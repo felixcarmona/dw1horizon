@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "virus",
   "specialties": ["nature", "battle", "air"],
+  "fields": ["nature-spirits", "wind-guardians"],
   "techniques": ["Sonic Jab", "Muscle Charge", "Spinning Shot", "Poison Claw", "Poison Powder", "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 51,

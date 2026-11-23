@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["air", "battle", "fire"],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Spit Fire", "Magma Bomb", "Megaton Punch", "Static Elect", "Wind Cutter", "Hurricane",
                  "Confused Storm", "War Cry", "Sonic Jab", "Tremar", "Pummel Whack"],
   "drop": {"item": "Hispeed dsk", "percent": 10},

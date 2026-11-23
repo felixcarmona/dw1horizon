@@ -6,6 +6,7 @@
   "vanilla_as": 46,
   "attribute": "data",
   "specialties": ["nature", "air", null],
+  "fields": ["nature-spirits", "metal-empire", "jungle-troopers"],
   "techniques": ["Poison Claw", "Insect Plague", "Bug", "Static Elect", "Mass Morph", "Electric Cloud",
                  "Danger Sting", "Poison Ivy", "Megalo Spark"],
   "drop": {"item": "Auto Pilot", "percent": 40},

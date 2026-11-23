@@ -6,6 +6,7 @@
   "off": {"level": "ultimate"},
   "attribute": "data",
   "specialties": ["ice", null, null],
+  "fields": ["nature-spirits"],
   "techniques": ["Tear Drop", "Giga Freeze", "Water Blit", "Winter Blast", "Ice Needle", "Ice Statue",
                  "Aurora Freeze", "Aqua Magic", "Blasting Spout"],
   "drop": {"item": "sm.recovery", "percent": 10},

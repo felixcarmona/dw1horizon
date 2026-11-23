@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "data",
   "specialties": ["fire", null, "battle"],
+  "fields": ["nature-spirits", "nightmare-soldiers", "dragons-roar"],
   "techniques": ["Magma Bomb", "Heat Laser", "Dynamite Kick (44)", "Fireball"],
   "drop": {"item": "Off. Chip", "percent": 100},
   "effects_like": 9,

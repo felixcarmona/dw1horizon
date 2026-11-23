@@ -6,6 +6,7 @@
   "vanilla_as": 40,
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
+  "fields": ["deep-savers", "virus-busters"],
   "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Thunder Justice", "Spinning Shot", "Megalo Spark",
                  "Hurricane", "Confused Storm", "Wind Cutter", "Death Claw"],

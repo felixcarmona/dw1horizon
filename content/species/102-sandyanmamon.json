@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "virus",
   "specialties": ["air", "fire", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Spit Fire", "Spinning Shot", "Hurricane"],
   "drop": {"item": "Protection", "percent": 5},
   "model": {"name": "SNDY", "bones": 30, "radius": 160, "height": 360},

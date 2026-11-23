@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["battle", "mech", "air"],
+  "fields": ["wind-guardians", "metal-empire", "virus-busters", "dragons-roar"],
   "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "DG Dimension", "All Range Beam", "Delete Program", "Pulse Laser", "Spinning Shot",
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Spiral Sword"],

@@ -6,6 +6,7 @@
   "vanilla_as": 59,
   "attribute": "data",
   "specialties": ["air", "battle", null],
+  "fields": ["nightmare-soldiers", "wind-guardians"],
   "techniques": ["Hurricane", "Thunder Justice", "Spinning Shot", "Megalo Spark", "Confused Storm", "Wind Cutter",
                  "Electric Cloud", "Static Elect", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Death Claw"],

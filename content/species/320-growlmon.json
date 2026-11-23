@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits", "metal-empire", "virus-busters", "dragons-roar"],
   "techniques": ["Spit Fire", "Prominence Beam", "Heat Laser", "Fire Tower", "Red Inferno", "Magma Bomb",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Blaze Blast"],
   "drop": {"item": "sm.recovery", "percent": 0},

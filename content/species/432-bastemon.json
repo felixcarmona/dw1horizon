@@ -6,6 +6,7 @@
   "vanilla_as": 60,
   "attribute": "virus",
   "specialties": ["battle", "nature", null],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Dynamite Kick (44)", "Counter", "Buster Dive", "Megaton Punch", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Charm Perfume", "Bug", "Green Trap", "Danger Sting",
                  "Poison Powder", "Death Claw"],

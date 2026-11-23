@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "vaccine",
   "specialties": ["battle", "nature", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Dynamite Kick (44)", "Megaton Punch", "Water Blit", "Green Trap", "Mass Morph"],
   "drop": {"item": "Giant Meat", "percent": 10},
   "effects_like": 52,

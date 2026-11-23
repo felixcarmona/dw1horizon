@@ -15,6 +15,9 @@ script 214 {
     on step(0) replace {    // section 51
         tournament_registered = false;
         if (engine.result == 3) {
+            if (tournament.cup >= 23) {    // the cups after the original's: their prizes are in script 220
+                jump_to_file(220, 51);
+            }
             if (tournament.cup == 0) {
                 give_bits(2000);
                 say(narrator, text("s214.sec51.u3"));
@@ -337,6 +340,9 @@ script 214 {
                 give_item(item("Giant Meat"), 1);
             }
             return;
+        }
+        if (tournament.cup >= 23) {
+            jump_to_file(220, 51);
         }
         if (tournament.cup == 0) {
             give_bits(500);

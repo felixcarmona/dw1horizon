@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "vaccine",
   "specialties": ["air", null, "battle"],
+  "fields": ["wind-guardians", "virus-busters"],
   "techniques": [],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 20,

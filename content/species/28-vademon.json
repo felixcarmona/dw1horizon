@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["mech", null, "nature"],
+  "fields": ["dark-area", "unknown"],
   "techniques": ["Green Trap", "Bug", "Charm Perfume", "Power Crane", "Delete Program", "Pulse Laser",
                  "Reverse Prog", "Metal Sprinter", "All Range Beam", "DG Dimension",
                  "Full Potential", "Abduction Beam"],

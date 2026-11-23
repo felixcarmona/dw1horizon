@@ -6,6 +6,7 @@
   "vanilla_as": 55,
   "attribute": "virus",
   "specialties": ["nature", "battle", "mech"],
+  "fields": ["wind-guardians", "jungle-troopers"],
   "techniques": ["Green Trap", "Bug", "Charm Perfume", "Danger Sting", "Poison Powder", "Poison Claw",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Power Crane",
                  "Delete Program", "Pulse Laser", "Reverse Prog", "Bit Bomb"],

@@ -6,6 +6,7 @@
   "vanilla_as": 41,
   "attribute": "virus",
   "specialties": ["mech", null, "battle"],
+  "fields": ["metal-empire"],
   "techniques": ["Megaton Punch", "Buster Dive", "Reverse Prog", "Full Potential", "DG Dimension", "All Range Beam",
                  "Delete Program", "Pulse Laser", "Power Crane", "Metal Sprinter", "Counter",
                  "Dynamite Kick (44)", "Sonic Jab", "Spiral Sword"],

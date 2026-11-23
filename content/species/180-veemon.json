@@ -6,6 +6,7 @@
   "vanilla_as": 3,
   "attribute": "vaccine",
   "specialties": ["battle", "fire", null],
+  "fields": ["nature-spirits", "wind-guardians", "metal-empire", "virus-busters", "dragons-roar", "unknown"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Spit Fire", "Heat Laser",
                  "Fire Tower", "Blue Blaster"],
   "drop": {"item": "sm.recovery", "percent": 10},

@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["mech", "air", "fire"],
+  "fields": ["metal-empire", "unknown"],
   "techniques": ["Pulse Laser", "Metal Sprinter", "DG Dimension", "All Range Beam", "Delete Program",
                  "Reverse Prog", "Power Crane", "Full Potential", "Electric Cloud", "Megalo Spark",
                  "Static Elect", "Prominence Beam", "Heat Laser", "Smiley Bomb"],

@@ -6,6 +6,7 @@
   "vanilla_as": 31,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "wind-guardians"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Buster Dive", "War Cry", "Wind Cutter", "Spinning Shot",
                  "Confused Storm", "Boom Bubble"],
   "drop": {"item": "Meat", "percent": 30},

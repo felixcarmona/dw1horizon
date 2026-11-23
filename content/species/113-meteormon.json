@@ -12,6 +12,7 @@
   },
   "attribute": "data",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits", "metal-empire"],
   "techniques": ["Magma Bomb", "Meltdown", "Megaton Punch", "Tremar", "Buster Dive", "Spit Fire", "Heat Laser",
                  "Red Inferno", "Prominence Beam", "Fireball"],
   "finisher": {"power": 230, "mpCost": 40, "element": "fire"},

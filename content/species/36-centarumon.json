@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits", "virus-busters"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Prominence Beam", "Heat Laser", "Red Inferno",
                  "Meltdown", "Dynamite Kick (48)", "Counter", "Muscle Charge", "Solar Ray"],
   "drop": {"item": "sm.recovery", "percent": 10},

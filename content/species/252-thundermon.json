@@ -6,6 +6,7 @@
   "vanilla_as": 48,
   "attribute": "data",
   "specialties": ["air", "battle", null],
+  "fields": ["metal-empire"],
   "techniques": ["Megalo Spark", "Static Elect", "Electric Cloud", "Wind Cutter", "Confused Storm", "Hurricane",
                  "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Solar Ray"],
   "drop": {"item": "sm.recovery", "percent": 10},

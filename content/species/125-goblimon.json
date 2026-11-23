@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "virus",
   "specialties": ["battle", null, null],
+  "fields": ["nightmare-soldiers"],
   "techniques": null,
   "drop": {"item": "Meat", "percent": 20},
   "model": {"name": "EGOB", "bones": 23, "radius": 125, "height": 280},

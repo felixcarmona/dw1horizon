@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["air", "battle", null],
+  "fields": ["virus-busters"],
   "techniques": ["Bubble (119)"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "model": {"name": "TOKO", "bones": 11, "radius": 100, "height": 160},

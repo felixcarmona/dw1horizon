@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "data",
   "specialties": ["air", "battle", "ice"],
+  "fields": ["nature-spirits", "wind-guardians", "virus-busters"],
   "techniques": ["Hurricane", "Thunder Justice", "Spinning Shot", "Megalo Spark", "Confused Storm", "Wind Cutter",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Giga Freeze",
                  "Water Blit", "Ice Needle", "Winter Blast", "Mail Strome"],

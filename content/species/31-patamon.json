@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["battle", null, "air"],
+  "fields": ["nature-spirits", "wind-guardians", "virus-busters", "jungle-troopers"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Buster Dive", "War Cry", "Wind Cutter", "Spinning Shot",
                  "Confused Storm", "Boom Bubble"],
   "drop": {"item": "sm.recovery", "percent": 10},

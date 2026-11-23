@@ -13,6 +13,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["ice", "fire", null],
+  "fields": ["nightmare-soldiers", "dragons-roar"],
   "techniques": ["Fire Tower", "Prominence Beam", "Red Inferno", "Tear Drop", "Spit Fire", "Giga Freeze",
                  "Ice Needle", "Ice Statue", "Heat Laser", "Magma Bomb", "Ice Blast"],
   "finisher": {"power": 220, "mpCost": 40, "element": "ice"},

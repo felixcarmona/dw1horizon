@@ -3686,6 +3686,149 @@
    "Accesso: ???"
   ]
  ],
+ "s209.sec10.u22": [
+  [
+   "- Coppa Intermedio -",
+   "Solo i Digimon Intermedi",
+   "possono salire sul ring.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Intermedi"
+  ]
+ ],
+ "s209.sec10.u23": [
+  [
+   "- Coppa Campione -",
+   "Solo i Digimon Campioni",
+   "possono salire sul ring.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Campioni"
+  ]
+ ],
+ "s209.sec10.u24": [
+  [
+   "- Coppa Evoluto -",
+   "Solo i Digimon Evoluti",
+   "possono salire sul ring.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Evoluti"
+  ]
+ ],
+ "s209.sec10.u25": [
+  [
+   "- Coppa Mega -",
+   "Solo i Digimon Mega",
+   "possono salire sul ring.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Mega"
+  ]
+ ],
+ "s209.sec10.u26": [
+  [
+   "- Coppa Vaccino -",
+   "Una coppa per i Digimon",
+   "di attributo Vaccino.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: attributo Vaccino"
+  ]
+ ],
+ "s209.sec10.u27": [
+  [
+   "- Coppa Dati -",
+   "Una coppa per i Digimon",
+   "di attributo Dati.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: attributo Dati"
+  ]
+ ],
+ "s209.sec10.u28": [
+  [
+   "- Coppa Virus -",
+   "Una coppa per i Digimon",
+   "di attributo Virus.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: attributo Virus"
+  ]
+ ],
+ "s209.sec10.u29": [
+  [
+   "- Coppa Nature Spirits -",
+   "Per i Digimon del Field",
+   "Nature Spirits.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Nature Spirits"
+  ]
+ ],
+ "s209.sec10.u30": [
+  [
+   "- Coppa Deep Savers -",
+   "Per i Digimon del Field",
+   "Deep Savers.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Deep Savers"
+  ]
+ ],
+ "s209.sec10.u31": [
+  [
+   "- Coppa Nightmare Soldiers -",
+   "Per i Digimon del Field",
+   "Nightmare Soldiers.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Nightmare Soldiers"
+  ]
+ ],
+ "s209.sec10.u32": [
+  [
+   "- Coppa Wind Guardians -",
+   "Per i Digimon del Field",
+   "Wind Guardians.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Wind Guardians"
+  ]
+ ],
+ "s209.sec10.u33": [
+  [
+   "- Coppa Metal Empire -",
+   "Per i Digimon del Field",
+   "Metal Empire.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Metal Empire"
+  ]
+ ],
+ "s209.sec10.u34": [
+  [
+   "- Coppa Virus Busters -",
+   "Per i Digimon del Field",
+   "Virus Busters.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Virus Busters"
+  ]
+ ],
  "s210.sec51.u0": [
   [
    "Ti aspettavo, {color 6}{player}{color 1}.",
@@ -4597,6 +4740,149 @@
   [
    "di tempo. Individuale, 3 giri,",
    "8 posti ingresso: ???"
+  ]
+ ],
+ "s213.sec10.u22": [
+  [
+   "- Coppa Intermedio -",
+   "Solo i Digimon Intermedi",
+   "possono salire sul ring.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Intermedi"
+  ]
+ ],
+ "s213.sec10.u23": [
+  [
+   "- Coppa Campione -",
+   "Solo i Digimon Campioni",
+   "possono salire sul ring.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Campioni"
+  ]
+ ],
+ "s213.sec10.u24": [
+  [
+   "- Coppa Evoluto -",
+   "Solo i Digimon Evoluti",
+   "possono salire sul ring.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Evoluti"
+  ]
+ ],
+ "s213.sec10.u25": [
+  [
+   "- Coppa Mega -",
+   "Solo i Digimon Mega",
+   "possono salire sul ring.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Mega"
+  ]
+ ],
+ "s213.sec10.u26": [
+  [
+   "- Coppa Vaccino -",
+   "Una coppa per i Digimon",
+   "di attributo Vaccino.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: attributo Vaccino"
+  ]
+ ],
+ "s213.sec10.u27": [
+  [
+   "- Coppa Dati -",
+   "Una coppa per i Digimon",
+   "di attributo Dati.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: attributo Dati"
+  ]
+ ],
+ "s213.sec10.u28": [
+  [
+   "- Coppa Virus -",
+   "Una coppa per i Digimon",
+   "di attributo Virus.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: attributo Virus"
+  ]
+ ],
+ "s213.sec10.u29": [
+  [
+   "- Coppa Nature Spirits -",
+   "Per i Digimon del Field",
+   "Nature Spirits.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Nature Spirits"
+  ]
+ ],
+ "s213.sec10.u30": [
+  [
+   "- Coppa Deep Savers -",
+   "Per i Digimon del Field",
+   "Deep Savers.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Deep Savers"
+  ]
+ ],
+ "s213.sec10.u31": [
+  [
+   "- Coppa Nightmare Soldiers -",
+   "Per i Digimon del Field",
+   "Nightmare Soldiers.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Nightmare Soldiers"
+  ]
+ ],
+ "s213.sec10.u32": [
+  [
+   "- Coppa Wind Guardians -",
+   "Per i Digimon del Field",
+   "Wind Guardians.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Wind Guardians"
+  ]
+ ],
+ "s213.sec10.u33": [
+  [
+   "- Coppa Metal Empire -",
+   "Per i Digimon del Field",
+   "Metal Empire.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Metal Empire"
+  ]
+ ],
+ "s213.sec10.u34": [
+  [
+   "- Coppa Virus Busters -",
+   "Per i Digimon del Field",
+   "Virus Busters.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Virus Busters"
   ]
  ],
  "s213.sec54.u0": [
@@ -6486,6 +6772,134 @@
  "s219.sec51.u65": [
   [
    "Bleah, una carta di Nanimon..."
+  ]
+ ],
+ "s220.sec51.u0": [
+  [
+   "Premio vittoria: 3000 Bits!",
+   "Ottenuto: {color 6}Chip Velocità{color 1}!"
+  ]
+ ],
+ "s220.sec51.u1": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Chip DV A{color 1}!"
+  ]
+ ],
+ "s220.sec51.u2": [
+  [
+   "Premio vittoria: 7000 Bits!",
+   "Ottenuto: {color 6}Chip DV D{color 1}!"
+  ]
+ ],
+ "s220.sec51.u3": [
+  [
+   "Premio vittoria: 10000 Bits!",
+   "Ottenuto: {color 6}Chip DV E{color 1}!"
+  ]
+ ],
+ "s220.sec51.u4": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Chip HP{color 1}!"
+  ]
+ ],
+ "s220.sec51.u5": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Chip Ingegno{color 1}!"
+  ]
+ ],
+ "s220.sec51.u6": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Chip Attacco{color 1}!"
+  ]
+ ],
+ "s220.sec51.u7": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Superverdura{color 1}!"
+  ]
+ ],
+ "s220.sec51.u8": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Digispigola{color 1}!"
+  ]
+ ],
+ "s220.sec51.u9": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Trota nera{color 1}!"
+  ]
+ ],
+ "s220.sec51.u10": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Foglia veloce{color 1}!"
+  ]
+ ],
+ "s220.sec51.u11": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Chip Difesa{color 1}!"
+  ]
+ ],
+ "s220.sec51.u12": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Chip MP{color 1}!"
+  ]
+ ],
+ "s220.sec51.u13": [
+  [
+   "Non puoi portare altro!"
+  ]
+ ],
+ "s220.sec51.u14": [
+  [
+   "Premio secondo posto: 1000",
+   "Bits! Ottenuto: {color 6}Filetto{color 1}!"
+  ]
+ ],
+ "s220.sec51.u15": [
+  [
+   "Non puoi portare altro!"
+  ]
+ ],
+ "s220.sec51.u16": [
+  [
+   "Premio secondo posto: 3000",
+   "Bits! Ottenuto: {color 6}Rigeneratore{color 1}!"
+  ]
+ ],
+ "s220.sec51.u17": [
+  [
+   "Non puoi portare altro!"
+  ]
+ ],
+ "s220.sec51.u18": [
+  [
+   "Premio secondo posto: 4000",
+   "Bits! Ottenuto:",
+   "{color 6}Superrigenera{color 1}!"
+  ]
+ ],
+ "s220.sec51.u19": [
+  [
+   "Non puoi portare altro!"
+  ]
+ ],
+ "s220.sec51.u20": [
+  [
+   "Premio secondo posto: 2000",
+   "Bits! Ottenuto: {color 6}Supercura{color 1}!"
+  ]
+ ],
+ "s220.sec51.u21": [
+  [
+   "Non puoi portare altro!"
   ]
  ],
  "s220.sec83.u0": [

@@ -6,6 +6,7 @@
   "vanilla_as": 61,
   "attribute": "data",
   "specialties": ["ice", "mech", null],
+  "fields": ["deep-savers", "metal-empire"],
   "techniques": ["Aurora Freeze", "Giga Freeze", "Ice Statue", "Water Blit", "Ice Needle", "Winter Blast",
                  "Tear Drop", "Aqua Magic", "All Range Beam", "Pulse Laser", "DG Dimension",
                  "Delete Program", "Reverse Prog", "Power Crane", "Mail Strome"],

@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["fire", "battle", "nature"],
+  "fields": ["nature-spirits"],
   "techniques": ["Spit Fire", "Prominence Beam", "Heat Laser", "Red Inferno", "Meltdown", "Megaton Punch",
                  "Counter", "Tremar", "Green Trap", "Insect Plague", "Mass Morph",
                  "Volcanic Strike"],

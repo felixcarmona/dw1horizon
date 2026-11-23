@@ -9,6 +9,7 @@
   },
   "attribute": "virus",
   "specialties": ["nature", "battle", "air"],
+  "fields": ["nature-spirits", "wind-guardians"],
   "techniques": ["Sonic Jab", "Muscle Charge", "Wind Cutter", "Spinning Shot", "Poison Claw", "Danger Sting",
                  "Green Trap", "Charm Perfume", "Poison Powder", "Mass Morph", "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},

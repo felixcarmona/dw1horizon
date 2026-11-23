@@ -6,6 +6,7 @@
   "vanilla_as": 3,
   "attribute": "virus",
   "specialties": ["battle", "fire", null],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Spit Fire", "Magma Bomb", "Sonic Jab", "Megaton Punch", "War Cry", "Heat Laser", "Muscle Charge",
                  "Pummel Whack"],
   "drop": {"item": "Meat", "percent": 30},

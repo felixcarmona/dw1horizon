@@ -215,6 +215,7 @@ def make(ctx):
             (P.file if opt == '--file' else P.add)(dest, S.resolve_path(x))
     for x in ('ETCNA/TITLE256.TIM', 'ETCNA/TITLE2.TIM', 'ETCDAT/TAMA.TIM'):
         P.file(x, O('title', x))
+    P.add('STDDAT/GRADE/NEWCUPS.BIN', O('title', 'STDDAT/GRADE/NEWCUPS.BIN'))
     from .effects import DISC_PATH
     P.file(DISC_PATH, O('effects', DISC_PATH))
     P.file('CHDAT/ALLTIM.TIM', O('ALLTIM.TIM'))     # the originals' flat sprites (species step)

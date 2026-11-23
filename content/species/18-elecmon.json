@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["air", null, "battle"],
+  "fields": ["nature-spirits", "deep-savers", "metal-empire"],
   "techniques": ["Dynamite Kick (44)", "Counter", "Muscle Charge", "Static Elect", "Megalo Spark", "Electric Cloud",
                  "Wind Cutter", "Super Thunder Strike"],
   "drop": {"item": "sm.recovery", "percent": 10},

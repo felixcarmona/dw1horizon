@@ -6,6 +6,7 @@
   "vanilla_as": 48,
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
+  "fields": ["deep-savers"],
   "techniques": ["Water Blit", "Tear Drop", "Aqua Magic", "Winter Blast", "Ice Needle", "Giga Freeze", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Tremar", "Hydro Pressure"],
   "drop": {"item": "sm.recovery", "percent": 10},

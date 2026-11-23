@@ -6,6 +6,7 @@
   "vanilla_as": 48,
   "attribute": "virus",
   "specialties": ["air", "ice", null],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Static Elect", "Megalo Spark", "Electric Cloud", "Thunder Justice", "Giga Freeze", "Wind Cutter",
                  "Confused Storm", "Aqua Magic", "Tear Drop", "Winter Blast", "Dark Claw"],
   "drop": {"item": "Medium MP", "percent": 10},

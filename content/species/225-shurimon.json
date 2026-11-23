@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "data",
   "specialties": ["battle", "air", "nature"],
+  "fields": ["wind-guardians", "jungle-troopers", "unknown"],
   "techniques": ["Sonic Jab", "Muscle Charge", "War Cry", "Tremar", "Dynamite Kick (44)", "Wind Cutter",
                  "Static Elect", "Electric Cloud", "Poison Claw", "Mass Morph",
                  "Iga School Knife Throw", "Spinning Shot", "Dynamite Kick (48)"],

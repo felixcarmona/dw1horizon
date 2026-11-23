@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "data",
   "specialties": ["nature", "battle", null],
+  "fields": ["metal-empire"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Sonic Jab", "Muscle Charge",
                  "Pepper Breath"],
   "drop": {"item": "Omnipotent", "percent": 5},

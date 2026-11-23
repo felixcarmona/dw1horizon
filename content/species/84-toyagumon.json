@@ -6,6 +6,7 @@
   "vanilla_as": 3,
   "attribute": "data",
   "specialties": ["fire", null, "battle"],
+  "fields": ["metal-empire"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Sonic Jab", "Muscle Charge",
                  "Pepper Breath"],
   "drop": {"item": "Port. potty", "percent": 10},

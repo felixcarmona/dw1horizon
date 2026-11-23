@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Spit Fire", "Magma Bomb", "Sonic Jab", "Megaton Punch", "War Cry"],
   "drop": {"item": "Meat", "percent": 10},
   "effects_like": 80,

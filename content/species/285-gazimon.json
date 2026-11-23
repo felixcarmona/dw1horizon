@@ -6,6 +6,7 @@
   "vanilla_as": 46,
   "attribute": "virus",
   "specialties": ["battle", "nature", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "wind-guardians", "unknown"],
   "techniques": ["Sonic Jab", "Muscle Charge", "War Cry", "Tremar", "Poison Claw", "Poison Powder", "Mass Morph",
                  "Poison Ivy"],
   "drop": {"item": "sm.recovery", "percent": 10},

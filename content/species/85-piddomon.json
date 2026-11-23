@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "vaccine",
   "specialties": ["air", "battle", null],
+  "fields": ["wind-guardians", "virus-busters"],
   "techniques": ["Dynamite Kick (44)", "Counter", "Megalo Spark", "Spinning Shot", "Confused Storm", "Hurricane",
                  "Static Elect", "Electric Cloud", "War Cry", "Megaton Punch", "Hand of Fate"],
   "drop": {"item": "Sage Fruit", "percent": 10},

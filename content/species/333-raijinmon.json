@@ -6,6 +6,7 @@
   "vanilla_as": 40,
   "attribute": "virus",
   "specialties": ["air", "mech", "battle"],
+  "fields": ["metal-empire"],
   "techniques": ["Thunder Justice", "Megalo Spark", "Spinning Shot", "Hurricane", "Confused Storm", "Wind Cutter",
                  "Power Crane", "DG Dimension", "All Range Beam", "Delete Program", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Sonic Jab", "Genoside Attack"],

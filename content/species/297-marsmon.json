@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["battle", "fire", null],
+  "fields": ["nature-spirits", "virus-busters"],
   "techniques": ["Megaton Punch", "Sonic Jab", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar",
                  "Muscle Charge", "War Cry", "Inifinity Burn", "Prominence Beam", "Meltdown",
                  "Magma Bomb", "Red Inferno", "Fire Tower", "Mega Flame"],

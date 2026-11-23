@@ -9,6 +9,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["nature", "fire", "air"],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Spit Fire", "Prominence Beam", "Red Inferno", "Wind Cutter", "Hurricane", "Poison Claw",
                  "Danger Sting", "Green Trap", "Charm Perfume", "Poison Powder", "Mass Morph",
                  "Electro Shocker"],

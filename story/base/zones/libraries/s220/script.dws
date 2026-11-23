@@ -2,9 +2,12 @@
 // original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
 // Text is by key (text/us/dialogue.json), never the game's own words.
 import "../../../../core/engine.dws";
+import "../../../names.dws";
 script 220 {
+    npc slot0 = 5;
+
     // the section table, in the order of the original header
-    sections 254, 83;
+    sections 254, 83, 51;
 
     on enter replace {    // section 254
     }
@@ -25,6 +28,218 @@ script 220 {
         }
         say(narrator, text("s220.sec83.u3"));
         sound(0, 1);
+        return;
+    }
+
+    on step(0) replace {    // section 51: the prizes of the cups after the original's (23 to 35); script 214 jumps here
+        if (engine.result == 3) {
+            if (tournament.cup == 23) {
+                give_bits(3000);
+                say(narrator, text("s220.sec51.u0"));
+                give_item(item("Quick Chip"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Quick Chip"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 24) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u1"));
+                give_item(item("DV Chip A"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("DV Chip A"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 25) {
+                give_bits(7000);
+                say(narrator, text("s220.sec51.u2"));
+                give_item(item("DV Chip D"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("DV Chip D"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 26) {
+                give_bits(10000);
+                say(narrator, text("s220.sec51.u3"));
+                give_item(item("DV Chip E"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("DV Chip E"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 27) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u4"));
+                give_item(item("HP Chip"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("HP Chip"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 28) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u5"));
+                give_item(item("Brain Chip"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Brain Chip"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 29) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u6"));
+                give_item(item("Off. Chip"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Off. Chip"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 30) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u7"));
+                give_item(item("Super veggy"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Super veggy"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 31) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u8"));
+                give_item(item("Digiseabass"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Digiseabass"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 32) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u9"));
+                give_item(item("Black trout"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Black trout"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 33) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u10"));
+                give_item(item("Speed leaf"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Speed leaf"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 34) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u11"));
+                give_item(item("Def. Chip"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Def. Chip"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 35) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u12"));
+                give_item(item("MP Chip"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("MP Chip"), 1);
+                }
+                jump_to_file(204, 51);
+            }
+        }
+        if (tournament.cup == 23) {
+            give_bits(1000);
+            say(narrator, text("s220.sec51.u14"));
+            give_item(item("Sirloin"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s220.sec51.u15"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Sirloin"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 25) {
+            give_bits(3000);
+            say(narrator, text("s220.sec51.u16"));
+            give_item(item("Restore"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s220.sec51.u17"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Restore"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 26) {
+            give_bits(4000);
+            say(narrator, text("s220.sec51.u18"));
+            give_item(item("Sup.restore"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s220.sec51.u19"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Sup.restore"), 1);
+            }
+            return;
+        }
+        give_bits(2000);
+        say(narrator, text("s220.sec51.u20"));
+        give_item(item("sup.recovery"), 1);
+        if (engine.item_did_not_fit) {
+            say(slot0, text("s220.sec51.u21"));
+            engine.picker_mode = true;
+            call_routine(routine("choose_item"));
+            call_routine(routine("remove_all_chosen_item"));
+            give_item(item("sup.recovery"), 1);
+        }
         return;
     }
 }

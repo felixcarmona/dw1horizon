@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
+  "fields": ["metal-empire"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Static Elect", "Megalo Spark", "Electric Cloud",
                  "Thunder Justice", "Confused Storm", "Lovely Attack"],

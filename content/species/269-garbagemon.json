@@ -6,6 +6,7 @@
   "vanilla_as": 42,
   "attribute": "virus",
   "specialties": ["filth", "mech", null],
+  "fields": ["wind-guardians", "unknown"],
   "techniques": ["Big Poop Toss", "Ult Poop Hell", "Big Rnd Toss", "Poop Spd Toss", "Rnd Spd Toss", "Odor Spray",
                  "Poop Rnd Toss", "Horizontal Kick (55)", "Power Crane", "DG Dimension",
                  "All Range Beam", "Delete Program", "Pulse Laser", "Energy Bomb", "Metal Sprinter"],

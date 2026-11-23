@@ -4,6 +4,7 @@
   "level": "ultimate",
   "attribute": "virus",
   "specialties": ["mech", null, "nature"],
+  "fields": ["dark-area", "unknown"],
   "techniques": [],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 28,

@@ -13,6 +13,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["battle", "air", "filth"],
+  "fields": ["nature-spirits", "metal-empire"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Megalo Spark", "Spinning Shot", "Thunder Justice",
                  "Horizontal Kick (55)", "Ult Poop Hell", "Dark Network & Concert Crush"],

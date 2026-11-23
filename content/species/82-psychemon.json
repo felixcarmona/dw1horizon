@@ -6,6 +6,7 @@
   "vanilla_as": 31,
   "attribute": "vaccine",
   "specialties": ["battle", null, null],
+  "fields": ["nature-spirits"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Tremar", "War Cry", "Muscle Charge",
                  "Counter", "Drill Spin"],
   "drop": {"item": "Bandage", "percent": 10},

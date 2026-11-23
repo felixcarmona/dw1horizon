@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "vaccine",
   "specialties": ["battle", null, "air"],
+  "fields": ["nature-spirits", "virus-busters"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Static Elect", "Megalo Spark", "Fist of the Beast King"],
   "drop": {"item": "sm.recovery", "percent": 10},

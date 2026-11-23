@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["filth", "battle", "mech"],
+  "fields": ["nightmare-soldiers", "metal-empire"],
   "techniques": ["Odor Spray", "Poop Rnd Toss", "Horizontal Kick (55)", "Poop Spd Toss", "Rnd Spd Toss",
                  "Big Poop Toss", "Metal Sprinter", "Muscle Charge", "War Cry", "Sonic Jab",
                  "Death Claw", "Power Crane"],

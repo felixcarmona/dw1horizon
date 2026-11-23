@@ -17,6 +17,8 @@ def enter():    # section 254
 def step0():    # section 51
     tournament_registered.clear()
     if engine.result == 3:
+        if tournament.cup >= 23:    # the cups after the original's: their prizes are in script 220
+            jump_to_script(220, 51)
         if tournament.cup == 0:
             give(bits=2000)
             narrator.say(t51.u3)
@@ -277,6 +279,8 @@ def step0():    # section 51
             take_picked(all=True)
             give(Item.GiantMeat)
         return
+    if tournament.cup >= 23:
+        jump_to_script(220, 51)
     if tournament.cup == 0:
         give(bits=500)
         narrator.say(t51.u52)

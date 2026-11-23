@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "vaccine",
   "specialties": ["filth", null, null],
+  "fields": ["unknown"],
   "techniques": ["Odor Spray", "Big Poop Toss", "Rnd Spd Toss", "Big Rnd Toss", "Ult Poop Hell"],
   "drop": {"item": "Medicine", "percent": 10},
   "effects_like": 39,

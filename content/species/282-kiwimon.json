@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "data",
   "specialties": ["nature", "battle", null],
+  "fields": ["wind-guardians", "jungle-troopers"],
   "techniques": ["Poison Powder", "Green Trap", "Mass Morph", "Insect Plague", "Poison Claw", "Danger Sting",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Sweet Breath"],
   "drop": {"item": "sm.recovery", "percent": 10},

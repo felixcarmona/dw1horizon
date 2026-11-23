@@ -6,6 +6,7 @@
   "vanilla_as": 59,
   "attribute": "vaccine",
   "specialties": ["fire", "air", "battle"],
+  "fields": ["wind-guardians", "virus-busters"],
   "techniques": ["Prominence Beam", "Inifinity Burn", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Hurricane", "Thunder Justice", "Spinning Shot", "Megalo Spark", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Mega Flame"],

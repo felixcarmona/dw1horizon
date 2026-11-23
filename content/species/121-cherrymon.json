@@ -6,6 +6,7 @@
   "off": {"level": "ultimate"},
   "attribute": "vaccine",
   "specialties": ["nature", null, null],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Poison Claw", "Danger Sting", "Green Trap", "Insect Plague", "Bug", "Charm Perfume",
                  "Poison Powder", "Mass Morph", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},

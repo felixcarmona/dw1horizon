@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "data",
   "specialties": ["mech", "battle", null],
+  "fields": ["metal-empire"],
   "techniques": ["Power Crane", "Reverse Prog", "Full Potential", "Metal Sprinter", "Pulse Laser", "Delete Program",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Genoside Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},

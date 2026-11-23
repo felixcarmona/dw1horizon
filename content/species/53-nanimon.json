@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["filth", "battle", null],
+  "fields": ["nightmare-soldiers", "unknown"],
   "techniques": ["Dynamite Kick (44)", "Megaton Punch", "Counter", "Horizontal Kick (55)", "Odor Spray",
                  "Poop Spd Toss", "Big Poop Toss", "Poop Rnd Toss", "Rnd Spd Toss", "Big Rnd Toss",
                  "Party time (107)"],

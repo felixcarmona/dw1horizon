@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["ice", null, "nature"],
+  "fields": ["deep-savers"],
   "techniques": ["Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit", "Ice Statue", "Winter Blast", "Aqua Magic",
                  "Poison Claw", "Danger Sting", "Insect Plague", "Variable Darts"],
   "drop": {"item": "sm.recovery", "percent": 10},

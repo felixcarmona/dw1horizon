@@ -7,6 +7,7 @@
   "off": {"level": "rookie"},
   "attribute": "vaccine",
   "specialties": ["mech", "air", null],
+  "fields": ["metal-empire"],
   "techniques": ["Static Elect", "Electric Cloud", "Power Crane", "Metal Sprinter", "Reverse Prog",
                  "Electric Shock"],
   "drop": {"item": "S.Off.disk", "percent": 30},

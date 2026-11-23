@@ -4,6 +4,7 @@
   "level": "none",
   "attribute": "data",
   "specialties": [null, null, null],
+  "fields": ["nature-spirits"],
   "techniques": [],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 119,

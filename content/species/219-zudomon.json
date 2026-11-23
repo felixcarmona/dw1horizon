@@ -6,6 +6,7 @@
   "vanilla_as": 40,
   "attribute": "vaccine",
   "specialties": ["battle", "ice", null],
+  "fields": ["deep-savers"],
   "techniques": ["Megaton Punch", "Tremar", "Buster Dive", "Counter", "Dynamite Kick (44)", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Giga Freeze", "Aurora Freeze", "Ice Statue",
                  "Water Blit", "Ice Needle", "Mail Strome"],

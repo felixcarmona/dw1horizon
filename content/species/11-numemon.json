@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["filth", null, null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "metal-empire", "unknown"],
   "techniques": ["Horizontal Kick (57)", "Odor Spray", "Poop Spd Toss", "Big Poop Toss", "Poop Rnd Toss",
                  "Rnd Spd Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (108)"],
   "drop": {"item": "sm.recovery", "percent": 0},

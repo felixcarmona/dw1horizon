@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["fire", "battle", "air"],
+  "fields": ["nightmare-soldiers", "dark-area", "unknown"],
   "techniques": ["Inifinity Burn", "Meltdown", "Prominence Beam", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Buster Dive", "Megaton Punch", "Counter", "Dynamite Kick (44)", "Spinning Shot",
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Nightmare Syndromer"],

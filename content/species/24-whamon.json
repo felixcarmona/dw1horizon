@@ -32,6 +32,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["ice", null, "nature"],
+  "fields": ["deep-savers"],
   "techniques": ["Charm Perfume", "Poison Powder", "Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit",
                  "Ice Statue", "Winter Blast", "Aurora Freeze", "Aqua Magic", "Blasting Spout"],
   "finisher": {"power": 210, "mpCost": 40, "element": "ice"},

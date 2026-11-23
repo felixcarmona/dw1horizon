@@ -6,6 +6,7 @@
   "vanilla_as": 40,
   "attribute": "data",
   "specialties": ["ice", "battle", null],
+  "fields": ["deep-savers"],
   "techniques": ["Ice Needle", "Water Blit", "Aurora Freeze", "Ice Statue", "Giga Freeze", "Winter Blast",
                  "Tear Drop", "Aqua Magic", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Bone Boomerang"],

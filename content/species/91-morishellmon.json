@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "data",
   "specialties": ["nature", "ice", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Charm Perfume", "Poison Powder", "Tear Drop", "Water Blit", "Ice Statue", "Aqua Magic",
                  "Winter Blast", "Ice Needle", "Giga Freeze", "Aurora Freeze", "Drill Spin"],
   "drop": {"item": "Muscle Yam", "percent": 1},

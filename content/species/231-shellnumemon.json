@@ -6,6 +6,7 @@
   "vanilla_as": 11,
   "attribute": "virus",
   "specialties": ["filth", "ice", "battle"],
+  "fields": ["nature-spirits", "deep-savers", "unknown"],
   "techniques": ["Odor Spray", "Big Poop Toss", "Horizontal Kick (55)", "Poop Rnd Toss", "Poop Spd Toss",
                  "Rnd Spd Toss", "Water Blit", "Aqua Magic", "Tear Drop", "Counter",
                  "Iga School Knife Throw"],

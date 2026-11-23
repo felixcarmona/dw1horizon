@@ -13,6 +13,7 @@
   },
   "attribute": "data",
   "specialties": ["fire", null, null],
+  "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Meltdown",
                  "Prominence Beam", "Fireball"],
   "finisher": {"power": 155, "mpCost": 40, "element": "fire"},

@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "data",
   "specialties": ["battle", null, "fire"],
+  "fields": ["nature-spirits", "wind-guardians", "metal-empire", "virus-busters"],
   "techniques": ["Dynamite Kick (44)", "Megaton Punch", "Tremar", "War Cry", "Blue Blaster"],
   "drop": {"item": "MP Chip", "percent": 0},
   "effects_like": 17,

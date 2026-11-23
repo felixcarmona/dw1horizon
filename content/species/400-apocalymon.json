@@ -6,6 +6,7 @@
   "vanilla_as": 26,
   "attribute": "virus",
   "specialties": ["mech", "battle", "ice"],
+  "fields": ["nature-spirits", "deep-savers", "nightmare-soldiers", "dark-area"],
   "techniques": ["DG Dimension", "All Range Beam", "Delete Program", "Pulse Laser", "Reverse Prog", "Power Crane",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Giga Freeze",
                  "Water Blit", "Ice Needle", "Winter Blast", "Deadly Bomb"],

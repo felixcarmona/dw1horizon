@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "data",
   "specialties": ["air", "ice", null],
+  "fields": ["wind-guardians"],
   "techniques": ["Dynamite Kick (44)", "Static Elect", "Electric Cloud", "Wind Cutter", "Spinning Shot",
                  "Confused Storm"],
   "drop": {"item": "Off. Disk", "percent": 10},

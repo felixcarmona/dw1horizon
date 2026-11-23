@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "virus",
   "specialties": ["fire", "air", null],
+  "fields": ["nightmare-soldiers", "unknown"],
   "techniques": ["Magma Bomb", "Heat Laser", "Red Inferno", "Giga Freeze", "Ice Needle", "Winter Blast"],
   "drop": {"item": "Medium MP", "percent": 10},
   "effects_like": 69,

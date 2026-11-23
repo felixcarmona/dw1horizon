@@ -9,6 +9,7 @@
   },
   "attribute": "data",
   "specialties": ["battle", null, "fire"],
+  "fields": ["nature-spirits", "wind-guardians", "metal-empire", "virus-busters"],
   "techniques": ["Fire Tower", "Heat Laser", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Tremar",
                  "War Cry", "Blue Blaster"],
   "drop": {"item": "sm.recovery", "percent": 10},

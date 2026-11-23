@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["filth", null, null],
+  "fields": ["metal-empire", "unknown"],
   "techniques": ["Horizontal Kick (55)", "Odor Spray", "Poop Spd Toss", "Big Poop Toss", "Poop Rnd Toss",
                  "Rnd Spd Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (65)"],
   "drop": {"item": "Enemy repel", "percent": 10},

@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "vaccine",
   "specialties": ["battle", "fire", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "virus-busters"],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar",
                  "Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Pummel Whack"],
   "drop": {"item": "sm.recovery", "percent": 10},

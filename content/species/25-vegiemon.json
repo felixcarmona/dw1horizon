@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["nature", null, "ice"],
+  "fields": ["nature-spirits", "wind-guardians", "unknown"],
   "techniques": ["Poison Claw", "Danger Sting", "Green Trap", "Charm Perfume", "Poison Powder", "Mass Morph",
                  "Water Blit", "Aqua Magic", "Sweet Breath"],
   "drop": {"item": "sm.recovery", "percent": 10},

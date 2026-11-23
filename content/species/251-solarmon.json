@@ -6,6 +6,7 @@
   "vanilla_as": 3,
   "attribute": "vaccine",
   "specialties": ["fire", "mech", null],
+  "fields": ["metal-empire", "virus-busters"],
   "techniques": ["Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Power Crane", "Full Potential",
                  "Metal Sprinter", "Spiral Twister"],
   "drop": {"item": "Enemy repel", "percent": 10},

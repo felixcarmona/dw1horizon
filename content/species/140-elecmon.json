@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "data",
   "specialties": ["air", null, "battle"],
+  "fields": ["nature-spirits", "deep-savers", "metal-empire"],
   "techniques": ["Static Elect", "Megalo Spark", "Electric Cloud"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 18,

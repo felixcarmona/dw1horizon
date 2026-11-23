@@ -6,6 +6,7 @@
   "vanilla_as": 31,
   "attribute": "data",
   "specialties": ["battle", null, null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "metal-empire", "unknown"],
   "techniques": ["Megaton Punch", "Buster Dive", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab",
                  "Dynamite Kick (44)", "Pummel Whack"],
   "drop": {"item": "med.recovery", "percent": 10},

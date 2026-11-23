@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["battle", "mech", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "wind-guardians", "metal-empire", "dark-area"],
   "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Pulse Laser", "DG Dimension", "All Range Beam",
                  "Delete Program", "Reverse Prog", "Power Crane", "Dark Shot"],

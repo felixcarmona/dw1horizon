@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["mech", "fire", "battle"],
+  "fields": ["metal-empire", "dragons-roar", "unknown"],
   "techniques": ["Pulse Laser", "Power Crane", "DG Dimension", "All Range Beam", "Delete Program", "Reverse Prog",
                  "Meltdown", "Inifinity Burn", "Prominence Beam", "Magma Bomb", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Deadly Bomb"],

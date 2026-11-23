@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["air", null, "ice"],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Static Elect", "Megalo Spark", "Electric Cloud", "Wind Cutter", "Spinning Shot",
                  "Thunder Justice", "Hurricane", "Giga Freeze", "Winter Blast", "Aqua Magic",
                  "Dark Claw"],

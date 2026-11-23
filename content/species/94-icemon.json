@@ -12,6 +12,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["ice", null, "battle"],
+  "fields": ["nature-spirits", "deep-savers", "nightmare-soldiers"],
   "techniques": ["Megaton Punch", "Giga Freeze", "Ice Needle", "Tremar", "Buster Dive", "Ice Statue",
                  "Winter Blast", "Muscle Charge", "Subzero Ice Punch"],
   "finisher": {"power": 157, "mpCost": 40, "element": "ice"},

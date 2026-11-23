@@ -6,6 +6,7 @@
   "vanilla_as": 15,
   "attribute": "data",
   "specialties": ["nature", null, null],
+  "fields": ["nature-spirits"],
   "techniques": ["Bubble (114)"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 15,

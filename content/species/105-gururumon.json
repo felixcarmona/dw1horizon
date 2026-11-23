@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "virus",
   "specialties": ["battle", "ice", null],
+  "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Megaton Punch", "Buster Dive", "War Cry", "Giga Freeze", "Ice Statue", "Winter Blast",
                  "Muscle Charge", "Sonic Jab", "Tremar", "Aqua Magic", "Ice Blast"],
   "drop": {"item": "med.recovery", "percent": 10},

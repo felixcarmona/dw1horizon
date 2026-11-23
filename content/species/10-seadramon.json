@@ -9,6 +9,7 @@
   },
   "attribute": "data",
   "specialties": ["ice", "nature", "fire"],
+  "fields": ["deep-savers"],
   "techniques": ["Spit Fire", "Magma Bomb", "Danger Sting", "Charm Perfume", "Poison Powder", "Tear Drop",
                  "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast", "Aqua Magic",
                  "Ice Blast"],

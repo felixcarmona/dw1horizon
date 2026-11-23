@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "vaccine",
   "specialties": ["ice", "battle", null],
+  "fields": ["deep-savers"],
   "techniques": ["Water Blit", "Tear Drop", "Giga Freeze", "Aqua Magic", "Winter Blast", "Ice Needle",
                  "Buster Dive", "Muscle Charge", "War Cry", "Sonic Jab", "Blasting Spout"],
   "drop": {"item": "sm.recovery", "percent": 10},

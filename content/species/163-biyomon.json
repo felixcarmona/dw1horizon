@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "vaccine",
   "specialties": ["air", null, "fire"],
+  "fields": ["nature-spirits", "wind-guardians", "virus-busters", "jungle-troopers"],
   "techniques": [],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 45,

@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "virus",
   "specialties": ["nature", "ice", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Poison Claw", "Charm Perfume", "Poison Powder", "Tear Drop", "Water Blit"],
   "drop": {"item": "Double flop", "percent": 5},
   "effects_like": 46,

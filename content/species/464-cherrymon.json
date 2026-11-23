@@ -4,6 +4,7 @@
   "level": "none",
   "attribute": "vaccine",
   "specialties": [null, null, null],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": [],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 121,

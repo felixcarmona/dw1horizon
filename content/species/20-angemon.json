@@ -9,6 +9,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["air", null, "battle"],
+  "fields": ["wind-guardians", "virus-busters"],
   "techniques": ["Dynamite Kick (44)", "Counter", "War Cry", "Static Elect", "Megalo Spark", "Electric Cloud",
                  "Wind Cutter", "Spinning Shot", "Confused Storm", "Hurricane", "Hand of Fate"],
   "drop": {"item": "sm.recovery", "percent": 10},

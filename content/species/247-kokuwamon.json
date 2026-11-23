@@ -6,6 +6,7 @@
   "vanilla_as": 18,
   "attribute": "data",
   "specialties": ["air", "mech", null],
+  "fields": ["metal-empire"],
   "techniques": ["Static Elect", "Electric Cloud", "Wind Cutter", "Confused Storm", "Power Crane", "Full Potential",
                  "Metal Sprinter", "Electric Shock"],
   "drop": {"item": "sm.recovery", "percent": 10},

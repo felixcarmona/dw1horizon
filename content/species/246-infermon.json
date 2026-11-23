@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["mech", "nature", null],
+  "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Pulse Laser", "Metal Sprinter", "DG Dimension", "All Range Beam", "Delete Program",
                  "Reverse Prog", "Power Crane", "Full Potential", "Poison Claw", "Poison Powder",
                  "Bug", "Insect Plague", "Mass Morph", "Genoside Attack"],

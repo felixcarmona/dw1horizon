@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "virus",
   "specialties": ["battle", "nature", null],
+  "fields": ["nightmare-soldiers", "metal-empire", "unknown"],
   "techniques": ["Megaton Punch", "Tremar", "Counter", "Muscle Charge", "War Cry", "Sonic Jab", "Mass Morph", null,
                  null, null, "Pummel Whack"],
   "drop": {"item": "sm.recovery", "percent": 10},

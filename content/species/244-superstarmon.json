@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "data",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits", "metal-empire"],
   "techniques": ["Magma Bomb", "Meltdown", "Inifinity Burn", "Prominence Beam", "Red Inferno", "Fire Tower",
                  "Heat Laser", "Spit Fire", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Fireball"],

@@ -6,6 +6,7 @@
   "vanilla_as": 53,
   "attribute": "virus",
   "specialties": ["battle", "mech", null],
+  "fields": ["unknown"],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar",
                  "Power Crane", "Full Potential", "Metal Sprinter", "Reverse Prog",
                  "Iga School Knife Throw"],

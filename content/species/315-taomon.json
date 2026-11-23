@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "data",
   "specialties": ["fire", "air", "battle"],
+  "fields": ["nature-spirits", "nightmare-soldiers", "wind-guardians", "virus-busters"],
   "techniques": ["Fire Tower", "Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Red Inferno",
                  "Wind Cutter", "Megalo Spark", "Thunder Justice", "Spinning Shot", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Mega Flame"],

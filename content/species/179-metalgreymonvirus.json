@@ -4,6 +4,7 @@
   "level": "ultimate",
   "attribute": "virus",
   "specialties": ["mech", "fire", "battle"],
+  "fields": ["metal-empire"],
   "techniques": null,
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 12,

@@ -2007,6 +2007,149 @@
    "Entrada: ???"
   ]
  ],
+ "s209.sec10.u22": [
+  [
+   "- Copa Novato -",
+   "Solo los Digimon Novato",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Novato"
+  ]
+ ],
+ "s209.sec10.u23": [
+  [
+   "- Copa Campeón -",
+   "Solo los Digimon Campeón",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Campeón"
+  ]
+ ],
+ "s209.sec10.u24": [
+  [
+   "- Copa Perfecto -",
+   "Solo los Digimon Perfecto",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Perfecto"
+  ]
+ ],
+ "s209.sec10.u25": [
+  [
+   "- Copa Mega -",
+   "Solo los Digimon Mega",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Mega"
+  ]
+ ],
+ "s209.sec10.u26": [
+  [
+   "- Copa Vacuna -",
+   "Una copa para los Digimon",
+   "de atributo Vacuna.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: atributo Vacuna"
+  ]
+ ],
+ "s209.sec10.u27": [
+  [
+   "- Copa Datos -",
+   "Una copa para los Digimon",
+   "de atributo Datos.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: atributo Datos"
+  ]
+ ],
+ "s209.sec10.u28": [
+  [
+   "- Copa Virus -",
+   "Una copa para los Digimon",
+   "de atributo Virus.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: atributo Virus"
+  ]
+ ],
+ "s209.sec10.u29": [
+  [
+   "- Copa Nature Spirits -",
+   "Para los Digimon del Field",
+   "Nature Spirits.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Nature Spirits"
+  ]
+ ],
+ "s209.sec10.u30": [
+  [
+   "- Copa Deep Savers -",
+   "Para los Digimon del Field",
+   "Deep Savers.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Deep Savers"
+  ]
+ ],
+ "s209.sec10.u31": [
+  [
+   "- Copa Nightmare Soldiers -",
+   "Para los Digimon del Field",
+   "Nightmare Soldiers.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Nightmare Soldiers"
+  ]
+ ],
+ "s209.sec10.u32": [
+  [
+   "- Copa Wind Guardians -",
+   "Para los Digimon del Field",
+   "Wind Guardians.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Wind Guardians"
+  ]
+ ],
+ "s209.sec10.u33": [
+  [
+   "- Copa Metal Empire -",
+   "Para los Digimon del Field",
+   "Metal Empire.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Metal Empire"
+  ]
+ ],
+ "s209.sec10.u34": [
+  [
+   "- Copa Virus Busters -",
+   "Para los Digimon del Field",
+   "Virus Busters.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Virus Busters"
+  ]
+ ],
  "s210.sec51.u0": "Te estaba esperando, {color 6}{player}{color 1}. Por fin ha llegado el día.",
  "s210.sec51.u1": "¿Qué pasa?",
  "s210.sec51.u2": "¡Ha aparecido el camino al Monte Infinito!",
@@ -2614,6 +2757,149 @@
    "",
    "Individual, 3 rondas, 8 plazas",
    "Entrada: ???"
+  ]
+ ],
+ "s213.sec10.u22": [
+  [
+   "- Copa Novato -",
+   "Solo los Digimon Novato",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Novato"
+  ]
+ ],
+ "s213.sec10.u23": [
+  [
+   "- Copa Campeón -",
+   "Solo los Digimon Campeón",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Campeón"
+  ]
+ ],
+ "s213.sec10.u24": [
+  [
+   "- Copa Perfecto -",
+   "Solo los Digimon Perfecto",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Perfecto"
+  ]
+ ],
+ "s213.sec10.u25": [
+  [
+   "- Copa Mega -",
+   "Solo los Digimon Mega",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Mega"
+  ]
+ ],
+ "s213.sec10.u26": [
+  [
+   "- Copa Vacuna -",
+   "Una copa para los Digimon",
+   "de atributo Vacuna.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: atributo Vacuna"
+  ]
+ ],
+ "s213.sec10.u27": [
+  [
+   "- Copa Datos -",
+   "Una copa para los Digimon",
+   "de atributo Datos.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: atributo Datos"
+  ]
+ ],
+ "s213.sec10.u28": [
+  [
+   "- Copa Virus -",
+   "Una copa para los Digimon",
+   "de atributo Virus.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: atributo Virus"
+  ]
+ ],
+ "s213.sec10.u29": [
+  [
+   "- Copa Nature Spirits -",
+   "Para los Digimon del Field",
+   "Nature Spirits.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Nature Spirits"
+  ]
+ ],
+ "s213.sec10.u30": [
+  [
+   "- Copa Deep Savers -",
+   "Para los Digimon del Field",
+   "Deep Savers.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Deep Savers"
+  ]
+ ],
+ "s213.sec10.u31": [
+  [
+   "- Copa Nightmare Soldiers -",
+   "Para los Digimon del Field",
+   "Nightmare Soldiers.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Nightmare Soldiers"
+  ]
+ ],
+ "s213.sec10.u32": [
+  [
+   "- Copa Wind Guardians -",
+   "Para los Digimon del Field",
+   "Wind Guardians.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Wind Guardians"
+  ]
+ ],
+ "s213.sec10.u33": [
+  [
+   "- Copa Metal Empire -",
+   "Para los Digimon del Field",
+   "Metal Empire.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Metal Empire"
+  ]
+ ],
+ "s213.sec10.u34": [
+  [
+   "- Copa Virus Busters -",
+   "Para los Digimon del Field",
+   "Virus Busters.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Virus Busters"
   ]
  ],
  "s213.sec54.u0": "Eh, no te has inscrito en el torneo.",
@@ -3800,6 +4086,147 @@
  "s219.sec51.u63": "Puaj, una carta de Vegiemon...",
  "s219.sec51.u64": "Puaj, una carta de Sukamon...",
  "s219.sec51.u65": "Puaj, una carta de Nanimon...",
+ "s220.sec51.u0": [
+  [
+   "",
+   "Premio: ¡3000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip Velocidad{color 1}!"
+  ]
+ ],
+ "s220.sec51.u1": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip DV A{color 1}!"
+  ]
+ ],
+ "s220.sec51.u2": [
+  [
+   "",
+   "Premio: ¡7000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip DV D{color 1}!"
+  ]
+ ],
+ "s220.sec51.u3": [
+  [
+   "",
+   "Premio: ¡10000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip DV E{color 1}!"
+  ]
+ ],
+ "s220.sec51.u4": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip HP{color 1}!"
+  ]
+ ],
+ "s220.sec51.u5": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip Intelecto{color 1}!"
+  ]
+ ],
+ "s220.sec51.u6": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip Ataque{color 1}!"
+  ]
+ ],
+ "s220.sec51.u7": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Superverdura{color 1}!"
+  ]
+ ],
+ "s220.sec51.u8": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Digilubina{color 1}!"
+  ]
+ ],
+ "s220.sec51.u9": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Trucha negra{color 1}!"
+  ]
+ ],
+ "s220.sec51.u10": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Hoja veloz{color 1}!"
+  ]
+ ],
+ "s220.sec51.u11": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip Defensa{color 1}!"
+  ]
+ ],
+ "s220.sec51.u12": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip MP{color 1}!"
+  ]
+ ],
+ "s220.sec51.u13": "¡No puedes llevar nada más!",
+ "s220.sec51.u14": [
+  [
+   "",
+   "Premio al segundo: ¡1000 Bits!",
+   "",
+   "¡Has ganado {color 6}Solomillo{color 1}!"
+  ]
+ ],
+ "s220.sec51.u15": "¡No puedes llevar nada más!",
+ "s220.sec51.u16": [
+  [
+   "",
+   "Premio al segundo: ¡3000 Bits!",
+   "",
+   "¡Has ganado {color 6}Regenerador{color 1}!"
+  ]
+ ],
+ "s220.sec51.u17": "¡No puedes llevar nada más!",
+ "s220.sec51.u18": [
+  [
+   "",
+   "Premio al segundo: ¡4000 Bits!",
+   "",
+   "¡Has ganado {color 6}Superregenerador{color 1}!"
+  ]
+ ],
+ "s220.sec51.u19": "¡No puedes llevar nada más!",
+ "s220.sec51.u20": [
+  [
+   "",
+   "Premio al segundo: ¡2000 Bits!",
+   "",
+   "¡Has ganado {color 6}Supercura{color 1}!"
+  ]
+ ],
+ "s220.sec51.u21": "¡No puedes llevar nada más!",
  "s220.sec83.u0": [
   [
    "{color 7}Poyomon {color 1}",

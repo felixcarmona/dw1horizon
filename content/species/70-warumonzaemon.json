@@ -5,6 +5,7 @@
   "vanilla_as": 14,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
+  "fields": ["metal-empire", "dark-area"],
   "techniques": ["Megaton Punch", "Buster Dive", "Muscle Charge", "Thunder Justice", "Sonic Jab",
                  "Dynamite Kick (44)", "Counter", "Tremar", "War Cry", "Static Elect",
                  "Megalo Spark", "Electric Cloud", "Confused Storm", "Lovely Attack"],

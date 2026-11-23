@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "data",
   "specialties": ["air", "battle", null],
+  "fields": ["wind-guardians"],
   "techniques": ["Wind Cutter", "Hurricane", "Static Elect", "Electric Cloud", "Confused Storm", "Megalo Spark",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Aerial Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},

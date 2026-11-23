@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "vaccine",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits", "wind-guardians", "virus-busters", "dragons-roar"],
   "techniques": ["Heat Laser", "Fire Tower", "Spit Fire", "Red Inferno", "Magma Bomb", "Meltdown", "Megaton Punch",
                  "Muscle Charge", "War Cry", "Sonic Jab", "Mega Flame"],
   "drop": {"item": "Giant Meat", "percent": 30},

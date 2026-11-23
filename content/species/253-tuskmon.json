@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["battle", "fire", null],
+  "fields": ["nature-spirits", "unknown"],
   "techniques": ["Megaton Punch", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)",
                  "Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Drill Spin"],
   "drop": {"item": "sm.recovery", "percent": 10},

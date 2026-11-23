@@ -6,6 +6,7 @@
   "vanilla_as": 54,
   "attribute": "virus",
   "specialties": ["ice", "air", null],
+  "fields": ["deep-savers"],
   "techniques": ["Giga Freeze", "Aurora Freeze", "Winter Blast", "Confused Storm", "Ice Statue", "Water Blit",
                  "Ice Needle", "Tear Drop", "Aqua Magic", "Spinning Shot", "Hurricane",
                  "Wind Cutter", "Thunder Justice", "Mail Strome"],

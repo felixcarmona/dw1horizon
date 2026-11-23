@@ -4,6 +4,7 @@
   "level": "ultimate",
   "attribute": "data",
   "specialties": ["battle", "mech", null],
+  "fields": ["metal-empire", "virus-busters"],
   "techniques": ["Buster Dive", "Pulse Laser", "Metal Sprinter", "All Range Beam", "Energy Bomb"],
   "drop": {"item": "Def. Chip", "percent": 100},
   "effects_like": 27,

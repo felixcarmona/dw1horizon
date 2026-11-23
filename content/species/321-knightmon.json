@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "data",
   "specialties": ["battle", "mech", null],
+  "fields": ["metal-empire", "virus-busters"],
   "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Power Crane", "DG Dimension", "All Range Beam",
                  "Delete Program", "Pulse Laser", "Spiral Sword"],

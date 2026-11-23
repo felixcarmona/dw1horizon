@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["nature", "air", null],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Poison Claw", "Danger Sting", "Green Trap", "Insect Plague", "Bug", "Charm Perfume",
                  "Poison Powder", "Mass Morph", "Wind Cutter", "Spinning Shot", "Confused Storm",
                  "Hurricane", "Bit Bomb"],

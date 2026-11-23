@@ -6,6 +6,7 @@
   "vanilla_as": 41,
   "attribute": "data",
   "specialties": ["mech", "battle", "air"],
+  "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["All Range Beam", "DG Dimension", "Delete Program", "Pulse Laser", "Reverse Prog", "Power Crane",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Megalo Spark",
                  "Spinning Shot", "Confused Storm", "Wind Cutter", "Dark Shot"],

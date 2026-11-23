@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "data",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Spit Fire", "Red Inferno", "Heat Laser", "Fire Tower", "Magma Bomb", "Meltdown",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Crimson Flare"],
   "drop": {"item": "sm.recovery", "percent": 10},

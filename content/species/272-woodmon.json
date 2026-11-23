@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Green Trap", "Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Danger Sting",
                  "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Sweet Breath"],
   "drop": {"item": "sm.recovery", "percent": 10},

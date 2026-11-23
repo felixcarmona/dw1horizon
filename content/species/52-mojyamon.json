@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "vaccine",
   "specialties": ["ice", "battle", "nature"],
+  "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Dynamite Kick (44)", "Megaton Punch", "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast",
                  "Aurora Freeze", "Aqua Magic", "Green Trap", "Mass Morph", "Bone Boomerang"],
   "drop": {"item": "sm.recovery", "percent": 10},

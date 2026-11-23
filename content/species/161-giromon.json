@@ -4,6 +4,7 @@
   "level": "ultimate",
   "attribute": "vaccine",
   "specialties": ["mech", "air", "battle"],
+  "fields": ["metal-empire"],
   "techniques": ["Power Crane", "Delete Program", "Reverse Prog", "DG Dimension", "Deadly Bomb"],
   "drop": {"item": "Def. Chip", "percent": 100},
   "effects_like": 41,

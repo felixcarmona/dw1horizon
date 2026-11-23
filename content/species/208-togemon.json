@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "data",
   "specialties": ["nature", "battle", null],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Poison Claw", "Danger Sting", "Mass Morph", "Insect Plague", "Poison Powder", "Charm Perfume",
                  "Sonic Jab", "Megaton Punch", "Muscle Charge", "War Cry", "Fist of the Beast King",
                  "Green Trap"],

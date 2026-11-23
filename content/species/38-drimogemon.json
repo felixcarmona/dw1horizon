@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["battle", null, "nature"],
+  "fields": ["nature-spirits"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Green Trap", "Charm Perfume", "Drill Spin"],
   "drop": {"item": "sm.recovery", "percent": 10},

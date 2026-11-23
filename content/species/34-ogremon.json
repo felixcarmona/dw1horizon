@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["battle", "fire", "nature"],
+  "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Spit Fire", "Magma Bomb", "Red Inferno", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch",
                  "Buster Dive", "Tremar", "War Cry", "Poison Claw", "Insect Plague", "Pummel Whack"],
   "drop": {"item": "sm.recovery", "percent": 10},

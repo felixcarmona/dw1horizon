@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "vaccine",
   "specialties": ["battle", "ice", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Megaton Punch", "Counter", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Ice Needle",
                  "Aqua Magic", "Tear Drop", "Winter Blast", "Mail Strome", "Giga Freeze"],
   "drop": {"item": "sm.recovery", "percent": 10},

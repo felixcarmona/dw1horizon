@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "data",
   "specialties": ["nature", null, "ice"],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Poison Claw", "Poison Powder", "Water Blit", "Poison Ivy"],
   "drop": {"item": "Brain Chip", "percent": 100},
   "effects_like": 46,

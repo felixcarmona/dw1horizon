@@ -6,6 +6,7 @@
   "vanilla_as": 31,
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
+  "fields": ["nature-spirits", "virus-busters"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Electric Cloud", "Static Elect",
                  "Wind Cutter", "Boom Bubble"],
   "drop": {"item": "sm.recovery", "percent": 10},
