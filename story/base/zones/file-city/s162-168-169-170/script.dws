@@ -36,6 +36,12 @@ script 162 {
         engine.arg = 0;
         call_routine(routine("save_clock_speed"));
         tamerless_battle = false;
+        if (card_shop_free_card_received && has_card(0) < 1) {
+            give_card(0);
+        }
+        if (ending_homecoming_seen && has_card(65) < 1) {
+            give_card(65);
+        }
         if (drill_tunnel_progress >= 3) {
             underground_pond_dig_work += 2;
         }

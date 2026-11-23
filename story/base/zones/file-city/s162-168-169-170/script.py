@@ -53,6 +53,11 @@ def enter():    # section 254
             chest_back_dimension.hp_chip.clear()
     call(Routine.save_clock_speed, arg=0)
     tamerless_battle.clear()
+    # A version that could not record the two album-only cards set their scenes' flags without the card: hand them back.
+    if card_shop_free_card_received and has_card(0) < 1:
+        raw.give_card(0)
+    if ending_homecoming_seen and has_card(65) < 1:
+        raw.give_card(65)
     if drill_tunnel_progress >= 3:
         underground_pond_dig_work.add(2)
     if drill_tunnel_progress >= 1:
