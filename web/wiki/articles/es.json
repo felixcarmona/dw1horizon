@@ -175,7 +175,7 @@
     "paragraphs": [
       "NORMAL usa las reglas habituales. EASY duplica el daño del compañero y divide entre dos el recibido, redondeando hacia arriba antes de los límites normales. También reduce a la mitad el veneno del compañero. Afecta a combates de campo y torneos individuales, no al VS de dos jugadores.",
       "La dificultad no reescribe las estadísticas guardadas. El daño porcentual de los guiones sigue sus reglas. Elige la dificultad en las opciones del título y comprueba los ajustes disponibles.",
-      "Elige entre las dificultades de las opciones del título. Los ajustes de combate se muestran abajo y no cambian el crecimiento permanente del compañero."
+      "Elige entre las dificultades de las opciones del título. Los ajustes de combate se muestran abajo y no cambian el crecimiento permanente del compañero. FUERZA SALVAJE, en las opciones del título y activada por defecto, pone un pequeño diablillo lila sobre un Digimon salvaje claramente más fuerte que tu compañero: su fuerza de combate, PS × (Ataque + Defensa), es al menos 2,5 veces la de tu compañero. Solo aparece en los Digimon que inician un combate al tocarlos, nunca en los personajes que solo hablan, y únicamente mientras puedes moverte. Úsala para evitar combates que perderías por mucho; es un aviso, no una garantía."
     ]
   },
   "faq": {

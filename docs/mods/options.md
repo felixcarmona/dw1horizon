@@ -1,7 +1,7 @@
 # Options: the title menu's OPTIONS
 
 Patches 0167, 0169, 0173-0175, 0177, 0180-0182, 0199, 0212, 0234, 0239, 0244 and 0276 (`mods/patches/`). The title menu has a fifth row, **OPTIONS**, under BATTLE MODE. It
-opens a box of twelve switches (eleven in a `FONT=original` build, which has no FONT):
+opens a box of thirteen switches (twelve in a `FONT=original` build, which has no FONT):
 
 | Row | Values | Default | Effect |
 |---|---|---|---|
@@ -12,6 +12,7 @@ opens a box of twelve switches (eleven in a `FONT=original` build, which has no 
 | EXTENDED STORY | OFF / ON | ON | patch 0199: the story with the story mods built onto the disc (What the Island Forgot: its new places, the city's new residents), or OFF the original story; changing it on a save moves the tamer to Jijimon's house (below) |
 | DIFFICULTY | EASY / NORMAL / HARD | NORMAL | EASY doubles partner damage and halves damage taken; HARD scales enemies and adds a damage floor (below) |
 | QUICK BATTLE START | OFF / ON | ON | patches 0234, 0239: a field battle starts the moment it is triggered, its BATTLE letters and bubbles over the running fight (patches 0233, 0236, 0238); OFF, the original start |
+| WILD STRENGTH | OFF / ON | ON | a purple smiling devil over a wild Digimon that starts a fight when touched and is clearly stronger than the partner: HP x (Offense + Defense) at least 2.5 times the partner's (`battleFormulas.strength`). Never on talk-only characters (its touch script must hold the battle opcodes); only while the tamer is free and the partner can stand. Stored in option byte 6, bit 0x40, inverted so old saves read ON |
 | FRAME RATE | AUTO / 60 / 20 | AUTO | AUTO adapts to scene cost through 60/30/20; 60 requests three render passes per tick; 20 requests one. Logic stays 20 Hz. |
 | FONT | NEW / CLASSIC / ORIGINAL | NEW | font b, ours; the original letters evenly spaced; the original font as the original draws it (below) |
 | LANGUAGE | eight languages selected at build time | the build's (`LANG_BASE`) | the selected runtime languages ([languages](language.md)) |

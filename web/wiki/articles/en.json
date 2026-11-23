@@ -175,7 +175,7 @@
     "paragraphs": [
       "NORMAL uses the ordinary battle rules. EASY doubles the partner’s damage and halves damage received, rounding up before the usual limits. It also halves poison damage to the partner. These changes cover single-player field battles and tournaments, not two-player VS.",
       "Difficulty does not rewrite the partner’s saved stats. Scripted percentage damage follows its own rules. Choose difficulty at the title’s options and check the available settings.",
-      "Choose from the difficulty settings shown in the title options. Battle adjustments come from the game’s settings below; they do not change permanent partner growth."
+      "Choose from the difficulty settings shown in the title options. Battle adjustments come from the game’s settings below; they do not change permanent partner growth. WILD STRENGTH, in the title options and on by default, puts a small purple devil over a wild Digimon that is clearly stronger than your partner: its fight strength, HP × (Offense + Defense), is at least 2.5 times your partner’s. It appears only on Digimon that start a battle when touched, never on characters who just talk, and only while you are free to move. Use it to steer clear of fights you would lose badly; it is a warning, not a guarantee."
     ]
   },
   "faq": {

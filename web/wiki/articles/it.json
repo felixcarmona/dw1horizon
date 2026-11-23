@@ -175,7 +175,7 @@
     "paragraphs": [
       "NORMAL usa le regole comuni. EASY raddoppia i danni inflitti e dimezza quelli ricevuti, arrotondati per eccesso prima dei limiti. Dimezza anche il veleno del compagno. Vale per campo e tornei singoli, non VS a due.",
       "La difficoltà non riscrive statistiche salvate. I danni percentuali degli script hanno regole proprie. Scegli al titolo e controlla le opzioni disponibili.",
-      "Scegli una difficoltà nelle opzioni del titolo. Le modifiche di battaglia sono riportate sotto e non cambiano la crescita permanente del partner."
+      "Scegli una difficoltà nelle opzioni del titolo. Le modifiche di battaglia sono riportate sotto e non cambiano la crescita permanente del partner. FORZA SELVATICA, nelle opzioni del titolo e attiva per impostazione predefinita, mette un piccolo diavoletto viola sopra un Digimon selvatico nettamente più forte del tuo partner: la sua forza in combattimento, PS × (Attacco + Difesa), è almeno 2,5 volte quella del tuo partner. Compare solo sui Digimon che avviano uno scontro al contatto, mai sui personaggi che si limitano a parlare, e solo finché puoi muoverti. Usala per evitare gli scontri che perderesti nettamente; è un avvertimento, non una garanzia."
     ]
   },
   "faq": {
