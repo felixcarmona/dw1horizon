@@ -1,0 +1,169 @@
+From 8b143403717b5f67c5b6d426ffa4499d6c63647b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 23 Nov 2026 08:08:02 +0000
+Subject: [PATCH] A sixteenth medal: Curling Legend
+
+The medals view draws its fifteen medals in five columns set closer together and a sixteenth alone in a sixth column; the cursor reaches it from the right end of each row. Medal 15 (trigger 379) is given by the curling room for the Legend Cup won in singles, doubles and free-for-all.
+---
+ src/main/game_menu.c     | 64 +++++++++++++++++++++++++---------------
+ text/main/game_menu.yaml |  9 ++++++
+ 2 files changed, 50 insertions(+), 23 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 1459e19..cf0a7bc 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -1663,7 +1663,7 @@ uint16_t CHART_LEVEL_ROW_PIECES[3] = {
+ #endif
+ };
+ 
+-char *MEDAL_NAMES[15] = {
++char *MEDAL_NAMES[16] = {
+ 	STR_MEDAL_NAME_GRADE_CUP,
+ 	STR_MEDAL_NAME_VERSION_CUP,
+ 	STR_MEDAL_NAME_TYPE_CUP,
+@@ -1679,10 +1679,11 @@ char *MEDAL_NAMES[15] = {
+ 	STR_MEDAL_NAME_CARD_COMPLETE,
+ 	STR_MEDAL_NAME_BITS_MAXED,
+ 	STR_MEDAL_NAME_10_YEARS,
++	STR_MEDAL_NAME_CURLING_LEGEND, /* MOD (curling cups) */
+ };
+ 
+ #if !VERSION_IS(US)
+-char *MEDAL_DESCRIPTIONS[45] = {
++char *MEDAL_DESCRIPTIONS[48] = {
+ 	STR_MEDAL_DESCRIPTION_CUP_D_C_B_A_S,
+ 	STR_MEDAL_DESCRIPTION_WIN_IN_ALL,
+ 	STR_OVERWORLD_EMPTY,
+@@ -1730,7 +1731,7 @@ char *MEDAL_DESCRIPTIONS[45] = {
+ 	STR_OVERWORLD_EMPTY,
+ };
+ #else
+-char *MEDAL_DESCRIPTIONS[45] = {
++char *MEDAL_DESCRIPTIONS[48] = {
+ 	STR_MEDAL_DESCRIPTION_CUP_D_C_B_A_S,
+ 	STR_MEDAL_DESCRIPTION_WIN_IN_ALL,
+ 	STR_OVERWORLD_EMPTY,
+@@ -1776,6 +1777,9 @@ char *MEDAL_DESCRIPTIONS[45] = {
+ 	STR_OVERWORLD_EMPTY,
+ 	STR_MEDAL_DESCRIPTION_SURVIVED_FOR_300_DAYS,
+ 	STR_OVERWORLD_EMPTY,
++	STR_MEDAL_DESCRIPTION_CURLING_LEGEND, /* MOD (curling cups) */
++	STR_MEDAL_DESCRIPTION_CURLING_LEGEND_MODES,
++	STR_OVERWORLD_EMPTY,
+ };
+ #endif
+ 
+@@ -3268,21 +3272,31 @@ void tickPlayerMenu(void)
+ #else
+ 		if (PLAYER_MENU_STATE == 2) {
+ #endif
+-			if ((CHANGED_INPUT & 0x8000) &&
+-			    ((MEDAL_SELECTOR_INDEX % 5) != 0)) {
+-				MEDAL_SELECTOR_INDEX--;
+-			}
+-			if ((CHANGED_INPUT & 0x2000) &&
+-			    ((MEDAL_SELECTOR_INDEX % 5) != 4)) {
+-				MEDAL_SELECTOR_INDEX++;
+-			}
+-			if ((CHANGED_INPUT & 0x1000) &&
+-			    (MEDAL_SELECTOR_INDEX >= 5)) {
+-				MEDAL_SELECTOR_INDEX -= 5;
+-			}
+-			if ((CHANGED_INPUT & 0x4000) &&
+-			    (MEDAL_SELECTOR_INDEX < 10)) {
+-				MEDAL_SELECTOR_INDEX += 5;
++			/* MOD (curling cups): a sixth column, of the one medal past the fifteen */
++			if (MEDAL_SELECTOR_INDEX >= 15) {
++				if (CHANGED_INPUT & 0x8000) {
++					MEDAL_SELECTOR_INDEX = (MEDAL_SELECTOR_INDEX - 15) * 5 + 4;
++				}
++			} else {
++				if (CHANGED_INPUT & 0x8000) {
++					if ((MEDAL_SELECTOR_INDEX % 5) != 0) {
++						MEDAL_SELECTOR_INDEX--;
++					}
++				} else if (CHANGED_INPUT & 0x2000) {
++					if ((MEDAL_SELECTOR_INDEX % 5) != 4) {
++						MEDAL_SELECTOR_INDEX++;
++					} else if (MEDAL_SELECTOR_INDEX == 4) {
++						MEDAL_SELECTOR_INDEX = 15;
++					}
++				}
++				if ((CHANGED_INPUT & 0x1000) &&
++				    (MEDAL_SELECTOR_INDEX >= 5)) {
++					MEDAL_SELECTOR_INDEX -= 5;
++				}
++				if ((CHANGED_INPUT & 0x4000) &&
++				    (MEDAL_SELECTOR_INDEX < 10)) {
++					MEDAL_SELECTOR_INDEX += 5;
++				}
+ 			}
+ 			if (SELECTED_MEDAL != MEDAL_SELECTOR_INDEX) {
+ 				if (hasMedal(MEDAL_SELECTOR_INDEX) != 0) {
+@@ -6228,6 +6242,10 @@ void renderEvoChartDetail(void)
+ 	}
+ }
+ 
++/* MOD (curling cups): sixteen medals, the fifteen in their five columns drawn closer and the sixteenth alone in a sixth */
++#define MEDAL_SLOT_X(i) (((i) < 15 ? (i) % 5 : 5) * 32 - 0x7a)
++#define MEDAL_SLOT_Y(i) (((i) < 15 ? (i) / 5 : (i) - 15) * 24 - 0x3d)
++
+ void renderMedalView(void)
+ {
+ 	int32_t i;
+@@ -6244,14 +6262,14 @@ void renderMedalView(void)
+ 			MENU_STATE = 2;
+ 		}
+ 	case 2:
+-		renderRectPolyFT4(((MEDAL_SELECTOR_INDEX % 5) * 38) - 0x7e,
+-		                  ((MEDAL_SELECTOR_INDEX / 5) * 24) - 0x3d, 0x18, 0x18, 0, 0xd0,
++		renderRectPolyFT4(MEDAL_SLOT_X(MEDAL_SELECTOR_INDEX) - 4,
++		                  MEDAL_SLOT_Y(MEDAL_SELECTOR_INDEX), 0x18, 0x18, 0, 0xd0,
+ 		                  0x18, 0x7dc7, 1, 0);
+ 	case 1:
+ 		renderSeparatorLines(MAIN_D_8012472C, 0xe, 5);
+ 		renderString(3, MEDAL_VIEW_CROPS[0].x, -0x51, MEDAL_VIEW_CROPS[0].w, 0xc, MEDAL_VIEW_CROPS[0].u, 0xc, 5, 1); /* MOD (language) */
+ 
+-		for (i = 0; i < 0xf; i++) {
++		for (i = 0; i < 16; i++) {
+ 			if (hasMedal(i) != 0) {
+ 				if (MEDAL_SELECTOR_INDEX == i) {
+ 					if (MENU_STATE != 3) {
+@@ -6274,11 +6292,11 @@ void renderMedalView(void)
+ 					renderString(0, -0x7e, 0x27, 0xc, 0xc, 0xe4, 0xc, 5, 1);
+ 				}
+ #endif
+-				renderRectPolyFT4(((i % 5) * 38) - 0x7c, ((i / 5) * 24) - 0x3d, 0xf,
++				renderRectPolyFT4(MEDAL_SLOT_X(i) - 2, MEDAL_SLOT_Y(i), 0xf,
+ 				                  0x18, 0xf0, 0xc8, 0x18, 0x7dc7, 5, 0);
+ 			}
+ 
+-			renderRectPolyFT4(((i % 5) * 38) - 0x7a, ((i / 5) * 24) - 0x3d, 0xf, 0x18,
++			renderRectPolyFT4(MEDAL_SLOT_X(i), MEDAL_SLOT_Y(i), 0xf, 0x18,
+ 			                  0xf0, 0xb0, 0x18, 0x7dc7, 5, 0);
+ 		}
+ 
+diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
+index f4511cd..533cd12 100644
+--- a/text/main/game_menu.yaml
++++ b/text/main/game_menu.yaml
+@@ -111,6 +111,15 @@ MENU_LABELS:
+     STR_MEDAL_NAME_PERFECT_CURLING:
+       ja: カーリング満点
+       en_us: Perfect Curling
++    STR_MEDAL_NAME_CURLING_LEGEND:
++      ja: カーリングレジェンド
++      en_us: Curling Legend
++    STR_MEDAL_DESCRIPTION_CURLING_LEGEND:
++      ja: レジェンドカップで優勝
++      en_us: Won the Legend Cup in singles,
++    STR_MEDAL_DESCRIPTION_CURLING_LEGEND_MODES:
++      ja: シングルス、ダブルス、みんなで
++      en_us: doubles and free-for-all
+     STR_MEDAL_NAME_100_FISH:
+       ja: 釣り１００ぴき
+       en_us: 100 Fish
+-- 
+2.55.0
+
