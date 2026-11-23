@@ -1,4 +1,4 @@
-From a430f5bd2905178a439b6fb3839fad813ba5f88d Mon Sep 17 00:00:00 2001
+From 663d4c6a9c26811b522fac460fd272be6fc66ce4 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Mon, 23 Nov 2026 08:08:02 +0000
 Subject: [PATCH] A sixteenth medal: Curling Legend
@@ -10,7 +10,7 @@ The medals view draws its fifteen medals in five columns set closer together and
  2 files changed, 50 insertions(+), 23 deletions(-)
 
 diff --git a/src/main/game_menu.c b/src/main/game_menu.c
-index 1459e19..cf0a7bc 100644
+index 1459e198..cf0a7bc4 100644
 --- a/src/main/game_menu.c
 +++ b/src/main/game_menu.c
 @@ -1663,7 +1663,7 @@ uint16_t CHART_LEVEL_ROW_PIECES[3] = {
@@ -145,7 +145,7 @@ index 1459e19..cf0a7bc 100644
  		}
  
 diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
-index f4511cd..a88fac1 100644
+index f4511cd4..a88fac13 100644
 --- a/text/main/game_menu.yaml
 +++ b/text/main/game_menu.yaml
 @@ -111,6 +111,15 @@ MENU_LABELS:

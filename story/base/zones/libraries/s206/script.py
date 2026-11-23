@@ -30,6 +30,36 @@ def talk():    # section 6
     curling_rival_1.set(0)
     curling_rival_2.set(0)
     curling_rival_3.set(0)
+    if curling_chips_kept > 0:    # chips of the Legend Cup that did not fit
+        say(t13.u29)
+        while True:    # one chip at a time; the ones that do not fit are kept for the next visit
+            if curling_chips_kept == 1:
+                give(Item.OffChip)
+                random_roll.set(23)
+            elif curling_chips_kept == 2:
+                give(Item.DefChip)
+                random_roll.set(24)
+            elif curling_chips_kept == 3:
+                give(Item.BrainChip)
+                random_roll.set(25)
+            elif curling_chips_kept == 4:
+                give(Item.QuickChip)
+                random_roll.set(26)
+            elif curling_chips_kept == 5:
+                give(Item.HPChip)
+                random_roll.set(27)
+            else:
+                give(Item.MPChip)
+                random_roll.set(28)
+            if engine.item_did_not_fit:
+                say(t13.u28)
+                break
+            narrator.say(t11.u6)
+            curling_chips_kept.add(1)
+            if curling_chips_kept >= 7:
+                curling_chips_kept.set(0)
+                break
+        return
     if not recruited(Species.Penguinmon) and not penguinmon_curling_offered:
         say(t6.u0)
         tamer.say(t6.u1)
@@ -283,66 +313,34 @@ def talk():    # section 8: back from the rink's menu, a quick match or a round 
         sound(0, 7)
         narrator.say(t13.u24)
         slot1.say(t13.u27)
-        while True:
-            give(Item.OffChip)
-            random_roll.set(23)
-            if not engine.item_did_not_fit:
+        curling_chips_kept.set(1)
+        while True:    # one chip at a time; the ones that do not fit are kept for the next visit
+            if curling_chips_kept == 1:
+                give(Item.OffChip)
+                random_roll.set(23)
+            elif curling_chips_kept == 2:
+                give(Item.DefChip)
+                random_roll.set(24)
+            elif curling_chips_kept == 3:
+                give(Item.BrainChip)
+                random_roll.set(25)
+            elif curling_chips_kept == 4:
+                give(Item.QuickChip)
+                random_roll.set(26)
+            elif curling_chips_kept == 5:
+                give(Item.HPChip)
+                random_roll.set(27)
+            else:
+                give(Item.MPChip)
+                random_roll.set(28)
+            if engine.item_did_not_fit:
+                slot1.say(t13.u28)
                 break
-            slot1.say(t11.u5)
-            engine.picker_mode.clear()
-            call(Routine.choose_item)
-            take_picked(all=True)
-        narrator.say(t11.u6)
-        while True:
-            give(Item.DefChip)
-            random_roll.set(24)
-            if not engine.item_did_not_fit:
+            narrator.say(t11.u6)
+            curling_chips_kept.add(1)
+            if curling_chips_kept >= 7:
+                curling_chips_kept.set(0)
                 break
-            slot1.say(t11.u5)
-            engine.picker_mode.clear()
-            call(Routine.choose_item)
-            take_picked(all=True)
-        narrator.say(t11.u6)
-        while True:
-            give(Item.BrainChip)
-            random_roll.set(25)
-            if not engine.item_did_not_fit:
-                break
-            slot1.say(t11.u5)
-            engine.picker_mode.clear()
-            call(Routine.choose_item)
-            take_picked(all=True)
-        narrator.say(t11.u6)
-        while True:
-            give(Item.QuickChip)
-            random_roll.set(26)
-            if not engine.item_did_not_fit:
-                break
-            slot1.say(t11.u5)
-            engine.picker_mode.clear()
-            call(Routine.choose_item)
-            take_picked(all=True)
-        narrator.say(t11.u6)
-        while True:
-            give(Item.HPChip)
-            random_roll.set(27)
-            if not engine.item_did_not_fit:
-                break
-            slot1.say(t11.u5)
-            engine.picker_mode.clear()
-            call(Routine.choose_item)
-            take_picked(all=True)
-        narrator.say(t11.u6)
-        while True:
-            give(Item.MPChip)
-            random_roll.set(28)
-            if not engine.item_did_not_fit:
-                break
-            slot1.say(t11.u5)
-            engine.picker_mode.clear()
-            call(Routine.choose_item)
-            take_picked(all=True)
-        narrator.say(t11.u6)
         curling_cup.set(0)
         camera.on(tamer, speed=10)
         camera.arrived()

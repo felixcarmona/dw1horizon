@@ -1,0 +1,12 @@
+A sheet of five title banners for a curling tournament in a 1990s PlayStation monster-raising game, in the painted, airbrushed 3D-logo style of that era's Japanese game title art. The image is divided into exactly five horizontal bands of exactly the same height, stacked from top to bottom with no gap, no border, no margin and no divider line between them: each band fills the whole width of the image and one fifth of its height.
+
+Each band is one banner: a wide strip with a big chunky 3D logo of the cup's name in capital letters on the left and centre, and at the right a polished curling stone on ice next to a small trophy cup. The whole text of a banner sits on one line and is large and easy to read, because the banner will be shown very small (256 pixels wide).
+
+From top to bottom, a ladder of cups from the humblest to the grandest:
+1. "ROOKIE CUP": fresh light green logo with a white outline, background of pale spring ice and soft snow, a plain wooden trophy.
+2. "AMATEUR CUP": bright sky blue logo, background of clear blue rink ice with pebbled texture, a tin trophy.
+3. "EXPERT CUP": deep violet logo with a chrome edge, background of an ice cave in purple shade, a polished steel trophy.
+4. "ELITE CUP": crimson red logo with a chrome edge, background of dark ice under red northern lights, a red enamel trophy.
+5. "LEGEND CUP": brilliant gold logo with sparkles, background of midnight blue ice under a golden aurora, a grand golden trophy.
+
+No characters, no creatures, no people. No other text than the five names, spelled exactly as given. Each band's picture reaches its own left, right, top and bottom edges. Strong, saturated colours and clear shapes that survive being reduced to a small size.

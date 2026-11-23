@@ -82,6 +82,7 @@ class BundleStartup(unittest.TestCase):
                        for p in (ROOT / 'tools/derive').rglob('*.py')]
             tracked += [p.relative_to(ROOT).as_posix() for p in (ROOT / 'tools/tamer_looks').glob('*.py')]
             tracked += ['tools/languages.py', 'tools/city_residents.py', 'tools/cards.py', 'tools/tamer_pack.py',
+                        'tools/curling_banners.py', 'tools/dwmap.py',
                         'tools/coldsplit.py', 'tools/mmd.py', 'tools/derive/recipes/everything.json']
             for name in tracked:
                 target = repo / name
