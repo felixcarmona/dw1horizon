@@ -449,6 +449,28 @@ reads and checks two identical no-input controls.
   < 30 → Coelamon (49); `NANIMON_TRIGGER` → Nanimon (53); any Champion with `evoTimer >= 240` and < 50 → Vademon (28).
   The exact `evoTimer == 360` may never match because sleep jumps hours (unverified).
 
+### After a lost life (`libraries/s212`, shared block L5)
+
+Jijimon's house runs this block when the partner comes back with a life left (fainted from sickness or beaten in a
+battle; section 72); the last life goes to the egg instead. One `random(100)` per visit:
+
+| Partner | Becomes | Chance | Also needs |
+|---|---|---|---|
+| Agumon, Betamon, Gabumon, Elecmon, Patamon, Kunemon, Biyomon, Palmon | Bakemon (37) | 30 % (10 % on the disc) | |
+| MetalGreymon (12), Megadramon (54) | SkullGreymon (26) | 30 % (10 %) | |
+| Kokatorimon (50) | Phoenixmon (59) | 30 % (10 %) | |
+| Angemon (20) | Devimon (6) | 50 % | discipline below 50 |
+| Greymon (5) | SkullGreymon (26) | 30 % | the stats SkullGreymon asks for |
+| Meramon (9) | SkullMeramon (277) | 30 % | the stats SkullMeramon asks for; NEW DIGIMON on |
+| Mammothmon (267) | SkullMammothmon (268) | 30 % | the stats SkullMammothmon asks for |
+| Garudamon (460) | Phoenixmon (59) | 30 % | the stats Phoenixmon asks for |
+
+The last four are Horizon's and use `CALL_DIGIMON_ROUTINE 12` (`earned_evolution`, `partner.c`): the target goes in wide
+register w61, so it may be past 255, and the routine refuses it unless `modSpeciesAllowed`, `isPartnerModelFit` and the
+stats group of `evoRequirementsMet` all hold. Care mistakes, weight and the bonus conditions are not asked, so the
+lost life stands in for them and never for the training. The script reads p254 (1 started, 0 refused) before it waits
+for the scene.
+
 ### Items (`handleEvoItems`, `item.c:2179`)
 
 Items 0x47..0x72 → `EVOLUTION_ITEM_TARGET[item-0x47]` only if `level(target) - 1 == current level`; Giga Hand (0x7D) →

@@ -97,6 +97,25 @@ def L2():    # shared code (the disc's label L2)
 def L5():    # shared code (the disc's label L5)
     hide_hud()
     raw.store_digimon_type(partner_type)
+    if partner.species in (Species.Greymon, Species.Meramon, Species.Mammothmon, Species.Garudamon):
+        # Horizon: a lost life can push a partner that already has the stats of its skull or phoenix form into it
+        roll = random.roll(99)
+        if roll > 29:
+            return
+        if partner.species == Species.Greymon:
+            raw.set_wreg(w61, 26)
+        elif partner.species == Species.Meramon:
+            raw.set_wreg(w61, 277)
+        elif partner.species == Species.Mammothmon:
+            raw.set_wreg(w61, 268)
+        else:
+            raw.set_wreg(w61, 59)
+        raw.call_digimon_routine(DigimonRoutine.earned_evolution)
+        if engine.arg == 0:
+            return
+        wait(27500)
+        narrator.say(t73.u4)
+        return
     if partner_type in (3, 4, 17, 18):
         pass
     elif partner_type != 31 and partner_type != 32 and partner_type != 45 and partner_type != 46:
