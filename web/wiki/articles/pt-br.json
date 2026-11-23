@@ -175,7 +175,7 @@
     "paragraphs": [
       "NORMAL usa regras comuns. EASY dobra dano causado e divide o recebido por dois, arredondando para cima antes dos limites. Também reduz o veneno no parceiro pela metade. Vale para campo e torneios individuais, não VS de dois jogadores.",
       "A dificuldade não reescreve atributos salvos. Dano percentual de scripts segue regras próprias. Escolha no título e confira as opções disponíveis.",
-      "Escolha uma das dificuldades nas opções do título. Os ajustes de batalha aparecem abaixo e não alteram o crescimento permanente do parceiro. FORÇA SELVAGEM, nas opções do título e ativada por padrão, coloca um pequeno diabinho roxo sobre um Digimon selvagem claramente mais forte que seu parceiro: sua força de combate, PV × (Ataque + Defesa), é pelo menos 2,5 vezes a do seu parceiro. Aparece apenas nos Digimon que iniciam uma batalha ao serem tocados, nunca em personagens que só conversam, e somente enquanto você pode se mover. Use-a para evitar lutas que você perderia feio; é um aviso, não uma garantia."
+      "Escolha uma das dificuldades nas opções do título. Os ajustes de batalha aparecem abaixo e não alteram o crescimento permanente do parceiro. ALERTA PERIGO, nas opções do título e ativada por padrão, coloca um pequeno diabinho roxo sobre um Digimon selvagem claramente mais forte que seu parceiro: sua força de combate, PV × (Ataque + Defesa), é pelo menos 2,5 vezes a do seu parceiro. Aparece apenas nos Digimon que iniciam uma batalha ao serem tocados, nunca em personagens que só conversam, e somente enquanto você pode se mover. Use-a para evitar lutas que você perderia feio; é um aviso, não uma garantia."
     ]
   },
   "faq": {
