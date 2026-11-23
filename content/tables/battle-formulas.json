@@ -255,7 +255,7 @@
       "minimumDamagePercent": 25
     },
     "strength": {
-      "strongerPercent": 65
+      "strongerPercent": 40
     }
   }
 }
