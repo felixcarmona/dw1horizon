@@ -996,7 +996,7 @@
     "evidence": {
       "story/mods/what-the-island-forgot/arcs/residents/phantomon.py": [
         "clock.hour >= 20",
-        "hp=1500"
+        ["hp=1500", "hp=3400"]
       ]
     }
   },
@@ -1286,7 +1286,7 @@
     "evidence": {
       "story/mods/what-the-island-forgot/arcs/residents/kotemon.py": [
         "when=ogre_fortress_cleared and not recruited",
-        "hp=1200",
+        ["hp=1200", "hp=2400"],
         "fight(kotemon, escape=False)"
       ]
     }
