@@ -239,7 +239,7 @@ def talk():    # section 8: back from the rink's menu, a quick match or a round 
     if curling_result == 5:    # left the menu with nothing played
         curling_format.set(0)
         return
-    if curling_result == 3:    # level on points and on the nearest stone: the match again
+    if curling_result == 3:    # level on points: the match again
         slot1.say(t13.u7)
         warp(Screen.freezeland_136, entry=1)
         return
@@ -258,18 +258,12 @@ def talk():    # section 8: back from the rink's menu, a quick match or a round 
         jump_to_script(206, 11)
     if curling_round == 1:
         curling_round.set(2)
-        if curling_format == 4:
-            slot1.say(t13.u1)
-        else:
-            slot1.say(t13.u8)
+        slot1.say(t13.u8)
         warp(Screen.freezeland_136, entry=1)
         return
     if curling_round == 2:
         curling_round.set(3)
-        if curling_format == 4:
-            slot1.say(t13.u2)
-        else:
-            slot1.say(t13.u9)
+        slot1.say(t13.u9)
         warp(Screen.freezeland_136, entry=1)
         return
     sound(0, 7)

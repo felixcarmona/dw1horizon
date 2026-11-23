@@ -165,8 +165,6 @@ pub alias var curling_cup = 132;
 pub alias var curling_round = 133;
 pub alias var curling_seed = 134;
 pub alias var curling_cups_won = 7;
-pub alias var curling_doubles_won = 8;
-pub alias var curling_crowd_won = 15;
 pub alias var damage_percent = 200;
 pub alias var training_slot_game = 246;
 pub group amida_path_passed {
