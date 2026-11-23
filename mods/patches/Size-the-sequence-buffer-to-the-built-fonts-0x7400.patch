@@ -1,0 +1,32 @@
+From cb49fdfdfca6729d987232180255aaf3c7cf522b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 23 Nov 2026 16:00:00 +0000
+Subject: [PATCH] Size the sequence buffer to the built fonts: 0x7400
+
+The largest SEQ block of the built sound fonts is 0x7284 bytes. The buffer kept 0x7800; 0x7400 holds it with 380 bytes to spare and returns 1024 bytes to the heap. tools/sound.py refuses a font with a bigger block and sound.c checks the size before the copy.
+---
+ include/dw/memmap.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index f8b58dd8..eca278a6 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -150,10 +150,11 @@
+ /*
+  * The SEQ block of the current music font (every track of it), copied from
+  * the FAALL chunk (sound.c). Original 0x5800 (font 0xB uses 0x55F8); the
+- * built fonts need at most 0x7284 bytes. Keep 0x7800 bytes (1404 spare),
+- * returning 0x800 unused resident bytes to the malloc3 heap.
++ * built fonts need at most 0x7284 bytes. Keep 0x7400 bytes (380 spare):
++ * tools/sound.py refuses a font with a bigger block, and sound.c checks the
++ * size before the copy.
+  */
+-#define SEQ_BUFFER_SIZE		0x7800
++#define SEQ_BUFFER_SIZE		0x7400
+ 
+ /*
+  * SPU RAM (512 KB, sound.c): what the sound banks may use. Below it the
+-- 
+2.55.0
+
