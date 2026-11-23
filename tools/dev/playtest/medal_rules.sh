@@ -33,7 +33,7 @@ def peek_raw(addr, n): return bytes.fromhex(''.join(l.split(None, 1)[1].replace(
 def fresh():
     emu('load', 'build/savedrop/m.state')
     b = bytearray(peek_raw(TRIG, 100))
-    for n in list(range(15, 51)) + list(range(364, 383)): b[n // 8] &= ~(1 << (n % 8)) & 0xFF
+    for n in list(range(15, 51)) + list(range(364, 384)): b[n // 8] &= ~(1 << (n % 8)) & 0xFF
     emu('poke', hex(TRIG), bytes(b).hex())
 def ok(name, got, want): print(f'{"ok " if got == want else "BAD"} {name:50s} got {got} expected {want}')
 # script routine: rows 0-4 are medals 0-4
@@ -60,7 +60,7 @@ tick('100 fish -> medal 9', 9, lambda: gs('set', 'partner.para.fishCaught=100'))
 tick('99 fish -> nothing', 9, lambda: gs('set', 'partner.para.fishCaught=99'), False)
 print('wiped rows (what a build without the file holds):')
 fresh()
-for i in range(16): poke(T['MOD_MEDALS'] + 16 * i, '<h', -1)
+for i in range(20): poke(T['MOD_MEDALS'] + 16 * i, '<h', -1)
 poke(T['TOURNAMENT_WINS'], '<h', 100); poke(T['YEAR'], 'B', 10); poke(T['MEDAL_AWARD_PENDING'], '<i', 0)
 print('  100 wins, script routine ->', call('checkTournamentMedalConditions()'), '(expected -1)')
 call('checkMedalConditions()'); print('  year 10, tick -> pending', struct.unpack('<i', peek('MEDAL_AWARD_PENDING'))[0], '(expected 0)')

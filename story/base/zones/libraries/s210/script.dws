@@ -78,9 +78,6 @@ script 210 {
                 add_stat(21, 1);
                 say(narrator, text("s210.sec77.u7"));
                 recruit(species("Tsunomon"));
-                medal.town_flourishing = true;
-                sound(0, 7);
-                say(narrator, text("s210.sec77.u8"));
             }
         }
         return;

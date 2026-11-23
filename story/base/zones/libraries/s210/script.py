@@ -67,9 +67,6 @@ def step26():    # section 77
             tamer.add(level=1)
             narrator.say(t77.u7)
             recruit(Species.Tsunomon)
-            medal.town_flourishing.set()
-            sound(0, 7)
-            narrator.say(t77.u8)
     return
 
 # the section table, in the order of the original header

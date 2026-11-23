@@ -1443,6 +1443,57 @@ HEADER_STATS_OFF, STATS_SWAP_MAX = 0x580, 19
 HEADER_BALANCE_OFF, BALANCE_SWAP_MAX = 0x4fc, 19
 HEADER_EVOLUTION_OFF, EVOLUTION_SWAP_MAX = 0x3c, 20
 VERSION = 2
+HEADER_MEDALS = 0x7f8          # optional sector pointer: the medal art block (medal_block)
+MEDALS_DIR = os.path.join(ROOT, 'content', 'medals')
+MEDAL_SMALL, MEDAL_LARGE, MEDALS_PER_SECTOR = 24, 48, 5
+
+
+def medal_art(path):
+    """A content/medals file: its 15 colours, and the small and the large grid as rows of colour numbers (0 = nothing)."""
+    pal, grids, cur = [], {}, None
+    for n, line in enumerate(open(path).read().split('\n'), 1):
+        if not line or line[0] == '#': continue
+        if line in ('small', 'large'):
+            cur = grids.setdefault(line, [])
+        elif cur is None:
+            c, h = line.split()
+            if c != '123456789abcdef'[len(pal)]: raise SystemExit(f'{os.path.relpath(path, ROOT)}:{n}: colours are 1..9, a..f in order')
+            pal.append(tuple(int(h[i:i + 2], 16) for i in (0, 2, 4)))
+        else:
+            cur.append([0 if c == '.' else int(c, 16) for c in line])
+    for name, size in (('small', MEDAL_SMALL), ('large', MEDAL_LARGE)):
+        g = grids.get(name, [])
+        if len(g) != size or any(len(r) != size for r in g) or any(c > len(pal) for r in g for c in r):
+            raise SystemExit(f'{os.path.relpath(path, ROOT)}: "{name}" must be {size} rows of {size} cells in the listed colours')
+    return pal, grids['small'], grids['large']
+
+
+def medal_block():
+    """The medal art: MEDALS_PER_SECTOR medals a sector as {16 colours, the 16 of the medal not yet earned, 24x24 at 4 bits},
+    then a sector per medal with its 48x48 picture. The view reads the small ones when it opens and a large one as the
+    cursor moves (src/main/game_menu.c loadMedalArt)."""
+    files = sorted(f for f in os.listdir(MEDALS_DIR) if f.endswith('.txt')) if os.path.isdir(MEDALS_DIR) else []
+    if not files: return b''
+    if [f[:-4] for f in files] != ['%02d' % i for i in range(len(files))]:
+        raise SystemExit('content/medals: one file per medal, 00.txt onwards with no gap')
+    def clut(pal):
+        return struct.pack('<16H', 0, *[(max(r, 8) >> 3) | (max(g, 8) >> 3) << 5 | (max(b, 8) >> 3) << 10 for r, g, b in pal + [(8, 8, 8)] * (15 - len(pal))])
+    def unearned(pal):                                   # the same medal as dark metal
+        return [tuple(int(base * 0.45 + sum(c) / 3 * 0.22) for base in (41, 57, 65)) for c in pal]
+    def pixels(grid):
+        flat = [c for row in grid for c in row]
+        return bytes(flat[i] | flat[i + 1] << 4 for i in range(0, len(flat), 2))
+    small, large = [], []
+    for f in files:
+        pal, s, l = medal_art(os.path.join(MEDALS_DIR, f))
+        small.append(clut(pal) + clut(unearned(pal)) + pixels(s))
+        large.append(pixels(l).ljust(SECTOR, b'\0'))
+    out = b''
+    for i in range(0, len(small), MEDALS_PER_SECTOR):
+        out += b''.join(small[i:i + MEDALS_PER_SECTOR]).ljust(SECTOR, b'\0')
+    return out + b''.join(large)
+
+
 HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
 INDEX_SECTORS = 2                # the partner list and the evolution links (include/dw/species.h)
 MAX_PARTNERS, MAX_LINKS = 1022, 510
@@ -1735,6 +1786,12 @@ def build(out=OUT, content=None, quiet=False, select=None):
         struct.pack_into('<H', cb, 2 + k * 2, city_cell(row, allsp))
     blobs.append(bytes(cb))
     sector += len(cb) // SECTOR
+    medals_ref = 0
+    mb = medal_block()
+    if mb:
+        medals_ref = sector
+        blobs.append(mb)
+        sector += len(mb) // SECTOR
     # links with the 62 original species that have evolution paths: the game applies them at boot, in this order
     extra = {}
     for t in sorted(species):
@@ -1809,6 +1866,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
     struct.pack_into('<I', hdr, HEADER_BALANCE_OFF, balance_ref)
     struct.pack_into(HEADER, hdr, 0, b'DIGI', VERSION, RECORD_SIZE, count, 0, first_records, sector, 1, fallback_ref, chart_ref)
     struct.pack_into('<I', hdr, HEADER_CITY, city_ref)
+    struct.pack_into('<I', hdr, HEADER_MEDALS, medals_ref)
     struct.pack_into('<I', hdr, HEADER_EVOLUTION_OFF, evolution_ref)
     for i, t in enumerate(partners): hdr[HEADER_LEVELS + i] = recs[t]['para']['level']
     for t in species:                                     # the record originals (include/dw/species.h)

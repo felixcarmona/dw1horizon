@@ -170,7 +170,7 @@ def practical_errors(sp, kids, table):
                 checked += 1
                 if not T.practical(p, c, kids, reqs, levels, sp):
                     errors.append(f'{parent} -> {name}: no practical picker state')
-    preserved = {'Analogman', 'Jijimon'}
+    preserved = set()
     for name in table.get('canon_megas', []):
         if name in preserved:
             continue

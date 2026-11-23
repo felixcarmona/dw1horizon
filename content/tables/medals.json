@@ -1,5 +1,5 @@
 {
-  "_comment": "When a medal is awarded. The C holds none: the rows start unused and the build writes these (at most 16); a medal with no row here is never awarded by the game itself (the story can still award it). when = [kind, numbers]: allTriggers [first, count] all set; wins [n] tournament wins >= n; allCards [trigger] every real authored card owned and that trigger set (-1: none); allMoves [n] the first n techniques learned; stats [hpMp, others] all six base stats at least; money [n] exactly; year [n] exactly; allRaised [first, end] the species first..end-1 raised once; fish [n] caught >= n. checkedBy: tick = every tamer tick, script = the card-trader routine (the textbox shown is `text`). levelUp raises the tamer level.",
+  "_comment": "When a medal is awarded. The C holds none: the rows start unused and the build writes these (at most 20); a medal with no row here is never awarded by the game itself (the story can still award it). when = [kind, numbers]: allTriggers [first, count] all set; wins [n] tournament wins >= n; allCards [trigger, end] every real authored card below the id `end` owned (0: every card) and that trigger set (-1: none); allMoves [n] the first n techniques learned; stats [hpMp, others] all six base stats at least; money [n] exactly; year [n] exactly; allRaised [first, end] the species first..end-1 raised once; fish [n] caught >= n; allPartners [] every species a partner can be raised once; residents [originals] every city resident recruited (1: only the original game's fifty). needs: the OPTIONS switch the row waits for (newDigimon, newCards, extendedStory); hiddenWithout: the medal is not shown while that switch is off. checkedBy: tick = every tamer tick, script = the card-trader routine (the textbox shown is `text`). levelUp raises the tamer level.",
   "medals": [
     {
       "medal": 0,
@@ -43,25 +43,72 @@
       "checkedBy": ["tick"],
       "text": 0,
       "levelUp": true,
-      "note": "every partner species 1..61 raised once; the tamer level goes up"
+      "note": "Classic Master: every partner species of the original game (1..61) raised once; the tamer level goes up"
     },
     {
       "medal": 7,
       "when": ["stats", 9999, 999],
       "checkedBy": ["tick"],
       "text": 0,
-      "note": "all six base stats at the original maximum: HP and MP 9999, the rest 999"
+      "note": "Classic Peak: all six base stats at the original maximum, HP and MP 9999, the rest 999"
     },
     {"medal": 9, "when": ["fish", 100], "checkedBy": ["tick"], "text": 0, "note": "100 fish caught"},
-    {"medal": 12, "when": ["allCards", -1], "checkedBy": ["tick"], "text": 0, "note": "all real authored cards"},
+    {
+      "medal": 11,
+      "when": ["residents", 1],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "note": "Classic City: the fifty residents of the original game all live in the city"
+    },
     {
       "medal": 12,
-      "when": ["allCards", 50],
+      "when": ["allCards", -1, 66],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "note": "Classic Collection: every card of the original game"
+    },
+    {
+      "medal": 12,
+      "when": ["allCards", 50, 66],
       "checkedBy": ["script"],
       "text": 5,
-      "note": "all 66 cards and the game beaten once (trigger 50), for the card trader"
+      "note": "every card of the original game and the game beaten once (trigger 50), for the card trader"
     },
     {"medal": 13, "when": ["money", 999999], "checkedBy": ["tick"], "text": 0, "note": "999999 bits"},
-    {"medal": 14, "when": ["year", 10], "checkedBy": ["tick"], "text": 0, "note": "year 10"}
+    {"medal": 14, "when": ["year", 10], "checkedBy": ["tick"], "text": 0, "note": "year 10"},
+    {
+      "medal": 16,
+      "when": ["allPartners"],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "needs": "newDigimon",
+      "hiddenWithout": true,
+      "note": "Horizon Master: every species a partner can be, the new ones included, raised once"
+    },
+    {
+      "medal": 17,
+      "when": ["stats", 15000, 1500],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "note": "Limit Breaker: past the original maximum, HP and MP 15000 and the rest 1500"
+    },
+    {
+      "medal": 18,
+      "when": ["residents", 0],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "needs": "extendedStory",
+      "hiddenWithout": true,
+      "note": "Horizon City: every resident lives in the city, the extended story's included"
+    },
+    {
+      "medal": 19,
+      "when": ["allCards", -1, 0],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "needs": "newCards",
+      "hiddenWithout": true,
+      "note": "Full Collection: every card, the new ones included"
+    }
   ]
 }
