@@ -1,0 +1,98 @@
+From 0247146d2536ee92a2d84632b20ee63bf97cbca1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 23 Nov 2026 17:12:26 +0000
+Subject: [PATCH] Run button: hold R1 in the field to run 40% faster, with the
+ following partner; walking moves to R2
+
+---
+ src/main/anim.c  |  6 ++++++
+ src/main/map.c   | 28 ++++++++++++++++++++++++++++
+ src/main/tamer.c |  2 +-
+ 3 files changed, 35 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/anim.c b/src/main/anim.c
+index 6abd84c..48b4894 100644
+--- a/src/main/anim.c
++++ b/src/main/anim.c
+@@ -33,6 +33,8 @@ void animReadMomentumInstruction(int16_t *delta, int16_t *reload1,
+ int32_t animApplyMomentum(int16_t base, int16_t reload, int16_t delta,
+ 		          int16_t *counter, int8_t step, int32_t offset);
+ void applyRootMomentum(MomentumData *momentum, Entity *entity);
++int32_t modRunBoost(Entity *entity);
++#define MOD_RUN_SCALE 358 /* MOD (run button): 1.4, as in map.c */
+ 
+ static void *anim_text_order[] = {
+ 	applyRootMomentum,
+@@ -490,6 +492,10 @@ void applyRootMomentum(MomentumData *momentum, Entity *entity)
+ 		input.vy = base[1];
+ 		input.vz = base[2];
+ 		ApplyMatrixLV(&posData->posMatrix.coord, &input, &result);
++		if (modRunBoost(entity)) { /* MOD (run button, map.c) */
++			result.vx = (result.vx >> 8) * MOD_RUN_SCALE;
++			result.vz = (result.vz >> 8) * MOD_RUN_SCALE;
++		}
+ 
+ 		if ((entity->anim.animFlag & 8) && result.vz < 0)
+ 			result.vz = 0;
+diff --git a/src/main/map.c b/src/main/map.c
+index 8b508b6..dcb5f4b 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -3820,6 +3820,30 @@ int32_t isTileOffScreen(int8_t tileX, int8_t tileZ)
+ 	return 0;
+ }
+ 
++/* MOD (run button): while R1 is held in free field control the tamer's run, and the partner's follow
++   locomotion while it follows, cover 1.4 times their animation's root step. Scripts, menus, battles,
++   walking (R2, which takes R1's original role, or the cancel button) and the lab's SELECT combos are untouched. */
++extern int8_t TAMER_STATE;
++extern int32_t IS_IN_MENU;
++#define MOD_RUN_SCALE 358 /* the run's step in 256ths: 358 = 1.4 (anim.c has the same value) */
++
++int32_t modRunBoost(Entity *entity)
++{
++	int32_t id;
++
++	if ((GAME_STATE != 0) || (TAMER_STATE != 0) || (IS_IN_MENU != 0) ||
++	    (IS_SCRIPT_PAUSED != 1) || ((POLLED_INPUT & 0x108) != 8) ||
++	    (TAMER_ENTITY.entity.anim.animId != 3)) {
++		return 0;
++	}
++	if (entity == &TAMER_ENTITY.entity) {
++		return 1;
++	}
++	id = entity->anim.animId;
++	return (entity == &PARTNER_ENTITY.digimonEntity.entity) && (PARTNER_STATE == 1) &&
++	       (id >= 2) && (id <= 4);
++}
++
+ void entityMoveForward(Entity *entity)
+ {
+ 	PositionData *posData;
+@@ -3847,6 +3871,10 @@ void entityMoveForward(Entity *entity)
+ 		vz = *delta << 15;
+ 	}
+ 
++	if (modRunBoost(entity)) { /* MOD (run button): probe the step the root will take */
++		vz = (vz >> 8) * MOD_RUN_SCALE;
++	}
++
+ 	posData = entity->posData;
+ 	dir.vx = 0;
+ 	dir.vy = 0;
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 5b17787..2700281 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -529,7 +529,7 @@ void tamerTickWalkingState(void)
+ 	    ((POLLED_INPUT & 0x4000) != 0) ||
+ 	    ((POLLED_INPUT & 0x8000) != 0) ||
+ 	    ((POLLED_INPUT & 0x2000) != 0)) {
+-		if (((POLLED_INPUT & 8) != 0) ||
++		if (((POLLED_INPUT & 2) != 0) || /* MOD (run button): walking moves from R1 to R2, R1 runs (map.c) */
+ 		    ((POLLED_INPUT & CANCEL_BUTTON) != 0)) {
+ 			if (TAMER_ENTITY.entity.anim.animId != 2) {
+ 				startAnimation(&TAMER_ENTITY.entity, 2);
+-- 
+2.55.0
+
