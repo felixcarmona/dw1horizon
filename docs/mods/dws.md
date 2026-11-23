@@ -163,7 +163,7 @@ set_selection(L1, L2, text("opt1"), text("opt2"));                          end_
 Operand kinds: `p` pstat (`p7` or a declared var), `t` trigger (a number or a flag), `l` label, `e` entity (`tamer`, `partner`, an npc, a
 number), item/species/tech typed ids, screens, scripts, sections and cards as numbers, `w` wide register, comparisons as strings
 (`"=="`). The statements `say`, `give`, `walk`... of the tables below are sugar over these. `routine("name")` knows the 57
-`CALL_ROUTINE` numbers (`choose_item`, `shop`, `save_machine`, `fade_to_white`...) and the 11 `CALL_DIGIMON_ROUTINE` ones;
+`CALL_ROUTINE` numbers (`choose_item`, `shop`, `save_machine`, `fade_to_white`...) and the 13 `CALL_DIGIMON_ROUTINE` ones;
 `routine name = N;` adds one.
 
 ### Labels, jumps, loops, match, par

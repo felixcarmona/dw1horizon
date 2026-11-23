@@ -278,13 +278,13 @@
     },
     "zones/libraries/s212/script.py": {
       "original_sha256": "4f0f94827732b0baa8771f2f03b6a8973181be5ff80b0c4e366cb4250f4b5f67",
-      "authored_sha256": "b977abcab3b89e95dcd303b630709f98a2079148c7a10f55883bd6fbf58caf2e",
-      "reason": "Death evolutions at 30 percent; Devimon stays at 50"
+      "authored_sha256": "83d9bcca31c3252aae8c54beebc88818b0a2eb091d570f152ab1c805c055c508",
+      "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution"
     },
     "zones/libraries/s212/script.dws": {
       "original_sha256": "b27061b40a24f6f8fc8b63cd805b57c19bb47b44549a1a71215da03b222c9ec8",
-      "authored_sha256": "1de14ee3c039464abbd7f44ddee5188f4797933e427137c8b6c4c9034c50fe40",
-      "reason": "Death evolutions at 30 percent; Devimon stays at 50; DWS synchronized with the authored Python source"
+      "authored_sha256": "37e279b9a90902bafe48f6efce55e82ed6de03280fb55689221a1145a221d565",
+      "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution; DWS synchronized with the authored Python source"
     },
     "zones/libraries/s217/script.py": {
       "original_sha256": "b8be36bdb1e2ca54b4b6ecc079dcfd38e3698f03ded7a038a395fadc24ac1378",

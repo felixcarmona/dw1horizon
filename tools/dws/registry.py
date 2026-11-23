@@ -42,7 +42,7 @@ ROUTINE_BY_NAME = {n: k for k, n in ROUTINES.items() if n}
 # CALL_DIGIMON_ROUTINE n
 DIGIMON_ROUTINES = {0: 'toilet', 1: 'curling', 2: 'revert_sukamon', 3: 'dying_a', 4: 'dying_b', 5: 'opening',
                     6: 'ending', 7: 'sickness_death', 8: 'machinedramon_appears', 9: 'battle_death',
-                    10: 'forced_evolution', 11: 'clear_poop'}
+                    10: 'forced_evolution', 11: 'clear_poop', 12: 'earned_evolution'}
 DIGIMON_ROUTINE_BY_NAME = {n: k for k, n in DIGIMON_ROUTINES.items()}
 
 

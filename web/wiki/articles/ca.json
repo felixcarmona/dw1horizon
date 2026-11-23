@@ -153,7 +153,10 @@
     "paragraphs": [
       "{bakemon_mechanic}",
       "Cada company té menjar i son propis. Les especialitats determinen les tècniques apreses al combat. Les caselles buides continuen comptant en la tirada, tot i que el resum les ometi.",
-      "La guia del joc i l’arbre expliquen els objectius. Transformacions especials i objectes tenen condicions pròpies; una fila normal no descriu totes les maneres d’obtenir una espècie."
+      "La guia del joc i l’arbre expliquen els objectius. Transformacions especials i objectes tenen condicions pròpies; una fila normal no descriu totes les maneres d’obtenir una espècie. Spoiler: quan un company perd una vida i encara n’hi queda alguna, hi ha un 30% de probabilitat d’una evolució especial a casa d’en Jijimon: Greymon a SkullGreymon, Meramon a SkullMeramon, Mammothmon a SkullMammothmon i Garudamon a Phoenixmon, però només si ja té les estadístiques que demana la nova forma."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "new-game-quiz": {

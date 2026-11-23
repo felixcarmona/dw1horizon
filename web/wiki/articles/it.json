@@ -153,7 +153,10 @@
     "paragraphs": [
       "{bakemon_mechanic}",
       "Ogni compagno ha cibo e sonno propri. Le specialità determinano tecniche apprese in battaglia. Gli spazi vuoti contano ancora per il tiro, anche se il riepilogo li omette.",
-      "Guida del gioco e albero spiegano gli obiettivi. Trasformazioni speciali e oggetti hanno condizioni proprie; una riga normale non descrive ogni modo di ottenere una specie."
+      "Guida del gioco e albero spiegano gli obiettivi. Trasformazioni speciali e oggetti hanno condizioni proprie; una riga normale non descrive ogni modo di ottenere una specie. Spoiler: quando un compagno perde una vita e gliene resta ancora una, c’è il 30% di probabilità di un’evoluzione speciale a casa di Jijimon: Greymon in SkullGreymon, Meramon in SkullMeramon, Mammothmon in SkullMammothmon e Garudamon in Phoenixmon, ma solo se ha già le statistiche richieste dalla nuova forma."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "new-game-quiz": {

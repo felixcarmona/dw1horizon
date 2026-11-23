@@ -1,0 +1,97 @@
+From 5510bdc0d9f8f13bcf6cd8c6cf6c83d55516f04f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 23 Nov 2026 11:11:36 +0000
+Subject: [PATCH] Add a script routine for an evolution the partner has earned
+
+CALL_DIGIMON_ROUTINE 12 evolves the partner into the species in wide register w61, which may be any id (routine 10
+reads a byte). It starts only when the options allow the species, its model fits and the partner has the stats the
+target's requirements ask for; p254 tells the script whether it started (1) or was refused (0).
+---
+ include/dw/script.h      |  2 ++
+ src/main/partner.c       | 18 ++++++++++++++++++
+ src/main/script_interp.c |  6 ++++++
+ 3 files changed, 26 insertions(+)
+
+diff --git a/include/dw/script.h b/include/dw/script.h
+index 4c700ea..a43c3e8 100644
+--- a/include/dw/script.h
++++ b/include/dw/script.h
+@@ -196,6 +196,7 @@ typedef struct {
+  */
+ #define SCRIPT_NUM_WREGS		64
+ #define SCRIPT_WREG_CHOSEN_ITEM		62
++#define SCRIPT_WREG_EVOLUTION_TARGET	61 /* MOD: the species CALL_DIGIMON_ROUTINE 12 evolves the partner into */
+ 
+ typedef struct {
+ 	uint8_t smth[212];
+@@ -207,6 +208,7 @@ typedef struct {
+ } ScriptState;
+ 
+ void scriptSetChosenItem(int32_t item); /* MOD: p254 and SCRIPT_WREG_CHOSEN_ITEM */
++int32_t scriptEvolutionTarget(void); /* MOD: SCRIPT_WREG_EVOLUTION_TARGET */
+ 
+ typedef struct {
+ 	uint8_t mapId;
+diff --git a/src/main/partner.c b/src/main/partner.c
+index c0bfb03..d37aa0b 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -22,6 +22,8 @@
+ #include <dw/utils.h>
+ #include <dw/version.h>
+ #include <dw/mod_rules.h>
++#include <dw/mod_options.h>
++#include <dw/species.h>
+ #include <dw/screen.h>
+ 
+ extern int32_t HAS_BUTTERFLY;
+@@ -113,6 +115,7 @@ int16_t entityCheckCollision(Entity *source, Entity *entity, int32_t arg2,
+ int32_t randomLimit(int32_t limit);
+ void writePStat(int32_t id, int32_t value);
+ uint8_t readPStat(int32_t id);
++int32_t scriptEvolutionTarget(void); /* MOD: the wide register of routine 12 (script_interp.c) */
+ void addTamerLevel(int32_t chance, int32_t amount);
+ int32_t getMapSoundId(int32_t mapId);
+ void loadMapSounds(int32_t soundId);
+@@ -1270,6 +1273,21 @@ uint8_t routine;
+ 		EVOLUTION_TARGET = readPStat(PSTAT_254);
+ 		partnerSetState(13);
+ 		SOME_SCRIPT_SYNC_BIT = 0;
++		break;
++	case 12:
++		/* MOD: an evolution the partner has to have earned. The target (any id) comes in a wide register; it starts
++		   only when the options allow the species, its model fits and the partner has the stats the target asks for.
++		   p254 tells the script: 1 started, 0 refused. */
++		i = scriptEvolutionTarget();
++		writePStat(PSTAT_254, 0);
++		if (modSpeciesAllowed(i) && isPartnerModelFit(i) &&
++		    (evoRequirementsMet(PARTNER_ENTITY.digimonEntity.entity.type, i, 0, 0) & EVO_MET_STATS)) {
++			EVOLUTION_TARGET = i;
++			partnerSetState(13);
++			writePStat(PSTAT_254, 1);
++		}
++		SOME_SCRIPT_SYNC_BIT = 0;
++		break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 2805615..50c24d9 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2973,6 +2973,12 @@ int32_t sukamonBackupSpecies(void)
+ 	return type != 0 ? type : readPStat(PSTAT_SUKAMON_BACKUP_DIGIMON);
+ }
+ 
++/* MOD: the species CALL_DIGIMON_ROUTINE 12 evolves the partner into (partner.c) */
++int32_t scriptEvolutionTarget(void)
++{
++	return WREG(SCRIPT_WREG_EVOLUTION_TARGET);
++}
++
+ void scriptSetChosenItem(int32_t item)
+ {
+ 	writePStat(PSTAT_254, item);
+-- 
+2.55.0
+

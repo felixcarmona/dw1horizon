@@ -153,7 +153,10 @@
     "paragraphs": [
       "{bakemon_mechanic}",
       "Cada parceiro tem preferências e sono próprios. Especialidades determinam técnicas aprendidas em batalha. Espaços vazios ainda contam na chance de aprendizado, embora o resumo não os mostre.",
-      "O guia do jogo e a árvore ajudam a entender os alvos. Transformações especiais e itens têm condições próprias; a linha normal de atributos não descreve todas as formas de obter uma espécie."
+      "O guia do jogo e a árvore ajudam a entender os alvos. Transformações especiais e itens têm condições próprias; a linha normal de atributos não descreve todas as formas de obter uma espécie. Spoiler: quando um parceiro perde uma vida e ainda tem outra, há 30% de chance de uma evolução especial na casa do Jijimon: Greymon para SkullGreymon, Meramon para SkullMeramon, Mammothmon para SkullMammothmon e Garudamon para Phoenixmon, mas só se ele já tiver os atributos que a nova forma pede."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "new-game-quiz": {

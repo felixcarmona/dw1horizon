@@ -155,7 +155,10 @@ A C `switch` of 57 handlers (0x00-0x38) in `script_interp.c`; arguments and resu
 | Reserved | 0x03, 0x04, 0x05, 0x11 | no-ops |
 
 `CALL_DIGIMON_ROUTINE n` (`partner.c`): 0 toilet, 1 curling (parameters p121, p122), 2 revert Sukamon, 3-4 dying,
-5 opening, 6 ending, 7 death by sickness, 8 Machinedramon appears, 9 death in battle, 10 forced evolution.
+5 opening, 6 ending, 7 death by sickness, 8 Machinedramon appears, 9 death in battle, 10 forced evolution (target
+in p254, a byte), 11 clear every poop pile, 12 earned evolution (target in wide register w61, any id: it starts only
+when the options allow the species, its model fits and the partner has the stats of the target's requirement row;
+p254 is 1 when it started and 0 when it was refused).
 
 Several `CALL_ROUTINE`-type operations push the script call stack themselves, so the depth left for `JUMP_AND_LINK` is
 less than 8 inside menus.

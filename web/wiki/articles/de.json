@@ -153,7 +153,10 @@
     "paragraphs": [
       "{bakemon_mechanic}",
       "Partner haben eigene Essensvorlieben und Schlafzeiten. Spezialitäten bestimmen lernbare Kampftechniken. Leere Plätze zählen beim Lernwurf weiterhin, auch wenn die Zusammenfassung sie auslässt.",
-      "Spielguide und Baum erläutern Ziele. Sonderverwandlungen und Gegenstände haben eigene Bedingungen; eine normale Wertezeile beschreibt nicht jeden Weg zu einer Art."
+      "Spielguide und Baum erläutern Ziele. Sonderverwandlungen und Gegenstände haben eigene Bedingungen; eine normale Wertezeile beschreibt nicht jeden Weg zu einer Art. Spoiler: Verliert ein Partner ein Leben und hat noch eines übrig, kommt es in Jijimons Haus mit 30 % Wahrscheinlichkeit zu einer Sonderentwicklung: Greymon zu SkullGreymon, Meramon zu SkullMeramon, Mammothmon zu SkullMammothmon und Garudamon zu Phoenixmon, aber nur, wenn er die Werte der neuen Form bereits hat."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "new-game-quiz": {

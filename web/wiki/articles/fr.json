@@ -153,7 +153,10 @@
     "paragraphs": [
       "{bakemon_mechanic}",
       "Chaque partenaire a ses préférences et son sommeil. Les spécialités définissent les techniques apprises en combat. Un emplacement vide compte encore pour le jet, même si le résumé ne l’affiche pas.",
-      "Le guide du jeu et l’arbre expliquent les cibles. Transformations spéciales et objets ont leurs propres conditions ; une ligne statistique ordinaire ne décrit pas toutes les façons d’obtenir une espèce."
+      "Le guide du jeu et l’arbre expliquent les cibles. Transformations spéciales et objets ont leurs propres conditions ; une ligne statistique ordinaire ne décrit pas toutes les façons d’obtenir une espèce. Spoiler : quand un partenaire perd une vie et qu’il lui en reste une, il y a 30 % de chances d’une évolution spéciale chez Jijimon : Greymon en SkullGreymon, Meramon en SkullMeramon, Mammothmon en SkullMammothmon et Garudamon en Phoenixmon, mais seulement s’il a déjà les statistiques que demande la nouvelle forme."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "new-game-quiz": {
