@@ -573,6 +573,21 @@ def pipeline(a, r):
             r.cmd(['gh', 'release', 'create', a.tag, archive, '--verify-tag',
                    '--title', 'Digimon World Horizon ' + info['version'],
                    '--notes-file', a.notes_file])
+        with r.step('Publish the engine source to the decompilation fork'):
+            publish_engine_tree(r, a)
+
+
+def engine_remote(a):
+    """The fork that publishes the engine source: --engine-remote, else the repository dw_decomp of --remote's owner."""
+    if getattr(a, 'engine_remote', None):
+        return a.engine_remote
+    return re.sub(r'[^/:]+$', 'dw_decomp.git', git('remote', 'get-url', a.remote).strip())
+
+
+def publish_engine_tree(r, a):
+    """Rebuild the engine branch from this checkout's series and push it with the tag horizon-TAG (releasing.md)."""
+    r.cmd(['tools/engine_tree.sh', 'build'])
+    r.cmd(['tools/engine_tree.sh', 'push', a.tag, engine_remote(a)], dict(os.environ, DW1H_PUBLISH='1'))
 
 
 def main(argv=None):
@@ -601,6 +616,7 @@ def main(argv=None):
     p.add_argument('--deploy', action='store_true', help='deploy to the configured server (off by default)')
     p.add_argument('--publish', action='store_true', help='push tag and gh release create (off by default)')
     p.add_argument('--remote', default='origin')
+    p.add_argument('--engine-remote', help='fork that receives the engine branch (default: dw_decomp of --remote\'s owner)')
     p.add_argument('--notes-file', type=Path)
     p.add_argument('--jobs', type=int, default=4)
     reuse = p.add_mutually_exclusive_group()

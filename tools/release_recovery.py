@@ -225,6 +225,9 @@ def run_step(name,context):
         archive=out/('horizon-'+context['frozen_identity']['version']+'.tar.gz')
         r.cmd(['gh','release','create',a.tag,archive,'--verify-tag','--title','Digimon World Horizon '+context['frozen_identity']['version'],'--notes-file',a.notes_file])
         steps.atomic(out/'published.json',steps.encoded({'commit':context['identity']['commit'],'tag':a.tag}))
+    elif name=='engine-tree':
+        release.publish_engine_tree(r,a)
+        steps.atomic(out/'engine-tree.json',steps.encoded({'commit':context['identity']['commit'],'tag':'horizon-'+a.tag}))
     elif name=='complete':
         rows=json.loads((out/'recovery/state/round.json').read_text())
         if any(row['status'] not in ('ok','reused') for row in rows if row['name']!='complete'):
@@ -271,6 +274,7 @@ def declared_outputs(name,context):
     if name=='deploy':return [out/'deployed.json']
     if name=='push-tag':return [out/'pushed.json']
     if name=='publish':return [out/'published.json']
+    if name=='engine-tree':return [out/'engine-tree.json']
     return [out/'logs'/(name.replace('/','-')+'.log')]
 
 
@@ -407,7 +411,7 @@ def locked_driver(a):
             if name=='complete':
                 changed=[]
                 for prior in plan:
-                    if prior.name in ('complete','deploy','push-tag','publish'):continue
+                    if prior.name in ('complete','deploy','push-tag','publish','engine-tree'):continue
                     current=hashlib.sha256(steps.encoded(prior.inputs())).hexdigest()
                     if current!=store.rows[prior.name].get('fingerprint'):changed.append(prior.name)
                 if changed:raise RuntimeError('inputs changed after validation: '+', '.join(changed))
@@ -470,6 +474,7 @@ def locked_driver(a):
         if a.publish:
             add('push-tag',['complete'],values={'tag':a.tag,'commit':context['identity']['commit'],'remote':a.remote})
             add('publish',['push-tag']+(['deploy'] if a.deploy else []),lambda:[a.notes_file,out/('horizon-'+context['frozen_identity']['version']+'.tar.gz')])
+            add('engine-tree',['publish'],values={'tag':a.tag,'commit':context['identity']['commit'],'remote':release.engine_remote(a)})
     steps.atomic(state/'plan.json',steps.encoded([dict(name=s.name,dependencies=s.deps,after=s.after,command=s.command) for s in plan]))
     def interrupt(*_):
         with children_lock:running=list(children)

@@ -83,6 +83,12 @@ def problems(root=ROOT):
     for name in rows:
         if name not in listed:
             errs.append(f'{INDEX}: a row for {name}, which is not in {SERIES}')
+    for name in listed:
+        if (root / DIR / name).is_file():
+            body = (root / DIR / name).read_text(encoding='utf-8', errors='replace')
+            if 'GIT binary patch' in body or re.search(r'^diff --git a/\S*(__pycache__/|\.pyc )', body, re.M):
+                errs.append(f'{DIR}/{name}: carries a binary or Python cache file (the engine branch and the decompilation '
+                            'hold text only): drop it from the commit and save again')
     if not errs and rows != listed:
         errs.append(f'{INDEX}: the rows are not in the order of {SERIES}')
     return errs

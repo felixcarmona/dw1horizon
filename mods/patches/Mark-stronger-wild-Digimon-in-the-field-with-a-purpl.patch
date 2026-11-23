@@ -333,15 +333,6 @@ index bb5ee43c..cd91f93a 100644
      MOD_OPT_STR_FONT:
        ja: "FONT"
        en_us: "FONT"
-diff --git a/tools/__pycache__/gen_lang_files.cpython-312.pyc b/tools/__pycache__/gen_lang_files.cpython-312.pyc
-index ab899bda88e0c1ceea2d3e214d7ced339d265f34..68f45e0bab92a6758d01b2032aa43c2f8531fe4c 100644
-GIT binary patch
-delta 21
-bcmbQBH9?E#G%qg~0}#k9XUg8l!y*a*Ht_^_
-
-delta 21
-bcmbQBH9?E#G%qg~0}y0x{*$$lheZ?sKXe7i
-
 -- 
 2.55.0
 
