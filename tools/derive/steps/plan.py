@@ -36,7 +36,7 @@ from . import story as ST
 
 NAME = 'plan'
 DESCRIPTION = 'Disc file and language layout'
-AFTER = ('cards', 'tamer', 'models', 'species', 'sound', 'effects', 'title', 'story', 'screens', 'localize', 'signs', 'balance', 'storycopies')
+AFTER = ('cards', 'tamer', 'curling', 'models', 'species', 'sound', 'effects', 'title', 'story', 'screens', 'localize', 'signs', 'balance', 'storycopies')
 FACTS = True
 SOUND = ('FAALL', 'VBALL', 'VLALL', 'ESALL')
 PLACEHOLDER = bytes(2048)    # an overlay's Spanish copy and LANGEN/LANGES.BIN until the executable is built
@@ -129,6 +129,7 @@ def make(ctx):
     P.add('CARD/CARDTAB.BIN', O('cards', 'CARDTAB.BIN'))
     P.add('CARD/CARD2.ALL', O('cards', 'CARD2.ALL'))
     P.add('TAMER.DAT', O('TAMER.DAT'))
+    P.add('ETCDAT/KARCUP.DAT', O('KARCUP.DAT'))   # in a folder: the root directory's first sector is full
     if s.scrn:   # (:325-336)
         P.add('SCRN.DAT', O('SCRN.DAT'))
         if orig and not same(O('SCRN.DAT'), O('orig', 'SCRN.DAT')):

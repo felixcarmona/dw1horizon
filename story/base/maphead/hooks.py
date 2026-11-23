@@ -2476,6 +2476,8 @@ def setup():    # section 136
     use_script(131, Screen.freezeland_136)
     engine.music_mode.set(1)
     music(16)
+    if curling_format != 0:    # a cup match: the rink brings its own rivals
+        return
     if curling_opponent == 1:
         load(Species.MetalMamemon149)
         spawn(Species.MetalMamemon149, slot=1)

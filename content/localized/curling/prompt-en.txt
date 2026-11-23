@@ -1,0 +1,14 @@
+A sheet of five title logos for a curling tournament in a 1990s PlayStation monster-raising game, text only, in the hand-drawn cartoon lettering of that era's Japanese game menus: fat, rounded, slightly uneven capital letters drawn by hand, each letter filled with a flat bright colour that has a simple lighter shine along its top, and surrounded by a thick, even, very dark outline. The letters of a word touch or slightly overlap their neighbours so the name reads as one solid shape.
+
+The background of the whole image is one perfectly flat, uniform, pure magenta (#FF00FF), with no gradient, no texture, no shadow, no glow and no pattern: it will be removed, so nothing but the letters and their outline may differ from it. No magenta, pink or purple-pink inside the letters.
+
+The image is divided into exactly five horizontal bands of exactly the same height, stacked from top to bottom, each one fifth of the image's height. Each band holds one name on one single line, centred in the band, as large as it can be while leaving a clear margin of magenta above, below, left and right: it never touches the band's edges or the next band's letters. The names will be shown very small (256 pixels wide), so the letters are big, thick and easy to read.
+
+From top to bottom, a ladder of cups from the humblest to the grandest, each in its own colour:
+1. "ROOKIE CUP": fresh light green letters.
+2. "AMATEUR CUP": bright sky blue letters.
+3. "EXPERT CUP": strong violet-blue letters (indigo, far from magenta).
+4. "ELITE CUP": crimson red letters.
+5. "LEGEND CUP": brilliant golden yellow letters with an orange lower half.
+
+Nothing else at all: no trophy, no cup, no curling stone, no icon, no frame, no banner, no box, no line, no stars, no sparkles, no characters. No other text than the five names, spelled exactly as given.

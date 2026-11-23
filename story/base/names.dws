@@ -157,6 +157,15 @@ pub alias var amida_correct_path = 116;
 pub alias var misty_trees_maze_steps = 120;
 pub alias var curling_result = 121;
 pub alias var curling_opponent = 122;
+pub alias var curling_format = 128;
+pub alias var curling_rival_1 = 129;
+pub alias var curling_rival_2 = 130;
+pub alias var curling_rival_3 = 131;
+pub alias var curling_cup = 132;
+pub alias var curling_round = 133;
+pub alias var curling_seed = 134;
+pub alias var curling_cups_won = 7;
+pub alias var curling_chips_kept = 8;
 pub alias var damage_percent = 200;
 pub alias var training_slot_game = 246;
 pub group amida_path_passed {
@@ -396,6 +405,7 @@ pub group medal {
     pub alias flag special_cup = 367;
     pub alias flag hundred_wins = 368;
     pub alias flag perfect_curling = 372;
+    pub alias flag curling_legend = 379;
     pub alias flag ending = 374;
     pub alias flag town_flourishing = 375;
 }

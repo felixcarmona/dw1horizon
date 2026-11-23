@@ -11,9 +11,11 @@ slot2 = lib.npc(None, slot=2)    # no NPC of the .MAP in this slot; the script s
 slot5 = lib.npc(None, slot=5)    # no NPC of the .MAP in this slot; the script spawns what stands here
 slot6 = lib.npc(None, slot=6)    # no NPC of the .MAP in this slot; the script spawns what stands here
 slot7 = lib.npc(None, slot=7)    # no NPC of the .MAP in this slot; the script spawns what stands here
+slot3 = lib.npc(None, slot=3)    # no NPC of the .MAP in this slot; the script spawns what stands here
 t10 = text.s206.sec10
 t11 = text.s206.sec11
 t12 = text.s206.sec12
+t13 = text.s206.sec13
 t6 = text.s206.sec6
 t7 = text.s206.sec7
 
@@ -24,6 +26,40 @@ def enter():    # section 254
 @slot1.on_talk
 def talk():    # section 6
     curling_opponent.set(0)
+    curling_format.set(0)
+    curling_rival_1.set(0)
+    curling_rival_2.set(0)
+    curling_rival_3.set(0)
+    if curling_chips_kept > 0:    # chips of the Legend Cup that did not fit
+        say(t13.u29)
+        while True:    # one chip at a time; the ones that do not fit are kept for the next visit
+            if curling_chips_kept == 1:
+                give(Item.OffChip)
+                random_roll.set(23)
+            elif curling_chips_kept == 2:
+                give(Item.DefChip)
+                random_roll.set(24)
+            elif curling_chips_kept == 3:
+                give(Item.BrainChip)
+                random_roll.set(25)
+            elif curling_chips_kept == 4:
+                give(Item.QuickChip)
+                random_roll.set(26)
+            elif curling_chips_kept == 5:
+                give(Item.HPChip)
+                random_roll.set(27)
+            else:
+                give(Item.MPChip)
+                random_roll.set(28)
+            if engine.item_did_not_fit:
+                say(t13.u28)
+                break
+            narrator.say(t11.u6)
+            curling_chips_kept.add(1)
+            if curling_chips_kept >= 7:
+                curling_chips_kept.set(0)
+                break
+        return
     if not recruited(Species.Penguinmon) and not penguinmon_curling_offered:
         say(t6.u0)
         tamer.say(t6.u1)
@@ -56,10 +92,12 @@ def talk():    # section 6
             say(t6.u8)
         curling_opponent.set(0)
         say(t6.u9)
-        match choose(a=t6.m1.o0, b=t6.m1.o1):
-            case "b":
-                curling_match_pending.set(0)
-                say(t6.u10)
+        match choose(a=t6.m1.o0, b=t13.m0.o0, c=t6.m1.o1):
+            case "b":    # the rink's own menu: quick matches and cups, alone, in doubles or with every team at once
+                curling_format.set(5)
+                curling_cup.set(0)
+                curling_round.set(0)
+                warp(Screen.freezeland_136, entry=1)
                 return
             case _:
                 return
@@ -76,12 +114,14 @@ def talk():    # section 6
             if engine.arg != 255:
                 tamer.say(t6.u13)
             curling_match_pending.set(0)
+            curling_format.set(0)
             say(t6.u15)
             return
         say(t6.u14)
         warp(Screen.freezeland_136, entry=1)
         return
     curling_match_pending.set(0)
+    curling_format.set(0)
     say(t6.u15)
 
 @slot5.on_talk
@@ -112,7 +152,8 @@ def talk():    # section 11
             medal.perfect_curling.set()
             sound(0, 7)
             narrator.say(t11.u2)
-    slot1.say(t11.u3)
+    if curling_result != 4:
+        slot1.say(t11.u3)
     slot1.say(t11.u4)
     raw.store_random(prize_roll, 49)
     while True:
@@ -147,6 +188,7 @@ def talk():    # section 11
 @slot2.on_talk
 def talk():    # section 7
     curling_opponent.set(1)
+    curling_format.set(0)
     slot1.say(t7.u0)
     match choose(a=t7.m0.o0, b=t7.m0.o1):
         case "a":
@@ -222,5 +264,159 @@ def talk():    # section 12
     camera.arrived()
     return
 
+@slot3.on_talk
+def talk():    # section 8: back from the rink's menu, a quick match or a round of a cup
+    if curling_result == 5:    # left the menu with nothing played
+        curling_format.set(0)
+        return
+    if curling_result == 3:    # level on points: the match again
+        slot1.say(t13.u7)
+        warp(Screen.freezeland_136, entry=1)
+        return
+    if curling_result == 0:
+        curling_format.set(0)
+        curling_cup.set(0)
+        slot1.say(t11.u0)
+        return
+    if curling_cup == 0:    # a quick match: Penguinmon's own prizes
+        if curling_format == 2:
+            slot1.say(t13.u25)
+        elif curling_format != 1:
+            slot1.say(t13.u26)
+        curling_format.set(0)
+        curling_result.set(4)    # won, and not against Penguinmon: its own lines about losing stay unsaid
+        jump_to_script(206, 11)
+    if curling_round == 1:
+        curling_round.set(2)
+        slot1.say(t13.u8)
+        warp(Screen.freezeland_136, entry=1)
+        return
+    if curling_round == 2:
+        curling_round.set(3)
+        slot1.say(t13.u9)
+        warp(Screen.freezeland_136, entry=1)
+        return
+    sound(0, 7)
+    if curling_cup == 1:
+        narrator.say(t13.u10)
+    elif curling_cup == 2:
+        narrator.say(t13.u11)
+    elif curling_cup == 3:
+        narrator.say(t13.u12)
+    elif curling_cup == 4:
+        narrator.say(t13.u13)
+    else:
+        narrator.say(t13.u14)
+    curling_format.set(0)
+    if curling_cups_won == 5 and not medal.curling_legend:    # the first Legend Cup: the medal and one chip of each kind
+        medal.curling_legend.set()
+        sound(0, 7)
+        narrator.say(t13.u24)
+        slot1.say(t13.u27)
+        curling_chips_kept.set(1)
+        while True:    # one chip at a time; the ones that do not fit are kept for the next visit
+            if curling_chips_kept == 1:
+                give(Item.OffChip)
+                random_roll.set(23)
+            elif curling_chips_kept == 2:
+                give(Item.DefChip)
+                random_roll.set(24)
+            elif curling_chips_kept == 3:
+                give(Item.BrainChip)
+                random_roll.set(25)
+            elif curling_chips_kept == 4:
+                give(Item.QuickChip)
+                random_roll.set(26)
+            elif curling_chips_kept == 5:
+                give(Item.HPChip)
+                random_roll.set(27)
+            else:
+                give(Item.MPChip)
+                random_roll.set(28)
+            if engine.item_did_not_fit:
+                slot1.say(t13.u28)
+                break
+            narrator.say(t11.u6)
+            curling_chips_kept.add(1)
+            if curling_chips_kept >= 7:
+                curling_chips_kept.set(0)
+                break
+        curling_cup.set(0)
+        camera.on(tamer, speed=10)
+        camera.arrived()
+        return
+    slot1.say(t11.u4)
+    raw.store_random(prize_roll, 11)    # one of the cup's own prizes
+    while True:
+        if curling_cup == 1:
+            if prize_roll <= 3:
+                give(Item.SupRecovery)
+                random_roll.set(3)
+            elif prize_roll <= 7:
+                give(Item.LargeMP)
+                random_roll.set(6)
+            else:
+                give(Item.OmniDisk)
+                random_roll.set(18)
+        elif curling_cup == 2:
+            if prize_roll <= 2:
+                give(Item.Restore)
+                random_roll.set(11)
+            elif prize_roll <= 5:
+                give(Item.Sirloin)
+                random_roll.set(40)
+            elif prize_roll <= 8:
+                give(Item.Various)
+                random_roll.set(8)
+            else:
+                give(Item.Omnipotent)
+                random_roll.set(9)
+        elif curling_cup == 3:
+            if prize_roll <= 2:
+                give(Item.SupRestore)
+                random_roll.set(12)
+            elif prize_roll <= 5:
+                give(Item.EnemyRepel)
+                random_roll.set(35)
+            elif prize_roll <= 8:
+                give(Item.GoldAcorn)
+                random_roll.set(50)
+            else:
+                give(Item.RainPlant)
+                random_roll.set(121)
+        elif curling_cup == 4:
+            if prize_roll <= 3:
+                give(Item.HPChip)
+                random_roll.set(27)
+            elif prize_roll <= 7:
+                give(Item.MPChip)
+                random_roll.set(28)
+            else:
+                give(Item.DefChip)
+                random_roll.set(24)
+        else:
+            if prize_roll <= 2:
+                give(Item.OffChip)
+                random_roll.set(23)
+            elif prize_roll <= 5:
+                give(Item.BrainChip)
+                random_roll.set(25)
+            elif prize_roll <= 8:
+                give(Item.QuickChip)
+                random_roll.set(26)
+            else:
+                give(Item.DefChip)
+                random_roll.set(24)
+        if not engine.item_did_not_fit:
+            break
+        slot1.say(t11.u5)
+        engine.picker_mode.clear()
+        call(Routine.choose_item)
+        take_picked(all=True)
+    curling_cup.set(0)
+    narrator.say(t11.u6)
+    camera.on(tamer, speed=10)
+    camera.arrived()
+
 # the section table, in the order of the original header
-sections(254, 6, 10, 11, 7, 12)
+sections(254, 6, 10, 11, 7, 12, 8)

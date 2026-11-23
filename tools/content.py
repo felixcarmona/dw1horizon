@@ -45,7 +45,7 @@ GROUPED = {'cards': ['cards', 'cardPrices'],
            'world': ['mapLights'],
            'fishing': ['fishKinds', 'fishBiteChance', 'fishBaitChances', 'fishingMaps'],
            'fishing-rules': ['fishingRules'],
-           'curling': ['curlingRules', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX'],
+           'curling': ['curlingRules', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRivals'],
            'slot-machine': ['slotReels', 'slotAssist'],
            'effects': ['conditionFxOffsets', 'auraTypes'],
            'effect-donors': ['effectDonors'],
@@ -184,7 +184,8 @@ def load_tables():
         if os.path.exists(p): out.update({k: v for k, v in json.load(open(p)).items() if not k.startswith('_')})
     if not os.path.exists(os.path.join(TABLE_DIR, 'curling.json')):      # no file: no curling rules, no weights, no rings, no points (the C holds the originals, the build empties them)
         out.update(curlingRules={}, curlingWeights=[0] * 4, curlingStartTypes=[0] * 10, curlingRingPoints=[0] * 4,
-                   curlingRings=[{'dx': 0, 'dz': 0, 'radius': 0} for _ in range(4)], curlingObstacleX=[0] * 3)
+                   curlingRings=[{'dx': 0, 'dz': 0, 'radius': 0} for _ in range(4)], curlingObstacleX=[0] * 3,
+                   curlingRivals=[dict(species=-1, style=0, aimClip=0, throwClip=0, releaseClip=0, hold=0, aimNoise=0, powerNoise=0, hitPercent=0, icon=0, room=0) for _ in range(32)])
     p = os.path.join(TABLE_DIR, 'training-spots.json')
     if os.path.exists(p):
         d = json.load(open(p)); out['trainingSpots'] = d['trainingSpots']; out['spotScreens'] = d['spotScreens']
