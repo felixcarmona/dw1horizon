@@ -232,6 +232,19 @@ for mh in "$O/MAPHEAD.SCN" $([ "$ORIG" = 1 ] && echo "$O/orig/MAPHEAD.SCN") $(fo
   echo "${mh#$O/}: $MH_SIZE bytes of the executable's $MH_MAX ($((MH_MAX - MH_SIZE)) free)"
 done
 
+# MAP_SCRIPT_BUFFER holds one DG.SCN entry (whole sectors): a bigger script of any language would overwrite what follows it
+MS_MAX=$(sed -n 's/^#define[[:space:]]*MAP_SCRIPT_MAX[[:space:]]*\(0x[0-9A-Fa-f]*\).*/\1/p' "$W/include/dw/memmap.h" 2>/dev/null)
+$PY - "$((${MS_MAX:-0x4000}))" "$O" <<'PYEOF'
+import glob, struct, sys
+limit, out = int(sys.argv[1]), sys.argv[2]
+for f in sorted(glob.glob(out + '/DG.SCN') + glob.glob(out + '/*/DG.SCN')):
+    d = open(f, 'rb').read(); o = struct.unpack_from('<512I', d, 0)
+    big = max((o[i + 1] - o[i] for i in range(1, 511) if 0 < o[i + 1] - o[i] <= 0x10000 and o[i + 1] <= len(d)), default=0)
+    if big > limit:
+        sys.exit(f'{f}: a script of {big:#x} bytes, the executable\'s MAP_SCRIPT_BUFFER holds {limit:#x}')
+print('DG.SCN: every script within MAP_SCRIPT_BUFFER', hex(limit))
+PYEOF
+
 # ---------------------------------------------------------------- 4. scripts
 # (DG.SCN and its MAPHEAD.SCN were compiled before the sound step, which edits the MAPHEAD)
 # memreclaim: the NPC animation keep table must cover the scripts on the disc. The audit
