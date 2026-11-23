@@ -111,5 +111,5 @@ bone_field_visited = flag()
 hunter_noticed = flag()
 HUNTER_PRESENT_PSTAT = 120  # unsaved night-model witness, reset on either hunter screen
 
-# After the ending (arcs/postgame/blackwargreymon.py): the first win at the summit pays once; the fight itself stays.
-summit_duel_won = flag()
+# After the ending (arcs/postgame/blackwargreymon.py): the first win in the Back Dimension pays once; the fight itself stays.
+rift_duel_won = flag()
