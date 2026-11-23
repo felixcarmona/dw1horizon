@@ -30,6 +30,20 @@ city: the list shows the seven faces of the cup under the cursor, the missing on
 Saved state: the cups won (variable 7) and the chips kept (variable 8). A cup is played in one go, round after round,
 so its cup, round and seed (132 to 134) are not saved.
 
+## Collisions
+
+Two free stones that touch (centres closer than 150) exchange the part of their speed that runs along the line between
+their centres and keep the rest (`KAR_exchangeAlongCentres`, patch
+`Curling-collisions-stones-exchange-their-speed-along.patch`): a square hit stops the thrown stone and sends the other
+on with all its speed, as before; a hit on the side sends the other stone away from the contact and the thrown one
+carries on, turned; a grazing touch barely moves either. Stones moving apart are left alone, and both stones wait at
+the contact positions for the rest of that tick.
+
+The original shared the speed by the angle alone and moved both stones by guessed amounts. A stone hit on its side
+left along the thrower's line while the thrown stone stopped dead, and a grazing touch could leave the pair inside
+each other: the collision pass repeats its last step while anything touches, so that pair hung the game. The repeat
+is now capped at eight. A stone standing on a peg collides as in the original.
+
 ## Cup names
 
 Each cup's name is drawn as art in every language, over the cup list and over the bracket: fat hand-drawn letters

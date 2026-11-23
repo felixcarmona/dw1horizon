@@ -1,0 +1,338 @@
+From 4b6078292a2b194ab5799e2449bca0a9ebdf01ac Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 23 Nov 2026 20:00:00 +0000
+Subject: [PATCH] Curling collisions: stones exchange their speed along the
+ line between their centres
+
+Two free stones that touch exchange the part of their speed that runs along the line between their centres and keep the rest, and only when they are closing in. The original shared the speed by the angle alone and moved both stones by guessed amounts: a stone hit on its side left along the thrower's line, the thrown stone stopped dead, and a grazing touch could leave the pair inside each other, colliding again in every step. The repeat of the last collision step ended only when nothing touched, so that pair hung the game; it now repeats eight times at most. Stones on a peg collide as before.
+---
+ src/kar/kar.c | 249 ++++++++++----------------------------------------
+ 1 file changed, 49 insertions(+), 200 deletions(-)
+
+diff --git a/src/kar/kar.c b/src/kar/kar.c
+index 2f4aa442..73a6f070 100644
+--- a/src/kar/kar.c
++++ b/src/kar/kar.c
+@@ -293,17 +293,13 @@ int32_t KAR_findUnusedStoneOfType(int32_t key);
+ void KAR_initializeOrderingTables(void);
+ int8_t KAR_tickYesNoPrompt(void);
+ void KAR_resolveStoneCollision(KarStone *stoneA, VECTOR a, KarStone *stoneB, VECTOR b);
+-void KAR_collideRestingStone(KarStone *resting, VECTOR a, KarStone *mover, VECTOR b);
+-void KAR_collideMovingStones(KarStone *stoneA, VECTOR a, KarStone *stoneB, VECTOR b);
+ int32_t KAR_tickHintBox(int32_t n);
+-int32_t KAR_computeSeparation(VECTOR *out, KarStone *stone, VECTOR a, VECTOR b);
+ void KAR_collidePeggedStone(KarStone *pegged, VECTOR a, KarStone *mover, VECTOR b);
+ void KAR_beginAiming(void);
+ void KAR_renderSprite(KarSprite *sp);
+ static int32_t KAR_boardX(int32_t row);
+ int32_t KAR_findWallContact(VECTOR *out, KarStone *stone, int32_t flag);
+ int32_t KAR_aimAtRandomStone(void);
+-int32_t KAR_computeImpactShare(KarStone *stone, VECTOR a, VECTOR b);
+ int32_t KAR_getWallZone(int16_t x, int16_t z);
+ void KAR_selectPreviousStone(void);
+ void KAR_selectNextStone(void);
+@@ -368,11 +364,7 @@ static void *kar_functions[] = {
+ 	KAR_findWallContact,
+ 	KAR_getWallZone,
+ 	KAR_debugCollisionPair,
+-	KAR_computeSeparation,
+-	KAR_computeImpactShare,
+ 	KAR_debugCollisionStone,
+-	KAR_collideMovingStones,
+-	KAR_collideRestingStone,
+ 	KAR_collidePeggedStone,
+ 	KAR_resolveStoneCollision,
+ 	KAR_distance,
+@@ -3033,6 +3025,7 @@ void KAR_updateCollisions(void)
+ 	int32_t p, i, a, b, step;
+ 	int32_t tx1, tx2, tz1, tz2, dist;
+ 	int8_t collided = 0;
++	int32_t reruns = 0;
+ 
+ 	KAR_bounceOffWall();
+ 	if (MAIN_D_80135244 != 0xb) {
+@@ -3088,8 +3081,9 @@ void KAR_updateCollisions(void)
+ 			prev[i].pad = cur[i].pad;
+ 		}
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+-		if (collided != 0 && step == 0xa) {
++		if (collided != 0 && step == 0xa && reruns < 8) { /* MOD (curling collisions): the last step is not repeated without end */
+ 			step--;
++			reruns++;
+ 		}
+ 		collided = 0;
+ #endif
+@@ -3169,31 +3163,65 @@ int32_t KAR_distance(long x, long y)
+ 	return d;
+ }
+ 
++/* MOD (curling collisions): two free stones exchange the part of their speed that runs along the line between
++ * their centres and keep the rest, and only when they are closing in. Both then stay at the contact positions for
++ * the rest of the tick. The original shared the speed by the angle alone and moved both stones by guessed amounts: a
++ * stone hit on its side left along the thrower's line, the thrown stone stopped dead, and a grazing touch could
++ * leave the pair inside each other, colliding without end. Returns 0 when the stones were moving apart. */
++static int32_t KAR_exchangeAlongCentres(KarStone *stoneA, VECTOR a, KarStone *stoneB, VECTOR b)
++{
++	KarStone *stone[2];
++	int32_t along, ang, i;
++	int32_t n[2], t[2];
++
++	stone[0] = stoneA;
++	stone[1] = stoneB;
++	along = ratan2(b.vz - a.vz, b.vx - a.vx);
++	for (i = 0; i < 2; i++) {
++		n[i] = t[i] = 0;
++		if (stone[i]->speed > 0) {
++			ang = (stone[i]->angle - along) & 0xfff;
++			n[i] = stone[i]->speed * rcos(ang) / 4096;
++			t[i] = stone[i]->speed * rsin(ang) / 4096;
++		}
++	}
++	/* Stones moving apart are left alone: rounding can still find them a hair inside each other. */
++	if (n[0] * stoneB->weight - n[1] * stoneA->weight <= 0) {
++		return 0;
++	}
++	stoneA->pos.vx = stoneA->target.vx = a.vx;
++	stoneA->pos.vz = stoneA->target.vz = a.vz;
++	stoneB->pos.vx = stoneB->target.vx = b.vx;
++	stoneB->pos.vz = stoneB->target.vz = b.vz;
++	for (i = 0; i < 2; i++) {
++		stone[i]->speed = KAR_distance(n[1 - i], t[i]);
++		stone[i]->angle = (along + ratan2(t[i], n[1 - i])) & 0xfff;
++	}
++	return 1;
++}
++
+ void KAR_resolveStoneCollision(KarStone *stoneA, VECTOR a, KarStone *stoneB, VECTOR b)
+ {
+ 	int16_t speed;
+ 
+ 	speed = stoneA->speed + stoneB->speed;
+-	if (speed >= 0xbb8) {
+-		playSound2(8, 1);
+-	} else {
+-		playSound2(8, 2);
+-	}
+-
+ 	if (stoneA->state == 2 || stoneA->state == 3 || stoneB->state == 2 || stoneB->state == 3) {
++		if (speed >= 0xbb8) {
++			playSound2(8, 1);
++		} else {
++			playSound2(8, 2);
++		}
+ 		if (stoneA->state == 2 || stoneA->state == 3) {
+ 			KAR_collidePeggedStone(stoneA, a, stoneB, b);
+ 		} else {
+ 			KAR_collidePeggedStone(stoneB, b, stoneA, a);
+ 		}
+-	} else if (stoneA->speed <= 0 || stoneB->speed <= 0) {
+-		if (stoneA->speed <= 0) {
+-			KAR_collideRestingStone(stoneA, a, stoneB, b);
++	} else if (KAR_exchangeAlongCentres(stoneA, a, stoneB, b)) { /* MOD (curling collisions) */
++		if (speed >= 0xbb8) {
++			playSound2(8, 1);
+ 		} else {
+-			KAR_collideRestingStone(stoneB, b, stoneA, a);
++			playSound2(8, 2);
+ 		}
+-	} else {
+-		KAR_collideMovingStones(stoneB, b, stoneA, a);
+ 	}
+ }
+ 
+@@ -3235,132 +3263,6 @@ void KAR_collidePeggedStone(KarStone *pegged, VECTOR a, KarStone *mover, VECTOR
+ 	mover->target = b;
+ }
+ 
+-void KAR_collideRestingStone(KarStone *resting, VECTOR a, KarStone *mover, VECTOR b)
+-{
+-	int32_t share;
+-	int32_t d;
+-	int32_t ang;
+-	int32_t n;
+-	VECTOR p1;
+-	VECTOR p2;
+-	int32_t r;
+-
+-	KAR_debugCollisionStone(mover, &b, &a);
+-	if (resting->speed == 0 && mover->speed == 0) {
+-		resting->pos = a;
+-		mover->pos = b;
+-		return;
+-	}
+-
+-	share = KAR_computeImpactShare(mover, b, a);
+-	KAR_computeSeparation(&p1, mover, b, a);
+-	resting->pos.vx = resting->pos.vx + p1.vx;
+-	resting->pos.vz = resting->pos.vz + p1.vz;
+-	mover->pos.vx = mover->pos.vx - p1.vx;
+-	mover->pos.vz -= p1.vz;
+-	d = KAR_distance(resting->pos.vx - mover->pos.vx, resting->pos.vz - mover->pos.vz);
+-	ang = ratan2(p1.vz, p1.vx);
+-	n = KAR_distance(p1.vx, p1.vz);
+-	r = 0;
+-	p1 = resting->pos;
+-	p2 = mover->pos;
+-	if (n != 0) {
+-		while (d < 0x97) {
+-			resting->pos.vx = p1.vx + r * rcos(ang) / 4096;
+-			resting->pos.vz = p1.vz + r * rsin(ang) / 4096;
+-			mover->pos.vx = p2.vx - r * rcos(ang) / 4096;
+-			mover->pos.vz = p2.vz - r * rsin(ang) / 4096;
+-			d = KAR_distance(resting->pos.vx - mover->pos.vx, resting->pos.vz - mover->pos.vz);
+-			r++;
+-		}
+-	} else {
+-		int32_t pushAng;
+-
+-		pushAng = ratan2(mover->pos.vz - resting->pos.vz, mover->pos.vx - resting->pos.vx);
+-		while (d < 0x97) {
+-			mover->pos.vx = p2.vx + r * rcos(pushAng) / 4096;
+-			mover->pos.vz = p2.vz + r * rsin(pushAng) / 4096;
+-			d = KAR_distance(resting->pos.vx - mover->pos.vx, resting->pos.vz - mover->pos.vz);
+-			r++;
+-		}
+-	}
+-
+-	resting->target = a;
+-	mover->target = b;
+-	mover->speed = mover->speed - share;
+-	resting->speed = share;
+-	resting->angle = ratan2(resting->pos.vz - a.vz, resting->pos.vx - a.vx) & 0xfff;
+-	mover->angle = ratan2(mover->pos.vz - b.vz, mover->pos.vx - b.vx) & 0xfff;
+-}
+-
+-void KAR_collideMovingStones(KarStone *stoneA, VECTOR a, KarStone *stoneB, VECTOR b)
+-{
+-	int32_t ang;
+-	int32_t d;
+-	int32_t share1;
+-	int32_t share2;
+-	VECTOR p1;
+-	VECTOR p2;
+-	VECTOR delta;
+-	int32_t r;
+-
+-	KAR_debugCollisionPair(stoneA, &a, stoneB, &b);
+-	share1 = KAR_computeImpactShare(stoneA, a, b);
+-	share2 = KAR_computeImpactShare(stoneB, b, a);
+-	KAR_computeSeparation(&p1, stoneB, b, a);
+-	KAR_computeSeparation(&p2, stoneA, a, b);
+-	delta.vx = p2.vx - p1.vx;
+-	delta.vz = p2.vz - p1.vz;
+-	ang = KAR_distance(delta.vx, delta.vz);
+-	if (ang != 0) {
+-		ang = ratan2(delta.vz, delta.vx);
+-		stoneB->pos.vx = stoneB->pos.vx + delta.vx;
+-		stoneB->pos.vz = stoneB->pos.vz + delta.vz;
+-		stoneA->pos.vx = stoneA->pos.vx - delta.vx;
+-		stoneA->pos.vz -= delta.vz;
+-		d = KAR_distance(stoneA->pos.vx - stoneB->pos.vx, stoneA->pos.vz - stoneB->pos.vz);
+-		r = 0;
+-		p1 = stoneA->pos;
+-		p2 = stoneB->pos;
+-		stoneA->speed += (int16_t)(share2 - share1);
+-		stoneB->speed += (int16_t)(share1 - share2);
+-		if (stoneA->speed > stoneB->speed) {
+-			while (d < 0x97) {
+-#if VERSION_IS(JP)
+-				stoneA->pos.vx = p1.vx - r * rcos(ang) / 4096;
+-				stoneA->pos.vz = p1.vz - r * rsin(ang) / 4096;
+-#else
+-				stoneA->pos.vx = p1.vx + r * rcos(ang) / 4096;
+-				stoneA->pos.vz = p1.vz + r * rsin(ang) / 4096;
+-#endif
+-				d = KAR_distance(stoneB->pos.vx - stoneA->pos.vx, stoneB->pos.vz - stoneA->pos.vz);
+-				r++;
+-			}
+-		} else {
+-			while (d < 0x97) {
+-				stoneB->pos.vx = p2.vx + r * rcos(ang) / 4096;
+-				stoneB->pos.vz = p2.vz + r * rsin(ang) / 4096;
+-				d = KAR_distance(stoneB->pos.vx - stoneA->pos.vx, stoneB->pos.vz - stoneA->pos.vz);
+-				r++;
+-			}
+-		}
+-		stoneA->target = a;
+-		stoneB->target = b;
+-		stoneA->angle = ratan2(stoneA->pos.vz - a.vz, stoneA->pos.vx - a.vx);
+-		stoneB->angle = ratan2(stoneB->pos.vz - b.vz, stoneB->pos.vx - b.vx);
+-	} else {
+-		d = KAR_distance(stoneA->pos.vx - stoneB->pos.vx, stoneA->pos.vz - stoneB->pos.vz);
+-		if (stoneB->speed / stoneA->weight < 5 || stoneA->speed / stoneB->weight < 5) {
+-			stoneB->speed = 0;
+-			stoneB->pos = stoneB->target;
+-			stoneA->pos = stoneA->target;
+-		} else {
+-			stoneB->pos = b;
+-			stoneA->pos = a;
+-		}
+-	}
+-}
+-
+ void KAR_debugCollisionStone(KarStone *stone, VECTOR *b, VECTOR *a)
+ {
+ 	int32_t r;
+@@ -3390,59 +3292,6 @@ void KAR_debugCollisionStone(KarStone *stone, VECTOR *b, VECTOR *a)
+ 	} while (dist < 0x97);
+ }
+ 
+-int32_t KAR_computeImpactShare(KarStone *stone, VECTOR a, VECTOR b)
+-{
+-	int32_t ang;
+-	int32_t impactAng;
+-	int32_t d;
+-	int32_t ret;
+-
+-	ang = stone->angle & 0xfff;
+-	impactAng = ratan2(b.vz - a.vz, b.vx - a.vx) & 0xfff;
+-	d = (ang - impactAng) & 0xfff;
+-	ret = 0;
+-	if (d < 0x400 || d > 0xc00) {
+-		if (d > 0xc00) {
+-			d = (0x1000 - d) & 0xfff;
+-		}
+-		d = 0x400 - (d % 0x400);
+-		ret = d * stone->speed / 0x400;
+-	}
+-
+-	return ret;
+-}
+-
+-int32_t KAR_computeSeparation(VECTOR *out, KarStone *stone, VECTOR a, VECTOR b)
+-{
+-	int32_t cur;
+-	int32_t ang;
+-	int32_t d;
+-	int32_t r;
+-	int32_t dist;
+-	int32_t n;
+-	VECTOR v;
+-
+-	cur = stone->angle & 0xfff;
+-	ang = ratan2(b.vz - a.vz, b.vx - a.vx) & 0xfff;
+-	d = abs(cur - ang);
+-	v.vz = 0;
+-	v.vy = 0;
+-	v.vx = 0;
+-	if (d < 0x400 || d > 0xc00) {
+-		d = d % 0x400;
+-		dist = KAR_distance(stone->pos.vz - a.vz, stone->pos.vx - a.vx);
+-		r = (0x400 - d) * dist / 0x400;
+-		do {
+-			v.vx = r * rcos(ang) / 4096;
+-			v.vz = r * rsin(ang) / 4096;
+-			n = KAR_distance(v.vx, v.vz);
+-			r++;
+-		} while (n == 0);
+-	}
+-
+-	*out = v;
+-}
+-
+ void KAR_debugCollisionPair(KarStone *stoneA, VECTOR *a, KarStone *stoneB, VECTOR *b)
+ {
+ 	VECTOR baseA;
+-- 
+2.55.0
+
