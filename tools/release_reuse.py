@@ -506,3 +506,4 @@ def reuse(a, r, info):
         r.cmd(['git', 'push', a.remote, f'refs/tags/{a.tag}:refs/tags/{a.tag}'])
         r.cmd(['gh', 'release', 'create', a.tag, archive, '--verify-tag',
                '--title', 'Digimon World Horizon ' + info['version'], '--notes-file', a.notes_file])
+        release.publish_engine_tree(r, a)

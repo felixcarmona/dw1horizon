@@ -40,6 +40,10 @@ case "${1:-build}" in
       git -C decomp worktree add "$W" -B "$BR" "$BASE"
     fi
     git -C "$W" checkout -q -B "$BR" "$BASE"
+    # Python caches written by the decompilation's own tools must never reach a commit, and so a patch (patch_series.py
+    # rejects them): the exclude file is shared by every working copy of decomp/.
+    EX="$(git -C decomp rev-parse --path-format=absolute --git-common-dir)/info/exclude"
+    grep -qxF '__pycache__/' "$EX" 2>/dev/null || { mkdir -p "$(dirname "$EX")"; printf '__pycache__/\n*.pyc\n' >> "$EX"; }
     git -C "$W" -c user.name="Horizon authors" -c user.email= am -q $(series | sed "s#^#$ROOT/#")
     git -C "$W" tag -f "series-$BR" >/dev/null
     [ -d decomp/asm ] || { echo "missing decomp/asm: tools/decomp-build.sh regenerate" >&2; exit 1; }

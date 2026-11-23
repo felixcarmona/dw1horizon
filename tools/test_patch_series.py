@@ -52,6 +52,15 @@ class SeriesTest(unittest.TestCase):
         self.assertEqual(len(S.problems(root)), 1)
         self.assertIn('not in the order', S.problems(root)[0])
 
+    def test_binary_and_python_cache_files(self):
+        root = self.tree('a.patch\nb.patch\n', ['a.patch', 'b.patch'], ['a.patch', 'b.patch'])
+        d = Path(root) / S.DIR
+        (d / 'a.patch').write_text('diff --git a/tools/__pycache__/x.cpython-312.pyc b/tools/__pycache__/x.cpython-312.pyc\n')
+        (d / 'b.patch').write_text('diff --git a/src/x.c b/src/x.c\nGIT binary patch\n')
+        errs = '\n'.join(S.problems(root))
+        self.assertIn('a.patch: carries a binary', errs)
+        self.assertIn('b.patch: carries a binary', errs)
+
     def test_checkout_agrees(self):
         self.assertEqual(S.problems(), [])
 

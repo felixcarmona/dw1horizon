@@ -174,14 +174,18 @@ verified resumes; measure the true cold duration during the next real cut.
 
 ## Engine source
 
-After the tag is public, publish the engine as readers see it, with the tag's name:
+`--publish` also publishes the engine as readers see it: after the GitHub release it rebuilds the branch `horizon`
+from the tag's patch series and pushes it with the tag `horizon-vX.Y.Z` to the decompilation fork (`dw_decomp` of
+`--remote`'s owner, or `--engine-remote URL`). A release is not finished until that step passed. By hand, for a release
+whose step failed, from a checkout of its tag:
 
 ```sh
 tools/engine_tree.sh build
 DW1H_PUBLISH=1 tools/engine_tree.sh push vX.Y.Z FORK_URL
 ```
 
-The branch is generated: each build dates every commit now and replaces the published branch. Add the release's row to
+The branch is generated: each build dates every commit now and replaces the published branch. It holds text only:
+`tools/patch_series.py check` rejects a patch that carries a binary or a Python cache file. Add the release's row to
 [compatibility.md](../mods/compatibility.md).
 
 ## Changelog

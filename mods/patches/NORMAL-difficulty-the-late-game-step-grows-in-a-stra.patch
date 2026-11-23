@@ -107,15 +107,6 @@ index 16899e12..b3c9b712 100644
      }
      if (MOD_OPT_DIFFICULTY != MOD_DIFF_HARD) return;
      stats->base.hp = modHardScale(stats->base.hp, MOD_BT_HARD_HP, HPMP_CAP);
-diff --git a/tools/__pycache__/gen_lang_files.cpython-312.pyc b/tools/__pycache__/gen_lang_files.cpython-312.pyc
-index 68f45e0bab92a6758d01b2032aa43c2f8531fe4c..a794510b73b9131166540eef241005cd3d4938e8 100644
-GIT binary patch
-delta 20
-acmbQBH9?E}G%qg~0}w?2W8TQkDhdEKOa!3-
-
-delta 20
-acmbQBH9?E}G%qg~0}#k9XWGckDhdEGk^~F@
-
 -- 
 2.55.0
 

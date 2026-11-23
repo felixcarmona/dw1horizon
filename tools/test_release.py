@@ -242,13 +242,15 @@ class ReleaseTests(unittest.TestCase):
             try:
                 os.chdir(td)
                 with patch.object(release, 'identity', return_value={'version': '0.0.1'}), \
-                        patch.object(release, 'git', side_effect=['/repo/.git', '160000 commit pin decomp']), \
+                        patch.object(release, 'git', side_effect=['/repo/.git', '160000 commit pin decomp',
+                                                                 'git@github.com:owner/dw1horizon.git\n']), \
                         contextlib.redirect_stdout(stdout):
                     self.assertEqual(release.main(['v0.0.1', '--publish', '--dry-run',
                                      '--notes-file', 'notes.md', '--out', str(Path(td) / 'candidate')]), 0)
             finally:
                 os.chdir(previous)
             self.assertIn('--notes-file ' + str(notes), stdout.getvalue())
+            self.assertIn('tools/engine_tree.sh push v0.0.1 git@github.com:owner/dw_decomp.git', stdout.getvalue())
 
     def test_publish_requires_owner_tag_and_notes(self):
         with contextlib.redirect_stderr(io.StringIO()):
