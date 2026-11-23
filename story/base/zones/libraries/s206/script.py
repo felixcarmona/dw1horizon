@@ -278,27 +278,137 @@ def talk():    # section 8: back from the rink's menu, a quick match or a round 
     else:
         narrator.say(t13.u14)
     curling_format.set(0)
-    if curling_cups_won == 5 and not medal.curling_legend:
+    if curling_cups_won == 5 and not medal.curling_legend:    # the first Legend Cup: the medal and one chip of each kind
         medal.curling_legend.set()
         sound(0, 7)
         narrator.say(t13.u24)
-    slot1.say(t11.u4)
-    while True:
-        if curling_cup == 1:
-            give(Item.SupRecovery)
-            random_roll.set(3)
-        elif curling_cup == 2:
-            give(Item.Restore)
-            random_roll.set(11)
-        elif curling_cup == 3:
-            give(Item.SupRestore)
-            random_roll.set(12)
-        elif curling_cup == 4:
-            give(Item.DefChip)
-            random_roll.set(24)
-        else:
+        slot1.say(t13.u27)
+        while True:
             give(Item.OffChip)
             random_roll.set(23)
+            if not engine.item_did_not_fit:
+                break
+            slot1.say(t11.u5)
+            engine.picker_mode.clear()
+            call(Routine.choose_item)
+            take_picked(all=True)
+        narrator.say(t11.u6)
+        while True:
+            give(Item.DefChip)
+            random_roll.set(24)
+            if not engine.item_did_not_fit:
+                break
+            slot1.say(t11.u5)
+            engine.picker_mode.clear()
+            call(Routine.choose_item)
+            take_picked(all=True)
+        narrator.say(t11.u6)
+        while True:
+            give(Item.BrainChip)
+            random_roll.set(25)
+            if not engine.item_did_not_fit:
+                break
+            slot1.say(t11.u5)
+            engine.picker_mode.clear()
+            call(Routine.choose_item)
+            take_picked(all=True)
+        narrator.say(t11.u6)
+        while True:
+            give(Item.QuickChip)
+            random_roll.set(26)
+            if not engine.item_did_not_fit:
+                break
+            slot1.say(t11.u5)
+            engine.picker_mode.clear()
+            call(Routine.choose_item)
+            take_picked(all=True)
+        narrator.say(t11.u6)
+        while True:
+            give(Item.HPChip)
+            random_roll.set(27)
+            if not engine.item_did_not_fit:
+                break
+            slot1.say(t11.u5)
+            engine.picker_mode.clear()
+            call(Routine.choose_item)
+            take_picked(all=True)
+        narrator.say(t11.u6)
+        while True:
+            give(Item.MPChip)
+            random_roll.set(28)
+            if not engine.item_did_not_fit:
+                break
+            slot1.say(t11.u5)
+            engine.picker_mode.clear()
+            call(Routine.choose_item)
+            take_picked(all=True)
+        narrator.say(t11.u6)
+        curling_cup.set(0)
+        camera.on(tamer, speed=10)
+        camera.arrived()
+        return
+    slot1.say(t11.u4)
+    raw.store_random(prize_roll, 11)    # one of the cup's own prizes
+    while True:
+        if curling_cup == 1:
+            if prize_roll <= 3:
+                give(Item.SupRecovery)
+                random_roll.set(3)
+            elif prize_roll <= 7:
+                give(Item.LargeMP)
+                random_roll.set(6)
+            else:
+                give(Item.OmniDisk)
+                random_roll.set(18)
+        elif curling_cup == 2:
+            if prize_roll <= 2:
+                give(Item.Restore)
+                random_roll.set(11)
+            elif prize_roll <= 5:
+                give(Item.Sirloin)
+                random_roll.set(40)
+            elif prize_roll <= 8:
+                give(Item.Various)
+                random_roll.set(8)
+            else:
+                give(Item.Omnipotent)
+                random_roll.set(9)
+        elif curling_cup == 3:
+            if prize_roll <= 2:
+                give(Item.SupRestore)
+                random_roll.set(12)
+            elif prize_roll <= 5:
+                give(Item.EnemyRepel)
+                random_roll.set(35)
+            elif prize_roll <= 8:
+                give(Item.GoldAcorn)
+                random_roll.set(50)
+            else:
+                give(Item.RainPlant)
+                random_roll.set(121)
+        elif curling_cup == 4:
+            if prize_roll <= 3:
+                give(Item.HPChip)
+                random_roll.set(27)
+            elif prize_roll <= 7:
+                give(Item.MPChip)
+                random_roll.set(28)
+            else:
+                give(Item.DefChip)
+                random_roll.set(24)
+        else:
+            if prize_roll <= 2:
+                give(Item.OffChip)
+                random_roll.set(23)
+            elif prize_roll <= 5:
+                give(Item.BrainChip)
+                random_roll.set(25)
+            elif prize_roll <= 8:
+                give(Item.QuickChip)
+                random_roll.set(26)
+            else:
+                give(Item.DefChip)
+                random_roll.set(24)
         if not engine.item_did_not_fit:
             break
         slot1.say(t11.u5)
