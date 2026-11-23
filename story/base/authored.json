@@ -318,13 +318,13 @@
     },
     "zones/file-city/s162-168-169-170/script.py": {
       "original_sha256": "0bbadd3ab80f0b29fc9a8511a0d172eccaded4624ad79d88ede165e290429769",
-      "authored_sha256": "c8d061c4bfe00f0adfd9a830e23be238d2e366fcc165a9fa0b98ebf8d3b999c5",
-      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
+      "authored_sha256": "8f14b9f34d2520bd33f5fb1e735e65a0d3a5cacd156b6895498d11882011ed1b",
+      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; entering the city hands back album cards 0 and 65 when their scene has played and the card is missing"
     },
     "zones/file-city/s162-168-169-170/script.dws": {
       "original_sha256": "6442e3f406a5cce704b6d4e16592344780cf13fb233d8a07432f836d34dfaad6",
-      "authored_sha256": "fc3ae084d3f651c7e23573245419b8a4891a10b343e470bcf5c63419bbdc0c03",
-      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
+      "authored_sha256": "a9c5bfa29817b9c89f1d3a153329bc4b4839fe4c2e231d4e1817d50a344532b7",
+      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source; entering the city hands back album cards 0 and 65 when their scene has played and the card is missing"
     },
     "zones/kunemons-bed/s002-1/script.py": {
       "original_sha256": "67a389b8c6144cc83430c94fbc44748970d717e41be0cbb0033c182418c55a4b",
