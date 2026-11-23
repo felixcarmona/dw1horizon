@@ -208,13 +208,13 @@
     },
     "zones/libraries/s210/script.py": {
       "original_sha256": "cca0a20ad7afaf03631c5ca87382ea83bd9239234439f2cac96433bc51e7b0dd",
-      "authored_sha256": "332f7334a3c3531a85239f886af5441f6e1b3bcdf338fc005db5a2e2f1adac79",
-      "reason": "Award the city medal at any prosperity of at least 100"
+      "authored_sha256": "465b3ece072bbafed3dc26cba9fecfe6e25a360ed3bbacdb2ff4d140e2a1c184",
+      "reason": "Jijimon's reward at a prosperity of at least 100 no longer hands the city medal: content/tables/medals.json awards it when the original game's fifty residents all live in the city"
     },
     "zones/libraries/s210/script.dws": {
       "original_sha256": "050b0ba7da1e5aece537a0f7f51cfbce85f2abc60f39db2cb50eff197672ef00",
-      "authored_sha256": "4d714a77c39f3cf4a05b5b0f0fc27d5637e144c0344a45b9beafed406dee40a1",
-      "reason": "Award the city medal at any prosperity of at least 100"
+      "authored_sha256": "8f22145912c59cf8678cc4b5dc848b9895f2fe9c63422089d330bfce6ffbb332",
+      "reason": "Jijimon's reward at a prosperity of at least 100 no longer hands the city medal: content/tables/medals.json awards it when the original game's fifty residents all live in the city"
     },
     "zones/libraries/s208/script.dws": {
       "original_sha256": "9e5003b1011c948437c95969d93d598ee400ba61afb2f280f4c1ba5ccabf40a3",

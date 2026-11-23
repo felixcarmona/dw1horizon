@@ -633,10 +633,11 @@ EVO_MODES = {'wake': 2, 'praise': 3}
 EVO_RULE = '<5h4b4(bbh)'.replace('4(bbh)', 'bbhbbhbbhbbh')           # evolution.c ModEvoRule: 30 bytes
 EVO_RULE_MAX, EVO_PAIR_MAX = 10, 16
 
-MEDAL_KINDS = {'allTriggers': (1, 2), 'wins': (2, 1), 'allCards': (3, 1), 'allMoves': (4, 1), 'stats': (5, 2), 'money': (6, 1),
-               'year': (7, 1), 'allRaised': (8, 2), 'fish': (9, 1)}                      # kind id, how many numbers
+MEDAL_KINDS = {'allTriggers': (1, 2), 'wins': (2, 1), 'allCards': (3, 2), 'allMoves': (4, 1), 'stats': (5, 2), 'money': (6, 1),
+               'year': (7, 1), 'allRaised': (8, 2), 'fish': (9, 1), 'allPartners': (10, 0), 'residents': (11, 1)}   # kind id, how many numbers
 MEDAL_CHECKED = {'tick': 1, 'script': 2}
-MEDAL_ROW, MEDAL_MAX = '<h4bxx2i', 16                                                     # tournament.h ModMedal: 16 bytes
+MEDAL_NEEDS = {'newDigimon': 8, 'newCards': 16, 'extendedStory': 32}                      # the OPTIONS switch a row waits for
+MEDAL_ROW, MEDAL_MAX = '<h4bxx2i', 20                                                     # tournament.h ModMedal: 16 bytes
 
 
 def encode_medals(rows):
@@ -645,7 +646,7 @@ def encode_medals(rows):
     out = b''
     for i, r in enumerate(rows):
         w = f'medals.json medals[{i}]'
-        bad = set(r) - {'medal', 'when', 'checkedBy', 'text', 'levelUp', 'note'}
+        bad = set(r) - {'medal', 'when', 'checkedBy', 'text', 'levelUp', 'needs', 'hiddenWithout', 'note'}
         if bad: raise SystemExit(f'{w}: unknown key {", ".join(sorted(bad))}')
         k, *args = r.get('when', [None])
         if k not in MEDAL_KINDS or len(args) != MEDAL_KINDS[k][1]:
@@ -654,6 +655,9 @@ def encode_medals(rows):
         if not by or any(b not in MEDAL_CHECKED for b in by): raise SystemExit(f'{w}: checkedBy is a list of: {", ".join(MEDAL_CHECKED)}')
         if not isinstance(r.get('medal'), int) or not 0 <= r['medal'] < 32767: raise SystemExit(f'{w}: medal is the medal number')
         flags = sum(MEDAL_CHECKED[b] for b in by) | (4 if r.get('levelUp') else 0)
+        if r.get('needs') is not None and r['needs'] not in MEDAL_NEEDS: raise SystemExit(f'{w}: needs is one of: {", ".join(MEDAL_NEEDS)}')
+        if r.get('hiddenWithout') and not r.get('needs'): raise SystemExit(f'{w}: hiddenWithout goes with needs')
+        flags |= MEDAL_NEEDS.get(r.get('needs'), 0) | (64 if r.get('hiddenWithout') else 0)
         out += struct.pack(MEDAL_ROW, r['medal'], MEDAL_KINDS[k][0], flags, r.get('text', 0), 0, *(args + [0, 0])[:2])
     return out + struct.pack(MEDAL_ROW, -1, 0, 0, 0, 0, 0, 0) * (MEDAL_MAX - len(rows))
 

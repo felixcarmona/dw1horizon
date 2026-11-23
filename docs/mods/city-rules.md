@@ -70,8 +70,11 @@ Wild recruit scripts do not add points immediately, and some scripted recruits
 add more than their level weight. Opening City therefore shows what the next
 save would write, so Jijimon and city layout read the same pstat.
 
-The base story awards the Thriving City medal at any prosperity of at least
-100. Seven wild recruitment sites now set the species present in the balanced
+Jijimon's reward at a prosperity of at least 100 (a tamer level and Tsunomon)
+no longer hands a medal: with added residents 100 points stopped meaning "every
+original resident". `content/tables/medals.json` awards Classic City when the
+original game's fifty residents all live in the city, and Horizon City when every
+resident of the extended story does ([medals](medals.md)). Seven wild recruitment sites now set the species present in the balanced
 `content/maps` slot; nine other explicit joins already matched their slots.
 These are reviewed authored base changes, pinned in `story/base/authored.json`;
 the original-disc generator remains unchanged.
