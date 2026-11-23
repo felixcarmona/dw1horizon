@@ -235,11 +235,15 @@ def build(out, extracted, run_with=None, scratch=None, language="es"):
 
         d = run('cards-cups', [['cards_out.py'], ['grades_es.py'], ['fr_es.py']], work, ext, run_with, language=language)
         card = bytearray(open(os.path.join(ext, 'CARD/CARD.ALL'), 'rb').read())
+        # English shares this pass's name bars when they are in Latin letters: a Chinese pass draws them again for it
+        latin = d if language != 'zh-hans' else run('cards-cups', [['cards_out.py']], os.path.join(work, 'latin'), ext,
+                                                    run_with, language='en')
         for lang in (language, 'en'):
             c = bytearray(card)
+            bars = latin if lang == 'en' else d
             # Japanese keeps the disc's own name bars: the original cards' names are already in katakana there.
             for k, off in enumerate(card_offsets(card) if lang != 'ja' else ()):
-                src = f'{d}/cartas/card-{k:02d}.es.idx' if not (lang == 'en' and k == 0) else f'{d}/cartas/card-00.en-latin.idx'
+                src = f'{bars}/cartas/card-{k:02d}.es.idx' if not (lang == 'en' and k == 0) else f'{bars}/cartas/card-00.en-latin.idx'
                 sub = bytearray(c[off:off + 14 * 2048])
                 put_indices(sub, 0, open(src, 'rb').read())
                 c[off:off + 14 * 2048] = sub
