@@ -222,6 +222,24 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
   (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) are written into the grade
   cups' lists of the story/base scripts, and Machinedramon into the Metalic Cup's (`tools/test_cup_lists.py`).
   `updateTournamentRegistration` compares with the registered byte wrapped.
+  **Cup rules**: an eligible list that begins with 253 states a rule (`include/dw/cup_rules.h`): `253, kind, value`, then
+  the ids that enter whatever the rule says. Kind 0 is the list and nothing else (Version 1 to 4), 1 a level, 2 an
+  attribute, 3 a first specialty (the specialty cups), 4 a Field. The rule reads the species' cup tag: a `u32` per id in
+  DIGI.DAT (header `0x4f8`: sector and count; Fields, attribute, first specialty, level, and a bit for the species the
+  arena draws without being recruited), written by `species.cup_tag`. `cupListHasType` (`dget.c`) reads it at
+  registration. The seven rivals are chosen by `STD_pickOpponents` (`std_setup.c`), in the arena overlay: an unmarked
+  list keeps the behaviour above, kind 0 draws only the recruited species of the rival list, and any other rule draws
+  from every species that meets it (an original once recruited, a DIGI.DAT species always, never the partner's own),
+  within one level of the partner while seven such exist when the rule is not a level. `startTournament` only stores the
+  cup and loads the overlay; `getSpeciesPartnersByLevel` is gone from the main executable. Cups 23 to 35 (the level,
+  attribute and Field cups) have their names in `TOURNAMENT_NAMES`, their grade letters in `dget.c`, their rivals' base
+  stat in `STD_NEW_CUP_BASE_STATS` (`newCupStats` in `content/tables/tournament-rules.json`) and their banners in one
+  file, `STDDAT/GRADE/NEWCUPS.BIN`: nine languages of thirteen 17-sector TIMs (`tools/cup_banners.py`), read with
+  `loadStackedTIMEntry`. They set no won-cup trigger and have no medal.
+  On the calendar a new cup's mark is one character (`NEW_CUP_GRADES`): `1` to `4` for the level cups in the order
+  of their banners' stars, `V` Vaccine, `E` Data, `U` Virus, and a small letter for a Field (`n`, `d`, `s`, `g`, `e`,
+  `b`). The calendar places every mark and every date with `TEXT_COLUMN` instead of trusting each glyph's advance, so
+  narrow characters stay under their column; the dates below 10 used to drift left of theirs.
 
 Also fixed on the way: `getConditionFxOffset` returned a 2-aligned pointer into a cached record, and the GTE's `LWC2`
 load of an `SVECTOR` needs 4-byte alignment (an address error the first time an imported partner's bubble showed); it

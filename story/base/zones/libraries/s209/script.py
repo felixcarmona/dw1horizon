@@ -282,6 +282,19 @@ def talk():    # section 10
         goto l41;
         goto l43;
         goto l45;
+        goto l47;
+        goto l49;
+        goto l51;
+        goto l53;
+        goto l55;
+        goto l57;
+        goto l59;
+        goto l61;
+        goto l63;
+        goto l65;
+        goto l67;
+        goto l69;
+        goto l71;
         l1:
         goto l2;
         goto L92;
@@ -464,6 +477,110 @@ def talk():    # section 10
         goto L105;
         goto L127;
         goto L150;
+        l46:
+        show_textbox(text("s209.sec10.u22"));
+        l47:
+        goto l46;
+        goto L92;
+        goto L105;
+        goto L153;
+        goto L105;
+        l48:
+        show_textbox(text("s209.sec10.u23"));
+        l49:
+        goto l48;
+        goto L92;
+        goto L105;
+        goto L154;
+        goto L105;
+        l50:
+        show_textbox(text("s209.sec10.u24"));
+        l51:
+        goto l50;
+        goto L151;
+        goto L105;
+        goto L155;
+        goto L105;
+        l52:
+        show_textbox(text("s209.sec10.u25"));
+        l53:
+        goto l52;
+        goto L152;
+        goto L105;
+        goto L156;
+        goto L105;
+        l54:
+        show_textbox(text("s209.sec10.u26"));
+        l55:
+        goto l54;
+        goto L92;
+        goto L105;
+        goto L157;
+        goto L105;
+        l56:
+        show_textbox(text("s209.sec10.u27"));
+        l57:
+        goto l56;
+        goto L92;
+        goto L105;
+        goto L158;
+        goto L105;
+        l58:
+        show_textbox(text("s209.sec10.u28"));
+        l59:
+        goto l58;
+        goto L92;
+        goto L105;
+        goto L159;
+        goto L105;
+        l60:
+        show_textbox(text("s209.sec10.u29"));
+        l61:
+        goto l60;
+        goto L92;
+        goto L105;
+        goto L160;
+        goto L105;
+        l62:
+        show_textbox(text("s209.sec10.u30"));
+        l63:
+        goto l62;
+        goto L92;
+        goto L105;
+        goto L161;
+        goto L105;
+        l64:
+        show_textbox(text("s209.sec10.u31"));
+        l65:
+        goto l64;
+        goto L92;
+        goto L105;
+        goto L162;
+        goto L105;
+        l66:
+        show_textbox(text("s209.sec10.u32"));
+        l67:
+        goto l66;
+        goto L92;
+        goto L105;
+        goto L163;
+        goto L105;
+        l68:
+        show_textbox(text("s209.sec10.u33"));
+        l69:
+        goto l68;
+        goto L92;
+        goto L105;
+        goto L164;
+        goto L105;
+        l70:
+        show_textbox(text("s209.sec10.u34"));
+        l71:
+        goto l70;
+        goto L92;
+        goto L105;
+        goto L165;
+        goto L105;
     """)
 
 @slot6.on_talk
@@ -509,29 +626,29 @@ def talk():    # section 11
         shared L110:
         data(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 70, 113, 115, 116, 117, 119, 120);
         shared L111:
-        data(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 254);
+        data(253, 0, 0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 254);
         shared L112:
-        data(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 254);
+        data(253, 0, 0, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 254);
         shared L113:
-        data(31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 254);
+        data(253, 0, 0, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 254);
         shared L114:
-        data(45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 254);
+        data(253, 0, 0, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 254);
         shared L115:
         data(57, 58, 59, 60, 61, 63, 64, 65, 254);
         shared L116:
-        data(3, 5, 9, 21, 36, 47, 56);
+        data(253, 3, 1, 3, 5, 9, 21, 36, 47, 56);
         shared L117:
-        data(6, 8, 13, 14, 17, 26, 27, 31, 34, 38, 42, 48, 63, 65, 254);
+        data(253, 3, 2, 6, 8, 13, 14, 17, 26, 27, 31, 34, 38, 42, 48, 63, 65, 254);
         shared L118:
-        data(7, 18, 20, 33, 37, 45, 50, 59, 254);
+        data(253, 3, 3, 7, 18, 20, 33, 37, 45, 50, 59, 254);
         shared L119:
-        data(4, 10, 22, 23, 24, 35, 49, 52, 57, 61, 254);
+        data(253, 3, 5, 4, 10, 22, 23, 24, 35, 49, 52, 57, 61, 254);
         shared L120:
-        data(19, 25, 32, 46, 51, 55, 58, 60, 254);
+        data(253, 3, 4, 19, 25, 32, 46, 51, 55, 58, 60, 254);
         shared L121:
-        data(12, 28, 40, 41, 54, 65, 115, 254);
+        data(253, 3, 6, 12, 28, 40, 41, 54, 65, 115, 254);
         shared L122:
-        data(11, 39, 53);
+        data(253, 3, 7, 11, 39, 53);
         shared L123:
         data(3, 4, 8, 5, 7, 10, 12, 35, 47, 54, 61, 65, 254);
         shared L124:
@@ -588,6 +705,36 @@ def talk():    # section 11
         data(6, 9, 20, 34, 36, 40, 42, 48, 52, 58, 66, 72, 80, 85, 89, 97, 100, 110, 104);
         shared L150:
         data(67, 74, 102, 111, 19, 32, 51, 60, 254);
+        shared L151:
+        data(10, 0, 0);
+        shared L152:
+        data(10, 0, 1);
+        shared L153:
+        data(253, 1, 3, 254);
+        shared L154:
+        data(253, 1, 4, 254);
+        shared L155:
+        data(253, 1, 5, 254);
+        shared L156:
+        data(253, 1, 6, 254);
+        shared L157:
+        data(253, 2, 2, 254);
+        shared L158:
+        data(253, 2, 1, 254);
+        shared L159:
+        data(253, 2, 3, 254);
+        shared L160:
+        data(253, 4, 0, 254);
+        shared L161:
+        data(253, 4, 1, 254);
+        shared L162:
+        data(253, 4, 2, 254);
+        shared L163:
+        data(253, 4, 3, 254);
+        shared L164:
+        data(253, 4, 4, 254);
+        shared L165:
+        data(253, 4, 5, 254);
         end_section();
         end_script();
     """)

@@ -190,6 +190,7 @@ TABLES = [
     ('daytime', 'SLUS_010.32', 'MOD_DAYTIME', 18),
     ('tournamentRemap', 'STD_REL.BIN', 'STD_REMAP', 16),
     ('stdArena', 'SLUS_010.32', 'STD_ARENA_SCREEN', 2),
+    ('newCupStats', 'STD_REL.BIN', 'STD_NEW_CUP_BASE_STATS', 26),      # the cups after the original's (23..35)
     ('vsUnlock', 'SLUS_010.32', 'MOD_VS_UNLOCK', 10),
     ('trainGain', 'TRN_REL.BIN', 'MOD_TRAIN_GAIN', 352),
     ('trainRules', 'TRN_REL.BIN', 'MOD_TRAIN_RULES', 68),
@@ -214,7 +215,7 @@ _SMALL_COUNTS = {'cardArt': 64, 'cardReal': 64, 'cards': 66, 'cardPrices': 5, 's
 TABLES += [(k, f, sym, struct.calcsize(fmt) * _SMALL_COUNTS[k]) for k, f, sym, fmt, _ in SMALL_TABLES]
 ORIGINAL_NAMES = {'SPECIES_BATTLE_MUSIC': 'ENEMY_MUSIC_MAPPING'}       # a table renamed by the mod
 TABLES += [('cityResidents', 'SLUS_010.32', 'CITY_RESIDENTS', 14)]
-OPTIONAL = {'curlingRivals', 'cardArt', 'cards', 'cardReal', 'evolutionRookieWeights', 'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
+OPTIONAL = {'newCupStats', 'curlingRivals', 'cardArt', 'cards', 'cardReal', 'evolutionRookieWeights', 'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
 SPECIES_TABLES = ('para', 'raise', 'itemTakeDistance', 'vlall', 'vball', 'originalTypes', 'trainingAnims',
                   'training2Anims', 'battleMusic', 'reincarnation', 'newGameTechniques')
 # (patch 0087's EFFECT_FALLBACK_SPECIES / _ORIGIN were per-species tables too; patch 0106 replaced them by the DIGI.DAT
@@ -428,6 +429,8 @@ NAMED_RULES = {
     'daytime': ['hours.dusk', 'hours.night', 'hours.dawn', 'tint.dusk', 'tint.night', 'music.dayFrom', 'music.dayTo',
                 'clock.dayFrom', 'clock.dayTo'],
     'stdArena': ['screen'],
+    'newCupStats': ['rookie', 'champion', 'ultimate', 'mega', 'vaccine', 'data', 'virus', 'natureSpirits', 'deepSavers',
+                    'nightmareSoldiers', 'windGuardians', 'metalEmpire', 'virusBusters'],
     'vsUnlock': ['species', 'techniques[0]', 'techniques[1]', 'techniques[2]', 'slot'],
     'evolutionSpecial': ['virus.threshold', 'virus.target', 'virus.notFor[0]', 'virus.notFor[1]', 'championCheck.level',
                          'championCheck.hours', 'scold.level', 'scold.discipline', 'scold.happiness'],

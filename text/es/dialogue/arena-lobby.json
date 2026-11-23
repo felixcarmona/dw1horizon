@@ -241,6 +241,149 @@
    "Entrada: ???"
   ]
  ],
+ "s168.sec10.u22": [
+  [
+   "- Copa Novato -",
+   "Solo los Digimon Novato",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Novato"
+  ]
+ ],
+ "s168.sec10.u23": [
+  [
+   "- Copa Campeón -",
+   "Solo los Digimon Campeón",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Campeón"
+  ]
+ ],
+ "s168.sec10.u24": [
+  [
+   "- Copa Perfecto -",
+   "Solo los Digimon Perfecto",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Perfecto"
+  ]
+ ],
+ "s168.sec10.u25": [
+  [
+   "- Copa Mega -",
+   "Solo los Digimon Mega",
+   "pueden subir a este ring.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Mega"
+  ]
+ ],
+ "s168.sec10.u26": [
+  [
+   "- Copa Vacuna -",
+   "Una copa para los Digimon",
+   "de atributo Vacuna.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: atributo Vacuna"
+  ]
+ ],
+ "s168.sec10.u27": [
+  [
+   "- Copa Datos -",
+   "Una copa para los Digimon",
+   "de atributo Datos.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: atributo Datos"
+  ]
+ ],
+ "s168.sec10.u28": [
+  [
+   "- Copa Virus -",
+   "Una copa para los Digimon",
+   "de atributo Virus.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: atributo Virus"
+  ]
+ ],
+ "s168.sec10.u29": [
+  [
+   "- Copa Nature Spirits -",
+   "Para los Digimon del Field",
+   "Nature Spirits.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Nature Spirits"
+  ]
+ ],
+ "s168.sec10.u30": [
+  [
+   "- Copa Deep Savers -",
+   "Para los Digimon del Field",
+   "Deep Savers.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Deep Savers"
+  ]
+ ],
+ "s168.sec10.u31": [
+  [
+   "- Copa Nightmare Soldiers -",
+   "Para los Digimon del Field",
+   "Nightmare Soldiers.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Nightmare Soldiers"
+  ]
+ ],
+ "s168.sec10.u32": [
+  [
+   "- Copa Wind Guardians -",
+   "Para los Digimon del Field",
+   "Wind Guardians.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Wind Guardians"
+  ]
+ ],
+ "s168.sec10.u33": [
+  [
+   "- Copa Metal Empire -",
+   "Para los Digimon del Field",
+   "Metal Empire.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Metal Empire"
+  ]
+ ],
+ "s168.sec10.u34": [
+  [
+   "- Copa Virus Busters -",
+   "Para los Digimon del Field",
+   "Virus Busters.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Virus Busters"
+  ]
+ ],
  "s168.sec53.u0": "Eh, eh, que esos son los asientos del público.",
  "s168.sec82.m0.o0": "Historial",
  "s168.sec82.m0.o1": "Torneos de categoría",

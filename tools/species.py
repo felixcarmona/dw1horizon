@@ -705,13 +705,14 @@ def content_files(content=None):
                   key=lambda p: (int(re.match(r'\d+', os.path.basename(p)).group()) if re.match(r'\d+', os.path.basename(p)) else 1 << 30, p))
 
 
-def cup_tag(s):
-    """The cup tag of a species (SPECIES_CUP_* of include/dw/species.h): bits 0-9 its Fields, 10-11 the attribute,
-    12-14 the first specialty + 1 (0: none), 15-17 the level, 18 set when it can be raised and fights in the arena."""
+def cup_tag(s, listed=False):
+    """The cup tag of a species (CUP_TAG_* of include/dw/cup_rules.h): bits 0-9 its Fields, 10-11 the attribute,
+    12-14 the first specialty + 1 (0: none), 15-17 the level, 18 set for a species of the archive's partner list
+    (`listed`) that is a Rookie or higher: the ones the arena draws as rivals without being recruited."""
     first = s['specialties'][0]
     level = LEVELS.index(s['level'])
     return (sum(1 << FIELDS.index(f) for f in s.get('fields', [])) | ATTRIBUTES.index(s['attribute']) << 10
-            | (ELEMENTS.index(first) + 1 if first else 0) << 12 | level << 15 | ('partner' in s and level >= 3) << 18)
+            | (ELEMENTS.index(first) + 1 if first else 0) << 12 | level << 15 | (listed and level >= 3) << 18)
 
 
 def validate(s):
@@ -1509,7 +1510,7 @@ def medal_block():
     return out + b''.join(large)
 
 
-HEADER_CUP_TAGS = 0x4f8        # optional sector pointer: one cup tag per id (cup_tag; include/dw/species.h)
+HEADER_CUP_TAGS = 0x4f8        # optional pointer (sector, sectors << 24): one cup tag per id (cup_tag; include/dw/cup_rules.h)
 HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
 INDEX_SECTORS = 2                # the partner list and the evolution links (include/dw/species.h)
 MAX_PARTNERS, MAX_LINKS = 1022, 510
@@ -1862,8 +1863,10 @@ def build(out=OUT, content=None, quiet=False, select=None):
         blobs.append((struct.pack('<H', len(balance_rows)) + b''.join(balance_rows)).ljust(SECTOR, b'\0'))
         sector += 1
     cup_ref = sector                                      # what the arena's cups ask of a species, every id
-    tags = b''.join(struct.pack('<I', cup_tag(allsp[t]) if t in allsp else 0) for t in range(count))
+    listed = set(partners)
+    tags = b''.join(struct.pack('<I', cup_tag(allsp[t], t in listed) if t in allsp else 0) for t in range(count))
     blobs.append(tags.ljust(-(-len(tags) // SECTOR) * SECTOR, b'\0'))
+    cup_ref |= len(blobs[-1]) // SECTOR << 24             # how many sectors, above the sector
     sector += len(blobs[-1]) // SECTOR
     fins, order = finisher_moves()
     fins = {t: f for t, f in fins.items() if t in species and recs[t] is not None}

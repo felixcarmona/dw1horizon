@@ -3698,6 +3698,149 @@
    "Accès : ???"
   ]
  ],
+ "s209.sec10.u22": [
+  [
+   "- Coupe Disciple -",
+   "Seuls les Digimon Disciples",
+   "peuvent monter sur ce ring.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Disciples"
+  ]
+ ],
+ "s209.sec10.u23": [
+  [
+   "- Coupe Champion -",
+   "Seuls les Digimon Champions",
+   "peuvent monter sur ce ring.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Champions"
+  ]
+ ],
+ "s209.sec10.u24": [
+  [
+   "- Coupe Ultime -",
+   "Seuls les Digimon Ultimes",
+   "peuvent monter sur ce ring.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Ultimes"
+  ]
+ ],
+ "s209.sec10.u25": [
+  [
+   "- Coupe Méga -",
+   "Seuls les Digimon Méga",
+   "peuvent monter sur ce ring.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Méga"
+  ]
+ ],
+ "s209.sec10.u26": [
+  [
+   "- Coupe Vaccin -",
+   "Une coupe pour les Digimon",
+   "de type Vaccin.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : type Vaccin"
+  ]
+ ],
+ "s209.sec10.u27": [
+  [
+   "- Coupe Donnée -",
+   "Une coupe pour les Digimon",
+   "de type Donnée.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : type Donnée"
+  ]
+ ],
+ "s209.sec10.u28": [
+  [
+   "- Coupe Virus -",
+   "Une coupe pour les Digimon",
+   "de type Virus.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : type Virus"
+  ]
+ ],
+ "s209.sec10.u29": [
+  [
+   "- Coupe Nature Spirits -",
+   "Pour les Digimon du Field",
+   "Nature Spirits.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Nature Spirits"
+  ]
+ ],
+ "s209.sec10.u30": [
+  [
+   "- Coupe Deep Savers -",
+   "Pour les Digimon du Field",
+   "Deep Savers.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Deep Savers"
+  ]
+ ],
+ "s209.sec10.u31": [
+  [
+   "- Coupe Nightmare Soldiers -",
+   "Pour les Digimon du Field",
+   "Nightmare Soldiers.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Nightmare Soldiers"
+  ]
+ ],
+ "s209.sec10.u32": [
+  [
+   "- Coupe Wind Guardians -",
+   "Pour les Digimon du Field",
+   "Wind Guardians.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Wind Guardians"
+  ]
+ ],
+ "s209.sec10.u33": [
+  [
+   "- Coupe Metal Empire -",
+   "Pour les Digimon du Field",
+   "Metal Empire.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Metal Empire"
+  ]
+ ],
+ "s209.sec10.u34": [
+  [
+   "- Coupe Virus Busters -",
+   "Pour les Digimon du Field",
+   "Virus Busters.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Virus Busters"
+  ]
+ ],
  "s210.sec51.u0": [
   [
    "Je t'attendais, {color 6}{player}{color 1}.",
@@ -4618,6 +4761,149 @@
   [
    "de temps. Individuel, 3 tours,",
    "8 places entrée: ???"
+  ]
+ ],
+ "s213.sec10.u22": [
+  [
+   "- Coupe Disciple -",
+   "Seuls les Digimon Disciples",
+   "peuvent monter sur ce ring.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Disciples"
+  ]
+ ],
+ "s213.sec10.u23": [
+  [
+   "- Coupe Champion -",
+   "Seuls les Digimon Champions",
+   "peuvent monter sur ce ring.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Champions"
+  ]
+ ],
+ "s213.sec10.u24": [
+  [
+   "- Coupe Ultime -",
+   "Seuls les Digimon Ultimes",
+   "peuvent monter sur ce ring.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Ultimes"
+  ]
+ ],
+ "s213.sec10.u25": [
+  [
+   "- Coupe Méga -",
+   "Seuls les Digimon Méga",
+   "peuvent monter sur ce ring.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Méga"
+  ]
+ ],
+ "s213.sec10.u26": [
+  [
+   "- Coupe Vaccin -",
+   "Une coupe pour les Digimon",
+   "de type Vaccin.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : type Vaccin"
+  ]
+ ],
+ "s213.sec10.u27": [
+  [
+   "- Coupe Donnée -",
+   "Une coupe pour les Digimon",
+   "de type Donnée.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : type Donnée"
+  ]
+ ],
+ "s213.sec10.u28": [
+  [
+   "- Coupe Virus -",
+   "Une coupe pour les Digimon",
+   "de type Virus.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : type Virus"
+  ]
+ ],
+ "s213.sec10.u29": [
+  [
+   "- Coupe Nature Spirits -",
+   "Pour les Digimon du Field",
+   "Nature Spirits.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Nature Spirits"
+  ]
+ ],
+ "s213.sec10.u30": [
+  [
+   "- Coupe Deep Savers -",
+   "Pour les Digimon du Field",
+   "Deep Savers.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Deep Savers"
+  ]
+ ],
+ "s213.sec10.u31": [
+  [
+   "- Coupe Nightmare Soldiers -",
+   "Pour les Digimon du Field",
+   "Nightmare Soldiers.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Nightmare Soldiers"
+  ]
+ ],
+ "s213.sec10.u32": [
+  [
+   "- Coupe Wind Guardians -",
+   "Pour les Digimon du Field",
+   "Wind Guardians.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Wind Guardians"
+  ]
+ ],
+ "s213.sec10.u33": [
+  [
+   "- Coupe Metal Empire -",
+   "Pour les Digimon du Field",
+   "Metal Empire.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Metal Empire"
+  ]
+ ],
+ "s213.sec10.u34": [
+  [
+   "- Coupe Virus Busters -",
+   "Pour les Digimon du Field",
+   "Virus Busters.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Virus Busters"
   ]
  ],
  "s213.sec54.u0": [
@@ -6538,6 +6824,134 @@
  "s219.sec51.u65": [
   [
    "Beurk, une carte de Nanimon..."
+  ]
+ ],
+ "s220.sec51.u0": [
+  [
+   "Prix du vainqueur : 3000 Bits !",
+   "Objet gagné : {color 6}Puce Vitesse{color 1} !"
+  ]
+ ],
+ "s220.sec51.u1": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Puce DV A{color 1} !"
+  ]
+ ],
+ "s220.sec51.u2": [
+  [
+   "Prix du vainqueur : 7000 Bits !",
+   "Objet gagné : {color 6}Puce DV D{color 1} !"
+  ]
+ ],
+ "s220.sec51.u3": [
+  [
+   "Prix du vainqueur : 10000 Bits !",
+   "Objet gagné : {color 6}Puce DV E{color 1} !"
+  ]
+ ],
+ "s220.sec51.u4": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Puce HP{color 1} !"
+  ]
+ ],
+ "s220.sec51.u5": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Puce Esprit{color 1} !"
+  ]
+ ],
+ "s220.sec51.u6": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Puce Attaque{color 1} !"
+  ]
+ ],
+ "s220.sec51.u7": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Super légume{color 1} !"
+  ]
+ ],
+ "s220.sec51.u8": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Digibar{color 1} !"
+  ]
+ ],
+ "s220.sec51.u9": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Truite noire{color 1} !"
+  ]
+ ],
+ "s220.sec51.u10": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Feuille rapide{color 1} !"
+  ]
+ ],
+ "s220.sec51.u11": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Puce Défense{color 1} !"
+  ]
+ ],
+ "s220.sec51.u12": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Puce MP{color 1} !"
+  ]
+ ],
+ "s220.sec51.u13": [
+  [
+   "Tu ne peux plus rien porter !"
+  ]
+ ],
+ "s220.sec51.u14": [
+  [
+   "Prix du finaliste : 1000 Bits !",
+   "Objet gagné : {color 6}Filet de boeuf{color 1}",
+   "!"
+  ]
+ ],
+ "s220.sec51.u15": [
+  [
+   "Tu ne peux plus rien porter !"
+  ]
+ ],
+ "s220.sec51.u16": [
+  [
+   "Prix du finaliste : 3000 Bits !",
+   "Objet gagné : {color 6}Régénérateur{color 1} !"
+  ]
+ ],
+ "s220.sec51.u17": [
+  [
+   "Tu ne peux plus rien porter !"
+  ]
+ ],
+ "s220.sec51.u18": [
+  [
+   "Prix du finaliste : 4000 Bits !",
+   "Objet gagné : {color 6}Super régén.{color 1} !"
+  ]
+ ],
+ "s220.sec51.u19": [
+  [
+   "Tu ne peux plus rien porter !"
+  ]
+ ],
+ "s220.sec51.u20": [
+  [
+   "Prix du finaliste : 2000 Bits !",
+   "Objet gagné : {color 6}Super soin{color 1} !"
+  ]
+ ],
+ "s220.sec51.u21": [
+  [
+   "Tu ne peux plus rien porter !"
   ]
  ],
  "s220.sec83.u0": [

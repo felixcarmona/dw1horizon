@@ -3810,6 +3810,149 @@
    "Teilnahme: ???"
   ]
  ],
+ "s209.sec10.u22": [
+  [
+   "- Rookie-Pokal -",
+   "Nur Rookie-Digimon dürfen",
+   "in diesen Ring steigen.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Rookie-Digimon"
+  ]
+ ],
+ "s209.sec10.u23": [
+  [
+   "- Champion-Pokal -",
+   "Nur Champion-Digimon dürfen",
+   "in diesen Ring steigen.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Champion-Digimon"
+  ]
+ ],
+ "s209.sec10.u24": [
+  [
+   "- Ultra-Pokal -",
+   "Nur Ultra-Digimon dürfen",
+   "in diesen Ring steigen.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Ultra-Digimon"
+  ]
+ ],
+ "s209.sec10.u25": [
+  [
+   "- Mega-Pokal -",
+   "Nur Mega-Digimon dürfen",
+   "in diesen Ring steigen.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Mega-Digimon"
+  ]
+ ],
+ "s209.sec10.u26": [
+  [
+   "- Serum-Pokal -",
+   "Ein Pokal für Digimon",
+   "vom Typ Serum.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Typ Serum"
+  ]
+ ],
+ "s209.sec10.u27": [
+  [
+   "- Datei-Pokal -",
+   "Ein Pokal für Digimon",
+   "vom Typ Datei.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Typ Datei"
+  ]
+ ],
+ "s209.sec10.u28": [
+  [
+   "- Virus-Pokal -",
+   "Ein Pokal für Digimon",
+   "vom Typ Virus.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Typ Virus"
+  ]
+ ],
+ "s209.sec10.u29": [
+  [
+   "- Nature-Spirits-Pokal -",
+   "Für die Digimon des Fields",
+   "Nature Spirits.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Nature Spirits"
+  ]
+ ],
+ "s209.sec10.u30": [
+  [
+   "- Deep-Savers-Pokal -",
+   "Für die Digimon des Fields",
+   "Deep Savers.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Deep Savers"
+  ]
+ ],
+ "s209.sec10.u31": [
+  [
+   "- Nightmare-Soldiers-Pokal -",
+   "Für die Digimon des Fields",
+   "Nightmare Soldiers.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Nightmare Soldiers"
+  ]
+ ],
+ "s209.sec10.u32": [
+  [
+   "- Wind-Guardians-Pokal -",
+   "Für die Digimon des Fields",
+   "Wind Guardians.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Wind Guardians"
+  ]
+ ],
+ "s209.sec10.u33": [
+  [
+   "- Metal-Empire-Pokal -",
+   "Für die Digimon des Fields",
+   "Metal Empire.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Metal Empire"
+  ]
+ ],
+ "s209.sec10.u34": [
+  [
+   "- Virus-Busters-Pokal -",
+   "Für die Digimon des Fields",
+   "Virus Busters.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Virus Busters"
+  ]
+ ],
  "s210.sec51.u0": [
   [
    "Ich hatte dich erwartet,",
@@ -4741,6 +4884,149 @@
   [
    "Zeitlimit. Einzelperson, 3",
    "Runden, 8 Plätze Eingang: ???"
+  ]
+ ],
+ "s213.sec10.u22": [
+  [
+   "- Rookie-Pokal -",
+   "Nur Rookie-Digimon dürfen",
+   "in diesen Ring steigen.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Rookie-Digimon"
+  ]
+ ],
+ "s213.sec10.u23": [
+  [
+   "- Champion-Pokal -",
+   "Nur Champion-Digimon dürfen",
+   "in diesen Ring steigen.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Champion-Digimon"
+  ]
+ ],
+ "s213.sec10.u24": [
+  [
+   "- Ultra-Pokal -",
+   "Nur Ultra-Digimon dürfen",
+   "in diesen Ring steigen.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Ultra-Digimon"
+  ]
+ ],
+ "s213.sec10.u25": [
+  [
+   "- Mega-Pokal -",
+   "Nur Mega-Digimon dürfen",
+   "in diesen Ring steigen.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Mega-Digimon"
+  ]
+ ],
+ "s213.sec10.u26": [
+  [
+   "- Serum-Pokal -",
+   "Ein Pokal für Digimon",
+   "vom Typ Serum.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Typ Serum"
+  ]
+ ],
+ "s213.sec10.u27": [
+  [
+   "- Datei-Pokal -",
+   "Ein Pokal für Digimon",
+   "vom Typ Datei.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Typ Datei"
+  ]
+ ],
+ "s213.sec10.u28": [
+  [
+   "- Virus-Pokal -",
+   "Ein Pokal für Digimon",
+   "vom Typ Virus.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Typ Virus"
+  ]
+ ],
+ "s213.sec10.u29": [
+  [
+   "- Nature-Spirits-Pokal -",
+   "Für die Digimon des Fields",
+   "Nature Spirits.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Nature Spirits"
+  ]
+ ],
+ "s213.sec10.u30": [
+  [
+   "- Deep-Savers-Pokal -",
+   "Für die Digimon des Fields",
+   "Deep Savers.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Deep Savers"
+  ]
+ ],
+ "s213.sec10.u31": [
+  [
+   "- Nightmare-Soldiers-Pokal -",
+   "Für die Digimon des Fields",
+   "Nightmare Soldiers.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Nightmare Soldiers"
+  ]
+ ],
+ "s213.sec10.u32": [
+  [
+   "- Wind-Guardians-Pokal -",
+   "Für die Digimon des Fields",
+   "Wind Guardians.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Wind Guardians"
+  ]
+ ],
+ "s213.sec10.u33": [
+  [
+   "- Metal-Empire-Pokal -",
+   "Für die Digimon des Fields",
+   "Metal Empire.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Metal Empire"
+  ]
+ ],
+ "s213.sec10.u34": [
+  [
+   "- Virus-Busters-Pokal -",
+   "Für die Digimon des Fields",
+   "Virus Busters.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Virus Busters"
   ]
  ],
  "s213.sec54.u0": [
@@ -6628,6 +6914,133 @@
  "s219.sec51.u65": [
   [
    "Igitt, eine Nanimon-Karte..."
+  ]
+ ],
+ "s220.sec51.u0": [
+  [
+   "Siegprämie: 3000 Bits!",
+   "Gewonnen: {color 6}Tempo-Chip{color 1}!"
+  ]
+ ],
+ "s220.sec51.u1": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}DV-Chip A{color 1}!"
+  ]
+ ],
+ "s220.sec51.u2": [
+  [
+   "Siegprämie: 7000 Bits!",
+   "Gewonnen: {color 6}DV-Chip D{color 1}!"
+  ]
+ ],
+ "s220.sec51.u3": [
+  [
+   "Siegprämie: 10000 Bits!",
+   "Gewonnen: {color 6}DV-Chip E{color 1}!"
+  ]
+ ],
+ "s220.sec51.u4": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}HP-Chip{color 1}!"
+  ]
+ ],
+ "s220.sec51.u5": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Klugheits-Chip{color 1}!"
+  ]
+ ],
+ "s220.sec51.u6": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Angriffs-Chip{color 1}!"
+  ]
+ ],
+ "s220.sec51.u7": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Supergemüse{color 1}!"
+  ]
+ ],
+ "s220.sec51.u8": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Digibarsch{color 1}!"
+  ]
+ ],
+ "s220.sec51.u9": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Schwarzforelle{color 1}!"
+  ]
+ ],
+ "s220.sec51.u10": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Tempoblatt{color 1}!"
+  ]
+ ],
+ "s220.sec51.u11": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Abwehr-Chip{color 1}!"
+  ]
+ ],
+ "s220.sec51.u12": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}MP-Chip{color 1}!"
+  ]
+ ],
+ "s220.sec51.u13": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s220.sec51.u14": [
+  [
+   "Zweiter Platz: 1000 Bits!",
+   "Gewonnen: {color 6}Filetstück{color 1}!"
+  ]
+ ],
+ "s220.sec51.u15": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s220.sec51.u16": [
+  [
+   "Zweiter Platz: 3000 Bits!",
+   "Gewonnen: {color 6}Regenerator{color 1}!"
+  ]
+ ],
+ "s220.sec51.u17": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s220.sec51.u18": [
+  [
+   "Zweiter Platz: 4000 Bits!",
+   "Gewonnen: {color 6}Super-Regen.{color 1}!"
+  ]
+ ],
+ "s220.sec51.u19": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s220.sec51.u20": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Superheilung{color 1}!"
+  ]
+ ],
+ "s220.sec51.u21": [
+  [
+   "Du kannst nicht mehr tragen!"
   ]
  ],
  "s220.sec83.u0": [

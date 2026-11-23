@@ -1,5 +1,5 @@
 {
-  "_comment": "Tournament rules the C does not hold (a key left out = the rule does not exist). tournamentRules.registration: a registered partner is reminded from remindFromMinute (minutes of the day) with MAPHEAD section remindSection, again from eveningFromMinute, and misses the cup from missedFromMinute (section missedSection). beetleCup: the script routine that registers the Beetle cup uses this cup number, the day it is held and the day stored when registering on any other day. tournamentRemap (at most 4): an opponent species the arena has no model for is swapped for another. stdArena.screen: the screen whose arena looks different. pool (patch 0133): the levels of the species that join a cup's bracket when its list is every recruit (levelLow..levelHigh, which is also the highest level drawn), and how many extra species join (extraMin, or the pool divided by extraDivisor when the pool is larger than extraMin); win: the result that wins a cup (result) and the cup whose win needs another result (specialCup, specialCupResult).",
+  "_comment": "Tournament rules the C does not hold (a key left out = the rule does not exist). tournamentRules.registration: a registered partner is reminded from remindFromMinute (minutes of the day) with MAPHEAD section remindSection, again from eveningFromMinute, and misses the cup from missedFromMinute (section missedSection). beetleCup: the script routine that registers the Beetle cup uses this cup number, the day it is held and the day stored when registering on any other day. tournamentRemap (at most 4): an opponent species the arena has no model for is swapped for another. stdArena.screen: the screen whose arena looks different. newCupStats: the base stat of the rivals of each cup after the original's (cups 23 to 35; the original cups' are tournaments.opponentBaseStats in tournaments.json), before the multiplier of the rival's level. pool (patch 0133): the levels of the species that join a cup's bracket when its list is every recruit (levelLow..levelHigh, which is also the highest level drawn), and how many extra species join (extraMin, or the pool divided by extraDivisor when the pool is larger than extraMin); win: the result that wins a cup (result) and the cup whose win needs another result (specialCup, specialCupResult).",
   "tournamentRules": {
     "registration": {
       "remindFromMinute": 720,
@@ -13,5 +13,8 @@
     "win": {"result": 3, "specialCup": 5, "specialCupResult": 2}
   },
   "tournamentRemap": [{"from": 64, "to": 54}, {"from": 63, "to": 48}, {"from": 65, "to": 42}],
-  "stdArena": {"screen": 106}
+  "stdArena": {"screen": 106},
+  "newCupStats": {"rookie": 150, "champion": 200, "ultimate": 250, "mega": 220, "vaccine": 250, "data": 250, "virus": 250,
+                  "natureSpirits": 250, "deepSavers": 250, "nightmareSoldiers": 250, "windGuardians": 250, "metalEmpire": 250,
+                  "virusBusters": 250}
 }
