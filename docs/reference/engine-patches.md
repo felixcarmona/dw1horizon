@@ -236,8 +236,8 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
   stat in `STD_NEW_CUP_BASE_STATS` (`newCupStats` in `content/tables/tournament-rules.json`) and their banners in one
   file, `STDDAT/GRADE/NEWCUPS.BIN`: nine languages of thirteen 17-sector TIMs (`tools/cup_banners.py`), read with
   `loadStackedTIMEntry`. They set no won-cup trigger and have no medal.
-  On the calendar a new cup's mark is one character (`NEW_CUP_GRADES`): `1` to `4` for the level cups in the order
-  of their banners' stars, `V` Vaccine, `E` Data, `U` Virus, and a small letter for a Field (`n`, `d`, `s`, `g`, `e`,
+  On the calendar a new cup's mark is one character (`NEW_CUP_GRADES`): `1` to `4` for the level cups from Rookie
+  to Mega, `V` Vaccine, `E` Data, `U` Virus, and a small letter for a Field (`n`, `d`, `s`, `g`, `e`,
   `b`). The calendar places every mark and every date with `TEXT_COLUMN` instead of trusting each glyph's advance, so
   narrow characters stay under their column; the dates below 10 used to drift left of theirs.
 

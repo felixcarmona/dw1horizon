@@ -110,7 +110,7 @@ index 0607b40..a6470d4 100644
 +#define NEW_CUP_COUNT	13
 +/*
 + * one character each, as the calendar's cells hold (the original's are single letters too): 1..4 the level cups by their
-+ * stars, V E U Vaccine, Data, Virus, and in small letters the Fields: n d s g e b (Nature Spirits, Deep Savers, Nightmare
++ * order, V E U Vaccine, Data, Virus, and in small letters the Fields: n d s g e b (Nature Spirits, Deep Savers, Nightmare
 + * Soldiers, Wind Guardians, Metal Empire, Virus Busters)
 + */
 +static char NEW_CUP_GRADES[NEW_CUP_COUNT][2] = {
