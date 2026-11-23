@@ -153,7 +153,10 @@
     "paragraphs": [
       "{bakemon_mechanic}",
       "Partners have individual food preferences and sleep cycles. Their specialties also control which techniques they can learn in battle. An empty specialty slot still counts when selecting the learning probability, even though the summary omits empty slots.",
-      "The in-game evolution guide and the wiki’s tree help explain possible targets. Special transformations and item routes have separate conditions; a normal stat row alone does not describe every way a species can appear."
+      "The in-game evolution guide and the wiki’s tree help explain possible targets. Special transformations and item routes have separate conditions; a normal stat row alone does not describe every way a species can appear. Spoiler: when a partner loses a life and still has one left, there is a 30% chance of a special evolution in Jijimon's house: Greymon into SkullGreymon, Meramon into SkullMeramon, Mammothmon into SkullMammothmon and Garudamon into Phoenixmon, but only if the partner already has the stats the new form asks for."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "new-game-quiz": {

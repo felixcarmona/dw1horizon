@@ -153,7 +153,10 @@
     "paragraphs": [
       "{bakemon_mechanic}",
       "Cada compañero tiene sus preferencias de comida y sueño. Las especialidades determinan qué técnicas aprende en combate. Una casilla vacía sigue contando al elegir la probabilidad, aunque el resumen no la muestre.",
-      "La guía de evolución del juego y el árbol de la wiki explican los objetivos. Las transformaciones especiales y los objetos tienen condiciones propias; una fila normal de estadísticas no describe todas las formas de obtener una especie."
+      "La guía de evolución del juego y el árbol de la wiki explican los objetivos. Las transformaciones especiales y los objetos tienen condiciones propias; una fila normal de estadísticas no describe todas las formas de obtener una especie. Spoiler: cuando un compañero pierde una vida y aún le queda alguna, hay un 30% de probabilidad de una evolución especial en casa de Jijimon: Greymon a SkullGreymon, Meramon a SkullMeramon, Mammothmon a SkullMammothmon y Garudamon a Phoenixmon, pero solo si ya tiene las estadísticas que pide la nueva forma."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "new-game-quiz": {
