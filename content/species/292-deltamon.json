@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["battle", "fire", null],
+  "fields": ["nightmare-soldiers", "unknown"],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar",
                  "Heat Laser", "Spit Fire", "Fire Tower", "Red Inferno", "Mega Flame"],
   "drop": {"item": "sm.recovery", "percent": 10},

@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "data",
   "specialties": ["air", "battle", null],
+  "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Electric Cloud", "Megalo Spark", "Wind Cutter", "Static Elect", "Confused Storm", "Hurricane",
                  "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Solar Ray"],
   "drop": {"item": "Off. Disk", "percent": 20},

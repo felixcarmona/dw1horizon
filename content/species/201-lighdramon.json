@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "data",
   "specialties": ["air", "battle", null],
+  "fields": ["nature-spirits", "metal-empire"],
   "techniques": ["Electric Cloud", "Megalo Spark", "Static Elect", "Wind Cutter", "Confused Storm", "Hurricane",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Solar Ray"],
   "drop": {"item": "sm.recovery", "percent": 10},

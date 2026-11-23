@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["air", "battle", "fire"],
+  "fields": ["nature-spirits", "wind-guardians", "virus-busters", "dragons-roar"],
   "techniques": ["Wind Cutter", "Thunder Justice", "Spinning Shot", "Megalo Spark", "Hurricane", "Confused Storm",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Heat Laser",
                  "Prominence Beam", "Magma Bomb", "Nightmare Syndromer"],

@@ -9,6 +9,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["fire", "air", null],
+  "fields": ["nature-spirits", "wind-guardians"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Prominence Beam", "Heat Laser", "Red Inferno",
                  "Meltdown", "Wind Cutter", "Spinning Shot", "Hurricane", "Meteor Wing"],
   "drop": {"item": "sm.recovery", "percent": 10},

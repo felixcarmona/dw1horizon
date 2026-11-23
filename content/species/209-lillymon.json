@@ -6,6 +6,7 @@
   "vanilla_as": 60,
   "attribute": "data",
   "specialties": ["nature", "battle", null],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Green Trap", "Charm Perfume", "Poison Powder", "Bug", "Danger Sting", "Poison Claw",
                  "Insect Plague", "Mass Morph", "Dynamite Kick (44)", "Buster Dive",
                  "Megaton Punch", "Counter", "Tremar", "Bit Bomb"],

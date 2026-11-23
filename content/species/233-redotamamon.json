@@ -6,6 +6,7 @@
   "vanilla_as": 3,
   "attribute": "data",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits", "deep-savers"],
   "techniques": ["Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Sonic Jab", "Muscle Charge", "War Cry",
                  "Fireball"],
   "drop": {"item": "Enemy repel", "percent": 10},

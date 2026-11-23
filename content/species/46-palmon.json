@@ -9,6 +9,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["nature", null, "ice"],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Poison Claw", "Charm Perfume", "Poison Powder", "Mass Morph", "Tear Drop", "Water Blit",
                  "Aqua Magic", "Poison Ivy"],
   "drop": {"item": "sm.recovery", "percent": 10},

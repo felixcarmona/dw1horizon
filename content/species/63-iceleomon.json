@@ -13,6 +13,7 @@
   },
   "attribute": "data",
   "specialties": ["battle", "ice", "air"],
+  "fields": ["nature-spirits", "nightmare-soldiers", "virus-busters"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Static Elect", "Megalo Spark", "Fist of the Beast King",
                  "Ice Needle", "Winter Blast", "Ice Statue"],

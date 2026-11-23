@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "data",
   "specialties": ["battle", null, "air"],
+  "fields": ["nature-spirits", "wind-guardians", "virus-busters", "jungle-troopers"],
   "techniques": ["Dynamite Kick (44)", "Buster Dive", "Wind Cutter", "Spinning Shot", "Boom Bubble"],
   "drop": {"item": "MP Floppy", "percent": 20},
   "effects_like": 31,

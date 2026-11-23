@@ -6,6 +6,7 @@
   "vanilla_as": 21,
   "attribute": "virus",
   "specialties": ["fire", "air", null],
+  "fields": ["nightmare-soldiers", "wind-guardians"],
   "techniques": ["Spit Fire", "Prominence Beam", "Red Inferno", "Wind Cutter", "Spinning Shot", "Hurricane",
                  "Heat Laser", "Fire Tower", "Magma Bomb", "Static Elect", "Meteor Wing"],
   "drop": {"item": "Various", "percent": 10},

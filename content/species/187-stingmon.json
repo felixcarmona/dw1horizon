@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "wind-guardians", "jungle-troopers"],
   "techniques": ["Danger Sting", "Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Charm Perfume",
                  "Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Death Claw", "Bug",
                  "Megaton Punch"],

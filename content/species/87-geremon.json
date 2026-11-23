@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "virus",
   "specialties": ["filth", "nature", null],
+  "fields": ["metal-empire", "unknown"],
   "techniques": ["Horizontal Kick (57)", "Odor Spray", "Poop Spd Toss", "Poop Rnd Toss", "Rnd Spd Toss",
                  "Big Poop Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (65)",
                  "Charm Perfume", "Poison Powder"],

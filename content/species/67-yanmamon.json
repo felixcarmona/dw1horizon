@@ -13,6 +13,7 @@
   },
   "attribute": "virus",
   "specialties": ["air", "nature", null],
+  "fields": ["nature-spirits", "jungle-troopers"],
   "techniques": ["Electric Cloud", "Wind Cutter", "Spinning Shot", "Danger Sting", "Insect Plague", "Static Elect",
                  "Mass Morph", "Solar Ray"],
   "finisher": {"power": 167, "mpCost": 40, "element": "air"},

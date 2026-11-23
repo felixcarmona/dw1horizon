@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "vaccine",
   "specialties": ["battle", "nature", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "jungle-troopers"],
   "techniques": ["Tremar", "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)",
                  "Green Trap", "Mass Morph", "Insect Plague", "Poison Claw", "Drill Spin"],
   "drop": {"item": "Restore", "percent": 20},

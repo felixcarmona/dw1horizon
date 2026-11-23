@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "vaccine",
   "specialties": ["mech", "battle", "fire"],
+  "fields": ["metal-empire"],
   "techniques": ["Prominence Beam", "Megaton Punch", "Power Crane", "All Range Beam", "Full Potential",
                  "Metal Sprinter", "Reverse Prog", "Muscle Charge", "War Cry", "Spit Fire",
                  "Genoside Attack"],

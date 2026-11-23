@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["mech", "fire", "battle"],
+  "fields": ["metal-empire"],
   "techniques": ["Heat Laser", "Inifinity Burn", "Meltdown", "Megaton Punch", "Buster Dive", "Tremar",
                  "Power Crane", "Delete Program", "Pulse Laser", "Reverse Prog", "Metal Sprinter",
                  "All Range Beam", "DG Dimension", "Full Potential", "Giga Scissor Claw"],

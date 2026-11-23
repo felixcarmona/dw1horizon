@@ -6,6 +6,7 @@
   "vanilla_as": 46,
   "attribute": "virus",
   "specialties": ["nature", "air", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Poison Claw", "Danger Sting", "Poison Powder", "Mass Morph", "Static Elect", "Electric Cloud",
                  "Confused Storm", "Electric Thread"],
   "drop": {"item": "Various", "percent": 25},

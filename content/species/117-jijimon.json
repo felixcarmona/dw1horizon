@@ -12,6 +12,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["battle", null, null],
+  "fields": ["virus-busters", "unknown"],
   "techniques": ["Tremar", "War Cry", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Buster Dive",
                  "Pummel Whack"],
   "finisher": {"power": 250, "mpCost": 40, "element": "battle"},

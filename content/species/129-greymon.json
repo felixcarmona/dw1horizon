@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "vaccine",
   "specialties": ["fire", "battle", "air"],
+  "fields": ["nature-spirits", "deep-savers", "nightmare-soldiers", "metal-empire", "virus-busters", "dragons-roar"],
   "techniques": ["Magma Bomb", "Red Inferno", "Dynamite Kick (44)", "Mega Flame"],
   "drop": {"item": "Off. Chip", "percent": 100},
   "effects_like": 5,

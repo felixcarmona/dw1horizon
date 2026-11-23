@@ -6,6 +6,7 @@
   "vanilla_as": 40,
   "attribute": "vaccine",
   "specialties": ["air", "fire", "battle"],
+  "fields": ["wind-guardians", "virus-busters"],
   "techniques": ["Thunder Justice", "Spinning Shot", "Megalo Spark", "Hurricane", "Confused Storm", "Wind Cutter",
                  "Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Sonic Jab", "Fireball"],

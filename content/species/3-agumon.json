@@ -5,6 +5,8 @@
   "vanilla": true,
   "attribute": "vaccine",
   "specialties": ["fire", null, "battle"],
+  "fields": ["nature-spirits", "deep-savers", "nightmare-soldiers", "metal-empire", "virus-busters", "dragons-roar",
+             "unknown"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Sonic Jab", "Muscle Charge",
                  "Pepper Breath"],
   "drop": {"item": "sm.recovery", "percent": 50},

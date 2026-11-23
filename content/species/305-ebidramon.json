@@ -6,6 +6,7 @@
   "vanilla_as": 48,
   "attribute": "data",
   "specialties": ["ice", "battle", null],
+  "fields": ["deep-savers"],
   "techniques": ["Water Blit", "Giga Freeze", "Aqua Magic", "Tear Drop", "Winter Blast", "Ice Needle",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},

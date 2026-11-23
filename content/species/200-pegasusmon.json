@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "vaccine",
   "specialties": ["air", "battle", null],
+  "fields": ["nature-spirits", "wind-guardians", "virus-busters"],
   "techniques": ["Wind Cutter", "Static Elect", "Electric Cloud", "Confused Storm", "Hurricane", "Megalo Spark",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Aerial Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},

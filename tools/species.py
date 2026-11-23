@@ -140,6 +140,9 @@ STAT_KEYS = ('hp', 'mp', 'offense', 'defense', 'speed', 'brains')
 LEVELS = ['none', 'fresh', 'in-training', 'rookie', 'champion', 'ultimate', 'mega']        # include/dw/level.h
 ATTRIBUTES = ['none', 'data', 'vaccine', 'virus']                   # FLEE_CHANCES rows (btl.c)
 ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth']                     # TYPE_FACTORS rows
+# the canon Fields of a species ("fields"); a cup can ask for one (the bit of its index in the cup tags)
+FIELDS = ['nature-spirits', 'deep-savers', 'nightmare-soldiers', 'wind-guardians', 'metal-empire', 'virus-busters',
+          'dragons-roar', 'jungle-troopers', 'dark-area', 'unknown']
 SLEEP_CYCLES = ['16:00-01:00', '19:00-04:00', '22:00-07:00', '02:00-11:00', '07:00-16:00', '10:00-19:00',
                 'fresh', 'in-training']                             # SLEEP_PATTERN rows (partner_impl.c)
 TRAINING_TYPES = ['even', 'offense-speed', 'mp-brains', 'hp-defense', 'all-low']   # TRN_calculateTrainingMultiplier
@@ -492,7 +495,7 @@ def stats_json(v):
 
 
 # ------------------------------------------------------------------ the file format: dict <-> JSON
-KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'techniques', 'finisher', 'drop', 'effects_like', 'own_effect', 'model',
+KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'fields', 'techniques', 'finisher', 'drop', 'effects_like', 'own_effect', 'model',
              'texture', 'voice', 'battle_music', 'reincarnation_stats', 'new_game_technique', 'status_screen_position',
              'partner_voice', 'item_distance', 'training', 'condition_bubble', 'effect_origins', 'effect_origin_fallback', 'effect_origin_fallback_always', 'wild', 'sizing', 'size', 'needs_ram_mb',
              'partner', 'care', 'evolution']
@@ -702,6 +705,15 @@ def content_files(content=None):
                   key=lambda p: (int(re.match(r'\d+', os.path.basename(p)).group()) if re.match(r'\d+', os.path.basename(p)) else 1 << 30, p))
 
 
+def cup_tag(s):
+    """The cup tag of a species (SPECIES_CUP_* of include/dw/species.h): bits 0-9 its Fields, 10-11 the attribute,
+    12-14 the first specialty + 1 (0: none), 15-17 the level, 18 set when it can be raised and fights in the arena."""
+    first = s['specialties'][0]
+    level = LEVELS.index(s['level'])
+    return (sum(1 << FIELDS.index(f) for f in s.get('fields', [])) | ATTRIBUTES.index(s['attribute']) << 10
+            | (ELEMENTS.index(first) + 1 if first else 0) << 12 | level << 15 | ('partner' in s and level >= 3) << 18)
+
+
 def validate(s):
     p = s['_path']
     if 'base' in s or 'para' in s:
@@ -710,6 +722,9 @@ def validate(s):
     if missing: raise SystemExit(f'{p}: missing {", ".join(missing)} (required: {", ".join(REQUIRED)})')
     unknown = [k for k in s if not k.startswith('_') and k not in KEY_ORDER]
     if unknown: raise SystemExit(f'{p}: unknown key {", ".join(unknown)} (keys: {", ".join(KEY_ORDER)})')
+    bad = [f for f in s.get('fields', []) if f not in FIELDS]
+    if bad or len(set(s.get('fields', []))) != len(s.get('fields', [])):
+        raise SystemExit(f'{p}: fields: {", ".join(bad) or "a repeated Field"} (Fields: {", ".join(FIELDS)})')
     t = s['id']
     if not 0 <= t < NUM_DIGIMON: raise SystemExit(f'{p}: id {t} must be 0..{NUM_DIGIMON - 1} (the executable\'s capacity)')
     m = s['model']
@@ -1494,6 +1509,7 @@ def medal_block():
     return out + b''.join(large)
 
 
+HEADER_CUP_TAGS = 0x4f8        # optional sector pointer: one cup tag per id (cup_tag; include/dw/species.h)
 HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
 INDEX_SECTORS = 2                # the partner list and the evolution links (include/dw/species.h)
 MAX_PARTNERS, MAX_LINKS = 1022, 510
@@ -1845,6 +1861,10 @@ def build(out=OUT, content=None, quiet=False, select=None):
         balance_ref = sector
         blobs.append((struct.pack('<H', len(balance_rows)) + b''.join(balance_rows)).ljust(SECTOR, b'\0'))
         sector += 1
+    cup_ref = sector                                      # what the arena's cups ask of a species, every id
+    tags = b''.join(struct.pack('<I', cup_tag(allsp[t]) if t in allsp else 0) for t in range(count))
+    blobs.append(tags.ljust(-(-len(tags) // SECTOR) * SECTOR, b'\0'))
+    sector += len(blobs[-1]) // SECTOR
     fins, order = finisher_moves()
     fins = {t: f for t, f in fins.items() if t in species and recs[t] is not None}
     for t, f in fins.items():
@@ -1867,6 +1887,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
     struct.pack_into(HEADER, hdr, 0, b'DIGI', VERSION, RECORD_SIZE, count, 0, first_records, sector, 1, fallback_ref, chart_ref)
     struct.pack_into('<I', hdr, HEADER_CITY, city_ref)
     struct.pack_into('<I', hdr, HEADER_MEDALS, medals_ref)
+    struct.pack_into('<I', hdr, HEADER_CUP_TAGS, cup_ref)
     struct.pack_into('<I', hdr, HEADER_EVOLUTION_OFF, evolution_ref)
     for i, t in enumerate(partners): hdr[HEADER_LEVELS + i] = recs[t]['para']['level']
     for t in species:                                     # the record originals (include/dw/species.h)

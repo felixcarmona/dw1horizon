@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "virus",
   "specialties": ["nature", null, "air"],
+  "fields": ["nature-spirits", "jungle-troopers"],
   "techniques": ["Static Elect", "Electric Cloud", "Poison Claw", "Danger Sting", "Electric Thread"],
   "drop": {"item": "MP Chip", "percent": 100},
   "effects_like": 32,

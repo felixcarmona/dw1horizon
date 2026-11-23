@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "vaccine",
   "specialties": ["ice", null, "air"],
+  "fields": ["nature-spirits", "deep-savers"],
   "techniques": ["Static Elect", "Electric Cloud", "Water Blit", "Aqua Magic", "Electric Shock"],
   "drop": {"item": "sm.recovery", "percent": 40},
   "effects_like": 4,

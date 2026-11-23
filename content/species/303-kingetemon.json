@@ -6,6 +6,7 @@
   "vanilla_as": 42,
   "attribute": "virus",
   "specialties": ["battle", "air", "filth"],
+  "fields": ["nightmare-soldiers", "metal-empire"],
   "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Thunder Justice", "Spinning Shot", "Megalo Spark", "Hurricane", "Big Poop Toss",
                  "Poop Spd Toss", "Rnd Spd Toss", "Odor Spray", "Dark Network & Concert Crush"],

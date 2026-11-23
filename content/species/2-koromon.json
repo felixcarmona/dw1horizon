@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["fire", "battle", null],
+  "fields": ["virus-busters"],
   "techniques": ["Bubble (117)"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "model": {"name": "KORO", "bones": 7, "radius": 100, "height": 150},

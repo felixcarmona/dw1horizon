@@ -6,6 +6,7 @@
   "vanilla_as": 26,
   "attribute": "virus",
   "specialties": ["battle", "mech", "air"],
+  "fields": ["nightmare-soldiers", "unknown"],
   "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Pulse Laser", "All Range Beam", "Delete Program",
                  "DG Dimension", "Power Crane", "Dark Shot"],

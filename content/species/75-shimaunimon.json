@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "data",
   "specialties": ["air", "battle", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Dynamite Kick (48)", "Counter", "War Cry", "Static Elect", "Megalo Spark", "Electric Cloud"],
   "drop": {"item": "med.recovery", "percent": 10},
   "effects_like": 33,

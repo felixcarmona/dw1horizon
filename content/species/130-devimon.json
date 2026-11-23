@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "virus",
   "specialties": ["battle", "air", "ice"],
+  "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Megaton Punch", "War Cry", "Muscle Charge", "Megalo Spark", "Thunder Justice", "Giga Freeze",
                  "Ice Statue", "Death Claw"],
   "drop": {"item": "Quick Chip", "percent": 100},

@@ -6,6 +6,7 @@
   "vanilla_as": 60,
   "attribute": "data",
   "specialties": ["ice", "battle", "nature"],
+  "fields": ["nature-spirits"],
   "techniques": ["Water Blit", "Aurora Freeze", "Ice Statue", "Giga Freeze", "Ice Needle", "Winter Blast",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Danger Sting",
                  "Charm Perfume", "Poison Powder", "Mail Strome"],

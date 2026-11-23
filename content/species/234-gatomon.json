@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "virus-busters"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Tremar", "Counter", "Megalo Spark",
                  "Static Elect", "Electric Cloud", "Wind Cutter", "Dark Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},

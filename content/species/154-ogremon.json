@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "virus",
   "specialties": ["battle", "fire", "nature"],
+  "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Magma Bomb", "Dynamite Kick (44)", "Tremar", "Pummel Whack"],
   "drop": {"item": "HP Chip", "percent": 100},
   "effects_like": 34,

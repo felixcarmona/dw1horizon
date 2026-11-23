@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "virus",
   "specialties": ["nature", "air", null],
+  "fields": ["wind-guardians", "unknown"],
   "techniques": ["Poison Powder", "Danger Sting", "Mass Morph", "Insect Plague", "Poison Claw", "Charm Perfume",
                  "Electric Cloud", "Static Elect", "Wind Cutter", "Confused Storm",
                  "Spnning Needle", "Bug", "Spinning Shot"],

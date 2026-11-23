@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "data",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits", "deep-savers", "nightmare-soldiers", "metal-empire"],
   "techniques": ["Spit Fire", "Magma Bomb", "Heat Laser", "Fire Tower", "Red Inferno", "Meltdown",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Meteor Wing"],
   "drop": {"item": "sm.recovery", "percent": 0},

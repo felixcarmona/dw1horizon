@@ -6,6 +6,7 @@
   "vanilla_as": 3,
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits", "deep-savers", "metal-empire", "virus-busters", "dragons-roar"],
   "techniques": ["Spit Fire", "Fire Tower", "Heat Laser", "Red Inferno", "Sonic Jab", "Muscle Charge", "War Cry",
                  "Pepper Breath"],
   "drop": {"item": "sm.recovery", "percent": 0},

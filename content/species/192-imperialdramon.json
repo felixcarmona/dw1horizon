@@ -6,6 +6,7 @@
   "vanilla_as": 60,
   "attribute": "data",
   "specialties": ["mech", "fire", "battle"],
+  "fields": ["nature-spirits", "wind-guardians", "metal-empire", "dragons-roar", "dark-area"],
   "techniques": ["All Range Beam", "DG Dimension", "Delete Program", "Pulse Laser", "Reverse Prog", "Power Crane",
                  "Prominence Beam", "Inifinity Burn", "Meltdown", "Magma Bomb", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Sonic Jab", "Energy Bomb"],

@@ -9,6 +9,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["air", "fire", null],
+  "fields": ["nature-spirits", "wind-guardians", "dragons-roar"],
   "techniques": ["Spit Fire", "Prominence Beam", "Heat Laser", "Static Elect", "Megalo Spark", "Electric Cloud",
                  "Wind Cutter", "Spinning Shot", "Confused Storm", "Hurricane", "Spnning Needle"],
   "drop": {"item": "sm.recovery", "percent": 0},

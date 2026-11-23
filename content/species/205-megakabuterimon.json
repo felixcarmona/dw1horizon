@@ -6,6 +6,7 @@
   "vanilla_as": 60,
   "attribute": "data",
   "specialties": ["nature", "fire", "air"],
+  "fields": ["nature-spirits", "jungle-troopers"],
   "techniques": ["Danger Sting", "Insect Plague", "Bug", "Green Trap", "Charm Perfume", "Poison Powder",
                  "Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Megalo Spark",
                  "Spinning Shot", "Confused Storm", "Bit Bomb"],

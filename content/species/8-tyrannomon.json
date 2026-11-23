@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["battle", null, "fire"],
+  "fields": ["nature-spirits", "nightmare-soldiers", "metal-empire", "dragons-roar", "unknown"],
   "techniques": ["Spit Fire", "Prominence Beam", "Red Inferno", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch",
                  "Buster Dive", "Tremar", "War Cry", "Muscle Charge", "Blaze Blast"],
   "drop": {"item": "sm.recovery", "percent": 0},

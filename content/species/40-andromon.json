@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "vaccine",
   "specialties": ["mech", "battle", "air"],
+  "fields": ["metal-empire", "virus-busters"],
   "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Tremar", "Static Elect", "Megalo Spark", "Power Crane",
                  "Delete Program", "Pulse Laser", "Reverse Prog", "Metal Sprinter",
                  "All Range Beam", "DG Dimension", "Full Potential", "Spiral Sword"],

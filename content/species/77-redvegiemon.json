@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "virus",
   "specialties": ["nature", "fire", null],
+  "fields": ["wind-guardians"],
   "techniques": ["Poison Claw", "Danger Sting", "Green Trap", "Charm Perfume", "Poison Powder", "Mass Morph"],
   "drop": {"item": "Supercarrot", "percent": 10},
   "effects_like": 25,

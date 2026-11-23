@@ -6,6 +6,7 @@
   "vanilla_as": 31,
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "virus-busters"],
   "techniques": ["Sonic Jab", "Muscle Charge", "War Cry", "Tremar", "Static Elect", "Electric Cloud", "Wind Cutter",
                  "Solar Ray"],
   "drop": {"item": "sm.recovery", "percent": 10},

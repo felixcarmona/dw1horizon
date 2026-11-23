@@ -6,6 +6,7 @@
   "vanilla_as": 26,
   "attribute": "virus",
   "specialties": ["air", "ice", "battle"],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Megalo Spark", "Hurricane", "Thunder Justice", "Spinning Shot", "Confused Storm", "Wind Cutter",
                  "Giga Freeze", "Aurora Freeze", "Ice Statue", "Water Blit", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Mail Strome"],

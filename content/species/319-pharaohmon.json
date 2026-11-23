@@ -6,6 +6,7 @@
   "vanilla_as": 26,
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Charm Perfume", "Poison Powder", "Bug", "Green Trap", "Danger Sting", "Poison Claw",
                  "Insect Plague", "Mass Morph", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Bit Bomb"],

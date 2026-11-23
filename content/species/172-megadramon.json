@@ -4,6 +4,7 @@
   "level": "ultimate",
   "attribute": "virus",
   "specialties": ["mech", "ice", "battle"],
+  "fields": ["wind-guardians", "metal-empire", "dragons-roar"],
   "techniques": ["Megaton Punch", "Giga Freeze", "DG Dimension", "Genoside Attack"],
   "drop": {"item": "Off. Chip", "percent": 100},
   "effects_like": 54,

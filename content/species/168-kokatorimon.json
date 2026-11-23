@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "data",
   "specialties": ["air", null, "battle"],
+  "fields": ["wind-guardians"],
   "techniques": ["Dynamite Kick (44)", "War Cry", "Megalo Spark", "Confused Storm", "Frozen Fire Shot"],
   "drop": {"item": "Def. Chip", "percent": 100},
   "effects_like": 50,

@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["battle", "fire", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "unknown"],
   "techniques": ["Megaton Punch", "War Cry", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Muscle Charge", "Prominence Beam", "Inifinity Burn", "Meltdown", "Magma Bomb",
                  "Red Inferno", "Lovely Attack"],

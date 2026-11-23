@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "data",
   "specialties": ["air", "battle", null],
+  "fields": ["nature-spirits", "wind-guardians"],
   "techniques": ["Wind Cutter", "Hurricane", "Confused Storm", "Static Elect", "Electric Cloud", "Megalo Spark",
                  "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Spnning Needle"],
   "drop": {"item": "sm.recovery", "percent": 10},

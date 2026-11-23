@@ -6,6 +6,7 @@
   "vanilla_as": 18,
   "attribute": "vaccine",
   "specialties": ["battle", null, null],
+  "fields": ["nature-spirits"],
   "techniques": ["Sonic Jab", "Muscle Charge", "War Cry", "Tremar", "Dynamite Kick (44)", "Counter", null,
                  "Super Slap"],
   "drop": {"item": "sm.recovery", "percent": 50},

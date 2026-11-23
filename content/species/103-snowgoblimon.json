@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Sonic Jab", "Megaton Punch", "War Cry", "Giga Freeze", "Winter Blast"],
   "drop": {"item": "Meat", "percent": 10},
   "effects_like": 80,

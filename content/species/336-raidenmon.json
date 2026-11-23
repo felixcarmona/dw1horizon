@@ -6,6 +6,7 @@
   "vanilla_as": 40,
   "attribute": "virus",
   "specialties": ["air", "fire", "mech"],
+  "fields": ["metal-empire"],
   "techniques": ["Thunder Justice", "Megalo Spark", "Spinning Shot", "Hurricane", "Confused Storm", "Wind Cutter",
                  "Prominence Beam", "Inifinity Burn", "Meltdown", "Magma Bomb", "Delete Program",
                  "Pulse Laser", "Reverse Prog", "Power Crane", "Fireball"],

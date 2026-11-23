@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "virus",
   "specialties": ["filth", null, null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "metal-empire", "unknown"],
   "techniques": ["Odor Spray", "Big Poop Toss", "Ult Poop Hell", "Party time (108)"],
   "drop": {"item": "MP Chip", "percent": 100},
   "effects_like": 11,

@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "vaccine",
   "specialties": ["battle", "nature", null],
+  "fields": ["nature-spirits", "deep-savers", "metal-empire"],
   "techniques": ["Megaton Punch", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)", null,
                  "Mass Morph", null, null, "Drill Spin"],
   "drop": {"item": "sm.recovery", "percent": 10},

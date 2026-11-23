@@ -6,6 +6,7 @@
   "vanilla_as": 40,
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
+  "fields": ["deep-savers"],
   "techniques": ["Aurora Freeze", "Giga Freeze", "Ice Statue", "Water Blit", "Ice Needle", "Winter Blast",
                  "Tear Drop", "Aqua Magic", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Mail Strome"],

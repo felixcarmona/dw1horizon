@@ -9,6 +9,7 @@
   },
   "attribute": "data",
   "specialties": ["ice", null, "nature"],
+  "fields": ["deep-savers", "wind-guardians"],
   "techniques": ["Poison Claw", "Charm Perfume", "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast",
                  "Aqua Magic", "Super Slap"],
   "drop": {"item": "sm.recovery", "percent": 10},

@@ -6,6 +6,7 @@
   "vanilla_as": 31,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
+  "fields": ["nightmare-soldiers", "wind-guardians", "dark-area"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Wind Cutter", "Static Elect",
                  "Electric Cloud", "Spnning Needle"],
   "drop": {"item": "sm.recovery", "percent": 10},

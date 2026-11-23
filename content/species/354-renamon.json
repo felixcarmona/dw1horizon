@@ -6,6 +6,7 @@
   "vanilla_as": 3,
   "attribute": "data",
   "specialties": ["battle", "fire", null],
+  "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Spit Fire", "Heat Laser",
                  "Fire Tower", "Spiral Twister"],
   "drop": {"item": "sm.recovery", "percent": 10},

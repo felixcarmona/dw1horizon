@@ -6,6 +6,7 @@
   "vanilla_as": 40,
   "attribute": "vaccine",
   "specialties": ["air", "mech", "battle"],
+  "fields": ["wind-guardians"],
   "techniques": ["Hurricane", "Confused Storm", "Thunder Justice", "Spinning Shot", "Megalo Spark", "Wind Cutter",
                  "Power Crane", "DG Dimension", "All Range Beam", "Delete Program", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Sonic Jab", "Spiral Sword"],

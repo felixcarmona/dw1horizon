@@ -6,6 +6,7 @@
   "vanilla_as": 18,
   "attribute": "virus",
   "specialties": ["ice", "battle", "nature"],
+  "fields": ["deep-savers"],
   "techniques": ["Water Blit", "Tear Drop", "Aqua Magic", "Winter Blast", "Sonic Jab", "Muscle Charge", "War Cry",
                  "Blasting Spout", "Poison Powder", "Charm Perfume"],
   "drop": {"item": "MP Floppy", "percent": 30},

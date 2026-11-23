@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "virus",
   "specialties": ["mech", "nature", null],
+  "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Power Crane", "Full Potential", "Metal Sprinter", "Reverse Prog", "Pulse Laser", "Delete Program",
                  "Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},

@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
+  "fields": ["metal-empire", "virus-busters"],
   "techniques": ["Megaton Punch", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)",
                  "Electric Cloud", "Static Elect", "Wind Cutter", "Confused Storm", "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},

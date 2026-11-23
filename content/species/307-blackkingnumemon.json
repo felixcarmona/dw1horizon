@@ -6,6 +6,7 @@
   "vanilla_as": 42,
   "attribute": "virus",
   "specialties": ["filth", "ice", null],
+  "fields": ["unknown"],
   "techniques": ["Ult Poop Hell", "Big Rnd Toss", "Big Poop Toss", "Poop Spd Toss", "Rnd Spd Toss", "Odor Spray",
                  "Poop Rnd Toss", "Horizontal Kick (55)", "Water Blit", null, "Aqua Magic",
                  "Tear Drop", "Ice Needle", "Winter Blast", "Death Claw", "Giga Freeze"],

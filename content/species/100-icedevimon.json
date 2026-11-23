@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
+  "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Sonic Jab", "Counter", "War Cry", "Giga Freeze", "Ice Statue", "Muscle Charge",
                  "Dynamite Kick (44)", "Megaton Punch", "Aqua Magic", "Tear Drop", "Death Claw"],
   "drop": {"item": "Speed Leaf", "percent": 1},

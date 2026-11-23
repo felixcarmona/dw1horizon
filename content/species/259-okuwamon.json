@@ -6,6 +6,7 @@
   "vanilla_as": 60,
   "attribute": "virus",
   "specialties": ["nature", "battle", "air"],
+  "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Danger Sting", "Green Trap", "Bug", "Charm Perfume", "Poison Powder", "Poison Claw",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Spinning Shot",
                  "Megalo Spark", "Confused Storm", "Bit Bomb"],

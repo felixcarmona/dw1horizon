@@ -4,6 +4,7 @@
   "level": "ultimate",
   "attribute": "data",
   "specialties": ["fire", "air", "ice"],
+  "fields": ["nightmare-soldiers", "unknown"],
   "techniques": ["Meltdown", "Thunder Justice", "Confused Storm", "Nightmare Syndromer"],
   "drop": {"item": "Quick Chip", "percent": 100},
   "effects_like": 56,

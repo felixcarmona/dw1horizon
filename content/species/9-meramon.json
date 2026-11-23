@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["fire", null, "battle"],
+  "fields": ["nature-spirits", "nightmare-soldiers", "dragons-roar"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Prominence Beam", "Heat Laser", "Red Inferno",
                  "Inifinity Burn", "Dynamite Kick (44)", "Counter", "War Cry", "Fireball"],
   "drop": {"item": "Off. Disk", "percent": 20},

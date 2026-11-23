@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["fire", "air", null],
+  "fields": ["nature-spirits", "wind-guardians", "virus-busters", "dragons-roar", "unknown"],
   "techniques": ["Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Heat Laser", "Spit Fire", "Thunder Justice", "Spinning Shot", "Megalo Spark",
                  "Hurricane", "Confused Storm", "Wind Cutter", "Crimson Flare"],

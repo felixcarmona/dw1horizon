@@ -6,6 +6,7 @@
   "vanilla_as": 26,
   "attribute": "data",
   "specialties": ["battle", "mech", null],
+  "fields": ["nightmare-soldiers", "metal-empire"],
   "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Power Crane", "DG Dimension", "All Range Beam",
                  "Delete Program", "Pulse Laser", "Reverse Prog", "Giga Scissor Claw"],

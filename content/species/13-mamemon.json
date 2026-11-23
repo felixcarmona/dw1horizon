@@ -9,6 +9,7 @@
   },
   "attribute": "data",
   "specialties": ["battle", "mech", null],
+  "fields": ["metal-empire", "virus-busters", "unknown"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Power Crane", "Pulse Laser", "Reverse Prog", "Metal Sprinter",
                  "Full Potential", "Smiley Bomb"],

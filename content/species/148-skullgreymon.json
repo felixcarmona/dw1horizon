@@ -4,6 +4,7 @@
   "level": "ultimate",
   "attribute": "virus",
   "specialties": ["battle", "ice", "mech"],
+  "fields": ["nightmare-soldiers", "dragons-roar"],
   "techniques": ["Dynamite Kick (48)", "Megaton Punch", "Buster Dive", "War Cry", "All Range Beam", "Dark Shot"],
   "drop": {"item": "Off. Chip", "percent": 100},
   "effects_like": 26,

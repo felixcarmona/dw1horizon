@@ -4,6 +4,7 @@
   "level": "fresh",
   "attribute": "data",
   "specialties": [null, null, null],
+  "fields": ["nightmare-soldiers"],
   "techniques": null,
   "drop": {"item": "sm.recovery", "percent": 10},
   "model": {"name": "PUTI", "bones": 3, "radius": 100, "height": 230},

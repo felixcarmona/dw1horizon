@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["nature", "battle", "fire"],
+  "fields": ["nature-spirits", "virus-busters", "jungle-troopers", "unknown"],
   "techniques": ["Fire Tower", "Magma Bomb", "Sonic Jab", "Dynamite Kick (44)", "Counter", "War Cry",
                  "Danger Sting", "Charm Perfume", "Poison Powder", "Mass Morph",
                  "Iga School Knife Throw"],

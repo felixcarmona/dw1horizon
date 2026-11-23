@@ -6,6 +6,7 @@
   "vanilla_as": 10,
   "attribute": "vaccine",
   "specialties": ["ice", "air", null],
+  "fields": ["deep-savers"],
   "techniques": ["Water Blit", "Tear Drop", "Aqua Magic", "Winter Blast", "Ice Needle", "Giga Freeze",
                  "Electric Cloud", "Static Elect", "Wind Cutter", "Confused Storm",
                  "Blasting Spout", "Ice Statue", "Aurora Freeze"],

@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["nature", null, "air"],
+  "fields": ["nature-spirits", "jungle-troopers"],
   "techniques": ["Static Elect", "Megalo Spark", "Electric Cloud", "Poison Claw", "Danger Sting", "Poison Powder",
                  "Mass Morph", "Electric Thread"],
   "drop": {"item": "sm.recovery", "percent": 10},

@@ -14,6 +14,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["air", "fire", null],
+  "fields": ["wind-guardians", "virus-busters"],
   "techniques": ["Magma Bomb", "Prominence Beam", "Red Inferno", "Inifinity Burn", "Meltdown", "Static Elect",
                  "Megalo Spark", "Electric Cloud", "Wind Cutter", "Spinning Shot",
                  "Thunder Justice", "Confused Storm", "Hurricane", "Crimson Flare"],

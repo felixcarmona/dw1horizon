@@ -6,6 +6,7 @@
   "vanilla_as": 41,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Wind Cutter", "Thunder Justice", "Spinning Shot",
                  "Megalo Spark", "Hurricane", "Death Claw"],

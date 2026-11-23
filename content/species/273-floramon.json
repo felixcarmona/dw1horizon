@@ -6,6 +6,7 @@
   "vanilla_as": 46,
   "attribute": "data",
   "specialties": ["nature", "ice", null],
+  "fields": ["wind-guardians", "jungle-troopers"],
   "techniques": ["Poison Powder", "Charm Perfume", "Mass Morph", "Insect Plague", "Tear Drop", "Aqua Magic",
                  "Winter Blast", "Poison Ivy"],
   "drop": {"item": "sm.recovery", "percent": 10},

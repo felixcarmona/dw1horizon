@@ -6,6 +6,7 @@
   "vanilla_as": 62,
   "attribute": "data",
   "specialties": ["ice", "mech", "battle"],
+  "fields": ["nature-spirits", "wind-guardians", "metal-empire", "virus-busters"],
   "techniques": ["Ice Statue", "Aurora Freeze", "Giga Freeze", "Water Blit", "Ice Needle", "Winter Blast",
                  "All Range Beam", "DG Dimension", "Delete Program", "Pulse Laser", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Sonic Jab", "Genoside Attack"],

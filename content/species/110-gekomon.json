@@ -6,6 +6,7 @@
   "vanilla_as": 25,
   "attribute": "data",
   "specialties": ["ice", null, null],
+  "fields": ["nature-spirits"],
   "techniques": ["Tear Drop", "Giga Freeze", "Water Blit", "Winter Blast", "Aqua Magic", "Ice Needle", "Ice Statue",
                  "Aurora Freeze", "Hydro Pressure"],
   "drop": {"item": "med.recovery", "percent": 10},

@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "data",
   "specialties": ["ice", null, "nature"],
+  "fields": ["deep-savers", "wind-guardians"],
   "techniques": [],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 57,

@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "virus",
   "specialties": ["nature", "filth", "battle"],
+  "fields": ["nature-spirits", "nightmare-soldiers", "unknown"],
   "techniques": ["Insect Plague", "Mass Morph", "Poison Claw", "Poison Powder", "Danger Sting", "Odor Spray",
                  "Horizontal Kick (55)", "Poop Rnd Toss", "Dynamite Kick (44)", "Muscle Charge",
                  "Electro Shocker", "Bug", "Big Poop Toss", "Megaton Punch"],

@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["mech", "ice", "battle"],
+  "fields": ["wind-guardians", "metal-empire", "dragons-roar"],
   "techniques": ["Dynamite Kick (44)", "Megaton Punch", "Giga Freeze", "Winter Blast", "Ice Statue", "Power Crane",
                  "Delete Program", "Pulse Laser", "Reverse Prog", "Metal Sprinter",
                  "All Range Beam", "DG Dimension", "Full Potential", "Genoside Attack"],

@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "data",
   "specialties": ["mech", "ice", null],
+  "fields": ["metal-empire"],
   "techniques": ["Pulse Laser", "All Range Beam", "DG Dimension", "Delete Program", "Reverse Prog", "Power Crane",
                  "Metal Sprinter", "Full Potential", "Water Blit", "Aurora Freeze", "Ice Statue",
                  "Giga Freeze", "Ice Needle", "Dark Shot"],

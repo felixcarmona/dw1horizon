@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Spit Fire", "Fire Tower", "Heat Laser", "Red Inferno", "Magma Bomb", "Meltdown",
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Fireball"],
   "drop": {"item": "Off. Disk", "percent": 20},

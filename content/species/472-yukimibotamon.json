@@ -6,6 +6,7 @@
   "vanilla_as": 1,
   "attribute": "data",
   "specialties": ["air", null, null],
+  "fields": ["virus-busters"],
   "techniques": ["Bubble (113)"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 1,

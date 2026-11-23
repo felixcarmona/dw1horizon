@@ -5,6 +5,7 @@
   "vanilla_as": 26,
   "attribute": "virus",
   "specialties": ["air", "battle", "ice"],
+  "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Megaton Punch", "Thunder Justice", "Hurricane", "Giga Freeze", "Aurora Freeze", "Sonic Jab",
                  "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 0},

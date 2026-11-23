@@ -6,6 +6,7 @@
   "vanilla_as": 48,
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
+  "fields": ["deep-savers", "nightmare-soldiers"],
   "techniques": ["Giga Freeze", "Ice Needle", "Sonic Jab", "Megaton Punch", "Buster Dive", "War Cry",
                  "Aurora Freeze", "Tremar", "Dynamite Kick (44)", "Aqua Magic", "Subzero Ice Punch"],
   "drop": {"item": "Sirloin", "percent": 10},

@@ -9,6 +9,7 @@
   },
   "attribute": "virus",
   "specialties": ["ice", null, "air"],
+  "fields": ["nature-spirits"],
   "techniques": ["Static Elect", "Electric Cloud", "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast",
                  "Aqua Magic", "Electric Shock"],
   "drop": {"item": "MP Floppy", "percent": 30},

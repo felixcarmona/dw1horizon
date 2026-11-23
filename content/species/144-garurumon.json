@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "vaccine",
   "specialties": ["ice", "air", "battle"],
+  "fields": ["nature-spirits", "nightmare-soldiers", "wind-guardians", "metal-empire", "virus-busters"],
   "techniques": ["Buster Dive", "War Cry", "Giga Freeze", "Ice Statue", "Howling Blaster"],
   "drop": {"item": "HP Chip", "percent": 100},
   "effects_like": 22,

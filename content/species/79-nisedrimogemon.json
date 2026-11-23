@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "vaccine",
   "specialties": ["battle", null, null],
+  "fields": ["nature-spirits"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Counter", "Buster Dive", "Tremar", "Muscle Charge"],
   "drop": {"item": "Auto Pilot", "percent": 10},
   "effects_like": 38,

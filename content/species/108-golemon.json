@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
+  "fields": ["nature-spirits", "metal-empire", "unknown"],
   "techniques": ["Sonic Jab", "Muscle Charge", "Ice Needle", "Ice Statue", "Winter Blast", "Aurora Freeze",
                  "Aqua Magic", "Tear Drop", "Water Blit", "Giga Freeze", "Pummel Whack"],
   "drop": {"item": "Power Ice", "percent": 1},

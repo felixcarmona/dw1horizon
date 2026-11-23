@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["battle", "ice", "mech"],
+  "fields": ["nightmare-soldiers", "dragons-roar"],
   "techniques": ["Sonic Jab", "Dynamite Kick (48)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Giga Freeze", "Ice Statue", "Winter Blast", "Pulse Laser",
                  "All Range Beam", "Dark Shot"],

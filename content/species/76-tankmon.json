@@ -6,6 +6,7 @@
   "vanilla_as": 5,
   "attribute": "data",
   "specialties": ["fire", "mech", null],
+  "fields": ["metal-empire"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Prominence Beam",
                  "Pulse Laser", "Delete Program", "Fireball"],
   "drop": {"item": "lrg.recovery", "percent": 20},

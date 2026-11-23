@@ -6,6 +6,7 @@
   "vanilla_as": 18,
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
+  "fields": ["deep-savers", "unknown"],
   "techniques": ["Water Blit", "Ice Needle", "Dynamite Kick (44)", "Tear Drop", "Sonic Jab", "Muscle Charge",
                  "War Cry", "Super Slap"],
   "drop": {"item": "MP Floppy", "percent": 30},

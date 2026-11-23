@@ -6,6 +6,7 @@
   "vanilla_as": 61,
   "attribute": "data",
   "specialties": ["ice", "air", null],
+  "fields": ["deep-savers"],
   "techniques": ["Aurora Freeze", "Ice Statue", "Giga Freeze", "Water Blit", "Ice Needle", "Winter Blast",
                  "Tear Drop", "Aqua Magic", "Electric Cloud", "Thunder Justice", "Spinning Shot",
                  "Megalo Spark", "Hurricane", "Confused Storm", "Mail Strome"],

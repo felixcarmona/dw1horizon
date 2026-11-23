@@ -6,6 +6,7 @@
   "vanilla_as": 18,
   "attribute": "virus",
   "specialties": ["air", "battle", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Static Elect", "Megalo Spark", "Electric Cloud", "Wind Cutter", "Sonic Jab", "Muscle Charge",
                  "War Cry", "Super Thunder Strike"],
   "drop": {"item": "sm.recovery", "percent": 10},

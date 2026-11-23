@@ -6,6 +6,7 @@
   "vanilla_as": 55,
   "attribute": "data",
   "specialties": ["nature", "air", null],
+  "fields": ["nightmare-soldiers", "wind-guardians", "jungle-troopers"],
   "techniques": ["Green Trap", "Charm Perfume", "Poison Powder", "Bug", "Danger Sting", "Poison Claw",
                  "Insect Plague", "Mass Morph", "Thunder Justice", "Spinning Shot", "Megalo Spark",
                  "Hurricane", "Confused Storm", "Wind Cutter", "Bit Bomb"],

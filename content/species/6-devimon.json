@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "virus",
   "specialties": ["battle", "air", "ice"],
+  "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "War Cry", "Muscle Charge",
                  "Megalo Spark", "Electric Cloud", "Spinning Shot", "Thunder Justice",
                  "Giga Freeze", "Ice Statue", "Death Claw"],

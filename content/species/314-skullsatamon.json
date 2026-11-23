@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["battle", "fire", null],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Prominence Beam", "Inifinity Burn", "Meltdown",
                  "Magma Bomb", "Red Inferno", "Nightmare Syndromer"],

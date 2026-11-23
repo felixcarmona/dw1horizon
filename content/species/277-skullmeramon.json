@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "data",
   "specialties": ["fire", "battle", null],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Meltdown", "Inifinity Burn", "Prominence Beam", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Heat Laser", "Spit Fire", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Mega Flame"],

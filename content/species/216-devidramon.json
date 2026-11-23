@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
+  "fields": ["nightmare-soldiers", "wind-guardians", "dragons-roar", "unknown"],
   "techniques": ["Dynamite Kick (44)", "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar",
                  "Wind Cutter", "Static Elect", "Electric Cloud", "Confused Storm", "Death Claw"],
   "drop": {"item": "Restore", "percent": 20},

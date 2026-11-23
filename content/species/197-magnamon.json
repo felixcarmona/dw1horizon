@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["battle", "mech", null],
+  "fields": ["metal-empire", "virus-busters"],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Buster Dive", "Counter", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Pulse Laser", "DG Dimension", "All Range Beam",
                  "Delete Program", "Reverse Prog", "Energy Bomb"],

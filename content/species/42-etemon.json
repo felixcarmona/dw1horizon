@@ -11,6 +11,7 @@
   },
   "attribute": "virus",
   "specialties": ["battle", "air", "filth"],
+  "fields": ["deep-savers", "metal-empire", "unknown"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Megalo Spark", "Spinning Shot", null, "Horizontal Kick (55)",
                  "Ult Poop Hell", "Dark Network & Concert Crush"],

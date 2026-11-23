@@ -12,6 +12,7 @@
   },
   "attribute": "virus",
   "specialties": ["mech", "air", "battle"],
+  "fields": ["metal-empire"],
   "techniques": ["Megaton Punch", "Megalo Spark", "Thunder Justice", "Aurora Freeze", "All Range Beam",
                  "Full Potential", "Infinity Cannon"],
   "finisher": {"power": 260, "mpCost": 40, "element": "mech"},

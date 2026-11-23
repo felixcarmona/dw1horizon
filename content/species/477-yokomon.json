@@ -6,6 +6,7 @@
   "vanilla_as": 44,
   "attribute": "data",
   "specialties": ["air", "nature", null],
+  "fields": ["wind-guardians"],
   "techniques": ["Bubble (120)"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 44,

@@ -4,6 +4,7 @@
   "level": "ultimate",
   "attribute": "vaccine",
   "specialties": ["nature", "air", null],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Danger Sting", "Bug", "Confused Storm", "Bit Bomb"],
   "drop": {"item": "MP Chip", "percent": 100},
   "effects_like": 55,

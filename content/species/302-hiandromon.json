@@ -6,6 +6,7 @@
   "vanilla_as": 40,
   "attribute": "vaccine",
   "specialties": ["mech", "battle", null],
+  "fields": ["metal-empire"],
   "techniques": ["DG Dimension", "All Range Beam", "Delete Program", "Pulse Laser", "Reverse Prog", "Power Crane",
                  "Metal Sprinter", "Full Potential", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Spiral Sword"],

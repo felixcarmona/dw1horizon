@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "vaccine",
   "specialties": ["battle", "nature", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Tremar", "Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)",
                  "Green Trap", "Mass Morph", "Insect Plague", "Poison Claw",
                  "Iga School Knife Throw"],

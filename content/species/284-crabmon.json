@@ -6,6 +6,7 @@
   "vanilla_as": 18,
   "attribute": "data",
   "specialties": ["ice", "battle", null],
+  "fields": ["deep-savers"],
   "techniques": ["Water Blit", "Tremar", "Aqua Magic", "Tear Drop", "Sonic Jab", "Counter", "War Cry",
                  "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},

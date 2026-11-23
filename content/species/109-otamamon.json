@@ -6,6 +6,7 @@
   "vanilla_as": 46,
   "attribute": "data",
   "specialties": ["ice", null, null],
+  "fields": ["nature-spirits", "deep-savers"],
   "techniques": ["Tear Drop", "Water Blit", "Aqua Magic", "Winter Blast", "Ice Needle", "Giga Freeze", "Ice Statue",
                  "Super Slap"],
   "drop": {"item": "MP Floppy", "percent": 0},

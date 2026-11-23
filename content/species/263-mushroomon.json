@@ -6,6 +6,7 @@
   "vanilla_as": 46,
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
+  "fields": ["nature-spirits", "wind-guardians", "jungle-troopers"],
   "techniques": ["Poison Powder", "Mass Morph", "Insect Plague", "Poison Claw", "Sonic Jab", "Muscle Charge",
                  "War Cry", "Drill Spin", "Charm Perfume"],
   "drop": {"item": "sm.recovery", "percent": 10},

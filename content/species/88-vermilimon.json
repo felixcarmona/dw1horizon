@@ -13,6 +13,7 @@
   },
   "attribute": "vaccine",
   "specialties": ["fire", "battle", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Prominence Beam", "Heat Laser", "Red Inferno", "Meltdown", "Megaton Punch", "Counter", "Tremar",
                  "Spit Fire", "Fire Tower", "Muscle Charge", "Volcanic Strike"],
   "finisher": {"power": 225, "mpCost": 40, "element": "fire"},

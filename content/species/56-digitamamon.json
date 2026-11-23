@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "data",
   "specialties": ["fire", "air", "ice"],
+  "fields": ["nightmare-soldiers", "unknown"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Prominence Beam", "Heat Laser", "Red Inferno",
                  "Inifinity Burn", "Meltdown", "Megalo Spark", "Spinning Shot", "Thunder Justice",
                  "Confused Storm", "Hurricane", "Tear Drop", "Aqua Magic", "Nightmare Syndromer"],

@@ -6,6 +6,7 @@
   "vanilla_as": 60,
   "attribute": "data",
   "specialties": ["nature", "battle", null],
+  "fields": ["wind-guardians"],
   "techniques": ["Poison Powder", "Green Trap", "Danger Sting", "Bug", "Charm Perfume", "Poison Claw",
                  "Insect Plague", "Mass Morph", "Buster Dive", "Megaton Punch", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Sweet Breath"],

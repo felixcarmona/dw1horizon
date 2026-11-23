@@ -5,6 +5,7 @@
   "vanilla": true,
   "attribute": "vaccine",
   "specialties": ["ice", "fire", "battle"],
+  "fields": ["nature-spirits", "nightmare-soldiers", "wind-guardians", "metal-empire", "virus-busters"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Megaton Punch", "Buster Dive", "War Cry", "Giga Freeze",
                  "Ice Needle", "Ice Statue", "Winter Blast", "Aqua Magic", "Howling Blaster"],
   "drop": {"item": "sm.recovery", "percent": 10},

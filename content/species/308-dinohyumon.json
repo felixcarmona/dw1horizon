@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "data",
   "specialties": ["battle", "air", null],
+  "fields": ["nature-spirits", "dragons-roar"],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar",
                  "Wind Cutter", "Spinning Shot", "Counter", null, "Scissor Claw"],
   "drop": {"item": "sm.recovery", "percent": 10},

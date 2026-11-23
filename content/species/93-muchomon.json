@@ -6,6 +6,7 @@
   "vanilla_as": 18,
   "attribute": "data",
   "specialties": ["battle", "air", "ice"],
+  "fields": ["deep-savers", "wind-guardians"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Tremar", "War Cry", "Muscle Charge", "Counter", "Wind Cutter",
                  "Super Slap"],
   "drop": {"item": "Various", "percent": 10},

@@ -6,6 +6,7 @@
   "vanilla_as": 38,
   "attribute": "virus",
   "specialties": ["battle", "mech", null],
+  "fields": ["deep-savers"],
   "techniques": ["Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Dynamite Kick (44)",
                  "Pulse Laser", "Power Crane", "Full Potential", "Metal Sprinter", "Dark Shot"],
   "drop": {"item": "sm.recovery", "percent": 10},

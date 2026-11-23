@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["fire", "mech", "battle"],
+  "fields": ["nature-spirits", "metal-empire", "virus-busters", "dragons-roar"],
   "techniques": ["Prominence Beam", "Inifinity Burn", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Pulse Laser", "DG Dimension", "All Range Beam", "Delete Program", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Dark Shot"],

@@ -4,6 +4,7 @@
   "level": "rookie",
   "attribute": "virus",
   "specialties": ["ice", null, "air"],
+  "fields": ["nature-spirits"],
   "techniques": ["Static Elect", "Electric Cloud", "Water Blit", "Aqua Magic", "Electric Shock"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 4,

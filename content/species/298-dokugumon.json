@@ -6,6 +6,7 @@
   "vanilla_as": 51,
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
+  "fields": ["nature-spirits", "nightmare-soldiers", "jungle-troopers", "unknown"],
   "techniques": ["Danger Sting", "Poison Claw", "Green Trap", "Mass Morph", "Insect Plague", "Poison Powder",
                  "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},

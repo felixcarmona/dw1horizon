@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "data",
   "specialties": ["nature", null, "ice"],
+  "fields": ["nature-spirits", "wind-guardians", "unknown"],
   "techniques": [],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 25,

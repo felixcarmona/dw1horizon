@@ -6,6 +6,7 @@
   "vanilla_as": 12,
   "attribute": "data",
   "specialties": ["mech", "fire", null],
+  "fields": ["metal-empire"],
   "techniques": ["All Range Beam", "DG Dimension", "Delete Program", "Pulse Laser", "Reverse Prog", "Power Crane",
                  "Metal Sprinter", "Full Potential", "Meltdown", "Inifinity Burn",
                  "Prominence Beam", "Magma Bomb", "Red Inferno", "Fire Tower", "Genoside Attack"],

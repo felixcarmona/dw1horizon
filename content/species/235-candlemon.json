@@ -6,6 +6,7 @@
   "vanilla_as": 3,
   "attribute": "data",
   "specialties": ["fire", "battle", null],
+  "fields": ["nightmare-soldiers"],
   "techniques": ["Spit Fire", "Heat Laser", "Fire Tower", "Red Inferno", "Muscle Charge", "War Cry", "Sonic Jab",
                  "Blue Blaster"],
   "drop": {"item": "sm.recovery", "percent": 10},

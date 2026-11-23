@@ -6,6 +6,7 @@
   "vanilla_as": 31,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
+  "fields": ["nature-spirits"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Wind Cutter", "Static Elect",
                  "Electric Cloud", "Boom Bubble"],
   "drop": {"item": "sm.recovery", "percent": 10},

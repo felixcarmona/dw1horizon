@@ -4,6 +4,7 @@
   "level": "champion",
   "attribute": "data",
   "specialties": ["nature", "battle", "fire"],
+  "fields": ["nature-spirits", "virus-busters", "jungle-troopers", "unknown"],
   "techniques": ["Magma Bomb", "Dynamite Kick (44)", "Charm Perfume", "Iga School Knife Throw"],
   "drop": {"item": "Quick Chip", "percent": 100},
   "effects_like": 58,

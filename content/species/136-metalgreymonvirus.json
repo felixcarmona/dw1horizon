@@ -4,6 +4,7 @@
   "level": "ultimate",
   "attribute": "virus",
   "specialties": ["mech", "fire", "battle"],
+  "fields": ["metal-empire"],
   "techniques": ["Inifinity Burn", "Meltdown", "Megaton Punch", "Buster Dive", "Reverse Prog", "DG Dimension",
                  "Full Potential", "Giga Scissor Claw"],
   "drop": {"item": "Def. Chip", "percent": 100},
