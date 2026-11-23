@@ -407,6 +407,10 @@ background 0xFA0 (`renderMap`), zone caption 0xFA1, clock 0xFA2, poop 0xFA8, doo
 - **Pad** (`tamerTickWalkingState`, `tamer.c:481-560`): directions are the `PadRead` bits (up 0x1000, right 0x2000,
   down 0x4000, left 0x8000); confirm 0x40 (✕), cancel 0x10 (△), 0x8 R1. Moving uses animation 3 (run), or 2 (walk) while
   R1 or △ is held; standing still, 0. △ opens the menu (state 1 → 6).
+  Horizon: the walk moves from R1 to R2 (△ still walks), and holding R1 (without SELECT) while running in free field
+  control makes the run, and the following partner's locomotion (anims 2-4), cover 1.4 times the root step: `modRunBoost`
+  (map.c) scales both `entityMoveForward`'s collision probe and `applyRootMomentum`, so walls stop the longer step.
+  Walking (R2/△) wins over R1.
 - **Heading** is rounded to 8 directions (multiples of 0x200 in a 0x1000 turn) relative to the camera: `getMapRotation`
   is the `.MAP`'s camera angle, so "up" always moves away from the camera. Heading 0 faces +Z; 0x400 +X, 0x800 -Z,
   0xC00 -X.
