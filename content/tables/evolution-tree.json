@@ -708,7 +708,9 @@
     "Bukamon": {"parents": ["Pichimon"], "reason": "Canon Baby I to Baby II line of the hand-made babies."},
     "Nyaromon": {"parents": ["YukimiBotamon"], "reason": "Canon Baby I to Baby II line of the hand-made babies."},
     "Yokomon": {"parents": ["Nyokimon"], "reason": "Canon Baby I to Baby II line of the hand-made babies."},
-    "Machinedramon": {"parents": ["MetalTyrannomon"], "reason": "Machine dragon family; Ultimate parents only.", "disc": true, "parent_reasons": {"MetalTyrannomon": "Weaponized dinosaur to machine dragon; mech and battle. Second Mega choice."}}
+    "Machinedramon": {"parents": ["MetalTyrannomon"], "reason": "Machine dragon family; Ultimate parents only.", "disc": true, "parent_reasons": {"MetalTyrannomon": "Weaponized dinosaur to machine dragon; mech and battle. Second Mega choice."}},
+    "Jijimon": {"parents": ["Monzaemon", "Mamemon"], "reason": "Canon main line, then shared specialty; Ultimate parents only.", "disc": true, "parent_reasons": {"Monzaemon": "Canon: Wikimon lists Monzaemon -> Jijimon (Anode/Cathode Tamer); both vaccine. Shares battle.", "Mamemon": "No second canon Ultimate is a partner (Piximon is an NPC). A small veteran fighter to the old master; shares battle."}},
+    "Analogman": {"parents": ["Datamon", "Vademon"], "reason": "No canon line: a human at a computer. Machine-minded virus Ultimates; Ultimate parents only.", "disc": true, "parent_reasons": {"Datamon": "A computer virus to the hacker who commands machines; virus. Shares mech and air.", "Vademon": "A scheming brain to the scheming scientist; virus. Shares mech."}}
   },
   "record_parents": {
     "IceLeomon": "Native partner had no path row; carries Leomon's matching mesh with IceLeomon's texture and unchanged raise data.",
@@ -791,10 +793,7 @@
     "Sukamon": "Virus bar transformation.",
     "Nanimon": "Scolding special.",
     "Vademon": "Champion praise special after 240 hours.",
-    "Machinedramon": "Story or Megadramon/Gigadramon timed special.",
-    "Analogman": "Story character; laboratory only.",
-    "Jijimon": "Story character; laboratory only.",
-    "KingSukamon": "Special King of Sukamon form; laboratory only."
+    "Machinedramon": "Story or Megadramon/Gigadramon timed special."
   },
   "ultimate_rules_reason": "Every raisable Ultimate has at least two distinct Mega targets with NEW DIGIMON on; natives without path rows use timed evolutionUltimate pairs.",
   "ultimate_rules": [
@@ -1003,8 +1002,8 @@
     "10": {"from": [4], "to": [54, 61, 64, 112, 24]},
     "11": {"from": [], "to": [14, 120]},
     "12": {"from": [5, 9, 47, 38, 8], "to": [373, 404, 461]},
-    "13": {"from": [48, 58, 23, 52], "to": [270, 302]},
-    "14": {"from": [11], "to": [181]},
+    "13": {"from": [48, 58, 23, 52], "to": [270, 302, 117]},
+    "14": {"from": [11], "to": [181, 117]},
     "15": {"from": [], "to": [16]},
     "16": {"from": [15], "to": [18, 57, 17, 71, 93, 256]},
     "17": {"from": [2, 16], "to": [36, 47, 38, 8, 34, 22]},
@@ -1018,7 +1017,7 @@
     "25": {"from": [32, 46, 263, 273], "to": [55, 121, 123, 209]},
     "26": {"from": [5, 6, 37, 22, 52], "to": [404, 268]},
     "27": {"from": [47, 19, 58, 23], "to": [270, 191]},
-    "28": {"from": [], "to": [302, 237]},
+    "28": {"from": [], "to": [302, 237, 116]},
     "29": {"from": [], "to": [30]},
     "30": {"from": [29], "to": [31, 45, 68, 82, 96, 122]},
     "31": {"from": [30], "to": [38, 8, 34, 48, 20, 33]},
@@ -1090,8 +1089,8 @@
     "112": {"from": [10, 238, 202, 254], "to": [408, 211]},
     "113": {"from": [47, 232, 243], "to": []},
     "115": {"from": [260], "to": []},
-    "116": {"from": [], "to": []},
-    "117": {"from": [], "to": []},
+    "116": {"from": [294, 28], "to": []},
+    "117": {"from": [14, 13], "to": []},
     "119": {"from": [110], "to": []},
     "120": {"from": [39, 11], "to": []},
     "121": {"from": [25, 282, 272, 91], "to": [181, 230]},
@@ -1211,7 +1210,7 @@
     "291": {"from": [278, 49, 240], "to": [401, 312]},
     "292": {"from": [84], "to": [266, 182]},
     "293": {"from": [460, 226, 286], "to": []},
-    "294": {"from": [92, 76, 232, 290], "to": [289, 400, 407]},
+    "294": {"from": [92, 76, 232, 290], "to": [289, 400, 407, 116]},
     "295": {"from": [236], "to": [223, 314]},
     "296": {"from": [353, 285], "to": [306, 63]},
     "297": {"from": [306, 124, 88], "to": []},

@@ -39,20 +39,20 @@
   },
   "evolution": {
     "requirements": {
-      "digimon": 0,
-      "hp": 0,
-      "mp": 0,
-      "offense": 0,
-      "defense": 0,
-      "speed": 0,
-      "brain": 0,
-      "care": 0,
-      "weight": 0,
-      "discipline": 0,
-      "happiness": 0,
-      "battles": 0,
-      "techs": 0,
-      "flags": 0
+      "digimon": 14,
+      "hp": 400,
+      "mp": -1,
+      "offense": 500,
+      "defense": -1,
+      "speed": 500,
+      "brain": -1,
+      "care": 5,
+      "weight": 10,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": -1,
+      "flags": 16
     },
     "gains": {"hp": 6000, "mp": 6500, "offense": 600, "defense": 650, "speed": 550, "brains": 800}
   }
