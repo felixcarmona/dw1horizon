@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch6/Quetzalmon.TIM", "entry": 0},
   "voice": 7,
   "battle_music": "normal-battle",
+  "boosted_technique": "Hurricane",
   "condition_bubble": [33, -146, -56, 5],
   "effect_origins": [[4, 90, 0, 0, 5, 30, -55, -88], [8, 330, 0, 0, 8, 178, 269, -2],
                      [1, 0, 0, 0, 1, 0, -118, -109]],

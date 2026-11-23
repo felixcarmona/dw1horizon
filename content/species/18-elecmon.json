@@ -12,6 +12,7 @@
   "model": {"name": "ELEC", "bones": 25, "radius": 190, "height": 230},
   "voice": 16,
   "battle_music": "normal-battle",
+  "boosted_technique": "Static Elect",
   "partner": {
     "voice": 1,
     "hunger_hours": [1, 5, 9, 13, 17, 21],

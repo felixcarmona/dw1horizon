@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch11/Bulbmon.TIM", "entry": 0},
   "voice": 36,
   "battle_music": "normal-battle",
+  "boosted_technique": "All Range Beam",
   "condition_bubble": [0, -21, 8, 1],
   "effect_origins": [[11, 213, 0, 0, 20, -67, -79, -142], [2, -5, -40, 0, 1, 0, 49, -24],
                      [2, 130, 0, 0, 1, 0, -63, 8], [2, 330, 0, 0, 1, 0, -228, 8],

@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch11/Daemon.TIM", "entry": 0},
   "voice": 6,
   "battle_music": "normal-battle",
+  "boosted_technique": "Inifinity Burn",
   "condition_bubble": [0, -119, -13, 7],
   "effect_origins": [[7, "any", 0, 0, 0, 0, -160, -380], [10, "any", 0, 0, 10, 27, -100, 16],
                      [1, "any", 0, 0, 13, 0, 0, 0], [6, "any", 0, 0, 4, -65, 235, -122]],

@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch9/Ganimon.TIM", "entry": 0},
   "voice": 4,
   "battle_music": "normal-battle",
+  "boosted_technique": "Water Blit",
   "condition_bubble": [7, -164, 70, 1],
   "effect_origins": [[14, 50, 50, 0, 1, 0, -39, 3], [12, 35, -20, 0, 14, -19, -1, -19],
                      [2, 225, 0, 0, 1, 0, -176, 48], [14, 300, -20, 0, 0, 0, -140, -425]],

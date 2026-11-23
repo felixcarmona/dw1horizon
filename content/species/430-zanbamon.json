@@ -27,6 +27,7 @@
   "texture": {"file": "build/rigfix/Zanbamon.TIM", "entry": 0},
   "voice": 29,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megaton Punch",
   "condition_bubble": [0, -169, -65, 4],
   "effect_origins": [[5, 0, 10, -100, 4, 0, -18, -100], [2, 0, 0, 0, 2, 0, 0, 0],
                      [5, 0, -143, -108, 4, 0, -169, -65]],

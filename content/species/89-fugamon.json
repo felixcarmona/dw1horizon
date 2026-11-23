@@ -24,6 +24,7 @@
   "texture": {"from": 89},
   "voice": 30,
   "battle_music": "normal-battle",
+  "boosted_technique": "Hurricane",
   "wild": {"hp": 2300, "mp": 3800, "off": 520, "def": 270, "speed": 170, "brain": 200, "bits": 600},
   "partner": {
     "voice": 3,

@@ -25,6 +25,7 @@
   "texture": {"file": "build/rigfix/Chrysalimon.TIM", "entry": 0},
   "voice": 23,
   "battle_music": "normal-battle",
+  "boosted_technique": "Delete Program",
   "condition_bubble": [0, -100, -5, 31],
   "effect_origins": [[3, 14, -97, 0, 31, 0, -2, -105], [3, 45, -60, 0, 31, 0, -40, -70]],
   "wild": {"hp": 1420, "mp": 1750, "off": 255, "def": 190, "speed": 200, "brain": 215, "bits": 600},

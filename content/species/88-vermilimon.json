@@ -33,6 +33,7 @@
   "texture": {"from": 88},
   "voice": 41,
   "battle_music": "normal-battle",
+  "boosted_technique": "Prominence Beam",
   "wild": {"hp": 2970, "mp": 2980, "off": 395, "def": 340, "speed": 295, "brain": 300, "bits": 1500},
   "partner": {
     "voice": 7,

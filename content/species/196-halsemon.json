@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch2/Halsemon.TIM", "entry": 0},
   "voice": 19,
   "battle_music": "normal-battle",
+  "boosted_technique": "Hurricane",
   "condition_bubble": [12, -63, 24, 4],
   "effect_origins": [[4, 70, 0, 20, 4, 7, 17, -78], [4, 120, 0, 20, 4, 8, 43, -127]],
   "wild": {"hp": 1550, "mp": 1510, "off": 255, "def": 205, "speed": 200, "brain": 175, "bits": 600},

@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch/Wormmon.TIM", "entry": 0},
   "voice": 28,
   "battle_music": "normal-battle",
+  "boosted_technique": "Poison Claw",
   "condition_bubble": [-14, -16, -66, 2],
   "effect_origins": [[4, 46, 0, 13, 2, -24, 32, -24], [4, 78, 0, 13, 2, -28, 55, -11]],
   "wild": {"hp": 620, "mp": 610, "off": 120, "def": 90, "speed": 110, "brain": 85, "bits": 200},

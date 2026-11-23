@@ -20,6 +20,7 @@
   "model": {"name": "MUGE", "bones": 32, "partner_file": "build/models/MUGP.MMD", "radius": 400, "height": 600},
   "voice": 48,
   "battle_music": "normal-battle",
+  "boosted_technique": "All Range Beam",
   "wild": {"hp": 9999, "mp": 9999, "off": 999, "def": 800, "speed": 800, "brain": 800, "bits": 9999},
   "partner": {
     "voice": 10,

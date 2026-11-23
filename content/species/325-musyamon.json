@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch12/Musyamon.TIM", "entry": 0},
   "voice": 30,
   "battle_music": "normal-battle",
+  "boosted_technique": "Wind Cutter",
   "condition_bubble": [2, -94, 18, 23],
   "effect_origins": [[7, 58, 0, 0, 15, -29, 65, 0], [3, 81, -53, 0, 23, -5, 203, -54],
                      [10, 48, -162, 15, 22, 132, -131, -143], [3, 76, -19, 0, 23, -3, 145, -94],

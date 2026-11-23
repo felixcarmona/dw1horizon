@@ -25,6 +25,7 @@
   "texture": {"from": 105},
   "voice": 20,
   "battle_music": "normal-battle",
+  "boosted_technique": "Winter Blast",
   "wild": {"hp": 3600, "mp": 3800, "off": 660, "def": 340, "speed": 390, "brain": 200, "bits": 1400},
   "partner": {
     "voice": 7,

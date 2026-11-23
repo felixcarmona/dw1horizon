@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch12/Pharaohmon.TIM", "entry": 0},
   "voice": 36,
   "battle_music": "normal-battle",
+  "boosted_technique": "Bug",
   "condition_bubble": [0, -127, -13, 5],
   "effect_origins": [[7, "any", 0, 0, 15, -15, 268, -56], [10, "any", 0, 0, 4, 86, -67, -11],
                      [1, "any", 0, 0, 16, 0, 0, 0], [6, "any", 0, 0, 10, 115, 252, -82]],

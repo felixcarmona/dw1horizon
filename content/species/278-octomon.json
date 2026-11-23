@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch9/Octomon.TIM", "entry": 0},
   "voice": 31,
   "battle_music": "normal-battle",
+  "boosted_technique": "Water Blit",
   "condition_bubble": [-4, -70, -64, 23],
   "effect_origins": [[3, 125, -10, 0, 23, 8, 41, -95], [7, 100, -120, 0, 13, 12, 106, -74],
                      [7, 75, -30, -65, 13, 23, 81, 17], [13, 75, -30, -65, 1, 135, 7, 45],

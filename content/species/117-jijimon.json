@@ -20,6 +20,7 @@
   "model": {"name": "JIJI", "bones": 17, "partner_file": "build/models/JIJP.MMD", "radius": 120, "height": 250},
   "voice": 30,
   "battle_music": "normal-battle",
+  "boosted_technique": "Tremar",
   "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},
   "partner": {
     "voice": 3,

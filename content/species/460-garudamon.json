@@ -26,6 +26,7 @@
   "texture": {"file": "build/fitfix/Garudamon.TIM", "entry": 0},
   "voice": 19,
   "battle_music": "normal-battle",
+  "boosted_technique": "Dynamite Kick (44)",
   "condition_bubble": [43, -74, -143, 26],
   "effect_origins": [[5, 100, 30, 0, 10, 18, -41, 107], [5, 120, -50, 0, 10, 96, 6, 108],
                      [5, 120, -100, 0, 10, 140, 39, 96], [5, 65, -30, 0, 10, 55, 5, 58],

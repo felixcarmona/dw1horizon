@@ -22,6 +22,7 @@
   "texture": {"file": "build/batch5/Candlemon.TIM", "entry": 0},
   "voice": 15,
   "battle_music": "normal-battle",
+  "boosted_technique": "Spit Fire",
   "condition_bubble": [53, -125, -1, 1],
   "effect_origins": [[3, 110, -140, 0, 1, 47, -37, -178]],
   "wild": {"hp": 710, "mp": 560, "off": 115, "def": 105, "speed": 100, "brain": 80, "bits": 200},

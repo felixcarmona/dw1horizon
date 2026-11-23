@@ -26,6 +26,7 @@
   "texture": {"from": 87},
   "voice": 11,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Poop Spd Toss",
   "wild": {"hp": 2800, "mp": 4200, "off": 530, "def": 280, "speed": 400, "brain": 50, "bits": 1300},
   "partner": {
     "voice": 6,

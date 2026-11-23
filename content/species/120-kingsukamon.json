@@ -20,6 +20,7 @@
   "model": {"name": "SCUD", "bones": 21, "file": "build/models/SCUD-partner.MMD", "radius": 279, "height": 496},
   "voice": 35,
   "battle_music": "normal-battle",
+  "boosted_technique": "Big Poop Toss",
   "wild": {"hp": 2500, "mp": 2500, "off": 250, "def": 250, "speed": 250, "brain": 250, "bits": 250},
   "partner": {
     "voice": 6,

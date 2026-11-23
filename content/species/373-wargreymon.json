@@ -26,6 +26,7 @@
   "texture": {"file": "build/models/WarGreymon.TIM", "entry": 0},
   "voice": 12,
   "battle_music": "normal-battle",
+  "boosted_technique": "Inifinity Burn",
   "condition_bubble": [0, -120, 0, 4],
   "effect_origins": [[5, "any", 0, 0, 2, 0, -70, -100], [4, "any", 0, 0, 4, 0, -40, -90]],
   "_effect_origins": "Greymon's EFE origins (originalType 5) on WarGreymon's skeleton: Greymon's jaw (5) -> in front of the chest (2), between the claws; its head (4: Megalo Spark) -> in front of the helmet (4). Bone 1 (hips) and bone 0 rows fit as they are",

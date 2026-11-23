@@ -27,6 +27,7 @@
   "texture": {"file": "build/meshfix2-out/Cannondramon.TIM", "entry": 0},
   "voice": 48,
   "battle_music": "normal-battle",
+  "boosted_technique": "Magma Bomb",
   "condition_bubble": [1, -42, -71, 16],
   "effect_origins": [[4, 70, 0, 20, 16, -1, 95, 1], [4, 120, 0, 20, 16, -3, 158, 21]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},

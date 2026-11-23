@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch3/Shakkoumon.TIM", "entry": 0},
   "voice": 21,
   "battle_music": "normal-battle",
+  "boosted_technique": "Power Crane",
   "condition_bubble": [0, -178, 0, 3],
   "effect_origins": [[3, 30, -100, 0, 3, 0, -42, -141], [12, -67, 0, 1, 1, -1, -85, 14], [1, 0, 0, 0, 1, 0, 0, 0]],
   "wild": {"hp": 2960, "mp": 3550, "off": 390, "def": 330, "speed": 310, "brain": 350, "bits": 1500},

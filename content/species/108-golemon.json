@@ -24,6 +24,7 @@
   "texture": {"from": 108},
   "voice": 21,
   "battle_music": "normal-battle",
+  "boosted_technique": "Giga Freeze",
   "wild": {"hp": 3400, "mp": 4700, "off": 630, "def": 330, "speed": 210, "brain": 150, "bits": 1600},
   "partner": {
     "voice": 3,

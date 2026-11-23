@@ -22,6 +22,7 @@
   "texture": {"file": "build/batch8/ExTyrannomon.TIM", "entry": 0},
   "voice": 5,
   "battle_music": "normal-battle",
+  "boosted_technique": "Magma Bomb",
   "condition_bubble": [0, -178, -171, 1],
   "effect_origins": [[5, 100, 30, 0, 1, 0, 20, -229], [5, 120, -50, 0, 1, 0, -36, -296],
                      [5, 120, -100, 0, 1, 0, -81, -327], [5, 65, -30, 0, 1, 0, -54, -235],

@@ -25,6 +25,7 @@
   "texture": {"from": 111},
   "voice": 68,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Static Elect",
   "wild": {"hp": 2200, "mp": 3000, "off": 500, "def": 280, "speed": 170, "brain": 250, "bits": 1100},
   "partner": {
     "voice": 8,

@@ -12,6 +12,7 @@
   "model": {"name": "OGRE", "bones": 18, "radius": 180, "height": 390},
   "voice": 30,
   "battle_music": "normal-battle",
+  "boosted_technique": "Buster Dive",
   "partner": {
     "voice": 3,
     "hunger_hours": [1, 5, 9, 13, 17, 21],

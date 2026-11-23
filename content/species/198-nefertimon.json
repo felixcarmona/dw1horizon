@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch2/Nefertimon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
+  "boosted_technique": "Heat Laser",
   "condition_bubble": [0, -144, 8, 2],
   "effect_origins": [[4, 0, 80, -100, 2, 0, -40, -62], [4, 0, 80, -280, 2, 0, -109, -206],
                      [9, 0, 80, -30, 6, -3, 71, -27], [4, 0, 80, -200, 2, 0, -78, -142]],

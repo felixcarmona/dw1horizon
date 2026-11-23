@@ -34,6 +34,7 @@
   "texture": {"from": 63},
   "voice": 42,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megaton Punch",
   "wild": {"hp": 3090, "mp": 3010, "off": 415, "def": 340, "speed": 290, "brain": 300, "bits": 1500},
   "partner": {
     "voice": 3,

@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch8/Floramon.TIM", "entry": 0},
   "voice": 40,
   "battle_music": "normal-battle",
+  "boosted_technique": "Charm Perfume",
   "condition_bubble": [0, -59, -15, 3],
   "effect_origins": [[4, 0, 0, 0, 3, 0, -18, -82]],
   "wild": {"hp": 590, "mp": 610, "off": 120, "def": 90, "speed": 115, "brain": 80, "bits": 200},

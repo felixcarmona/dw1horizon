@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch12/Knightmon.TIM", "entry": 0},
   "voice": 36,
   "battle_music": "normal-battle",
+  "boosted_technique": "Buster Dive",
   "condition_bubble": [0, -106, -10, 6],
   "effect_origins": [[7, "any", 0, 0, 5, 20, 316, -12], [10, "any", 0, 0, 10, 57, -69, -17],
                      [1, "any", 0, 0, 22, 0, 0, 0], [6, "any", 0, 0, 5, 91, 220, -40]],

@@ -13,6 +13,7 @@
   "model": {"name": "BAKE", "bones": 10, "radius": 150, "height": 370},
   "voice": 33,
   "battle_music": "normal-battle",
+  "boosted_technique": "Wind Cutter",
   "partner": {
     "voice": 0,
     "hunger_hours": [2, 6, 10, 14, 18, 22],

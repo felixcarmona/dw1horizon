@@ -21,6 +21,7 @@
   "texture": {"file": "build/batch9/Shakomon.TIM", "entry": 0},
   "voice": 4,
   "battle_music": "normal-battle",
+  "boosted_technique": "Tear Drop",
   "condition_bubble": [0, -142, -34, 3],
   "effect_origins": [[2, 60, 0, 10, 3, 0, 15, -37], [2, -70, 0, 210, 3, 0, -142, -34], [1, 0, 0, 0, 1, 0, 12, -104],
                      [2, -102, 0, 155, 3, 0, -123, 3]],

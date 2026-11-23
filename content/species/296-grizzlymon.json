@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch10/Grizzlymon.TIM", "entry": 0},
   "voice": 46,
   "battle_music": "normal-battle",
+  "boosted_technique": "Tremar",
   "condition_bubble": [0, -152, -11, 2],
   "effect_origins": [[4, 55, -50, 0, 2, -1, 26, -73], [1, 0, 0, 0, 1, 0, 161, -43],
                      [4, 65, 130, 0, 2, 0, -152, -11]],

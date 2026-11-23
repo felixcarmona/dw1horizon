@@ -16,6 +16,7 @@
   "model": {"name": "BIRD", "bones": 24, "radius": 230, "height": 450},
   "voice": 19,
   "battle_music": "normal-battle",
+  "boosted_technique": "Red Inferno",
   "partner": {
     "voice": 4,
     "hunger_hours": [2, 6, 11, 16, 21],

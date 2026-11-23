@@ -12,6 +12,7 @@
   "model": {"name": "PATA", "bones": 23, "radius": 130, "height": 180},
   "voice": 27,
   "battle_music": "normal-battle",
+  "boosted_technique": "Wind Cutter",
   "partner": {
     "voice": 1,
     "hunger_hours": [1, 5, 9, 13, 17, 21],

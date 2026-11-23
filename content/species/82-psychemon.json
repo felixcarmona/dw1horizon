@@ -25,6 +25,7 @@
   "texture": {"from": 82},
   "voice": 15,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Sonic Jab",
   "wild": {"hp": 900, "mp": 2300, "off": 340, "def": 200, "speed": 240, "brain": 200, "bits": 200},
   "partner": {
     "voice": 1,

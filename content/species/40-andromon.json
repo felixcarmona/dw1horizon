@@ -13,6 +13,7 @@
   "model": {"name": "ANDR", "bones": 21, "radius": 150, "height": 400},
   "voice": 36,
   "battle_music": "normal-battle",
+  "boosted_technique": "All Range Beam",
   "partner": {
     "voice": 10,
     "hunger_hours": [2, 6, 11, 16, 21],

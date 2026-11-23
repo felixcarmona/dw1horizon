@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch2/Pegasusmon.TIM", "entry": 0},
   "voice": 29,
   "battle_music": "normal-battle",
+  "boosted_technique": "Dynamite Kick (44)",
   "condition_bubble": [0, -135, -77, 3],
   "effect_origins": [[5, 0, 10, -100, 3, 0, -3, -87], [2, 0, 0, 0, 1, 0, 0, 0], [5, 0, -143, -108, 3, 0, -135, -77]],
   "wild": {"hp": 1480, "mp": 1520, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},

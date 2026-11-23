@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch9/SkullMeramon.TIM", "entry": 0},
   "voice": 9,
   "battle_music": "normal-battle",
+  "boosted_technique": "Meltdown",
   "condition_bubble": [0, -111, 4, 3],
   "effect_origins": [[7, 0, 0, 0, 7, 0, 0, 0], [10, 0, 0, 0, 10, 0, 0, 0], [18, 0, 0, 0, 16, 8, 54, -10]],
   "wild": {"hp": 2990, "mp": 3000, "off": 400, "def": 350, "speed": 310, "brain": 310, "bits": 1500},

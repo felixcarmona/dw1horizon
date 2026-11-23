@@ -24,6 +24,7 @@
   "texture": {"file": "build/guilmon/Guilmon.TIM", "entry": 0},
   "voice": 3,
   "battle_music": "normal-battle",
+  "boosted_technique": "Spit Fire",
   "condition_bubble": [-4, -101, -15, 6],
   "effect_origins": [[3, 100, -45, 0, 6, -1, -2, -85], [4, 0, 0, 0, 7, 0, 0, 0]],
   "wild": {"hp": 610, "mp": 600, "off": 120, "def": 95, "speed": 110, "brain": 80, "bits": 200},

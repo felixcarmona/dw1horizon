@@ -12,6 +12,7 @@
   "model": {"name": "NUME", "bones": 22, "radius": 180, "height": 270},
   "voice": 11,
   "battle_music": "normal-battle",
+  "boosted_technique": "Rnd Spd Toss",
   "partner": {
     "voice": 6,
     "hunger_hours": [0, 3, 6, 9, 12, 15, 18, 21],

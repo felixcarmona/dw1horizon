@@ -12,6 +12,7 @@
   "model": {"name": "MOJA", "bones": 18, "radius": 170, "height": 300},
   "voice": 46,
   "battle_music": "normal-battle",
+  "boosted_technique": "Giga Freeze",
   "partner": {
     "voice": 3,
     "hunger_hours": [3, 8, 13, 18, 23],

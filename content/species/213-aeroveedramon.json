@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch3/AeroVeedramon.TIM", "entry": 0},
   "voice": 12,
   "battle_music": "normal-battle",
+  "boosted_technique": "Hurricane",
   "condition_bubble": [-3, -161, -102, 3],
   "effect_origins": [[4, 260, 30, 0, 3, -44, 94, -225], [9, 0, 75, 50, 11, -13, 17, 97],
                      [9, 192, 32, 0, 11, -3, 213, -8], [1, 0, 0, 0, 2, 0, 0, 0],

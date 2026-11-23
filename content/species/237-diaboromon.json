@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch5/Diaboromon.TIM", "entry": 0},
   "voice": 12,
   "battle_music": "normal-battle",
+  "boosted_technique": "Delete Program",
   "condition_bubble": [-3, -46, -10, 4],
   "effect_origins": [[4, 260, 30, 0, 4, -23, 31, -241], [9, 0, 75, 50, 9, 13, -3, 83],
                      [9, 192, 32, 0, 9, -45, 171, 39], [1, 0, 0, 0, 20, 0, 0, 0],

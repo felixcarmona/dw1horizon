@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch4/Vikemon.TIM", "entry": 0},
   "voice": 46,
   "battle_music": "normal-battle",
+  "boosted_technique": "Aurora Freeze",
   "condition_bubble": [0, -98, -69, 20],
   "effect_origins": [[1, 0, 0, 0, 1, 0, 0, 0], [3, 100, -25, 0, 20, 0, 86, -105]],
   "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},

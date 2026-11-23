@@ -13,6 +13,7 @@
   "model": {"name": "PICC", "bones": 26, "radius": 110, "height": 330},
   "voice": 49,
   "battle_music": "normal-battle",
+  "boosted_technique": "Spinning Shot",
   "partner": {
     "voice": 0,
     "hunger_hours": [3, 8, 13, 18, 23],

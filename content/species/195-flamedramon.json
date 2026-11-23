@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch2/Flamedramon.TIM", "entry": 0},
   "voice": 9,
   "battle_music": "normal-battle",
+  "boosted_technique": "Fire Tower",
   "condition_bubble": [1, -150, 37, 2],
   "effect_origins": [[12, 50, 0, 0, 7, 37, 134, -52], [4, 150, -70, 0, 2, 1, -203, -67],
                      [8, 0, 0, -25, 5, -15, 14, -16], [4, 120, -210, 0, 2, 1, -172, -213],

@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch7/Okuwamon.TIM", "entry": 0},
   "voice": 54,
   "battle_music": "normal-battle",
+  "boosted_technique": "Bug",
   "condition_bubble": [0, -107, -61, 3],
   "effect_origins": [[1, 0, 0, 0, 2, 0, 0, 0], [3, 100, -25, 0, 3, 0, 77, -115]],
   "wild": {"hp": 3530, "mp": 2870, "off": 380, "def": 405, "speed": 265, "brain": 285, "bits": 1500},

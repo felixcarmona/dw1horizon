@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch/Hawkmon.TIM", "entry": 0},
   "voice": 39,
   "battle_music": "normal-battle",
+  "boosted_technique": "Sonic Jab",
   "condition_bubble": [-1, -100, -4, 2],
   "effect_origins": [[3, 60, 0, 0, 2, -2, 3, -75], [3, 120, 0, 0, 2, -4, 5, -151], [1, 0, 0, 0, 1, 0, 0, 0],
                      [3, 100, 14, 0, 2, -3, -13, -126]],

@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch13/MegaGargomon.TIM", "entry": 0},
   "voice": 36,
   "battle_music": "normal-battle",
+  "boosted_technique": "All Range Beam",
   "condition_bubble": [0, -125, 6, 17],
   "effect_origins": [[7, "any", 0, 0, 16, -31, 245, 109], [10, "any", 0, 0, 25, 98, -48, 94],
                      [1, "any", 0, 0, 3, 0, 0, 0], [6, "any", 0, 0, 12, 95, 227, -142]],

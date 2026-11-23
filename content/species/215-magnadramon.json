@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch3/Magnadramon.TIM", "entry": 0},
   "voice": 7,
   "battle_music": "normal-battle",
+  "boosted_technique": "Prominence Beam",
   "condition_bubble": [0, -67, -149, 1],
   "effect_origins": [[2, 60, 0, 10, 1, 0, 229, -8], [2, -70, 0, 210, 1, 0, -67, -149], [1, 0, 0, 0, 1, 0, 179, 51],
                      [2, -102, 0, 155, 1, 0, -65, -62]],

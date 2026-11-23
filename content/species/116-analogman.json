@@ -19,6 +19,7 @@
   "model": {"name": "ANLG", "bones": 18, "partner_file": "build/models/ANLP.MMD", "radius": 100, "height": 350},
   "voice": 36,
   "battle_music": "normal-battle",
+  "boosted_technique": "Delete Program",
   "wild": {"hp": 300, "mp": 300, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},
   "partner": {
     "voice": 10,

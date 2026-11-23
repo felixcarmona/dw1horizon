@@ -24,6 +24,7 @@
   "texture": {"from": 76},
   "voice": 61,
   "battle_music": "normal-battle",
+  "boosted_technique": "Magma Bomb",
   "wild": {"hp": 4000, "mp": 2300, "off": 530, "def": 240, "speed": 100, "brain": 50, "bits": 1400},
   "partner": {
     "voice": 2,

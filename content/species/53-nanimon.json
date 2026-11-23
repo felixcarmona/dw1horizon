@@ -13,6 +13,7 @@
   "model": {"name": "NANI", "bones": 20, "radius": 120, "height": 240},
   "voice": 47,
   "battle_music": "normal-battle",
+  "boosted_technique": "Big Poop Toss",
   "partner": {
     "voice": 3,
     "hunger_hours": [1, 5, 9, 13, 17, 21],

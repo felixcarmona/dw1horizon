@@ -28,6 +28,7 @@
   "texture": {"file": "build/record-originals/126.TIM", "entry": 0},
   "voice": 32,
   "battle_music": "normal-battle",
+  "boosted_technique": "Magma Bomb",
   "condition_bubble": [1, -159, -27, 6],
   "effect_origins": [[7, 30, 0, 0, 5, 130, 176, 1], [25, 48, 37, 0, 18, -18, 24, 94],
                      [9, 115, 0, 0, 4, -120, 187, -25], [9, 140, 0, 0, 4, -120, 225, -40]],

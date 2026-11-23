@@ -22,6 +22,7 @@
   "texture": {"file": "build/batch/Ankylomon.TIM", "entry": 0},
   "voice": 41,
   "battle_music": "normal-battle",
+  "boosted_technique": "Tremar",
   "condition_bubble": [0, -133, -67, 2],
   "effect_origins": [[3, 30, 0, -70, 2, 0, 15, -106]],
   "wild": {"hp": 1420, "mp": 1480, "off": 275, "def": 185, "speed": 235, "brain": 185, "bits": 600},

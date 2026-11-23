@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch12/Taomon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
+  "boosted_technique": "Magma Bomb",
   "condition_bubble": [0, -92, 20, 23],
   "effect_origins": [[7, 0, 0, 0, 22, 0, 0, 0], [10, 0, 0, 0, 26, -55, 76, 63], [18, 0, 0, 0, 5, 0, 0, 0]],
   "wild": {"hp": 2890, "mp": 3020, "off": 400, "def": 345, "speed": 310, "brain": 290, "bits": 1500},

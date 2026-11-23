@@ -12,6 +12,7 @@
   "model": {"name": "CENT", "bones": 27, "radius": 165, "height": 430},
   "voice": 32,
   "battle_music": "normal-battle",
+  "boosted_technique": "Dynamite Kick (48)",
   "partner": {
     "voice": 9,
     "hunger_hours": [2, 6, 11, 16, 21],

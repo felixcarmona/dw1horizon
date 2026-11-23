@@ -22,6 +22,7 @@
   "texture": {"file": "build/batch12/Growlmon.TIM", "entry": 0},
   "voice": 8,
   "battle_music": "normal-battle",
+  "boosted_technique": "Dynamite Kick (44)",
   "condition_bubble": [0, -130, -24, 6],
   "effect_origins": [[3, 90, -41, 0, 6, 0, 1, -109], [4, 0, 0, 0, 8, 0, 0, 0]],
   "wild": {"hp": 1460, "mp": 1550, "off": 260, "def": 200, "speed": 200, "brain": 180, "bits": 600},

@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch4/BlackGatomon.TIM", "entry": 0},
   "voice": 27,
   "battle_music": "normal-battle",
+  "boosted_technique": "Confused Storm",
   "condition_bubble": [0, -58, -5, 1],
   "effect_origins": [[3, 110, -140, 0, 1, 0, -2, -110]],
   "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},

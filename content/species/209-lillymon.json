@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch3/Lillymon.TIM", "entry": 0},
   "voice": 40,
   "battle_music": "normal-battle",
+  "boosted_technique": "Green Trap",
   "condition_bubble": [115, -136, 118, 18],
   "effect_origins": [[10, 40, -60, 0, 8, -74, -61, -60], [4, 50, -120, 0, 1, 10, -50, -197],
                      [5, 0, 0, 0, 2, 0, 0, 0], [10, 130, 25, 0, 8, -29, 74, -192],

@@ -16,6 +16,7 @@
   "model": {"name": "UNIM", "bones": 27, "radius": 180, "height": 400},
   "voice": 29,
   "battle_music": "normal-battle",
+  "boosted_technique": "Confused Storm",
   "partner": {
     "voice": 9,
     "hunger_hours": [2, 6, 11, 16, 21],

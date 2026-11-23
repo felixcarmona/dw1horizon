@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch/Stingmon.TIM", "entry": 0},
   "voice": 6,
   "battle_music": "normal-battle",
+  "boosted_technique": "Danger Sting",
   "condition_bubble": [41, -129, 64, 13],
   "effect_origins": [[2, 150, -200, 0, 1, -112, -219, -110], [3, 300, -50, 50, 13, 125, -233, 201],
                      [1, -260, -40, 0, 21, -251, -11, -132], [3, 70, -70, 0, 13, -11, -102, 31]],

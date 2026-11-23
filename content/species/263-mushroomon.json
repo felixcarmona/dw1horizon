@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch7/Mushroomon.TIM", "entry": 0},
   "voice": 23,
   "battle_music": "normal-battle",
+  "boosted_technique": "Poison Powder",
   "condition_bubble": [0, -109, -17, 8],
   "effect_origins": [[2, 0, -140, 0, 8, 0, 0, -117], [8, 0, 0, 0, 6, -51, -15, 26], [1, 0, 0, 0, 1, 0, 0, 0],
                      [2, 130, -215, 0, 8, 0, -109, -180], [8, 89, 0, 12, 6, -110, 26, 49]],

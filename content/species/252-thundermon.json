@@ -22,6 +22,7 @@
   "texture": {"file": "build/batch6/Thundermon.TIM", "entry": 0},
   "voice": 16,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megalo Spark",
   "condition_bubble": [-10, -40, -27, 2],
   "effect_origins": [[1, 0, 0, 0, 1, 0, 0, 0], [3, 100, -25, 0, 2, -20, 36, -38]],
   "wild": {"hp": 1690, "mp": 1380, "off": 240, "def": 220, "speed": 185, "brain": 175, "bits": 600},

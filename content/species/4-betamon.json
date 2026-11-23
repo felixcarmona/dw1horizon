@@ -16,6 +16,7 @@
   "model": {"name": "BETA", "bones": 24, "radius": 160, "height": 160},
   "voice": 4,
   "battle_music": "normal-battle",
+  "boosted_technique": "Ice Needle",
   "partner": {
     "voice": 1,
     "hunger_hours": [0, 5, 9, 14, 19],

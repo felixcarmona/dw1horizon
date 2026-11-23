@@ -23,6 +23,7 @@
   "model": {"name": "HOUO", "bones": 31, "radius": 250, "height": 450},
   "voice": 53,
   "battle_music": "normal-battle",
+  "boosted_technique": "Hurricane",
   "partner": {
     "voice": 4,
     "hunger_hours": [2, 6, 11, 16, 21],

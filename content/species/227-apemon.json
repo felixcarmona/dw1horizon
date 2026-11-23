@@ -22,6 +22,7 @@
   "texture": {"file": "build/batch4/Apemon.TIM", "entry": 0},
   "voice": 46,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megaton Punch",
   "condition_bubble": [7, -171, -61, 1],
   "effect_origins": [[3, 130, -10, 0, 1, 6, -87, -154], [3, 130, -50, 0, 1, 7, -57, -154],
                      [6, 150, 0, 0, 1, 145, -59, -180], [11, 100, 0, 0, 4, 32, 68, 3],

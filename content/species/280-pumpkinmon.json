@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch9/Pumpkinmon.TIM", "entry": 0},
   "voice": 21,
   "battle_music": "normal-battle",
+  "boosted_technique": "Fire Tower",
   "condition_bubble": [0, -175, 0, 2],
   "effect_origins": [[3, 30, -100, 0, 2, 0, -41, -139], [12, -67, 0, 1, 1, -1, -129, 14], [1, 0, 0, 0, 1, 0, 0, 0]],
   "wild": {"hp": 3010, "mp": 3500, "off": 380, "def": 310, "speed": 310, "brain": 330, "bits": 1500},

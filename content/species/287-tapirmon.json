@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch9/Bakumon.TIM", "entry": 0},
   "voice": 27,
   "battle_music": "normal-battle",
+  "boosted_technique": "Static Elect",
   "condition_bubble": [0, -54, -98, 1],
   "effect_origins": [[4, 70, 0, 20, 1, 0, 2, -139], [4, 120, 0, 20, 1, 0, 22, -160]],
   "wild": {"hp": 1100, "mp": 2300, "off": 390, "def": 190, "speed": 80, "brain": 150, "bits": 400},

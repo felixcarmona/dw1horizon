@@ -16,6 +16,7 @@
   "model": {"name": "COCA", "bones": 21, "radius": 190, "height": 320},
   "voice": 44,
   "battle_music": "normal-battle",
+  "boosted_technique": "Hurricane",
   "partner": {
     "voice": 4,
     "hunger_hours": [3, 8, 13, 18, 23],

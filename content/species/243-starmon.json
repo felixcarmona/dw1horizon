@@ -22,6 +22,7 @@
   "texture": {"file": "build/batch6/Starmon.TIM", "entry": 0},
   "voice": 9,
   "battle_music": "normal-battle",
+  "boosted_technique": "Magma Bomb",
   "condition_bubble": [-16, -128, -12, 1],
   "effect_origins": [[3, 100, -45, 0, 1, -43, -25, -89], [4, 0, 0, 0, 1, -29, -48, -55]],
   "wild": {"hp": 1470, "mp": 1500, "off": 245, "def": 200, "speed": 195, "brain": 180, "bits": 600},

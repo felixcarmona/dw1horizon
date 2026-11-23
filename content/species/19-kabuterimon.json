@@ -17,6 +17,7 @@
   "model": {"name": "KABU", "bones": 28, "radius": 240, "height": 430},
   "voice": 17,
   "battle_music": "normal-battle",
+  "boosted_technique": "Danger Sting",
   "partner": {
     "voice": 8,
     "hunger_hours": [2, 7, 12, 17, 21],

@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch7/Valkyrimon.TIM", "entry": 0},
   "voice": 18,
   "battle_music": "normal-battle",
+  "boosted_technique": "Thunder Justice",
   "condition_bubble": [5, -89, 3, 2],
   "effect_origins": [[3, 130, -10, 0, 3, 32, 1, -112], [3, 130, -50, 0, 3, 31, 36, -114],
                      [6, 150, 0, 0, 7, 106, 62, 51], [11, 100, 0, 0, 14, 66, 58, -19],

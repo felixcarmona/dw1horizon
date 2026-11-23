@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch10/Dokugumon.TIM", "entry": 0},
   "voice": 57,
   "battle_music": "normal-battle",
+  "boosted_technique": "Green Trap",
   "condition_bubble": [0, -191, -64, 1],
   "effect_origins": [[3, 30, 0, -70, 1, 0, -23, -107]],
   "wild": {"hp": 1380, "mp": 1440, "off": 295, "def": 180, "speed": 225, "brain": 180, "bits": 600},

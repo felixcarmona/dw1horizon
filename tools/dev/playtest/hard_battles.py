@@ -291,6 +291,8 @@ def main():
                     if mode==2 and partner:expected=expected*hard['partnerDamagePercent']//100
                     expected=max(1,min(30000,expected))
                 else:
+                    # The partner's boosted technique: docs/mods/boosted-techniques.md.
+                    if partner and species[attacker].get('boosted_technique') in (tech['name'],f"{tech['name']} ({move})"):power+=power//8+30
                     expected=B.damage(power,o,d,total,formulas['damage'],roll=roll,counter=move==45)
                     if mode==2 and partner:expected=max(1,expected*hard['partnerDamagePercent']//100)
                     if mode!=1 and not partner:
@@ -311,7 +313,7 @@ def main():
             after_ram=e.ram()
             after_stats=list(struct.unpack_from('<4h',after_ram,e.A('PARTNER_ENTITY')-0x80000000+0x38))
             after_max=list(struct.unpack_from('<2h',after_ram,e.A('PARTNER_ENTITY')-0x80000000+0x48))
-            row=dict(beforeDefenseCurve=a.before,case=case,kind=kind,screen=screen,profile=profile,mode=modeName,loadout=loadout,recoveryThrows=throws,recoveriesCarried=a.recoveries,recoveriesRemaining=e.peek('INVENTORY+60','B') if a.recoveries else 0,finisherInput=a.finishers,muscleFirst=a.muscle_first,afterPartnerStats=after_stats,afterPartnerMaxHPMP=after_max,partnerStats=stats,partnerMaxHP=health,partnerMaxMP=magic,ramBytes=len(e.ram()),expandedRAM=False,initialization=init,hits=checked,appliedHits=applied,samples=samples,
+            row=dict(afterPartnerMP=struct.unpack_from('<h',after_ram,e.A('PARTNER_ENTITY')-0x80000000+0x4e)[0],beforeDefenseCurve=a.before,case=case,kind=kind,screen=screen,profile=profile,mode=modeName,loadout=loadout,recoveryThrows=throws,recoveriesCarried=a.recoveries,recoveriesRemaining=e.peek('INVENTORY+60','B') if a.recoveries else 0,finisherInput=a.finishers,muscleFirst=a.muscle_first,afterPartnerStats=after_stats,afterPartnerMaxHPMP=after_max,partnerStats=stats,partnerMaxHP=health,partnerMaxMP=magic,ramBytes=len(e.ram()),expandedRAM=False,initialization=init,hits=checked,appliedHits=applied,samples=samples,
                      finished=True,partnerKnockedOut=any(s['state']==1 and s['partnerHP']<=0 for s in samples) or any(h['partnerTarget'] and 0<h['hpBefore']<=h['damage'] for h in applied),minimumObservedHP=min(s['partnerHP'] for s in samples),heap=free_heap(e,e.ram()),elapsedWallSeconds=round(time.monotonic()-start,2),
                      combatSeconds=max(s['frame'] for s in samples)/20)
             results.append(row);(a.out/'results.json').write_text(json.dumps(results,indent=2)+'\n');print(json.dumps({k:v for k,v in row.items() if k not in ('samples','hits','appliedHits')}),flush=True)

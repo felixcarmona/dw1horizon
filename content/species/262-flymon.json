@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch7/Flymon.TIM", "entry": 0},
   "voice": 57,
   "battle_music": "normal-battle",
+  "boosted_technique": "Danger Sting",
   "condition_bubble": [46, -215, -242, 1],
   "effect_origins": [[5, 0, 10, -100, 1, 15, -76, -233], [2, 0, 0, 0, 1, 0, 0, 0],
                      [5, 0, -143, -108, 1, 46, -215, -242]],

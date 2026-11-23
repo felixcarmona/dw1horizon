@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch6/Kokuwamon.TIM", "entry": 0},
   "voice": 68,
   "battle_music": "normal-battle",
+  "boosted_technique": "Static Elect",
   "condition_bubble": [-10, -27, 6, 4],
   "effect_origins": [[7, 60, 0, 0, 19, -26, 28, 2], [3, 85, -55, 0, 4, 21, 58, -17],
                      [10, 50, -210, 0, 14, 57, 122, -24], [3, 80, -20, 0, 4, 15, 41, -29],

@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch/Aquilamon.TIM", "entry": 0},
   "voice": 19,
   "battle_music": "normal-battle",
+  "boosted_technique": "Confused Storm",
   "condition_bubble": [0, -19, -62, 5],
   "effect_origins": [[4, 0, -20, -130, 5, 0, 87, -78], [4, 0, -10, -85, 5, 0, 59, -48],
                      [1, 0, 100, -100, 2, 0, 101, -74], [8, 80, -150, 0, 12, -119, 90, 23],

@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch11/KingEtemon.TIM", "entry": 0},
   "voice": 38,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megalo Spark",
   "condition_bubble": [0, -93, 3, 18],
   "effect_origins": [[7, 0, 0, 0, 12, -59, -23, 74], [10, 0, 0, 0, 16, -59, 69, 13], [18, 0, 0, 0, 6, 0, 0, 0],
                      [0, -83, 0, 120, 13, 0, 0, 0], [0, -42, 0, -100, 13, 0, 0, 0]],

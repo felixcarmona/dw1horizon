@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch12/SkullSatamon.TIM", "entry": 0},
   "voice": 6,
   "battle_music": "normal-battle",
+  "boosted_technique": "Prominence Beam",
   "condition_bubble": [0, -96, 9, 6],
   "effect_origins": [[7, 0, 0, 0, 4, 0, 0, 0], [10, 0, 0, 0, 10, 0, 0, 0], [18, 0, 0, 0, 16, 0, 0, 0]],
   "wild": {"hp": 3120, "mp": 2890, "off": 385, "def": 340, "speed": 295, "brain": 295, "bits": 1500},

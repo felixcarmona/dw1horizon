@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch13/Mummymon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
+  "boosted_technique": "Power Crane",
   "condition_bubble": [0, -105, -18, 1],
   "effect_origins": [[7, 0, 0, 0, 8, 7, 83, 4], [10, 0, 0, 0, 12, 0, 0, 0], [18, 0, 0, 0, 17, 0, 0, 0]],
   "wild": {"hp": 2990, "mp": 3020, "off": 395, "def": 350, "speed": 300, "brain": 295, "bits": 1500},

@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch9/Gazimon.TIM", "entry": 0},
   "voice": 16,
   "battle_music": "normal-battle",
+  "boosted_technique": "Poison Claw",
   "condition_bubble": [0, -47, -2, 4],
   "effect_origins": [[4, 70, 0, 20, 4, -2, 32, -46], [4, 120, 0, 20, 4, -2, 61, -69]],
   "wild": {"hp": 580, "mp": 620, "off": 120, "def": 90, "speed": 110, "brain": 80, "bits": 200},

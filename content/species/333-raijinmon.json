@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch13/Raijinmon.TIM", "entry": 0},
   "voice": 36,
   "battle_music": "normal-battle",
+  "boosted_technique": "Thunder Justice",
   "condition_bubble": [0, -120, 7, 4],
   "effect_origins": [[7, "any", 0, 0, 10, -37, 386, 139], [10, "any", 0, 0, 7, 68, -68, -37],
                      [1, "any", 0, 0, 16, 0, 0, 0], [6, "any", 0, 0, 10, 43, 262, 56]],

@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch13/WarGrowlmon.TIM", "entry": 0},
   "voice": 8,
   "battle_music": "normal-battle",
+  "boosted_technique": "Prominence Beam",
   "condition_bubble": [-3, -175, 2, 18],
   "effect_origins": [[3, 100, -45, 0, 18, 12, -27, -140], [4, 0, 0, 0, 20, 0, 0, 0]],
   "wild": {"hp": 3090, "mp": 3110, "off": 395, "def": 350, "speed": 300, "brain": 295, "bits": 1500},

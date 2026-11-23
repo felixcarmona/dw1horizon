@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch3/MegaKabuterimon.TIM", "entry": 0},
   "voice": 54,
   "battle_music": "normal-battle",
+  "boosted_technique": "Bug",
   "condition_bubble": [0, -92, -45, 2],
   "effect_origins": [[3, 117, -9, 0, 2, 0, 62, -117], [3, 117, -45, 0, 2, 0, 100, -101],
                      [6, 135, 0, 0, 5, 56, -95, -105], [11, 90, 0, 0, 10, 84, 142, 58],

@@ -23,6 +23,7 @@
   "model": {"name": "MTET", "bones": 27, "radius": 130, "height": 265},
   "voice": 38,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megaton Punch",
   "partner": {
     "voice": 12,
     "hunger_hours": [2, 6, 10, 14, 18, 22],

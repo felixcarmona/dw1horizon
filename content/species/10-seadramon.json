@@ -17,6 +17,7 @@
   "model": {"name": "SEAD", "bones": 17, "radius": 200, "height": 340},
   "voice": 10,
   "battle_music": "normal-battle",
+  "boosted_technique": "Giga Freeze",
   "partner": {
     "voice": 5,
     "hunger_hours": [0, 4, 8, 12, 16, 20],
