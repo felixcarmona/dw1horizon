@@ -1,0 +1,85 @@
+From de1feef2f15f2b34358b97029fbb968591c38961 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 23 Nov 2026 21:00:00 +0000
+Subject: [PATCH] Battle image copy: out of the executable, into the tournament
+ and VS overlays
+
+The 3584-byte copy of the palette rows that battle effects dim was resident in the executable, though only the
+tournament and VS overlays use it. Each of the two now keeps its own copy and points the shared routines at it, which
+returns those bytes to the heap everywhere else.
+---
+ src/main/efe.c       | 5 +++--
+ src/std/std_effect.c | 4 ++++
+ src/vs/vs_effect.c   | 4 ++++
+ 3 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/efe.c b/src/main/efe.c
+index 4d4e8be7..f96faae5 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -299,7 +299,8 @@ EfeParticleField FX_PARTICLE_DATA[50];
+ EntityParticleFX ENTITY_PARTICLE_FX_DATA[20];
+ CloudFXEntry CLOUD_FX_DATA[60];
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+-u_long SOME_IMAGE_DATA[896];
++/* MOD (heap): the copy lives in the overlay that dims it (STD, VS); each sets this before downloadSomeImage */
++u_long *SOME_IMAGE_DATA;
+ #endif
+ int16_t EFE_LOADED_MOVE_DATA[17];
+ int32_t EFE_SCRIPT_MEM1_DATA[32];
+@@ -318,7 +319,7 @@ static void *efe_bss_order[] = {
+ 	EFE_SCRIPT_MEM1_DATA,
+ 	EFE_LOADED_MOVE_DATA,
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+-	SOME_IMAGE_DATA,
++	&SOME_IMAGE_DATA,
+ #endif
+ 	CLOUD_FX_DATA,
+ 	ENTITY_PARTICLE_FX_DATA,
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index 4b8d2264..0b85247b 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -83,6 +83,9 @@ void STD_renderProjectedSprite(void);
+ void STD_renderParallelLines(SVECTOR *a, SVECTOR *b, int16_t n, SVECTOR *from, SVECTOR *to, int32_t *col);
+ void STD_renderStunEffect(int32_t idx);
+ void downloadSomeImage();
++extern u_long *SOME_IMAGE_DATA;
++/* MOD (heap): the palette rows the effects dim, kept here instead of in the executable */
++static u_long STD_IMAGE_COPY[896];
+ void modifySomeImage(long dim);
+ void STD_addPodiumRenderer(void);
+ void STD_removePodiumRenderer(void);
+@@ -2082,6 +2085,7 @@ void STD_loadMoveEFE(moves, effectIds, isLoaded)
+ // clang-format on
+ {
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
++	SOME_IMAGE_DATA = STD_IMAGE_COPY;
+ 	downloadSomeImage();
+ #endif
+ 	EFE_LOAD_REQUEST.state = -1;
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 2df1d5cc..56dd70c1 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -43,6 +43,9 @@ extern int32_t UNKNOWN_MODEL_TAKEN[16];
+ 
+ int32_t doSomethingWithSomePoints(int16_t *rect, DVECTOR *line);
+ void downloadSomeImage();
++extern u_long *SOME_IMAGE_DATA;
++/* MOD (heap): the palette rows the effects dim, kept here instead of in the executable */
++static u_long VS_IMAGE_COPY[896];
+ void modifySomeImage(long dim);
+ int32_t addFileReadRequest(char *path, uint8_t *buffer, uint8_t *isRunning, void *callback, void *callbackParam, CdlLOC *loc, int32_t size);
+ CdlLOC *getEFEDATEntry(int32_t id);
+@@ -1733,6 +1736,7 @@ void VS_loadMoveEFE(moves, effectIds, isLoaded)
+ // clang-format on
+ {
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
++	SOME_IMAGE_DATA = VS_IMAGE_COPY;
+ 	downloadSomeImage();
+ #endif
+ 	EFE_LOAD_REQUEST.state = -1;
+-- 
+2.55.0
+
