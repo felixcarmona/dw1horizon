@@ -2,7 +2,8 @@
 """Shared padding bank for any number of runtime languages (gen_text.py).
 
 Pick the longest encoded string per key; identity=True makes each key keep its own
-array. This prevents aliases that hold for two languages but not the third.
+array. This prevents aliases that hold for two languages but not the third; 'apart'
+does the same for the texts the C takes as literals.
 """
 import json
 import sys
@@ -37,10 +38,29 @@ def merge(banks):
         if all(key in bank['text'] for bank in banks):
             signature = tuple(bank['text'][key] for bank in banks)
             aliases[key] = canonical.setdefault(signature, key)
+    # A text the C takes as a literal is merged by the compiler with an equal literal of the same file. Two keys that
+    # read the same in one language and not in another would then be one array there and two elsewhere, and the
+    # executables would lay out differently. Such keys get padded lengths that differ in every language: 'apart' is the
+    # extra NULs of a key over its capacity.
+    apart = {}
+    taken = {}
+    for key in sorted(aliases):
+        if aliases[key] != key:
+            continue
+        extra = 0
+        while any((n, bank['text'][key], sizes[key] + extra) in taken for n, bank in enumerate(banks)):
+            extra += 1
+        for n, bank in enumerate(banks):
+            taken[(n, bank['text'][key], sizes[key] + extra)] = key
+        if extra:
+            apart[key] = extra
+    for key, first in aliases.items():
+        if first in apart:
+            apart[key] = apart[first]
     # Independent glyph sets can map one Unicode character to different codes.
     # gen_text needs only the encoded capacity of the padding text, never its ink.
     if independent:text = {key:'X'*sizes[key] for key in text}
-    return {'font': font, 'text': text, 'identity': True, 'aliases': aliases, 'complete': sorted(aliases)}
+    return {'font': font, 'text': text, 'identity': True, 'aliases': aliases, 'apart': apart, 'complete': sorted(aliases)}
 
 
 if __name__ == '__main__':

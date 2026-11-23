@@ -1,0 +1,33 @@
+From 0f133a42433da1bf13e88ac9143a2cfec1627cde Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 23 Nov 2026 16:00:00 +0000
+Subject: [PATCH] Language padding: macro texts equal in one language only stay
+ apart
+
+The compiler merges equal string literals of one file. Two texts taken as literals that read the same in one language and not in another (the laboratory's Save and the Look page's Save in English, its Back and Exit in Japanese) were one array in one executable and two in the other, so the language executables laid out differently. The padding bank now lists such keys under 'apart' and each gets that many more NULs in every language.
+---
+ tools/gen_text.py | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/tools/gen_text.py b/tools/gen_text.py
+index 47a61855..b968a063 100755
+--- a/tools/gen_text.py
++++ b/tools/gen_text.py
+@@ -220,9 +220,12 @@ def __generate(release, blocks, source):
+         literal = __padded(text, other, where)
+         if as_macro:
+             # MOD (language): still a literal (the C may initialise an array with it), with one NUL more than the longer
+-            # text, so the compiler never merges it with an equal literal (both languages keep the same layout)
++            # text, so the compiler never merges it with an equal literal (both languages keep the same layout).
++            # Two macros that read the same in this language and not in another would still merge here and not
++            # there: the padding bank's 'apart' gives such a key more NULs, the same number in every language.
+             if __PAD_ON:
+-                literal = __c_string(text, where, max(__c_bytes(text, where), __c_bytes(other or '', where)) + 1)
++                literal = __c_string(text, where, max(__c_bytes(text, where), __c_bytes(other or '', where)) + 1 +
++                                     __PAD.get('apart', {}).get(key, 0))
+             header.append('#define {} {}'.format(symbol, literal))
+             return []
+         pair = __pair(literal, other, key or where)
+-- 
+2.55.0
+

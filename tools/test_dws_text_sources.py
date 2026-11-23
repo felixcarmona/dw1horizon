@@ -27,6 +27,17 @@ class TextSources(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'inconsistent'):
             padding.merge([banks[0], dict(font={'é': 2}, text={})])
 
+    def test_padding_keeps_apart_keys_equal_in_one_language_only(self):
+        # save/look_save read the same in the first language, back/exit in the second: as literals of one file each
+        # pair would be one array in one executable and two in the other
+        banks = [dict(font={}, text={'save': 'Save', 'look_save': 'Save', 'back': 'Back', 'exit': 'Exit', 'ok': 'OK', 'yes': 'OK'}),
+                 dict(font={}, text={'save': 'Sav2', 'look_save': 'Keep', 'back': 'Undo', 'exit': 'Undo', 'ok': 'Si', 'yes': 'Si'})]
+        got = padding.merge(banks)
+        self.assertEqual(got['apart'], {'exit': 1, 'save': 1})
+        lengths = lambda n: {(banks[n]['text'][k], len(got['text'][k]) + got['apart'].get(k, 0)) for k in ('save', 'look_save', 'back', 'exit')}
+        self.assertEqual((len(lengths(0)), len(lengths(1))), (4, 4))
+        self.assertEqual(got['aliases']['yes'], 'ok')
+
     def test_spanish_punctuation_preserves_decimal_points(self):
         self.assertEqual(extract.tidy('hambre.¿Tienes 1.5?', {'id': 'es-fan'}), 'hambre. ¿Tienes 1.5?')
         self.assertEqual(extract.tidy('hambre.¿Tienes', {'id': 'jp1'}), 'hambre.¿Tienes')
