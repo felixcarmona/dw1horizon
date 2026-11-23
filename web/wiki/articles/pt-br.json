@@ -132,7 +132,8 @@
     "paragraphs": [
       "Uma execução inimiga de técnica normal registra a candidata; não precisa acertar. Após a batalha ela precisa estar na lista da espécie, ter especialidade correspondente e ainda não ser conhecida. O primeiro espaço correspondente define a chance.",
       "Inteligência não altera essa rolagem. Usos repetidos não geram rolagens extras. Se várias candidatas passarem, uma é escolhida ao acaso; a porcentagem não garante o prêmio final.",
-      "Treino de inteligência usa outras regras. As páginas mostram MP básico antes de modificadores; finalizadores não gastam MP. Nomes repetidos mantêm IDs e espécies podem alterar valores do finalizador."
+      "Treino de inteligência usa outras regras. As páginas mostram MP básico antes de modificadores; finalizadores não gastam MP. Nomes repetidos mantêm IDs e espécies podem alterar valores do finalizador.",
+      "Cada espécie que pode ser criada tem uma técnica reforçada, indicada na sua página e com uma seta no menu de técnicas. Quando esse parceiro a usa, o poder sobe um oitavo mais 30 e ela gasta um quarto a menos de MP; as tabelas da espécie já mostram esses valores. O reforço também vale para os dois lutadores do modo VS e nunca para inimigos."
     ]
   },
   "file-city": {

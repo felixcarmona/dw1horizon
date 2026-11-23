@@ -132,7 +132,8 @@
     "paragraphs": [
       "L’exécution d’une technique normale par un ennemi l’enregistre comme candidate, même sans toucher. Après le combat elle doit figurer dans la liste de l’espèce, correspondre à une spécialité et être inconnue. Le premier emplacement correspondant fixe le jet.",
       "L’intelligence ne modifie pas ce jet. Les répétitions ne créent pas de jets supplémentaires. Si plusieurs candidats réussissent, un est tiré au sort ; le pourcentage ne garantit pas la récompense finale.",
-      "L’entraînement d’intelligence suit d’autres règles. Les fiches donnent le coût PM de base avant modificateurs ; les coups de grâce ne coûtent pas de PM. Les noms identiques conservent leurs IDs et une espèce peut modifier son coup de grâce."
+      "L’entraînement d’intelligence suit d’autres règles. Les fiches donnent le coût PM de base avant modificateurs ; les coups de grâce ne coûtent pas de PM. Les noms identiques conservent leurs IDs et une espèce peut modifier son coup de grâce.",
+      "Chaque espèce que l’on peut élever a une technique renforcée, signalée sur sa fiche et par une flèche dans le menu des techniques. Quand ce partenaire l’utilise, sa puissance augmente d’un huitième plus 30 et elle coûte un quart de PM en moins ; les tableaux d’espèce affichent déjà ces valeurs. Le bonus vaut aussi pour les deux combattants du mode VS et jamais pour les ennemis."
     ]
   },
   "file-city": {
