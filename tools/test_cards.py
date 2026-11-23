@@ -116,10 +116,9 @@ class CardContent(unittest.TestCase):
             p = Path(d) / 'new.json'
             p.write_text(json.dumps([authored(510), dict(key='last', replaces=64)]))
             self.assertEqual(cards.replacement_table(p), [65535] * 63 + [445])
-        entries = cards.replacement_entries()
-        self.assertEqual(set(entries), set(range(1, 65)))
-        self.assertEqual(sorted(entries.values()), list(range(240, 304)))
-        self.assertEqual(cards.replacement_table(), [entries[n] for n in range(1, 65)])
+        # The shipped cards keep the original art of every original card: no replacement rows.
+        self.assertEqual(cards.replacement_entries(), {})
+        self.assertEqual(cards.replacement_table(), [65535] * 64)
 
     def test_bad_metadata(self):
         for update in ({'number': 65}, {'number': 512}, {'species': 65536},

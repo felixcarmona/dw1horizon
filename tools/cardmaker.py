@@ -46,12 +46,12 @@ KEPT = ROOT / 'content' / 'cards' / 'art'   # reduced copies of it that the buil
 CARDS = ROOT / 'content' / 'cards' / 'new.json'
 OUT = ROOT / 'build' / 'cards'
 W, H = 150, 180
-WIN = (5, 5, 144, 157)            # the art window, inclusive: 140 x 153
+WIN = (4, 4, 145, 158)            # the art window, inclusive: 142 x 155 (the frame's corners are drawn over it)
 GEMINI = 'gemini-3-pro-image-preview'
 
 # Frame colours, one per element, as the original cards do (sampled by eye from them, redrawn here):
-# line = the coloured rule round the art and the name bar, dark = the thin shadow rule inside it,
-# tint = the card's margin, bar = the fill of the name bar.
+# line = the coloured rule round the art and the fill of the name bar, dark = the thin shadow rule beside it.
+# (tint and bar belonged to an earlier frame and are not drawn.)
 FRAMES = {
     'red':    dict(line=(232, 56, 48),  dark=(112, 24, 24), tint=(248, 232, 216), bar=(232, 56, 48)),
     'blue':   dict(line=(40, 96, 160),  dark=(16, 48, 80),  tint=(208, 220, 240), bar=(40, 96, 160)),
@@ -382,6 +382,15 @@ DIGITS = {
 }
 
 
+# the number's digits: 6 x 8, bold; put_number leans their top half one pixel to the right
+SLANTED = {
+    '0': '.####./##..##/##..##/##..##/##..##/##..##/##..##/.####.', '1': '..##../.###../..##../..##../..##../..##../..##../.####.',
+    '2': '.####./##..##/....##/...##./..##../.##.../##..../######', '3': '.####./##..##/....##/..###./....##/....##/##..##/.####.',
+    '4': '...##./..###./.####./##.##./######/...##./...##./...##.', '5': '######/##..../#####./....##/....##/....##/##..##/.####.',
+    '6': '.####./##..../##..../#####./##..##/##..##/##..##/.####.', '7': '######/....##/...##./...##./..##../..##../.##.../.##...',
+    '8': '.####./##..##/##..##/.####./##..##/##..##/##..##/.####.', '9': '.####./##..##/##..##/##..##/.#####/....##/....##/.####.',
+}
+
 EXTRA_GLYPHS = {
     '-': ['', '', '', '', '+###+', '+###+', '', '', '', ''],
     'X': ['##..##', '##..##', '+#..#+', '.####.', '.####.', '+#..#+', '##..##', '##..##', '', ''],
@@ -409,36 +418,87 @@ def text_mask(text):
     return m, x
 
 
-def draw_frame(card, spec, number, name):
+def _mix(a, b, t):
+    return tuple(round(a[i] * (1 - t) + b[i] * t) for i in range(3))
+
+
+def _noise(x, y):
+    h = (x * 374761393 + y * 668265263) & 0xffffffff
+    h = ((h ^ (h >> 13)) * 1274126177) & 0xffffffff
+    return ((h ^ (h >> 16)) & 255) / 255
+
+
+_MARGIN = []
+
+
+def margin():
+    """The card's grey margin, our own texture (soft blotches and a fine grain): W * H RGB bytes, the same on every card."""
+    if not _MARGIN:
+        out = bytearray()
+        for y in range(H):
+            for x in range(W):
+                b = sum(_noise(x // s + s, y // s) * w for s, w in ((7, .5), (3, .3), (1, .2)))
+                v = 134 + round(9 * b) - y // 45
+                out += bytes((v - 2, v + 4, v + 8))
+        _MARGIN.append(bytes(out))
+    return _MARGIN[0]
+
+
+# The frame of the original cards, drawn again from its measures: a grey margin, a coloured rule round the art with a
+# shadow rule on its top and left and a light one on its right and bottom, a square in the top left corner, a stair
+# of squares cut into the art's bottom right corner, and the name bar.
+STAIR_CUTS = ((4, 4, 12, 12), (139, 138, 145, 158), (132, 145, 138, 158), (125, 152, 131, 158))   # margin over the art
+LIGHT_RULES = ((145, 5, 145, 137), (138, 137, 145, 137), (138, 137, 138, 144), (131, 144, 138, 144), (131, 144, 131, 151),
+               (124, 151, 131, 151), (124, 151, 124, 158), (5, 158, 124, 158))
+DARK_RULES = ((13, 4, 145, 4), (13, 4, 13, 13), (4, 13, 13, 13), (4, 13, 4, 158))
+LINES = ((12, 3, 146, 3), (12, 3, 12, 12), (3, 12, 12, 12), (3, 12, 3, 159), (146, 3, 146, 138), (139, 138, 146, 138),
+         (139, 138, 139, 159), (139, 144, 146, 144), (146, 144, 146, 152), (132, 145, 138, 145), (132, 145, 132, 152),
+         (138, 145, 138, 152), (125, 152, 146, 152), (125, 152, 125, 159), (131, 152, 131, 159), (3, 159, 125, 159),
+         (131, 159, 139, 159))
+STAIR_SQUARES = ((140, 146), (133, 153))    # the two filled ones (top left pixel, 5 x 5)
+
+
+def draw_frame(im, spec):
+    """The frame over a card whose art is already pasted at WIN."""
     f = FRAMES[spec]
-    im = card
-    def rect(x0, y0, x1, y1, col):
-        row = bytes(col) * (x1 - x0 + 1)      # (whole rows at once: the card is an RGB raster)
-        for y in range(y0, y1 + 1):
-            im.data[(y * im.width + x0) * 3:(y * im.width + x1 + 1) * 3] = row
-    rect(0, 0, W - 1, H - 1, f['tint'])
-    # coloured rule + dark rule round the art window
+    line, dark = f['line'], f['dark']
+    light = _mix(line, (255, 255, 255), 0.45)
+    grey = margin()
+
+    def rect(x0, y0, x1, y1, col=None):
+        for y in range(y0, y1 + 1):         # (whole rows at once: the card is an RGB raster)
+            a, b = (y * W + x0) * 3, (y * W + x1 + 1) * 3
+            im.data[a:b] = bytes(col) * (x1 - x0 + 1) if col else grey[a:b]
     x0, y0, x1, y1 = WIN
-    rect(x0 - 2, y0 - 2, x1 + 2, y1 + 3, f['line'])
-    rect(x0 - 1, y0 - 1, x1 + 1, y1 + 1, f['dark'])
-    # name bar
-    rect(3, 162, 146, 176, f['bar'])
-    rect(3, 162, 146, 162, f['line'])
-    rect(3, 176, 146, 176, f['dark'])
-    rect(3, 163, 146, 163, tuple(min(255, c + 60) for c in f['bar']))
-    # corner ornaments: filled square top left, small stair of squares bottom right
-    rect(0, 0, 9, 9, f['line']); rect(0, 9, 9, 9, f['dark']); rect(9, 0, 9, 9, f['dark'])
+    for box in ((0, 0, W - 1, y0 - 1), (0, y1 + 1, W - 1, H - 1), (0, y0, x0 - 1, y1), (x1 + 1, y0, W - 1, y1)) + STAIR_CUTS:
+        rect(*box)
+    for box in DARK_RULES:
+        rect(*box, dark)
+    for box in LIGHT_RULES:
+        rect(*box, light)
+    for box in LINES:
+        rect(*box, line)
+    for sx, sy in STAIR_SQUARES:
+        rect(sx, sy, sx + 4, sy + 4, line)
+        rect(sx - 1, sy - 1, sx + 5, sy - 1, dark); rect(sx - 1, sy - 1, sx - 1, sy + 5, dark)
+        rect(sx + 5, sy, sx + 5, sy + 5, light); rect(sx, sy + 5, sx + 5, sy + 5, light)
+    rect(0, 0, 8, 8, line); rect(9, 0, 9, 9, dark); rect(0, 9, 9, 9, dark)
+    rect(3, 162, 146, 176, line)
+    rect(3, 162, 145, 162, light); rect(3, 162, 3, 175, light); rect(3, 176, 146, 176, dark); rect(146, 162, 146, 176, dark)
     return im
 
 
-def draw_stair(im, spec):
-    """The three small squares in the art's bottom right corner: drawn over the art, after it is pasted."""
-    f = FRAMES[spec]
-    for (sx, sy) in ((133, 152), (140, 145), (140, 152)):
-        for y in range(sy, sy + 6):
-            for x in range(sx, sx + 6):
-                edge = x in (sx, sx + 5) or y in (sy, sy + 5)
-                im.putpixel((x, y), f['tint'] if edge else f['line'])
+def put_number(im, x, y, number, shadow):
+    """The card's number in the slanted bold digits of the original cards' bar -> the x after it."""
+    for ch in '%02d' % number:
+        rows = SLANTED[ch].split('/')
+        for layer, col in ((1, shadow), (0, (255, 255, 255))):
+            for gy, r in enumerate(rows):
+                for gx, v in enumerate(r):
+                    if v == '#':
+                        im.putpixel((x + gx + (1 if gy < 4 else 0) + layer, y + gy + layer), col)
+        x += 8
+    return x
 
 
 def put_text(im, x, y, text, ink=(255, 255, 255), shadow=(40, 24, 24)):
@@ -466,13 +526,13 @@ def compose(card_def, number, preview=False):
     art = art.resize((ww, hh), Image.Resampling.LANCZOS)
     card = Image.new('RGB', (W, H), (0, 0, 0))
     spec = card_def.get('frame') or ELEMENTS[element_of(sp)][0]
-    draw_frame(card, spec, number, sp['name'])
     card.paste(art, (x0, y0))
-    draw_stair(card, spec)
+    draw_frame(card, spec)
     # number left, name centred in the rest of the bar
-    put_text(card, 9, 165, '%02d' % number)
+    dark = FRAMES[spec]['dark']
+    x = put_number(card, 9, 165, number, dark)
     m, tw = text_mask(sp['name'])
-    put_text(card, max(34, round(90 - tw / 2)), 165, sp['name'])
+    put_text(card, max(x + 4, min(round(92 - tw / 2), 144 - tw)), 165, sp['name'], shadow=dark)
     return card
 
 

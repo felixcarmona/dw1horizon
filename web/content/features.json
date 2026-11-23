@@ -230,18 +230,18 @@
    "id": "cards",
    "media": [
     {
-     "type": "compare",
-     "src": "media/clips/cards-leomon-en.jpg",
+     "type": "image",
+     "src": "media/clips/cards-angewomon-en.jpg",
      "alt": {
-      "en": "The same card in the album, side by side: Leomon's original art (NEW CARDS off) and its new art (NEW CARDS on)",
-      "es": "La misma carta en el álbum, lado a lado: el arte original de Leomon (NEW CARDS desactivado) y su arte nuevo (NEW CARDS activado)",
-      "pt-br": "A mesma carta no álbum, lado a lado: a arte original do Leomon (NEW CARDS desligado) e a arte nova (NEW CARDS ligado)",
-      "fr": "La même carte dans l'album, côte à côte : l'illustration d'origine de Leomon (NEW CARDS désactivé) et la nouvelle (NEW CARDS activé)",
-      "de": "Dieselbe Karte im Album, nebeneinander: Leomons Originalbild (NEW CARDS aus) und das neue Bild (NEW CARDS an)",
-      "it": "La stessa carta nell'album, fianco a fianco: l'illustrazione originale di Leomon (NEW CARDS spento) e quella nuova (NEW CARDS acceso)",
-      "ja": "アルバム内の同じカードの比較：レオモンのオリジナル絵（NEW CARDSオフ）と新しい絵（NEW CARDSオン）",
-      "ca": "La mateixa carta a l'àlbum, un al costat de l'altre: l'art original de Leomon (NEW CARDS desactivat) i el nou (NEW CARDS activat)",
-      "zh-hans": "相册中同一张卡牌的并排对比：雷欧兽的原版画面（NEW CARDS关闭）与新画面（NEW CARDS开启）"
+      "en": "One of the new cards open in the album: Angewomon, card 134",
+      "es": "Una de las cartas nuevas abierta en el álbum: Angewomon, la carta 134",
+      "pt-br": "Uma das cartas novas aberta no álbum: Angewomon, a carta 134",
+      "fr": "L'une des nouvelles cartes ouverte dans l'album : Angewomon, la carte 134",
+      "de": "Eine der neuen Karten im Album geöffnet: Angewomon, Karte 134",
+      "it": "Una delle carte nuove aperta nell'album: Angewomon, la carta 134",
+      "ja": "アルバムで開いた新カードの1枚：エンジェウーモン（134番）",
+      "ca": "Una de les cartes noves oberta a l'àlbum: Angewomon, la carta 134",
+      "zh-hans": "在相册中打开的一张新卡牌：天女兽，第134号"
      }
     },
     {
@@ -262,39 +262,39 @@
    ],
    "en": {
     "title": "300 collectible cards",
-    "body": "240 new cards, numbered 66 to 305, join the original 64, and every card has new art that matches its Digimon. The album scrolls and counts what you own. The NEW CARDS option in OPTIONS brings back the original cards and art whenever you want."
+    "body": "240 new cards, numbered 66 to 305, join the original 64, each with art that matches its Digimon. The album scrolls and counts what you own. The NEW CARDS option in OPTIONS hides the new ones whenever you want."
    },
    "es": {
     "title": "300 cartas coleccionables",
-    "body": "240 cartas nuevas, de la 66 a la 305, se suman a las 64 originales, y todas tienen un dibujo nuevo acorde con su Digimon. El álbum se desplaza y cuenta las que tienes. La opción NEW CARDS en OPTIONS devuelve las cartas y los dibujos originales cuando quieras."
+    "body": "240 cartas nuevas, de la 66 a la 305, se suman a las 64 originales, cada una con un dibujo acorde con su Digimon. El álbum se desplaza y cuenta las que tienes. La opción NEW CARDS en OPTIONS oculta las nuevas cuando quieras."
    },
    "pt-br": {
     "title": "300 cartas colecionáveis",
-    "body": "240 cartas novas, de 66 a 305, se juntam às 64 originais, e todas têm uma arte nova que combina com seu Digimon. O álbum rola e conta as que você tem. A opção NEW CARDS em OPTIONS traz de volta as cartas e a arte originais quando quiser."
+    "body": "240 cartas novas, de 66 a 305, se juntam às 64 originais, cada uma com uma arte que combina com seu Digimon. O álbum rola e conta as que você tem. A opção NEW CARDS em OPTIONS esconde as novas quando quiser."
    },
    "fr": {
     "title": "300 cartes à collectionner",
-    "body": "240 nouvelles cartes, numérotées de 66 à 305, rejoignent les 64 d'origine, et chacune a une nouvelle illustration assortie à son Digimon. L'album défile et compte celles que tu possèdes. L'option NEW CARDS dans OPTIONS rend les cartes et les illustrations d'origine quand tu veux."
+    "body": "240 nouvelles cartes, numérotées de 66 à 305, rejoignent les 64 d'origine, chacune avec une illustration assortie à son Digimon. L'album défile et compte celles que tu possèdes. L'option NEW CARDS dans OPTIONS masque les nouvelles quand tu veux."
    },
    "de": {
     "title": "300 Sammelkarten",
-    "body": "240 neue Karten, nummeriert von 66 bis 305, kommen zu den 64 ursprünglichen hinzu, und jede hat ein neues Bild passend zu ihrem Digimon. Das Album scrollt und zählt, was du besitzt. Die Option NEW CARDS in OPTIONS bringt die ursprünglichen Karten und Bilder zurück, wann immer du willst."
+    "body": "240 neue Karten, nummeriert von 66 bis 305, kommen zu den 64 ursprünglichen hinzu, jede mit einem Bild passend zu ihrem Digimon. Das Album scrollt und zählt, was du besitzt. Die Option NEW CARDS in OPTIONS blendet die neuen aus, wann immer du willst."
    },
    "it": {
     "title": "300 carte collezionabili",
-    "body": "240 carte nuove, numerate da 66 a 305, si aggiungono alle 64 originali, e ognuna ha un'illustrazione nuova in tema con il suo Digimon. L'album scorre e conta quelle che possiedi. L'opzione NEW CARDS in OPTIONS riporta le carte e le illustrazioni originali quando vuoi."
+    "body": "240 carte nuove, numerate da 66 a 305, si aggiungono alle 64 originali, ognuna con un'illustrazione in tema con il suo Digimon. L'album scorre e conta quelle che possiedi. L'opzione NEW CARDS in OPTIONS nasconde quelle nuove quando vuoi."
    },
    "ja": {
     "title": "300枚のコレクションカード",
-    "body": "66〜305番の新カード240枚がオリジナルの64枚に加わり、すべてのカードにそのデジモンに合った新しいイラストが付きます。アルバムはスクロールでき、持っている枚数を数えます。OPTIONSのNEW CARDSで、いつでもオリジナルのカードとイラストに戻せます。"
+    "body": "66〜305番の新カード240枚がオリジナルの64枚に加わり、どのカードにもそのデジモンに合ったイラストが付きます。アルバムはスクロールでき、持っている枚数を数えます。OPTIONSのNEW CARDSで、いつでも新カードを非表示にできます。"
    },
    "ca": {
     "title": "300 cartes col·leccionables",
-    "body": "240 cartes noves, de la 66 a la 305, se sumen a les 64 originals, i totes tenen un dibuix nou d'acord amb el seu Digimon. L'àlbum es desplaça i compta les que tens. L'opció NEW CARDS a OPTIONS retorna les cartes i els dibuixos originals quan vulguis."
+    "body": "240 cartes noves, de la 66 a la 305, se sumen a les 64 originals, cadascuna amb un dibuix d'acord amb el seu Digimon. L'àlbum es desplaça i compta les que tens. L'opció NEW CARDS a OPTIONS amaga les noves quan vulguis."
    },
    "zh-hans": {
     "title": "300张收集卡",
-    "body": "第66至305号的240张新卡加入原有的64张，每张卡都有与其数码宝贝相配的新插画。卡册可以滚动，并统计你拥有的数量。在OPTIONS中打开NEW CARDS选项，随时可以换回原版卡片和插画。"
+    "body": "第66至305号的240张新卡加入原有的64张，每张新卡都有与其数码宝贝相配的插画。卡册可以滚动，并统计你拥有的数量。在OPTIONS中关闭NEW CARDS选项，随时可以隐藏新卡。"
    }
   },
   {

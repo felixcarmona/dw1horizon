@@ -237,7 +237,8 @@ def build(out, extracted, run_with=None, scratch=None, language="es"):
         card = bytearray(open(os.path.join(ext, 'CARD/CARD.ALL'), 'rb').read())
         for lang in (language, 'en'):
             c = bytearray(card)
-            for k, off in enumerate(card_offsets(card)):
+            # Japanese keeps the disc's own name bars: the original cards' names are already in katakana there.
+            for k, off in enumerate(card_offsets(card) if lang != 'ja' else ()):
                 src = f'{d}/cartas/card-{k:02d}.es.idx' if not (lang == 'en' and k == 0) else f'{d}/cartas/card-00.en-latin.idx'
                 sub = bytearray(c[off:off + 14 * 2048])
                 put_indices(sub, 0, open(src, 'rb').read())
