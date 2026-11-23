@@ -250,9 +250,9 @@
     },
     "normal": {
       "fromHp": 3500,
-      "hpPercent": 250,
-      "offensePercent": 150,
-      "minimumDamagePercent": 25,
+      "hpPercent": 175,
+      "offensePercent": 125,
+      "minimumDamagePercent": 20,
       "fullHp": 6500
     },
     "strength": {
