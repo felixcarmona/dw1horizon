@@ -15,7 +15,7 @@ partner still has to learn it like any other.
 - Finishers and Counter are never boosted.
 
 The technique menu shows the boosted technique's power in red with a small up arrow and its MP cost in blue
-with a small down arrow, in the equipped list and in the technique's panel.
+with a small down arrow, in the equipped list and in the technique's panel, and its cell in the grid carries a small up arrow on its corner.
 
 ## Where it lives
 

@@ -1,4 +1,4 @@
-From 5e134981fd144dadb61412cde0294427ca9f3114 Mon Sep 17 00:00:00 2001
+From 888c1c69f60ce5be5001f152f2079504f842baf5 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Mon, 23 Nov 2026 17:14:03 +0000
 Subject: [PATCH] Boosted techniques: one regular technique per species hits
@@ -12,12 +12,12 @@ small up and down arrows.
 ---
  include/dw/params.h    |  2 +-
  include/dw/species.h   |  9 +++++++++
- src/btl/battle_main.c  | 10 +++++-----
- src/main/game_menu.c   | 31 +++++++++++++++++++++++++++----
- src/main/mod_species.c | 16 ++++++++++++++++
- src/std/std_main.c     | 10 +++++-----
- src/vs/vs_main.c       | 10 +++++-----
- 7 files changed, 68 insertions(+), 20 deletions(-)
+ src/btl/battle_main.c  | 10 ++++-----
+ src/main/game_menu.c   | 46 ++++++++++++++++++++++++++++++++++++++----
+ src/main/mod_species.c | 16 +++++++++++++++
+ src/std/std_main.c     | 10 ++++-----
+ src/vs/vs_main.c       | 10 ++++-----
+ 7 files changed, 83 insertions(+), 20 deletions(-)
 
 diff --git a/include/dw/params.h b/include/dw/params.h
 index 727fc66a..0a0cf5b4 100644
@@ -102,34 +102,39 @@ index e91fcfd3..5aedee32 100644
  		}
  		BTL_sortScoresAscending(values, keys, groups, 3);
 diff --git a/src/main/game_menu.c b/src/main/game_menu.c
-index 4a179a73..ed318faa 100644
+index 4a179a73..77635044 100644
 --- a/src/main/game_menu.c
 +++ b/src/main/game_menu.c
-@@ -3882,6 +3882,31 @@ void renderDigimonStatsView(void)
+@@ -3882,6 +3882,36 @@ void renderDigimonStatsView(void)
  	}
  }
  
 +/* MOD (boosted techniques): the species' boosted technique shows its raised power in red with an up arrow
 + * and its lowered MP cost in blue with a down arrow */
++static void renderBoostArrow(int32_t x, int32_t y, int32_t down, int32_t otz)
++{
++	int32_t k, w;
++
++	if (down) y += 6;
++	for (k = 0; k < 7; k++) {
++		w = k < 4 ? k : 1; /* the head, then the shaft */
++		renderBox(x + 3 - w, y, w * 2 + 1, 1, down ? 0x60 : 0xff, down ? 0xb0 : 0x60, down ? 0xff : 0x50, 0, otz);
++		y += down ? -1 : 1;
++	}
++}
++
 +static void renderBoostedNumbers(int32_t moveId, int32_t x, int32_t y, int32_t list)
 +{
 +	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
 +	int32_t boosted = DIGI_PARA(type).boostedTech == moveId + 1;
 +	int32_t otz = list ? 5 : 3;
-+	int32_t i, k, w, value, arrowY;
++	int32_t i, value;
 +
 +	for (i = 0; i < 2; i++) { /* the power, then the MP cost: beside it in the list, under it in the panel */
 +		value = modBoost(type, moveId, i);
 +		if (i) value *= 3;
 +		renderNumber(boosted ? 6 - i * 4 : 0, x, y, 3, value, otz);
-+		if (boosted) {
-+			arrowY = i ? y + 9 : y + 5;
-+			for (k = 0; k < 7; k++) {
-+				w = k < 4 ? k : 1; /* the head, then the shaft */
-+				renderBox(x + 0x20 - w, arrowY, w * 2 + 1, 1, i ? 0x60 : 0xff, i ? 0xb0 : 0x60, i ? 0xff : 0x50, 0, otz);
-+				arrowY += i ? -1 : 1;
-+			}
-+		}
++		if (boosted) renderBoostArrow(x + 0x19, y + 2, i, otz); /* 3 px after the digits, centred on their 10 rows */
 +		if (list) x += 0x29; else y += 0x11;
 +	}
 +}
@@ -137,7 +142,7 @@ index 4a179a73..ed318faa 100644
  void renderDigimonMovesView(void)
  {
  	Move *mv;
-@@ -3906,8 +3931,7 @@ void renderDigimonMovesView(void)
+@@ -3906,8 +3936,7 @@ void renderDigimonMovesView(void)
  			if (EQUIPPED_MOVES[j] != 0xff) {
  				mv = &MOVE_DATA[EQUIPPED_MOVES[j]];
  				renderString(0, -0x7c, j * 0xf - 0x42, 0x78, 0xc, 0, j * 0xc + 0x18, 5, 1);
@@ -147,7 +152,7 @@ index 4a179a73..ed318faa 100644
  				if (mv->range != 0) {
  #if !VERSION_IS(US)
  					renderString(0, 0x65, j * 0xf - 0x42, 0xc, 0xc,
-@@ -4255,8 +4279,7 @@ void renderDigimonMovesSelected(int16_t panel)
+@@ -4255,8 +4284,7 @@ void renderDigimonMovesSelected(int16_t panel)
  		drawStringMode(MOVE_NAMES[moveId], 0, 0x84,
  		              fitStringMode(MOVE_NAMES[moveId], MOVE_NAME_WIDTH));
  		renderString(0, (panel * 0x9d) - 0x8a, 9, 0x78, 0xc, 0, 0x84, 3, 1);
@@ -157,6 +162,23 @@ index 4a179a73..ed318faa 100644
  		renderString(0, (panel * 0xcb) - 0x64, 0x3e, 0x24, 0xc, (move->range - 1) * 0x24, 0x78, 3, 1);
  #if !VERSION_IS(US)
  		status = move->status;
+@@ -4322,6 +4350,16 @@ void renderDigimonMoveBox(void)
+ 		}
+ 	}
+ 
++	/* MOD (boosted techniques): an up arrow on the corner of the boosted technique's cell (the two techniques that
++	 * exist twice share a cell) */
++	i = DIGI_PARA(ENTITY_TABLE[1]->type).boostedTech - 1;
++	if (i >= 0) {
++		static const uint8_t ROWS[] = { 0, 2, 4, 5, 3, 1, 6, 6 };
++
++		if (i == 0x30) i = 0x2c;
++		if (i == 0x39) i = 0x37;
++		renderBoostArrow((i - (i > 0x30)) % 8 * 0x12 - 0x24, ROWS[i / 8] * 0xf - 9, 0, 3);
++	}
+ 	for (i = 0; i < 0x10; i++) {
+ 		moves[i] = DIGI_PARA(ENTITY_TABLE[1]->type).moves[i];
+ 	}
 diff --git a/src/main/mod_species.c b/src/main/mod_species.c
 index 62719651..c9d07c0f 100644
 --- a/src/main/mod_species.c
