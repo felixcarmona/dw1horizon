@@ -1,0 +1,35 @@
+From db7dfef5fd3dfbf3e902bdd0ca74030315c46bd7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 23 Nov 2026 08:08:02 +0000
+Subject: [PATCH] Curling: the cup draw's lines run on through the empty places
+
+A place of the draw nobody has reached yet left a hole in the line between one tie and the next. The line now runs through it until a face takes the place.
+---
+ src/kar/kar.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/kar/kar.c b/src/kar/kar.c
+index 756ec6f2..2f4aa442 100644
+--- a/src/kar/kar.c
++++ b/src/kar/kar.c
+@@ -2564,12 +2564,17 @@ static void KAR_renderDraw(void)
+ 			if (round >= 2) {
+ 				KAR_lobbyFace(won[i], -0x70 + 0x44, top + 10 + i * 40,
+ 				              round == 2 ? (i < 2 ? 0x80 : 0x58) : won[i] == s[12 + i / 2] ? 0x58 : 0x28);
++			} else {
++				/* nobody there yet: the line goes on to the next tie */
++				drawLine2P(0xa0a0a0, -0x70 + 64, top + 18 + i * 40, -0x70 + 0x44 + 20, top + 18 + i * 40, 6, 0);
+ 			}
+ 		}
+ 		for (i = 0; i < 2; i++) {
+ 			KAR_drawLink(-0x70 + 0x44, top + 10 + i * 80, top + 10 + i * 80 + 40);
+ 			if (round >= 3) {
+ 				KAR_lobbyFace(s[12 + i], -0x70 + 0x88, top + 30 + i * 80, 0x80);
++			} else {
++				drawLine2P(0xa0a0a0, -0x70 + 0x44 + 64, top + 38 + i * 80, -0x70 + 0x88 + 20, top + 38 + i * 80, 6, 0);
+ 			}
+ 		}
+ 		KAR_drawLink(-0x70 + 0x88, top + 30, top + 30 + 80);
+-- 
+2.55.0
+
