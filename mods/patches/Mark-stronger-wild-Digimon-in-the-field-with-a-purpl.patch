@@ -2,7 +2,7 @@ From aa1254ba44849e2ecf01b3581fd545b54fef5d7c Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Sun, 22 Nov 2026 18:20:04 +0000
 Subject: [PATCH] Mark stronger wild Digimon in the field with a purple devil,
- with a WILD STRENGTH option
+ with a DANGER ALERT option
 
 ---
  include/dw/memmap.h                           |   2 +-
@@ -50,7 +50,7 @@ index a85739f2..ad1562bd 100644
  #define MOD_DIFF_HARD	2
  extern int32_t MOD_OPT_DIFFICULTY; /* Saved values: NORMAL=0, EASY=1, HARD=2. */
  extern int32_t MOD_OPT_QUICK_BATTLE; /* QUICK BATTLE START: a field battle starts at once, its intro over the fight (battle_setup.c, btl.c); 0 = the original start */
-+extern int32_t MOD_OPT_STRENGTH; /* WILD STRENGTH: marks over wild Digimon in the field (clock.c), 1 = shown; saved inverted in option byte 6 bit 0x40 */
++extern int32_t MOD_OPT_STRENGTH; /* DANGER ALERT: marks over wild Digimon in the field (clock.c), 1 = shown; saved inverted in option byte 6 bit 0x40 */
  /* the damage `dmg` that `attacker` deals `defender` with the difficulty (`partner`: the partner's entity) */
  #define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
  	(MOD_OPT_DIFFICULTY != MOD_DIFF_EASY ? (dmg)                                                                       \
@@ -62,7 +62,7 @@ index 7255d513..a62fb3a7 100644
  #include <dw/graphics.h>
  #include <dw/ids.h>
  #include <dw/mod_options.h> /* MOD (quick battle start) */
-+#include <dw/mod_hard.h> /* MOD (wild strength mark): the scaling a fight applies, so the mark judges the fight */
++#include <dw/mod_hard.h> /* MOD (danger mark): the scaling a fight applies, so the mark judges the fight */
  #include <dw/species.h>
  #include <dw/item.h>
  #include <dw/main.h>
@@ -80,7 +80,7 @@ index 7255d513..a62fb3a7 100644
  GARBAGE(renderFleeBubble, 23);
  
 +/*
-+ * MOD (wild strength mark): a purple devil above each wild Digimon in the field that is stronger than the partner.
++ * MOD (danger mark): a purple devil above each wild Digimon in the field that is stronger than the partner.
 + * Strength is HP x (Offense + Defense) as the Digimon stand in the field, before the difficulty's scaling (the limit is 2.5 times, far coarser than it); the limit is
 + * battleFormulas.strength (tools/battle_audit.py calibrates it against simulated fights). Only Digimon whose touch script
 + * starts a fight (strengthFights) get one.
@@ -211,7 +211,7 @@ index 47fe9cd5..d4c308dd 100644
  void addTamerLevel(int32_t chance, int32_t amount);
  void updateBGM();
  void renderStatusBars(int32_t isGameTimeRunning);
-+void modStrengthMarks(void); /* btl.c: MOD (wild strength mark) */
++void modStrengthMarks(void); /* btl.c: MOD (danger mark) */
  void tickStatusBarsSlide(int32_t isGameTimeRunning);
  
  extern uint16_t LAST_HANDLED_FRAME;
@@ -232,7 +232,7 @@ index e062d3c5..8f535224 100644
  #define MOD_OPT_ROW_DIFF	5 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
  #define MOD_OPT_ROW_QUICK	6 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
 -#define MOD_OPT_ROW_FPS 7
-+#define MOD_OPT_ROW_STRENGTH	7 /* MOD (wild strength mark): WILD STRENGTH, under QUICK BATTLE START */
++#define MOD_OPT_ROW_STRENGTH	7 /* MOD (danger mark): DANGER ALERT, under QUICK BATTLE START */
 +#define MOD_OPT_ROW_FPS 8
  #if FONT_SWITCH
 -#define MOD_OPT_ROWS	12 /* MOD (options): and FONT, in a build with both fonts */
@@ -254,7 +254,7 @@ index e062d3c5..8f535224 100644
  #endif
  	d[5] = MOD_OPT_EVO_GUIDE;
 -	d[6] = MOD_OPT_NEW_DIGIMON | (MOD_OPT_NEW_CARDS ? 0 : 0x80); /* Inverted: old saves enable new cards. */
-+	/* Inverted: old saves enable new cards and the wild strength marks. */
++	/* Inverted: old saves enable new cards and the danger marks. */
 +	d[6] = MOD_OPT_NEW_DIGIMON | (MOD_OPT_NEW_CARDS ? 0 : 0x80) | (MOD_OPT_STRENGTH ? 0 : 0x40);
  	d[7] = MOD_LANG; /* MOD (language) */
  	d[8] = MOD_OPT_SIGNS;
@@ -271,7 +271,7 @@ index e062d3c5..8f535224 100644
  	{ MOD_OPT_STR_STORY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (story) */
  	{ MOD_OPT_STR_DIFF, MOD_OPT_STR_EASY, MOD_OPT_STR_NORMAL, MOD_OPT_STR_HARD }, /* MOD (difficulty) */
  	{ MOD_OPT_STR_QUICK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (quick battle start) */
-+	{ MOD_OPT_STR_STRENGTH, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (wild strength mark) */
++	{ MOD_OPT_STR_STRENGTH, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (danger mark) */
      { MOD_OPT_STR_FPS, MOD_OPT_STR_AUTO, MOD_OPT_STR_60, MOD_OPT_STR_20 },
  #if FONT_SWITCH
  	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC, MOD_OPT_STR_ORIGINAL },
@@ -279,7 +279,7 @@ index e062d3c5..8f535224 100644
          return MOD_OPT_FPS;
  	case MOD_OPT_ROW_QUICK: /* MOD (quick battle start) */
  		return MOD_OPT_QUICK_BATTLE != 0;
-+	case MOD_OPT_ROW_STRENGTH: /* MOD (wild strength mark) */
++	case MOD_OPT_ROW_STRENGTH: /* MOD (danger mark) */
 +		return MOD_OPT_STRENGTH != 0;
  #if FONT_SWITCH
  	case MOD_OPT_ROW_FONT: /* NEW, CLASSIC, ORIGINAL */
@@ -288,7 +288,7 @@ index e062d3c5..8f535224 100644
  	case MOD_OPT_ROW_QUICK: /* MOD (quick battle start) */
  		MOD_OPT_QUICK_BATTLE = value;
  		break;
-+	case MOD_OPT_ROW_STRENGTH: /* MOD (wild strength mark) */
++	case MOD_OPT_ROW_STRENGTH: /* MOD (danger mark) */
 +		MOD_OPT_STRENGTH = value;
 +		break;
  #if FONT_SWITCH
@@ -302,7 +302,7 @@ index eda8f254..a16b3231 100644
  int32_t MOD_OPT_STORY = 1;
  int32_t MOD_OPT_DIFFICULTY = MOD_DIFF_NORMAL;
  int32_t MOD_OPT_QUICK_BATTLE = 1;
-+int32_t MOD_OPT_STRENGTH = 1; /* WILD STRENGTH: a mark above each wild Digimon in the field (mod_strength.c), ON */
++int32_t MOD_OPT_STRENGTH = 1; /* DANGER ALERT: a mark above each wild Digimon in the field (mod_strength.c), ON */
  int32_t MOD_STORY_ARRIVE = 0;
  
  /* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
@@ -328,8 +328,8 @@ index bb5ee43c..cd91f93a 100644
        ja: "QUICK BATTLE START"
        en_us: "QUICK BATTLE START"
 +    MOD_OPT_STR_STRENGTH:
-+      ja: "WILD STRENGTH"
-+      en_us: "WILD STRENGTH"
++      ja: "DANGER ALERT"
++      en_us: "DANGER ALERT"
      MOD_OPT_STR_FONT:
        ja: "FONT"
        en_us: "FONT"
