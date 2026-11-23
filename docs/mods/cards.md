@@ -174,7 +174,9 @@ was run for this change.
 ## Generating and keeping the artwork
 
 Cards are built by `tools/cardmaker.py` from kept artwork plus our own frame and font, so changing
-the frame or the font only needs a re-run. The artwork of each card is generated from a render of
+the frame or the font only needs a re-run. The frame is the original cards' frame drawn again from its measures
+(grey margin of our own texture, coloured rule with its shadow and light rules, corner square, stair of
+squares, name bar and slanted digits): nothing of it is copied from the disc. The artwork of each card is generated from a render of
 the real 3D model (the model sheet is the reference image) placed in a low-poly PlayStation-style
 scene. Everything that steers the image is a field of its row in `content/cards/new.json`: `scene`,
 `pose`, `anatomy` (the limbs the model really has) and `frame` (colour override).
