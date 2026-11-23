@@ -59,6 +59,43 @@ def damage(power, off, defense, factors, rules, old=False, roll=100,
     return max(rules['minimum'], min(30000, value)) * block // 100
 
 
+def late_permille(hp, normal):
+    """How far into the late game an enemy of this original maximum HP is (battleFormulas.normal), as the engine counts
+    it: 0 below fromHp, 1000 from fullHp on, a straight line between them (a single step without a fullHp above fromHp)."""
+    start = normal.get('fromHp', 0)
+    span = normal.get('fullHp', 0) - start
+    if start <= 0 or hp < start:
+        return 0
+    if span <= 0 or hp - start >= span:
+        return 1000
+    return (hp - start) * 1000 // span
+
+
+def late_percent(full, permille):
+    return 100 + (full - 100) * permille // 1000
+
+
+def late_enemy(hp, off, normal, hp_cap=30000, stat_cap=9999):
+    """An enemy's maximum HP and Offense on NORMAL."""
+    t = late_permille(hp, normal)
+    return (min(hp_cap, hp * late_percent(normal['hpPercent'], t) // 100),
+            min(stat_cap, off * late_percent(normal['offensePercent'], t) // 100))
+
+
+def late_floor(max_hp, normal):
+    """NORMAL's damage floor in percent, from the attacker's maximum HP in the fight (after the step)."""
+    start = normal.get('fromHp', 0)
+    if start <= 0:
+        return 0
+    full = max(start, normal.get('fullHp', 0))
+    top = full * normal['hpPercent'] // 100
+    if max_hp >= top:
+        return normal['minimumDamagePercent']
+    if full == start or max_hp <= start:
+        return 0
+    return normal['minimumDamagePercent'] * (max_hp - start) // (top - start)
+
+
 def placements():
     import content
     species = [load(p.relative_to(ROOT)) for p in sorted((ROOT / 'content/species').glob('*.json'))]

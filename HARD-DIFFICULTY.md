@@ -71,9 +71,13 @@ Training remains beneficial, and no enemy follows the partner's level or stats.
 
 ## NORMAL's late-game step (2026-11-22)
 
-NORMAL is no longer the original numbers everywhere. An enemy whose maximum HP is at least 4000 (82 of the 989
-placed enemies: the late game, the final bosses and the recruits fought there) gets 250% HP and 150% Offense, and
-every enemy hit does at least 25% of the same hit against Defense zero. The floor applies only to those enemies. Nothing below 4000 HP changes on NORMAL, nor EASY or two-player VS.
+NORMAL is no longer the original numbers everywhere. The full step is 250% HP, 150% Offense and a floor: every hit of
+that enemy does at least 25% of the same hit against Defense zero. An enemy gets it by its maximum HP: nothing at 3500
+or less, all of it from 6500 on (12 of the 983 placed enemies: Mt. Infinity's bosses and the final fights), and a
+straight line between them (100 more placed enemies, and the late recruit fights), so two enemies of nearly the same
+strength never end up far apart. The first version (2026-11-22) was a single step at 4000 HP: it took an enemy of 3900
+HP to 3900 and one of 4000 to 10000, and gave mid-game bosses such as the fortress Ogremon the whole late-game step.
+Nothing at or below 3500 HP changes on NORMAL, nor EASY or two-player VS.
 HARD takes the same step first and then its own factors on top (HP 110%, Offense 150%...), and keeps the larger of the two
 floors, so it stays above NORMAL. The numbers are `battleFormulas.normal` in
 `content/tables/battle-formulas.json`. The cause was that a trained partner's Defense makes enemy Offense almost
@@ -86,6 +90,22 @@ irrelevant, so only HP and the damage floor move the fight (hits to kill, final 
 | 1500 | 10 / 520 | 23 / 778 |
 | 4000 | 8 / 194 | 20 / 521 |
 | 9999 | 8 / 77 | 19 / 521 |
+
+That table is the full step and did not change with the line. What the line gives (HP / Offense, floor), from
+`tools/battle_audit.py late_enemy` and `late_floor`:
+
+| Enemy | Original | NORMAL |
+|---|---|---|
+| Ogremon, Great Canyon | 3600 / 450 | 3744 / 454, no floor |
+| Ogremon in his fortress, Angemon | 4000 / 480, 4000 / 400 | 4960 / 518, 4960 / 432, 2% |
+| Mammothmon (recruit fight) | 4400 / 640 | 6380 / 736, 5% |
+| Knightmon (recruit fight) | 4500 / 720 | 6705 / 835, 6% |
+| Etemon | 5600 / 700 | 11480 / 945, 15% |
+| Devimon | 6800 / 780 | 17000 / 1170, 25% |
+| Final Machinedramon | 9400 / 999 | 23500 / 1498, 25% |
+
+The engine tells how late an attacker is from its maximum HP in the fight (after the step), so the floor is a straight
+line over that number, from 3500 to 16250 (what the step gives an enemy of 6500).
 
 ## Save and UI
 
