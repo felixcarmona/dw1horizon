@@ -110,3 +110,6 @@ bone_field_visited = flag()
 # Shared first sighting of either rumour hunter in Native Forest or Gear Savanna.
 hunter_noticed = flag()
 HUNTER_PRESENT_PSTAT = 120  # unsaved night-model witness, reset on either hunter screen
+
+# After the ending (arcs/postgame/blackwargreymon.py): the first win at the summit pays once; the fight itself stays.
+summit_duel_won = flag()

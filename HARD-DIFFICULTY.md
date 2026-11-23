@@ -106,7 +106,25 @@ with the partner left to its own AI (no commands, items or finisher) against the
 | 1500 / 15000 | knocked out | knocked out |
 | 9999 / 30000 | wins with 12025 HP left | knocked out |
 
-So the final fights ask for commands and healing from every partner, the strongest included. What the line gives (HP / Offense, floor), from
+So the final fights ask for commands and healing from every partner, the strongest included.
+
+Partners that players have shown on their status screens are lopsided: about 8000 HP and 700-800 Defense, with Offense
+anywhere from 1200 to 7600. Two of them are profiles of the harness (`shown-mega`: Offense 1176, Defense 713, 8281 HP;
+`shown-offense`: Offense 7633, Defense 772, 7334 HP). Live on NORMAL, with twelve recoveries thrown when HP runs low and
+the finisher used when the gauge fills (single fights; they vary a lot):
+
+| Fight | shown-mega | shown-offense |
+|---|---|---|
+| Repeat Machinedramon, 175/125/20 | knocked out (8 recoveries) | knocked out (4) |
+| Repeat Machinedramon, 175/100/20 (not shipped), two fights each | knocked out twice | one win (8), one loss |
+| BlackWarGreymon at the summit (19250 HP, Offense 1375) | knocked out (12) | wins (9) |
+
+What decides the Machinedramon fights is Infinity Cannon, not its ordinary hits: 6100-6900 at Offense 100%, 7800-11400
+at 125%, and about 10000 either way after Full Potential, against partners of about 8000 HP. BlackWarGreymon's Terra
+Destroyer does 1700-3100, so that fight is long instead of sudden: a partner of 1500 in every stat and 15000 HP wins it
+with three recoveries, one of 800 and 8005 HP loses after twelve.
+
+What the line gives (HP / Offense, floor), from
 `tools/battle_audit.py late_enemy` and `late_floor`:
 
 | Enemy | Original | NORMAL |
