@@ -134,6 +134,7 @@ def load(ref):
         rows.append(dict(id=i, name=s['name'], level=s['level'], attribute=s['attribute'],
                          specialties=[x for x in s['specialties'] if x], slots=s['specialties'],
                          moves=moves, finisher=s.get('finisher', {}), partner=s['partner'],
+                         boosted=guide.resolve_move(s['boosted_technique'], techniques)['id'] if s.get('boosted_technique') else None,
                          to=to[i], parents=frm[i], requirements=guide.requirements(s, partners, tree),
                          special=tree['special_routes'].get(s['name'], ''),
                          spoiler=bool(tree['special_routes'].get(s['name']))))

@@ -132,7 +132,8 @@
     "paragraphs": [
       "Eine normale gegnerische Technik wird durch Ausführen zum Kandidaten, auch ohne Treffer. Nach dem Kampf muss sie in der Artenliste stehen, eine passende Spezialität haben und unbekannt sein. Der erste passende Platz bestimmt den Wurf.",
       "Intelligenz ändert diesen Kampfwurf nicht. Wiederholungen geben keine Zusatzwürfe. Bestehen mehrere Kandidaten, wird einer zufällig gewählt; die Prozentzahl garantiert keine endgültige Belohnung.",
-      "Intelligenztraining folgt anderen Regeln. Seiten zeigen Basis-MP vor Modifikatoren; Finisher kosten keine MP. Gleiche Namen behalten IDs, und artspezifische Finisher können Werte überschreiben."
+      "Intelligenztraining folgt anderen Regeln. Seiten zeigen Basis-MP vor Modifikatoren; Finisher kosten keine MP. Gleiche Namen behalten IDs, und artspezifische Finisher können Werte überschreiben.",
+      "Jede aufziehbare Art hat eine verstärkte Technik, die auf ihrer Seite und mit einem Pfeil im Technikmenü markiert ist. Setzt dieser Partner sie ein, steigt ihre Stärke um ein Achtel plus 30 und sie kostet ein Viertel weniger MP; die Arttabellen zeigen bereits diese Werte. Die Verstärkung gilt auch für beide Kämpfer im VS-Modus und nie für Gegner."
     ]
   },
   "file-city": {

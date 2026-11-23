@@ -132,7 +132,8 @@
     "paragraphs": [
       "L’execució enemiga d’una tècnica normal la registra com a candidata, encara que no impacti. Després del combat ha de ser a la llista de l’espècie, coincidir amb especialitat i ser desconeguda. La primera casella coincident fixa la tirada.",
       "La intel·ligència no canvia aquesta tirada. Repeticions no donen tirades addicionals. Si passen diverses candidates, se’n tria una a l’atzar; el percentatge no garanteix el premi final.",
-      "Entrenar intel·ligència segueix altres regles. Les fitxes mostren PM base abans de modificadors; els remats no gasten PM. Noms repetits conserven IDs i una espècie pot modificar el remat."
+      "Entrenar intel·ligència segueix altres regles. Les fitxes mostren PM base abans de modificadors; els remats no gasten PM. Noms repetits conserven IDs i una espècie pot modificar el remat.",
+      "Cada espècie que es pot criar té una tècnica potenciada, indicada a la seva fitxa i amb una fletxa al menú de tècniques. Quan aquest company la fa servir, la potència puja un vuitè més 30 i gasta una quarta part menys de PM; les taules d’espècie ja mostren aquests valors. La millora també val per als dos lluitadors del mode VS i mai per als enemics."
     ]
   },
   "file-city": {

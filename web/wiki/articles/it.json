@@ -132,7 +132,8 @@
     "paragraphs": [
       "L’esecuzione nemica di una tecnica normale la registra come candidata, anche senza colpire. Dopo la battaglia deve essere nella lista specie, avere specialità compatibile ed essere sconosciuta. Il primo spazio compatibile determina il tiro.",
       "L’intelligenza non cambia questo tiro. Ripetizioni non danno tentativi aggiuntivi. Se più candidate passano, se ne sceglie una casualmente; la percentuale non garantisce il premio finale.",
-      "Allenare intelligenza segue altre regole. Le pagine mostrano MP base prima dei modificatori; i finalizzatori non costano MP. Nomi uguali mantengono gli ID e una specie può modificare il proprio finalizzatore."
+      "Allenare intelligenza segue altre regole. Le pagine mostrano MP base prima dei modificatori; i finalizzatori non costano MP. Nomi uguali mantengono gli ID e una specie può modificare il proprio finalizzatore.",
+      "Ogni specie allevabile ha una tecnica potenziata, indicata nella sua pagina e con una freccia nel menu delle tecniche. Quando quel partner la usa, la potenza sale di un ottavo più 30 e costa un quarto di MP in meno; le tabelle della specie mostrano già questi valori. Il potenziamento vale anche per entrambi i lottatori della modalità VS e mai per i nemici."
     ]
   },
   "file-city": {

@@ -132,7 +132,8 @@
     "paragraphs": [
       "Que un enemigo ejecute una técnica normal la registra como candidata; no hace falta que alcance a tu compañero. Al terminar, debe figurar en la lista de la especie, coincidir con una especialidad y no estar aprendida. La primera casilla coincidente determina la tirada.",
       "La inteligencia no cambia esa tirada de combate. Repetir la misma técnica no crea más tiradas. Si superan la prueba varias candidatas, se elige una al azar; el porcentaje no garantiza la recompensa final.",
-      "El entrenamiento de inteligencia sigue otras reglas. Las fichas muestran el coste base de PM antes de modificadores de estado e inteligencia; los remates no gastan PM. Los nombres repetidos conservan sus identificadores y una especie puede modificar su remate."
+      "El entrenamiento de inteligencia sigue otras reglas. Las fichas muestran el coste base de PM antes de modificadores de estado e inteligencia; los remates no gastan PM. Los nombres repetidos conservan sus identificadores y una especie puede modificar su remate.",
+      "Cada especie que se puede criar tiene una técnica potenciada, señalada en su ficha y con una flecha en el menú de técnicas. Cuando ese compañero la usa, su potencia sube un octavo más 30 y gasta una cuarta parte menos de PM; las tablas de especie ya muestran esos valores. La mejora también vale para los dos luchadores del modo VS y nunca para los enemigos."
     ]
   },
   "file-city": {

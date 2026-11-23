@@ -225,7 +225,14 @@ class Pages:
                 finisher = 58 <= m['id'] <= 112
                 power = species['finisher'].get('power',m['power']) if finisher else m['power']
                 chance = str(entry['chance'])+'%' if entry['chance'] is not None else '—'
-                moves.append(f'<tr><td><a href="{self.move_url(m)}">{escape(self.move_name(m))}</a>{"<br>"+self.t("data.finisher") if finisher else ""}</td><td>{power}</td><td>{m["baseMP"]}</td><td>{chance}</td></tr>')
+                mp = m['baseMP']
+                # The species' boosted technique (docs/mods/boosted-techniques.md): the table shows what this partner gets.
+                boosted = species.get('boosted') == m['id']
+                if boosted:
+                    power += power // 8 + 30
+                    mp = (m['mpCost'] - (m['mpCost'] + 2) // 4) * 3
+                label = self.t('data.finisher') if finisher else self.t('data.boosted') if boosted else ''
+                moves.append(f'<tr><td><a href="{self.move_url(m)}">{escape(self.move_name(m))}</a>{"<br>"+label if label else ""}</td><td>{power}</td><td>{mp}</td><td>{chance}</td></tr>')
             move_table = f'<div class="table-wrap"><table><thead><tr><th>{self.t("data.technique")}</th><th>{self.t("data.power")}</th><th>{self.t("data.mp")}</th><th>{self.t("wiki.learning")}</th></tr></thead><tbody>{"".join(moves)}</tbody></table></div>'
             p = species['partner']
             food = str(p.get('favorite_food','—'))
@@ -403,7 +410,7 @@ class Pages:
                 singular={'en':{'1 free blocks':'1 free block','1 blocks':'1 block'},'es':{'1 bloques libres':'1 bloque libre'},'pt-br':{'1 blocos livres':'1 bloco livre'},'fr':{'1 blocs libres':'1 bloc libre'},'de':{'1 freien Blöcken':'1 freiem Block','1 freie Blöcke':'1 freien Block','1 Blöcke':'1 Block'},'it':{'1 blocchi liberi':'1 blocco libero'},'ca':{'1 blocs lliures':'1 bloc lliure'}}
                 for plural,one in singular.get(self.lang,{}).items():
                     paras=[p.replace(plural,one) for p in paras]
-            heading_keys=['wiki.before','wiki.settings','wiki.memoryCards','wiki.troubleshooting'] if ident=='duckstation-android' else ['wiki.basics','wiki.how','wiki.remember']
+            heading_keys=['wiki.before','wiki.settings','wiki.memoryCards','wiki.troubleshooting'] if ident=='duckstation-android' else ['wiki.basics','wiki.how','wiki.remember','wiki.boostedTechnique'] if ident=='learning-techniques' else ['wiki.basics','wiki.how','wiki.remember']
             toc=''.join(f'<a href="#step-{i}">{self.t(heading_keys[i])}</a>' for i in range(len(paras)))
             body=f'<div class="page-title"><span class="eyebrow">{self.t("wiki.guideType")}</span><h1>{escape(article["title"])}</h1><p>{escape(article["summary"])}</p></div><div class="article-layout"><nav class="toc" aria-label="{self.t("wiki.contents")}"><b>{self.t("wiki.contents")}</b>{toc}<a href="#related">{self.t("wiki.related")}</a></nav><article class="surface article-body">'+''.join(f'<section id="step-{i}"><h2>{self.t(heading_keys[i])}</h2>'+(self.spoiler('<p>'+escape(p)+'</p>') if i in article.get('spoiler_paragraphs',[]) else '<p>'+escape(p)+'</p>')+'</section>' for i,p in enumerate(paras))+(self.spoiler(self.fact_block(ident)) if ident=='new-game-quiz' else self.fact_block(ident))+(self.bakemon() if ident=='hidden-mechanics' else '')+f'<h2 id="related">{self.t("wiki.related")}</h2><a class="text-link" href="{self.base}guides/">{self.t("wiki.articles")} →</a></article></div>'
             self.page(f'guides/{ident}/',article['title'],body,'article',dict(type='article',text=' '.join(p for i,p in enumerate(paras) if i not in article.get('spoiler_paragraphs',[])),summary=article['summary'],aliases=ident.replace('-',' ')))

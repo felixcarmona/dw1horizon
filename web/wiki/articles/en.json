@@ -132,7 +132,8 @@
     "paragraphs": [
       "An enemy executing a normal technique records it as a learning candidate; it does not need to hit your partner. After battle, the move must be on the species list, have a matching specialty and not already be known. The first matching specialty slot selects its roll.",
       "Brains does not change that battle learning roll. Repeated uses of the same move do not create extra candidate rolls. If multiple candidates pass, one is chosen at random; a displayed percentage is not a guaranteed final award.",
-      "Brains training uses separate rules. Technique pages show base battle MP cost before condition and Brains modifiers; finishers cost no MP. Shared move names retain their IDs, and a species-specific finisher can override the ordinary move’s values."
+      "Brains training uses separate rules. Technique pages show base battle MP cost before condition and Brains modifiers; finishers cost no MP. Shared move names retain their IDs, and a species-specific finisher can override the ordinary move’s values.",
+      "Each species that can be raised has one boosted technique, marked on its page and with an arrow in the Tech menu. When that partner uses it, its power rises by one eighth plus 30 and it costs a quarter less MP; species tables already show those values. The boost also applies to both fighters in VS mode and never to enemies."
     ]
   },
   "file-city": {
