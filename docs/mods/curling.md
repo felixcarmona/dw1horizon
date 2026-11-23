@@ -30,14 +30,16 @@ city: the list shows the seven faces of the cup under the cursor, the missing on
 Saved state: the cups won (variable 7) and the chips kept (variable 8). A cup is played in one go, round after round,
 so its cup, round and seed (132 to 134) are not saved.
 
-## Banners
+## Cup names
 
-Each cup has a banner in every language, shown over the cup list and over the bracket. The art is the repository's
-own: one sheet of five bands per language in `content/localized/curling/<lang>.png` (256 x 200, at most 128 colours
-a band), drawn by the image generator from `prompt-en.txt` and, for the other languages, from the English sheet
-(`jobs.py`); `tools/curling_banners.py --make` reduces the generator's sheets to that size.
+Each cup's name is drawn as art in every language, over the cup list and over the bracket: fat hand-drawn letters
+in the cup's colour and nothing else, the screen showing through around them. The art is the repository's own: one
+sheet of five names per language in `content/localized/curling/<lang>.png` (256 x 200, a name in each 40-line band,
+at most 128 colours a band, magenta where nothing is drawn), drawn by the image generator from `prompt-en.txt` and,
+for the other languages, from the English sheet (`jobs.py`); `tools/curling_banners.py --make` cuts the names out of
+the generator's sheets and fits them to that size.
 
 The derive step `curling` packs them into `KARCUP.DAT`, a new file in `ETCDAT`: for each language, in the
-game's order, 26 sectors with five rows of 128 colours and the five 256 x 40 pictures. The menu reads its language's
+game's order, 26 sectors with five rows of 128 colours and the five 256 x 40 pictures (magenta packed as the transparent colour). The menu reads its language's
 section through the world's scratch area into the video memory the rink leaves free (576, 256). A disc without the
 file shows the menu with the cup's name as text.

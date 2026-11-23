@@ -2,10 +2,11 @@
 """The curling cups' banners (docs/mods/curling.md): KARCUP.DAT from content/localized/curling/<lang>.png.
 
   curling_banners.py OUT               KARCUP.DAT (pack(); the derive step `curling`, no Pillow)
-  curling_banners.py --make [SRC]      the developer's: SRC/<lang>.png (the generator's sheets of five bands, default
+  curling_banners.py --make [SRC]      the developer's: SRC/<lang>.png (the generator's sheets of five names on magenta, default
                                        build/localized-src/curling) -> content/localized/curling/<lang>.png (Pillow)
 
-A committed sheet is 256 x 200 RGB: five bands of 256 x 40, each with at most 128 colours of 15 bits. The file holds,
+A committed sheet is 256 x 200 RGB: five bands of 256 x 40, each with at most 128 colours of 15 bits, the name alone
+on the magenta KEY, which the game does not draw. The file holds,
 for each language in the game's order, 26 sectors: five rows of 128 colours (16 bits), then the five bands (8 bits a
 pixel). A language with no sheet takes the English one.
 """
@@ -16,10 +17,13 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 ART = os.path.join(ROOT, 'content', 'localized', 'curling')
 W, H, BANDS, COLOURS, SECTORS = 256, 40, 5, 128, 26
+KEY = (248, 0, 248)   # the sheets' background: nothing is drawn there
 
 
 def colour(r, g, b):
-    """15 bits; black is kept opaque (0 is the transparent colour)"""
+    """15 bits; KEY is the transparent colour (0), black is kept opaque"""
+    if (r, g, b) == KEY:
+        return 0
     return (r >> 3) | (g >> 3) << 5 | (b >> 3) << 10 or 0x8000
 
 
@@ -50,19 +54,46 @@ def pack():
 
 
 def make(src):
-    from PIL import Image
+    """Each name is cut from the generator's flat magenta, scaled into its band and centred; what was magenta is KEY."""
+    from PIL import Image, ImageChops
     from tools.languages import CODES
     for lang in CODES:
         path = os.path.join(src, lang + '.png')
         if not os.path.isfile(path):
             continue
         im = Image.open(path).convert('RGB')
-        out = Image.new('RGB', (W, H * BANDS))
-        for band in range(BANDS):
-            top, bottom = round(im.height * band / BANDS), round(im.height * (band + 1) / BANDS)
-            part = im.crop((0, top + 2, im.width, bottom - 2)).resize((W, H), Image.LANCZOS)
+        r, g, b = im.split()
+        key = ImageChops.subtract(ImageChops.darker(r, b), g)          # how much of a pixel is the magenta
+        alpha = key.point(lambda v: 255 - min(255, v * 255 // 200))
+        solid = alpha.point(lambda v: 255 if v > 128 else 0)
+        rows = [solid.crop((0, y, im.width, y + 1)).histogram()[255] for y in range(im.height)]
+        for y, n in enumerate(list(rows)):                             # a line across the whole sheet is a divider
+            if n >= im.width - 4:
+                for k in range(max(0, y - 3), min(im.height, y + 4)):
+                    alpha.paste(0, (0, k, im.width, k + 1))
+        rows = [alpha.point(lambda v: 255 if v > 128 else 0).crop((0, y, im.width, y + 1)).histogram()[255] for y in range(im.height)]
+        spans, start = [], None
+        for y, n in enumerate(rows + [0]):
+            if n and start is None:
+                start = y
+            elif not n and start is not None:
+                if y - start > im.height // 40:
+                    spans.append((start, y))
+                start = None
+        if len(spans) != BANDS:
+            sys.exit(f'{path}: {len(spans)} names found, a sheet has {BANDS}')
+        unmixed = Image.merge('RGB', [ImageChops.subtract(c, key) if i != 1 else c for i, c in enumerate((r, g, b))])
+        out = Image.new('RGB', (W, H * BANDS), KEY)
+        for band, (top, bottom) in enumerate(spans):
+            box = alpha.crop((0, top, im.width, bottom)).point(lambda v: 255 if v > 128 else 0).getbbox()
+            box = (box[0], top + box[1], box[2], top + box[3])
+            scale = min((W - 4) / (box[2] - box[0]), (H - 2) / (box[3] - box[1]))
+            size = (max(1, round((box[2] - box[0]) * scale)), max(1, round((box[3] - box[1]) * scale)))
+            mask = alpha.crop(box).resize(size, Image.LANCZOS).point(lambda v: 255 if v > 128 else 0)
+            part = unmixed.crop(box).resize(size, Image.LANCZOS)
             part = part.quantize(COLOURS - 8, method=Image.MEDIANCUT, dither=Image.NONE).convert('RGB')
-            out.paste(Image.eval(part, lambda v: v & 0xF8), (0, band * H))
+            part = Image.eval(part, lambda v: v & 0xF8)
+            out.paste(part, ((W - size[0]) // 2, band * H + (H - size[1]) // 2), mask)
         out.save(os.path.join(ART, lang + '.png'), optimize=True)
         print(os.path.join(ART, lang + '.png'))
 
