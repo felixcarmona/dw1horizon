@@ -249,10 +249,11 @@
       "minimumDamagePercent": 15
     },
     "normal": {
-      "fromHp": 4000,
+      "fromHp": 3500,
       "hpPercent": 250,
       "offensePercent": 150,
-      "minimumDamagePercent": 25
+      "minimumDamagePercent": 25,
+      "fullHp": 6500
     },
     "strength": {
       "strongerPercent": 40

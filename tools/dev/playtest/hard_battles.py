@@ -262,8 +262,8 @@ def main():
             actualMode,address,sid,hp,current,off,defense,speed,brain,mp,rawhp,rawoff,rawdef,rawspeed,rawbrain=init
             assert actualMode==mode
             for got,raw,key,cap in [(hp,rawhp,'hpPercent',30000),(off,rawoff,'offensePercent',9999),(defense,rawdef,'defensePercent',9999),(speed,rawspeed,'speedPercent',9999),(brain,rawbrain,'brainsPercent',9999)]:
-                late=mode!=1 and rawhp>=normal['fromHp'] and key in ('hpPercent','offensePercent')
-                step=min(cap,raw*normal[key]//100) if late else raw
+                late=B.late_permille(rawhp,normal) if mode!=1 and key in ('hpPercent','offensePercent') else 0
+                step=min(cap,raw*B.late_percent(normal[key],late)//100) if late else raw
                 assert got==(min(cap,step*hard[key]//100) if mode==2 else step),(case,init,key)
             checked=[]
             for row in hits(e):
@@ -283,9 +283,11 @@ def main():
                     expected=max(1,min(30000,expected))
                 else:
                     expected=B.damage(power,o,d,total,formulas['damage'],roll=roll,counter=move==45)
-                    if mode==2:
-                        if partner:expected=max(1,expected*hard['partnerDamagePercent']//100)
-                        else:expected=max(expected,(B.damage(power,o,0,total,formulas['damage'],roll=roll)*hard['minimumDamagePercent']+99)//100)
+                    if mode==2 and partner:expected=max(1,expected*hard['partnerDamagePercent']//100)
+                    if mode!=1 and not partner:
+                        # The floor: HARD's for every enemy, NORMAL's by how late the enemy is (its maximum HP in the fight); HARD keeps the larger.
+                        floor=max(hard['minimumDamagePercent'] if mode==2 else 0,B.late_floor(hp,normal))
+                        if floor:expected=max(expected,(B.damage(power,o,0,total,formulas['damage'],roll=roll)*floor+99)//100)
                 assert expected==actual,(row,total,expected)
                 checked.append(dict(partner=bool(partner),offense=o,defense=d,power=power,roll=roll,damage=actual,frame=frame,move=move,finisher=move>=58,zeroDefenseNative=zeroNative,blockPercent=blockPercent))
             (a.out/(case+'-observations.json')).write_text(json.dumps(dict(initialization=init,hits=checked,samples=samples),indent=2)+'\n')
