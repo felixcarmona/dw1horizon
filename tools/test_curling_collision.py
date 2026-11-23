@@ -104,8 +104,12 @@ SCAN_TEST = r'''
 #define VERSION_EQUAL_OR_NEWER(v) 1
 typedef struct { int32_t vx, vy, vz, pad; } VECTOR;
 typedef struct { int32_t state; VECTOR pos, target; } KarStone;
-typedef struct { struct { KarStone stones[5]; } row; } KarRow;
+typedef struct { KarStone stones[5]; } KarStoneRow;
+typedef struct { KarStoneRow row; } KarRow;
 static KarRow KAR_D_8005B5A0[3];
+/* the scan walks the rows of the match's format: the original three here */
+static struct { int32_t rows; } KAR_CUP = { 3 };
+static KarStoneRow *KAR_row(int32_t p) { return &KAR_D_8005B5A0[p].row; }
 static int32_t MAIN_D_80135244;
 static uint64_t trace;
 static unsigned calls;

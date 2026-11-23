@@ -24,6 +24,8 @@ def talk():    # section 6
 
 @slot6.on_talk
 def talk():    # section 11
+    if curling_format != 0:
+        jump_to_script(206, 8)
     if curling_opponent == 0:
         jump_to_script(206, 11)
     if curling_opponent == 1:

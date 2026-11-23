@@ -122,6 +122,8 @@ SMALL_TABLES = [
     ('curlingRingPoints', 'SLUS_010.32', 'MAIN_D_80134A44', '<b', None),
     ('curlingRings', 'KAR_REL.BIN', 'KAR_D_8005B438', '<3h', ('dx', 'dz', 'radius')),
     ('curlingObstacleX', 'KAR_REL.BIN', 'KAR_D_8005AB98', '<i', None),
+    # the cup rivals: row 0 is whoever has no row; a row is asked for by its number (the story's curling_rival variables)
+    ('curlingRivals', 'KAR_REL.BIN', 'KAR_RIVALS', '<h10B', ('species', 'style', 'aimClip', 'throwClip', 'releaseClip', 'hold', 'aimNoise', 'powerNoise', 'hitPercent', 'icon', 'room')),
 ]
 
 KEEP = {'fishingMaps': ('spots', 'spotCount', 'isWater', 'unk24', 'sprite', 'waypoints', 'waypointCount'),
@@ -206,13 +208,13 @@ _SMALL_COUNTS = {'cardArt': 64, 'cardReal': 64, 'cards': 66, 'cardPrices': 5, 's
                  'defaultInventoryAmounts': 30, 'sleepPatterns': 8, 'statLimits': 22, 'targetAttackerChance': 4,
                  'statGainEnemyFactors': 4, 'healingValues': 4, 'healEffectVariant': 4, 'mojyamonGives': 12, 'mojyamonTakes': 12,
                  'babies': 8, 'reincarnationBabies': 4, 'vsBattleCounts': 4, 'concaveScreens': 18,
-                 'mapLights': 1, 'fishKinds': 7, 'fishBiteChance': 200, 'fishBaitChances': 6, 'fishingMaps': 2, 'trainingScreens': 8, 'trainingScreensb': 8,
+                 'curlingRivals': 32, 'mapLights': 1, 'fishKinds': 7, 'fishBiteChance': 200, 'fishBaitChances': 6, 'fishingMaps': 2, 'trainingScreens': 8, 'trainingScreensb': 8,
                  'slotReels': 3, 'slotReelsb': 3, 'slotAssist': 10, 'slotAssistb': 10, 'conditionFxOffsets': 177, 'auraTypes': 129, 'auraTypesStd': 129, 'auraTypesVs': 129,
                  'trainingSpots112': 7, 'trainingSpots112b': 7, 'trainingSpots78': 3, 'trainingSpots78b': 3, 'trainingSpots165': 2, 'trainingSpots165b': 2, 'trainingSpots107': 3, 'trainingSpots107b': 3, 'trainingSpots108': 3, 'trainingSpots108b': 3, 'trainingSpots99': 3, 'trainingSpots99b': 3, 'trainingSpots119': 2, 'trainingSpots119b': 2, 'curlingWeights': 4, 'curlingStartTypes': 10, 'curlingRingPoints': 4, 'curlingRings': 4, 'curlingObstacleX': 3}
 TABLES += [(k, f, sym, struct.calcsize(fmt) * _SMALL_COUNTS[k]) for k, f, sym, fmt, _ in SMALL_TABLES]
 ORIGINAL_NAMES = {'SPECIES_BATTLE_MUSIC': 'ENEMY_MUSIC_MAPPING'}       # a table renamed by the mod
 TABLES += [('cityResidents', 'SLUS_010.32', 'CITY_RESIDENTS', 14)]
-OPTIONAL = {'cardArt', 'cards', 'cardReal', 'evolutionRookieWeights', 'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
+OPTIONAL = {'curlingRivals', 'cardArt', 'cards', 'cardReal', 'evolutionRookieWeights', 'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
 SPECIES_TABLES = ('para', 'raise', 'itemTakeDistance', 'vlall', 'vball', 'originalTypes', 'trainingAnims',
                   'training2Anims', 'battleMusic', 'reincarnation', 'newGameTechniques')
 # (patch 0087's EFFECT_FALLBACK_SPECIES / _ORIGIN were per-species tables too; patch 0106 replaced them by the DIGI.DAT

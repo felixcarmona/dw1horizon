@@ -1,5 +1,5 @@
 {
-  "_comment": "Curling (the Kara-kuri game). The C holds none of these numbers. curlingRules (a key left out = that rule does not exist; a modulus reads as 1): stones.frictionPercent = the part of its speed a stone keeps each frame (the throw power is computed with the same), stopBelowMove = a stone moving less than this stops; obstacles: how many (at most mostPerMatch-1) and where (xSpan, zBase, zSpan); match.bigWinScore = the score from which a win counts as a big one; opponent.aimNoise = the spread of the opponent's aim; throw.powerCut* = what is taken off the throw power in the two modes. curlingWeights: the weight of each stone type (a heavier stone moves less per frame); curlingStartTypes: the type of each of the ten rolls a row of stones is dealt from; curlingRingPoints: the points of each ring zone; curlingRings: the four zones' centre offset and radius; curlingObstacleX: where the obstacles can start.",
+  "_comment": "Curling (the Kara-kuri game). The C holds none of these numbers. curlingRules (a key left out = that rule does not exist; a modulus reads as 1): stones.frictionPercent = the part of its speed a stone keeps each frame (the throw power is computed with the same), stopBelowMove = a stone moving less than this stops; obstacles: how many (at most mostPerMatch-1) and where (xSpan, zBase, zSpan); match.bigWinScore = the score from which a win counts as a big one; opponent.aimNoise = the spread of the opponent's aim; throw.powerCut* = what is taken off the throw power in the two modes. curlingWeights: the weight of each stone type (a heavier stone moves less per frame); curlingStartTypes: the type of each of the ten rolls a row of stones is dealt from; curlingRingPoints: the points of each ring zone; curlingRings: the four zones' centre offset and radius; curlingObstacleX: where the obstacles can start. curlingRivals: how each Digimon plays (aimNoise and powerNoise = the spread of its aim and power, hitPercent = how often it goes for a rival stone, icon = the chart id whose icon its plate shows, room = the KB of heap its model and its body take: a match never draws rivals of more than 160 KB together).",
   "curlingRules": {
     "stones": {
       "frictionPercent": 98,
@@ -72,5 +72,39 @@
     705,
     235,
     -235
+  ],
+  "curlingRivals": [
+    {"species": 0, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 60, "powerNoise": 40, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": 176, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 34, "powerNoise": 22, "hitPercent": 20, "icon": 57, "room": 36},
+    {"species": 139, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 32, "powerNoise": 21, "hitPercent": 23, "icon": 17, "room": 47},
+    {"species": 170, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 31, "powerNoise": 20, "hitPercent": 27, "icon": 52, "room": 36},
+    {"species": 145, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 29, "powerNoise": 19, "hitPercent": 30, "icon": 23, "room": 31},
+    {"species": 164, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 27, "powerNoise": 18, "hitPercent": 34, "icon": 46, "room": 55},
+    {"species": 152, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 26, "powerNoise": 17, "hitPercent": 37, "icon": 32, "room": 62},
+    {"species": 147, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 24, "powerNoise": 16, "hitPercent": 41, "icon": 25, "room": 29},
+    {"species": 168, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 23, "powerNoise": 15, "hitPercent": 44, "icon": 50, "room": 65},
+    {"species": 140, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 21, "powerNoise": 14, "hitPercent": 47, "icon": 18, "room": 40},
+    {"species": 153, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 19, "powerNoise": 13, "hitPercent": 51, "icon": 33, "room": 34},
+    {"species": 156, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 18, "powerNoise": 11, "hitPercent": 54, "icon": 36, "room": 32},
+    {"species": 166, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 16, "powerNoise": 10, "hitPercent": 58, "icon": 48, "room": 47},
+    {"species": 135, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 14, "powerNoise": 9, "hitPercent": 61, "icon": 11, "room": 61},
+    {"species": 161, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 13, "powerNoise": 8, "hitPercent": 64, "icon": 41, "room": 33},
+    {"species": 137, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 11, "powerNoise": 7, "hitPercent": 68, "icon": 13, "room": 53},
+    {"species": 160, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 10, "powerNoise": 6, "hitPercent": 71, "icon": 40, "room": 37},
+    {"species": 175, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 8, "powerNoise": 5, "hitPercent": 75, "icon": 58, "room": 53},
+    {"species": 173, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 6, "powerNoise": 4, "hitPercent": 78, "icon": 55, "room": 48},
+    {"species": 174, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 5, "powerNoise": 3, "hitPercent": 82, "icon": 56, "room": 49},
+    {"species": 149, "style": 3, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 80, "aimNoise": 3, "powerNoise": 2, "hitPercent": 85, "icon": 27, "room": 59},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0},
+    {"species": -1, "style": 0, "aimClip": 0, "throwClip": 0, "releaseClip": 0, "hold": 0, "aimNoise": 0, "powerNoise": 0, "hitPercent": 0, "icon": 0, "room": 0}
   ]
 }
