@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch8/PrinceMamemon.TIM", "entry": 0},
   "voice": 13,
   "battle_music": "normal-battle",
+  "boosted_technique": "Buster Dive",
   "condition_bubble": [-8, -151, 40, 2],
   "effect_origins": [[19, 60, 80, 0, 18, 22, 108, -139], [2, -50, 14, 0, 2, -3, 116, 31],
                      [2, 10, -115, 0, 2, -5, -19, -182], [2, 133, -13, 0, 2, -9, -211, 26],

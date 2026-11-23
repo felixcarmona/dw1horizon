@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch3/GranKuwagamon.TIM", "entry": 0},
   "voice": 54,
   "battle_music": "normal-battle",
+  "boosted_technique": "Spinning Shot",
   "condition_bubble": [0, -162, -42, 3],
   "effect_origins": [[4, 0, 80, -100, 3, 0, 16, -66], [4, 0, 80, -280, 3, 0, 20, -295],
                      [9, 0, 80, -30, 8, 92, 14, -54], [4, 0, 80, -200, 3, 0, 18, -194]],

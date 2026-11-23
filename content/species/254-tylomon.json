@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch7/Tylomon.TIM", "entry": 0},
   "voice": 22,
   "battle_music": "normal-battle",
+  "boosted_technique": "Winter Blast",
   "condition_bubble": [-19, -124, -60, 11],
   "effect_origins": [[2, 60, 0, 10, 11, 14, 19, -30], [2, -70, 0, 210, 11, -19, -124, -60],
                      [1, 0, 0, 0, 14, 0, 0, 0], [2, -102, 0, 155, 11, -25, -111, -23]],

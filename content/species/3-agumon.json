@@ -14,6 +14,7 @@
   "voice": 3,
   "battle_music": "normal-battle",
   "new_game_technique": "Spit Fire",
+  "boosted_technique": "Spit Fire",
   "wild": {"hp": 1100, "mp": 2300, "off": 390, "def": 190, "speed": 80, "brain": 150, "bits": 400},
   "partner": {
     "voice": 1,

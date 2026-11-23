@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch4/Shurimon.TIM", "entry": 0},
   "voice": 52,
   "battle_music": "normal-battle",
+  "boosted_technique": "Spinning Shot",
   "condition_bubble": [-19, -112, -24, 2],
   "effect_origins": [[1, 0, 0, 0, 16, 0, 0, 0], [4, 244, 0, 67, 2, -6, -14, -112], [4, 101, 0, 17, 2, -2, -1, -46]],
   "wild": {"hp": 1780, "mp": 1460, "off": 235, "def": 240, "speed": 185, "brain": 180, "bits": 600},

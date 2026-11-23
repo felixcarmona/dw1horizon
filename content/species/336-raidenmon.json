@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch13/Raidenmon.TIM", "entry": 0},
   "voice": 54,
   "battle_music": "normal-battle",
+  "boosted_technique": "Thunder Justice",
   "condition_bubble": [0, -92, -50, 8],
   "effect_origins": [[1, 0, 0, 0, 1, 0, 28, 0], [3, 100, -25, 0, 8, 0, 63, -98]],
   "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},

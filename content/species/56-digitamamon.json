@@ -13,6 +13,7 @@
   "model": {"name": "DIGI", "bones": 12, "radius": 100, "height": 250},
   "voice": 50,
   "battle_music": "normal-battle",
+  "boosted_technique": "Confused Storm",
   "partner": {
     "voice": 1,
     "hunger_hours": [0, 3, 6, 9, 12, 15, 18, 21],

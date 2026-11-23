@@ -25,6 +25,7 @@
   "texture": {"from": 110},
   "voice": 67,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Water Blit",
   "wild": {"hp": 1400, "mp": 1300, "off": 420, "def": 250, "speed": 100, "brain": 150, "bits": 500},
   "partner": {
     "voice": 4,

@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch2/Paildramon.TIM", "entry": 0},
   "voice": 54,
   "battle_music": "normal-battle",
+  "boosted_technique": "All Range Beam",
   "condition_bubble": [8, -96, 64, 3],
   "effect_origins": [[1, 0, 0, 0, 5, 0, 0, 0], [3, 100, -25, 0, 3, 21, -61, -113]],
   "wild": {"hp": 3480, "mp": 2800, "off": 365, "def": 405, "speed": 265, "brain": 295, "bits": 1500},

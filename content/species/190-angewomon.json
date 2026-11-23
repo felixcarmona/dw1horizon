@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch/Angewomon.TIM", "entry": 0},
   "voice": 18,
   "battle_music": "normal-battle",
+  "boosted_technique": "Thunder Justice",
   "condition_bubble": [1, -96, -13, 2],
   "effect_origins": [[7, 30, 0, 0, 7, -24, 13, -11], [25, 48, 37, 0, 28, -65, 63, 99],
                      [9, 115, 0, 0, 9, 61, 92, 13], [9, 140, 0, 0, 9, 75, 111, 16]],

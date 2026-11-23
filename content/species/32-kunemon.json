@@ -12,6 +12,7 @@
   "model": {"name": "KUNE", "bones": 28, "radius": 120, "height": 210},
   "voice": 28,
   "battle_music": "normal-battle",
+  "boosted_technique": "Static Elect",
   "partner": {
     "voice": 1,
     "hunger_hours": [2, 6, 10, 14, 18, 22],

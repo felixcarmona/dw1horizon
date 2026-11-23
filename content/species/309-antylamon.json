@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch11/Antylamon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
+  "boosted_technique": "Wind Cutter",
   "condition_bubble": [0, -94, 85, 12],
   "effect_origins": [[7, 0, 0, 0, 18, 0, 0, 0], [10, 0, 0, 0, 15, 0, 0, 0], [18, 0, 0, 0, 6, 0, 0, 0]],
   "wild": {"hp": 3100, "mp": 3030, "off": 400, "def": 350, "speed": 290, "brain": 310, "bits": 1500},

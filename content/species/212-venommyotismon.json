@@ -28,6 +28,7 @@
   "texture": {"file": "build/batch3/VenomMyotismon.TIM", "entry": 0},
   "voice": 8,
   "battle_music": "normal-battle",
+  "boosted_technique": "Inifinity Burn",
   "condition_bubble": [-5, -195, -93, 2],
   "effect_origins": [[3, 100, -45, 0, 2, -12, 47, -171], [4, 0, 0, 0, 2, -11, 40, -152]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},

@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch4/Baronmon.TIM", "entry": 0},
   "voice": 9,
   "battle_music": "normal-battle",
+  "boosted_technique": "Meltdown",
   "condition_bubble": [-27, -101, 28, 3],
   "effect_origins": [[12, 50, 0, 0, 14, -89, 29, -44], [4, 150, -70, 0, 3, -40, -149, -77],
                      [8, 0, 0, -25, 8, -13, 46, 143], [4, 120, -210, 0, 3, -31, -115, -222],

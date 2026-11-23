@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch8/Plesiomon.TIM", "entry": 0},
   "voice": 55,
   "battle_music": "normal-battle",
+  "boosted_technique": "Aurora Freeze",
   "condition_bubble": [0, 19, -103, 15],
   "effect_origins": [[4, 0, 80, -100, 15, 0, 134, -10], [4, 0, 80, -280, 15, 0, 271, -136],
                      [9, 0, 80, -30, 6, 68, 235, 27], [4, 0, 80, -200, 15, 0, 211, -81]],

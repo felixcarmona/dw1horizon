@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch6/SuperStarmon.TIM", "entry": 0},
   "voice": 18,
   "battle_music": "normal-battle",
+  "boosted_technique": "Prominence Beam",
   "condition_bubble": [-52, -139, -61, 26],
   "effect_origins": [[4, 90, 0, 0, 26, -66, -15, -89], [8, 330, 0, 0, 9, -79, 5, -324],
                      [1, 0, 0, 0, 1, 0, 121, -21]],

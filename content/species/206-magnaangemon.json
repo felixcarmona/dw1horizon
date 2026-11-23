@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch3/MagnaAngemon.TIM", "entry": 0},
   "voice": 18,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megalo Spark",
   "condition_bubble": [-1, -113, -49, 3],
   "effect_origins": [[9, 220, 0, 0, 9, 330, 0, 0], [9, 18, -135, 59, 9, 27, -202, 88],
                      [1, 29, 18, 258, 1, 44, 27, 387], [1, 29, 18, 129, 1, 44, 27, 194]],

@@ -25,6 +25,7 @@
   "texture": {"file": "build/imported-models/224.TIM", "entry": 0},
   "voice": 12,
   "battle_music": "normal-battle",
+  "boosted_technique": "Power Crane",
   "condition_bubble": [0, 50, 0, 4],
   "wild": {"hp": 2690, "mp": 2890, "off": 470, "def": 305, "speed": 345, "brain": 300, "bits": 1500},
   "partner": {

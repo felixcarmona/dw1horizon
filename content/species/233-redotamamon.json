@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch5/D-Otamamon.TIM", "entry": 0},
   "voice": 66,
   "battle_music": "normal-battle",
+  "boosted_technique": "Fire Tower",
   "condition_bubble": [5, -105, 66, 7],
   "effect_origins": [[14, 50, 50, 0, 1, 0, 79, -5], [12, 35, -20, 0, 11, -229, 39, -133],
                      [2, 225, 0, 0, 1, 5, -115, 58]],

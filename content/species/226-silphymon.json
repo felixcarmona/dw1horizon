@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch4/Sylphymon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megalo Spark",
   "condition_bubble": [0, -93, -19, 3],
   "effect_origins": [[3, 135, -10, 0, 3, 11, 27, -120], [3, 135, -52, 0, 3, 11, 66, -114],
                      [6, 155, 0, 0, 2, 30, -79, -235], [11, 104, 0, 0, 8, -8, 68, 66],

@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch13/Gargoylemon.TIM", "entry": 0},
   "voice": 30,
   "battle_music": "normal-battle",
+  "boosted_technique": "Tremar",
   "condition_bubble": [0, -44, 18, 18],
   "effect_origins": [[7, 60, 0, 0, 15, -175, 114, -156], [3, 85, -55, 0, 18, 0, 95, -45],
                      [10, 50, -210, 0, 23, 92, -64, -251], [3, 80, -20, 0, 18, 0, 61, -60],

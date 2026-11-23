@@ -13,6 +13,7 @@
   "model": {"name": "VEDA", "bones": 16, "radius": 110, "height": 400},
   "voice": 26,
   "battle_music": "normal-battle",
+  "boosted_technique": "Reverse Prog",
   "partner": {
     "voice": 10,
     "hunger_hours": [4, 9, 14, 18, 23],

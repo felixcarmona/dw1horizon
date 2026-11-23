@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch4/Zudomon.TIM", "entry": 0},
   "voice": 12,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megaton Punch",
   "condition_bubble": [2, -24, -34, 3],
   "effect_origins": [[4, 260, 30, 0, 3, -20, 161, -144], [9, 0, 75, 50, 7, 6, 147, 11],
                      [9, 192, 32, 0, 7, -8, 260, -112], [1, 0, 0, 0, 1, -4, 42, -5],

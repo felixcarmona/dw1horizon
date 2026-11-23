@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch16/Renamon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
+  "boosted_technique": "Spit Fire",
   "condition_bubble": [-1, -60, 18, 15],
   "effect_origins": [[7, 0, 0, 0, 21, 0, 0, 0], [10, 0, 0, 0, 18, 0, 0, 0], [18, 0, 0, 0, 5, 0, 0, 0]],
   "wild": {"hp": 580, "mp": 620, "off": 120, "def": 90, "speed": 110, "brain": 80, "bits": 200},

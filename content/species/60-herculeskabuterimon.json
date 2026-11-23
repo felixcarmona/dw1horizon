@@ -23,6 +23,7 @@
   "model": {"name": "HKAB", "bones": 26, "radius": 250, "height": 440},
   "voice": 54,
   "battle_music": "normal-battle",
+  "boosted_technique": "Bug",
   "partner": {
     "voice": 8,
     "hunger_hours": [2, 7, 12, 17, 21],

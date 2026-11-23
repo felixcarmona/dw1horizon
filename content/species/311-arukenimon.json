@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch11/Arukenimon.TIM", "entry": 0},
   "voice": 26,
   "battle_music": "normal-battle",
+  "boosted_technique": "Bug",
   "condition_bubble": [0, -189, 76, 2],
   "effect_origins": [[10, 40, -60, 0, 13, -107, 0, -4], [4, 50, -120, 0, 19, 198, -166, -111],
                      [5, 0, 0, 0, 1, 0, 0, 0], [10, 130, 25, 0, 13, -70, 36, -180],

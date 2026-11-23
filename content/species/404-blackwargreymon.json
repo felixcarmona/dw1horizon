@@ -24,6 +24,7 @@
   "texture": {"file": "build/meshfix2-out/BlackWarGreymon.TIM", "entry": 0},
   "voice": 5,
   "battle_music": "normal-battle",
+  "boosted_technique": "Prominence Beam",
   "condition_bubble": [0, -145, -44, 15],
   "effect_origins": [[7, "any", 0, 0, 10, -18, 157, -127], [10, "any", 0, 0, 13, 32, -75, 39],
                      [1, "any", 0, 0, 2, 0, 0, 0], [6, "any", 0, 0, 3, -6, 188, -145]],

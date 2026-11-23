@@ -24,6 +24,7 @@
   "texture": {"from": 121},
   "voice": 23,
   "battle_music": "normal-battle",
+  "boosted_technique": "Green Trap",
   "wild": {"hp": 1000, "mp": 4000, "off": 250, "def": 100, "speed": 500, "brain": 400, "bits": 1000},
   "partner": {
     "voice": 14,

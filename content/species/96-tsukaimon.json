@@ -25,6 +25,7 @@
   "texture": {"from": 96},
   "voice": 27,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Confused Storm",
   "wild": {"hp": 700, "mp": 1700, "off": 250, "def": 120, "speed": 90, "brain": 150, "bits": 400},
   "partner": {
     "voice": 1,

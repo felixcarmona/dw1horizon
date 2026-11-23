@@ -13,6 +13,7 @@
   "model": {"name": "WARU", "bones": 12, "file": "build/models/WARU-partner.MMD", "radius": 150, "height": 410},
   "voice": 60,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Confused Storm",
   "wild": {"hp": 5200, "mp": 2600, "off": 680, "def": 340, "speed": 380, "brain": 100, "bits": 3500},
   "partner": {
     "voice": 15,

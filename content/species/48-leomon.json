@@ -12,6 +12,7 @@
   "model": {"name": "LEOM", "bones": 23, "radius": 160, "height": 400},
   "voice": 42,
   "battle_music": "normal-battle",
+  "boosted_technique": "Dynamite Kick (44)",
   "partner": {
     "voice": 3,
     "hunger_hours": [2, 6, 11, 16, 21],

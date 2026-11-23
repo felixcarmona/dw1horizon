@@ -20,6 +20,7 @@
   "model": {"name": "INSE", "bones": 22, "file": "build/models/INSE-partner.MMD", "radius": 160, "height": 400},
   "voice": 58,
   "battle_music": "normal-battle",
+  "boosted_technique": "Magma Bomb",
   "wild": {"hp": 3400, "mp": 2800, "off": 400, "def": 210, "speed": 220, "brain": 150, "bits": 2800},
   "partner": {
     "voice": 7,

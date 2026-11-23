@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch6/Sorcerimon.TIM", "entry": 0},
   "voice": 6,
   "battle_music": "normal-battle",
+  "boosted_technique": "Winter Blast",
   "condition_bubble": [3, -87, 109, 11],
   "effect_origins": [[2, 150, -200, 0, 2, -13, -186, -167], [3, 300, -50, 50, 11, 14, -125, 282],
                      [1, -260, -40, 0, 8, -159, 102, -184], [3, 70, -70, 0, 11, -26, -79, 53]],

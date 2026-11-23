@@ -13,6 +13,7 @@
   "model": {"name": "GREY", "bones": 26, "radius": 230, "height": 400},
   "voice": 5,
   "battle_music": "normal-battle",
+  "boosted_technique": "Red Inferno",
   "partner": {
     "voice": 2,
     "hunger_hours": [2, 6, 11, 16, 21],

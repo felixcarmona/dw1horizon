@@ -13,6 +13,7 @@
   "model": {"name": "MONO", "bones": 24, "radius": 260, "height": 330},
   "voice": 41,
   "battle_music": "normal-battle",
+  "boosted_technique": "Red Inferno",
   "partner": {
     "voice": 7,
     "hunger_hours": [2, 6, 10, 14, 18, 22],

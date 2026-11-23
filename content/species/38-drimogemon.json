@@ -12,6 +12,7 @@
   "model": {"name": "DORI", "bones": 28, "radius": 200, "height": 360},
   "voice": 34,
   "battle_music": "normal-battle",
+  "boosted_technique": "Buster Dive",
   "partner": {
     "voice": 7,
     "hunger_hours": [2, 6, 10, 14, 18, 22],

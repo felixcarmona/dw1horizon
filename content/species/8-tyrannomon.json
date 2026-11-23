@@ -12,6 +12,7 @@
   "model": {"name": "TYRA", "bones": 27, "radius": 230, "height": 400},
   "voice": 8,
   "battle_music": "normal-battle",
+  "boosted_technique": "Dynamite Kick (44)",
   "partner": {
     "voice": 2,
     "hunger_hours": [1, 5, 9, 13, 17, 21],

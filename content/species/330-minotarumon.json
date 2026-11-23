@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch13/Minotarumon.TIM", "entry": 0},
   "voice": 30,
   "battle_music": "normal-battle",
+  "boosted_technique": "Tremar",
   "condition_bubble": [0, -47, -2, 17],
   "effect_origins": [[7, 60, 0, 0, 13, -11, 61, -9], [3, 85, -55, 0, 17, 0, 105, -1],
                      [10, 50, -210, 0, 8, 200, -101, -2], [3, 80, -20, 0, 17, 0, 81, -28],

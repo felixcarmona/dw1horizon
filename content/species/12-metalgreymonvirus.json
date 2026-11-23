@@ -13,6 +13,7 @@
   "model": {"name": "MTGR", "bones": 30, "radius": 280, "height": 430},
   "voice": 12,
   "battle_music": "normal-battle",
+  "boosted_technique": "Power Crane",
   "partner": {
     "voice": 10,
     "hunger_hours": [0, 4, 8, 12, 16, 20],

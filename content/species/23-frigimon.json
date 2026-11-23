@@ -12,6 +12,7 @@
   "model": {"name": "YUKI", "bones": 19, "radius": 160, "height": 380},
   "voice": 21,
   "battle_music": "normal-battle",
+  "boosted_technique": "Winter Blast",
   "partner": {
     "voice": 3,
     "hunger_hours": [1, 5, 9, 13, 17, 21],

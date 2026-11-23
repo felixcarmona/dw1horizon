@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch10/Hookmon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
+  "boosted_technique": "Metal Sprinter",
   "condition_bubble": [0, -88, 18, 5],
   "effect_origins": [[7, 0, 0, 0, 4, -54, 25, 48], [10, 0, 0, 0, 7, 17, 93, 34], [18, 0, 0, 0, 12, 0, 0, 0]],
   "wild": {"hp": 1560, "mp": 1470, "off": 245, "def": 205, "speed": 200, "brain": 180, "bits": 600},

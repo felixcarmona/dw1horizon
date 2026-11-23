@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch8/DarkTyrannomon.TIM", "entry": 0},
   "voice": 8,
   "battle_music": "normal-battle",
+  "boosted_technique": "Red Inferno",
   "condition_bubble": [1, -113, -3, 20],
   "effect_origins": [[3, 130, -10, 0, 20, -1, 6, -147], [3, 130, -50, 0, 20, -1, 52, -148],
                      [6, 150, 0, 0, 17, 68, 152, -31], [11, 100, 0, 0, 2, 255, 98, 8],

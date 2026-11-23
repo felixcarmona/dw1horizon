@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch8/Blossomon.TIM", "entry": 0},
   "voice": 40,
   "battle_music": "normal-battle",
+  "boosted_technique": "Green Trap",
   "condition_bubble": [0, -51, -46, 8],
   "effect_origins": [[3, 125, -10, 0, 8, 0, 30, -69], [7, 100, -120, 0, 13, 30, -21, -137],
                      [7, 75, -30, -65, 13, 88, -35, -104], [13, 75, -30, -65, 11, -30, 16, 52],

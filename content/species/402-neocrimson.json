@@ -24,6 +24,7 @@
   "texture": {"file": "build/neocrimson-out/NeoCrimson.TIM", "entry": 0},
   "voice": 8,
   "battle_music": "normal-battle",
+  "boosted_technique": "Inifinity Burn",
   "condition_bubble": [6, -163, -1, 13],
   "effect_origins": [[3, 102, -35, 2, 13, -4, -22, -132], [4, 0, 0, 0, 13, 1, -2, -89]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},

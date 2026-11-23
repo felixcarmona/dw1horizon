@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch4/LadyDevimon.TIM", "entry": 0},
   "voice": 6,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megalo Spark",
   "condition_bubble": [45, -194, 72, 2],
   "effect_origins": [[10, 26, -29, 1, 25, -126, -65, 0], [4, 76, -126, 14, 15, -156, -64, -112],
                      [5, 0, 0, 0, 1, 0, 0, 0], [10, 103, 24, 0, 25, -138, 26, -220],

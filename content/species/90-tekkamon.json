@@ -25,6 +25,7 @@
   "texture": {"from": 90},
   "voice": 37,
   "battle_music": "normal-battle",
+  "boosted_technique": "Reverse Prog",
   "wild": {"hp": 5200, "mp": 4500, "off": 320, "def": 310, "speed": 220, "brain": 100, "bits": 2900},
   "partner": {
     "voice": 10,

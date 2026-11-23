@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch8/Woodmon.TIM", "entry": 0},
   "voice": 23,
   "battle_music": "normal-battle",
+  "boosted_technique": "Green Trap",
   "condition_bubble": [-92, -149, -6, 6],
   "effect_origins": [[3, 30, 0, -70, 6, -74, -2, -39]],
   "wild": {"hp": 1340, "mp": 1460, "off": 285, "def": 180, "speed": 225, "brain": 180, "bits": 600},

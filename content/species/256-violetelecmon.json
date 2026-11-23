@@ -22,6 +22,7 @@
   "texture": {"file": "build/batch7/Vi-Elecmon.TIM", "entry": 0},
   "voice": 16,
   "battle_music": "normal-battle",
+  "boosted_technique": "Static Elect",
   "condition_bubble": [0, -74, -80, 2],
   "wild": {"hp": 540, "mp": 590, "off": 140, "def": 85, "speed": 125, "brain": 75, "bits": 200},
   "sizing": {

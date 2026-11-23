@@ -27,6 +27,7 @@
   "texture": {"file": "build/dw2/Kimeramon.TIM", "entry": 0},
   "voice": 12,
   "battle_music": "normal-battle",
+  "boosted_technique": "Prominence Beam",
   "condition_bubble": [-9, -24, -42, 4],
   "effect_origins": [[4, 260, 30, 0, 4, -9, 14, -268], [4, "any", 0, 0, 4, -2, 4, -140],
                      [3, "any", 0, 0, 4, -2, 4, -140], [9, "any", 0, 0, 8, -9, -72, 9],

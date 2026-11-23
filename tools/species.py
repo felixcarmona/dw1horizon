@@ -481,6 +481,23 @@ def techniques_from_json(v, where):
     return ids + [0xFF] * (16 - len(ids))
 
 
+COUNTER_TECH = 45                # Counter: reactive, never chosen like the others
+
+
+def boosted_technique(s, where=None):
+    """The id of the species' boosted technique (docs/mods/boosted-techniques.md), None without one: a regular
+    technique of its list, and of its NEW DIGIMON off list when it has one."""
+    name = s.get('boosted_technique')
+    if name is None: return None
+    w = f'{where or s.get("_path", s.get("name"))}.boosted_technique'
+    tech = id_of('techs', name, w)
+    if tech >= FINISHER_FIRST or tech == COUNTER_TECH: raise SystemExit(f'{w}: {name} is not a regular attacking technique')
+    for block in (s, s.get('off', {})):
+        if 'techniques' in block and tech not in techniques_from_json(block['techniques'], w):
+            raise SystemExit(f'{w}: {name} is not one of its techniques' + (' with NEW DIGIMON off' if block is not s else ''))
+    return tech
+
+
 def specialties_to_json(sp):
     return [None if e == 0xFF else enum_name(ELEMENTS, e) for e in sp]
 
@@ -496,7 +513,7 @@ def stats_json(v):
 
 # ------------------------------------------------------------------ the file format: dict <-> JSON
 KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'fields', 'techniques', 'finisher', 'drop', 'effects_like', 'own_effect', 'model',
-             'texture', 'voice', 'battle_music', 'reincarnation_stats', 'new_game_technique', 'status_screen_position',
+             'texture', 'voice', 'battle_music', 'reincarnation_stats', 'new_game_technique', 'boosted_technique', 'status_screen_position',
              'partner_voice', 'item_distance', 'training', 'condition_bubble', 'effect_origins', 'effect_origin_fallback', 'effect_origin_fallback_always', 'wild', 'sizing', 'size', 'needs_ram_mb',
              'partner', 'care', 'evolution']
 REQUIRED = ['id', 'name', 'level', 'attribute', 'specialties', 'techniques', 'model', 'voice', 'battle_music']
@@ -541,6 +558,7 @@ def table_rows(s):
         rows['newGameTechnique'] = (tech, 0x2E + para['moves'].index(tech))
     else:
         rows['newGameTechnique'] = None
+    boosted_technique(s, w)
     fb = s.get('effect_origin_fallback')
     if fb is not None and not (isinstance(fb, list) and len(fb) == 4 and all(isinstance(v, int) for v in fb)):
         raise SystemExit(f'{w}.effect_origin_fallback: [bone, x, y, z]')
@@ -562,6 +580,8 @@ def para_from_json(s, w):
                 special=specialties_from_json(s['specialties'], w),
                 dropItem=id_of('items', drop.get('item', 0), f'{w}.drop.item'), dropChance=drop.get('percent', 0),
                 moves=techniques_from_json(s['techniques'], w), padding=0)
+    boost = boosted_technique(s, w)
+    if boost is not None: para['padding'] = boost + 1      # DigimonPara.boostedTech: the technique + 1
     return para
 
 

@@ -16,6 +16,7 @@
   "model": {"name": "PENM", "bones": 25, "radius": 120, "height": 250},
   "voice": 51,
   "battle_music": "normal-battle",
+  "boosted_technique": "Ice Needle",
   "wild": {"hp": 400, "mp": 400, "off": 40, "def": 40, "speed": 40, "brain": 40, "bits": 100},
   "partner": {
     "voice": 1,

@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch2/ExVeemon.TIM", "entry": 0},
   "voice": 5,
   "battle_music": "normal-battle",
+  "boosted_technique": "Heat Laser",
   "condition_bubble": [-52, -125, -31, 4],
   "effect_origins": [[5, 100, 30, 0, 4, -20, 13, -156], [5, 120, -50, 0, 4, -28, -60, -189],
                      [5, 120, -100, 0, 4, -34, -108, -198], [5, 65, -30, 0, 4, -31, -50, -133],

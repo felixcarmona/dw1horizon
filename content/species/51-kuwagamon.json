@@ -16,6 +16,7 @@
   "model": {"name": "KUWA", "bones": 30, "radius": 240, "height": 415},
   "voice": 45,
   "battle_music": "normal-battle",
+  "boosted_technique": "Wind Cutter",
   "partner": {
     "voice": 8,
     "hunger_hours": [4, 9, 14, 18, 23],

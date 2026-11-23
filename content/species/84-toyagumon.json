@@ -24,6 +24,7 @@
   "texture": {"from": 84},
   "voice": 3,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Spit Fire",
   "wild": {"hp": 2600, "mp": 3000, "off": 530, "def": 280, "speed": 110, "brain": 150, "bits": 1200},
   "partner": {
     "voice": 1,

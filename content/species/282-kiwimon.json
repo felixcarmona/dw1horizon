@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch9/Kiwimon.TIM", "entry": 0},
   "voice": 44,
   "battle_music": "normal-battle",
+  "boosted_technique": "Dynamite Kick (44)",
   "condition_bubble": [0, -68, 2, 1],
   "effect_origins": [[7, 0, 0, 0, 7, 43, 47, -16], [10, 0, 0, 0, 3, -43, 47, -16], [18, 0, 0, 0, 10, 0, 0, 0]],
   "wild": {"hp": 1490, "mp": 1460, "off": 250, "def": 195, "speed": 205, "brain": 185, "bits": 600},

@@ -12,6 +12,7 @@
   "model": {"name": "GARU", "bones": 26, "radius": 220, "height": 290},
   "voice": 20,
   "battle_music": "normal-battle",
+  "boosted_technique": "Giga Freeze",
   "partner": {
     "voice": 7,
     "hunger_hours": [2, 6, 11, 16, 21],

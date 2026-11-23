@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch8/SkullMammothmon.TIM", "entry": 0},
   "voice": 41,
   "battle_music": "normal-battle",
+  "boosted_technique": "Ice Statue",
   "condition_bubble": [8, -100, -7, 19],
   "effect_origins": [[4, 70, 0, 20, 19, -8, 70, -96], [4, 120, 0, 20, 19, -15, 133, -146]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},

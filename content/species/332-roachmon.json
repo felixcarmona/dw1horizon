@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch13/Gokimon.TIM", "entry": 0},
   "voice": 57,
   "battle_music": "normal-battle",
+  "boosted_technique": "Big Poop Toss",
   "condition_bubble": [0, -96, -45, 27],
   "effect_origins": [[5, 134, 24, 1, 28, 0, 113, -87], [5, 161, -40, -1, 28, 0, 40, -174],
                      [5, 161, -81, -3, 28, 0, -16, -214], [5, 87, -24, -1, 28, 0, 19, -96],

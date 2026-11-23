@@ -29,6 +29,7 @@
   "texture": {"file": "build/record-originals/62.TIM", "entry": 0},
   "voice": 20,
   "battle_music": "normal-battle",
+  "boosted_technique": "Buster Dive",
   "condition_bubble": [-1, -77, 11, 3],
   "effect_origins": [[4, 70, 0, 20, 3, 8, 36, -84], [4, 120, 0, 20, 3, 14, 75, -132]],
   "wild": {"hp": 3090, "mp": 3010, "off": 415, "def": 340, "speed": 290, "brain": 300, "bits": 1500},

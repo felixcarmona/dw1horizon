@@ -25,6 +25,7 @@
   "texture": {"from": 85},
   "voice": 18,
   "battle_music": "normal-battle",
+  "boosted_technique": "Spinning Shot",
   "wild": {"hp": 3800, "mp": 4200, "off": 710, "def": 280, "speed": 100, "brain": 100, "bits": 1300},
   "partner": {
     "voice": 11,

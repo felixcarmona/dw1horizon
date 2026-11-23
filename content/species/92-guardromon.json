@@ -25,6 +25,7 @@
   "texture": {"from": 92},
   "voice": 36,
   "battle_music": "normal-battle",
+  "boosted_technique": "Metal Sprinter",
   "wild": {"hp": 2900, "mp": 3800, "off": 630, "def": 340, "speed": 100, "brain": 50, "bits": 1100},
   "partner": {
     "voice": 10,

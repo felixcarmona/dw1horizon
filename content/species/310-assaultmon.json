@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch11/Armormon.TIM", "entry": 0},
   "voice": 32,
   "battle_music": "normal-battle",
+  "boosted_technique": "All Range Beam",
   "condition_bubble": [1, -123, -25, 16],
   "effect_origins": [[7, 30, 0, 0, 12, 0, 36, -10], [25, 48, 37, 0, 9, -28, 66, 25],
                      [9, 115, 0, 0, 24, 50, 86, 104], [9, 140, 0, 0, 24, 61, 105, 127]],

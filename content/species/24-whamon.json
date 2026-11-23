@@ -40,6 +40,7 @@
   "model": {"name": "HOEE", "bones": 12, "radius": 200, "height": 400},
   "voice": 22,
   "battle_music": "normal-battle",
+  "boosted_technique": "Water Blit",
   "partner": {
     "voice": 5,
     "hunger_hours": [2, 6, 10, 14, 18, 21],

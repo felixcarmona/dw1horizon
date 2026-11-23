@@ -17,6 +17,7 @@
   "voice": 15,
   "battle_music": "normal-battle",
   "new_game_technique": "Sonic Jab",
+  "boosted_technique": "Heat Laser",
   "partner": {
     "voice": 1,
     "hunger_hours": [2, 5, 8, 11, 14, 17, 20, 23],

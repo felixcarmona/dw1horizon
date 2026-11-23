@@ -13,6 +13,7 @@
   "model": {"name": "SKUL", "bones": 26, "radius": 260, "height": 480},
   "voice": 24,
   "battle_music": "normal-battle",
+  "boosted_technique": "Pulse Laser",
   "partner": {
     "voice": 2,
     "hunger_hours": [4, 12, 20],

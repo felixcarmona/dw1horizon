@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch2/Raidramon.TIM", "entry": 0},
   "voice": 20,
   "battle_music": "normal-battle",
+  "boosted_technique": "Electric Cloud",
   "condition_bubble": [0, -155, -13, 3],
   "effect_origins": [[4, 70, 0, 20, 3, -2, -49, -122], [4, 120, 0, 20, 3, -2, -14, -176]],
   "wild": {"hp": 1440, "mp": 1520, "off": 260, "def": 205, "speed": 200, "brain": 175, "bits": 600},

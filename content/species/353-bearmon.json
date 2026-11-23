@@ -22,6 +22,7 @@
   "texture": {"file": "build/batch16/Bearmon.TIM", "entry": 0},
   "voice": 3,
   "battle_music": "normal-battle",
+  "boosted_technique": "Sonic Jab",
   "condition_bubble": [0, -126, 26, 8],
   "effect_origins": [[4, 4, 34, 0, 9, 0, -36, 7], [3, 105, -157, 0, 8, 0, -44, -200]],
   "wild": {"hp": 590, "mp": 600, "off": 115, "def": 95, "speed": 110, "brain": 80, "bits": 200},

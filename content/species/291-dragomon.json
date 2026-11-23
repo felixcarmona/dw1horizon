@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch10/Dagomon.TIM", "entry": 0},
   "voice": 24,
   "battle_music": "normal-battle",
+  "boosted_technique": "Aurora Freeze",
   "condition_bubble": [0, -217, -72, 1],
   "effect_origins": [[4, -70, 70, 0, 1, 0, 83, -66], [17, 118, 0, 129, 4, -133, 104, -81],
                      [2, 230, -100, 0, 2, 0, -56, -53], [2, 0, 0, 0, 2, 0, 128, 142]],

@@ -25,6 +25,7 @@
   "texture": {"from": 71},
   "voice": 3,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Ice Needle",
   "wild": {"hp": 2900, "mp": 2700, "off": 460, "def": 240, "speed": 150, "brain": 150, "bits": 600},
   "partner": {
     "voice": 1,

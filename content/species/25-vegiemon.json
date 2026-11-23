@@ -12,6 +12,7 @@
   "model": {"name": "VEGI", "bones": 20, "radius": 150, "height": 270},
   "voice": 23,
   "battle_music": "normal-battle",
+  "boosted_technique": "Danger Sting",
   "partner": {
     "voice": 14,
     "hunger_hours": [3, 7, 11, 14, 18, 23],

@@ -16,6 +16,7 @@
   "model": {"name": "ANGE", "bones": 26, "radius": 150, "height": 400},
   "voice": 18,
   "battle_music": "normal-battle",
+  "boosted_technique": "Hurricane",
   "partner": {
     "voice": 11,
     "hunger_hours": [7, 12, 17],

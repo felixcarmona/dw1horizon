@@ -17,6 +17,7 @@
   "model": {"name": "MGSD", "bones": 15, "radius": 200, "height": 340},
   "voice": 55,
   "battle_music": "normal-battle",
+  "boosted_technique": "Ice Statue",
   "partner": {
     "voice": 5,
     "hunger_hours": [0, 5, 9, 14, 19],

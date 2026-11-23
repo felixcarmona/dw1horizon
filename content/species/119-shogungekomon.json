@@ -13,6 +13,7 @@
   "model": {"name": "TONO", "bones": 28, "file": "build/models/TONO-partner.MMD", "radius": 220, "height": 440},
   "voice": 67,
   "battle_music": "normal-battle",
+  "boosted_technique": "Aurora Freeze",
   "wild": {"hp": 2500, "mp": 2500, "off": 200, "def": 100, "speed": 10, "brain": 50, "bits": 200},
   "partner": {
     "voice": 5,

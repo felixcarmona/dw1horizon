@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch2/Veedramon.TIM", "entry": 0},
   "voice": 5,
   "battle_music": "normal-battle",
+  "boosted_technique": "Heat Laser",
   "condition_bubble": [20, -143, -67, 4],
   "effect_origins": [[5, 100, 30, 0, 4, 23, 35, -155], [5, 120, -50, 0, 4, 22, -30, -209],
                      [5, 120, -100, 0, 4, 22, -77, -230], [5, 65, -30, 0, 4, 22, -36, -149],

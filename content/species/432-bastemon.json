@@ -26,6 +26,7 @@
   "texture": {"file": "build/bastemon/Bastemon.TIM", "entry": 0},
   "voice": 27,
   "battle_music": "normal-battle",
+  "boosted_technique": "Charm Perfume",
   "condition_bubble": [0, -106, 10, 8],
   "effect_origins": [[7, "any", 0, 0, 7, -54, 292, -71], [10, "any", 0, 0, 4, 41, -82, -1],
                      [1, "any", 0, 0, 12, 0, 0, 0], [6, "any", 0, 0, 7, -5, 224, -89]],

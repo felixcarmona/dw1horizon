@@ -1,0 +1,346 @@
+From ad44896e2897e6ab029df678788ce7b382469159 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 23 Nov 2026 17:14:03 +0000
+Subject: [PATCH] Boosted techniques: one regular technique per species hits
+ harder and costs less MP
+
+The partner's damage and MP cost for its species' boosted technique (the spare
+byte at the end of DigimonPara) are raised and lowered where the battle, the
+tournament and VS compute them; the speed buffer, the enemies and the finishers
+are untouched. The technique menu shows the two numbers in red and blue with
+small up and down arrows.
+---
+ config/us/overlay.ld   |  4 +++
+ include/dw/params.h    |  2 +-
+ include/dw/species.h   |  9 +++++++
+ src/btl/battle_main.c  | 10 +++----
+ src/main/game_menu.c   | 60 +++++++++++++++++++++++++++++++++++++++---
+ src/main/mod_species.c | 16 +++++++++++
+ src/std/std_main.c     | 10 +++----
+ src/vs/vs_main.c       | 10 +++----
+ 8 files changed, 101 insertions(+), 20 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index ef4e558c..a9f85d64 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -313,6 +313,7 @@ SECTIONS
+                 .text.drawOptionsText* .text.renderOptionsMenu* .text.modSetOption*
+                 .text.modOptionValue* .text.modOptionText* .text.modOptionCount*
+                 .text.modOptionV* .text.modOptionW* .rodata.MOD_OPT_TEXT
++                .text.modOptionLanguageName*
+                 .rodata.drawOptionsText* .rodata.renderOptionsMenu* .rodata.modSetOption*
+                 .rodata.modOptionValue* .rodata.modOptionText* .rodata.modOptionCount*
+                 .rodata.modDrawLanguagePicker* .rodata.modTickLanguagePicker*
+@@ -331,6 +332,9 @@ SECTIONS
+                 .rodata.renderConfirmNoCard*
+             );
+             . = ALIGN(., 4);
++            /* MOD (boosted techniques, room in the executable): the new game's tamer look, which only the title's code calls */
++            BUILD_DIR/src/main/mod_species.c.o(.text.modTamerRelook);
++            . = ALIGN(., 4);
+             /* Detection display only runs while the title owns EVL and MENU. */
+             BUILD_DIR/src/main/main_menu.c.o(
+                 .text.modNoticeDraw* .text.modNoticeRender* .text.modNoticeString*
+diff --git a/include/dw/params.h b/include/dw/params.h
+index 727fc66a..0a0cf5b4 100644
+--- a/include/dw/params.h
++++ b/include/dw/params.h
+@@ -26,7 +26,7 @@ typedef struct {
+ 	uint8_t dropItem;
+ 	uint8_t dropChance;
+ 	uint8_t moves[16];
+-	uint8_t padding;
++	uint8_t boostedTech; /* MOD (boosted techniques): the species' boosted technique + 1, 0 none; padding in the original */
+ } DigimonPara;
+ 
+ typedef struct {
+diff --git a/include/dw/species.h b/include/dw/species.h
+index c82f1538..c6cbc341 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -117,6 +117,15 @@ typedef struct {
+ #define SPECIES_HEADER_EVOLUTION_OFF 0x3c
+ #define SPECIES_EVOLUTION_SWAP_MAX 20
+ Move *modSpeciesMove(int32_t type, int32_t move);
++/* MOD (boosted techniques, docs/mods/boosted-techniques.md): what `move` does in the hands of a partner of species
++ * `type`: its power, or its stored MP cost with `cost`, raised and lowered when it is the species' boosted technique
++ * (DigimonPara.boostedTech). Only the partner (and both VS fighters) ask; the speed buffer, the enemies and the
++ * finishers keep reading modSpeciesMove. */
++int32_t modBoost(int32_t type, int32_t move, int32_t cost);
++#define modBoostPower(type, mv) modBoost(type, mv, 0)
++#define modBoostCost(type, mv) modBoost(type, mv, 1)
++#define MOD_BOOST_POWER(e, mv) ((Entity *)(e) == ENTITY_TABLE[1] ? modBoostPower((e)->entity.type, mv) : modSpeciesMove((e)->entity.type, mv)->power)
++#define MOD_BOOST_COST(e, mv) ((Entity *)(e) == ENTITY_TABLE[1] ? modBoostCost((e)->entity.type, mv) : modSpeciesMove((e)->entity.type, mv)->mpCost)
+ void modApplySpeciesLevels(void);
+ /* Native evolution items follow current stages, retaining the legacy Mega item exception. */
+ int32_t modNativeItemTargetLevel(int32_t type);
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index e91fcfd3..5aedee32 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -2076,7 +2076,7 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 	} else {
+ 		diff = off - def;
+ 		roll = randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN);
+-        dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtDefensePower(modSpeciesMove(attacker->entity.type, move)->power, off, defender->stats.base.def, move == 0x2d), DMG_DIV) * roll / 100;
++        dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtDefensePower(MOD_BOOST_POWER(attacker, move), off, defender->stats.base.def, move == 0x2d), DMG_DIV) * roll / 100;
+         if ((Entity *)defender == ENTITY_TABLE[1] && (Entity *)attacker != ENTITY_TABLE[1] && (floorPercent = modFloorPercent(attacker->stats.base.hp)) > 0) {
+             floorDamage = BMD((mult[0] + mult[1] + mult[2]) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, off), DMG_DIV) * roll / 100;
+             if (floorDamage > DAMAGE_CAP) floorDamage = DAMAGE_CAP;
+@@ -2382,7 +2382,7 @@ int32_t BTL_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+ 		return 0;
+ 	}
+ 
+-	mp = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT); /* MOD (battle as data) */
++	mp = MOD_BOOST_COST(digimon, tech) * BM(MP_MULT); /* MOD (battle as data, boosted techniques) */
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		mp -= mp * BMBRAIN(PARTNER_ENTITY.digimonEntity.stats.base.brain) / 100;
+ 		if (PARTNER_PARA.condition & 0x60) {
+@@ -2557,7 +2557,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	BTL_removeMoveEffect(digimon, fighter);
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		if (!((tech >= 0x3a) && (tech < 0x71))) {
+-			cost = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
++			cost = modBoostCost(digimon->entity.type, tech) * BM(MP_MULT); /* MOD (boosted techniques) */
+ 			if (PARTNER_PARA.condition & 0x60) {
+ 				cost += cost * BM(MP_COND_PCT) / 100;
+ 			}
+@@ -3536,7 +3536,7 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = -1;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = modSpeciesMove(digimon->entity.type, tech)->power;
++				values[i] = MOD_BOOST_POWER(digimon, tech);
+ 			}
+ 		}
+ 		BTL_sortScoresDescending(values, keys, groups, 3);
+@@ -3564,7 +3564,7 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = 10000;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
++				values[i] = MOD_BOOST_COST(digimon, tech) * BM(MP_MULT);
+ 			}
+ 		}
+ 		BTL_sortScoresAscending(values, keys, groups, 3);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 4a179a73..74891147 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -3882,6 +3882,48 @@ void renderDigimonStatsView(void)
+ 	}
+ }
+ 
++/* MOD (boosted techniques): the species' boosted technique shows its raised power in red with an up arrow
++ * and its lowered MP cost in blue with a down arrow */
++/* mode 0: red, up; 1: blue, down; 2: the black edge of the up arrow, one pixel wider all round (added after it, so
++ * drawn under it) */
++static void renderBoostArrow(int32_t x, int32_t y, int32_t mode, int32_t otz)
++{
++	int32_t k, w;
++	int32_t edge = mode >> 1;
++	int32_t step = 1;
++	int32_t r = 0, g = 0, b = 0;
++
++	if (mode == 0) {
++		r = 0xff; g = 0x60; b = 0x50;
++	}
++	if (mode == 1) {
++		r = 0x60; g = 0xb0; b = 0xff;
++		y += 6;
++		step = -1;
++	}
++	for (k = 0; k < 7; k++) {
++		w = k < 4 ? k : 1; /* the head, then the shaft */
++		renderBox(x + 3 - w - edge, y - edge, (w + edge) * 2 + 1, edge * 2 + 1, r, g, b, 0, otz);
++		y += step;
++	}
++}
++
++static void renderBoostedNumbers(int32_t moveId, int32_t x, int32_t y, int32_t list)
++{
++	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++	int32_t boosted = DIGI_PARA(type).boostedTech == moveId + 1;
++	int32_t otz = list ? 5 : 3;
++	int32_t i, value;
++
++	for (i = 0; i < 2; i++) { /* the power, then the MP cost: beside it in the list, under it in the panel */
++		value = modBoost(type, moveId, i);
++		if (i) value *= 3;
++		renderNumber(boosted ? 6 - i * 4 : 0, x, y, 3, value, otz);
++		if (boosted) renderBoostArrow(x + 0x19, y + 2, i, otz); /* 3 px after the digits, centred on their 10 rows */
++		if (list) x += 0x29; else y += 0x11;
++	}
++}
++
+ void renderDigimonMovesView(void)
+ {
+ 	Move *mv;
+@@ -3906,8 +3948,7 @@ void renderDigimonMovesView(void)
+ 			if (EQUIPPED_MOVES[j] != 0xff) {
+ 				mv = &MOVE_DATA[EQUIPPED_MOVES[j]];
+ 				renderString(0, -0x7c, j * 0xf - 0x42, 0x78, 0xc, 0, j * 0xc + 0x18, 5, 1);
+-				renderNumber(0, 0x10, j * 0xf - 0x43, 3, mv->power, 5);
+-				renderNumber(0, 0x39, j * 0xf - 0x43, 3, mv->mpCost * 3, 5);
++				renderBoostedNumbers(EQUIPPED_MOVES[j], 0x10, j * 0xf - 0x43, 1);
+ 				if (mv->range != 0) {
+ #if !VERSION_IS(US)
+ 					renderString(0, 0x65, j * 0xf - 0x42, 0xc, 0xc,
+@@ -4255,8 +4296,7 @@ void renderDigimonMovesSelected(int16_t panel)
+ 		drawStringMode(MOVE_NAMES[moveId], 0, 0x84,
+ 		              fitStringMode(MOVE_NAMES[moveId], MOVE_NAME_WIDTH));
+ 		renderString(0, (panel * 0x9d) - 0x8a, 9, 0x78, 0xc, 0, 0x84, 3, 1);
+-		renderNumber(0, (panel * 0xcb) - 0x64, 0x1b, 3, move->power, 3);
+-		renderNumber(0, (panel * 0xcb) - 0x64, 0x2c, 3, move->mpCost * 3, 3);
++		renderBoostedNumbers(moveId, (panel * 0xcb) - 0x64, 0x1b, 0);
+ 		renderString(0, (panel * 0xcb) - 0x64, 0x3e, 0x24, 0xc, (move->range - 1) * 0x24, 0x78, 3, 1);
+ #if !VERSION_IS(US)
+ 		status = move->status;
+@@ -4322,6 +4362,18 @@ void renderDigimonMoveBox(void)
+ 		}
+ 	}
+ 
++	/* MOD (boosted techniques): an up arrow on the corner of the boosted technique's cell (the two techniques that
++	 * exist twice share a cell) */
++	i = DIGI_PARA(ENTITY_TABLE[1]->type).boostedTech - 1;
++	if (i >= 0) {
++		if (i == 0x30) i = 0x2c;
++		if (i == 0x39) i = 0x37;
++		if (i > 0x30) i--;
++		x = (i & 7) * 0x12 - 0x24;
++		y = "\0\2\4\5\3\1\6"[i >> 3] * 0xf - 9;
++		renderBoostArrow(x, y, 0, 3);
++		renderBoostArrow(x, y, 2, 3);
++	}
+ 	for (i = 0; i < 0x10; i++) {
+ 		moves[i] = DIGI_PARA(ENTITY_TABLE[1]->type).moves[i];
+ 	}
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 62719651..c9d07c0f 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -232,6 +232,22 @@ int32_t getSpeciesTechEffect(int32_t type, int32_t move)
+ 	return tech + 0x100;
+ }
+ 
++int32_t modBoost(int32_t type, int32_t move, int32_t cost)
++{
++	Move *mv = modSpeciesMove(type, move);
++	int32_t boosted = DIGI_PARA(type).boostedTech == move + 1;
++	int32_t value;
++
++	if (cost) {
++		value = mv->mpCost;
++		if (boosted) value -= (value + 2) / 4; /* a quarter less, rounded; 1 stays 1 */
++	} else {
++		value = mv->power;
++		if (boosted) value += value / 8 + 30;
++	}
++	return value;
++}
++
+ int32_t isRecordOriginal(int32_t type)
+ {
+ 	if ((uint32_t)type >= NUM_ORIGINAL_DIGIMON) {
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 596a44a1..b2fe866a 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -5861,7 +5861,7 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 	} else {
+ 		diff = off - def;
+ 		roll = randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN);
+-        dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtDefensePower(modSpeciesMove(attacker->entity.type, move)->power, off, defender->stats.base.def, move == 0x2d), DMG_DIV) * roll / 100;
++        dmg = BMD((mult[0] + mult[1] + mult[2]) * modBtDefensePower(MOD_BOOST_POWER(attacker, move), off, defender->stats.base.def, move == 0x2d), DMG_DIV) * roll / 100;
+         if ((Entity *)defender == ENTITY_TABLE[1] && (Entity *)attacker != ENTITY_TABLE[1] && (floorPercent = modFloorPercent(attacker->stats.base.hp)) > 0) {
+             floorDamage = BMD((mult[0] + mult[1] + mult[2]) * modBtStatPower(modSpeciesMove(attacker->entity.type, move)->power, off), DMG_DIV) * roll / 100;
+             if (floorDamage > DAMAGE_CAP) floorDamage = DAMAGE_CAP;
+@@ -6255,7 +6255,7 @@ int32_t STD_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+ 		return 0;
+ 	}
+ 
+-	mp = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT); /* MOD (battle as data) */
++	mp = MOD_BOOST_COST(digimon, tech) * BM(MP_MULT); /* MOD (battle as data, boosted techniques) */
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		mp -= mp * BMBRAIN(PARTNER_ENTITY.digimonEntity.stats.base.brain) / 100;
+ 		if (PARTNER_PARA.condition & 0x60) {
+@@ -6450,7 +6450,7 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = -1;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = modSpeciesMove(digimon->entity.type, tech)->power;
++				values[i] = MOD_BOOST_POWER(digimon, tech);
+ 			}
+ 		}
+ 		STD_sortScoresDescending(values, keys, groups, 3);
+@@ -6478,7 +6478,7 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = 10000;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
++				values[i] = MOD_BOOST_COST(digimon, tech) * BM(MP_MULT);
+ 			}
+ 		}
+ 		STD_sortScoresAscending(values, keys, groups, 3);
+@@ -6738,7 +6738,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	STD_removeMoveEffect(digimon, fighter);
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		if (!((tech >= 0x3a) && (tech < 0x71))) {
+-			cost = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
++			cost = modBoostCost(digimon->entity.type, tech) * BM(MP_MULT); /* MOD (boosted techniques) */
+ 			if (PARTNER_PARA.condition & 0x60) {
+ 				cost += cost / 2;
+ 			}
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index f615a7fc..760982e2 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -372,7 +372,7 @@ int32_t VS_rollAttackOutcome(DigimonEntity *attacker, DigimonEntity *defender, i
+ 		dmg = dmg * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	} else {
+ 		diff = atk - def;
+-		dmg = BMD((eff[2] + (eff[0] + eff[1])) * modBtDefensePower(modSpeciesMove(attacker->entity.type, move)->power, atk, defender->stats.base.def, move == 0x2d), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		dmg = BMD((eff[2] + (eff[0] + eff[1])) * modBtDefensePower(modBoostPower(attacker->entity.type, move), atk, defender->stats.base.def, move == 0x2d), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 
+ 	if (dmg <= BM(DMG_MIN) - 1) {
+@@ -716,7 +716,7 @@ int32_t VS_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t sl
+ 		return 0;
+ 	}
+ 
+-	mp = (int16_t)(modSpeciesMove(digimon->entity.type, tech)->mpCost * 3);
++	mp = (int16_t)(modBoostCost(digimon->entity.type, tech) * 3); /* MOD (boosted techniques) */
+ 	if (digimon->stats.base.brain >= 700) {
+ 		if (digimon->stats.base.brain == 999) {
+ 			mp -= (int16_t)(mp / 5);
+@@ -920,7 +920,7 @@ void VS_playMoveEffect(DigimonEntity *digimon, DigimonEntity *target, FighterDat
+ 	}
+ 
+ 	if (!((tech >= 0x3a) && (tech < 0x71))) {
+-		cost = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
++		cost = modBoostCost(digimon->entity.type, tech) * BM(MP_MULT);
+ 		brain = digimon->stats.base.brain;
+ 		if (brain >= 0x2bc) {
+ 			if (brain == 0x3e7) {
+@@ -1626,7 +1626,7 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = -1;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = modSpeciesMove(digimon->entity.type, tech)->power;
++				values[i] = modBoostPower(digimon->entity.type, tech);
+ 			}
+ 		}
+ 		VS_sortScoresDescending(values, keys, groups, 3);
+@@ -1654,7 +1654,7 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = 10000;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
++				values[i] = modBoostCost(digimon->entity.type, tech) * BM(MP_MULT);
+ 			}
+ 		}
+ 		VS_sortScoresAscending(values, keys, groups, 3);
+-- 
+2.55.0
+

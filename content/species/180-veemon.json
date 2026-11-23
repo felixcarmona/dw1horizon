@@ -23,6 +23,7 @@
   "texture": {"file": "build/dcb/Veemon.TIM", "entry": 0},
   "voice": 15,
   "battle_music": "normal-battle",
+  "boosted_technique": "Sonic Jab",
   "condition_bubble": [0, -85, -7, 3],
   "effect_origins": [[3, 110, -140, 0, 3, 0, -5, -177], [3, 50, -40, 0, 3, 0, -3, -67],
                      [3, "any", 0, 0, 3, 0, -3, -67]],

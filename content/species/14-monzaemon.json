@@ -13,6 +13,7 @@
   "model": {"name": "MONZ", "bones": 14, "radius": 130, "height": 330},
   "voice": 14,
   "battle_music": "normal-battle",
+  "boosted_technique": "Megaton Punch",
   "partner": {
     "voice": 15,
     "hunger_hours": [2, 6, 11, 16, 21],

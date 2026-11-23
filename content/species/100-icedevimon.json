@@ -25,6 +25,7 @@
   "texture": {"from": 100},
   "voice": 6,
   "battle_music": "normal-battle",
+  "boosted_technique": "Ice Statue",
   "wild": {"hp": 2400, "mp": 3300, "off": 550, "def": 280, "speed": 170, "brain": 150, "bits": 700},
   "partner": {
     "voice": 3,

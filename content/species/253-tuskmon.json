@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch7/Tuskmon.TIM", "entry": 0},
   "voice": 8,
   "battle_music": "normal-battle",
+  "boosted_technique": "Tremar",
   "condition_bubble": [3, -67, -37, 21],
   "effect_origins": [[1, 0, 0, 0, 1, 3, 14, -64], [3, 100, -25, 0, 21, -9, 47, -72]],
   "wild": {"hp": 1730, "mp": 1410, "off": 230, "def": 230, "speed": 180, "brain": 175, "bits": 600},

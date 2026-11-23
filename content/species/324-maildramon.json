@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch12/Maildramon.TIM", "entry": 0},
   "voice": 32,
   "battle_music": "normal-battle",
+  "boosted_technique": "Electric Cloud",
   "condition_bubble": [1, -150, -22, 19],
   "effect_origins": [[7, 30, 0, 0, 20, -8, 44, 4], [25, 48, 37, 0, 12, -5, 71, 58],
                      [9, 115, 0, 0, 25, -98, 91, 112], [9, 140, 0, 0, 25, -119, 111, 136]],

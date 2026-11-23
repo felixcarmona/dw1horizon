@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch13/Snatchmon.TIM", "entry": 0},
   "voice": 3,
   "battle_music": "normal-battle",
+  "boosted_technique": "Metal Sprinter",
   "condition_bubble": [0, -158, -10, 1],
   "effect_origins": [[7, 0, 0, 0, 16, 0, 0, 0], [10, 0, 0, 0, 22, 0, 0, 0], [18, 0, 0, 0, 8, 0, 0, 0]],
   "wild": {"hp": 1100, "mp": 2300, "off": 390, "def": 190, "speed": 80, "brain": 150, "bits": 400},

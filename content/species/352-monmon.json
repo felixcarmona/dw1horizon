@@ -23,6 +23,7 @@
   "texture": {"file": "build/batch16/Monmon.TIM", "entry": 0},
   "voice": 15,
   "battle_music": "normal-battle",
+  "boosted_technique": "Sonic Jab",
   "condition_bubble": [0, -85, 15, 15],
   "effect_origins": [[3, 110, -140, 0, 15, 0, -45, -156]],
   "wild": {"hp": 670, "mp": 580, "off": 110, "def": 100, "speed": 95, "brain": 75, "bits": 200},

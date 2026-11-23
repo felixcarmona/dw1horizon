@@ -23,6 +23,7 @@
   "texture": {"from": 107},
   "voice": 33,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Wind Cutter",
   "wild": {"hp": 800, "mp": 1800, "off": 290, "def": 150, "speed": 200, "brain": 250, "bits": 300},
   "partner": {
     "voice": 0,

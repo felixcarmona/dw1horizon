@@ -12,6 +12,7 @@
   "model": {"name": "PIYO", "bones": 22, "radius": 100, "height": 235},
   "voice": 39,
   "battle_music": "normal-battle",
+  "boosted_technique": "Electric Cloud",
   "partner": {
     "voice": 1,
     "hunger_hours": [1, 5, 9, 13, 17, 21],

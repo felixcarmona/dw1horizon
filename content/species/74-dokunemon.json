@@ -25,6 +25,7 @@
   "texture": {"from": 74},
   "voice": 28,
   "battle_music": "normal-battle-2",
+  "boosted_technique": "Poison Powder",
   "wild": {"hp": 300, "mp": 600, "off": 110, "def": 100, "speed": 100, "brain": 100, "bits": 400},
   "partner": {
     "voice": 1,

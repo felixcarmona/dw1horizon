@@ -24,6 +24,7 @@
   "texture": {"file": "build/rescue-kyubimon/Kyubimon.TIM", "entry": 0},
   "voice": 20,
   "battle_music": "normal-battle",
+  "boosted_technique": "Fire Tower",
   "condition_bubble": [1, -135, -55, 9],
   "effect_origins": [[4, 70, 0, 20, 9, 0, -35, -121], [4, 120, 0, 20, 9, 0, 1, -156]],
   "wild": {"hp": 1560, "mp": 1510, "off": 255, "def": 205, "speed": 200, "brain": 175, "bits": 600},

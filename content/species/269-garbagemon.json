@@ -24,6 +24,7 @@
   "texture": {"file": "build/batch8/Garbagemon.TIM", "entry": 0},
   "voice": 35,
   "battle_music": "normal-battle",
+  "boosted_technique": "Ult Poop Hell",
   "condition_bubble": [-1, -59, 0, 1],
   "effect_origins": [[11, 213, 0, 0, 14, 1, 147, -58], [2, -5, -40, 0, 1, 0, 4, -30], [2, 130, 0, 0, 1, -1, -96, 0],
                      [2, 330, 0, 0, 1, -4, -244, 0], [1, 0, 0, 0, 1, 7, -9, -3],

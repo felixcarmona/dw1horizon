@@ -27,6 +27,7 @@
   "texture": {"file": "build/batch/MetalGarurumon.TIM", "entry": 0},
   "voice": 20,
   "battle_music": "normal-battle",
+  "boosted_technique": "Aurora Freeze",
   "condition_bubble": [5, -205, 51, 2],
   "effect_origins": [[4, 70, 0, 20, 2, -2, -122, -123], [4, 120, 0, 20, 2, -5, -101, -203]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},

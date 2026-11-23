@@ -25,6 +25,7 @@
   "texture": {"file": "build/batch10/Vilemon.TIM", "entry": 0},
   "voice": 6,
   "battle_music": "normal-battle",
+  "boosted_technique": "Confused Storm",
   "condition_bubble": [0, -25, -28, 19],
   "effect_origins": [[4, 260, 30, 0, 19, 0, 130, -148], [9, 0, 75, 50, 18, 42, 0, 53],
                      [9, 192, 32, 0, 18, 37, 142, -4], [1, 0, 0, 0, 1, 0, -8, -10],

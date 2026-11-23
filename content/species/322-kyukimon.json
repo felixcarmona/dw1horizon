@@ -26,6 +26,7 @@
   "texture": {"file": "build/batch12/Kyukimon.TIM", "entry": 0},
   "voice": 5,
   "battle_music": "normal-battle",
+  "boosted_technique": "Hurricane",
   "condition_bubble": [0, -77, 6, 22],
   "effect_origins": [[5, 100, 30, 0, 26, 0, 39, -96], [5, 120, -50, 0, 26, 0, -38, -124],
                      [5, 120, -100, 0, 26, 0, -88, -129], [5, 65, -30, 0, 26, 0, -24, -68],

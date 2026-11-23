@@ -12,6 +12,7 @@
   "model": {"name": "MERA", "bones": 22, "radius": 150, "height": 400},
   "voice": 9,
   "battle_music": "normal-battle",
+  "boosted_technique": "Magma Bomb",
   "partner": {
     "voice": 11,
     "hunger_hours": [4, 9, 14, 18, 23],
