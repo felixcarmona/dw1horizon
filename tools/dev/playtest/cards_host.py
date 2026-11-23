@@ -57,7 +57,8 @@ def main():
     # loop and the two production card cases, excluding unrelated game globals.
     dispatch = function(save, 'static void applyRecords(uint8_t *e)\n')
     start = dispatch.index('\t\tcase SAVE_TAG_CARD_COUNTS:')
-    end = dispatch.index('\t\tcase SAVE_TAG_GROUND_PICKUP_BITS:', start)
+    # (the two card cases end at whatever record comes after them: other features add theirs there)
+    end = dispatch.index('\t\tcase SAVE_TAG_', dispatch.index('\t\tcase SAVE_TAG_CARD_STOCK:', start) + 1)
     production += dispatch[:dispatch.index('\t\tcase SAVE_TAG_SCREENS:')] + dispatch[start:end] + '\t\t}\n\t}\n}\n'
     header = (tree / 'include/dw/save_tags.h').read_text()
     tags = '\n'.join(line for line in header.splitlines() if line.startswith('#define SAVE_TAG_'))
@@ -170,7 +171,8 @@ int main(int argc,char **argv) {
  table=fopen(argv[3],"rb");assert(table);assert(fread(MOD_CARD_REAL,1,64,table)==64);fclose(table);
  table=fopen(argv[4],"rb");assert(table);assert(fread(MOD_CARD_ART,2,64,table)==64);fclose(table);
  assert(CARD_DATA[511].digimonId==300);
- for(int i=-2;i<514;i++){ setCardAmount(i,9); assert(getCardAmount(i)==(modCardIsReal(i)?9:0)); }
+ /* (0 and 65, the two album-only cards, are not real cards but their scenes' counts are stored) */
+ for(int i=-2;i<514;i++){ setCardAmount(i,9); assert(getCardAmount(i)==(modCardIsReal(i)||i==0||i==65?9:0)); }
  setCardAmount(256,42); assert(getCardAmount(256)==9);
  setCardAmount(256,-1); assert(getCardAmount(256)==0);setCardAmount(256,9);
  assert(album());setCardAmount(511,0);assert(!album());setCardAmount(511,9);
