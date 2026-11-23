@@ -148,7 +148,7 @@ def main():
     ap.add_argument('--battle-state',type=Path,help='paused checkpoint at the real final-scene startBattle entry')
     ap.add_argument('--boss-screen',type=int,default=104,help='screen of the boss case (default the repeat Machinedramon in the Ice Sanctuary)')
     ap.add_argument('--boss-slot',type=int,default=0,help='NPC slot of the boss on that screen')
-    ap.add_argument('--boss-triggers',default='',help='flags to set before entering the boss screen, e.g. 256 (Digitamamon recruited) for the summit duel; replaces the Ice Sanctuary setup')
+    ap.add_argument('--boss-triggers',default='',help='flags to set before entering the boss screen, e.g. 256 (Digitamamon recruited)')
     ap.add_argument('--boss-move',type=int,default=47,help='legal boss technique in slot zero (default Buster Dive)')
     ap.add_argument('--recoveries',type=int,default=0,help='player-strategy trial: carry large recoveries and throw one below 75%% HP')
     ap.add_argument('--muscle-first',action='store_true',help='select the legal Muscle Charge command until its five-use budget is spent, then Buster Dive')
@@ -201,9 +201,9 @@ def main():
             else:
                 if kind=='boss' and a.boss_triggers:
                     for n in a.boss_triggers.split(','):e.gs('trigger',n,'1')
-                elif kind=='boss':e.gs('pstat','16','1')
+                if kind=='boss' and screen==104:e.gs('pstat','16','1')
                 assert e.warp(screen)
-                if kind=='boss' and not a.boss_triggers:
+                if kind=='boss' and screen==104:
                     e.gs('approach','0','600')
                     e.poke('NPC_ENTITIES+0x9c',bytes(2))
                 e.wait(2);fixture(e,close=True,enemy_slot=slot)

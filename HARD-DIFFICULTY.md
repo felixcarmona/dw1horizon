@@ -117,7 +117,7 @@ the finisher used when the gauge fills (single fights; they vary a lot):
 |---|---|---|
 | Repeat Machinedramon, 175/125/20 | knocked out (8 recoveries) | knocked out (4) |
 | Repeat Machinedramon, 175/100/20 (not shipped), two fights each | knocked out twice | one win (8), one loss |
-| BlackWarGreymon at the summit (19250 HP, Offense 1375) | knocked out (12) | wins (9) |
+| BlackWarGreymon in the Back Dimension (19250 HP, Offense 1375) | knocked out (12) | wins (9 and 2, two fights) |
 
 What decides the Machinedramon fights is Infinity Cannon, not its ordinary hits: 6100-6900 at Offense 100%, 7800-11400
 at 125%, and about 10000 either way after Full Potential, against partners of about 8000 HP. BlackWarGreymon's Terra
