@@ -71,7 +71,7 @@ Training remains beneficial, and no enemy follows the partner's level or stats.
 
 ## NORMAL's late-game step (2026-11-22)
 
-NORMAL is no longer the original numbers everywhere. The full step is 175% HP, 125% Offense and a floor: every hit of
+NORMAL is no longer the original numbers everywhere. The full step is 150% HP, no change to Offense, and a floor: every hit of
 that enemy does at least 20% of the same hit against Defense zero. An enemy gets it by its maximum HP: nothing at 3500
 or less, all of it from 6500 on (12 of the 983 placed enemies: Mt. Infinity's bosses and the final fights), and a
 straight line between them (100 more placed enemies, and the late recruit fights), so two enemies of nearly the same
@@ -80,7 +80,9 @@ HP to 3900 and one of 4000 to 10000, and gave mid-game bosses such as the fortre
 The full step was 250% HP, 150% Offense and a 25% floor until 2026-11-23: that asked a partner at the original
 game's limits (999 in every stat, 9999 HP) for 33 hits while taking 1560 a hit, far more than its HP, and still cost a
 partner trained well past them only a fifth of its HP, so it weighed most on the players who needed it least. The
-harder fights for trained partners belong to HARD and to optional fights after the ending.
+harder fights for trained partners belong to HARD and to optional fights after the ending. Until later that day it was
+175% HP and 125% Offense: live fights with partners like the ones players show (below) lost to Machinedramon every
+time, because the extra Offense took Infinity Cannon past their whole HP.
 Nothing at or below 3500 HP changes on NORMAL, nor EASY or two-player VS.
 HARD takes the same step first and then its own factors on top (HP 110%, Offense 150%...), and keeps the larger of the two
 floors, so it stays above NORMAL. The numbers are `battleFormulas.normal` in
@@ -90,15 +92,15 @@ irrelevant, so only HP and the damage floor move the fight (hits to kill, final 
 
 | Partner stats | Original: hits / damage taken | 250/150/25: hits / damage taken | Now: hits / damage taken |
 |---|---|---|---|
-| 800 | 17 / 1092 | 43 / 1784 | 30 / 1481 |
-| 999 | 13 / 781 | 33 / 1560 | 23 / 1169 |
-| 1500 | 10 / 520 | 23 / 778 | 16 / 624 |
-| 4000 | 8 / 194 | 20 / 521 | 14 / 406 |
-| 9999 | 8 / 77 | 19 / 521 | 14 / 406 |
+| 800 | 17 / 1092 | 43 / 1784 | 26 / 1092 |
+| 999 | 13 / 781 | 33 / 1560 | 20 / 781 |
+| 1500 | 10 / 520 | 23 / 778 | 14 / 520 |
+| 4000 | 8 / 194 | 20 / 521 | 12 / 391 |
+| 9999 | 8 / 77 | 19 / 521 | 12 / 391 |
 
 That table is the full step. It counts one enemy hit for each partner hit, which is far kinder than a real fight. Live,
-with the partner left to its own AI (no commands, items or finisher) against the repeat Machinedramon at 175/125/20
-(17498 HP, Offense 1248 in the fight; HARD 19247 / 1872):
+with the partner left to its own AI (no commands, items or finisher) against the repeat Machinedramon at the earlier 175/125/20
+(17498 HP, Offense 1248 in the fight; HARD 19247 / 1872; not measured again at 150/100):
 
 | Partner (stats / HP) | NORMAL | HARD |
 |---|---|---|
@@ -111,16 +113,20 @@ So the final fights ask for commands and healing from every partner, the stronge
 Partners that players have shown on their status screens are lopsided: about 8000 HP and 700-800 Defense, with Offense
 anywhere from 1200 to 7600. Two of them are profiles of the harness (`shown-mega`: Offense 1176, Defense 713, 8281 HP;
 `shown-offense`: Offense 7633, Defense 772, 7334 HP). Live on NORMAL, with twelve recoveries thrown when HP runs low and
-the finisher used when the gauge fills (single fights; they vary a lot):
+the finisher used when the gauge fills (they vary a lot from one fight to the next):
 
 | Fight | shown-mega | shown-offense |
 |---|---|---|
-| Repeat Machinedramon, 175/125/20 | knocked out (8 recoveries) | knocked out (4) |
+| Repeat Machinedramon with no step (9999 HP, Offense 999), two fights each | one win (7 recoveries), one loss | wins twice (3, 5) |
+| Repeat Machinedramon, 150/100/20 (14998 HP, Offense 999), three fights each | knocked out three times | wins twice (5, 5), one loss |
 | Repeat Machinedramon, 175/100/20 (not shipped), two fights each | knocked out twice | one win (8), one loss |
-| BlackWarGreymon in the Back Dimension (19250 HP, Offense 1375) | knocked out (12) | wins (9 and 2, two fights) |
+| Repeat Machinedramon, 175/125/20 (the earlier step), one fight each | knocked out (8) | knocked out (4) |
+| BlackWarGreymon in the Back Dimension, at 175/125 (19250 HP, Offense 1375; now 16500 / 1100) | knocked out (12) | wins (9 and 2, two fights) |
 
 What decides the Machinedramon fights is Infinity Cannon, not its ordinary hits: 6100-6900 at Offense 100%, 7800-11400
-at 125%, and about 10000 either way after Full Potential, against partners of about 8000 HP. BlackWarGreymon's Terra
+at 125%, and about 10000 either way after Full Potential, against partners of about 8000 HP. So even with no step at
+all a partner of ordinary Offense loses half the time, and what the extra HP adds is more cannons before the end: the
+step stays at 150% so the fight is longer than the original without the cannon growing. BlackWarGreymon's Terra
 Destroyer does 1700-3100, so that fight is long instead of sudden: a partner of 1500 in every stat and 15000 HP wins it
 with three recoveries, one of 800 and 8005 HP loses after twelve.
 
@@ -129,16 +135,16 @@ What the line gives (HP / Offense, floor), from
 
 | Enemy | Original | NORMAL |
 |---|---|---|
-| Ogremon, Great Canyon | 3600 / 450 | 3672 / 450, no floor |
-| Ogremon in his fortress, Angemon | 4000 / 480, 4000 / 400 | 4480 / 499, 4480 / 416, 2% |
-| Mammothmon (recruit fight) | 4650 / 640 | 5952 / 697, 6% |
-| Knightmon (recruit fight) | 4500 / 720 | 5580 / 777, 5% |
-| Etemon | 5600 / 700 | 8512 / 819, 12% |
-| Devimon | 6800 / 780 | 11900 / 975, 20% |
-| Final Machinedramon | 9400 / 999 | 16450 / 1248, 20% |
+| Ogremon, Great Canyon | 3600 / 450 | 3636 / 450, no floor |
+| Ogremon in his fortress, Angemon | 4000 / 480, 4000 / 400 | 4320 / 480, 4320 / 400, 2% |
+| Mammothmon (recruit fight) | 4650 / 640 | 5533 / 640, 6% |
+| Knightmon (recruit fight) | 4500 / 720 | 5220 / 720, 5% |
+| Etemon | 5600 / 700 | 7560 / 700, 12% |
+| Devimon | 6800 / 780 | 10200 / 780, 20% |
+| Final Machinedramon | 9400 / 999 | 14100 / 999, 20% |
 
 The engine tells how late an attacker is from its maximum HP in the fight (after the step), so the floor is a straight
-line over that number, from 3500 to 11375 (what the step gives an enemy of 6500).
+line over that number, from 3500 to 9750 (what the step gives an enemy of 6500).
 
 ## Save and UI
 

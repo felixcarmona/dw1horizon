@@ -8,6 +8,6 @@ missing battle in both story modes.
 `blackwargreymon.py` adds the one fight above the final one: BlackWarGreymon stands in the Back Dimension (screen 227),
 which only opens after the ending. It is not on the summit because that screen's setup can load both final bosses and a third large model does not fit the heap. It is optional, recruits nobody and gates nothing. The first win gives one
 Offense chip and one Defense chip; later wins give nothing, and it never pays bits (a fight that can be repeated is not a source of
-money). Its sheet (11000 HP, 1100 Offense, 900 Defense before the difficulty factors; 19250 HP and 1375 Offense on NORMAL) and its
+money). Its sheet (11000 HP, 1100 Offense, 900 Defense before the difficulty factors; 16500 HP and 1100 Offense on NORMAL) and its
 moves (`content/battle/enemy-movesets.json`, with its finisher Terra Destroyer one choice in seven) were set from live fights:
 `tools/dev/playtest/hard_battles.py ... --cases boss --boss-screen 227 --boss-slot 4`.
