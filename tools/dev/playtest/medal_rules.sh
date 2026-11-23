@@ -33,7 +33,7 @@ def peek_raw(addr, n): return bytes.fromhex(''.join(l.split(None, 1)[1].replace(
 def fresh():
     emu('load', 'build/savedrop/m.state')
     b = bytearray(peek_raw(TRIG, 100))
-    for n in list(range(15, 51)) + list(range(364, 383)): b[n // 8] &= ~(1 << (n % 8)) & 0xFF
+    for n in list(range(15, 51)) + list(range(364, 384)): b[n // 8] &= ~(1 << (n % 8)) & 0xFF
     emu('poke', hex(TRIG), bytes(b).hex())
 def ok(name, got, want): print(f'{"ok " if got == want else "BAD"} {name:50s} got {got} expected {want}')
 # script routine: rows 0-4 are medals 0-4

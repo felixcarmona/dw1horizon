@@ -77,7 +77,7 @@
     {"medal": 13, "when": ["money", 999999], "checkedBy": ["tick"], "text": 0, "note": "999999 bits"},
     {"medal": 14, "when": ["year", 10], "checkedBy": ["tick"], "text": 0, "note": "year 10"},
     {
-      "medal": 15,
+      "medal": 16,
       "when": ["allPartners"],
       "checkedBy": ["tick"],
       "text": 0,
@@ -86,14 +86,14 @@
       "note": "Horizon Master: every species a partner can be, the new ones included, raised once"
     },
     {
-      "medal": 16,
+      "medal": 17,
       "when": ["stats", 15000, 1500],
       "checkedBy": ["tick"],
       "text": 0,
       "note": "Limit Breaker: past the original maximum, HP and MP 15000 and the rest 1500"
     },
     {
-      "medal": 17,
+      "medal": 18,
       "when": ["residents", 0],
       "checkedBy": ["tick"],
       "text": 0,
@@ -102,7 +102,7 @@
       "note": "Horizon City: every resident lives in the city, the extended story's included"
     },
     {
-      "medal": 18,
+      "medal": 19,
       "when": ["allCards", -1, 0],
       "checkedBy": ["tick"],
       "text": 0,

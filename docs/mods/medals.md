@@ -1,7 +1,8 @@
 # Medals
 
 The original game has fifteen medals. Horizon keeps them as the **classic** medals, which ask only for what the original
-game had, and adds four **Horizon** medals that ask for everything the mod adds on top. The rules are data:
+game had, and adds four **Horizon** medals that ask for everything the mod adds on top, next to Curling Legend, the
+medal of the rink's hardest cup ([curling](curling.md)). The rules are data:
 `content/tables/medals.json` (keys in its `_comment`), encoded by `tools/balance.py` into `MOD_MEDALS`.
 
 | Id | Medal | Earned by |
@@ -18,10 +19,11 @@ game had, and adds four **Horizon** medals that ask for everything the mod adds 
 | 12 | Classic Collection | every card of the original game (card ids below 66) |
 | 13 | Bits Maxed | 999999 bits |
 | 14 | 10th Anniversary | year 10 |
-| 15 | Horizon Master | raising every Digimon of the partner list (NEW DIGIMON on) |
-| 16 | Limit Breaker | HP and MP 15000, the other four stats 1500, on one Digimon |
-| 17 | Horizon City | every resident recruited (EXTENDED STORY on) |
-| 18 | Full Collection | every card (NEW CARDS on) |
+| 15 | Curling Legend | winning the Legend Cup at the rink |
+| 16 | Horizon Master | raising every Digimon of the partner list (NEW DIGIMON on) |
+| 17 | Limit Breaker | HP and MP 15000, the other four stats 1500, on one Digimon |
+| 18 | Horizon City | every resident recruited (EXTENDED STORY on) |
+| 19 | Full Collection | every card (NEW CARDS on) |
 
 - A classic medal does not change with the options: Classic Collection counts only the original cards even with NEW CARDS on.
 - Horizon Master, Horizon City and Full Collection wait for their option. While it is off the medal is not shown in the

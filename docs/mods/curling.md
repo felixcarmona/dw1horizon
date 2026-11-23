@@ -23,8 +23,8 @@ city: the list shows the seven faces of the cup under the cursor, the missing on
   the same seed, each player weighted by `(place in the window + 2)^2`, so the better thrower goes through more
   often but not always.
 - A level cup match is played again, with no new fish. A quick match still goes to the nearest stone.
-- Prizes: each cup draws one item of its own set. The first Legend Cup gives the Curling Legend medal (flag 379, a
-  sixteenth medal) and one chip of each kind; the chips that do not fit in the bag stay with Penguinmon
+- Prizes: each cup draws one item of its own set. The first Legend Cup gives the Curling Legend medal (flag 379,
+  medal 15 of the [medals](medals.md)) and one chip of each kind; the chips that do not fit in the bag stay with Penguinmon
   (`curling_chips_kept`), who hands them over at the next talk. No prize is Bits.
 
 Saved state: the cups won (variable 7) and the chips kept (variable 8). A cup is played in one go, round after round,

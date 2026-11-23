@@ -1,4 +1,4 @@
-From 43b1a7d4e2f26c78ebb097e0977aea687588de73 Mon Sep 17 00:00:00 2001
+From 3d02d3b5fc7bece44bcf629c8a190fa8b0b3d766 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Mon, 23 Nov 2026 12:36:43 +0000
 Subject: [PATCH] Classic and Horizon medals: four new medals, a scrolling
@@ -17,15 +17,15 @@ Chart, City page and card album draw a small gold corner on the boxes of what th
 ---
  include/dw/map_object.h  |   4 -
  include/dw/species.h     |   6 +
- include/dw/tournament.h  |  17 ++-
- src/main/game_menu.c     | 321 ++++++++++++++++++++++++---------------
+ include/dw/tournament.h  |  17 +-
+ src/main/game_menu.c     | 346 +++++++++++++++++++++++----------------
  src/main/main.c          |  31 +++-
  src/main/map_object.c    |  28 ----
  src/main/mod_species.c   |   5 +-
- src/main/tamer.c         | 102 ++++++++++---
+ src/main/tamer.c         | 102 +++++++++---
  src/main/tournament.c    |   3 +-
  text/main/game_menu.yaml |  48 ++++++
- 10 files changed, 377 insertions(+), 188 deletions(-)
+ 10 files changed, 382 insertions(+), 208 deletions(-)
 
 diff --git a/include/dw/map_object.h b/include/dw/map_object.h
 index 3553e57..bd336d6 100644
@@ -73,7 +73,7 @@ index 163a20c..c82f153 100644
  #define SPECIES_BALANCE_SWAP_MAX 19
  /*
 diff --git a/include/dw/tournament.h b/include/dw/tournament.h
-index 5a500c3..50bcf8c 100644
+index 5a500c3..190f3fd 100644
 --- a/include/dw/tournament.h
 +++ b/include/dw/tournament.h
 @@ -25,20 +25,30 @@ int32_t checkTournamentMedalConditions(void);
@@ -92,7 +92,7 @@ index 5a500c3..50bcf8c 100644
 +#define MOD_MEDAL_HIDE		64
 +/* where the original game's residents end: the ids from here on are Horizon's (the City page marks them) */
 +#define MOD_ORIGINAL_RESIDENTS_END	59
-+#define MOD_MEDAL_COUNT		19 /* medals 0..18: the triggers 0x16C.. hold no more */
++#define MOD_MEDAL_COUNT		20 /* medals 0..19: the triggers 0x16C.. hold no more */
  enum {
  	MOD_MEDAL_ALL_TRIGGERS = 1, /* a = first trigger, b = how many: all set */
  	MOD_MEDAL_WINS,             /* tournament wins >= a */
@@ -120,7 +120,7 @@ index 5a500c3..50bcf8c 100644
  void initTournamentSchedule(void);
  void initTournamentInfo(int32_t source);
 diff --git a/src/main/game_menu.c b/src/main/game_menu.c
-index f574ae3..b7673e5 100644
+index b5db112..4a179a7 100644
 --- a/src/main/game_menu.c
 +++ b/src/main/game_menu.c
 @@ -29,6 +29,7 @@
@@ -186,15 +186,15 @@ index f574ae3..b7673e5 100644
  #endif
  };
  
--char *MEDAL_NAMES[15] = {
+-char *MEDAL_NAMES[16] = {
 +char *MEDAL_NAMES[MOD_MEDAL_COUNT] = {
  	STR_MEDAL_NAME_GRADE_CUP,
  	STR_MEDAL_NAME_VERSION_CUP,
  	STR_MEDAL_NAME_TYPE_CUP,
-@@ -1679,6 +1671,10 @@ char *MEDAL_NAMES[15] = {
- 	STR_MEDAL_NAME_CARD_COMPLETE,
+@@ -1680,6 +1672,10 @@ char *MEDAL_NAMES[16] = {
  	STR_MEDAL_NAME_BITS_MAXED,
  	STR_MEDAL_NAME_10_YEARS,
+ 	STR_MEDAL_NAME_CURLING_LEGEND, /* MOD (curling cups) */
 +	STR_MEDAL_NAME_HORIZON_MASTER, /* MOD (classic and Horizon medals) */
 +	STR_MEDAL_NAME_LIMIT_BREAKER,
 +	STR_MEDAL_NAME_HORIZON_CITY,
@@ -202,11 +202,11 @@ index f574ae3..b7673e5 100644
  };
  
  #if !VERSION_IS(US)
-@@ -1730,52 +1726,46 @@ char *MEDAL_DESCRIPTIONS[45] = {
+@@ -1731,55 +1727,48 @@ char *MEDAL_DESCRIPTIONS[48] = {
  	STR_OVERWORLD_EMPTY,
  };
  #else
--char *MEDAL_DESCRIPTIONS[45] = {
+-char *MEDAL_DESCRIPTIONS[48] = {
 +/* MOD (medal view): two lines a medal; the panel's third row says how far the medal is */
 +char *MEDAL_DESCRIPTIONS[MOD_MEDAL_COUNT * 2] = {
  	STR_MEDAL_DESCRIPTION_CUP_D_C_B_A_S,
@@ -256,6 +256,9 @@ index f574ae3..b7673e5 100644
 -	STR_OVERWORLD_EMPTY,
  	STR_MEDAL_DESCRIPTION_SURVIVED_FOR_300_DAYS,
  	STR_OVERWORLD_EMPTY,
+ 	STR_MEDAL_DESCRIPTION_CURLING_LEGEND, /* MOD (curling cups) */
+ 	STR_MEDAL_DESCRIPTION_CURLING_LEGEND_MODES,
+-	STR_OVERWORLD_EMPTY,
 +	STR_MEDAL_DESCRIPTION_HORIZON_MASTER_1,
 +	STR_MEDAL_DESCRIPTION_HORIZON_MASTER_2,
 +	STR_MEDAL_DESCRIPTION_LIMIT_BREAKER_1,
@@ -267,7 +270,7 @@ index f574ae3..b7673e5 100644
  };
  #endif
  
-@@ -1904,6 +1894,11 @@ int16_t MOVE_SELECT_BOX_Y;
+@@ -1908,6 +1897,11 @@ int16_t MOVE_SELECT_BOX_Y;
  int16_t MOVE_SELECT_BOX_X;
  int8_t SELECTED_MEDAL;
  int8_t MEDAL_SELECTOR_INDEX;
@@ -279,7 +282,7 @@ index f574ae3..b7673e5 100644
  int16_t SELECTED_CARD;
  static int16_t CARD_TOP_ROW;
  int16_t CHART_SELECTED_DIGIMON;
-@@ -3251,7 +3246,7 @@ void tickPlayerMenu(void)
+@@ -3255,7 +3249,7 @@ void tickPlayerMenu(void)
  		    (PLAYER_MENU_STATE != 0 || playerLookEnter())) {
  			MENU_STATE = 2;
  			playSound(0, 3);
@@ -288,7 +291,7 @@ index f574ae3..b7673e5 100644
  			SELECTED_CARD = 0;
  			CARD_TOP_ROW = 0;
  		}
-@@ -3317,33 +3312,31 @@ void tickPlayerMenu(void)
+@@ -3321,43 +3315,31 @@ void tickPlayerMenu(void)
  			}
  		}
  
@@ -298,29 +301,45 @@ index f574ae3..b7673e5 100644
 -#else
 -		if (PLAYER_MENU_STATE == 2) {
 -#endif
--			if ((CHANGED_INPUT & 0x8000) &&
--			    ((MEDAL_SELECTOR_INDEX % 5) != 0)) {
+-			/* MOD (curling cups): a sixth column, of the one medal past the fifteen */
+-			if (MEDAL_SELECTOR_INDEX >= 15) {
+-				if (CHANGED_INPUT & 0x8000) {
+-					MEDAL_SELECTOR_INDEX = (MEDAL_SELECTOR_INDEX - 15) * 5 + 4;
+-				}
+-			} else {
+-				if (CHANGED_INPUT & 0x8000) {
+-					if ((MEDAL_SELECTOR_INDEX % 5) != 0) {
+-						MEDAL_SELECTOR_INDEX--;
+-					}
+-				} else if (CHANGED_INPUT & 0x2000) {
+-					if ((MEDAL_SELECTOR_INDEX % 5) != 4) {
+-						MEDAL_SELECTOR_INDEX++;
+-					} else if (MEDAL_SELECTOR_INDEX == 4) {
+-						MEDAL_SELECTOR_INDEX = 15;
+-					}
+-				}
+-				if ((CHANGED_INPUT & 0x1000) &&
+-				    (MEDAL_SELECTOR_INDEX >= 5)) {
+-					MEDAL_SELECTOR_INDEX -= 5;
+-				}
+-				if ((CHANGED_INPUT & 0x4000) &&
+-				    (MEDAL_SELECTOR_INDEX < 10)) {
+-					MEDAL_SELECTOR_INDEX += 5;
 +			if ((CHANGED_INPUT & 0x8000) && ((MEDAL_SELECTOR_INDEX % 5) != 0)) {
- 				MEDAL_SELECTOR_INDEX--;
- 			}
--			if ((CHANGED_INPUT & 0x2000) &&
--			    ((MEDAL_SELECTOR_INDEX % 5) != 4)) {
++				MEDAL_SELECTOR_INDEX--;
++			}
 +			if ((CHANGED_INPUT & 0x2000) && ((MEDAL_SELECTOR_INDEX % 5) != 4) &&
 +			    (MEDAL_SELECTOR_INDEX + 1 < MEDAL_SHOWN_COUNT)) {
- 				MEDAL_SELECTOR_INDEX++;
- 			}
--			if ((CHANGED_INPUT & 0x1000) &&
--			    (MEDAL_SELECTOR_INDEX >= 5)) {
++				MEDAL_SELECTOR_INDEX++;
++			}
 +			if ((CHANGED_INPUT & 0x1000) && (MEDAL_SELECTOR_INDEX >= 5)) {
- 				MEDAL_SELECTOR_INDEX -= 5;
- 			}
--			if ((CHANGED_INPUT & 0x4000) &&
--			    (MEDAL_SELECTOR_INDEX < 10)) {
++				MEDAL_SELECTOR_INDEX -= 5;
++			}
 +			if ((CHANGED_INPUT & 0x4000) && (MEDAL_SELECTOR_INDEX / 5 < (MEDAL_SHOWN_COUNT - 1) / 5)) {
- 				MEDAL_SELECTOR_INDEX += 5;
++				MEDAL_SELECTOR_INDEX += 5;
 +				if (MEDAL_SELECTOR_INDEX >= MEDAL_SHOWN_COUNT) {
 +					MEDAL_SELECTOR_INDEX = MEDAL_SHOWN_COUNT - 1;
-+				}
+ 				}
  			}
  			if (SELECTED_MEDAL != MEDAL_SELECTOR_INDEX) {
 -				if (hasMedal(MEDAL_SELECTOR_INDEX) != 0) {
@@ -336,7 +355,7 @@ index f574ae3..b7673e5 100644
  				playSound(0, 2);
  			}
  			SELECTED_MEDAL = MEDAL_SELECTOR_INDEX;
-@@ -4169,8 +4162,8 @@ void renderPlayerInfoView(void)
+@@ -4183,8 +4165,8 @@ void renderPlayerInfoView(void)
  		}
  
  		count = 0;
@@ -347,7 +366,7 @@ index f574ae3..b7673e5 100644
  				count++;
  			}
  		}
-@@ -4894,6 +4887,31 @@ static int32_t chartRows(void)
+@@ -4908,6 +4890,31 @@ static int32_t chartRows(void)
  }
  
  /* the VRAM slot of the shown box k's icon: its place in the tab, modulo the slots */
@@ -379,7 +398,7 @@ index f574ae3..b7673e5 100644
  static int32_t chartSlot(int32_t k)
  {
  	return (CHART_TOP * CHART_COLS + k) % CHART_PAGE_SIZE;
-@@ -5397,10 +5415,13 @@ void renderEvoChartView(void)
+@@ -5411,10 +5418,13 @@ void renderEvoChartView(void)
  		chartDrawStatus();
  		for (k = 0; k < CHART_PAGE_COUNT; k++) {
  			id = CHART_CELL_ID(CHART_PAGE_IDS[k]);
@@ -394,18 +413,21 @@ index f574ae3..b7673e5 100644
  			shift = ((PLAYTIME_FRAMES + k * 3) % 20) < 10; /* two idle frames, half a second each, out of step */
  			slot = chartSlot(k);
  			if (id <= NUM_EVO_CHART_DIGIMON) {
-@@ -6282,10 +6303,100 @@ void renderEvoChartDetail(void)
+@@ -6296,14 +6306,100 @@ void renderEvoChartDetail(void)
  	}
  }
  
+-/* MOD (curling cups): sixteen medals, the fifteen in their five columns drawn closer and the sixteenth alone in a sixth */
+-#define MEDAL_SLOT_X(i) (((i) < 15 ? (i) % 5 : 5) * 32 - 0x7a)
+-#define MEDAL_SLOT_Y(i) (((i) < 15 ? (i) / 5 : (i) - 15) * 24 - 0x3d)
 +/*
 + * MOD (medal view): the medals are drawn pictures, not the stamped coin. Their small pictures sit where the coin's
 + * stamps were (VRAM 512..572, 432..480; the last one where the coin's own texture was), one palette each under them, and the
 + * selected medal's large picture goes to a free part of the view's text page. A medal not earned yet is the same picture
 + * with its dark palette.
 + */
-+#define MEDAL_ART_X(i)		((i) == 18 ? 512 : 518 + ((i) % 9) * 6)
-+#define MEDAL_ART_Y(i)		((i) == 18 ? 432 : 432 + ((i) / 9) * 24)
++#define MEDAL_ART_X(i)		((i) >= 18 ? 512 : 518 + ((i) % 9) * 6)
++#define MEDAL_ART_Y(i)		((i) >= 18 ? 432 + ((i) - 18) * 24 : 432 + ((i) / 9) * 24)
 +#define MEDAL_CLUT_X(i)		(528 + ((i) & 1) * 16)
 +#define MEDAL_CLUT_Y(i)		(480 + ((i) >> 1))
 +#define MEDAL_CLUT(i)		((MEDAL_CLUT_Y(i) << 6) | (MEDAL_CLUT_X(i) >> 4))
@@ -483,7 +505,7 @@ index f574ae3..b7673e5 100644
 +	}
 +	return STR_MEDAL_NOT_EARNED;
 +}
-+
+ 
  void renderMedalView(void)
  {
  	int32_t i;
@@ -495,18 +517,18 @@ index f574ae3..b7673e5 100644
  
  	switch (MENU_STATE) {
  	case 0:
-@@ -6298,63 +6409,45 @@ void renderMedalView(void)
+@@ -6316,63 +6412,45 @@ void renderMedalView(void)
  			MENU_STATE = 2;
  		}
  	case 2:
--		renderRectPolyFT4(((MEDAL_SELECTOR_INDEX % 5) * 38) - 0x7e,
--		                  ((MEDAL_SELECTOR_INDEX / 5) * 24) - 0x3d, 0x18, 0x18, 0, 0xd0,
+-		renderRectPolyFT4(MEDAL_SLOT_X(MEDAL_SELECTOR_INDEX) - 4,
+-		                  MEDAL_SLOT_Y(MEDAL_SELECTOR_INDEX), 0x18, 0x18, 0, 0xd0,
 -		                  0x18, 0x7dc7, 1, 0);
  	case 1:
  		renderSeparatorLines(MAIN_D_8012472C, 0xe, 5);
  		renderString(3, MEDAL_VIEW_CROPS[0].x, -0x51, MEDAL_VIEW_CROPS[0].w, 0xc, MEDAL_VIEW_CROPS[0].u, 0xc, 5, 1); /* MOD (language) */
  
--		for (i = 0; i < 0xf; i++) {
+-		for (i = 0; i < 16; i++) {
 -			if (hasMedal(i) != 0) {
 -				if (MEDAL_SELECTOR_INDEX == i) {
 -					if (MENU_STATE != 3) {
@@ -540,11 +562,11 @@ index f574ae3..b7673e5 100644
 -					renderString(0, -0x7e, 0x27, 0xc, 0xc, 0xe4, 0xc, 5, 1);
 -				}
 -#endif
--				renderRectPolyFT4(((i % 5) * 38) - 0x7c, ((i / 5) * 24) - 0x3d, 0xf,
+-				renderRectPolyFT4(MEDAL_SLOT_X(i) - 2, MEDAL_SLOT_Y(i), 0xf,
 -				                  0x18, 0xf0, 0xc8, 0x18, 0x7dc7, 5, 0);
  			}
 -
--			renderRectPolyFT4(((i % 5) * 38) - 0x7a, ((i / 5) * 24) - 0x3d, 0xf, 0x18,
+-			renderRectPolyFT4(MEDAL_SLOT_X(i), MEDAL_SLOT_Y(i), 0xf, 0x18,
 -			                  0xf0, 0xb0, 0x18, 0x7dc7, 5, 0);
 +		}
 +		if (MENU_STATE != 3 && MEDAL_SHOWN_COUNT > 0) {
@@ -584,7 +606,7 @@ index f574ae3..b7673e5 100644
  	}
  }
  
-@@ -6464,6 +6557,9 @@ void renderCardsView(void)
+@@ -6482,6 +6560,9 @@ void renderCardsView(void)
  			for (j = 0; j < 11; j++) {
  				card = j + (i + CARD_TOP_ROW) * 11;
  				if (card >= limit || (card >= 66 && !modCardIsReal(card))) continue;
@@ -594,7 +616,7 @@ index f574ae3..b7673e5 100644
  				amount = getCardAmount(card);
  				if (amount > 0) {
  					tpage = 0x18;
-@@ -6927,30 +7023,6 @@ int8_t entityId;
+@@ -6945,30 +7026,6 @@ int8_t entityId;
  	tickAnimation(entity);
  }
  
@@ -625,7 +647,7 @@ index f574ae3..b7673e5 100644
  int32_t drawDigimonMovesText(void)
  {
  	RECT rect;
-@@ -7125,6 +7197,8 @@ int32_t drawMedalViewStrings(void)
+@@ -7143,6 +7200,8 @@ int32_t drawMedalViewStrings(void)
  {
  	RECT rect1;
  	RECT rect2;
@@ -634,7 +656,7 @@ index f574ae3..b7673e5 100644
  
  	rect1 = MEDAL_VIEW_TEXT_AREA;
  	rect2 = MEDAL_DETAIL_AREA;
-@@ -7132,6 +7206,7 @@ int32_t drawMedalViewStrings(void)
+@@ -7150,6 +7209,7 @@ int32_t drawMedalViewStrings(void)
  	case 0:
  		clearTextSubArea(&rect1);
  		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xf0);
@@ -642,7 +664,7 @@ index f574ae3..b7673e5 100644
  		MENU_SUB_STATE = 1;
  		break;
  	case 1:
-@@ -7139,19 +7214,19 @@ int32_t drawMedalViewStrings(void)
+@@ -7157,19 +7217,19 @@ int32_t drawMedalViewStrings(void)
  		MENU_SUB_STATE = 2;
  		break;
  	case 2:
@@ -1038,10 +1060,10 @@ index c0d3dc2..0a0510d 100644
  
  int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE] = { [0 ... MOD_TOURNAMENT_SIZE - 1] = -1 };
 diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
-index f4511cd..2390aad 100644
+index a88fac1..210adfb 100644
 --- a/text/main/game_menu.yaml
 +++ b/text/main/game_menu.yaml
-@@ -328,6 +328,54 @@ CHART_TEXT:
+@@ -337,6 +337,54 @@ CHART_TEXT:
      CITY_STR_RESIDENTS:
        en_us: Residents
        ja: 住人
