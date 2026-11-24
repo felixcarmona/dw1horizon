@@ -95,7 +95,9 @@ a model of `TAMER.DAT` like the rest.
   the tamer, and `loadColdAnimation` serves the tamer's cold entries.
 - The hair colour is a palette row. `lookHairPalette` writes it into the look's texture before it is uploaded: each
   channel of tone `i` is `colour * level[i] / 128`, so one model and one texture serve every colour. Hair polygons
-  come first in the head, which keeps the fringe in front of the forehead.
+  come first in the head, which keeps the fringe in front of the forehead. The undersides of the locks come last,
+  after the skin: they reach into the head, so at three-quarter angles they sort level with the cheek, and drawn
+  first they painted a dark patch beside the fringe.
 - `modTamerRelook` (`model.c`) loads the look again and links the tamer's bones to the new model, for a change while
   he is on screen.
 - The Look page (`lookPage*` in `game_menu.c`), the loader (`lookTamerLoad`) and the relink (`lookTamerRelook`) are

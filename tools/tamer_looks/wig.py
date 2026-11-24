@@ -119,7 +119,11 @@ class Wig:
             else: out.append(d)
         hair=out
         for d in hair: d.update(mode=0x34,olen=9,cba=HAIR_CBA,uvpad=[0])      # textured gouraud triangles in the hair's own palette row
-        ob.prims=[mmd.Prim.encode(d) for d in hair+skull]  # hair first: the game draws earlier polygons on top in a depth tie
+        # hair first: the game draws earlier polygons on top in a depth tie, which keeps the fringe over the forehead. A lock's
+        # underside reaches into the head, so its middle sorts level with the cheek or the ear at three-quarter angles: it
+        # goes last, behind the skin in a tie (and out of the menu's inside pass, which takes the head's leading hair only)
+        flags=[d.pop('under',0) for d in hair]; under=[d for d,f in zip(hair,flags) if f]; hair=[d for d,f in zip(hair,flags) if not f]
+        ob.prims=[mmd.Prim.encode(d) for d in hair+skull+under]
         for o in tm.objects[2:]: o.vert_start+=dv; o.norm_start+=dn
         return s.m
 
