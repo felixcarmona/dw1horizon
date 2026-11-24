@@ -105,7 +105,7 @@
     "paragraphs": [
       "Durante una sesión, R2 cambia el bloque entre x1 y x5. Se reproduce la animación inicial y después se aplica cada recompensa en orden. No es un multiplicador por cinco sin costes de tiempo ni cuidados.",
       "El bloque puede parar si una sesión deja al compañero con hambre, ganas de ir al retrete, sueño, cansancio o malestar; también comprueba la evolución, la vida restante y los mensajes del gimnasio. El resultado indica lo completado. No supongas que siempre fueron cinco sesiones.",
-      "Bonus Try es independiente de los bloques. Alimenta, descansa o atiende el motivo de parada antes de repetir. Si solo quieres una recompensa, selecciona x1 antes de confirmar la sesión en vez de confiar en una parada de emergencia."
+      "Bonus Try es independiente de los bloques. Cada rodillo se para donde pulsas, sin nada oculto que lo empuje fuera del premio: si fallas recibes la mitad, tres símbolos iguales dan el doble, tres del atributo que entrenas dan x4 y tres cacas doradas dan x5. Alimenta, descansa o atiende el motivo de parada antes de repetir. Si solo quieres una recompensa, selecciona x1 antes de confirmar la sesión en vez de confiar en una parada de emergencia."
     ]
   },
   "evolution-requirements": {

@@ -105,7 +105,7 @@
     "paragraphs": [
       "R2 wechselt während einer Einheit zwischen x1 und x5. Nach der ersten Animation vergibt der Block die Belohnungen nacheinander. Er ist kein kostenloser Fünffachmultiplikator.",
       "Er kann nach Hunger, Toilettenbedarf, Schläfrigkeit, Müdigkeit oder Unwohlsein stoppen. Auch Entwicklung, Lebensdauer und Studiomeldungen werden geprüft. Das Ergebnis zeigt die tatsächlich abgeschlossenen Einheiten; es sind nicht immer fünf.",
-      "Bonus Try ist unabhängig vom Block. Kümmere dich vor dem nächsten Versuch um den Stopgrund. Wähle für eine Belohnung rechtzeitig x1, statt auf einen Notstopp zu setzen."
+      "Bonus Try ist unabhängig vom Block. Jede Walze hält dort, wo du drückst, ohne verstecktes Weiterrutschen: Ein Fehlversuch gibt die Hälfte, drei gleiche Symbole das Doppelte, drei Symbole des trainierten Werts x4 und drei goldene Haufen x5. Kümmere dich vor dem nächsten Versuch um den Stopgrund. Wähle für eine Belohnung rechtzeitig x1, statt auf einen Notstopp zu setzen."
     ]
   },
   "evolution-requirements": {
