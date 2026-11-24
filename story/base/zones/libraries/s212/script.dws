@@ -52,7 +52,10 @@ script 212 {
         say(slot0, text("rite.explain"));
         choice(slot0) {
             text("rite.yes") => {}
-            text("rite.no") => {}
+            text("rite.no") => {
+                rotate(tamer, 0);
+                return;
+            }
             cancel => {
                 rotate(tamer, 0);
                 return;
@@ -66,7 +69,10 @@ script 212 {
         say(slot0, text("rite.sure"));
         choice(slot0) {
             text("rite.sure_yes") => {}
-            text("rite.no") => {}
+            text("rite.no") => {
+                rotate(tamer, 0);
+                return;
+            }
             cancel => {
                 rotate(tamer, 0);
                 return;

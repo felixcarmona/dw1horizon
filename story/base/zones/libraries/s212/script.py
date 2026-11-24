@@ -53,6 +53,9 @@ def step23():    # section 74: the rite of return, from the save machine of Jiji
     match slot0.choose(a=text.rite.yes, b=text.rite.no):
         case "a":
             pass
+        case "b":
+            tamer.turn(0)
+            return
         case _:
             tamer.turn(0)
             return
@@ -64,6 +67,9 @@ def step23():    # section 74: the rite of return, from the save machine of Jiji
     match slot0.choose(a=text.rite.sure_yes, b=text.rite.no):
         case "a":
             pass
+        case "b":
+            tamer.turn(0)
+            return
         case _:
             tamer.turn(0)
             return
