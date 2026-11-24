@@ -655,6 +655,13 @@ reachable if they are added to `EVOLUTION_PATHS`, and 63..65 only through items.
   or prosperity >= 50, otherwise 0xDA; see [world.md](world.md)); with 0 lives it loads DOOA. Script routine 3 → state 8
   (`partnerTickDying`): DOOA dissolve, then lifetime = 408, `sicknessTimer = injuryTimer = 0` (this is how losing a
   life cures).
+- **The rite of return** (the save machine's third option in Jijimon's houses, 218 and 205): a partner of Champion or
+  above can be sent back to the egg by choice. Script 212 section 74 (`jump_to_script(212, 74)` from each house's
+  `use5`) asks twice, then writes lifetime -1 (`SET_STAT 13, 65535`: the stat is an `int16_t`, and natural play clamps
+  at 0 everywhere) and ends. `tickDeathCondition` ignores the immortal hour for a lifetime below zero (a loaded save is
+  inside it), sets `IS_NATURAL_DEATH = 1` and the flow above runs unchanged. A partner whose happiness was 20 or more
+  (displayed 60 of 100) sets the unsaved pstat 125 (`engine.rite_keepsake`); step 20 of script 212 reads it right
+  after `dying_b` and sets the baby's happiness and discipline to 80 instead of 50, then clears it.
 - **Rebirth**: routine 0x1D opens the egg box (`DOO2_openEggBox`) and 29 waits for the choice (left/right among 4);
   then routine 4 → state 14 (`partnerTickDying2`) → `DOOA_getSequenceState`: **if `lives == 0` the egg is replaced by
   `rand() % 4`** (death by battle or sickness with no lives left gives a random egg; a natural death keeps the chosen

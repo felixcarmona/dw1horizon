@@ -162,11 +162,13 @@ def use5():    # section 85
         wait(250)
         return
     narrator.say(t85.u2)
-    match narrator.choose(a=t85.m0.o0, b=t85.m0.o1):
+    match narrator.choose(a=t85.m0.o0, d=text.rite.menu, b=t85.m0.o1):
         case "a":
             hide_hud()
             call(Routine.save_machine)
             return
+        case "d":
+            jump_to_script(212, 74)
         case "b":
             return
         case _:
