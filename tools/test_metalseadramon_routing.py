@@ -13,9 +13,12 @@ class MetalSeadramonRouting(unittest.TestCase):
     def test_identity_and_effect_origins(self):
         own = json.loads(Path('content/species/211-metalseadramon.json').read_text())
         family = json.loads(Path('content/species/61-megaseadramon.json').read_text())
-        self.assertEqual((own['level'],own['specialties']),('mega',['ice','mech',None]))
+        self.assertEqual((own['level'],own['specialties']),('mega',['water','ice','mech']))
         self.assertEqual(own['effects_like'],61)
-        self.assertEqual(own['techniques'][-1],family['techniques'][-1])
+        rows = {json.loads(p.read_text())['name'] for p in Path('content/techniques').glob('*.json')
+                if json.loads(p.read_text())['id'] >= 122}
+        finisher = lambda s: [t for t in s['techniques'] if t not in rows][-1]   # the new rows' techniques follow it
+        self.assertEqual(finisher(own),finisher(family))
         self.assertEqual((own['voice'],own['partner']['voice']),(family['voice'],family['partner']['voice']))
         self.assertEqual({r[0] for r in own['effect_origins']},{1,3})
         self.assertEqual(own['effect_origin_fallback'][0],6)

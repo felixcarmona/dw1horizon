@@ -231,14 +231,14 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
   list keeps the behaviour above, kind 0 draws only the recruited species of the rival list, and any other rule draws
   from every species that meets it (an original once recruited, a DIGI.DAT species always, never the partner's own),
   within one level of the partner while seven such exist when the rule is not a level. `startTournament` only stores the
-  cup and loads the overlay; `getSpeciesPartnersByLevel` is gone from the main executable. Cups 23 to 37 (the level,
-  attribute and Field cups) have their names in `TOURNAMENT_NAMES`, their grade letters in `dget.c`, their rivals' base
+  cup and loads the overlay; `getSpeciesPartnersByLevel` is gone from the main executable. Cups 23 to 40 (the level,
+  attribute and Field cups, and the Dark, Holy and Aqua specialty cups) have their names in `TOURNAMENT_NAMES`, their grade letters in `dget.c`, their rivals' base
   stat in `STD_NEW_CUP_BASE_STATS` (`newCupStats` in `content/tables/tournament-rules.json`) and their banners in one
-  file, `STDDAT/GRADE/NEWCUPS.BIN`: nine languages of fifteen 17-sector TIMs (`tools/cup_banners.py`), read with
+  file, `STDDAT/GRADE/NEWCUPS.BIN`: nine languages of eighteen 17-sector TIMs (`tools/cup_banners.py`), read with
   `loadStackedTIMEntry`. They set no won-cup trigger and have no medal.
   On the calendar a new cup's mark is one character (`NEW_CUP_GRADES`): `1` to `4` for the level cups from Rookie
   to Mega, `V` Vaccine, `E` Data, `U` Virus, and a small letter for a Field (`n`, `d`, `s`, `g`, `e`,
-  `b`, `r`, `j`). The calendar places every mark and every date with `TEXT_COLUMN` instead of trusting each glyph's advance, so
+  `b`, `r`, `j`) and for the Dark, Holy and Aqua cups (`k`, `h`, `a`). The calendar places every mark and every date with `TEXT_COLUMN` instead of trusting each glyph's advance, so
   narrow characters stay under their column; the dates below 10 used to drift left of theirs.
 
 Also fixed on the way: `getConditionFxOffset` returned a 2-aligned pointer into a cached record, and the GTE's `LWC2`
@@ -479,6 +479,24 @@ Techniques are ready within about a second of contact when `BTL_REL` was read ah
 | 0220 | the Status page's happiness label read the wrong texture columns (a stray mark before it, its last letter cut) |
 | 0231 | a selection with no end-of-selection marker let cancel continue from inside the first option's code, misaligned (23 such selections, 11 already block cancel; the one with a lasting effect is Piximon's Training Manual sale, which overwrote prosperity and the tournament day and cup with the date); cancel is now refused there |
 | `Move-a-battle-drop-out-of-a-wall-…` | battle moves skip the map collision, so a defeated enemy can stand inside a wall and its drop lie where the tamer never gets within one tile of it (Great Canyon Top Area, tile 78,46). A drop on a blocked tile, or with no room to stand within one tile, now moves toward the tamer to the first tile with standing room (`spawnDroppedItems`, battle overlay); proofs `tools/dev/playtest/drop_reach_host.py` and `drop_reach.py` |
+
+## The Darkness, Light and Water technique rows
+
+- **Ten elements** (`NUM_ELEMENTS`): the type chart, the brain-training table, the Techset rows and the arena's intro
+  colours are sized by it; `content/tables/type-factors.json` is ten by ten.
+- **Techniques 122 to 145** (`IS_NEW_MOVE`, `NEW_MOVE_FIRST`): `MOVE_DATA`, the names and the effect table grow by
+  24 entries after the finishers'. Their learned bits are 64 to 87 of `learnedMoves` (`IS_GRID_MOVE` tells a
+  technique from a finisher, which has no bit); the original left those bits unused, so the save layout keeps its
+  size. The gift of an evolution into a species of a new row comes from that row's eight techniques.
+- **Support techniques** (`include/dw/tech_rules.h`): statuses 5 to 8 heal, raise Defense or Speed and lower the
+  target's Defense, with the same rules in `BTL`, `STD` and `VS` (`TechRules`: heals used per fighter slot and the
+  fighters already weakened; `techRulesReset` at the start of each fight). The healed amount is drawn by the damage
+  number's code in green and rising.
+- **Authored effects**: an effect's launch table may say "any caster, from its entity point" (type -2,
+  `BTL_checkTechCompatibility`), so one chunk serves every species; the chunks are made by `tools/technique_effects`.
+- **Techset**: ten rows in a window of seven, with a scroll bar; the cursor scrolls the window.
+
+Details and the technique table: [mods/technique-rows.md](../mods/technique-rows.md).
 
 ## Jijimon's starter quiz (0273)
 

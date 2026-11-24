@@ -5,10 +5,11 @@
   "level": "champion",
   "vanilla_as": 38,
   "attribute": "vaccine",
-  "specialties": ["battle", "air", null],
+  "specialties": ["light", "battle", "air"],
   "fields": ["nature-spirits", "nightmare-soldiers", "virus-busters"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Tremar", "Counter", "Megalo Spark",
-                 "Static Elect", "Electric Cloud", "Wind Cutter", "Dark Claw"],
+                 "Static Elect", "Electric Cloud", "Wind Cutter", "Dark Claw", "Holy Spark",
+                 "Shining Arrow", "Sacred Shield", "Blessing", "Flash Burst"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
   "model": {

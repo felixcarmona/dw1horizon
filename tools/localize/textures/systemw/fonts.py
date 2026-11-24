@@ -62,6 +62,14 @@ ELEM.update(F('''
 J: ..#./..#d/..#d/..#d/#.#d/#d#d/.#.d/..d.
 S: .##./#.dd/#d../.#../..#./..#d/##.d/.dd.
 '''))
+# the three new rows' names (DARK, LIGHT, WATER; SOMBRA, LUZ, AGUA / ÁGUA)
+ELEM.update(F('''
+D: ##../#d#./#d#d/#d#d/#d#d/#d#d/##.d/.dd.
+K: #.#./#d#d/#d#d/##.d/#d#./#d#d/#d#d/.d.d
+W: #...#./#d..#d/#d..#d/#d..#d/#d#.#d/##d##d/#d.d#d/.d...d
+Z: ###./..#d/..#d/.#.d/#.d./#d../###./.ddd
+Á: ..#./.#../#.#./#d#d/###d/#d#d/#d#d/.d.d
+'''))
 ELEM_NEW='L U O G M(5-wide; the original 4-wide M reads as N)'
 
 # status-screen stat labels (HAPPINESS/SPEED/BRAINS): 7-row yellow ink (E), shadow D at (+1,+1). clut row 4.

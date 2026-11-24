@@ -5,10 +5,11 @@
   "level": "champion",
   "vanilla_as": 48,
   "attribute": "virus",
-  "specialties": ["ice", "battle", null],
+  "specialties": ["ice", "battle", "dark"],
   "fields": ["deep-savers", "nightmare-soldiers"],
   "techniques": ["Giga Freeze", "Ice Needle", "Sonic Jab", "Megaton Punch", "Buster Dive", "War Cry",
-                 "Aurora Freeze", "Tremar", "Dynamite Kick (44)", "Aqua Magic", "Subzero Ice Punch"],
+                 "Aurora Freeze", "Tremar", "Dynamite Kick (44)", "Aqua Magic", "Subzero Ice Punch",
+                 "Shadow Claw", "Dark Bolt", "Evil Whisper", "Nightmare", "Death Grip"],
   "drop": {"item": "Sirloin", "percent": 10},
   "effects_like": 34,
   "model": {
@@ -19,7 +20,8 @@
     "height": 390,
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 2], [4, 5], [5, 6], [6, 2], [7, 8], [8, 9], [9, 1],
                  [10, 11], [11, 12], [12, 13], [13, 11], [14, 15], [15, 16]],
-    "slot_aliases": [[52, 46], [53, 50], [54, 48], [55, 46], [56, 46]]
+    "slot_aliases": [[52, 46], [53, 50], [54, 48], [55, 46], [56, 46], [57, 48], [58, 53], [59, 51], [60, 47],
+                     [61, 49]]
   },
   "texture": {"from": 72},
   "voice": 30,

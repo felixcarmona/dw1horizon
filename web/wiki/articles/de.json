@@ -136,6 +136,15 @@
       "Jede aufziehbare Art hat eine verstärkte Technik, die auf ihrer Seite und mit einem Pfeil im Technikmenü markiert ist. Setzt dieser Partner sie ein, steigt ihre Stärke um ein Achtel plus 30 und sie kostet ein Viertel weniger MP; die Arttabellen zeigen bereits diese Werte. Die Verstärkung gilt auch für beide Kämpfer im VS-Modus und nie für Gegner."
     ]
   },
+  "darkness-light-water": {
+    "title": "Finsternis, Licht und Wasser",
+    "summary": "Drei weitere Technikreihen, Heilung und ihre Pokale.",
+    "paragraphs": [
+      "Drei Reihen kommen zu den sieben des Originals hinzu: Finsternis, Licht und Wasser, je acht Techniken. Ein Partner lernt sie wie alle anderen: Die Technik muss auf der Liste seiner Art stehen und die Reihe unter seinen Spezialitäten sein. Der Technikbildschirm scrollt durch die zehn Reihen. Ein Spielstand einer früheren Version wird unverändert geladen. Bei diesem ersten Laden lernt der Partner die erste Technik jeder neuen Reihe, die auf der Liste seiner Art steht: Schattenklaue, Heiliger Funke oder Blasenschuss. Die übrigen lernt er wie jede andere Technik.",
+      "Segen gibt 10 % der vollen KP zurück, und der Betrag steigt in Grün über dem Digimon auf. Ein Partner heilt sich dreimal pro Kampf und ein Gegner zweimal; mit vollen KP heilt sich niemand. Von sich aus heilt sich ein Partner nur unter 60 % seiner KP; auf deinen Befehl heilt er sich, sobald ihm KP fehlen. Heiliger Schild erhöht die Abwehr, Regentanz erhöht das Tempo, und Böses Flüstern nimmt dem Ziel ein Fünftel seiner Abwehr, einmal pro Kämpfer und Kampf.",
+      "Finsternis und Licht fügen einander doppelten Schaden zu und der eigenen Reihe den halben. Wasser fügt Feuer und Schmutz doppelten Schaden zu und Natur, Eis und Wasser den halben; Luft fügt Wasser doppelten Schaden zu. Drei Pokale der Arena lassen nur die Arten zu, deren erste Spezialität ihre Reihe ist: der Finsternis-Pokal, der Licht-Pokal und der Wasser-Pokal, jeder zweimal in den 30 Tagen des Kalenders. Der Sieger erhält 5000 Bits und eine Muskelknolle, eine Weisheitsfrucht oder ein Krafteis."
+    ]
+  },
   "file-city": {
     "title": "File City und Bewohner",
     "summary": "Dienste, Wohlstand und Rekrutierung.",

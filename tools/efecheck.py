@@ -539,7 +539,7 @@ def main():
     disc = D.Disc(a.disc)
     tables = D.Tables(disc)
     for key, e in spec.items():
-        if key == 'note' or 'dw3' in e or 'compose' in e or (a.keys and key not in a.keys):
+        if key == 'note' or 'dw3' in e or 'compose' in e or 'authored' in e or (a.keys and key not in a.keys):
             continue                    # DW2003 ports: tools/test_dw3_ports.py; composed: --composed
         like = E.launch_table(archive[e['stands_for'] * E.CHUNK_SIZE:(e['stands_for'] + 1) * E.CHUNK_SIZE])
         lists = [[(s, D.parse_effect(*(disc.image.read(*disc.files['AAA/4.AAA/EFFECT/' + n]) for n in names)))

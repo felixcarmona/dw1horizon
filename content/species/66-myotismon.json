@@ -4,10 +4,11 @@
   "level": "ultimate",
   "vanilla_as": 26,
   "attribute": "virus",
-  "specialties": ["air", "battle", "ice"],
+  "specialties": ["dark", "air", "battle"],
   "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Megaton Punch", "Thunder Justice", "Hurricane", "Giga Freeze", "Aurora Freeze", "Sonic Jab",
-                 "Death Claw"],
+                 "Death Claw", "Dark Bolt", "Evil Whisper", "Nightmare", "Death Grip", "Venom Mist",
+                 "Black Gate"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 66,
   "model": {
@@ -18,7 +19,8 @@
     "height": 430,
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 2], [3, 2], [4, 2], [5, 2], [6, 2], [7, 8], [8, 2], [9, 10],
                  [10, 11], [11, 12], [12, 2], [13, 14], [14, 15], [15, 16], [16, 2], [17, 18],
-                 [18, 19], [19, 20], [20, 18], [21, 22], [22, 23]]
+                 [18, 19], [19, 20], [20, 18], [21, 22], [22, 23]],
+    "slot_aliases": [[53, 49], [54, 51], [55, 49], [56, 46], [57, 49], [58, 50]]
   },
   "texture": {"from": 66},
   "voice": 56,

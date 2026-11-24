@@ -5,7 +5,7 @@ from pathlib import Path as _ImagePath
 _image_sys.path.insert(0, str(next(p for p in _ImagePath(__file__).resolve().parents if (p / 'tools').is_dir())))
 import json, copy, os
 from tex import *; from words import *
-PT_WORDS = {'NOMBRE': 'NOME', 'ESPECIE': 'DIGI', 'EDAD': 'DIAS', 'ACTIVO': 'ATIVO', 'FELICIDAD': 'FELICID.', 'VELOCIDAD': 'VELOCID.', 'INTELECTO': 'INTELECTO', 'RAPIDEZ': 'RAPIDEZ', 'POTENCIA': 'POT.', 'ALCANCE': 'ALCANCE', 'EFECTO': 'EFEITO', 'DATOS TÉC.': 'DADOS TÉC.', 'OBJETO': 'ITEM', 'PRECIO': 'VALOR', 'TÍTULO': 'TÍTULO', 'PUNTOS': 'PONTOS', 'CANT.': 'QTD.', 'FUEGO': 'FOGO', 'AIRE': 'AR', 'TIERRA': 'TERRA', 'HIELO': 'GELO', 'MUGRE': 'SUJO'}
+PT_WORDS = {'AGUA': 'ÁGUA', 'NOMBRE': 'NOME', 'ESPECIE': 'DIGI', 'EDAD': 'DIAS', 'ACTIVO': 'ATIVO', 'FELICIDAD': 'FELICID.', 'VELOCIDAD': 'VELOCID.', 'INTELECTO': 'INTELECTO', 'RAPIDEZ': 'RAPIDEZ', 'POTENCIA': 'POT.', 'ALCANCE': 'ALCANCE', 'EFECTO': 'EFEITO', 'DATOS TÉC.': 'DADOS TÉC.', 'OBJETO': 'ITEM', 'PRECIO': 'VALOR', 'TÍTULO': 'TÍTULO', 'PUNTOS': 'PONTOS', 'CANT.': 'QTD.', 'FUEGO': 'FOGO', 'AIRE': 'AR', 'TIERRA': 'TERRA', 'HIELO': 'GELO', 'MUGRE': 'SUJO'}
 def tr(word):
     return PT_WORDS.get(word, word) if os.environ.get('LOCALIZE_LANGUAGE') == 'pt-br' else word
 EN=grid(); ES=copy.deepcopy(EN)
@@ -103,6 +103,16 @@ for j,(en,es) in enumerate([('FIRE','FUEGO'),('BATTLE','COMBATE'),('AIR','AIRE')
     if es=='MUGRE': u,v=60,96
     else: u,v=x,24; x+=w
     add(en,es,arr,u,v,[j*20,24,20,10],4,EL,'per-word table {u,v,w}: left column x = -45 - w (right-aligned, 3 px before the grid at -42), right column x = 100 (unchanged)')
+# the three new rows' names: 8 rows tall (no blank row on top: the table draws them one line lower), on the row the
+# English headers leave free
+from tools.localize.tech_rows_art import ES_NAMES, ES_ROW, EN_NAMES, EN_CELL
+EN_AT={n:[u,v,*EN_CELL] for n,u,v in EN_NAMES}
+x=ES_ROW[0]
+for en,es in ES_NAMES:
+    arr=r_elem(tr(es),h=ES_ROW[3],top=0); w=len(r_elem(es)[0])
+    assert len(arr[0]) <= w and x+w <= ES_ROW[0]+ES_ROW[2], es
+    arr=[row + [15] * (w-len(row)) for row in arr]
+    add(en,es,arr,x,ES_ROW[1],EN_AT[en],4,EL,'a new row: a cell of its own, drawn one line lower than the 10-row names'); x+=w
 
 # ---- outputs ----
 open('SYSTEM_W.es.idx','wb').write(bytes(ES[y][x] for y in range(H) for x in range(W)))

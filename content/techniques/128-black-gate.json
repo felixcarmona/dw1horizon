@@ -1,0 +1,17 @@
+{
+  "id": 128,
+  "name": "Black Gate",
+  "element": "dark",
+  "power": 440,
+  "mpCost": 78,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 74,
+  "status": 4,
+  "statusChance": 10,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [15, 8, 0]
+}

@@ -140,9 +140,9 @@ class QuizTest(unittest.TestCase):
             para = S.species_record(s)['para']
             tech, slot = Q.opening_technique(para, powers)
             with self.subTest(starter=s['name']):
-                self.assertLess(tech, 58)
+                self.assertTrue(tech < 58 or 122 <= tech <= 145, tech)
                 self.assertEqual(para['moves'][slot], tech)
-                weakest = min(t['power'] for i, t in techs.items() if i < 58 and t['power'] and t['element'] == techs[tech]['element'])
+                weakest = min(t['power'] for i, t in techs.items() if (i < 58 or 122 <= i <= 145) and t['power'] and t['element'] == techs[tech]['element'])
                 self.assertLessEqual(powers[tech], max(ceiling, weakest), techs[tech]['name'])
                 if 'new_game_technique' in s:
                     self.assertEqual(techs[tech]['name'], s['new_game_technique'])

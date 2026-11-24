@@ -1896,6 +1896,39 @@
    "Singles, 3 rounds, 8 entrants"
   ]
  ],
+ "s209.sec10.u37": [
+  [
+   "- Dark Cup -",
+   "Crowns the best Digimon",
+   "of the Dark specialty.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Dark Digimon"
+  ]
+ ],
+ "s209.sec10.u38": [
+  [
+   "- Holy Cup -",
+   "Crowns the best Digimon",
+   "of the Holy specialty.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Holy Digimon"
+  ]
+ ],
+ "s209.sec10.u39": [
+  [
+   "- Aqua Cup -",
+   "Crowns the best Digimon",
+   "of the Aqua specialty.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Aqua Digimon"
+  ]
+ ],
  "s210.sec51.u0": "I've been waiting for you, {color 6}{player}{color 1}. At last, the day has come.",
  "s210.sec51.u1": "What's wrong?",
  "s210.sec51.u2": "The way into Mt. Infinity has appeared!",
@@ -2558,6 +2591,39 @@
    "Time-limited matches.",
    "",
    "Singles, 3 rounds, 8 entrants"
+  ]
+ ],
+ "s213.sec10.u37": [
+  [
+   "- Dark Cup -",
+   "Crowns the best Digimon",
+   "of the Dark specialty.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Dark Digimon"
+  ]
+ ],
+ "s213.sec10.u38": [
+  [
+   "- Holy Cup -",
+   "Crowns the best Digimon",
+   "of the Holy specialty.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Holy Digimon"
+  ]
+ ],
+ "s213.sec10.u39": [
+  [
+   "- Aqua Cup -",
+   "Crowns the best Digimon",
+   "of the Aqua specialty.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Aqua Digimon"
   ]
  ],
  "s213.sec54.u0": "Hey, you haven't entered the tournament.",
@@ -3868,6 +3934,22 @@
    "Winner's purse: 5000 Bits!",
    "",
    "Won {color 6}Sage Fruit{color 1}!"
+  ]
+ ],
+ "s220.sec51.u24": [
+  [
+   "",
+   "Winner's purse: 5000 Bits!",
+   "",
+   "Won {color 6}Muscle Yam{color 1}!"
+  ]
+ ],
+ "s220.sec51.u25": [
+  [
+   "",
+   "Winner's purse: 5000 Bits!",
+   "",
+   "Won {color 6}Power Ice{color 1}!"
   ]
  ],
  "s220.sec83.u0": [

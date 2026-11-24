@@ -1,0 +1,17 @@
+{
+  "id": 136,
+  "name": "Heaven's Ring",
+  "element": "light",
+  "power": 380,
+  "mpCost": 92,
+  "distance": 160000,
+  "range": 3,
+  "accuracy": 88,
+  "status": 3,
+  "statusChance": 12,
+  "iframes": 1,
+  "unk3": 3,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [14, 8, 0]
+}

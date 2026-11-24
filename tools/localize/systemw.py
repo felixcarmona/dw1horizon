@@ -37,6 +37,9 @@ def check_chinese_menu_cells():
         used.append(rect)
 
 
+from tools.localize.tech_rows_art import OTHER_CELLS
+
+
 def relocated_rect(item):
     key = item['en'], item['es']
     return {
@@ -45,6 +48,7 @@ def relocated_rect(item):
         ('SPEC', 'EFECTO'): (194, 110, 34, 12),
         ('TECH. DATA', 'DATOS TÉC.'): (96, 84, 64, 12),
         ('RANG', 'ALCANCE'): (160, 84, 38, 12),
+        **OTHER_CELLS,
     }.get(key)
 
 
@@ -97,8 +101,10 @@ def crop_tables(source, metadata):
                               (17, 'HAPPINESS'), (18, 'SPEED'), (19, 'BRAINS')]:
                     put(i, en)
             elif name == 'MOVES_VIEW_ELEMENT_NAMES':
-                for i, en in enumerate(('FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH')):
+                for i, en in enumerate(('FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH',
+                                        'DARK', 'LIGHT', 'WATER')):
                     rr[i][0] = (-45 - put(i, en, shifted=True)) & 65535
+                    rr[i][1] = 1 if rr[i][3] == 8 else 0    # posY: a name with no blank row on top goes a line lower
             elif name == 'MOVES_VIEW_TECHSET_TEXT':
                 for i, en, es in [(0, 'POWER', None), (1, 'RANG', 'ALC.'), (2, 'SPEC', None)]:
                     put(i, en, es)

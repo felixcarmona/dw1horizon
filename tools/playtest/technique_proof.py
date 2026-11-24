@@ -37,7 +37,9 @@ def start_battle(moves):
     """The partner strong, every technique of its list learned; a wild battle with NPC slot 0 of Native Forest."""
     words = [0, 0, 0, 0]
     for m in moves:
-        if m != 255: words[m // 32] |= 1 << (m % 32)
+        if m != 255:
+            bit = m - 122 + 64 if m >= 122 else m  # the new rows keep their bits after the 58 originals'
+            words[bit // 32] |= 1 << (bit % 32)
     P.mset(*[f'PARTNER_ENTITY.learnedMoves[{k}]={words[k]}' for k in range(4)],
            'PARTNER_ENTITY.digimonEntity.stats.base.off=400', 'PARTNER_ENTITY.digimonEntity.stats.base.speed=400',
            'PARTNER_ENTITY.digimonEntity.stats.base.brain=400', 'PARTNER_ENTITY.digimonEntity.stats.base.hp=4000',

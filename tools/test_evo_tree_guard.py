@@ -263,7 +263,7 @@ class GuardTests(unittest.TestCase):
         s = self.sp[238]
         self.assertEqual(set(s['evolution']['from']), {217, 46, 4, 57})
         self.assertEqual(s['evolution']['requirements'], self.sp[24]['off']['evolution']['requirements'])
-        self.assertEqual(s['specialties'], ['ice', 'air', None])
+        self.assertEqual(s['specialties'], ['water', 'ice', 'air'])
         self.assertIn('Blasting Spout', s['techniques'])
         champion_ice = {'Tear Drop', 'Giga Freeze', 'Ice Needle', 'Water Blit',
                         'Ice Statue', 'Winter Blast', 'Aurora Freeze', 'Aqua Magic'}
@@ -286,8 +286,11 @@ class GuardTests(unittest.TestCase):
             self.assertFalse(self.sp[238].get('vanilla'))
 
     def test_original_battle_specialties_are_preserved(self):
+        # the rows added later (dark, light, water) may sit beside them; the original ones stay, in their order
+        added = {'dark', 'light', 'water'}
         for t in (7, 11, 24, 27, 35, 53):
-            self.assertEqual(self.sp[t]['specialties'], T.S.disc_file(t)['specialties'])
+            self.assertEqual([x for x in self.sp[t]['specialties'] if x and x not in added],
+                             [x for x in T.S.disc_file(t)['specialties'] if x])
         self.assertEqual(self.sp[87]['specialties'], ['filth', 'nature', None])
 
     def test_mega_chain_uses_real_clock_and_lifetime(self):

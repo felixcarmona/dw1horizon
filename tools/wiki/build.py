@@ -10,6 +10,7 @@ import shutil
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import learning
 import model
 import articles as article_catalogs
 from localize import translate
@@ -257,7 +258,7 @@ class Pages:
     def learning_section(self, move):
         ident = move['id']
         rows = self.data['learning_sources'][ident]
-        if ident >= 58:
+        if not learning.learnable(ident):
             content = f'<p>{self.t("wiki.notLearnable")}</p>'
         else:
             def source_table(secret):
@@ -333,10 +334,10 @@ class Pages:
             species=[s for s in self.data['species'] if any(m['id']==ident for m in s['moves'])]
             chance = ' / '.join(f'{i+1}: {n}%' for i,n in enumerate(move.get('learnChances',[]))) or '—'
             range_key={0:'other',1:'melee',2:'ranged',3:'area',4:'buff'}.get(move['range'],'other')
-            status_key={0:None,1:'poison',2:'confusion',3:'stun',4:'flatten'}.get(move['status'])
+            status_key={0:None,1:'poison',2:'confusion',3:'stun',4:'flatten',5:'heal',6:'defenseUp',7:'speedUp',8:'defenseDown'}.get(move['status'])
             status=self.t('data.'+status_key)+f' ({move["statusChance"]}%)' if status_key else '—'
             stats=f'<dl class="facts"><dt>{self.t("data.range")}</dt><dd>{self.t("data."+range_key)}</dd><dt>{self.t("data.status")}</dt><dd>{status}</dd><dt>{self.t("data.specialty")}</dt><dd>{self.t("data."+str(move["element"] if isinstance(move["element"],str) else "other"))}</dd><dt>{self.t("data.power")}</dt><dd>{move["power"]}</dd><dt>{self.t("data.mp")}</dt><dd>{move["baseMP"]}</dd><dt>{self.t("wiki.learning")}</dt><dd>{chance}</dd></dl>'
-            partner_heading = self.t("wiki.canLearn" if ident<58 else "data.recruit.digimon")
+            partner_heading = self.t("wiki.canLearn" if learning.learnable(ident) else "data.recruit.digimon")
             body=f'<div class="page-title"><span class="eyebrow">{self.t("data.technique")} #{ident}</span><h1>{escape(self.move_name(move))}</h1></div>{self.learning_section(move)}<section class="surface">{stats}<p>{self.t("data.learningRule")}</p><p>{self.t("data.brainsRule")} {self.t("data.oneRule")}</p><p>{self.t("data.costRule")}</p></section><h2>{partner_heading}</h2>'+self.species_cards(species)
             path=f'techniques/{ident}-{model.slug(move["name"])}/'
             self.page(path,self.move_name(move)+' #'+str(ident),body,'technique',dict(type='technique',text=plain(self.t('data.'+str(move['element'] if isinstance(move['element'],str) else 'other')))+' · '+str(move['power']),aliases=move['name']+' '+' '.join(s['name'] for s in species if not s['spoiler'])))

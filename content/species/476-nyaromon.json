@@ -5,7 +5,7 @@
   "level": "in-training",
   "vanilla_as": 30,
   "attribute": "data",
-  "specialties": ["battle", "air", null],
+  "specialties": ["light", "battle", "air"],
   "fields": ["virus-busters"],
   "techniques": ["Bubble (119)"],
   "drop": {"item": "sm.recovery", "percent": 10},

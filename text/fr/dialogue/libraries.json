@@ -3848,6 +3848,39 @@
    "Duels, 3 tours, 8 inscrits"
   ]
  ],
+ "s209.sec10.u37": [
+  [
+   "- Coupe Ténèbres -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Ténèbres.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Ténèbres"
+  ]
+ ],
+ "s209.sec10.u38": [
+  [
+   "- Coupe Lumière -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Lumière.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Lumière"
+  ]
+ ],
+ "s209.sec10.u39": [
+  [
+   "- Coupe Eau -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Eau.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Eau"
+  ]
+ ],
  "s210.sec51.u0": [
   [
    "Je t'attendais, {color 6}{player}{color 1}.",
@@ -4908,6 +4941,39 @@
    "Combats à durée limitée.",
    "",
    "Duels, 3 tours, 8 inscrits"
+  ]
+ ],
+ "s213.sec10.u37": [
+  [
+   "- Coupe Ténèbres -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Ténèbres.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Ténèbres"
+  ]
+ ],
+ "s213.sec10.u38": [
+  [
+   "- Coupe Lumière -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Lumière.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Lumière"
+  ]
+ ],
+ "s213.sec10.u39": [
+  [
+   "- Coupe Eau -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Eau.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Eau"
   ]
  ],
  "s213.sec54.u0": [
@@ -6968,6 +7034,18 @@
   [
    "Prix du vainqueur : 5000 Bits !",
    "Objet gagné : {color 6}Fruit sage{color 1} !"
+  ]
+ ],
+ "s220.sec51.u24": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Patate musclée{color 1} !"
+  ]
+ ],
+ "s220.sec51.u25": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Glace de force{color 1} !"
   ]
  ],
  "s220.sec83.u0": [

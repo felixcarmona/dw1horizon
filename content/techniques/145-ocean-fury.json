@@ -1,0 +1,17 @@
+{
+  "id": 145,
+  "name": "Ocean Fury",
+  "element": "water",
+  "power": 560,
+  "mpCost": 112,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 84,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [12, 7, 0]
+}

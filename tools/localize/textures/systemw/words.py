@@ -14,8 +14,8 @@ def r_small(word):
     rows=pad(compose(SMALL,word),1,1,1,1)
     ol=outline(rows,'#')
     return [[1 if c=='#' else 12 if c=='c' else 13 if ol[y][x] else 15 for x,c in enumerate(r)] for y,r in enumerate(rows)]
-def r_elem(word,h=10):
-    rows=compose(ELEM,word,gap=0); rows=pad(rows,0,1,0,h-1-len(rows))
+def r_elem(word,h=10,top=1):
+    rows=compose(ELEM,word,gap=0); rows=pad(rows,0,top,0,h-top-len(rows))
     return [[10 if c=='#' else 13 if c=='d' else 15 for c in r] for r in rows]
 def shadow(rows,ink,sh,bg):
     H=len(rows);W=len(rows[0]); out=[[bg]*W for _ in range(H)]

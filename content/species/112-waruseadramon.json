@@ -5,11 +5,11 @@
   "level": "ultimate",
   "vanilla_as": 54,
   "attribute": "virus",
-  "specialties": ["ice", "air", null],
+  "specialties": ["water", "ice", "air"],
   "fields": ["deep-savers"],
   "techniques": ["Giga Freeze", "Aurora Freeze", "Winter Blast", "Confused Storm", "Ice Statue", "Water Blit",
                  "Ice Needle", "Tear Drop", "Aqua Magic", "Spinning Shot", "Hurricane",
-                 "Wind Cutter", "Thunder Justice", "Mail Strome"],
+                 "Wind Cutter", "Thunder Justice", "Mail Strome", "Whirlpool", "Tidal Wave"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 61,
   "model": {
@@ -21,7 +21,7 @@
     "skeleton": [[-1, -1], [-1, 0], [2, 1], [0, 2], [1, 3], [3, 1], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10],
                  [10, 11], [11, 5], [12, 5]],
     "slot_aliases": [[50, 46], [51, 46], [52, 46], [53, 46], [54, 47], [55, 49], [56, 49], [57, 49], [58, 49],
-                     [59, 49]]
+                     [59, 49], [60, 57], [61, 55]]
   },
   "texture": {"from": 112},
   "voice": 69,

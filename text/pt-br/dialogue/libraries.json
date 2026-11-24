@@ -2734,6 +2734,39 @@
    "Individual, 3 rodadas, 8 vagas"
   ]
  ],
+ "s209.sec10.u37": [
+  [
+   "- Copa Trevas -",
+   "Decide o melhor Digimon",
+   "de especialidade Trevas.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Trevas"
+  ]
+ ],
+ "s209.sec10.u38": [
+  [
+   "- Copa Luz -",
+   "Decide o melhor Digimon",
+   "de especialidade Luz.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Luz"
+  ]
+ ],
+ "s209.sec10.u39": [
+  [
+   "- Copa Água -",
+   "Decide o melhor Digimon",
+   "de especialidade Água.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Água"
+  ]
+ ],
  "s210.sec51.u0": "Eu estava esperando por você, {color 6}{player}{color 1}. Finalmente, chegou o dia.",
  "s210.sec51.u1": "O que há de errado?",
  "s210.sec51.u2": [
@@ -3434,6 +3467,39 @@
    "Combates com limite de tempo.",
    "",
    "Individual, 3 rodadas, 8 vagas"
+  ]
+ ],
+ "s213.sec10.u37": [
+  [
+   "- Copa Trevas -",
+   "Decide o melhor Digimon",
+   "de especialidade Trevas.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Trevas"
+  ]
+ ],
+ "s213.sec10.u38": [
+  [
+   "- Copa Luz -",
+   "Decide o melhor Digimon",
+   "de especialidade Luz.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Luz"
+  ]
+ ],
+ "s213.sec10.u39": [
+  [
+   "- Copa Água -",
+   "Decide o melhor Digimon",
+   "de especialidade Água.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Água"
   ]
  ],
  "s213.sec54.u0": "Ei, você não entrou no torneio.",
@@ -4832,6 +4898,18 @@
   [
    "Prêmio do campeão: 5000 Bits!",
    "Recebeu 1 x {color 6}Fruta sábia{color 1}!"
+  ]
+ ],
+ "s220.sec51.u24": [
+  [
+   "Prêmio do campeão: 5000 Bits!",
+   "Recebeu 1 x {color 6}Inhame muscular{color 1}!"
+  ]
+ ],
+ "s220.sec51.u25": [
+  [
+   "Prêmio do campeão: 5000 Bits!",
+   "Recebeu 1 x {color 6}Gelo do poder{color 1}!"
   ]
  ],
  "s220.sec83.u0": [

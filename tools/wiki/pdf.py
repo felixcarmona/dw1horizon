@@ -114,7 +114,7 @@ def document(pages, tag):
     innate={}
     for move in p.data['techniques']:
         range_key={0:'other',1:'melee',2:'ranged',3:'area',4:'buff'}.get(move['range'],'other')
-        status_key={1:'poison',2:'confusion',3:'stun',4:'flatten'}.get(move['status'])
+        status_key={1:'poison',2:'confusion',3:'stun',4:'flatten',5:'heal',6:'defenseUp',7:'speedUp',8:'defenseDown'}.get(move['status'])
         status=p.t('data.'+status_key)+f' ({move["statusChance"]}%)' if status_key else '—'
         if 58 <= move['id'] <= 121:
             innate[move['id']]=f'<tr id="move-{move["id"]}"><td>{escape(p.move_name(move))}</td><td>{move["id"]}</td><td>{move["power"]}</td><td>{p.t("data."+range_key)}</td><td>{status}</td></tr>'

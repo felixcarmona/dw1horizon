@@ -1,0 +1,134 @@
+From b7b9c2699663f533457ad7ac7af038a1a9ecd93f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 06:41:48 +0000
+Subject: [PATCH] Healing techniques: a technique of status 5 gives back a
+ share of the full HP, and the amount rises over the fighter in green
+
+---
+ include/dw/combat.h    |  3 +++
+ src/btl/battle_main.c  | 11 +++++++++++
+ src/main/entity_text.c | 13 +++++++++----
+ src/std/std_main.c     | 11 +++++++++++
+ src/vs/vs_main.c       | 11 +++++++++++
+ 5 files changed, 45 insertions(+), 4 deletions(-)
+
+diff --git a/include/dw/combat.h b/include/dw/combat.h
+index 36582765..99f4f77c 100644
+--- a/include/dw/combat.h
++++ b/include/dw/combat.h
+@@ -114,6 +114,9 @@ typedef struct {
+ 	PlayerData player;
+ } CombatData;
+ 
++/* MOD (healing techniques): with this bit in the icon of addEntityText the number rises instead of bouncing */
++#define ENTITY_TEXT_RISE 0x80
++
+ extern CombatData COMBAT_DATA;
+ extern CombatData *COMBAT_DATA_PTR;
+ 
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 5aedee32..b5627efe 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -1946,6 +1946,17 @@ int32_t BTL_applyBuffMove(DigimonEntity *digimon, int32_t slot, int16_t anim)
+ 	int32_t row;
+ 
+ 	stats = &digimon->stats;
++	/* MOD (healing techniques): a technique of status 5 gives back statusChance percent of the full HP; the amount
++	   that came back rises over the fighter in green */
++	if (modSpeciesMove(digimon->entity.type, anim)->status == 5) {
++		row = stats->base.hp * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100;
++		if (row > stats->base.hp - stats->current.currentHP) {
++			row = stats->base.hp - stats->current.currentHP;
++		}
++		stats->current.currentHP += row;
++		addEntityText(&digimon->entity, slot, 7, row, ENTITY_TEXT_RISE);
++		return 1;
++	}
+ 	/* MOD (battle as data): the buff moves and what they add, in percent of the stat (the rows of MOD_BATTLE) */
+ 	for (row = 0; row < 5; row++) {
+ 		if (BMV(BUFF_MOVE0 + row) == anim) {
+diff --git a/src/main/entity_text.c b/src/main/entity_text.c
+index 5bfe919c..229787a2 100644
+--- a/src/main/entity_text.c
++++ b/src/main/entity_text.c
+@@ -183,7 +183,12 @@ void lateTickEntityText(int32_t instanceId)
+ 			break;
+ 		}
+ 		if (*frame < 21) {
+-			entry->y += ENTITY_TEXT_Y_OFFSETS[*frame];
++			/* MOD (healing techniques): a healed amount rises, fast and then slower, where a hit bounces */
++			if (entry->icon & ENTITY_TEXT_RISE) {
++				entry->y -= *frame < 6 ? 3 : *frame < 14 ? 2 : 1;
++			} else {
++				entry->y += ENTITY_TEXT_Y_OFFSETS[*frame];
++			}
+ 		}
+ 
+ 		/* drawn by renderEntityText on layer 14 - i */
+@@ -255,15 +260,15 @@ void renderEntityText(instanceId)
+ 				       entry->value, 14 - i);
+ 		}
+ 
+-		if (entry->icon != 0) {
++		if ((entry->icon & ~ENTITY_TEXT_RISE) != 0) {
+ 			if (GAME_STATE != 4) {
+ 				drawEntityTextIcon(entry->x - 8, entry->y,
+-						   ENTITY_TEXT_ICON_U[entry->icon - 1],
++						   ENTITY_TEXT_ICON_U[(entry->icon & ~ENTITY_TEXT_RISE) - 1],
+ 						   14 - i);
+ 			} else {
+ 				drawEntityTextIcon(screenPos.vx + entry->x - 8,
+ 						   screenPos.vy - 8 + entry->y,
+-						   ENTITY_TEXT_ICON_U[entry->icon - 1],
++						   ENTITY_TEXT_ICON_U[(entry->icon & ~ENTITY_TEXT_RISE) - 1],
+ 						   14 - i);
+ 			}
+ 		}
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index b2fe866a..3ffdf1b2 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -5753,6 +5753,17 @@ int32_t STD_applyBuffMove(DigimonEntity *digimon, int32_t slot, int16_t anim)
+ 	int32_t row;
+ 
+ 	stats = &digimon->stats;
++	/* MOD (healing techniques): a technique of status 5 gives back statusChance percent of the full HP; the amount
++	   that came back rises over the fighter in green */
++	if (modSpeciesMove(digimon->entity.type, anim)->status == 5) {
++		row = stats->base.hp * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100;
++		if (row > stats->base.hp - stats->current.currentHP) {
++			row = stats->base.hp - stats->current.currentHP;
++		}
++		stats->current.currentHP += row;
++		addEntityText(&digimon->entity, slot, 7, row, ENTITY_TEXT_RISE);
++		return 1;
++	}
+ 	/* MOD (battle as data): the buff moves and what they add, in percent of the stat (the rows of MOD_BATTLE) */
+ 	for (row = 0; row < 5; row++) {
+ 		if (BMV(BUFF_MOVE0 + row) == anim) {
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index 760982e2..1070625b 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -265,6 +265,17 @@ int32_t VS_applyBuffMove(DigimonEntity *digimon, int32_t slot, int16_t anim)
+ 	int32_t row;
+ 
+ 	stats = &digimon->stats;
++	/* MOD (healing techniques): a technique of status 5 gives back statusChance percent of the full HP; the amount
++	   that came back rises over the fighter in green */
++	if (modSpeciesMove(digimon->entity.type, anim)->status == 5) {
++		row = stats->base.hp * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100;
++		if (row > stats->base.hp - stats->current.currentHP) {
++			row = stats->base.hp - stats->current.currentHP;
++		}
++		stats->current.currentHP += row;
++		addEntityText(&digimon->entity, slot, 7, row, ENTITY_TEXT_RISE);
++		return 1;
++	}
+ 	/* MOD (battle as data): the buff moves and what they add, in percent of the stat (the rows of MOD_BATTLE) */
+ 	for (row = 0; row < 5; row++) {
+ 		if (BMV(BUFF_MOVE0 + row) == anim) {
+-- 
+2.55.0
+

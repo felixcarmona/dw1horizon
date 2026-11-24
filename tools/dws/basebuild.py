@@ -520,7 +520,7 @@ def compile_base_story(base, work, lang, text, exclude, mh_overrides, mh_gen, re
         lines = generate_text(f'script {sid}', info, orders.get(sid), prog.b.gen_event)
         fn = f'script_{sid:03d}.scn.txt'
         open(os.path.join(dis, fn), 'w', encoding='utf-8').write('\n'.join(lines))
-        try: size = len(bytecode.assemble_script('\n'.join(lines), fn, {'quiet': True})[0])
+        try: size = len(bytecode.assemble_script('\n'.join(lines), fn, {'quiet': True, 'pack_ascii': BE.PACK_ASCII})[0])   # as the disc stores it
         except bytecode.BytecodeError as e: raise DwsError(f'story/base script {sid} does not assemble: {e}', None)
         if sid and size > bytecode.MAP_SCRIPT_MAX:
             raise DwsError(f'story/base script {sid} takes {size} bytes; the engine\'s script buffer holds {bytecode.MAP_SCRIPT_MAX} '

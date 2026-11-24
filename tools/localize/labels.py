@@ -123,7 +123,7 @@ def apply(files, language, work):
     check_care_button_cells(items)
     from tools.localize.status_art import check_cells
     check_cells(items)
-    elements = {'FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH'}
+    elements = {'FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH', 'DARK', 'LIGHT', 'WATER'}
     for item in items:
         if item['es'] not in UI:
             continue

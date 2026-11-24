@@ -9,13 +9,15 @@
     "stats": {"hp": 2000, "mp": 2500, "offense": 200, "defense": 150, "speed": 150, "brains": 200},
     "finisher": {"power": 162, "mpCost": 40, "element": "ice"},
     "techniques": ["Fire Tower", "Prominence Beam", "Red Inferno", "Tear Drop", "Spit Fire", "Giga Freeze",
-                   "Ice Needle", "Ice Statue", "Heat Laser", "Magma Bomb", "Ice Blast"]
+                   "Ice Needle", "Ice Statue", "Heat Laser", "Magma Bomb", "Ice Blast",
+                   "Venom Mist", "Black Gate"]
   },
   "attribute": "vaccine",
-  "specialties": ["ice", "fire", null],
+  "specialties": ["ice", "fire", "dark"],
   "fields": ["nightmare-soldiers", "dragons-roar"],
   "techniques": ["Fire Tower", "Prominence Beam", "Red Inferno", "Tear Drop", "Spit Fire", "Giga Freeze",
-                 "Ice Needle", "Ice Statue", "Heat Laser", "Magma Bomb", "Ice Blast"],
+                 "Ice Needle", "Ice Statue", "Heat Laser", "Magma Bomb", "Ice Blast", "Venom Mist",
+                 "Black Gate"],
   "finisher": {"power": 220, "mpCost": 40, "element": "ice"},
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 9,
@@ -28,7 +30,7 @@
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [-1, 2], [1, 3], [-1, 2], [2, 5], [3, 6], [4, 7], [-1, 2], [5, 9],
                  [6, 10], [7, 11], [8, 1], [-1, 13], [9, 14], [10, 15], [11, 16], [-1, 13],
                  [12, 18], [13, 19], [14, 20]],
-    "slot_aliases": [[50, 47], [52, 49], [49, 48], [54, 48], [55, 47], [56, 48]]
+    "slot_aliases": [[50, 47], [52, 49], [49, 48], [54, 48], [55, 47], [56, 48], [57, 52], [58, 47]]
   },
   "texture": {"from": 104},
   "voice": 9,

@@ -5,11 +5,11 @@
   "level": "mega",
   "vanilla_as": 54,
   "attribute": "vaccine",
-  "specialties": ["ice", "battle", null],
+  "specialties": ["light", "ice", "battle"],
   "fields": ["deep-savers", "virus-busters"],
   "techniques": ["Tear Drop", "Aqua Magic", "Aurora Freeze", "Ice Statue", "Giga Freeze", "Water Blit",
                  "Ice Needle", "Winter Blast", "Dynamite Kick (44)", "Buster Dive", "Megaton Punch",
-                 "Counter", "Tremar", "Sonic Jab", "Lovely Attack"],
+                 "Counter", "Tremar", "Sonic Jab", "Lovely Attack", "Grand Cross"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 28,
   "model": {

@@ -1,0 +1,653 @@
+From 571d8567189efa77445e349bc553a3b57abee53a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 06:41:48 +0000
+Subject: [PATCH] Techset shows ten technique rows with a scroll bar; arena
+ intro colours and cup tags for the new specialties
+
+---
+ include/dw/cup_rules.h |   2 +-
+ src/main/game_menu.c   | 368 ++++++++++++++++++-----------------------
+ src/std/std_main.c     |  11 +-
+ src/vs/vs_intro.c      |  11 +-
+ 4 files changed, 178 insertions(+), 214 deletions(-)
+
+diff --git a/include/dw/cup_rules.h b/include/dw/cup_rules.h
+index c0d87172..20d3ccd1 100644
+--- a/include/dw/cup_rules.h
++++ b/include/dw/cup_rules.h
+@@ -30,7 +30,7 @@ enum {
+ #define CUP_TAGS_PER_SECTOR	512
+ #define CUP_TAG_FIELDS(tag)	((tag) & 0x3ff)
+ #define CUP_TAG_ATTRIBUTE(tag)	((tag) >> 10 & 3)
+-#define CUP_TAG_SPECIALTY(tag)	((tag) >> 12 & 7)
++#define CUP_TAG_SPECIALTY(tag)	((tag) >> 19 & 15)
+ #define CUP_TAG_LEVEL(tag)	((tag) >> 15 & 7)
+ #define CUP_TAG_RIVAL		(1 << 18) /* a species of DIGI.DAT the arena can draw: raised by players, Rookie or higher */
+ 
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 74891147..8fce74c6 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -1012,7 +1012,18 @@ IconRect STATS_VIEW_ELEMENTS[21] = {
+ /* MOD (language): the move-help screen's element names, one per row (posX: the left column's x, the right column is at
+  * 100; posY unused; texY with the 0x80 of the texture's v). The Spanish words are not all 20 wide (COMBATE, TIERRA,
+  * MUGRE): each has its own cell and the left column is right-aligned, 3 px before the grid */
+-IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
++/* MOD (new technique rows): the names of the new rows sit on the originals' column: centred on it when they fit
++ * its 20 px, otherwise ending where the originals end on the left and starting where they start on the right (the
++ * cells are cropped to the letters). Spanish and Portuguese keep their own right-aligned column */
++/* (data, not code: the nine languages must lay out the same code) the widest name the right column centres */
++uint8_t MOVES_VIEW_CENTRE_MAX =
++#if MOD_LANG_BUILD == MOD_LANG_ES || MOD_LANG_BUILD == MOD_LANG_PT_BR
++	0;
++#else
++	20;
++#endif
++#define MOVES_VIEW_RIGHT_NAME_X(w) ((w) <= MOVES_VIEW_CENTRE_MAX ? 110 - (w) / 2 : 100)
++IconRect MOVES_VIEW_ELEMENT_NAMES[10] = {
+ #if MOD_LANG_BUILD == MOD_LANG_ES
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+ 	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
+@@ -1021,6 +1032,9 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++	{ 0xffb9, 0x0001, 0x001a, 0x0008, 0x0000, 0x00b0 },
++	{ 0xffc7, 0x0001, 0x000c, 0x0008, 0x001a, 0x00b0 },
++	{ 0xffc3, 0x0001, 0x0010, 0x0008, 0x0026, 0x00b0 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_PT_BR
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+@@ -1030,6 +1044,9 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++	{ 0xffb9, 0x0001, 0x001a, 0x0008, 0x0000, 0x00b0 },
++	{ 0xffc7, 0x0001, 0x000c, 0x0008, 0x001a, 0x00b0 },
++	{ 0xffc3, 0x0001, 0x0010, 0x0008, 0x0026, 0x00b0 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_FR
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+@@ -1039,6 +1056,9 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++	{ 0xffb1, 0x0000, 0x0020, 0x000a, 0x0001, 0x00a9 },
++	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0023, 0x00a9 },
++	{ 0xffbe, 0x0000, 0x0013, 0x000a, 0x004c, 0x00a9 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_DE
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+@@ -1048,6 +1068,9 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0001, 0x00a9 },
++	{ 0xffb4, 0x0000, 0x001d, 0x000a, 0x0025, 0x00a9 },
++	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0045, 0x00a9 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_IT
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+@@ -1057,6 +1080,9 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0001, 0x00a9 },
++	{ 0xffb9, 0x0000, 0x0018, 0x000a, 0x0027, 0x00a9 },
++	{ 0xffb1, 0x0000, 0x0020, 0x000a, 0x0045, 0x00a9 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_JA
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+@@ -1066,6 +1092,9 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++	{ 0xffbe, 0x0000, 0x0013, 0x000a, 0x0008, 0x00a9 },
++	{ 0xffb6, 0x0000, 0x001b, 0x000a, 0x0026, 0x00a9 },
++	{ 0xffbe, 0x0000, 0x0013, 0x000a, 0x004c, 0x00a9 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_CA
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+@@ -1075,6 +1104,9 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0001, 0x00a9 },
++	{ 0xffb8, 0x0000, 0x0019, 0x000a, 0x0027, 0x00a9 },
++	{ 0xffb4, 0x0000, 0x001d, 0x000a, 0x0047, 0x00a9 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_ZH
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+@@ -1084,6 +1116,9 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x0009, 0x00a9 },
++	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x002b, 0x00a9 },
++	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x004d, 0x00a9 },
+ 
+ #else
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x00, 0x98 },
+@@ -1093,6 +1128,9 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x50, 0x98 },
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x64, 0x98 },
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x78, 0x98 },
++	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x0090, 0x00c5 },
++	{ 0xffbe, 0x0000, 0x0012, 0x000a, 0x00a6, 0x00c5 },
++	{ 0xffbb, 0x0000, 0x0016, 0x000a, 0x0090, 0x00cf },
+ #endif
+ };
+ 
+@@ -1490,9 +1528,20 @@ uint16_t TECH_TITLE_PIECES[4] = {
+ #endif
+ };
+ 
+-/* the technique grid's "Tech" over "help" (the Digimon tab's word): Técnicas is wider, centred over ayuda */
++/* the technique grid's "Tech" over "help" (the Digimon tab's word): each language's word centred in the help box
++ * (inside it from -138 to -87; the word starts at the crop's first pixel and is 40, 42, 53, 21 or 32 wide) */
+ LabelCrop TECH_GRID_TITLE_CROP = {
+-#if MOD_LANG_BUILD != MOD_LANG_EN
++#if MOD_LANG_BUILD == MOD_LANG_ES || MOD_LANG_BUILD == MOD_LANG_PT_BR || MOD_LANG_BUILD == MOD_LANG_IT
++	-0x84, 0x3c, 0x40,
++#elif MOD_LANG_BUILD == MOD_LANG_FR
++	-0x85, 0x3c, 0x40,
++#elif MOD_LANG_BUILD == MOD_LANG_DE
++	-0x8a, 0x3c, 0x40,
++#elif MOD_LANG_BUILD == MOD_LANG_JA
++	-0x7b, 0x3c, 0x40,
++#elif MOD_LANG_BUILD == MOD_LANG_CA
++	-0x80, 0x3c, 0x40,
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	-0x95, 0x3c, 0x40,
+ #else
+ 	-0x87, 0x3c, 0x30,
+@@ -1895,6 +1944,7 @@ int8_t DIGIMON_MENU_STATE;
+ int8_t PLAYER_MENU_STATE;
+ int16_t MOVE_SELECT_BOX_Y;
+ int16_t MOVE_SELECT_BOX_X;
++uint8_t MOVE_GRID_SCROLL; /* MOD (new technique rows): the first of the Techset grid's rows on screen */
+ int8_t SELECTED_MEDAL;
+ int8_t MEDAL_SELECTOR_INDEX;
+ /* MOD (medal view): the medals the view shows, in order (one hidden by its OPTIONS switch is left out); the cursor
+@@ -2485,11 +2535,22 @@ void tickDigimonMenu(void)
+ 		}
+ 		previousX = MOVE_SELECT_BOX_X;
+ 		previousY = MOVE_SELECT_BOX_Y;
++		/* MOD (new technique rows): past the first or the last row on screen the grid scrolls */
+ 		if (CHANGED_INPUT & 0x1000) {
+-			MOVE_SELECT_BOX_Y -= 0xf;
++			if (MOVE_SELECT_BOX_Y == 0x6f && MOVE_GRID_SCROLL > 0) {
++				MOVE_GRID_SCROLL--;
++				playSound(0, 2);
++			} else {
++				MOVE_SELECT_BOX_Y -= 0xf;
++			}
+ 		}
+ 		if (CHANGED_INPUT & 0x4000) {
+-			MOVE_SELECT_BOX_Y += 0xf;
++			if (MOVE_SELECT_BOX_Y == 0xc9 && MOVE_GRID_SCROLL < NUM_ELEMENTS - 7) {
++				MOVE_GRID_SCROLL++;
++				playSound(0, 2);
++			} else {
++				MOVE_SELECT_BOX_Y += 0xf;
++			}
+ 		}
+ 		if (CHANGED_INPUT & 0x8000) {
+ 			MOVE_SELECT_BOX_X -= 0x12;
+@@ -3517,30 +3578,65 @@ void renderFeedingItem(int16_t arg)
+ 	renderOverworldItem(&TAMER_ITEM.worldItem);
+ }
+ 
++/* MOD (new technique rows): the Techset grid has ten rows and shows seven; MOVE_GRID_SCROLL is the first one on
++ * screen (declared with the cursor). A row is an element (the original seven keep their order, their techniques'
++ * ids are in another one). */
++
++static int32_t moveGridId(int32_t row, int32_t col)
++{
++	static const uint8_t block[7] = { 0, 5, 1, 4, 2, 3, 6 };
++	int32_t id;
++
++	if (row >= 7) {
++		return NEW_MOVE_FIRST + (row - 7) * 8 + col;
++	}
++	id = block[row] * 8 + col;
++	return id >= 0x30 ? id + 1 : id;
++}
++
++/* -> row * 8 + column of a technique (the two that share a cell with another land on it) */
++static int32_t moveGridCell(int32_t id)
++{
++	static const uint8_t rowOf[7] = { 0, 2, 4, 5, 3, 1, 6 };
++
++	if (IS_NEW_MOVE(id)) {
++		return id - NEW_MOVE_FIRST + 56;
++	}
++	if (id == 0x30) {
++		id = 0x2c;
++	} else if (id == 0x39) {
++		id = 0x37;
++	} else if (id > 0x30) {
++		id--;
++	}
++	return rowOf[id >> 3] * 8 + (id & 7);
++}
++
++static int32_t moveGridCursor(void)
++{
++	return moveGridId((MOVE_SELECT_BOX_Y - 0x6f) / 15 + MOVE_GRID_SCROLL, (MOVE_SELECT_BOX_X - 0x73) / 18);
++}
++
++/* An element's icon (two tiles each). The three new rows have theirs, and a palette of their own, in cells of
++ * SYSTEM_W that nothing used (tools/localize/tech_rows_art.py). */
++static void renderMoveIcon(int32_t x, int32_t y, int32_t special, int32_t tile, int32_t otz)
++{
++	static const uint8_t own[3][2][2] = { { { 128, 163 }, { 140, 163 } }, { { 152, 163 }, { 164, 163 } }, { { 200, 200 }, { 200, 212 } } };
++	static const uint16_t cluts[7] = { 0x7a06, 0x7a06, 0x7a46, 0x7a46, 0x7a46, 0x7a86, 0x7a06 };
++
++	if (special >= 7) {
++		renderRectPolyFT4(x, y, 0xc, 0xc, own[special - 7][tile][0], own[special - 7][tile][1], 5, 0x3f56, otz, 0);
++	} else {
++		renderRectPolyFT4(x, y, 0xc, 0xc, tile * 0xc + (special * 0x18 + 0x24), 0x80, 5, cluts[special], otz, 0);
++	}
++}
++
+ int8_t getEquippedSlot(void)
+ {
+ 	uint8_t moveId;
+-	uint8_t column;
+-	uint8_t row;
+ 	int32_t slot;
+ 
+-	column = (MOVE_SELECT_BOX_X - 0x73) / 18;
+-	row = (MOVE_SELECT_BOX_Y - 0x6f) / 15;
+-	if (row == 1) {
+-		row = 5;
+-	} else if (row == 2) {
+-		row = 1;
+-	} else if (row == 3) {
+-		row = 4;
+-	} else if (row == 4) {
+-		row = 2;
+-	} else if (row == 5) {
+-		row = 3;
+-	}
+-	moveId = column + row * 8;
+-	if (moveId >= 0x30) {
+-		moveId++;
+-	}
++	moveId = moveGridCursor();
+ 	for (slot = 0; slot < 3; slot++) {
+ 		if ((moveId == 0x2c) && (EQUIPPED_MOVES[slot] == 0x30)) {
+ 			return slot;
+@@ -3558,29 +3654,11 @@ int8_t getEquippedSlot(void)
+ void equipMove(void)
+ {
+ 	RECT textArea;
+-	uint8_t column;
+-	uint8_t row;
+ 	uint8_t moveId;
+ 	int32_t slot;
+ 	int32_t animation;
+ 
+-	column = (MOVE_SELECT_BOX_X - 0x73) / 18;
+-	row = (MOVE_SELECT_BOX_Y - 0x6f) / 15;
+-	if (row == 1) {
+-		row = 5;
+-	} else if (row == 2) {
+-		row = 1;
+-	} else if (row == 3) {
+-		row = 4;
+-	} else if (row == 4) {
+-		row = 2;
+-	} else if (row == 5) {
+-		row = 3;
+-	}
+-	moveId = column + row * 8;
+-	if (row == 6) {
+-		moveId++;
+-	}
++	moveId = moveGridCursor();
+ 	if (hasMove(moveId) == 0) {
+ 		playSound(0, 4);
+ 		return;
+@@ -3746,11 +3824,9 @@ void renderDigimonStatsView(void)
+ 	int16_t w;
+ 	int16_t k;
+ 	int16_t special;
+-	int16_t clut;
+ 	int32_t attrX;
+ 	int32_t maxX;
+ 	int32_t hpW;
+-	uint8_t frame;
+ 
+ 	cluts = STATS_VIEW_ELEMENT_CLUT;
+ 	switch (MENU_STATE) {
+@@ -3817,18 +3893,7 @@ void renderDigimonStatsView(void)
+ 		for (i = 0, k = 0; i < 3; i++) {
+ 			special = DIGI_PARA(ENTITY_TABLE[1]->type).special[i];
+ 			if (special != 0xff) {
+-				clut = 0x7a06;
+-				if ((special == 2) || (special == 3) || (special == 4)) {
+-					clut = 0x7a46;
+-				} else if (special == 5) {
+-					clut = 0x7a86;
+-				}
+-				if (PLAYTIME_FRAMES % 10 < 5) {
+-					frame = 0;
+-				} else {
+-					frame = 0xc;
+-				}
+-				renderRectPolyFT4(k + 9, -0x33, 0xc, 0xc, frame + (special * 0x18 + 0x24), 0x80, 5, clut, 5, 0);
++				renderMoveIcon(k + 9, -0x33, special, PLAYTIME_FRAMES % 10 < 5 ? 0 : 1, 5);
+ 				k += 0xc;
+ 			}
+ 		}
+@@ -4043,14 +4108,16 @@ void renderDigimonMovesView(void)
+ 		renderString(0x10, -0x80, 0x4c, 0xc, 0xc, 0x24, 0x6c, 5, 1);
+ 		renderString(0, -0x74, 0x4c, 0x18, 0xc, 0x30, 0x6c, 5, 1);
+ #else
+-		renderString(0xc, -0x74, 0x4c, 0x18, 0xc, 0x30, 0x6c, 5, 1);
++		/* MOD (language): only the square's 12 px: in other languages the next cell of the row holds a word */
++		renderString(0xc, -0x74, 0x4c, 0xc, 0xc, 0x30, 0x6c, 5, 1);
+ #endif
+ 		renderRectPolyFT4(-0x74, 0x3c, 10, 10, 0x80, 0x8c, 5, 0x7b06, 5, 0);
+ 		j = 0;
+ 		while (j < 7) {
+-			icon = &MOVES_VIEW_ELEMENT_NAMES[j];
+-			renderRectPolyFT4(icon->posX, j * 0xf - 8, icon->width, icon->height, icon->texX, icon->texY, 5, 0x7b06, 5, 0);
+-			renderRectPolyFT4(100, j * 0xf - 8, icon->width, icon->height, icon->texX, icon->texY, 5, 0x7b06, 5, 0);
++			/* MOD (new technique rows): the seven rows on screen; posY lowers a name whose cell has no blank row */
++			icon = &MOVES_VIEW_ELEMENT_NAMES[j + MOVE_GRID_SCROLL];
++			renderRectPolyFT4(icon->posX, j * 0xf - 8 + icon->posY, icon->width, icon->height, icon->texX, icon->texY, 5, 0x7b06, 5, 0);
++			renderRectPolyFT4(MOVES_VIEW_RIGHT_NAME_X(icon->width), j * 0xf - 8 + icon->posY, icon->width, icon->height, icon->texX, icon->texY, 5, 0x7b06, 5, 0);
+ 			j++;
+ 		}
+ 		j = 0;
+@@ -4071,6 +4138,10 @@ void renderDigimonMovesView(void)
+ 		} else {
+ 			renderDigimonMovesSelected(1);
+ 		}
++		/* the scrollbar, under the technique's panel when that is on its side: the thumb is the seven rows of the ten
++		 * (of two boxes at one depth the earlier one is on top: the panel's first, then the thumb, then the track) */
++		renderBox(0x8b, MOVE_GRID_SCROLL * 31 / 3 - 7, 3, 0x47, 0xc0, 0xd0, 0xe8, 0, 4);
++		renderBox(0x8b, -7, 3, 0x66, 0x10, 0x14, 0x30, 0, 4);
+ 		renderDigimonMoveBox();
+ 		break;
+ 	case 7:
+@@ -4233,8 +4304,6 @@ void renderDigimonMovesSelected(int16_t panel)
+ 	IconRect *label;
+ 	Move *move;
+ 	int32_t i;
+-	uint8_t row;
+-	uint8_t col;
+ #if !VERSION_IS(US)
+ 	uint8_t status;
+ #endif
+@@ -4271,23 +4340,7 @@ void renderDigimonMovesSelected(int16_t panel)
+ 		renderRectPolyFT4((panel * 0xcb) - 0x71, i * 0x11 + 0x1b, 0xa, 0xa, 0x8a, 0x8c, 5, 0x7b06, 3, 0);
+ 	}
+ 
+-	row = (MOVE_SELECT_BOX_X - 0x73) / 18;
+-	col = (MOVE_SELECT_BOX_Y - 0x6f) / 15;
+-	if (col == 1) {
+-		col = 5;
+-	} else if (col == 2) {
+-		col = 1;
+-	} else if (col == 3) {
+-		col = 4;
+-	} else if (col == 4) {
+-		col = 2;
+-	} else if (col == 5) {
+-		col = 3;
+-	}
+-	moveId = col * 8 + row;
+-	if (col == 6) {
+-		moveId++;
+-	}
++	moveId = moveGridCursor();
+ 
+ 	if (hasMove(moveId)) {
+ 		move = modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, moveId);
+@@ -4319,146 +4372,46 @@ void renderDigimonMovesSelected(int16_t panel)
+ 
+ void renderDigimonMoveBox(void)
+ {
+-	int16_t moveId;
+-	int16_t moves[16];
+-	int32_t col;
+-	int32_t row;
+-	int32_t j;
+-	int16_t clut;
+-	uint8_t x;
+-	uint8_t special;
+-	int8_t blink;
+-	int32_t i;
+-	uint8_t y;
++	uint8_t *list = DIGI_PARA(ENTITY_TABLE[1]->type).moves;
++	int32_t i, j, row, col, id, alt, cell;
+ 
+ 	for (i = 0; i < 3; i++) {
+-		if (EQUIPPED_MOVES[i] < 0x3a) {
+-			x = EQUIPPED_MOVES[i] % 8;
+-			if (EQUIPPED_MOVES[i] < 8) {
+-				y = 0;
+-			} else if (EQUIPPED_MOVES[i] < 0x10) {
+-				y = 2;
+-			} else if (EQUIPPED_MOVES[i] < 0x18) {
+-				y = 4;
+-			} else if (EQUIPPED_MOVES[i] < 0x20) {
+-				y = 5;
+-			} else if (EQUIPPED_MOVES[i] < 0x28) {
+-				y = 3;
+-			} else if (EQUIPPED_MOVES[i] < 0x30) {
+-				y = 1;
+-			} else {
+-				x = (EQUIPPED_MOVES[i] - 1) % 8;
+-				y = 6;
+-			}
+-			if (EQUIPPED_MOVES[i] == 0x30) {
+-				x = 4;
+-				y = 1;
+-			}
+-			if (EQUIPPED_MOVES[i] == 0x39) {
+-				x = 6;
+-				y = 6;
+-			}
+-			renderBox(x * 0x12 - 0x2a, y * 0xf - 7, 0xc, 0xc, 200, 0, 0x28, 1, 4);
++		if (!IS_GRID_MOVE(EQUIPPED_MOVES[i])) {
++			continue;
++		}
++		cell = moveGridCell(EQUIPPED_MOVES[i]) - MOVE_GRID_SCROLL * 8;
++		if (cell >= 0 && cell < 56) {
++			renderBox((cell & 7) * 0x12 - 0x2a, (cell >> 3) * 0xf - 7, 0xc, 0xc, 200, 0, 0x28, 1, 4);
+ 		}
+ 	}
+ 
+ 	/* MOD (boosted techniques): an up arrow on the corner of the boosted technique's cell (the two techniques that
+ 	 * exist twice share a cell) */
+ 	i = DIGI_PARA(ENTITY_TABLE[1]->type).boostedTech - 1;
+-	if (i >= 0) {
+-		if (i == 0x30) i = 0x2c;
+-		if (i == 0x39) i = 0x37;
+-		if (i > 0x30) i--;
+-		x = (i & 7) * 0x12 - 0x24;
+-		y = "\0\2\4\5\3\1\6"[i >> 3] * 0xf - 9;
+-		renderBoostArrow(x, y, 0, 3);
+-		renderBoostArrow(x, y, 2, 3);
+-	}
+-	for (i = 0; i < 0x10; i++) {
+-		moves[i] = DIGI_PARA(ENTITY_TABLE[1]->type).moves[i];
++	if (i >= 0 && IS_GRID_MOVE(i)) {
++		cell = moveGridCell(i) - MOVE_GRID_SCROLL * 8;
++		if (cell >= 0 && cell < 56) {
++			col = (cell & 7) * 0x12 - 0x24;
++			row = (cell >> 3) * 0xf - 9;
++			renderBoostArrow(col, row, 0, 3);
++			renderBoostArrow(col, row, 2, 3);
++		}
+ 	}
+-	sortArray(moves, 0x10);
+-
+-	i = 0;
++	/* MOD (new technique rows): the rows on screen. A cell is greyed when the species cannot use its technique
++	 * (nor the one that shares the cell), and shows its element's icon once the technique is learned */
+ 	for (row = 0; row < 7; row++) {
+ 		for (col = 0; col < 8; col++) {
+-			moveId = row * 8 + col;
+-			if (moveId >= 0x30) {
+-				moveId++;
+-			}
+-			j = 0;
+-			if (moveId == 0x2c) {
+-				for (j = 0; j < 0x10; j++) {
+-					if (moves[j] == 0x2c || moves[j] == 0x30) {
+-						break;
+-					}
+-					if (j == 0xf) {
+-						renderBox(0x1e, 8, 0xc, 0xc, 0x68, 0x68, 0x68, 3, 4);
+-					}
+-				}
++			id = moveGridId(row + MOVE_GRID_SCROLL, col);
++			alt = id == 0x2c ? 0x30 : id == 0x37 ? 0x39 : id;
++			for (j = 0; j < 16 && list[j] != id && list[j] != alt; j++) {
+ 			}
+-			if (moveId == 0x37) {
+-				for (j = 0; j < 0x10; j++) {
+-					if (moves[j] == 0x37 || moves[j] == 0x39) {
+-						break;
+-					}
+-					if (j == 0xf) {
+-						renderBox(0x42, 0x53, 0xc, 0xc, 0x68, 0x68, 0x68, 3, 4);
+-					}
+-				}
+-			}
+-			if (moveId == moves[i]) {
+-				i++;
+-			} else if (moveId != 0x2c && moveId != 0x37 && moveId != 0x30 &&
+-			           moveId != 0x39) {
+-				if (moveId < 8) {
+-					y = 0;
+-				} else if (moveId < 0x10) {
+-					y = 2;
+-				} else if (moveId < 0x18) {
+-					y = 4;
+-				} else if (moveId < 0x20) {
+-					y = 5;
+-				} else if (moveId < 0x28) {
+-					y = 3;
+-				} else if (moveId < 0x30) {
+-					y = 1;
+-				} else {
+-					y = 6;
+-				}
+-				renderBox(col * 0x12 - 0x2a, y * 0xf - 7, 0xc, 0xc, 0x68, 0x68, 0x68, 3, 4);
++			if (j == 16) {
++				renderBox(col * 0x12 - 0x2a, row * 0xf - 7, 0xc, 0xc, 0x68, 0x68, 0x68, 3, 4);
+ 			}
+-			if (hasMove(moveId) == 1) {
+-				special = modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, moveId)->special;
+-				switch (special) {
+-				case 0:
+-					clut = 0x7a06;
+-					break;
+-				case 1:
+-					clut = 0x7a06;
+-					break;
+-				case 2:
+-					clut = 0x7a46;
+-					break;
+-				case 3:
+-					clut = 0x7a46;
+-					break;
+-				case 4:
+-					clut = 0x7a46;
+-					break;
+-				case 5:
+-					clut = 0x7a86;
+-					break;
+-				case 6:
+-					clut = 0x7a06;
+-				}
+-				if (PLAYTIME_FRAMES % 0x14 < 10) {
+-					blink = 0;
+-				} else {
+-					blink = 0xc;
+-				}
+-				renderRectPolyFT4(col * 0x12 - 0x2a, special * 0xf - 7, 0xc, 0xc,
+-				                  blink + (special * 0x18 + 0x24), 0x80, 5, clut, 4, 0);
++			if (hasMove(id) == 1) {
++				renderMoveIcon(col * 0x12 - 0x2a, row * 0xf - 7,
++				               modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, id)->special,
++				               PLAYTIME_FRAMES % 0x14 < 10 ? 0 : 1, 4);
+ 			}
+ 		}
+ 	}
+@@ -7153,6 +7106,7 @@ int32_t drawDigimonMovesText(void)
+ 		DRAW_STRING_PIECES(TECH_VIEW_LABELS[0], 0, 0x78, 0, 0x24, 0x48, 0x6c);
+ 		MOVE_SELECT_BOX_X = 0x73;
+ 		MOVE_SELECT_BOX_Y = 0x6f;
++		MOVE_GRID_SCROLL = 0;
+ 		return 1;
+ 	}
+ 	return 0;
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index a79166bb..dc967f2b 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -1196,9 +1196,9 @@ RGB8 STD_INTRO_NAME_COLORS[10] = {
+ 	{ 0x1e, 0x80, 0x80 },
+ 	{ 0xc8, 0xc8, 0x00 },
+ 	{ 0x32, 0xb4, 0xc8 },
+-	{ 0x00, 0x00, 0x00 },
+-	{ 0x00, 0x00, 0x00 },
+-	{ 0x00, 0x00, 0x00 },
++	{ 0xa0, 0x48, 0xe0 },
++	{ 0xf0, 0xe4, 0xa8 },
++	{ 0x38, 0x68, 0xff },
+ };
+ 
+ CameraPreset STD_CAMERA_PRESETS[9] = {
+@@ -1486,6 +1486,11 @@ void STD_addIntroText(entity, id)
+ 	case 6:
+ 		STD_INTRO_DATA_COLOR = 5;
+ 		break;
++	case 7:
++	case 8:
++	case 9:
++		STD_INTRO_DATA_COLOR = DIGI_PARA(entity->type).special[0];
++		break;
+ 	default:
+ 		STD_INTRO_DATA_COLOR = 0;
+ 		break;
+diff --git a/src/vs/vs_intro.c b/src/vs/vs_intro.c
+index d6b6e91c..f84aa7a7 100644
+--- a/src/vs/vs_intro.c
++++ b/src/vs/vs_intro.c
+@@ -104,9 +104,9 @@ RGB8 VS__INTRO_NAME_COLORS[10] = {
+ 	{ 0x1e, 0x80, 0x80 },
+ 	{ 0xc8, 0xc8, 0x00 },
+ 	{ 0x32, 0xb4, 0xc8 },
+-	{ 0x00, 0x00, 0x00 },
+-	{ 0x00, 0x00, 0x00 },
+-	{ 0x00, 0x00, 0x00 },
++	{ 0xa0, 0x48, 0xe0 },
++	{ 0xf0, 0xe4, 0xa8 },
++	{ 0x38, 0x68, 0xff },
+ };
+ 
+ // clang-format on
+@@ -214,6 +214,11 @@ void VS__addIntroText(entity, id)
+ 	case 6:
+ 		VS__INTRO_DATA_COLOR = 5;
+ 		break;
++	case 7:
++	case 8:
++	case 9:
++		VS__INTRO_DATA_COLOR = DIGI_PARA(entity->type).special[0];
++		break;
+ 	default:
+ 		VS__INTRO_DATA_COLOR = 0;
+ 		break;
+-- 
+2.55.0
+

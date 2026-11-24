@@ -275,6 +275,20 @@ def build(ctx):
                     s['texture']['file'] = x
                 S.write_file(os.path.join(out, S.file_name(s)), s)
             print(f'provider record_originals: {len(ro)} species')
+        # A disc original that plays an existing attack clip for an added technique (model.slot_aliases) and has no
+        # file of its own: its disc model with those table entries, made here from the player's disc.
+        for t, s in S.load_content(out).items():
+            m = s['model']
+            if t >= S.NUM_ORIGINAL or S.is_record_original(s) or 'file' in m or not m.get('slot_aliases'):
+                continue
+            data = S.species_model(s)[0]
+            path = os.path.join(ctx.path('models'), f'{m["name"]}-techniques.MMD')
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, 'wb') as f:
+                f.write(data)
+            m['file'] = os.path.relpath(path, ctx.root)
+            del m['slot_aliases']
+            S.write_file(os.path.join(out, S.file_name(s)), s)
         # the partner model buffer (build-full.sh): the biggest partner model of the disc, at least the original
         pmm = env.get('PARTNER_MMD_MAX')
         if pmm:

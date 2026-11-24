@@ -26,7 +26,7 @@ COPIES = [ZONES / f'{z}/script' for z in ('beetle-land/s102-106', 'libraries/s20
 LEVELS = {'fresh': 1, 'in-training': 2, 'rookie': 3, 'champion': 4, 'ultimate': 5, 'mega': 6}
 CUPS = ('D C B A S R Version1 Version2 Version3 Version4 Version0 Fire Grapple ThunderWind Cool Nature Metalic Filth '
         'Dino Wing Animal Human Beetle Rookie Champion Ultimate Mega Vaccine Data Virus NatureSpirits DeepSavers '
-        'NightmareSoldiers WindGuardians MetalEmpire VirusBusters DragonsRoar JungleTroopers').split()
+        'NightmareSoldiers WindGuardians MetalEmpire VirusBusters DragonsRoar JungleTroopers Dark Holy Aqua').split()
 RULE_MARK = 253
 VERSION_CUPS = {'Version1': range(3, 15), 'Version2': range(17, 29), 'Version3': range(31, 43), 'Version4': range(45, 57)}
 
@@ -68,7 +68,7 @@ class CupLists(unittest.TestCase):
             kind, value, ids = lst[1], lst[2], lst[3:]
             tag = S.cup_tag(s)
             return t in ids or {0: False, 1: (tag >> 15 & 7) == value, 2: (tag >> 10 & 3) == value,
-                                3: (tag >> 12 & 7) == value, 4: bool(tag >> value & 1)}[kind]
+                                3: (tag >> 19 & 15) == value, 4: bool(tag >> value & 1)}[kind]
         if t < S.NUM_ORIGINAL and not S.is_record_original(s):
             return t in lst
         level = min(self.level(t), 5)
@@ -123,7 +123,8 @@ class CupLists(unittest.TestCase):
 
     def test_a_specialty_cup_takes_every_species_of_that_first_specialty(self):
         for cup, element in (('Fire', 'fire'), ('Grapple', 'battle'), ('ThunderWind', 'air'), ('Cool', 'ice'),
-                             ('Nature', 'nature'), ('Metalic', 'mech'), ('Filth', 'filth')):
+                             ('Nature', 'nature'), ('Metalic', 'mech'), ('Filth', 'filth'), ('Dark', 'dark'),
+                             ('Holy', 'light'), ('Aqua', 'water')):
             entrants = set(self.entrants(cup))
             for t, s in self.species.items():
                 if 'partner' in s and self.level(t) >= 3 and s['specialties'][0] == element:

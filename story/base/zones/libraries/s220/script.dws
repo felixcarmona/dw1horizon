@@ -213,6 +213,42 @@ script 220 {
                     give(item(59));
                 }
                 jump_to_file(204, 51);
+            } else if (tournament.cup == 38) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u24"));
+                give_item(item("Muscle Yam"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Muscle Yam"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 39) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u23"));
+                give_item(item("Sage Fruit"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Sage Fruit"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 40) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u25"));
+                give_item(item("Power Ice"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Power Ice"), 1);
+                }
+                jump_to_file(204, 51);
             }
         }
         if (tournament.cup == 23) {

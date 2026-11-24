@@ -3,10 +3,10 @@ UI = dict(zip(
     ['PERFIL','ESTADO','ATRIBUTOS','PESO','TIPO','OBJETOS','JUGADOR','ALABAR','REÑIR','DORMIR','PESCAR',
      'NOMBRE','ESPECIE','EDAD','ACTIVO','ESPECIAL','FELICIDAD','VELOCIDAD','INTELECTO','RAPIDEZ',
      'POTENCIA','ALC.','ALCANCE','EFECTO','DATOS TÉC.','OBJETO','PRECIO','TÍTULO','LUGAR','PUNTOS','CANT.','Nº',
-     'FUEGO','COMBATE','AIRE','TIERRA','HIELO','MECA','MUGRE'],
+     'FUEGO','COMBATE','AIRE','TIERRA','HIELO','MECA','MUGRE','SOMBRA','LUZ','AGUA'],
     ['资料','状态','能力','体重','属性','道具','玩家','表扬','训斥','睡觉','钓鱼','名字','种族','年龄','作息','擅长',
      '心情','速度','智力','速度','威力','范围','范围','效果','招式资料','道具','价格','名称','地点','点数','数量','编号',
-     '火焰','格斗','空气','大地','冰雪','机械','污物']))
+     '火焰','格斗','空气','大地','冰雪','机械','污物','黑暗','光明','水流']))
 SIGNS = {
  'betl02':'竞技场','frzl06':'冰山海滩 / 迷雾树林','gcan09':'黑白商店 / 应有尽有',
  'gias06b':'回收与卡片 / 回收卡片商店 / 特价','mayo01_2':'全景山',

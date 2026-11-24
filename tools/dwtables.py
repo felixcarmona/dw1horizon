@@ -53,7 +53,12 @@ def dump_items(d, out):
 
 def dump_techs(d, out):
     base, n = TECH_NAME_PTRS
-    write(out, 'techs.csv', [dict(id=i, name=ptr_string(d, base + i * 4)) for i in range(n)])
+    rows = [dict(id=i, name=ptr_string(d, base + i * 4)) for i in range(n)]
+    import glob, json                             # the mod's own techniques (122 and up) are named by their files
+    here = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'content/techniques')
+    own = [json.load(open(p)) for p in glob.glob(os.path.join(here, '*.json'))]
+    rows += [dict(id=t['id'], name=t['name']) for t in sorted(own, key=lambda t: t['id']) if t['id'] > n]
+    write(out, 'techs.csv', rows)
 
 def dump_maps(d, out):
     names = []; p = MAP_NAME_PTRS

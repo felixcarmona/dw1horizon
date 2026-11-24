@@ -43,7 +43,10 @@ FILE_BASE = {'SLUS_010.32': 0x80090000, 'TRN_REL.BIN': 0x80088800, 'TRN2_REL.BIN
              'STD_REL.BIN': 0x80052AE0, 'FISH_REL.BIN': 0x80070000, 'KAR_REL.BIN': 0x80053800,
              'BTL_REL.BIN': 0x80052AE0, 'VS_REL.BIN': 0x80052AE0}
 NUM_ORIGINAL = SP.NUM_ORIGINAL
-ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth']
+ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water']
+# the technique grid: rows of the learn-chance table are the 58 originals, then the new rows' techniques (122..145)
+NEW_TECH_FIRST, NUM_NEW_TECHS = 122, 24
+def grid_tech(g): return g if g < 58 else g - 58 + NEW_TECH_FIRST
 
 MOVE_FIELDS = [('distance', 'i'), ('power', 'h'), ('mpCost', 'B'), ('iframes', 'B'), ('range', 'B'),
                ('special', 'B'), ('status', 'B'), ('accuracy', 'B'), ('statusChance', 'B'), ('unk3', 'B'),
@@ -190,7 +193,7 @@ TABLES = [
     ('daytime', 'SLUS_010.32', 'MOD_DAYTIME', 18),
     ('tournamentRemap', 'STD_REL.BIN', 'STD_REMAP', 16),
     ('stdArena', 'SLUS_010.32', 'STD_ARENA_SCREEN', 2),
-    ('newCupStats', 'STD_REL.BIN', 'STD_NEW_CUP_BASE_STATS', 30),      # the cups after the original's (23..37)
+    ('newCupStats', 'STD_REL.BIN', 'STD_NEW_CUP_BASE_STATS', 36),      # the cups after the original's (23..40)
     ('vsUnlock', 'SLUS_010.32', 'MOD_VS_UNLOCK', 10),
     ('trainGain', 'TRN_REL.BIN', 'MOD_TRAIN_GAIN', 352),
     ('trainRules', 'TRN_REL.BIN', 'MOD_TRAIN_RULES', 68),
@@ -330,8 +333,8 @@ def decode(exe):
     decode_species_tables(exe, sp)
     for i, r in enumerate(_rows(MOVE_FIELDS, exe.raw('techniques'))): doc['techniques'][str(i)] = r
     lc = exe.raw('learnChances')
-    for i in range(len(lc) // 3): doc['techniques'][str(i)]['learnChances'] = list(lc[3 * i:3 * i + 3])
-    tf = exe.raw('typeFactors'); doc['typeFactors'] = [list(tf[7 * i:7 * i + 7]) for i in range(7)]
+    for i in range(len(lc) // 3): doc['techniques'][str(grid_tech(i))]['learnChances'] = list(lc[3 * i:3 * i + 3])
+    tf = exe.raw('typeFactors'); n = int(len(tf) ** .5); doc['typeFactors'] = [list(tf[n * i:n * i + n]) for i in range(n)]
     doc['evolutionItems'] = {str(0x47 + i): v for i, v in enumerate(exe.raw('evolutionItems'))}
     jc = exe.raw('joinChances'); doc['joinChances'] = [list(jc[3 * i:3 * i + 3]) for i in range(4)]
     doc['items'] = {str(i): r for i, r in enumerate(_rows(ITEM_FIELDS, exe.raw('items')))}
@@ -340,7 +343,7 @@ def decode(exe):
     wc = exe.raw('winChances'); doc['tournaments']['winChances'] = [list(wc[3 * i:3 * i + 3]) for i in range(4)]
     for suffix, key in (('', 'brainTraining'),):        # (TRN2 has no brains gym: TRN2_D_8008DAD0/DB08 are TrainingSpot arrays)
         bt = exe.raw('brainTechs' + suffix); bw = struct.unpack('<24b', exe.raw('brainWeights' + suffix))
-        doc[key] = {'techniques': {e: list(bt[8 * i:8 * i + 8]) for i, e in enumerate(ELEMENTS)},
+        doc[key] = {'techniques': {e: list(bt[8 * i:8 * i + 8]) for i, e in enumerate(ELEMENTS[:len(bt) // 8])},
                     'weights': [list(bw[3 * i:3 * i + 3]) for i in range(8)]}
     raw = exe.raw('screens'); doc['screens'] = {}
     for i in range(len(raw) // 16):                     # MAP_ENTRIES: the screens (map.h MapEntry)
@@ -430,7 +433,8 @@ NAMED_RULES = {
                 'clock.dayFrom', 'clock.dayTo'],
     'stdArena': ['screen'],
     'newCupStats': ['rookie', 'champion', 'ultimate', 'mega', 'vaccine', 'data', 'virus', 'natureSpirits', 'deepSavers',
-                    'nightmareSoldiers', 'windGuardians', 'metalEmpire', 'virusBusters', 'dragonsRoar', 'jungleTroopers'],
+                    'nightmareSoldiers', 'windGuardians', 'metalEmpire', 'virusBusters', 'dragonsRoar', 'jungleTroopers',
+                    'dark', 'holy', 'aqua'],
     'vsUnlock': ['species', 'techniques[0]', 'techniques[1]', 'techniques[2]', 'slot'],
     'evolutionSpecial': ['virus.threshold', 'virus.target', 'virus.notFor[0]', 'virus.notFor[1]', 'championCheck.level',
                          'championCheck.hours', 'scold.level', 'scold.discipline', 'scold.happiness'],
@@ -844,8 +848,9 @@ def encode(doc, exe):
     encode_species_tables(S, exe, out)
     T = doc['techniques']
     out['techniques'] = b''.join(SP.pack(MOVE_FIELDS, T[str(i)]) for i in range(size('techniques') // 16))
-    out['learnChances'] = bytes(sum((T[str(i)]['learnChances'] for i in range(size('learnChances') // 3)), []))
-    out['typeFactors'] = bytes(sum(doc['typeFactors'], []))
+    out['learnChances'] = bytes(sum((T[str(grid_tech(i))]['learnChances'] for i in range(size('learnChances') // 3)), []))
+    n = int(size('typeFactors') ** .5)            # an original executable has the 7 x 7 corner
+    out['typeFactors'] = bytes(sum((r[:n] for r in doc['typeFactors'][:n]), []))
     out['evolutionItems'] = bytes(doc['evolutionItems'][str(0x47 + i)] for i in range(size('evolutionItems')))
     out['joinChances'] = bytes(sum(doc['joinChances'], []))
     out['items'] = b''.join(SP.pack(ITEM_FIELDS, doc['items'][str(i)]) for i in range(size('items') // 32))
@@ -855,7 +860,7 @@ def encode(doc, exe):
     out['winChances'] = bytes(sum(tr['winChances'], []))
     for suffix, key in (('', 'brainTraining'),):
         bt = doc.get(key) or doc['brainTraining']
-        out['brainTechs' + suffix] = bytes(sum((bt['techniques'][e] for e in ELEMENTS), []))
+        out['brainTechs' + suffix] = bytes(sum((bt['techniques'][e] for e in ELEMENTS[:size('brainTechs' + suffix) // 8]), []))
         out['brainWeights' + suffix] = struct.pack('<24b', *sum(bt['weights'], []))
     if 'screens' in doc:
         blob = b''
@@ -1065,11 +1070,11 @@ def validate(over, base, new_species):
         if i not in T: errs.append(f'{w}: no such technique (0..{len(T) - 1})'); continue
         _check_fields(errs, w, MOVE_FIELDS, o, skip=('learnChances',))
         if 'learnChances' in o:
-            if 'learnChances' not in T[i]: errs.append(f'{w}.learnChances: only techniques 0..57 are learnable')
+            if 'learnChances' not in T[i]: errs.append(f'{w}.learnChances: only techniques 0..57 and 122..145 are learnable')
             elif not (isinstance(o['learnChances'], list) and len(o['learnChances']) == 3 and all(0 <= x <= 100 for x in o['learnChances'])):
                 errs.append(f'{w}.learnChances: three percentages (main, second, third element)')
-        if o.get('special', 0) != 0xFF and not 0 <= o.get('special', 0) < 7: errs.append(f'{w}.special: element 0..6 or 255')
-        if not 0 <= o.get('status', 0) <= 4: errs.append(f'{w}.status: 0 none, 1 poison, 2 confusion, 3 stun, 4 flatten')
+        if o.get('special', 0) != 0xFF and not 0 <= o.get('special', 0) < len(ELEMENTS): errs.append(f'{w}.special: element 0..{len(ELEMENTS) - 1} or 255')
+        if not 0 <= o.get('status', 0) <= 8: errs.append(f'{w}.status: 0 none, 1 poison, 2 confusion, 3 stun, 4 flatten, 5 heal, 6 Defense up, 7 Speed up, 8 Defense down')
         if not 0 <= o.get('range', 1) <= 4: errs.append(f'{w}.range: 1 melee, 2 ranged, 3 area, 4 self')
         for k in ('accuracy', 'statusChance'):
             if k in o and not 0 <= o[k] <= 100: errs.append(f'{w}.{k}: a percentage')
@@ -1085,7 +1090,7 @@ def validate(over, base, new_species):
         for r in v:
             for x in r:
                 if not isinstance(x, int) or not lo <= x <= hi: errs.append(f'{where}: {x} not in {lo}..{hi}')
-    if 'typeFactors' in over: grid('typeFactors', over['typeFactors'], 7, 7)
+    if 'typeFactors' in over: grid('typeFactors', over['typeFactors'], len(ELEMENTS), len(ELEMENTS))
     if 'joinChances' in over: grid('joinChances', over['joinChances'], 4, 3)
     tr = over.get('tournaments', {})
     if 'schedule' in tr: grid('tournaments.schedule', tr['schedule'], 30, 6)
@@ -1163,6 +1168,15 @@ def pad_rows(doc, exe):
     for key, fields in (('evoReqs', SP.REQ_FIELDS), ('evoGains', SP.GAIN_FIELDS)):
         for t in range(size(key) // struct.calcsize(SP._fmt(fields))):
             S.setdefault(str(t), {}).setdefault(key, zero_row(fields))
+    T = doc['techniques']                                   # the three new rows of techniques (122..145) and their elements
+    for t in range(len(T), size('techniques') // 16):
+        T[str(t)] = dict(zero_row(MOVE_FIELDS), special=0xFF, **({'learnChances': [0, 0, 0]} if t >= NEW_TECH_FIRST else {}))
+    n = int(size('typeFactors') ** .5); F = doc['typeFactors']
+    for r in F: r.extend([10] * (n - len(r)))
+    while len(F) < n: F.append([10] * n)
+    B = doc.get('brainTraining', {}).get('techniques')
+    if B is not None:
+        for e in ELEMENTS[:n]: B.setdefault(e, [0] * 8)
     return doc
 
 

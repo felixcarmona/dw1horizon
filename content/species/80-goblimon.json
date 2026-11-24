@@ -5,10 +5,10 @@
   "level": "rookie",
   "vanilla_as": 3,
   "attribute": "virus",
-  "specialties": ["battle", "fire", null],
+  "specialties": ["battle", "fire", "dark"],
   "fields": ["nightmare-soldiers"],
   "techniques": ["Spit Fire", "Magma Bomb", "Sonic Jab", "Megaton Punch", "War Cry", "Heat Laser", "Muscle Charge",
-                 "Pummel Whack"],
+                 "Pummel Whack", "Shadow Claw", "Dark Bolt", "Evil Whisper"],
   "drop": {"item": "Meat", "percent": 30},
   "effects_like": 80,
   "model": {
@@ -20,7 +20,7 @@
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 4], [-1, 2], [4, 6], [5, 7], [6, 8], [-1, 2],
                  [7, 10], [8, 11], [9, 12], [10, 1], [-1, 14], [11, 15], [12, 16], [13, 17],
                  [-1, 14], [14, 19], [15, 20], [16, 21]],
-    "slot_aliases": [[51, 47], [53, 50], [54, 52], [52, 50]]
+    "slot_aliases": [[51, 47], [53, 50], [54, 52], [52, 50], [55, 51], [56, 50]]
   },
   "texture": {"from": 80},
   "voice": 64,

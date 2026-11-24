@@ -1,0 +1,17 @@
+{
+  "id": 127,
+  "name": "Venom Mist",
+  "element": "dark",
+  "power": 130,
+  "mpCost": 62,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 76,
+  "status": 1,
+  "statusChance": 50,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [17, 11, 6]
+}
