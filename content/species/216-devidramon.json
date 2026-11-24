@@ -12,6 +12,7 @@
                  "Shadow Claw", "Dark Bolt", "Evil Whisper", "Nightmare", "Death Grip"],
   "drop": {"item": "Restore", "percent": 20},
   "effects_like": 12,
+  "own_effect": {"technique": "Death Claw", "chunk": 374},
   "model": {
     "file": "build/sizes-out/models/Devidramon.MMD",
     "radius": 167,

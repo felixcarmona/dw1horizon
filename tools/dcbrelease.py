@@ -17,7 +17,7 @@ own code of all three executables run under unicorn (`python -m dcb.decompress c
 
   dcbrelease.py make RELEASE     needs both discs: $DCB_ROOT/drv (USA) and $DCB_DISC / $DCB_DRV (the release's
                                  extracted disc and DRVs); writes content/imports/releases/dcb-RELEASE.json
-                                 with the SHA-1 of F.DRV, E.DRV and the executable (`files`: the web
+                                 with the SHA-1 of F.DRV and the executable (`files`: the web
                                  page checks a cooked image by them) and of every F.DRV model equal to the USA one
                                  (`make us` on the USA disc gives the USA list)
   dcbrelease.py check RELEASE    every recipe model on $DCB_DRV must be one of those
@@ -97,8 +97,8 @@ def main(argv):
             raise SystemExit(f'{rel}: recipe models not equal to the USA ones: {", ".join(missing)}')
         boot = dcb2mmd.release()[1]
         # files: what the web page checks on an image that cannot match redump (a 2048-byte .iso): the models'
-        # archive, the attack effects' (E.DRV, tools/dcbefe.py) and the executable whose routine unpacks them
-        files = {name: sha1(os.path.join(dcb2mmd.disc_dir(), name)) for name in ('F.DRV', 'E.DRV', boot)}
+        # archive and the executable whose routine unpacks them
+        files = {name: sha1(os.path.join(dcb2mmd.disc_dir(), name)) for name in ('F.DRV', boot)}
         out = dict(release=rel, note='tools/dcbrelease.py make: do not edit by hand',
                    files=files, models=same)
         os.makedirs(OUT_DIR, exist_ok=True)

@@ -12,6 +12,7 @@
                  "Shining Arrow", "Sacred Shield", "Blessing", "Flash Burst"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
+  "own_effect": {"technique": "Dark Claw", "chunk": 375},
   "model": {
     "file": "build/sizes-out/models/R-Gatomon.MMD",
     "radius": 151,

@@ -3,7 +3,7 @@
 
 It runs a chunk's scripts as BTL_runEFEScript does (the opcodes, call/return with the saved context and
 target index, spawnEFESubEffect's search for a free instance and context, the tick and render passes) and the
-sub-opcodes the DW2 converter (tools/dw2efe.py) uses, against mocked fighters. It records what the chunk
+sub-opcodes the authored effects (tools/technique_effects) use, against mocked fighters. It records what the chunk
 draws (drawTMDYXZ: object, rotation, scale, position), the hits it deals and the sounds it plays, and can draw
 those frames with the chunk's own TMD and TIM.
 
@@ -54,10 +54,17 @@ def ry(yaw):
     return [[c, 0, s], [0, 1, 0], [-s, 0, c]]
 
 
+def _rot_yxz(a, b, c):
+    """libgte RotMatrixYXZ (angles in radians) in right-handed rows: Ry(b) * Rx(a) * Rz(c)."""
+    ca, sa, cb, sb, cc, sc = math.cos(a), math.sin(a), math.cos(b), math.sin(b), math.cos(c), math.sin(c)
+    return [[cb * cc + sb * sa * sc, -cb * sc + sb * sa * cc, sb * ca],
+            [ca * sc, ca * cc, -sa],
+            [-sb * cc + cb * sa * sc, sb * sc + cb * sa * cc, cb * ca]]
+
+
 def rot_yxz(rx, ry_, rz):
-    from tools.dw2efe import rot_yxz as r
     k = math.pi / 2048
-    return r(rx * k, ry_ * k, rz * k)
+    return _rot_yxz(rx * k, ry_ * k, rz * k)
 
 
 def euler_y(x, z):
@@ -707,7 +714,7 @@ def tmd_objects(chunk):
 
 
 def strip_image(chunk):
-    """The chunk's TIM as dw2effect images: texel rows, then the palettes at row 32 on (clut = (32 + row) << 6)."""
+    """The chunk's TIM as images: texel rows, then the palettes at row 32 on (clut = (32 + row) << 6)."""
     h = struct.unpack_from('<13i', chunk, 0)
     t = HEADER + h[7]
     clen, _x, _y, cw, ch = struct.unpack_from('<I4H', chunk, t + 8)
@@ -729,23 +736,99 @@ class _Prim:
 SPRITE_UNIT = 32        # a sprite w texels wide at scale s (4096 = 1) is w * s / SPRITE_UNIT units wide
 
 
+def texel(image, clut, u, v):
+    """The 15-bit colour of texel (u, v) with the prim's palette."""
+    row = image[v % len(image)]
+    idx = (row[(u >> 2) % len(row)] >> (4 * (u & 3))) & 0xF
+    pal = image[(clut >> 6) % len(image)]
+    return pal[((clut & 0x3F) * 16 + idx) % len(pal)]
+
+
+class Camera:
+    """A fixed pinhole camera: from the side of the line between the two fighters, a little above."""
+
+    def __init__(self, width, height, eye=(14000, -4200, -5120), look=(0, -1400, -5120), fov=0.95):
+        self.w, self.h = width, height
+        self.eye = eye
+        f = [look[i] - eye[i] for i in range(3)]
+        n = math.sqrt(sum(x * x for x in f))
+        self.f = [x / n for x in f]
+        up = (0, -1, 0)
+        r = [self.f[1] * up[2] - self.f[2] * up[1], self.f[2] * up[0] - self.f[0] * up[2], self.f[0] * up[1] - self.f[1] * up[0]]
+        n = math.sqrt(sum(x * x for x in r))
+        self.r = [x / n for x in r]
+        self.u = [self.r[1] * self.f[2] - self.r[2] * self.f[1], self.r[2] * self.f[0] - self.r[0] * self.f[2],
+                  self.r[0] * self.f[1] - self.r[1] * self.f[0]]
+        self.focal = width / 2 / math.tan(fov / 2)
+
+    def project(self, p):
+        d = [p[i] - self.eye[i] for i in range(3)]
+        z = sum(d[i] * self.f[i] for i in range(3))
+        if z < 10:
+            return None
+        x = sum(d[i] * self.r[i] for i in range(3))
+        y = sum(d[i] * self.u[i] for i in range(3))
+        return (self.w / 2 + self.focal * x / z, self.h / 2 - self.focal * y / z, z)
+
+
+def _blend(dst, src, mode):
+    if mode == 0:
+        return tuple((a + b) // 2 for a, b in zip(dst, src))
+    if mode == 1:
+        return tuple(min(255, a + b) for a, b in zip(dst, src))
+    if mode == 2:
+        return tuple(max(0, a - b) for a, b in zip(dst, src))
+    return tuple(min(255, a + b // 4) for a, b in zip(dst, src))
+
+
+def _rgb(c):
+    return ((c & 0x1F) * 255 // 31, ((c >> 5) & 0x1F) * 255 // 31, ((c >> 10) & 0x1F) * 255 // 31)
+
+
+def _raster_plain(px, W, H, q, uv, prim, image):
+    (x0, y0, _), (x1, y1, _), (x2, y2, _) = q
+    area = (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0)
+    if abs(area) < 1e-6:
+        return
+    lo_x, hi_x = max(int(min(x0, x1, x2)), 0), min(int(max(x0, x1, x2)) + 1, W)
+    lo_y, hi_y = max(int(min(y0, y1, y2)), 0), min(int(max(y0, y1, y2)) + 1, H)
+    for y in range(lo_y, hi_y):
+        cy = y + 0.5
+        for x in range(lo_x, hi_x):
+            cx = x + 0.5
+            w0 = ((x1 - cx) * (y2 - cy) - (x2 - cx) * (y1 - cy)) / area
+            w1 = ((x2 - cx) * (y0 - cy) - (x0 - cx) * (y2 - cy)) / area
+            w2 = 1 - w0 - w1
+            if w0 < 0 or w1 < 0 or w2 < 0:
+                continue
+            u = int(w0 * uv[0][0] + w1 * uv[1][0] + w2 * uv[2][0])
+            v = int(w0 * uv[0][1] + w1 * uv[1][1] + w2 * uv[2][1])
+            c = texel(image, prim.clut, u, v)
+            if c == 0:
+                continue
+            i = y * W + x
+            if prim.blend is not None and c & 0x8000:
+                px[i] = _blend(px[i], _rgb(c), prim.blend)
+            else:
+                px[i] = _rgb(c)
+
+
 def _raster(px, W, H, q, uv, prim, image):
-    """dw2effect's rasteriser with the prim's colour modulating the texture (128 = as is)."""
-    from tools import dw2effect as D
+    """The rasteriser with the prim's colour modulating the texture (128 = as is)."""
     if prim.colour is None or prim.colour == (128, 128, 128):
-        return D._raster(px, W, H, q, uv, prim, image)
+        return _raster_plain(px, W, H, q, uv, prim, image)
     k = [c / 128 for c in prim.colour]
     sub = [None] * (W * H)
-    D._raster(sub, W, H, q, uv, _Prim(prim.verts, prim.uvs, prim.clut, None), image)
+    _raster_plain(sub, W, H, q, uv, _Prim(prim.verts, prim.uvs, prim.clut, None), image)
     for i, c in enumerate(sub):
         if c is None:
             continue
         c = tuple(min(255, int(x * f)) for x, f in zip(c, k))
-        px[i] = D._blend(px[i], c, prim.blend) if prim.blend is not None else c
+        px[i] = _blend(px[i], c, prim.blend) if prim.blend is not None else c
 
 
 def render(chunk, sim, tick, cam, fighters=True, bg=(28, 30, 40)):
-    """The chunk's draws of one tick (TMD objects, projected sprites and quads) through the dw2effect rasteriser
+    """The chunk's draws of one tick (TMD objects, projected sprites and quads) through the rasteriser
     (and the fighters as grey posts)."""
     objs = tmd_objects(chunk)
     image = strip_image(chunk)

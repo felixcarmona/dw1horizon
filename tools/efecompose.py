@@ -20,8 +20,7 @@ An entry of content/battle/own-effects.json is composed when it has "compose" (d
   sprites or faces that use those texels (efesim's draws say which). It is copied before the recolour.
 - scale: the template's model (TMD vertices) resized, one factor or [x, y, z]. Sprites keep their size.
 - sounds: {template sound id: new sound id}: the sound each of the template's playSound calls plays (the id it
-  pushes just before the call), for an effect that keeps the sounds of the attack it stands for (a Card Battle
-  attack's cues as tools/dcbsound.py matched them). Every key must be a sound the template plays.
+  pushes just before the call). Every key must be a sound the template plays.
 - check: what tools/efecheck.py --composed expects: "hue", the main hue in degrees.
 
     python -m tools.efecompose sheet KEY [--out PNG]     template above, composed below, one tick per column

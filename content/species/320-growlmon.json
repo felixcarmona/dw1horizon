@@ -11,6 +11,7 @@
                  "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Blaze Blast"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 8,
+  "own_effect": {"technique": "Blaze Blast", "chunk": 370},
   "model": {
     "file": "build/batch12/Growlmon.MMD",
     "radius": 252,
