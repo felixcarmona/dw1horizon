@@ -8,7 +8,7 @@
   "specialties": ["light", "air", "battle"],
   "fields": ["wind-guardians", "virus-busters"],
   "techniques": ["Dynamite Kick (44)", "Counter", "Megalo Spark", "Spinning Shot", "Confused Storm", "Hurricane",
-                 "Static Elect", "Electric Cloud", "War Cry", "Megaton Punch", "Hand of Fate",
+                 "Grand Cross", "Judgment Ray", "War Cry", "Megaton Punch", "Hand of Fate",
                  "Holy Spark", "Shining Arrow", "Sacred Shield", "Blessing", "Flash Burst"],
   "drop": {"item": "Sage Fruit", "percent": 10},
   "effects_like": 20,

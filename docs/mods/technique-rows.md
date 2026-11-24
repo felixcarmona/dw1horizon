@@ -112,12 +112,13 @@ the list keeps at least three of each row it trains. The last of a row has no le
 third specialty, in battle or in the gym, so Pharaohmon, Phoenixmon, Marsmon and Baihumon hold a lower one of that
 row in its place.
 
-Every technique of the five rows is on some list, and wild Digimon that come back each time the screen is entered
-cast all of them but three: Abyss Requiem and Ocean Fury are cast in one fight each (BlackWarGreymon, and the
-WaruSeadramon of the Secret Beach Cave) and nobody casts Grand Cross, so those three come from brain training. Final
-Edge and Whirling Edge are cast by the two Tekkamon of the Back Dimension, Gaia Quake by a Brachiomon of the Ancient
-Glacial Region, and Sea Crush and Tidal Wave by the Coelamon of Coela Point; Tekkamon, WaruSeadramon,
-Brachiomon and Coelamon have them on their lists for that.
+Every technique of the five rows is on some list, and each is cast in a fight that can be had again: by wild
+Digimon that come back each time the screen is entered, and Abyss Requiem by BlackWarGreymon, who fights again
+whenever it is asked. Final Edge and Whirling Edge are cast by the two Tekkamon of the Back Dimension, Gaia Quake by
+a Brachiomon of the Ancient Glacial Region, Sea Crush, Tidal Wave and Ocean Fury by the Coelamon of Coela Point,
+Judgment Ray by a Piddomon of Mt. Infinity and Grand Cross by two Piddomon, one of Mt. Infinity and one of the Back
+Dimension. Tekkamon, WaruSeadramon, Brachiomon, Coelamon and Piddomon have them on their lists for that, so these
+two Champions can learn the last of their row.
 
 A model has an attack animation for each technique of its list. A species that got techniques added plays one of
 its own attack clips for each of them: an imported model names the clip in `technique_aliases`
