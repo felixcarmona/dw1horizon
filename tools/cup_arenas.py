@@ -54,12 +54,14 @@ PILLAR = ('c', 0, 120, 127, 239)
 # the floor reaches the File City arena's cage at 3120.
 SEGMENTS = 24
 MEDALLION_R = 1000
-FLOOR_RINGS = [1000, 1500, 2050, 2650, 3260]  # the last ring passes under the wall, so no gap shows at its foot
+FLOOR_RINGS = [1000, 1700, 2450, 3260]        # the last ring passes under the wall, so no gap shows at its foot
 WALL_R, WALL_H, WALL_T = 3120, 560, 200
-# The cup's opening shot and the bracket look from about 5150 out and 3430 up (GS_VIEWPOINT, measured): the cliff
-# stands beyond that and rises above it, and the pillars stay below the line from there to the centre.
-TERRACE_R, TERRACE_RINGS = 5900, 2
-PILLARS, PILLAR_R, PILLAR_W, PILLAR_H = 8, 4500, 380, 2400
+# The cup's opening shot and the bracket look from about 5150 out and 3430 up (GS_VIEWPOINT, measured), from outside
+# the room as in the File City arena (its walls stand at 4000): the cliff near that camera shows it its back, which
+# is not drawn. Nothing may stand beside or behind that camera (it flickers across the picture), so the pillars
+# keep to the half across from it.
+TERRACE_R, TERRACE_RINGS = 4400, 1
+PILLARS, PILLAR_R, PILLAR_W, PILLAR_H = 8, 3950, 380, 2400
 CLIFF_SEGMENTS, CLIFF_TIERS, CLIFF_H = 16, 4, 4200
 SKY_TOP = -6500
 SKY = [(72, 66, 70), (36, 33, 38), (14, 13, 18)]   # the vault's shade (128 = as drawn): cliff top, middle, top
@@ -151,12 +153,11 @@ def floor_object():
         for k in range(SEGMENTS):
             p = [ring(r0, k, SEGMENTS), ring(r0, k + 1, SEGMENTS), ring(r1, k, SEGMENTS), ring(r1, k + 1, SEGMENTS)]
             m.quad([p[1], p[0], p[3], p[2]], piece(FLOOR, k % 2, 2, i % 2, 2), FLOOR, toward=ABOVE)
-    return m
+    return wall_object(m)
 
 
 def wall_object(m):
-    """The wall round the floor, in the depth-sorted object with the pillars: the floor object is divided 2x2 by
-    the game once the bracket is over, so it keeps to the File City floor's polygon count."""
+    """The low wall round the floor, in the floor's object: drawn behind the fighters whatever the camera."""
     _, u0, v0, u1, v1 = WALL
     top = v0 + 14
     for k in range(SEGMENTS):
@@ -172,11 +173,10 @@ def wall_object(m):
 
 def pillar_object():
     m = Mesh()
-    wall_object(m)
     _, u0, v0, u1, v1 = PILLAR
     h = PILLAR_W / 2
-    for k in range(PILLARS):
-        a = 2 * math.pi * (k + .5) / PILLARS
+    for k in range(-2, 3):      # the half across from the opening shot's camera: beside or behind it they flicker
+        a = 2 * math.pi * k / PILLARS
         cx, cz = PILLAR_R * math.sin(a), PILLAR_R * math.cos(a)
         corners = [(cx + dx * math.cos(a) + dz * math.sin(a), cz - dx * math.sin(a) + dz * math.cos(a))
                    for dx, dz in ((-h, -h), (h, -h), (h, h), (-h, h))]
@@ -214,15 +214,12 @@ def surround_object():
     # The dark vault above the cliff: the rough top of the cliff picture, darker towards the top. Textured like
     # everything else: of the untextured kinds the game's GsSortObject4 has no working handler.
     mid_r, mid_y = TERRACE_R * .8, (-CLIFF_H + SKY_TOP) / 2 - 300
+    one = [(u0 + 4, v0 + 2)] * 4      # one texel of the cliff's top for every corner: a plain shade, nothing to stretch
     for k in range(n):
-        ua, ub = u0 + (u1 + 1 - u0) * (k % 2) // 2, u0 + (u1 + 1 - u0) * (k % 2 + 1) // 2 - 1
         a0, a1 = ring(TERRACE_R, k, n, -CLIFF_H), ring(TERRACE_R, k + 1, n, -CLIFF_H)
         b0, b1 = ring(mid_r, k, n, mid_y), ring(mid_r, k + 1, n, mid_y)
-        m.quad([b0, b1, a0, a1], [(ua, v0), (ub, v0), (ua, v0 + 40), (ub, v0 + 40)], CLIFF,
-               [SKY[1], SKY[1], SKY[0], SKY[0]], toward=CENTRE)
-        # up to the top as one triangle a segment, its tip on one texel of the picture (no sheared picture)
-        m.tri([b0, b1, (0, SKY_TOP, 0)], [(ua, v0), (ub, v0), ((ua + ub) // 2, v0)], CLIFF,
-              [SKY[1], SKY[1], SKY[2]], toward=CENTRE)
+        m.quad([b0, b1, a0, a1], one, CLIFF, [SKY[1], SKY[1], SKY[0], SKY[0]], toward=CENTRE)
+        m.tri([b0, b1, (0, SKY_TOP, 0)], one[:3], CLIFF, [SKY[1], SKY[1], SKY[2]], toward=CENTRE)
     return m
 
 
