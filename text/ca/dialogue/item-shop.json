@@ -31,7 +31,7 @@
  ],
  "s176.sec81.u0": [
   [
-   "Benvingut, {color 6}{player}{color 1}! Mira, la meva",
+   "Hola, {color 6}{player}{color 1}! Mira, la meva",
    "pròpia botiga! Vendré objectes sense parar!",
    "L'assortiment... Ja ho resoldré. M'agradaria"
   ],
@@ -41,7 +41,7 @@
  ],
  "s176.sec81.u1": [
   [
-   "Benvingut, piulo! He decidit comprar i vendre",
+   "Hola, piulo! He decidit comprar i vendre",
    "objectes, piulo. Encantat, piulo! Encara no hi ha",
    "molt de gènere... però si vingués algun"
   ],
@@ -51,7 +51,7 @@
  ],
  "s176.sec81.u2": [
   [
-   "Benvingut. Si em permets l'atreviment, he",
+   "Hola. Si em permets l'atreviment, he",
    "obert una botiga d'objectes. Espero comptar",
    "amb la teva visita."
   ],
@@ -81,14 +81,14 @@
  ],
  "s176.sec81.u5": [
   [
-   "Benvingut, piu! Des d'avui",
+   "Hola, piu! Des d'avui",
    "ajudo a la botiga, piu.",
    "Encantat, piu!"
   ]
  ],
  "s176.sec81.u6": [
   [
-   "Benvingut, {color 6}{player}{color 1}. Si em permets",
+   "Hola, {color 6}{player}{color 1}. Si em permets",
    "l'atreviment, he decidit ajudar en aquesta",
    "botiga. Espero comptar amb la teva visita."
   ]
@@ -104,7 +104,7 @@
  "s176.sec82.m0.o1": "No comprar",
  "s176.sec82.u0": [
   [
-   "Oooh, senyor! Com et va? Jo estic taaan",
+   "Oooh, tu! Com et va? Jo estic taaan",
    "ocupat venent objectes... És broma! Sóc molt",
    "gandul i no crec que pari gaire per la botiga."
   ],
@@ -136,7 +136,7 @@
  "s176.sec82.u4": [
   [
    "Ni un Bit de descompte,",
-   "senyor!"
+   "eh!"
   ]
  ]
 }

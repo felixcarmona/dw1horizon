@@ -52,7 +52,7 @@
  "s147.sec9.m0.o1": "Ho sento, més tard",
  "s147.sec9.u0": [
   [
-   "Mmm, tu, el d'aquí! Sóc MetalMamemon, invicte",
+   "Mmm, ei, tu! Sóc MetalMamemon, invicte",
    "en 99 combats! Vèncer-te serà la meva",
    "victòria número 100! El gran {color 6}{player}{color 1}"
   ],
@@ -67,7 +67,7 @@
   ],
   [
    "Ho he decidit. Et reconec com",
-   "el meu rival!"
+   "a rival!"
   ],
   [
    "Algun dia et guanyaré, ja",
@@ -152,7 +152,7 @@
  "s149.sec11.m1.o0": "Oblida-ho",
  "s149.sec11.m1.o1": "Quan és el canvi de torn?",
  "s149.sec11.m2.o0": "Tinc permís, en realitat",
- "s149.sec11.m2.o1": "Em dono permís jo mateix!",
+ "s149.sec11.m2.o1": "Em dono permís jo!",
  "s149.sec11.u0": [
   [
    "No pot passar per aquí."
@@ -399,7 +399,7 @@
   [
    "El trobaré... i faré alguna cosa per aturar-lo.",
    "Ara ho entenc. Em van cridar aquí per",
-   "derrotar-lo, perquè jo també sóc humà."
+   "derrotar-lo, perquè també sóc persona humana."
   ]
  ],
  "s151.sec5.u15": [

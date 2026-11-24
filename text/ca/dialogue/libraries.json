@@ -263,7 +263,7 @@
  ],
  "s199.sec51.u1": [
   [
-   "Benvingut! {color 6}Carn{color 1}, veritat?",
+   "Hola! {color 6}Carn{color 1}, veritat?",
    "Això..."
   ]
  ],
@@ -414,7 +414,7 @@
  ],
  "s199.sec51.u27": [
   [
-   "Benvingut! Un {color 6}Vàter portàtil{color 1},",
+   "Hola! Un {color 6}Vàter portàtil{color 1},",
    "veritat? Això..."
   ]
  ],
@@ -554,7 +554,7 @@
  ],
  "s199.sec51.u51": [
   [
-   "Benvingut! {color 6}Medicina{color 1}, veritat?",
+   "Hola! {color 6}Medicina{color 1}, veritat?",
    "Això..."
   ]
  ],
@@ -757,7 +757,7 @@
  ],
  "s200.sec51.u1": [
   [
-   "Benvingut! {color 6}Carn{color 1}, veritat?",
+   "Hola! {color 6}Carn{color 1}, veritat?",
    "Això..."
   ]
  ],
@@ -908,7 +908,7 @@
  ],
  "s200.sec51.u27": [
   [
-   "Benvingut! Un {color 6}Vàter portàtil{color 1},",
+   "Hola! Un {color 6}Vàter portàtil{color 1},",
    "veritat? Això..."
   ]
  ],
@@ -1048,7 +1048,7 @@
  ],
  "s200.sec51.u51": [
   [
-   "Benvingut! {color 6}Medicina{color 1}, veritat?",
+   "Hola! {color 6}Medicina{color 1}, veritat?",
    "Això..."
   ]
  ],
@@ -1252,7 +1252,7 @@
  ],
  "s201.sec51.u1": [
   [
-   "Benvingut! {color 6}Carn{color 1}, veritat?",
+   "Hola! {color 6}Carn{color 1}, veritat?",
    "Això..."
   ]
  ],
@@ -1404,7 +1404,7 @@
  ],
  "s201.sec51.u27": [
   [
-   "Benvingut! Un {color 6}Vàter portàtil{color 1},",
+   "Hola! Un {color 6}Vàter portàtil{color 1},",
    "veritat? Això..."
   ]
  ],
@@ -1545,7 +1545,7 @@
  ],
  "s201.sec51.u51": [
   [
-   "Benvingut! {color 6}Medicina{color 1}, veritat?",
+   "Hola! {color 6}Medicina{color 1}, veritat?",
    "Això..."
   ]
  ],
@@ -1748,7 +1748,7 @@
  ],
  "s202.sec51.u1": [
   [
-   "Benvingut! {color 6}Carn{color 1}, veritat?",
+   "Hola! {color 6}Carn{color 1}, veritat?",
    "Això..."
   ]
  ],
@@ -1899,7 +1899,7 @@
  ],
  "s202.sec51.u27": [
   [
-   "Benvingut! Un {color 6}Vàter portàtil{color 1},",
+   "Hola! Un {color 6}Vàter portàtil{color 1},",
    "veritat? Això..."
   ]
  ],
@@ -2040,7 +2040,7 @@
  ],
  "s202.sec51.u51": [
   [
-   "Benvingut! {color 6}Medicina{color 1}, veritat?",
+   "Hola! {color 6}Medicina{color 1}, veritat?",
    "Això..."
   ]
  ],
@@ -2421,7 +2421,7 @@
  "s205.sec6.u34": "Fet! Tindràs resultats en tres dies. M'esforçaré!",
  "s205.sec6.u35": [
   [
-   "No tens prou Bits, company. Ni",
+   "No tens prou Bits. Ni",
    "jo puc desenterrar tresors",
    "sense diners per començar."
   ]
@@ -2499,20 +2499,20 @@
  ],
  "s206.sec6.u7": [
   [
-   "Ei, company, et veus amb cor",
+   "Ei, tu, et veus amb cor",
    "de reptar-me? Costa un peix."
   ]
  ],
  "s206.sec6.u8": [
   [
-   "Ei, company! Aquí també he muntat una pista.",
+   "Ei, tu! Aquí també he muntat una pista.",
    "Com abans, un peix per partida. Si em",
    "guanyes, et dono un premi fantàstic."
   ]
  ],
  "s206.sec6.u9": [
   [
-   "Bé, company, et veus amb cor",
+   "Bé, tu, et veus amb cor",
    "de reptar-me? Costa un peix."
   ]
  ],
@@ -2547,7 +2547,7 @@
  ],
  "s206.sec6.u15": [
   [
-   "Vingui ja, oncle. Vés a pescar",
+   "Vingui ja. Vés a pescar",
    "un peix al Llac Ull de Drac!"
   ]
  ],
@@ -2604,14 +2604,14 @@
  ],
  "s206.sec10.u0": [
   [
-   "Ho sento, oncle. Porta un",
+   "Ho sento. Porta un",
    "altre peix i torna a reptar-me!"
   ]
  ],
  "s206.sec10.u1": [
   [
    "Hala, una puntuació perfecta!",
-   "Oncle... tu ets professional o",
+   "Eh... tu ets professional o",
    "què?"
   ]
  ],
@@ -2623,7 +2623,7 @@
  ],
  "s206.sec10.u3": [
   [
-   "Quina passada, oncle. És la",
+   "Quina passada. És la",
    "primera vegada que perdo."
   ]
  ],
@@ -2643,14 +2643,14 @@
  "s206.sec10.u6": "Penguinmon s'ha unit a la ciutat!",
  "s206.sec11.u0": [
   [
-   "Ho sento, oncle. Porta un",
+   "Ho sento. Porta un",
    "altre peix i torna a reptar-me!"
   ]
  ],
  "s206.sec11.u1": [
   [
    "Hala, una puntuació perfecta!",
-   "Oncle... tu ets professional o",
+   "Eh... tu ets professional o",
    "què?"
   ]
  ],
@@ -2662,7 +2662,7 @@
  ],
  "s206.sec11.u3": [
   [
-   "Hala, ets un crack, oncle! He",
+   "Hala, ets una màquina! He",
    "tornat a perdre."
   ]
  ],
@@ -2696,7 +2696,7 @@
  ],
  "s206.sec12.u3": [
   [
-   "Hmpf, ets bo, {color 6}{player}{color 1}.",
+   "Hmpf, vals, {color 6}{player}{color 1}.",
    "Aquí tens el premi que et vaig",
    "prometre."
   ]
@@ -2704,19 +2704,19 @@
  "s206.sec12.u4": "No pots portar res més!",
  "s206.sec12.u5": "Reps {color 6}{item 110}{color 1}!",
  "s206.sec13.m0.o0": "Partides i copes",
- "s206.sec13.u7": "Empat, company! Es repeteix el partit.",
- "s206.sec13.u8": "Has passat, company! Ara, la semifinal.",
- "s206.sec13.u9": "Ostres, ets a la final, company! El campió t'espera.",
+ "s206.sec13.u7": "Empat! Es repeteix el partit.",
+ "s206.sec13.u8": "Has passat! Ara, la semifinal.",
+ "s206.sec13.u9": "Ostres, ets a la final! El campió t'espera.",
  "s206.sec13.u10": "{color 7}Has guanyat la Copa Novell!{color 1}",
  "s206.sec13.u11": "{color 7}Has guanyat la Copa Aficionat!{color 1}",
  "s206.sec13.u12": "{color 7}Has guanyat la Copa Expert!{color 1}",
  "s206.sec13.u13": "{color 7}Has guanyat la Copa Elit!{color 1}",
  "s206.sec13.u14": "{color 7}Has guanyat la Copa Llegenda!{color 1}",
  "s206.sec13.u24": "{color 7}Has guanyat la Copa Llegenda: t'emportes la medalla Llegenda del Cúrling!{color 1}",
- "s206.sec13.u25": "Quina parella, tio! Ningú llança com vosaltres dos.",
- "s206.sec13.u26": "Tots contra tots i has quedat el primer, tio!",
- "s206.sec13.u27": "Una llegenda s'emporta el lot sencer, company! Un xip de cada mena.",
- "s206.sec13.u28": "No pots portar res més, company! Et guardo els xips que falten. Torna quan tinguis lloc.",
+ "s206.sec13.u25": "Quina parella! Ningú llança com vosaltres dos.",
+ "s206.sec13.u26": "Tots contra tots i has quedat en primer lloc!",
+ "s206.sec13.u27": "Una llegenda s'emporta el lot sencer! Un xip de cada mena.",
+ "s206.sec13.u28": "No pots portar res més! Et guardo els xips que falten. Torna quan tinguis lloc.",
  "s206.sec13.u29": "Company! T'he guardat els teus xips. Té.",
  "s207.sec11.m0.o0": "Comprar",
  "s207.sec11.m0.o1": "No comprar",
@@ -3818,7 +3818,7 @@
  "s210.sec51.u8": [
   [
    "Bé, compto amb tu! Però no et precipitis. No",
-   "facis cap bogeria fins que estiguis preparat."
+   "facis cap bogeria fins que estiguis a punt."
   ]
  ],
  "s210.sec51.u9": [
@@ -3877,7 +3877,7 @@
  "s210.sec77.u6": [
   [
    "No puc dir res més. És una",
-   "meravella, noi!"
+   "meravella, jove!"
   ]
  ],
  "s210.sec77.u7": [
@@ -3894,7 +3894,7 @@
  ],
  "s211.sec8.u0": [
   [
-   "Benvingut, {color 6}{player}{color 1}."
+   "Hola, {color 6}{player}{color 1}."
   ]
  ],
  "s211.sec8.u1": [
@@ -4847,7 +4847,7 @@
  ],
  "s213.sec81.u4": [
   [
-   "Estàs inscrit en el torneig de",
+   "Tens plaça al torneig de",
    "demà: «- {cup 3} -»."
   ],
   [
@@ -4856,7 +4856,7 @@
  ],
  "s213.sec81.u5": [
   [
-   "Estàs inscrit en el torneig de",
+   "Tens plaça al torneig de",
    "avui: «- {cup 3} -».",
    "Pots entrar des de les 10."
   ],
@@ -4867,7 +4867,7 @@
  ],
  "s213.sec81.u6": [
   [
-   "Estàs inscrit en el torneig de",
+   "Tens plaça al torneig de",
    "avui: «- {cup 3} -».",
    "Entra abans de les 23:00."
   ],
@@ -5680,7 +5680,7 @@
  "s216.sec51.m0.o2": "Res, gràcies",
  "s216.sec51.u0": [
   [
-   "Hola, {color 6}{player}{color 1}. Sorprès?"
+   "Ei, {color 6}{player}{color 1}. Sorpresa?"
   ],
   [
    "Segur que mai vas pensar que",

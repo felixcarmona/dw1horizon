@@ -11,7 +11,7 @@
    "frio{color 1}."
   ]
  ],
- "s085.sec5.u0": "Garoto, vou te comer!",
+ "s085.sec5.u0": "Ei, vou te comer!",
  "s085.sec6.u0": "Hora de causar problemas!",
  "s085.sec7.u0": "Amaldiçoe sua própria fraqueza!",
  "s085.sec8.u0": "Venha, então. Vou cortá-lo em pedaços!",
@@ -32,7 +32,7 @@
  "s087.sec10.u0": "Não posso deixá-lo ir mais longe.",
  "s088.sec51.u0": "Um misterioso poder branco bloqueia o caminho!",
  "s088.sec51.u1": "O quê? Minhas pernas estão se movendo sozinhas...",
- "s089.sec5.u0": "Deixe seus pertences aqui, amigo.",
+ "s089.sec5.u0": "Deixe seus pertences aqui.",
  "s089.sec6.u0": [
   [
    "Vou congelar você por inteiro!"
@@ -55,7 +55,7 @@
  ],
  "s090.sec5.u0": "Você veio de longe, hein?",
  "s090.sec6.u0": "Quer brigar? Por mim tudo bem!",
- "s090.sec7.u0": "Hmph. Você certamente parece fraco.",
+ "s090.sec7.u0": "Hmph. Você certamente não parece forte.",
  "s090.sec8.u0": "Eu sou perfeita.",
  "s091.sec5.m0.o0": "Você pode ter razão.",
  "s091.sec5.m0.o1": "Não seja um mau perdedor.",
@@ -129,7 +129,7 @@
   ]
  ],
  "s130.sec81.m0.o0": "Vim ajudar",
- "s130.sec81.m0.o1": "Ainda não estou pronto...",
+ "s130.sec81.m0.o1": "Ainda não é hora...",
  "s130.sec81.m1.o0": "Certo. Eu vou ajudar.",
  "s130.sec81.m1.o1": "Tenho outras coisas...",
  "s130.sec81.u0": "Oh, é você.",
@@ -138,8 +138,8 @@
  "s130.sec81.u3": "Eu sou Whamon. Eu geralmente vivo no mar. Não tenho olhos, mas sinto a maioria das coisas.",
  "s130.sec81.u4": [
   [
-   "Eu sou {color 6}{player}{color 1}, um",
-   "humano, e isso é... bem, você",
+   "Eu sou {color 6}{player}{color 1}, do",
+   "mundo humano. Isso é... você",
    "não pode vê-lo, mas ele é"
   ],
   [
@@ -191,7 +191,7 @@
  "s132.sec51.u2": "Tudo bem, tudo bem, acalme-se. Sou Frigimon, um Digimon de gelo e neve. Esta é a minha casa. Vocês dois tinham desmaiado na neve. Eu te peguei e cuidei de você. Entendeu?",
  "s132.sec51.u3": "{color 10}{partner}{color 1}, você está bem! Ufa!",
  "s132.sec51.u4": "Hey! Você está ouvindo? Se eu não tivesse cuidado de você, você não estaria bem!",
- "s132.sec51.u5": "Desculpe, desculpe. Muito obrigado.",
+ "s132.sec51.u5": "Desculpe, desculpe. Agradeço muito.",
  "s132.sec51.u6": "Ei, vamos lá, {color 10}{partner}{color 1}! Você caiu de repente, e eu bati minha cabeça também!",
  "s132.sec51.u7": [
   [
@@ -210,7 +210,7 @@
    "{color 10}{partner}{color 1}."
   ]
  ],
- "s132.sec51.u9": "Obrigado por tudo, Frigimon. E, enquanto estou sendo um incômodo, há algo que quero te perguntar...",
+ "s132.sec51.u9": "Agradeço por tudo, Frigimon. E, enquanto estou sendo um incômodo, há algo que quero te perguntar...",
  "s132.sec51.u10": [
   [
    "Qual é. O que você vai fazer",

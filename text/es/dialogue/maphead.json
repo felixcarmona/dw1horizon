@@ -1,7 +1,7 @@
 {
  "m1230.u0": [
   [
-   "¡Bienvenido! ¿Qué deseas?"
+   "¡Hola! ¿Qué deseas?"
   ],
   [
    "Aún lo estamos preparando."
@@ -74,7 +74,7 @@
  "m1230.u12": "¿Tienes algo más?",
  "m1230.u13": "Ya no me queda nada que vender.",
  "m1230.u14": "{color 10}{partner}{color 1} aún es chiquitín, ¿eh? ¡Te descuento {shopvar} Bits!",
- "m1230.u15": "Ah, bienvenido.",
+ "m1230.u15": "Ah, hola.",
  "m1230.u16": "Vuelve otro día, por favor.",
  "m1230.u17": "Mirar sin comprar no está muy bien, ¿sabes?",
  "m1230.u18": "¿Qué vas a comprar?",
@@ -83,7 +83,7 @@
  "m1230.u21": "¿Algo más?",
  "m1230.u22": "{color 10}{partner}{color 1} tiene que crecer, y pronto. Está bien, te descuento {shopvar} Bits.",
  "m1230.u23": [
-  "¡Bienvenido, pío!",
+  "¡Hola, pío!",
   "¿Qué va a ser, pío?"
  ],
  "m1230.u24": "¡Gracias como siempre, pío!",
@@ -93,7 +93,7 @@
  "m1230.u28": "Gracias, pío.",
  "m1230.u29": "¿Algo más, pío?",
  "m1230.u30": "{color 10}{partner}{color 1} es un crío, pío. Te descuento {shopvar} Bits, pío.",
- "m1230.u31": "¡Ah, bienvenido! ¿Qué desea?",
+ "m1230.u31": "¡Ah, hola! ¿Qué desea?",
  "m1230.u32": "Gracias. Vuelva cuando guste.",
  "m1230.u33": "...Otra vez será, espero.",
  "m1230.u34": "Bien, ¿cuál va a ser?",
@@ -156,7 +156,7 @@
  "m1230.u76": "¡Gracias, sí, sí!",
  "m1230.u77": "¿Algo más, sí?",
  "m1230.u78": "Oh, {color 10}{partner}{color 1} es un niño, sí. ¡{shopvar} Bits menos, servicio especial!",
- "m1230.u79": "¡Bienveniiido!",
+ "m1230.u79": "¡Hoooola!",
  "m1230.u80": "Vuelve otra vez, ¿vale?",
  "m1230.u81": [
   "Jo, qué malo eres.",
@@ -269,7 +269,7 @@
   "Usarla",
   "Hoy no"
  ],
- "m1237.u2": "¿Seguro? Ven a usarla cuando quieras, ¿vale?",
+ "m1237.u2": "¿De verdad? Ven a usarla cuando quieras.",
  "m1237.u3": [
   "La cruceta mueve el cursor,",
   "{color 6}×{color 1} pasa uno al otro lado,",
@@ -288,7 +288,7 @@
  "m1238.u4": "......¿Adónde?",
  "m1238.u5": "A pie, entonces... Puede que sea lo mejor.",
  "m1238.u6": [
-  "¿Seguro? Una vez que te vas,",
+  "¿Ah, sí? Una vez que te vas,",
   "no hay vuelta atrás."
  ],
  "m1238.u7": [
@@ -396,7 +396,7 @@
  "m1240.u3": [
   "Así que {color 10}{partner}{color 1} se apunta",
   "a la -{cup 3}-...",
-  "¿Seguro del todo?"
+  "¿Lo tienes claro?"
  ],
  "m1240.u4": [
   "Participar",
@@ -415,7 +415,7 @@
  ],
  "m1242.u0": [
   "¡Oh, no! ¡Se me ha olvidado",
-  "que hoy estoy apuntado a la",
+  "que hoy me he apuntado a la",
   "-{cup 3}-!"
  ],
  "m1243.u0": "Categoría",

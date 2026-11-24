@@ -47,7 +47,7 @@
   ]
  ],
  "s147.sec9.m0.o0": "J'accepte !",
- "s147.sec9.m0.o1": "Désolé, plus tard",
+ "s147.sec9.m0.o1": "Pardon, plus tard",
  "s147.sec9.u0": [
   [
    "Hmm, toi, là ! Je suis",
@@ -62,9 +62,9 @@
  ],
  "s147.sec9.u1": [
   [
-   "Hmm... Tu es meilleur que prévu",
-   "! C'est décidé, je te reconnais",
-   "comme rival ! Un jour, je te"
+   "Hmm... Tu vaux mieux que prévu",
+   "! C'est décidé, nous sommes",
+   "rivaux ! Un jour, je te"
   ],
   [
    "battrai, tu verras !"
@@ -392,11 +392,11 @@
   [
    "Je le trouverai... et je",
    "m'occuperai de lui. Maintenant,",
-   "je comprends. On m'a appelé ici"
+   "je comprends. On m'a fait venir"
   ],
   [
-   "pour le vaincre, car je suis",
-   "humain moi aussi."
+   "ici pour le vaincre, car je",
+   "viens du même monde."
   ]
  ],
  "s151.sec5.u15": [
@@ -583,7 +583,7 @@
  "s151.sec5.u40": [
   [
    "Oh... c'est toi... Comment",
-   "es-tu entré dans cette ville ?"
+   "as-tu pu entrer en ville ?"
   ]
  ],
  "s151.sec5.u41": [

@@ -19,13 +19,13 @@ def the_bones_came_back():
 
 @house.on_enter(when=root3 and not recruited(Species.Angemon) and not memory_news)
 def angemon_came_home():
-    jijimon.say("Mm, mm... Angemon came back this morning, my boy.",
+    jijimon.say("Mm, mm... Angemon came back this morning, my child.",
                 "The ice has all run down, he says. A wall of water needs no door.")
     recruit(Species.Angemon, prosperity=3)
 
 @house.on_enter(when=memory_news)
 def what_the_city_remembers():
-    jijimon.say("Mm, mm... Something came back to me just now, my boy. Something old.")
+    jijimon.say("Mm, mm... Something came back to me just now, my child. Something old.")
     if memories == 1:
         jijimon.say("The city remembers one thing it had forgotten.")
     elif memories <= 3:

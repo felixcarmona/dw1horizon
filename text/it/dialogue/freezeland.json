@@ -29,7 +29,7 @@
  ],
  "s085.sec5.u0": [
   [
-   "Ragazzo, ti mangerò in un",
+   "Ehi, ti mangerò in un",
    "bocconeee!"
   ]
  ],
@@ -114,7 +114,7 @@
  "s089.sec5.u0": [
   [
    "Lascia qui gli oggetti di",
-   "valore, amico."
+   "valore."
   ]
  ],
  "s089.sec6.u0": [
@@ -152,7 +152,7 @@
  ],
  "s090.sec5.u0": [
   [
-   "Sei venuto da lontano, eh."
+   "Vieni da lontano, eh."
   ]
  ],
  "s090.sec6.u0": [
@@ -206,14 +206,14 @@
  ],
  "s091.sec5.u4": [
   [
-   "Sei venuto e non sei scappato.",
+   "Hai avuto il fegato di venire.",
    "Niente male. Oggi sarà uno",
    "contro uno, come promesso!"
   ]
  ],
  "s091.sec5.u5": [
   [
-   "Non ti sei presentato all'ora",
+   "Non hai rispettato l'ora",
    "stabilita, che tipo! Ma così ho",
    "avuto tempo di guarire per"
   ],
@@ -342,7 +342,7 @@
  ],
  "s128.sec5.u3": [
   [
-   "Ehi, sei tornato a trovarmi!"
+   "Ehi, torni a trovarmi!"
   ]
  ],
  "s128.sec5.u4": [
@@ -362,8 +362,8 @@
    "Va' all'inferno."
   ]
  ],
- "s130.sec81.m0.o0": "Sono venuto ad aiutare",
- "s130.sec81.m0.o1": "Non sono pronto",
+ "s130.sec81.m0.o0": "Sono qui ad aiutare",
+ "s130.sec81.m0.o1": "Non ancora",
  "s130.sec81.m1.o0": "Ok. Ti aiutero'.",
  "s130.sec81.m1.o1": "Ho altro da fare...",
  "s130.sec81.u0": [
@@ -390,8 +390,8 @@
  ],
  "s130.sec81.u4": [
   [
-   "Sono {color 6}{player}{color 1}, un umano, e",
-   "questo è... be', non puoi",
+   "Sono {color 6}{player}{color 1}, del mondo",
+   "umano. E lui... non puoi",
    "vederlo, ma è"
   ],
   [

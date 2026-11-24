@@ -76,7 +76,7 @@
  ],
  "s195.sec5.u0": [
   [
-   "Torna da dove sei venuto."
+   "Torna da dove vieni."
   ]
  ],
  "s195.sec6.u0": [
@@ -268,7 +268,7 @@
  ],
  "s199.sec51.u1": [
   [
-   "Benvenuto! {color 6}Carne{color 1}, giusto?",
+   "Salve! {color 6}Carne{color 1}, giusto?",
    "Ehm..."
   ]
  ],
@@ -418,7 +418,7 @@
  ],
  "s199.sec51.u27": [
   [
-   "Benvenuto! {color 6}Vaso portatile{color 1},",
+   "Salve! {color 6}Vaso portatile{color 1},",
    "giusto? Ehm..."
   ]
  ],
@@ -566,7 +566,7 @@
  ],
  "s199.sec51.u51": [
   [
-   "Benvenuto! {color 6}Medicina{color 1}, giusto?",
+   "Salve! {color 6}Medicina{color 1}, giusto?",
    "Ehm..."
   ]
  ],
@@ -769,7 +769,7 @@
  ],
  "s200.sec51.u1": [
   [
-   "Benvenuto! {color 6}Carne{color 1}, giusto?",
+   "Salve! {color 6}Carne{color 1}, giusto?",
    "Ehm..."
   ]
  ],
@@ -904,7 +904,7 @@
  ],
  "s200.sec51.u24": [
   [
-   "È un furto, amico!"
+   "È un furto!"
   ]
  ],
  "s200.sec51.u25": [
@@ -919,7 +919,7 @@
  ],
  "s200.sec51.u27": [
   [
-   "Benvenuto! {color 6}Vaso portatile{color 1},",
+   "Salve! {color 6}Vaso portatile{color 1},",
    "giusto? Ehm..."
   ]
  ],
@@ -1052,7 +1052,7 @@
  ],
  "s200.sec51.u48": [
   [
-   "È un furto, amico!"
+   "È un furto!"
   ]
  ],
  "s200.sec51.u49": [
@@ -1067,7 +1067,7 @@
  ],
  "s200.sec51.u51": [
   [
-   "Benvenuto! {color 6}Medicina{color 1}, giusto?",
+   "Salve! {color 6}Medicina{color 1}, giusto?",
    "Ehm..."
   ]
  ],
@@ -1192,7 +1192,7 @@
  ],
  "s200.sec51.u72": [
   [
-   "È un furto, amico!"
+   "È un furto!"
   ]
  ],
  "s200.sec51.u73": [
@@ -1270,7 +1270,7 @@
  ],
  "s201.sec51.u1": [
   [
-   "Benvenuto! {color 6}Carne{color 1}, giusto?",
+   "Salve! {color 6}Carne{color 1}, giusto?",
    "Ehm..."
   ]
  ],
@@ -1422,7 +1422,7 @@
  ],
  "s201.sec51.u27": [
   [
-   "Benvenuto! {color 6}Vaso portatile{color 1},",
+   "Salve! {color 6}Vaso portatile{color 1},",
    "giusto? Ehm..."
   ]
  ],
@@ -1570,7 +1570,7 @@
  ],
  "s201.sec51.u51": [
   [
-   "Benvenuto! {color 6}Medicina{color 1}, giusto?",
+   "Salve! {color 6}Medicina{color 1}, giusto?",
    "Ehm..."
   ]
  ],
@@ -1773,7 +1773,7 @@
  ],
  "s202.sec51.u1": [
   [
-   "Benvenuto! {color 6}Carne{color 1}, giusto?",
+   "Salve! {color 6}Carne{color 1}, giusto?",
    "Ehm..."
   ]
  ],
@@ -1924,7 +1924,7 @@
  ],
  "s202.sec51.u27": [
   [
-   "Benvenuto! {color 6}Vaso portatile{color 1},",
+   "Salve! {color 6}Vaso portatile{color 1},",
    "giusto? Ehm..."
   ]
  ],
@@ -2073,7 +2073,7 @@
  ],
  "s202.sec51.u51": [
   [
-   "Benvenuto! {color 6}Medicina{color 1}, giusto?",
+   "Salve! {color 6}Medicina{color 1}, giusto?",
    "Ehm..."
   ]
  ],
@@ -2464,7 +2464,7 @@
  "s205.sec6.u34": "Bene! Avrai i risultati tra tre giorni. Farò del mio meglio!",
  "s205.sec6.u35": [
   [
-   "Non hai abbastanza Bits, amico.",
+   "Non hai abbastanza Bits.",
    "Nemmeno io posso scovare",
    "tesori senza un po' di soldi"
   ],
@@ -2506,7 +2506,7 @@
  "s206.sec6.m1.o1": "Passo",
  "s206.sec6.u0": [
   [
-   "Ehi, amico, vuoi sfidarmi? Se",
+   "Ehi, vuoi sfidarmi? Se",
    "mi batti, farò tutto quello che",
    "dici."
   ]
@@ -2549,13 +2549,13 @@
  ],
  "s206.sec6.u7": [
   [
-   "Ehi, amico! Vuoi sfidarmi?",
+   "Ehi! Vuoi sfidarmi?",
    "Costa un pesce."
   ]
  ],
  "s206.sec6.u8": [
   [
-   "Ehi, amico! Ho fatto una pista",
+   "Ehi! Ho fatto una pista",
    "anche qui. Come prima, un pesce",
    "a partita. Ma se mi batti, ti"
   ],
@@ -2565,7 +2565,7 @@
  ],
  "s206.sec6.u9": [
   [
-   "Allora, amico, mi sfidi? Costa",
+   "Allora, mi sfidi? Costa",
    "un pesce."
   ]
  ],
@@ -2599,7 +2599,7 @@
  ],
  "s206.sec6.u15": [
   [
-   "Dai, amico. Va' a pescare al",
+   "Dai, va' a pescare al",
    "Lago Occhio di Drago!"
   ]
  ],
@@ -2658,7 +2658,7 @@
  ],
  "s206.sec10.u0": [
   [
-   "Mi spiace, amico. Porta un",
+   "Mi spiace. Porta un",
    "altro pesce e sfidami ancora!"
   ]
  ],
@@ -2676,7 +2676,7 @@
  ],
  "s206.sec10.u3": [
   [
-   "Incredibile, amico. Non avevo",
+   "Incredibile. Non avevo",
    "mai perso prima."
   ]
  ],
@@ -2695,7 +2695,7 @@
  "s206.sec10.u6": "Penguinmon si è unito alla città!",
  "s206.sec11.u0": [
   [
-   "Mi spiace, amico. Porta un",
+   "Mi spiace. Porta un",
    "altro pesce e sfidami ancora!"
   ]
  ],
@@ -2713,7 +2713,7 @@
  ],
  "s206.sec11.u3": [
   [
-   "Wow, sei forte, amico. Ho perso",
+   "Wow, sei forte. Ho perso",
    "di nuovo."
   ]
  ],
@@ -2750,7 +2750,7 @@
  ],
  "s206.sec12.u3": [
   [
-   "Hmpf, sei bravo, {color 6}{player}{color 1}!",
+   "Hmpf, ci sai fare, {color 6}{player}{color 1}!",
    "Ecco il premio promesso."
   ]
  ],
@@ -2761,20 +2761,20 @@
   ]
  ],
  "s206.sec13.m0.o0": "Partite e coppe",
- "s206.sec13.u7": "Parità, amico! Si rigioca.",
- "s206.sec13.u8": "Sei passato, amico! Ora la semifinale.",
- "s206.sec13.u9": "Wow, sei in finale, amico! Il campione ti aspetta.",
+ "s206.sec13.u7": "Parità! Si rigioca.",
+ "s206.sec13.u8": "Passi il turno! Ora la semifinale.",
+ "s206.sec13.u9": "Wow, sei in finale! Il campione ti aspetta.",
  "s206.sec13.u10": "{color 7}Hai vinto la Coppa Novizio!{color 1}",
  "s206.sec13.u11": "{color 7}Hai vinto la Coppa Dilettante!{color 1}",
  "s206.sec13.u12": "{color 7}Hai vinto la Coppa Esperto!{color 1}",
  "s206.sec13.u13": "{color 7}Hai vinto la Coppa Élite!{color 1}",
  "s206.sec13.u14": "{color 7}Hai vinto la Coppa Leggenda!{color 1}",
  "s206.sec13.u24": "{color 7}Hai vinto la Coppa Leggenda: ricevi la medaglia Leggenda del curling!{color 1}",
- "s206.sec13.u25": "Che coppia, fratello! Nessuno lancia come voi due.",
- "s206.sec13.u26": "Tutti contro tutti, e sei arrivato primo, fratello!",
- "s206.sec13.u27": "Una leggenda si prende tutto il set, amico! Un chip per tipo.",
- "s206.sec13.u28": "Non puoi portare altro, amico! Ti tengo io i chip che mancano. Torna quando hai posto.",
- "s206.sec13.u29": "Amico! Ti ho tenuto da parte i chip. Ecco.",
+ "s206.sec13.u25": "Che coppia! Nessuno lancia come voi due.",
+ "s206.sec13.u26": "Tutti contro tutti, e il primo posto è tuo!",
+ "s206.sec13.u27": "Una leggenda si prende tutto il set! Un chip per tipo.",
+ "s206.sec13.u28": "Non puoi portare altro! Ti tengo io i chip che mancano. Torna quando hai posto.",
+ "s206.sec13.u29": "Ehi! Ti ho tenuto da parte i chip. Ecco.",
  "s207.sec11.m0.o0": "Compra",
  "s207.sec11.m0.o1": "Non comprare",
  "s207.sec11.m1.o0": "Compra",
@@ -3942,10 +3942,10 @@
   [
    "Mh, conto su di te! Ma non",
    "avere fretta. Non fare nulla di",
-   "avventato finché non sei"
+   "avventato finché non te la"
   ],
   [
-   "pronto."
+   "senti."
   ]
  ],
  "s210.sec51.u9": [
@@ -4004,7 +4004,7 @@
  "s210.sec77.u6": [
   [
    "Non so più che dire. È",
-   "meraviglioso, ragazzo mio!"
+   "meraviglioso, davvero!"
   ]
  ],
  "s210.sec77.u7": [
@@ -4021,7 +4021,7 @@
  ],
  "s211.sec8.u0": [
   [
-   "Bentornato, {color 6}{player}{color 1}."
+   "Rieccoti, {color 6}{player}{color 1}."
   ]
  ],
  "s211.sec8.u1": [
@@ -4477,13 +4477,13 @@
   [
    "così {color 10}{partner}{color 1} ce l'ha",
    "fatta... D'ora in poi dovrai",
-   "stare più attento."
+   "fare più attenzione."
   ]
  ],
  "s212.sec72.u1": [
   [
    "Oh, hai perso una battaglia e",
-   "sei tornato qui? Gli restava",
+   "sei di nuovo qui? Gli restava",
    "ancora un po' di vita, così"
   ],
   [
@@ -5006,7 +5006,7 @@
  ],
  "s213.sec54.u0": [
   [
-   "Ehi, non sei iscritto al",
+   "Ehi, non sei in lista per il",
    "torneo."
   ]
  ],
@@ -5081,14 +5081,14 @@
  ],
  "s213.sec81.u4": [
   [
-   "Sei iscritto a «- {cup 3}",
+   "Sei in lista per «- {cup 3}",
    "-» di domani. Vuoi annullare",
    "l'iscrizione?"
   ]
  ],
  "s213.sec81.u5": [
   [
-   "Sei iscritto a «- {cup 3}",
+   "Sei in lista per «- {cup 3}",
    "-» di oggi. Puoi entrare dalle",
    "10. Non dirmi che vuoi"
   ],
@@ -5098,7 +5098,7 @@
  ],
  "s213.sec81.u6": [
   [
-   "Sei iscritto a «- {cup 3}",
+   "Sei in lista per «- {cup 3}",
    "-» di oggi. Entra entro le 23.",
    "Non dirmi che vuoi annullare?"
   ]
@@ -5915,7 +5915,7 @@
  "s216.sec51.m0.o2": "Niente. Grazie.",
  "s216.sec51.u0": [
   [
-   "Ciao, {color 6}{player}{color 1}. Sorpreso?",
+   "Ciao, {color 6}{player}{color 1}. Che sorpresa!",
    "Non pensavi che avrei aperto",
    "una clinica, eh? Affida a me"
   ],

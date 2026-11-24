@@ -1,7 +1,7 @@
 {
  "m1230.u0": [
   [
-   "Benvenuto! Come posso aiutarti?"
+   "Salve! Come posso aiutarti?"
   ],
   [
    "Stiamo ancora preparando."
@@ -125,7 +125,7 @@
  ],
  "m1230.u15": [
   [
-   "Ah, Benvenuto."
+   "Ah, salve."
   ]
  ],
  "m1230.u16": [
@@ -168,7 +168,7 @@
  ],
  "m1230.u23": [
   [
-   "Benvenuto, pio! Cosa desideri,",
+   "Salve, pio! Cosa desideri,",
    "pio?"
   ]
  ],
@@ -211,7 +211,7 @@
  ],
  "m1230.u31": [
   [
-   "Ah, Benvenuto! Cosa vuoi?"
+   "Ah, salve! Cosa vuoi?"
   ]
  ],
  "m1230.u32": [
@@ -253,7 +253,7 @@
  ],
  "m1230.u39": [
   [
-   "Umpf, sei venuto. Non troverai",
+   "Umpf, eccoti. Non troverai",
    "altrove la mia merce. Compra",
    "quanto vuoi... Eheh..."
   ]
@@ -463,7 +463,7 @@
  ],
  "m1230.u79": [
   [
-   "Benvenuto!"
+   "Salve!"
   ]
  ],
  "m1230.u80": [
@@ -687,7 +687,7 @@
  ],
  "m1237.u2": [
   [
-   "Sei sicuro? Vieni a usarlo",
+   "Confermi? Vieni a usarlo",
    "quando vuoi, Ok?"
   ]
  ],
@@ -742,7 +742,7 @@
  ],
  "m1238.u6": [
   [
-   "Sei sicuro? Una volta che te",
+   "Confermi? Una volta che te",
    "ne vai, Non si torna indietro."
   ]
  ],
@@ -913,8 +913,8 @@
  "m1240.u3": [
   [
    "Quindi {color 10}{partner}{color 1} partecipa",
-   "al -{cup 3}-... Sei",
-   "sicuro?"
+   "al -{cup 3}-... Va",
+   "bene così?"
   ]
  ],
  "m1240.u4": [

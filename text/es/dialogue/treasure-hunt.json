@@ -17,7 +17,7 @@
  "s169.sec81.m2.o0": "Plan normal: 2000 Bits",
  "s169.sec81.m2.o1": "Plan especial: 5000 Bits",
  "s169.sec81.m2.o2": "Cancelar",
- "s169.sec81.u0": "¡Buenas, bienvenido, {color 6}{player}{color 1}! Esto es la tienda de la Caza del Tesoro. Un servidor pone a currar su arte de cavar y te saca tesoros del subsuelo. ¡Ese es el negocio! Esta isla tiene tesoros de todas clases enterraos por todas partes. ¡Déjaselo a un servidor!",
+ "s169.sec81.u0": "¡Buenas, {color 6}{player}{color 1}! Esto es la tienda de la Caza del Tesoro. Un servidor pone a currar su arte de cavar y te saca tesoros del subsuelo. ¡Ese es el negocio! Esta isla tiene tesoros de todas clases enterraos por todas partes. ¡Déjaselo a un servidor!",
  "s169.sec81.u1": "¡Buenas! ¿Quieres buscar tesoros? ¿Te cuento primero cómo funciona?",
  "s169.sec81.u2": "Tú pagas por adelantao, y un servidor te encuentra un tesoro. Hay dos planes, con tiempos y precios distintos. El plan normal es un día por 2000 Bits. El plan especial son tres días por 5000 Bits. ¡Con el plan especial, claro, tienes más posibilidades de sacar un buen tesoro! Eso es todo. Bueno, ¿qué va a ser?",
  "s169.sec81.u3": "¡Venga, elige un plan!",

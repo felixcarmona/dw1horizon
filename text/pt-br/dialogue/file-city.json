@@ -381,7 +381,7 @@
   ]
  ],
  "s163.sec12.u0": "Ei, {color 6}{player}{color 1}. Estou patrulhando a cidade por tipos obscuros. O quê? Não vou atrapalhar nem nada!",
- "s163.sec81.u0": "Bem, bem, bem, bem-vindos à minha loja! Para você, {color 6}{player}{color 1}, farei uma pechincha. A verdade é que eu não sou um bom vendedor. Mas ninguém mais parece ser bom nisso também... então foi assim que vim a vender itens por um tempo. Fico feliz em tê-lo. E você, {color 6}{player}{color 1}, continue e traga de volta muito Digimon!",
+ "s163.sec81.u0": "Bem, bem, bem, bem-vindos à minha loja! Para você, {color 6}{player}{color 1}, farei uma pechincha. A verdade é que eu não sou um bom vendedor. Mas ninguém mais parece ser bom nisso também... então foi assim que vim a vender itens por um tempo. Fico feliz em ter você. E você, {color 6}{player}{color 1}, continue e traga de volta muito Digimon!",
  "s163.sec81.u1": [
   [
    "Hehe, e aí? O que acha da minha loja? Não sou",
@@ -587,12 +587,12 @@
   ]
  ],
  "s192.sec51.u7": "{color 10}{partner}{color 1}, meu melhor amigo... nossa aventura foi a melhor de todas!",
- "s193.sec54.u0": "Hum... Ele está acordando? Parece que deu certo!",
- "s193.sec54.u1": "Um humano... Igualzinho ao que o Jiji disse!",
+ "s193.sec54.u0": "Hum... Está acordando? Parece que deu certo!",
+ "s193.sec54.u1": "Uma pessoa humana... Do jeitinho que o Jiji disse!",
  "s193.sec54.u2": "Nnnngh...",
- "s193.sec54.u3": "Psiu! Ele está acordando!",
+ "s193.sec54.u3": "Psiu! Está acordando!",
  "s193.sec54.u4": "Hã...? Onde... eu estou?",
- "s193.sec54.u5": "Bem-vindo ao Mundo Digimon!",
+ "s193.sec54.u5": "Boas-vindas ao Mundo Digimon!",
  "s193.sec54.u6": "Hã?",
  "s193.sec54.u7": "Aaaah!!",
  "s193.sec54.u8": "Hã? O quê? O que foi?",
@@ -614,7 +614,7 @@
  "s193.sec54.u24": "Olhe atrás de você. Isso deve esclarecer as coisas.",
  "s193.sec54.u25": "Hã?",
  "s193.sec54.u26": "Não pode ser... É o {color 10}{partner}{color 1}, o Digimon que eu estava criando?",
- "s193.sec54.u27": "É isso...! Fui sugado pra dentro do meu chaveiro Digimon...",
+ "s193.sec54.u27": "É isso...! Algo me sugou pra dentro do meu chaveiro Digimon...",
  "s193.sec54.u28": "Isso mesmo. Agora você entendeu.",
  "s193.sec54.u29": "Entendi, mas... por que eu estou... aqui?",
  "s193.sec54.u30": "Hum... Agora que você entendeu, venha até a nossa casa. Conversaremos melhor lá.",
@@ -631,7 +631,7 @@
  "s193.sec55.u10": "Isso mesmo. E é perigoso. Diz a lenda que, quando a Cidade Arquivo corre perigo, todos os Digimon também correm...",
  "s193.sec55.u11": "Mas por que eu? Não podia ser outra pessoa?",
  "s193.sec55.u12": "Você sabe criar Digimon muito bem, não sabe?",
- "s193.sec55.u13": "Hã? ...Ah, sei. Sou ótimo nisso! He, he.",
+ "s193.sec55.u13": "Hã? ...Ah, sei. Mando bem nisso! He, he.",
  "s193.sec55.u14": "Você não percebeu? Está falando a língua dos Digimon.",
  "s193.sec55.u15": "O quê? Pra mim, estou falando português normal.",
  "s193.sec55.u16": "Para nós, parece exatamente a língua dos Digimon.",
