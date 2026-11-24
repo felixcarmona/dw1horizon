@@ -27,8 +27,9 @@ TORSO = 0
 OBJECTS = (0, 2, 3, 5, 6)                  # the torso, the upper arms (2, 5) and the forearms (3, 6)
 UPPER, FORE = (2, 5), (3, 6)
 PELVIS = (1, 4, 5, 6, 7, 8, 20, 21, 22, 23, 24, 35, 36, 37, 39, 46)   # the torso's polygons that are trousers
-# The trousers' top corners reached the hoodie's hem: under a shirt they sit closer to the body.
-PELVIS_MOVED = {10: (-31, 12, -26), 34: (-31, 12, 26), 24: (-29, -25, -28), 35: (-29, -25, 28), 23: (-30, -30, 0)}
+# The trousers' top corners reached the hoodie's hem: under a shirt they sit closer to the body. The two at the back of
+# the hips sit well inside it: nearer the shirt, the seat's polygons there averaged a bucket nearer than its back.
+PELVIS_MOVED = {10: (-33, 0, -20), 34: (-33, 0, 20), 24: (-29, -25, -28), 35: (-29, -25, 28), 23: (-30, -30, 0)}
 QUAD, TRI = 3, 38                          # a quad and a triangle of the torso, the patterns of every new polygon
 ROW, SKIN_ROW = 2, 6                       # palette rows: the cloth's and the skin's
 NC, NS = 8, 6                              # corners around the trunk and around an arm

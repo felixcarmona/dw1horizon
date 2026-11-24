@@ -130,7 +130,12 @@ a model of `TAMER.DAT` like the rest.
   legs' palette row and to one texel of plain cloth, which the trousers' head sector names. Last, because with no
   depth buffer the polygons that share a bucket of the ordering table are drawn last to first: the seat lies inside
   the shirt, a few units behind its hem, and first in the torso it was drawn over the hem as flat patches of the
-  trousers' colour.
+  trousers' colour. Its two corners at the back of the hips sit well inside the shirt (`PELVIS_MOVED`): closer to
+  it, those polygons averaged a bucket nearer than the shirt's back at three-quarter angles.
+- A thigh's top lies inside the shirt and comes out under its hem, and a skirt or shorts flare out from there: their
+  wide polygons' average depth fell a bucket nearer than the hem that covers them, and the trousers showed through the
+  shirt's lower edge from the back. On the Look page `lookPageThighDepth` sorts the two thighs 16 units deeper (half a
+  bucket): it scales their screen matrix about the eye, so every corner stays where it was on the screen.
 - A boot's leg cannot be part of the foot, which turns at the ankle. It is eleven corners and ten polygons stored in
   the shoes' head sector, and it rides on the shin: slim trousers (a flag in their head sector) keep eleven unused
   corners at the start of each shin and room for ten polygons right before the shin's own, and the loader copies the
