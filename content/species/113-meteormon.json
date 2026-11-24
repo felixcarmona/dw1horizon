@@ -7,8 +7,8 @@
     "level": "rookie",
     "stats": {"hp": 1000, "mp": 750, "offense": 100, "defense": 100, "speed": 50, "brains": 50},
     "finisher": {"power": 90, "mpCost": 40, "element": "fire"},
-    "techniques": ["Magma Bomb", "Meltdown", "Megaton Punch", "Tremar", "Buster Dive", "Spit Fire", "Heat Laser",
-                   "Red Inferno", "Prominence Beam", "Fireball"]
+    "techniques": ["Magma Bomb", "Meltdown", "Megaton Punch", "Tremar", "Buster Dive", "Spit Fire",
+                   "Heat Laser", "Red Inferno", "Prominence Beam", "Fireball", "Sand Blast"]
   },
   "attribute": "data",
   "specialties": ["earth", "fire", "battle"],
