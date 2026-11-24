@@ -8,7 +8,7 @@
   "specialties": ["water", "ice", "air"],
   "fields": ["deep-savers"],
   "techniques": ["Giga Freeze", "Aurora Freeze", "Winter Blast", "Confused Storm", "Ice Statue", "Water Blit",
-                 "Ice Needle", "Tear Drop", "Aqua Magic", "Spinning Shot", "Hurricane",
+                 "Sea Crush", "Hydro Cannon", "Aqua Magic", "Ocean Fury", "Hurricane",
                  "Wind Cutter", "Thunder Justice", "Mail Strome", "Whirlpool", "Tidal Wave"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 61,

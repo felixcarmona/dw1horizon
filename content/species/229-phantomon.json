@@ -8,7 +8,7 @@
   "specialties": ["dark", "air", "battle"],
   "fields": ["nightmare-soldiers"],
   "techniques": ["Megalo Spark", "Hurricane", "Thunder Justice", "Spinning Shot", "Confused Storm", "Wind Cutter",
-                 "Giga Freeze", "Aurora Freeze", "Ice Statue", "Water Blit", "Megaton Punch",
+                 "Giga Freeze", "Venom Mist", "Ice Statue", "Death Grip", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Mail Strome", "Nightmare", "Black Gate"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 54,

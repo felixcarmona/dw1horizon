@@ -7,7 +7,7 @@
   "attribute": "data",
   "specialties": ["weapon", "battle", "mech"],
   "fields": ["metal-empire", "virus-busters"],
-  "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
+  "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Dynamite Kick (44)", "Whirling Edge", "Cross Cutter",
                  "Muscle Charge", "War Cry", "Power Crane", "DG Dimension", "All Range Beam",
                  "Delete Program", "Pulse Laser", "Spiral Sword", "War Stance", "Giant Cleave"],
   "drop": {"item": "S.speed.disk", "percent": 30},

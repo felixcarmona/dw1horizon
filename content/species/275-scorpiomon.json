@@ -9,7 +9,7 @@
   "fields": ["nature-spirits"],
   "techniques": ["Water Blit", "Aurora Freeze", "Ice Statue", "Giga Freeze", "Ice Needle", "Winter Blast",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Danger Sting",
-                 "Charm Perfume", "Poison Powder", "Mail Strome", "Boulder Crash", "Landslide"],
+                 "Stalagmite", "Fissure", "Mail Strome", "Boulder Crash", "Landslide"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 24,
   "own_effect": {"technique": "Mail Strome", "chunk": 142},

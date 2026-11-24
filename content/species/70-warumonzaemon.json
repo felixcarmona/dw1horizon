@@ -6,10 +6,10 @@
   "attribute": "virus",
   "specialties": ["battle", "air", "dark"],
   "fields": ["metal-empire", "dark-area"],
-  "techniques": ["Megaton Punch", "Buster Dive", "Muscle Charge", "Thunder Justice", "Sonic Jab",
+  "techniques": ["Megaton Punch", "Buster Dive", "Muscle Charge", "Thunder Justice", "Death Grip",
                  "Dynamite Kick (44)", "Counter", "Tremar", "War Cry", "Static Elect",
                  "Megalo Spark", "Electric Cloud", "Confused Storm", "Lovely Attack", "Nightmare",
-                 "Black Gate"],
+                 "Venom Mist"],
   "drop": {"item": "HP Chip", "percent": 50},
   "model": {
     "name": "WARU",

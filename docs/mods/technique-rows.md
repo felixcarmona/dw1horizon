@@ -106,6 +106,20 @@ sixteen Earth (Gotsumon, Golemon, Drimogemon, Monochromon, Triceramon and other 
 a few more as a second or third. Where a species took a new row it gave up one that did not suit it (Devimon's Ice, Seadramon's
 Fire). The wild Digimon and bosses of those species cast the new techniques (`content/maps/*.json`).
 
+An Ultimate holds up to four techniques of its first new row and three of another, and a Mega four and two: where a
+list was full, the technique took the place of a weak original one that no wild Digimon of the species casts, and
+the list keeps at least three of each row it trains. The last three of a row have no learning chance for a
+third specialty, in battle or in the gym, so a species whose third specialty is one of the five rows holds only the
+lower techniques of it. BlueMeramon is the exception: it keeps Black Gate because the wild ones cast it.
+
+Every technique of the five rows is on some list, and each is cast in a fight that can be had again: by wild
+Digimon that come back each time the screen is entered, and Abyss Requiem by BlackWarGreymon, who fights again
+whenever it is asked. Final Edge and Whirling Edge are cast by the two Tekkamon of the Back Dimension, Gaia Quake by
+a Brachiomon of the Ancient Glacial Region, Sea Crush, Tidal Wave and Ocean Fury by the Coelamon of Coela Point,
+Judgment Ray by a Piddomon of Mt. Infinity and Grand Cross by two Piddomon, one of Mt. Infinity and one of the Back
+Dimension. Tekkamon, WaruSeadramon, Brachiomon, Coelamon and Piddomon have them on their lists for that, so these
+two Champions can learn the last of their row.
+
 A model has an attack animation for each technique of its list. A species that got techniques added plays one of
 its own attack clips for each of them: an imported model names the clip in `technique_aliases`
 (`content/models/imports/models.json`), an original one in `model.slot_aliases` of its species file.

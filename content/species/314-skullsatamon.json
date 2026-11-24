@@ -7,7 +7,7 @@
   "attribute": "virus",
   "specialties": ["dark", "battle", "fire"],
   "fields": ["nightmare-soldiers"],
-  "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
+  "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Dynamite Kick (44)", "Venom Mist", "Death Grip",
                  "Muscle Charge", "War Cry", "Prominence Beam", "Inifinity Burn", "Meltdown",
                  "Magma Bomb", "Red Inferno", "Nightmare Syndromer", "Nightmare", "Black Gate"],
   "drop": {"item": "sm.recovery", "percent": 10},

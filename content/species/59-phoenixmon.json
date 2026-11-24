@@ -10,7 +10,7 @@
     "techniques": ["Magma Bomb", "Prominence Beam", "Red Inferno", "Inifinity Burn", "Meltdown", "Static Elect",
                    "Megalo Spark", "Electric Cloud", "Wind Cutter", "Spinning Shot",
                    "Thunder Justice", "Confused Storm", "Hurricane", "Crimson Flare",
-                   "Heaven's Ring", "Grand Cross"],
+                   "Sacred Shield", "Flash Burst"],
     "evolution": {"from": [21, 20, 7, 50, 33], "to": [-1, -1, -1, -1, -1, -1]}
   },
   "attribute": "vaccine",
@@ -18,8 +18,8 @@
   "fields": ["wind-guardians", "virus-busters"],
   "techniques": ["Magma Bomb", "Prominence Beam", "Red Inferno", "Inifinity Burn", "Meltdown", "Static Elect",
                  "Megalo Spark", "Electric Cloud", "Wind Cutter", "Spinning Shot",
-                 "Thunder Justice", "Confused Storm", "Hurricane", "Crimson Flare", "Heaven's Ring",
-                 "Grand Cross"],
+                 "Thunder Justice", "Confused Storm", "Hurricane", "Crimson Flare", "Sacred Shield",
+                 "Flash Burst"],
   "finisher": {"power": 250, "mpCost": 40, "element": "fire"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "model": {

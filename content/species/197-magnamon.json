@@ -7,7 +7,7 @@
   "attribute": "vaccine",
   "specialties": ["light", "battle", "mech"],
   "fields": ["metal-empire", "virus-busters"],
-  "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Buster Dive", "Counter", "Tremar", "Sonic Jab",
+  "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Buster Dive", "Counter", "Flash Burst", "Sacred Shield",
                  "Muscle Charge", "War Cry", "Pulse Laser", "DG Dimension", "All Range Beam",
                  "Delete Program", "Reverse Prog", "Energy Bomb", "Blessing", "Judgment Ray"],
   "drop": {"item": "sm.recovery", "percent": 10},

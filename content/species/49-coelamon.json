@@ -7,7 +7,7 @@
   "specialties": ["water", "ice", "nature"],
   "fields": ["deep-savers"],
   "techniques": ["Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit", "Ice Statue", "Winter Blast", "Aqua Magic",
-                 "Poison Claw", "Danger Sting", "Insect Plague", "Variable Darts", "Bubble Shot",
+                 "Poison Claw", "Ocean Fury", "Sea Crush", "Tidal Wave", "Bubble Shot",
                  "Aqua Jet", "Rain Dance", "Whirlpool", "Hydro Cannon"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "model": {

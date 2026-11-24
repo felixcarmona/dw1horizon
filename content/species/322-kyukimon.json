@@ -9,7 +9,7 @@
   "fields": ["nightmare-soldiers", "unknown"],
   "techniques": ["Hurricane", "Wind Cutter", "Thunder Justice", "Spinning Shot", "Megalo Spark", "Confused Storm",
                  "Electric Cloud", "Static Elect", "Megaton Punch", "Buster Dive", "Counter",
-                 "Dynamite Kick (44)", "Tremar", "Death Claw", "War Stance", "Giant Cleave"],
+                 "Cross Cutter", "Whirling Edge", "Death Claw", "War Stance", "Giant Cleave"],
   "drop": {"item": "Giant Meat", "percent": 30},
   "effects_like": 5,
   "own_effect": {"technique": "Death Claw", "chunk": 236},
