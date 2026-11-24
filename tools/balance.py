@@ -641,10 +641,10 @@ EVO_RULE = '<5h4b4(bbh)'.replace('4(bbh)', 'bbhbbhbbhbbh')           # evolution
 EVO_RULE_MAX, EVO_PAIR_MAX = 10, 16
 
 MEDAL_KINDS = {'allTriggers': (1, 2), 'wins': (2, 1), 'allCards': (3, 2), 'allMoves': (4, 1), 'stats': (5, 2), 'money': (6, 1),
-               'year': (7, 1), 'allRaised': (8, 2), 'fish': (9, 1), 'allPartners': (10, 0), 'residents': (11, 1)}   # kind id, how many numbers
+               'year': (7, 1), 'allRaised': (8, 2), 'fish': (9, 1), 'allPartners': (10, 0), 'residents': (11, 1), 'everyMove': (12, 1)}   # kind id, how many numbers
 MEDAL_CHECKED = {'tick': 1, 'script': 2}
 MEDAL_NEEDS = {'newDigimon': 8, 'newCards': 16, 'extendedStory': 32}                      # the OPTIONS switch a row waits for
-MEDAL_ROW, MEDAL_MAX = '<h4bxx2i', 20                                                     # tournament.h ModMedal: 16 bytes
+MEDAL_ROW, MEDAL_MAX = '<h4bxx2i', 21                                                     # tournament.h ModMedal: 16 bytes
 
 
 def encode_medals(rows):
