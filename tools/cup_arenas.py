@@ -163,8 +163,9 @@ def wall_object(m):
     for k in range(SEGMENTS):
         a0, a1 = ring(WALL_R, k, SEGMENTS), ring(WALL_R, k + 1, SEGMENTS)
         t0, t1 = ring(WALL_R, k, SEGMENTS, -WALL_H), ring(WALL_R, k + 1, SEGMENTS, -WALL_H)
-        # half the picture's width per segment, so the wall is drawn in proportion and not squeezed
-        ua, ub = (u0, u0 + 127) if k % 2 == 0 else (u0 + 128, u1)
+        # a quarter of the picture per segment: about the floor's texel size, finer than that shimmers
+        ua = u0 + 64 * (k % 4)
+        ub = ua + 63
         m.quad([t0, t1, a0, a1], [(ua, top), (ub, top), (ua, v1), (ub, v1)], WALL, toward=CENTRE)   # the inner face
         o0, o1 = ring(WALL_R + WALL_T, k, SEGMENTS, -WALL_H), ring(WALL_R + WALL_T, k + 1, SEGMENTS, -WALL_H)
         m.quad([o0, o1, t0, t1], [(ua, v0), (ub, v0), (ua, top), (ub, top)], WALL, toward=ABOVE)    # the capstones
@@ -174,8 +175,9 @@ def wall_object(m):
 def pillar_object():
     m = Mesh()
     _, u0, v0, u1, v1 = PILLAR
+    u1 = u0 + 31                # a quarter of the picture across a face: broad bands, fine ones shimmer
     h = PILLAR_W / 2
-    for k in range(-2, 3):      # the half across from the opening shot's camera: beside or behind it they flicker
+    for k in ():                # no pillars: the bracket camera sweeps through wherever they stand and draws them huge
         a = 2 * math.pi * k / PILLARS
         cx, cz = PILLAR_R * math.sin(a), PILLAR_R * math.cos(a)
         corners = [(cx + dx * math.cos(a) + dz * math.sin(a), cz - dx * math.sin(a) + dz * math.cos(a))

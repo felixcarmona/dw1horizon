@@ -38,7 +38,7 @@ def tim(path):
     if (w, h, mode) != (W, H, 'P'):
         raise ValueError(f'{path}: a {w}x{h} {mode} picture, a banner is {W}x{H} with a palette')
     colours = (list(colours) + [(0, 0, 0)] * 256)[:256]
-    clut = [0] + [max(1, (r >> 3) | (g >> 3) << 5 | (b >> 3) << 10) for r, g, b in colours[1:]]
+    clut = [0] + [0x8000 | (r >> 3) | (g >> 3) << 5 | (b >> 3) << 10 for r, g, b in colours[1:]]
     data = struct.pack('<II', 0x10, 9)
     data += struct.pack('<IHHHH', 12 + 512, *CLUT_XY, 256, 1) + struct.pack('<256H', *clut)
     data += struct.pack('<IHHHH', 12 + W * H, *IMAGE_XY, W // 2, H) + b''.join(bytes(row) for row in rows)
