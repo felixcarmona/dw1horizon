@@ -123,7 +123,10 @@ reuses the Digimon World 2 converter (`tools/dw2efe.py`):
    checks that every own effect's parts that start on the caster's half start inside the caster's box.
 5. Parts are not re-aimed. Digimon World 2's rule of re-aiming a far-flying part at the target and hiding it at
    the hit would cut a DW2003 beam, which keeps drawing through its hit. So the effect plays as on the disc,
-   drawn for a target 2700 units away, and the hit comes when the converter's cast ends.
+   drawn for a target 2700 units away, and the hit comes when the converter's cast ends. A shot that is a
+   single flying ball instead overshoots: Pyrosphere's ball flies 3300 units whatever the distance, so it went
+   through the target and the hit came after it had gone. Such an entry sets `"aim": true` (`--aim`): the ball
+   is aimed at the target, vanishes at its body and the hit lands there (at 2700 on tick 24, at 1200 on tick 9).
 6. The launch point comes from the native chunk that the finisher design names as the template.
 7. The 3D effects' key frames are sampled every second tick, at this game's 30 frames a second.
 8. A technique with no 3D effect is converted from its sprites (`--sprites`). Each sprite block becomes a bone
@@ -312,7 +315,8 @@ drifts, a late burst is missing); Bastemon changes too seldom.
   emblem (sprites 1009 and 1020) is left out.
 - **Hit timing.** Several finisher designs call a technique a beam or a shot (Vilemon, HiAndromon,
   WarGrowlmon, Gallantmon, Bulbmon and others). The conversion does not re-aim their parts, so the damage
-  lands when the effect ends, not when a projectile arrives.
+  lands when the effect ends, not when a projectile arrives. Pyrosphere (Guilmon) is aimed (`"aim": true`). WarGrowlmon's Atomic
+  Blaster is a beam that stops about halfway to the target and the hit comes after it ends: not aimed yet.
 - **Camera.** DW2003 techniques move the camera; this game's effect engine keeps its own camera.
 - **Blending.** The 3D effects' blend meanings above are assumed; the sprites' are read from the frame records.
 

@@ -266,8 +266,8 @@ def dw3_effect(games, key, e, origin_table, area=False, root=None):
         tech = X.model_scripts(files, d['model'])[d['slot']]
         species = caster_of(root, int(key)) if root else None
         return E.convert(files, X.EffectIds(d['meft'], sprites), tech, E.FIELD_SCALE * d.get('scale', 1), origin_table,
-                         0x100 + int(key), area=area, leave_out=[tuple(x) for x in d.get('leave_out', [])],
-                         sounds=e.get('sounds'), caster_height=species['model']['height'] if species else None)
+                         0x100 + int(key), area=area, aim=d.get('aim', False),
+                         leave_out=[tuple(x) for x in d.get('leave_out', [])], sounds=e.get('sounds'), caster_height=species['model']['height'] if species else None)
 
 
 def caster_of(root, chunk):

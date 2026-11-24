@@ -22,8 +22,10 @@ species that have one are listed in [the signature attacks](../reference/signatu
   `[[slot, model, anim], ...]` (every object of the technique). `stands_for` is the species' finisher, whose launch
   point the chunk takes; `scale` is the species' model height here over its DW2 head height.
 - An entry converted from a DW2003 technique has `"dw3"` in place of the DW2 files: `{"model": "M170IVRU",
-  "slot": 9, "meft": [335], "pin": SHA-1}`, plus `leave_out` when parts do not fit (below). It has no scale,
-  `area` or `hits`: it is gameplay-neutral, one target and one hit, as the finisher it stands for.
+  "slot": 9, "meft": [335], "pin": SHA-1}`, plus `leave_out` when parts do not fit (below), and `"aim": true` for
+  a shot that flies to its target (a ball, not a beam): its flying part is aimed at the target, stops and vanishes
+  at the target's body, and the hit lands there, at any distance (Guilmon's Pyrosphere). It has no `area` or
+  `hits`: it is gameplay-neutral, one target and one hit, as the finisher it stands for.
 
 ## Converting a DW2 technique
 

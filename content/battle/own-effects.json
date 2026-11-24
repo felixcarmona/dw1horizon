@@ -598,7 +598,7 @@
     "name": "Pyrosphere",
     "stands_for": 59,
     "sounds": [[165, 27], [165, 41], [275, 24]],
-    "dw3": {"model": "M366GIRU", "slot": 11, "meft": [102], "scale": 1.26, "pin": "e52ede128d349fb83378d00456d02d50db7c00b3"}
+    "dw3": {"model": "M366GIRU", "slot": 11, "meft": [102], "scale": 1.26, "aim": true, "pin": "c0371c73cc031e6ccdabb8d799f25982e7be5b96"}
   },
   "224": {
     "name": "Striking Fish",
