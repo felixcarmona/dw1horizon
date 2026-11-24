@@ -407,11 +407,12 @@ orange as HP drops, and the current HP in the big battle digits above the
 outline's right end. The number is right-aligned in a four-digit field (five
 past 9999), so it stays in place as it loses digits. The fill keeps at least one
 pixel until the enemy dies. The group moves inside the screen and below the top
-corner HUDs; finishers, cutscenes and results suppress the new head bars. Arena and VS keep
-their fixed HP/MP panels and add the same head bar for the opponent.
+corner HUDs; finishers, cutscenes and results suppress the new head bars. Arena and VS show
+only their fixed HP/MP panels: the opponent's HP is already there, so they draw
+no head bar.
 
-Select no longer hides life bars. Their display is continuous in wild, arena and
-VS battles. The player panels and finisher meters retain their existing behavior.
+Select no longer hides life bars. Their display is continuous in wild battles.
+The player panels and finisher meters retain their existing behavior.
 Cheats still uses Select while paused and its optional field shortcuts.
 
 Record 0x0009 retains 14 bytes. Byte 12 keeps CHEATS/SELECT SHORTCUTS; byte 13
