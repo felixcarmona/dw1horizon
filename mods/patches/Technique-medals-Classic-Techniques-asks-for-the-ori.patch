@@ -1,0 +1,168 @@
+From 87b812810f81942d0c1363229ba5da77bb106f75 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 15:40:08 +0000
+Subject: [PATCH] Technique medals: Classic Techniques asks for the original
+ 57, a new Technique Master for every technique
+
+Medal 5 is renamed Classic Techniques. Medal 20, Technique Master, is earned by the 57 original techniques and every
+technique of the new rows. The medal table grows to 21 rows (a new condition kind, every move), medal 20 is stored in
+trigger 641 because 0x180 is the shop stock, and unlockMedal accepts every medal (it stopped at 18, which left Full
+Collection out). The medal art block holds five sectors of small pictures.
+---
+ include/dw/ids.h         |  2 ++
+ include/dw/tournament.h  |  5 +++--
+ src/main/game_menu.c     |  5 ++++-
+ src/main/script_common.c |  7 ++++---
+ src/main/tamer.c         |  7 +++++++
+ text/main/game_menu.yaml | 12 ++++++++++++
+ 6 files changed, 32 insertions(+), 6 deletions(-)
+
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index 2d3a3a5..4e4a9ae 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -192,6 +192,8 @@ typedef uint16_t CardId;
+ #define TRIGGER_RECRUITED_BASE	200	/* + Digimon type */
+ #define TRIGGER_SHOP_STOCK_BASE	0x180	/* + item id */
+ #define TRIGGER_RAISED_BASE	0x200	/* + Digimon type */
++/* MOD (technique medals): medal m is trigger 0x16C + m up to medal 19 (0x180 is the shop stock); medal 20 is trigger 641 */
++#define MEDAL_TRIGGER(m)	((m) < 20 ? (m) + 0x16c : (m) - 20 + 641)
+ 
+ /*
+  * The current and previous screen, 16-bit since step 3 of ids.md § 10.
+diff --git a/include/dw/tournament.h b/include/dw/tournament.h
+index 190f3fd..c39cd29 100644
+--- a/include/dw/tournament.h
++++ b/include/dw/tournament.h
+@@ -25,7 +25,7 @@ int32_t checkTournamentMedalConditions(void);
+  * content/tables/medals.json. A row is checked every tamer tick (MOD_MEDAL_TICK), by the script routine 0x16 (MOD_MEDAL_SCRIPT, `text`
+  * is the textbox shown), or both, and may raise the tamer level (MOD_MEDAL_LEVEL_UP).
+  */
+-#define MOD_MEDAL_MAX		20
++#define MOD_MEDAL_MAX		21
+ #define MOD_MEDAL_TICK		1
+ #define MOD_MEDAL_SCRIPT	2
+ #define MOD_MEDAL_LEVEL_UP	4
+@@ -36,7 +36,7 @@ int32_t checkTournamentMedalConditions(void);
+ #define MOD_MEDAL_HIDE		64
+ /* where the original game's residents end: the ids from here on are Horizon's (the City page marks them) */
+ #define MOD_ORIGINAL_RESIDENTS_END	59
+-#define MOD_MEDAL_COUNT		20 /* medals 0..19: the triggers 0x16C.. hold no more */
++#define MOD_MEDAL_COUNT		21 /* medals 0..19 are the triggers 0x16C.., medal 20 is trigger 641 (MEDAL_TRIGGER) */
+ enum {
+ 	MOD_MEDAL_ALL_TRIGGERS = 1, /* a = first trigger, b = how many: all set */
+ 	MOD_MEDAL_WINS,             /* tournament wins >= a */
+@@ -49,6 +49,7 @@ enum {
+ 	MOD_MEDAL_FISH,             /* fish caught >= a */
+ 	MOD_MEDAL_ALL_PARTNERS,     /* every species of the partner list raised once */
+ 	MOD_MEDAL_RESIDENTS,        /* every city resident recruited (a = 1: the original game's only) */
++	MOD_MEDAL_EVERY_MOVE,       /* the first a techniques and every technique of the new rows learned */
+ };
+ typedef struct {
+ 	int16_t medal; /* -1 = unused row */
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 56a6d5c..9fc7cb0 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -1763,6 +1763,7 @@ char *MEDAL_NAMES[MOD_MEDAL_COUNT] = {
+ 	STR_MEDAL_NAME_LIMIT_BREAKER,
+ 	STR_MEDAL_NAME_HORIZON_CITY,
+ 	STR_MEDAL_NAME_FULL_COLLECTION,
++	STR_MEDAL_NAME_ALL_TECHNIQUES, /* MOD (technique medals) */
+ };
+ 
+ #if !VERSION_IS(US)
+@@ -1827,7 +1828,7 @@ char *MEDAL_DESCRIPTIONS[MOD_MEDAL_COUNT * 2] = {
+ 	STR_MEDAL_DESCRIPTION_WON_CHAMPIONSHIP_100_TIMES,
+ 	STR_OVERWORLD_EMPTY,
+ 	STR_MEDAL_DESCRIPTION_MASTERED_56_SWITCH_TECHNIQUES,
+-	STR_OVERWORLD_EMPTY,
++	STR_MEDAL_DESCRIPTION_CLASSIC_TECHNIQUES_2,
+ 	STR_MEDAL_DESCRIPTION_RAISED_ALL_61_DIGIMON,
+ 	STR_MEDAL_DESCRIPTION_CLASSIC_MASTER_2,
+ 	STR_MEDAL_DESCRIPTION_MAXED_ALL_OF_THE_DIGIMONS,
+@@ -1856,6 +1857,8 @@ char *MEDAL_DESCRIPTIONS[MOD_MEDAL_COUNT * 2] = {
+ 	STR_MEDAL_DESCRIPTION_HORIZON_CITY_2,
+ 	STR_MEDAL_DESCRIPTION_FULL_COLLECTION_1,
+ 	STR_MEDAL_DESCRIPTION_FULL_COLLECTION_2,
++	STR_MEDAL_DESCRIPTION_ALL_TECHNIQUES_1, /* MOD (technique medals) */
++	STR_MEDAL_DESCRIPTION_ALL_TECHNIQUES_2,
+ };
+ #endif
+ 
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 95e3f4b..735b36f 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -1,4 +1,5 @@
+ #include <dw/ids.h>
++#include <dw/tournament.h> /* MOD (technique medals) */
+ #include <string.h>
+ 
+ #include <dw/mod_options.h>
+@@ -3160,14 +3161,14 @@ int32_t hasDigimonRaised(digimonId)
+ 
+ void unlockMedal(uint16_t medal)
+ {
+-	if (medal < 0x13) {
+-		setTrigger(medal + 0x16c);
++	if (medal < MOD_MEDAL_COUNT) { /* MOD (technique medals): was medal < 0x13, which left medal 19 out */
++		setTrigger(MEDAL_TRIGGER(medal));
+ 	}
+ }
+ 
+ int32_t hasMedal(uint16_t medal)
+ {
+-	return isTriggerSet(medal + 0x16c);
++	return isTriggerSet(MEDAL_TRIGGER(medal));
+ }
+ 
+ void createMonochromonMoodBubble(void)
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 2700281..65110dc 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -764,10 +764,17 @@ int32_t modMedalCount(ModMedal *m, int32_t *need)
+ 		}
+ 		break;
+ 	case MOD_MEDAL_ALL_MOVES:
++	case MOD_MEDAL_EVERY_MOVE: /* MOD (technique medals): the first a techniques, and with EVERY_MOVE those of the new rows */
+ 		*need = m->a;
+ 		for (i = 0; i < m->a; i++) {
+ 			have += hasMove(i) != 0;
+ 		}
++		if (m->kind == MOD_MEDAL_EVERY_MOVE) {
++			*need += NUM_NEW_MOVES;
++			for (i = 0; i < NUM_NEW_MOVES; i++) {
++				have += hasMove(NEW_MOVE_FIRST + i) != 0;
++			}
++		}
+ 		break;
+ 	case MOD_MEDAL_STATS:
+ 		bs = &PARTNER_ENTITY.digimonEntity.stats.base;
+diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
+index 210adfb..cd696bd 100644
+--- a/text/main/game_menu.yaml
++++ b/text/main/game_menu.yaml
+@@ -379,6 +379,18 @@ CHART_TEXT:
+     STR_MEDAL_DESCRIPTION_FULL_COLLECTION_2:
+       en_us: "old and new"
+       ja: "old and new"
++    STR_MEDAL_NAME_ALL_TECHNIQUES:
++      en_us: "Technique Master"
++      ja: "Technique Master"
++    STR_MEDAL_DESCRIPTION_CLASSIC_TECHNIQUES_2:
++      en_us: "of the original game"
++      ja: "of the original game"
++    STR_MEDAL_DESCRIPTION_ALL_TECHNIQUES_1:
++      en_us: "Learned every technique,"
++      ja: "Learned every technique,"
++    STR_MEDAL_DESCRIPTION_ALL_TECHNIQUES_2:
++      en_us: "the new ones included"
++      ja: "the new ones included"
+     STR_MEDAL_EARNED:
+       en_us: "Earned"
+       ja: "Earned"
+-- 
+2.55.0
+

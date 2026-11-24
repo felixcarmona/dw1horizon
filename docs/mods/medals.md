@@ -1,7 +1,7 @@
 # Medals
 
 The original game has fifteen medals. Horizon keeps them as the **classic** medals, which ask only for what the original
-game had, and adds four **Horizon** medals that ask for everything the mod adds on top, next to Curling Legend, the
+game had, and adds **Horizon** medals that ask for everything the mod adds on top, next to Curling Legend, the
 medal of the rink's hardest cup ([curling](curling.md)). The rules are data:
 `content/tables/medals.json` (keys in its `_comment`), encoded by `tools/balance.py` into `MOD_MEDALS`.
 
@@ -9,7 +9,7 @@ medal of the rink's hardest cup ([curling](curling.md)). The rules are data:
 |---|---|---|
 | 0-3 | Grade, Version, Type, Special Cups | winning every cup of the group |
 | 4 | 100 Wins | 100 tournament wins |
-| 5 | Technique Master | every technique learned |
+| 5 | Classic Techniques | the 57 techniques of the original game learned |
 | 6 | Classic Master | raising the 61 original Digimon |
 | 7 | Classic Peak | HP and MP 9999, the other four stats 999, on one Digimon |
 | 8 | Perfect Curling | a perfect curling score |
@@ -24,12 +24,15 @@ medal of the rink's hardest cup ([curling](curling.md)). The rules are data:
 | 17 | Limit Breaker | HP and MP 15000, the other four stats 1500, on one Digimon |
 | 18 | Horizon City | every resident recruited (EXTENDED STORY on) |
 | 19 | Full Collection | every card (NEW CARDS on) |
+| 20 | Technique Master | the 57 original techniques and every technique of the new rows (kind `everyMove`) |
 
 - A classic medal does not change with the options: Classic Collection counts only the original cards even with NEW CARDS on.
 - Horizon Master, Horizon City and Full Collection wait for their option. While it is off the medal is not shown in the
   Medals view, is not counted on the Player page and cannot be earned. A medal already earned is kept.
 - Classic City is checked every tick from the recruit flags. Jijimon's scene at 100 prosperity still raises the tamer
   level and brings Tsunomon, and no longer gives the medal.
+
+Medals 0-19 are the triggers `0x16C + medal`; medal 20 is trigger 641 (`MEDAL_TRIGGER`, ids.h), because `0x180` is the shop stock.
 
 ## The Medals view
 

@@ -1,5 +1,5 @@
 {
-  "_comment": "When a medal is awarded. The C holds none: the rows start unused and the build writes these (at most 20); a medal with no row here is never awarded by the game itself (the story can still award it). when = [kind, numbers]: allTriggers [first, count] all set; wins [n] tournament wins >= n; allCards [trigger, end] every real authored card below the id `end` owned (0: every card) and that trigger set (-1: none); allMoves [n] the first n techniques learned; stats [hpMp, others] all six base stats at least; money [n] exactly; year [n] exactly; allRaised [first, end] the species first..end-1 raised once; fish [n] caught >= n; allPartners [] every species a partner can be raised once; residents [originals] every city resident recruited (1: only the original game's fifty). needs: the OPTIONS switch the row waits for (newDigimon, newCards, extendedStory); hiddenWithout: the medal is not shown while that switch is off. checkedBy: tick = every tamer tick, script = the card-trader routine (the textbox shown is `text`). levelUp raises the tamer level.",
+  "_comment": "When a medal is awarded. The C holds none: the rows start unused and the build writes these (at most 21); a medal with no row here is never awarded by the game itself (the story can still award it). when = [kind, numbers]: allTriggers [first, count] all set; wins [n] tournament wins >= n; allCards [trigger, end] every real authored card below the id `end` owned (0: every card) and that trigger set (-1: none); allMoves [n] the first n techniques learned; everyMove [n] the first n techniques and every technique of the new rows; stats [hpMp, others] all six base stats at least; money [n] exactly; year [n] exactly; allRaised [first, end] the species first..end-1 raised once; fish [n] caught >= n; allPartners [] every species a partner can be raised once; residents [originals] every city resident recruited (1: only the original game's fifty). needs: the OPTIONS switch the row waits for (newDigimon, newCards, extendedStory); hiddenWithout: the medal is not shown while that switch is off. checkedBy: tick = every tamer tick, script = the card-trader routine (the textbox shown is `text`). levelUp raises the tamer level.",
   "medals": [
     {
       "medal": 0,
@@ -35,7 +35,7 @@
       "when": ["allMoves", 57],
       "checkedBy": ["tick"],
       "text": 0,
-      "note": "all 57 techniques learned"
+      "note": "Classic Techniques: the 57 techniques of the original game learned"
     },
     {
       "medal": 6,
@@ -109,6 +109,13 @@
       "needs": "newCards",
       "hiddenWithout": true,
       "note": "Full Collection: every card, the new ones included"
+    },
+    {
+      "medal": 20,
+      "when": ["everyMove", 57],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "note": "Technique Master: the 57 original techniques and all 40 of the new rows learned"
     }
   ]
 }
