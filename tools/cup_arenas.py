@@ -54,7 +54,12 @@ PILLAR = ('c', 0, 120, 127, 239)
 # the floor reaches the File City arena's cage at 3120.
 SEGMENTS = 24
 MEDALLION_R = 1000
-FLOOR_RINGS = [1000, 1700, 2450, 3260]        # the last ring passes under the wall, so no gap shows at its foot
+# The last ring passes under the wall, so no gap shows at its foot. No ring between 2300 and 2800: the camera of the
+# bracket circles at 2890, and a corner there lands more than 663 lines below the centre of the picture without
+# leaving the range the game drops polygons at; in the lower of the two display buffers that is past the last line a
+# coordinate holds, and the polygon is drawn across the picture every other frame. The File City arena's rings are
+# at 2000 and 3100.
+FLOOR_RINGS = [1000, 1600, 2200, 3260]
 WALL_R, WALL_H, WALL_T = 3120, 560, 200
 # The cup's opening shot and the bracket look from about 5150 out and 3430 up (GS_VIEWPOINT, measured), from outside
 # the room as in the File City arena (its walls stand at 4000): the cliff near that camera shows it its back, which
@@ -146,13 +151,13 @@ def floor_object():
         m.tri([(0, 0, 0), b, a], [uv((0, 0, 0)), uv(b), uv(a)], MEDALLION, toward=ABOVE)
         c, d = ring(MEDALLION_R, k, SEGMENTS), ring(MEDALLION_R, k + 1, SEGMENTS)
         m.quad([b, a, d, c], [uv(b), uv(a), uv(d), uv(c)], MEDALLION, toward=ABOVE)
-    # Narrow rings: the low cameras of the fight look along the floor, where a long quad folds its picture (affine
-    # mapping). The picture spans two segments and two rings, about 11 units a texel: finer, its lines shimmer as
-    # the camera moves (no mipmaps on the PlayStation).
+    # The picture spans two segments and two of the inner rings, about 9 units a texel: finer, its lines shimmer as
+    # the camera moves (no mipmaps on the PlayStation). The outer ring is as long as two and takes the picture whole.
     for i, (r0, r1) in enumerate(zip(FLOOR_RINGS, FLOOR_RINGS[1:])):
         for k in range(SEGMENTS):
             p = [ring(r0, k, SEGMENTS), ring(r0, k + 1, SEGMENTS), ring(r1, k, SEGMENTS), ring(r1, k + 1, SEGMENTS)]
-            m.quad([p[1], p[0], p[3], p[2]], piece(FLOOR, k % 2, 2, i % 2, 2), FLOOR, toward=ABOVE)
+            uv = piece(FLOOR, k % 2, 2, i % 2, 2) if i < len(FLOOR_RINGS) - 2 else piece(FLOOR, k % 2, 2, 0, 1)
+            m.quad([p[1], p[0], p[3], p[2]], uv, FLOOR, toward=ABOVE)
     return wall_object(m)
 
 
@@ -225,11 +230,39 @@ def surround_object():
     return m
 
 
+def bracket_check(meshes):
+    """The bracket's camera circles the arena (view 0,500,3000, tilted 100/4096 of a turn, projection 500). The game
+    drops a polygon with a corner out of the +-1023 range or nearer than 250; one that stays in range with a corner
+    more than 663 lines below the centre passes the last line of the lower display buffer (+360) and is drawn across
+    the picture every other frame. No polygon may do that at any angle."""
+    ct, st = math.cos(2 * math.pi * 100 / 4096), math.sin(2 * math.pi * 100 / 4096)
+    for step in range(0, 4096, 4):
+        cp, sp = math.cos(2 * math.pi * step / 4096), math.sin(2 * math.pi * step / 4096)
+        for m in meshes:
+            for p in m.prims:
+                low = False
+                for x, y, z in (m.verts[i] for i in p['verts']):
+                    z1 = -sp * x + cp * z
+                    zv = st * y + ct * z1 + 3000
+                    if zv < 250:
+                        break
+                    sx, sy = (cp * x + sp * z) * 500 / zv, (ct * y - st * z1 + 500) * 500 / zv
+                    if abs(sx) > 1023 or abs(sy) > 1023:
+                        break
+                    low = low or sy > 663
+                else:
+                    if low:
+                        raise ValueError('a polygon passes the last line of the display buffer under the bracket camera: '
+                                         f'{[m.verts[i] for i in p["verts"]]}')
+
+
 # Every polygon is unlit (flag 1) and textured: the kinds the File City arena uses, which GsSortObject4 draws.
 def tmd():
     import mmd
     t = mmd.TMD()
-    for mesh in (floor_object(), pillar_object(), surround_object()):
+    meshes = (floor_object(), pillar_object(), surround_object())
+    bracket_check(meshes)
+    for mesh in meshes:
         ob = mmd.TMDObject()
         ob.vert_start, ob.nvert = len(t.verts), len(mesh.verts)
         t.verts += [v + (0,) for v in mesh.verts]
