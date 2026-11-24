@@ -34,6 +34,7 @@ FOLDS_AT = (88, 88, 35, 24)                # the tamer's own trousers on his tex
 DARK2, LIGHT2 = 11, 12                     # the second colour and its shade
 BARE = (160, 88, 24)                       # bare skin, drawn at the end of the cloth: u, v, height (shirts.skin_strips)
 SKIN_TONES = (13, 14, 15)                  # its tones: lit, plain, shaded
+SHIN_FROM = .4                             # where down the drawing a shin's cloth begins
 
 
 def patch(p, a=0.0, b=1.0, half=None):
@@ -53,12 +54,14 @@ def leg(mesh, rings, ns, phase, outer, x0):
 
     def radial(c):
         return (0, c[1], c[2] - 1)
-    length, reach = (66, 1) if x0 else (52, .86)
+    # a thigh runs down the drawing from its top, and a shin from where the tones are the thigh's last ones to its last
+    # rows: the drawing's first rows are its darkest (the waist), and a shin that began there was a darker block under
+    # the knee, the whole of a capri's
+    length, first, reach = (66, SHIN_FROM, 1 - SHIN_FROM) if x0 else (52, 0, .86)
     for i in range(len(rings) - 1):
         kind = rings[i + 1][3]
-        # each of the two bones runs down the whole drawing: its folds keep their shape (a shin's end is its last rows)
-        a = max(0, min(1, rings[i][0] / length)) * reach
-        b = max(0, min(1, rings[i + 1][0] / length)) * reach
+        a = first + max(0, min(1, rings[i][0] / length)) * reach
+        b = first + max(0, min(1, rings[i + 1][0] / length)) * reach
         for j in range(ns):
             vs = (ids[i][j], ids[i][(j + 1) % ns], ids[i + 1][j], ids[i + 1][(j + 1) % ns])
             if kind == 's':
