@@ -1,0 +1,26 @@
+From 67cdeffc5194711f3242d2bf26581346555a405f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 11:15:19 +0000
+Subject: [PATCH] Care HUD: the icons centred in the bar's left cap
+
+---
+ src/main/partner_impl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 57ff7ea8..2f71632d 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2412,7 +2412,8 @@ static void renderCareHUD(void)
+ 		renderRectPolyFT4(x, y, 48, 8, 144, 236, 31, getClut(272, 508), 15, 0);
+ 		if (pixels)
+ 			renderRectPolyFT4(x + 18, y + 3, pixels, 2, 196, 236, 31, getClut(272, 507), 14, 0);
+-		renderRectPolyFT4(x + 1, y - 2, 11, 11, 144 + icon * 11, 224, 31, clut, 13, 0);
++		/* The cap left of the slot's bevel is 15 pixels (frame columns 0..14): the 11-pixel icon is centred in it. */
++		renderRectPolyFT4(x + 2, y - 2, 11, 11, 144 + icon * 11, 224, 31, clut, 13, 0);
+ 	}
+ }
+ 
+-- 
+2.55.0
+

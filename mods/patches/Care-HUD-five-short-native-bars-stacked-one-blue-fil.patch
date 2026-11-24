@@ -1,0 +1,136 @@
+From 1e219eff160c2be13a134adc8fb213034c7d2957 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 10:15:22 +0000
+Subject: [PATCH] Care HUD: five short native bars stacked, one blue fill, no
+ blink or tint
+
+The field and training care HUD draws five short copies of the original field status bar in one column at the bottom right: happiness, discipline, hunger, toilet and tiredness. Each row is the native bar frame with its slot cut to 22 pixels, the icon on its left cap as the original game draws its two bars, and the native MP blue fill. Every fill has the same colour: the mood bars no longer turn green or red, and the need bars no longer blink when low or tint their icon when empty. The condition bubbles carry the warnings. Up to 15 quads a frame, 600 bytes of the existing packet buffer; the art lives in unused ETCTIM cells.
+---
+ src/main/partner_impl.c | 75 +++++++++++------------------------------
+ 1 file changed, 20 insertions(+), 55 deletions(-)
+
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 7b46fd3..57ff7ea 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2357,97 +2357,62 @@ void tickStatusBarsSlide(int32_t state)
+ 		STATUS_UI_OFFSET_X = 75;
+ }
+ 
+-/* B5a: tile art and fills live in unused ETCTIM cells, never in main RAM.
+-   Up to 13 FT4 packets use 520 bytes of the existing frame buffer. */
++/* Field care HUD: five short copies of the native field bar stacked in one column (happiness, discipline,
++   hunger, toilet, tiredness). Art in unused ETCTIM cells (tools/field_hud_art.py), never in main RAM: per row a
++   frame, its icon on the frame's left cap and the native blue fill. Up to 15 FT4 packets, 600 bytes of the
++   existing frame buffer. Every fill is the same blue: no colour change, blink or tint; the condition bubbles
++   carry the warnings. */
+ static void renderCareHUD(void)
+ {
+-	/* Texture u/v and screen x/y offsets for the seven icon variants. */
+-	static const uint8_t uv[4][7] = {
+-		{144,178,212,144,178,212,110},
+-		{224,224,224,237,237,237,242},
+-		{1,1,1,1,39,39,39},
+-		{72,72,86,86,65,79,93}
+-	};
+-	int32_t i, value, max, red, icon, x, y, pixels, active, warn, period, dim, clut;
++	int32_t i, value, max, icon, x, y, pixels, clut;
+ 	for (i = 0; i < 5; i++) {
+ 		max = 100;
+ 		icon = i + 2;
+-		active = warn = 0;
+ 		switch (i) {
+ 		case 0:
+ 			value = PARTNER_PARA.happiness + 100;
+ 			max = 200;
+-			red = PARTNER_PARA.happiness < 0;
+-			icon = red;
++			icon = PARTNER_PARA.happiness < 0;
+ 			break;
+ 		case 1:
+ 			value = PARTNER_PARA.discipline;
+-			red = value < 50;
+-			icon = 2 + red;
++			icon = 2 + (value < 50);
+ 			break;
+ 		case 2:
++			/* Time left until the next meal. */
+ 			value = PARTNER_PARA.foodLevel;
+-			period = careGet(MOD_CARE_HUNGER_FOOD_PERIOD);
+-			active = (PARTNER_PARA.condition & 4) != 0;
+-			if (period > 0) {
+-				active |= value <= 0;
+-				warn = value * period <= 1200;
+-			}
+-			red = active;
+ 			max = 180;
+ 			break;
+ 		case 3:
+-			period = careGet(MOD_CARE_POOP_PERIOD);
+-			active = (PARTNER_PARA.condition & 8) != 0;
++			/* Time left until the toilet. */
+ 			max = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer * 2;
+ 			value = 0;
+ 			if (max <= 0)
+ 				max = 1;
+-			else {
++			else
+ 				value = PARTNER_PARA.poopLevel;
+-				if (period > 0) {
+-					active |= PARTNER_PARA.poopLevel <= 0;
+-					warn = PARTNER_PARA.poopLevel * period <= 1200;
+-				}
+-			}
+-			red = active;
+ 			break;
+ 		default:
+-			value = PARTNER_PARA.tiredness;
+-			red = value >= 50;
+-			period = careGet(MOD_CARE_TIRED_EXHAUSTED_AT);
+-			active = (PARTNER_PARA.condition & 2) != 0;
+-			if (period >= 0) {
+-				active |= value >= period;
+-				/* ceil(100 / 18): the last native gauge step before exhaustion. */
+-				warn = value + 6 >= period;
+-			}
+ 			/* Energy remaining; condition thresholds still use raw fatigue. */
+-			value = max - value;
++			value = max - PARTNER_PARA.tiredness;
+ 		}
+-		/* Needs share light-blue fills; active changes only the icon palette. */
+-		x = STATUS_UI_OFFSET_X + uv[2][icon];
+-		y = uv[3][icon];
++		x = STATUS_UI_OFFSET_X + 28;
++		y = 49 + i * 12;
+ 		if (value < 0)
+ 			value = 0;
+ 		if (value > max)
+ 			value = max;
+-		pixels = ((uint32_t)value * 18 + (uint32_t)max / 2) / (uint32_t)max;
++		pixels = ((uint32_t)value * 22 + (uint32_t)max / 2) / (uint32_t)max;
+ 		if (value && !pixels)
+ 			pixels = 1;
+-		uint32_t phase = PLAYTIME_FRAMES / 5;
+-		/* One shared quotient preserves the 5-tick face and 20-tick warning phases. */
+-		dim = ((!active) & warn & (phase >> 2)) << 3;
+-		clut = getClut(272, 500 + icon + active * 4);
++		clut = getClut(272, 500 + icon);
+ 		/* Native disliked-habitat phase: five worse-face ticks, five normal. */
+-		if (i == 0 && MAP_TILE_DATA.partnerAreaResponse == 2 && !(phase & 1))
++		if (i == 0 && MAP_TILE_DATA.partnerAreaResponse == 2 && !((PLAYTIME_FRAMES / 5) & 1))
+ 			clut = getClut(272, 511) - icon;
+-		/* Warning dimming affects the outlined bar, never the icon. */
+-		renderRectPolyFT4(x, y, dim ? 13 : 34, 13, uv[0][icon], uv[1][icon], 31, clut, 14, 0);
+-		if (dim)
+-			renderRectPolyFT4(x + 14, y + 5, 20, 4, uv[0][icon] + 14, uv[1][icon] + 5, 31, clut, 14, dim);
++		renderRectPolyFT4(x, y, 48, 8, 144, 236, 31, getClut(272, 508), 15, 0);
+ 		if (pixels)
+-			renderRectPolyFT4(x + 15, y + 6, pixels, 2, i < 2 ? 144 : 164, i < 2 ? 251 + red * 2 : 251, 31, getClut(272, 507), 13, dim);
++			renderRectPolyFT4(x + 18, y + 3, pixels, 2, 196, 236, 31, getClut(272, 507), 14, 0);
++		renderRectPolyFT4(x + 1, y - 2, 11, 11, 144 + icon * 11, 224, 31, clut, 13, 0);
+ 	}
+ }
+ 
+-- 
+2.55.0
+

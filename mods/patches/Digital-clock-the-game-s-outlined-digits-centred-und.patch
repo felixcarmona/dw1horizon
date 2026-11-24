@@ -1,0 +1,139 @@
+From 1c8ec3dbdc4cbf91e4e207b86d400d2ea25bbef3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 10:57:53 +0000
+Subject: [PATCH] Digital clock: the game's outlined digits, centred under the
+ dial, no plate
+
+---
+ src/main/clock.c       | 73 ++++++++++++++++++------------------------
+ src/main/mod_options.c |  2 +-
+ 2 files changed, 33 insertions(+), 42 deletions(-)
+
+diff --git a/src/main/clock.c b/src/main/clock.c
+index 9e1486d..c3d01a6 100644
+--- a/src/main/clock.c
++++ b/src/main/clock.c
+@@ -279,20 +279,24 @@ int32_t modTimeOfDay(int32_t hour)
+ 	return 2;
+ }
+ 
+-/* MOD (digital clock): the hour as HH:MM in 3x5 digits on a small plate under the clock; each row of a digit is
+-   3 bits (bit 2 the left column), drawn as flat runs */
+-static const uint8_t CLOCK_DIGITS[10][5] = {
+-	{ 7, 5, 5, 5, 7 }, { 2, 6, 2, 2, 7 }, { 7, 1, 7, 4, 7 }, { 7, 1, 3, 1, 7 }, { 5, 5, 7, 1, 1 },
+-	{ 7, 4, 7, 1, 7 }, { 7, 4, 7, 5, 7 }, { 7, 1, 1, 1, 1 }, { 7, 5, 7, 5, 7 }, { 7, 5, 7, 1, 7 },
+-};
+-
+-static void addClockRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z)
++/* MOD (digital clock): the hour as HH:MM under the clock in the game's own outlined digits, the 8x9 cells at v 0xb7
++   of the text page (896,256) that drawEntityText draws 8 rows of (its ninth row, the bottom outline, is drawn here).
++   Digits step 7 pixels so neighbours share their outline column, as the game places them; the colon is two outlined
++   dots with a free pixel on each side. The 35-pixel string is centred on the clock's ring whatever the hour.
++   Modulated to white (the texture's grey 200 becomes 248). */
++void setEntityTextDigit(POLY_FT4 *poly, int32_t x, int32_t y);
++void setUVDataPolyFT4(POLY_FT4 *prim, int32_t u, int32_t v, int32_t w, int32_t h);
++void setPosDataPolyFT4(POLY_FT4 *prim, int32_t x, int32_t y, int32_t w, int32_t h);
++
++#define CLOCK_DIGIT_RGB	0x9f
++
++static void addClockRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t c, int32_t z)
+ {
+ 	POLY_F4 *p;
+ 
+ 	p = (POLY_F4 *)GsGetWorkBase();
+ 	SetPolyF4(p);
+-	setRGB0(p, r, g, b);
++	setRGB0(p, c, c, c);
+ 	setXYWH(p, x, y, w, h);
+ 	AddPrim(ACTIVE_ORDERING_TABLE->org + z, p++);
+ 	GsSetWorkBase((PACKET *)p);
+@@ -300,30 +304,18 @@ static void addClockRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r,
+ 
+ static void addClockDigit(int32_t x, int32_t y, int32_t digit)
+ {
+-	int32_t row;
+-	int32_t bits;
+-
+-	for (row = 0; row < 5; row++) {
+-		bits = CLOCK_DIGITS[digit][row];
+-		if (bits == 7)
+-			addClockRect(x, y + row, 3, 1, 0xF0, 0xF0, 0xF0, 8);
+-		else if (bits == 6)
+-			addClockRect(x, y + row, 2, 1, 0xF0, 0xF0, 0xF0, 8);
+-		else if (bits == 3)
+-			addClockRect(x + 1, y + row, 2, 1, 0xF0, 0xF0, 0xF0, 8);
+-		else {
+-			if (bits & 4)
+-				addClockRect(x, y + row, 1, 1, 0xF0, 0xF0, 0xF0, 8);
+-			if (bits & 2)
+-				addClockRect(x + 1, y + row, 1, 1, 0xF0, 0xF0, 0xF0, 8);
+-			if (bits & 1)
+-				addClockRect(x + 2, y + row, 1, 1, 0xF0, 0xF0, 0xF0, 8);
+-		}
+-	}
++	POLY_FT4 *prim;
++
++	prim = (POLY_FT4 *)GsGetWorkBase();
++	setEntityTextDigit(prim, 256, 484);
++	setRGB0(prim, CLOCK_DIGIT_RGB, CLOCK_DIGIT_RGB, CLOCK_DIGIT_RGB);
++	setUVDataPolyFT4(prim, digit * 8, 0xb7, 8, 9);
++	setPosDataPolyFT4(prim, x, y, 8, 9);
++	AddPrim(ACTIVE_ORDERING_TABLE->org + 8, prim++);
++	GsSetWorkBase((PACKET *)prim);
+ }
+ 
+-/* the plate is 23 x 9 pixels, centred under the clock's face (x + 24), its top 2 pixels below it; a later prim at the
+-   same depth is drawn under an earlier one, so the edge, the dark inside and the digits go 11, 10, 9, 8 */
++/* x is the string's left edge: digits at 0, 7, 20, 27, the colon's dots at 16..18 */
+ static void renderDigitalClock(int32_t x, int32_t y)
+ {
+ 	int32_t hour = HOUR;
+@@ -333,15 +325,14 @@ static void renderDigitalClock(int32_t x, int32_t y)
+ 		hour = 0;
+ 	if (minute < 0 || minute > 59)
+ 		minute = 0;
+-	addClockRect(x, y, 23, 9, 0x62, 0xB4, 0xF6, 11);
+-	addClockRect(x + 1, y + 1, 21, 7, 0x18, 0x18, 0x18, 10);
+-	addClockRect(x + 2, y + 2, 19, 5, 0x20, 0x20, 0x20, 9);
+-	addClockDigit(x + 3, y + 2, hour / 10);
+-	addClockDigit(x + 7, y + 2, hour % 10);
+-	addClockRect(x + 11, y + 3, 1, 1, 0xF0, 0xF0, 0xF0, 8);
+-	addClockRect(x + 11, y + 5, 1, 1, 0xF0, 0xF0, 0xF0, 8);
+-	addClockDigit(x + 13, y + 2, minute / 10);
+-	addClockDigit(x + 17, y + 2, minute % 10);
++	addClockDigit(x, y, hour / 10);
++	addClockDigit(x + 7, y, hour % 10);
++	addClockRect(x + 17, y + 2, 1, 1, 0xf8, 8);
++	addClockRect(x + 17, y + 6, 1, 1, 0xf8, 8);
++	addClockRect(x + 16, y + 1, 3, 3, 0x10, 9);
++	addClockRect(x + 16, y + 5, 3, 3, 0x10, 9);
++	addClockDigit(x + 20, y, minute / 10);
++	addClockDigit(x + 27, y, minute % 10);
+ }
+ 
+ void renderGameClock(int32_t instanceId)
+@@ -379,7 +370,7 @@ void renderGameClock(int32_t instanceId)
+ 			  6, 6, 203, 216,
+ 			  GetTPage(0, 0, 896, 448), GetClut(256, 497), 9, 0);
+ 
+-	renderDigitalClock(CLOCK_OFFSET_X + 13, -46);
++	renderDigitalClock(CLOCK_OFFSET_X + 6, -46);
+ 
+ 	renderStatusBars(IS_GAMETIME_RUNNING);
+ 	modStrengthMarks();
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 601725b..a7b201e 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -13,7 +13,7 @@
+  * from the disc's own frames: the cross is painted over with the button's face and a ring drawn where it was, in the
+  * red of the PlayStation's ○ (its own CLUT, modButtonClut).
+  *
+- * DIGITAL CLOCK. The hour as HH:MM on a plate under the clock (patch 0166, renderDigitalClock in clock.c), on or off.
++ * DIGITAL CLOCK. The hour as HH:MM in the game's outlined digits under the clock (patch 0166, renderDigitalClock in clock.c), on or off.
+  *
+  * NEW STATUS BARS. The field's happiness and discipline bars as patches 0162-0164 draw them (one fill, red below the
+  * midpoint, green from it, on a grey track), or off, as the original drew them (renderStatusBars, partner_impl.c).
+-- 
+2.55.0
+
