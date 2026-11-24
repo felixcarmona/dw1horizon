@@ -435,6 +435,28 @@
    "Entrada: Digimon de Agua"
   ]
  ],
+ "s102.sec10.u40": [
+  [
+   "- Copa Espada -",
+   "Corona al mejor Digimon",
+   "de especialidad Arma.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Arma"
+  ]
+ ],
+ "s102.sec10.u41": [
+  [
+   "- Copa Gaia -",
+   "Corona al mejor Digimon",
+   "de especialidad Tierra.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Tierra"
+  ]
+ ],
  "s102.sec51.u0": "Hoy no torneo.",
  "s102.sec51.u1": "Quien no inscrito, no entrar.",
  "s102.sec51.u2": "Todavía preparar. Venir día 22, de 10:00 de mañana a 23:00 de noche.",

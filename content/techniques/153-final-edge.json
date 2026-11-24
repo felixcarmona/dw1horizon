@@ -1,0 +1,21 @@
+{
+  "id": 153,
+  "name": "Final Edge",
+  "element": "weapon",
+  "power": 540,
+  "mpCost": 96,
+  "distance": 360000,
+  "range": 2,
+  "accuracy": 84,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    12,
+    7,
+    0
+  ]
+}

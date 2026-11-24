@@ -5,7 +5,7 @@ from pathlib import Path as _ImagePath
 _image_sys.path.insert(0, str(next(p for p in _ImagePath(__file__).resolve().parents if (p / 'tools').is_dir())))
 import json, copy, os
 from tex import *; from words import *
-PT_WORDS = {'AGUA': 'ÁGUA', 'NOMBRE': 'NOME', 'ESPECIE': 'DIGI', 'EDAD': 'DIAS', 'ACTIVO': 'ATIVO', 'FELICIDAD': 'FELICID.', 'VELOCIDAD': 'VELOCID.', 'INTELECTO': 'INTELECTO', 'RAPIDEZ': 'RAPIDEZ', 'POTENCIA': 'POT.', 'ALCANCE': 'ALCANCE', 'EFECTO': 'EFEITO', 'DATOS TÉC.': 'DADOS TÉC.', 'OBJETO': 'ITEM', 'PRECIO': 'VALOR', 'TÍTULO': 'TÍTULO', 'PUNTOS': 'PONTOS', 'CANT.': 'QTD.', 'FUEGO': 'FOGO', 'AIRE': 'AR', 'TIERRA': 'TERRA', 'HIELO': 'GELO', 'MUGRE': 'SUJO'}
+PT_WORDS = {'AGUA': 'ÁGUA', 'NOMBRE': 'NOME', 'ESPECIE': 'DIGI', 'EDAD': 'DIAS', 'ACTIVO': 'ATIVO', 'FELICIDAD': 'FELICID.', 'VELOCIDAD': 'VELOCID.', 'INTELECTO': 'INTELECTO', 'RAPIDEZ': 'RAPIDEZ', 'POTENCIA': 'POT.', 'ALCANCE': 'ALCANCE', 'EFECTO': 'EFEITO', 'DATOS TÉC.': 'DADOS TÉC.', 'OBJETO': 'ITEM', 'PRECIO': 'VALOR', 'TÍTULO': 'TÍTULO', 'PUNTOS': 'PONTOS', 'CANT.': 'QTD.', 'FUEGO': 'FOGO', 'AIRE': 'AR', 'TIERRA': 'TERRA', 'HIELO': 'GELO', 'MUGRE': 'SUJO', 'NATURA': 'NATUREZA'}
 def tr(word):
     return PT_WORDS.get(word, word) if os.environ.get('LOCALIZE_LANGUAGE') == 'pt-br' else word
 EN=grid(); ES=copy.deepcopy(EN)
@@ -113,6 +113,14 @@ for en,es in ES_NAMES:
     assert len(arr[0]) <= w and x+w <= ES_ROW[0]+ES_ROW[2], es
     arr=[row + [15] * (w-len(row)) for row in arr]
     add(en,es,arr,x,ES_ROW[1],EN_AT[en],4,EL,'a new row: a cell of its own, drawn one line lower than the 10-row names'); x+=w
+# the weapon row's name and the fourth row's new one (the earth row takes the name the fourth row had): ten rows
+# tall as the originals are, in the free corner under MUGRE
+from tools.localize.tech_rows_art import WIDE_NAMES, WIDE_CELLS
+for en,es in WIDE_NAMES:
+    u,v,cw,ch=WIDE_CELLS[(en,es)]
+    arr=r_elem(tr(es))
+    assert len(arr)==ch and len(arr[0])<=cw, es
+    add(en,es,arr,u,v,EN_AT[en],4,EL,'a new name: a cell of its own')
 
 # ---- outputs ----
 open('SYSTEM_W.es.idx','wb').write(bytes(ES[y][x] for y in range(H) for x in range(W)))

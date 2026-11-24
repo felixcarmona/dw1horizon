@@ -2190,6 +2190,28 @@
    "Entrada: Digimon de Agua"
   ]
  ],
+ "s209.sec10.u40": [
+  [
+   "- Copa Espada -",
+   "Corona al mejor Digimon",
+   "de especialidad Arma.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Arma"
+  ]
+ ],
+ "s209.sec10.u41": [
+  [
+   "- Copa Gaia -",
+   "Corona al mejor Digimon",
+   "de especialidad Tierra.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Tierra"
+  ]
+ ],
  "s210.sec51.u0": "Te estaba esperando, {color 6}{player}{color 1}. Por fin ha llegado el día.",
  "s210.sec51.u1": "¿Qué pasa?",
  "s210.sec51.u2": "¡Ha aparecido el camino al Monte Infinito!",
@@ -2980,6 +3002,28 @@
    "",
    "Individual, 3 rondas, 8 plazas",
    "Entrada: Digimon de Agua"
+  ]
+ ],
+ "s213.sec10.u40": [
+  [
+   "- Copa Espada -",
+   "Corona al mejor Digimon",
+   "de especialidad Arma.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Arma"
+  ]
+ ],
+ "s213.sec10.u41": [
+  [
+   "- Copa Gaia -",
+   "Corona al mejor Digimon",
+   "de especialidad Tierra.",
+   "Con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Tierra"
   ]
  ],
  "s213.sec54.u0": "Eh, no te has inscrito en el torneo.",
@@ -4337,6 +4381,22 @@
    "Premio: ¡5000 Bits!",
    "",
    "¡Has ganado {color 6}Hielo poder{color 1}!"
+  ]
+ ],
+ "s220.sec51.u26": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip Ataque{color 1}!"
+  ]
+ ],
+ "s220.sec51.u27": [
+  [
+   "",
+   "Premio: ¡5000 Bits!",
+   "",
+   "¡Has ganado {color 6}Chip Defensa{color 1}!"
   ]
  ],
  "s220.sec83.u0": [

@@ -70,6 +70,11 @@ W: #...#./#d..#d/#d..#d/#d..#d/#d#.#d/##d##d/#d.d#d/.d...d
 Z: ###./..#d/..#d/.#.d/#.d./#d../###./.ddd
 Á: ..#./.#../#.#./#d#d/###d/#d#d/#d#d/.d.d
 '''))
+# the names of the weapon row and of the fourth row's new name (WEAPON, NATURE; ARMA, NATURA)
+ELEM.update(F('''
+N: #..#./##.#d/##d#d/#d##d/#d##d/#d.#d/#d.#d/.d..d
+P: ##../#d#./#d#d/##.d/#dd./#d../#d../.d..
+'''))
 ELEM_NEW='L U O G M(5-wide; the original 4-wide M reads as N)'
 
 # status-screen stat labels (HAPPINESS/SPEED/BRAINS): 7-row yellow ink (E), shadow D at (+1,+1). clut row 4.

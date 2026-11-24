@@ -1,0 +1,21 @@
+{
+  "id": 148,
+  "name": "Armor Break",
+  "element": "weapon",
+  "power": 0,
+  "mpCost": 20,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 100,
+  "status": 8,
+  "statusChance": 25,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    22,
+    14,
+    9
+  ]
+}

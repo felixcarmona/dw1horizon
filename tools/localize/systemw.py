@@ -37,18 +37,17 @@ def check_chinese_menu_cells():
         used.append(rect)
 
 
-from tools.localize.tech_rows_art import OTHER_CELLS
+from tools.localize.tech_rows_art import other_cell
 
 
-def relocated_rect(item):
+def relocated_rect(item, language=None):
     key = item['en'], item['es']
-    return {
+    return other_cell(key, language) or {
         ('POWER', 'POTENCIA'): (128, 110, 38, 12),
         ('RANG', 'ALC.'): (166, 110, 28, 12),
         ('SPEC', 'EFECTO'): (194, 110, 34, 12),
         ('TECH. DATA', 'DATOS TÉC.'): (96, 84, 64, 12),
         ('RANG', 'ALCANCE'): (160, 84, 38, 12),
-        **OTHER_CELLS,
     }.get(key)
 
 
@@ -57,7 +56,7 @@ def check_care_button_cells(items):
     from tools.localize.fi_info import overlaps
     protected = list(CARE_BUTTON_RECTS) + list(CARE_BUTTON_GUARD_RECTS) + [CARE_BUTTON_CLUT_RECT]
     for item in items:
-        for rect in ([item[k] for k in ('u', 'v', 'w', 'h')], relocated_rect(item)):
+        for rect in ([item[k] for k in ('u', 'v', 'w', 'h')], relocated_rect(item), relocated_rect(item, 'zh-hans')):
             if rect and any(overlaps(rect, reserved) for reserved in protected):
                 raise ValueError(f'SYSTEM_W label overlaps the care badge: {item["en"]} {rect}')
 
@@ -89,7 +88,7 @@ def crop_tables(source, metadata):
 
             def put(i, en, es=None, shifted=False):
                 m = next(x for x in meta if x['en'] == en and (es is None or x['es'] == es))
-                rect = relocated_rect(m) if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans') else None
+                rect = relocated_rect(m, lang) if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans') else None
                 u, v, w, h = rect or [m[k] for k in ('u', 'v', 'w', 'h')]
                 rr[i][2:] = [w, h, u, v + (128 if shifted else 0)]
                 return w
@@ -101,8 +100,8 @@ def crop_tables(source, metadata):
                               (17, 'HAPPINESS'), (18, 'SPEED'), (19, 'BRAINS')]:
                     put(i, en)
             elif name == 'MOVES_VIEW_ELEMENT_NAMES':
-                for i, en in enumerate(('FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH',
-                                        'DARK', 'LIGHT', 'WATER')):
+                for i, en in enumerate(('FIRE', 'BATTLE', 'AIR', 'NATURE', 'ICE', 'MECH', 'FILTH',
+                                        'DARK', 'LIGHT', 'WATER', 'WEAPON', 'EARTH')):
                     rr[i][0] = (-45 - put(i, en, shifted=True)) & 65535
                     rr[i][1] = 1 if rr[i][3] == 8 else 0    # posY: a name with no blank row on top goes a line lower
             elif name == 'MOVES_VIEW_TECHSET_TEXT':

@@ -1,0 +1,30 @@
+# The Techset icons of the weapon and earth rows, one tile each, in SYSTEM_W's colour indices: b c d are the grey
+# tile, e the outline, 0-2 the weapon (steel, steel in shade, gold), 3-5 the earth (three browns). The first two
+# lines are their two palettes (15-bit, index 0 first): the icon of the chosen technique alternates them, as the
+# other rows alternate their two tiles.
+73bc 6292 1b1f 3ebb 1dd3 110c 0000 0000 0000 0000 77bd 5ef7 4a52 2108 0001 0000
+7fff 6f18 1b1f 4f3e 1dd3 110c 0000 0000 0000 0000 77bd 5ef7 4a52 2108 0001 0000
+
+weapon
+ccccccceec
+cccccce01e
+ccccce01ec
+cccce01ecc
+ccee01eccc
+ce201ecccc
+cce22ecccc
+ce1ee2eccc
+e1eccecccc
+cecccccccc
+
+earth
+cccceecccc
+ccce33eccc
+cce3344ecc
+ce334445ec
+ce344455ec
+e33444455e
+e34445555e
+e44455555e
+ce555555ec
+cceeeeeecc

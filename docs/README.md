@@ -29,7 +29,7 @@
 | [mods/species.md](mods/species.md) | species as data (`content/species`, DIGI.DAT) |
 | [mods/data-sources.md](mods/data-sources.md) | which JSON in `content/` is the source of which game table |
 | [mods/balance.md](mods/balance.md) | the balance tables |
-| [mods/technique-rows.md](mods/technique-rows.md) | the Darkness, Light and Water technique rows: techniques, healing, effects, cups |
+| [mods/technique-rows.md](mods/technique-rows.md) | the five new technique rows (Darkness, Light, Water, Weapon, Earth): techniques, healing, effects, cups |
 | [mods/options.md](mods/options.md) | the OPTIONS menu and how to add a setting |
 | [mods/new-maps.md](mods/new-maps.md) | new screen authoring, foreground cut-outs, collision and 2 MB acceptance |
 | [mods/maps.md](mods/maps.md) | low-level map formats and inspection (`tools/dwmap.py`) |

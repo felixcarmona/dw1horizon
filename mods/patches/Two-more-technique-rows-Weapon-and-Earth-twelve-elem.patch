@@ -1,0 +1,641 @@
+From ec50ae0001acbe3203ec74f8043617acb9ae0409 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 10:06:57 +0000
+Subject: [PATCH] Two more technique rows, Weapon and Earth: twelve elements,
+ sixteen techniques, an Offense buff, the Blade and Gaia cups
+
+The fourth row reads NATURE and the earth row at the end takes the name it had. Techset scrolls twelve rows; the two
+new rows draw one tile each from SYSTEM_W with two palettes. Save layout 3: an older save learns, once, the first
+technique of each new row its partner's species has. The save load asks the resident learnMove and copies the
+extension with memcpy, so the MENU overlay still ends before ENDI's first sector in nine languages.
+---
+ include/dw/ids.h             | 14 ++++-----
+ include/dw/save_tags.h       |  2 +-
+ include/dw/tech_rules.h      |  6 ++--
+ src/btl/battle_main.c        |  4 +++
+ src/dget/dget.c              |  8 +++---
+ src/main/coherent_slots.h    |  2 +-
+ src/main/evolution.c         |  2 +-
+ src/main/game_menu.c         | 55 ++++++++++++++++++++++++++++--------
+ src/main/item.c              | 22 ++++++++-------
+ src/main/main_menu.c         | 36 +++++++++++------------
+ src/main/script_common.c     |  6 ++--
+ src/std/std_main.c           |  8 +++++-
+ src/std/std_setup.c          |  6 ++--
+ src/vs/vs_intro.c            |  4 ++-
+ src/vs/vs_main.c             |  6 +++-
+ text/main/item.yaml          | 32 +++++++++++++++++++++
+ text/main/script_common.yaml |  6 ++++
+ 17 files changed, 155 insertions(+), 64 deletions(-)
+
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index ad326ce8..2d3a3a52 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -164,15 +164,15 @@ typedef uint16_t CardId;
+ #define NUM_ITEMS		128	/* ITEM_PARA, ITEM_FUNCTIONS, icons (16x8 grid) */
+ 
+ /* Techniques */
+-#define NUM_MOVES		146	/* MOVE_DATA rows; row 121 is the flattened Digimon's projectile, 122.. the new rows */
+-#define NUM_MOVE_NAMES		146	/* MOVE_NAMES; drawMoveName checks this bound */
+-#define NUM_LEARNABLE_MOVES	82	/* MOVE_LEARN_CHANCES, the technique grid: 58 originals and the 24 new ones */
+-/* MOD (new technique rows): techniques 122..145 are the rows of Darkness, Light and Water (elements 7, 8, 9), eight
+- * each. In the grid tables they follow the 58 originals; in the learned bits they take 64..87; their effects are
++#define NUM_MOVES		162	/* MOVE_DATA rows; row 121 is the flattened Digimon's projectile, 122.. the new rows */
++#define NUM_MOVE_NAMES		162	/* MOVE_NAMES; drawMoveName checks this bound */
++#define NUM_LEARNABLE_MOVES	98	/* MOVE_LEARN_CHANCES, the technique grid: 58 originals and the 40 new ones */
++/* MOD (new technique rows): techniques 122..161 are the rows of Darkness, Light, Water, Weapon and Earth (elements 7..11), eight
++ * each. In the grid tables they follow the 58 originals; in the learned bits they take 64..103; their effects are
+  * the chunks from 330 of EFEDAT.EFE (122..149 hold effects of their own) */
+-#define NUM_ELEMENTS		10
++#define NUM_ELEMENTS		12
+ #define NEW_MOVE_FIRST		122
+-#define NUM_NEW_MOVES		24
++#define NUM_NEW_MOVES		40
+ #define IS_NEW_MOVE(m)		((uint32_t)((m) - NEW_MOVE_FIRST) < NUM_NEW_MOVES)
+ #define IS_GRID_MOVE(m)		((uint32_t)(m) < 0x3a || IS_NEW_MOVE(m))
+ #define MOVE_GRID(m)		(IS_NEW_MOVE(m) ? (m) - NEW_MOVE_FIRST + 58 : (m))
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index 651b5662..b0f30337 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -37,7 +37,7 @@
+ #define SAVE_TAG_CARD_STOCK		0x000E /* u16[6] daily shop cards, 0xffff sold */
+ #define SAVE_TAG_TAMER_LOOK		0x000F /* MOD_TAMER_STATE: u8 look (0 = the original tamer), hair colour, face, shirt (0 = the original), shirt colour, trousers, their colour, shoes, their colour, backpack (0 = the original, 1 = none), its colour, hands (1 = small); older saves end earlier */
+ #define SAVE_TAG_REQUIRED		0x8000
+-#define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots, 2 = and the learned bits 64..87 are the new rows' techniques; required to prevent silent downgrade substitution */
++#define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots, 2 = and the learned bits 64..87 are the new rows' techniques, 3 = and 88..103; required to prevent silent downgrade substitution */
+ /* engine tier 2 */
+ #define SAVE_TAG_STORY_FLAGS		0x8001 /* bit array: story flag n = trigger 800 + n */
+ #define SAVE_TAG_STORY_VARS		0x8002 /* i32[n] story variables */
+diff --git a/include/dw/tech_rules.h b/include/dw/tech_rules.h
+index 05cb209c..25726c90 100644
+--- a/include/dw/tech_rules.h
++++ b/include/dw/tech_rules.h
+@@ -4,15 +4,17 @@
+ #include <dw/entity.h>
+ #include <dw/move.h>
+ 
+-/* MOD (new technique rows): what the techniques of the Darkness, Light and Water rows do besides damage, shared by the
++/* MOD (new technique rows): what the techniques of the new rows do besides damage, shared by the
+  * field battle, the tournament and the versus fight. Move.status says which and Move.statusChance is its percent:
+  *   5  gives back that share of the caster's full HP
+  *   6  raises the caster's Defense, 7 its Speed (as the original buff techniques do)
+- *   8  lowers the Defense of the fighter it reaches, once per fighter and battle */
++ *   8  lowers the Defense of the fighter it reaches, once per fighter and battle
++ *   9  raises the caster's Offense */
+ #define TECH_HEAL	5
+ #define TECH_DEF_UP	6
+ #define TECH_SPEED_UP	7
+ #define TECH_DEF_DOWN	8
++#define TECH_OFF_UP	9
+ 
+ #define TECH_HEALS_PARTNER	3	/* heals per battle: the partner (and both sides of a versus fight) */
+ #define TECH_HEALS_ENEMY	2	/* an enemy or a tournament rival */
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 8a854d0e..6f359da5 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -1966,6 +1966,10 @@ int32_t BTL_applyBuffMove(DigimonEntity *digimon, int32_t slot, int16_t anim)
+ 		BTL_buffStats(digimon, slot, (int16_t)(stats->base.def * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100), &stats->base.def, 0xb, 4);
+ 		return 1;
+ 	}
++	if (modSpeciesMove(digimon->entity.type, anim)->status == TECH_OFF_UP) {
++		BTL_buffStats(digimon, slot, (int16_t)(stats->base.off * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100), &stats->base.off, 0xb, 3);
++		return 1;
++	}
+ 	if (modSpeciesMove(digimon->entity.type, anim)->status == TECH_SPEED_UP) {
+ 		BTL_buffStats(digimon, slot, (int16_t)(stats->base.speed * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100), &stats->base.speed, 0xb, 5);
+ 		return 1;
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index 5956f90a..7a10146a 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -92,16 +92,16 @@ static void *dget_sbss_order[] = {
+ 	&DGET_BUFFER,
+ };
+ 
+-/* MOD (cup rules): Rookie, Champion, Ultimate, Mega; Vaccine, Data, Virus; the eight Fields; Dark, Holy, Aqua */
+-#define NEW_CUP_COUNT	18
++/* MOD (cup rules): Rookie, Champion, Ultimate, Mega; Vaccine, Data, Virus; the eight Fields; Dark, Holy, Aqua; Blade, Gaia */
++#define NEW_CUP_COUNT	20
+ /*
+  * one character each, as the calendar's cells hold (the original's are single letters too): 1..4 the level cups by their
+  * order, V E U Vaccine, Data, Virus, and in small letters the Fields: n d s g e b r j (Nature Spirits, Deep Savers,
+  * Nightmare Soldiers, Wind Guardians, Metal Empire, Virus Busters, Dragon's Roar, Jungle Troopers), and k h a the cups
+- * of the new technique rows (Dark, Holy, Aqua)
++ * of the new technique rows (Dark, Holy, Aqua), w t those of the weapon and earth rows (Blade, Gaia)
+  */
+ static char NEW_CUP_GRADES[NEW_CUP_COUNT][2] = {
+-	"1", "2", "3", "4", "V", "E", "U", "n", "d", "s", "g", "e", "b", "r", "j", "k", "h", "a",
++	"1", "2", "3", "4", "V", "E", "U", "n", "d", "s", "g", "e", "b", "r", "j", "k", "h", "a", "w", "t",
+ };
+ 
+ void fillEnabledTournamentTable(void)
+diff --git a/src/main/coherent_slots.h b/src/main/coherent_slots.h
+index 8aea31ad..283b1dc6 100644
+--- a/src/main/coherent_slots.h
++++ b/src/main/coherent_slots.h
+@@ -77,7 +77,7 @@ static int32_t coherentSlotLayout(uint8_t *e)
+ 		tag = e[at] | (e[at + 1] << 8);
+ 		len = e[at + 2] | (e[at + 3] << 8);
+ 		if (tag == SAVE_TAG_END) return 0;
+-		if (tag == SAVE_TAG_TECHNIQUE_LAYOUT) return len == 1 && (uint8_t)(e[at + 4] - 1) < 2 ? e[at + 4] : -1;
++		if (tag == SAVE_TAG_TECHNIQUE_LAYOUT) return len == 1 && (uint8_t)(e[at + 4] - 1) < 3 ? e[at + 4] : -1;
+ 		at += 4 + len;
+ 	}
+ }
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 47cdb5cd..5a3e8ded 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -1294,7 +1294,7 @@ int8_t getNumMasteredMoves(void) {
+   int32_t i;
+   int32_t j;
+ 
+-  for (i = 0; i < 3; i++) { /* MOD (new technique rows): bits 64..87 */
++  for (i = 0; i < 4; i++) { /* MOD (new technique rows): bits 64..103 */
+     for (j = 0; j < 32; j++) {
+       if (PARTNER_ENTITY.learnedMoves[i] & 1 << j)
+         moveCount++;
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 8fce74c6..b6a35b08 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -1015,6 +1015,8 @@ IconRect STATS_VIEW_ELEMENTS[21] = {
+ /* MOD (new technique rows): the names of the new rows sit on the originals' column: centred on it when they fit
+  * its 20 px, otherwise ending where the originals end on the left and starting where they start on the right (the
+  * cells are cropped to the letters). Spanish and Portuguese keep their own right-aligned column */
++/* MOD (weapon and earth rows): the fourth row reads NATURE, in a cell of its own, and the earth row at the end has
++ * the name the fourth row had */
+ /* (data, not code: the nine languages must lay out the same code) the widest name the right column centres */
+ uint8_t MOVES_VIEW_CENTRE_MAX =
+ #if MOD_LANG_BUILD == MOD_LANG_ES || MOD_LANG_BUILD == MOD_LANG_PT_BR
+@@ -1023,114 +1025,132 @@ uint8_t MOVES_VIEW_CENTRE_MAX =
+ 	20;
+ #endif
+ #define MOVES_VIEW_RIGHT_NAME_X(w) ((w) <= MOVES_VIEW_CENTRE_MAX ? 110 - (w) / 2 : 100)
+-IconRect MOVES_VIEW_ELEMENT_NAMES[10] = {
++IconRect MOVES_VIEW_ELEMENT_NAMES[NUM_ELEMENTS] = {
+ #if MOD_LANG_BUILD == MOD_LANG_ES
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+ 	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
+ 	{ 0xffc5, 0x0000, 0x000e, 0x000a, 0x0032, 0x0098 },
+-	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
++	{ 0xffba, 0x0000, 0x0019, 0x000a, 0x0052, 0x00ea },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
+ 	{ 0xffb9, 0x0001, 0x001a, 0x0008, 0x0000, 0x00b0 },
+ 	{ 0xffc7, 0x0001, 0x000c, 0x0008, 0x001a, 0x00b0 },
+ 	{ 0xffc3, 0x0001, 0x0010, 0x0008, 0x0026, 0x00b0 },
++	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x005a, 0x00e0 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_PT_BR
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+ 	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
+ 	{ 0xffc5, 0x0000, 0x000e, 0x000a, 0x0032, 0x0098 },
+-	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
++	{ 0xffb2, 0x0000, 0x0021, 0x000a, 0x0052, 0x00ea },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
+ 	{ 0xffb9, 0x0001, 0x001a, 0x0008, 0x0000, 0x00b0 },
+ 	{ 0xffc7, 0x0001, 0x000c, 0x0008, 0x001a, 0x00b0 },
+ 	{ 0xffc3, 0x0001, 0x0010, 0x0008, 0x0026, 0x00b0 },
++	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x005a, 0x00e0 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_FR
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+ 	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
+ 	{ 0xffc5, 0x0000, 0x000e, 0x000a, 0x0032, 0x0098 },
+-	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
++	{ 0xffab, 0x0000, 0x0026, 0x000a, 0x0056, 0x00ea },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
+ 	{ 0xffb1, 0x0000, 0x0020, 0x000a, 0x0001, 0x00a9 },
+ 	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0023, 0x00a9 },
+ 	{ 0xffbe, 0x0000, 0x0013, 0x000a, 0x004c, 0x00a9 },
++	{ 0xffb7, 0x0000, 0x001a, 0x000a, 0x005c, 0x00e0 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_DE
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+ 	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
+ 	{ 0xffc5, 0x0000, 0x000e, 0x000a, 0x0032, 0x0098 },
+-	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
++	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0059, 0x00ea },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
+ 	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0001, 0x00a9 },
+ 	{ 0xffb4, 0x0000, 0x001d, 0x000a, 0x0025, 0x00a9 },
+ 	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0045, 0x00a9 },
++	{ 0xffb4, 0x0000, 0x001d, 0x000a, 0x005b, 0x00e0 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_IT
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+ 	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
+ 	{ 0xffc5, 0x0000, 0x000e, 0x000a, 0x0032, 0x0098 },
+-	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
++	{ 0xffaa, 0x0000, 0x0027, 0x000a, 0x0056, 0x00ea },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
+ 	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0001, 0x00a9 },
+ 	{ 0xffb9, 0x0000, 0x0018, 0x000a, 0x0027, 0x00a9 },
+ 	{ 0xffb1, 0x0000, 0x0020, 0x000a, 0x0045, 0x00a9 },
++	{ 0xffb6, 0x0000, 0x001b, 0x000a, 0x005c, 0x00e0 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_JA
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+ 	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
+ 	{ 0xffc5, 0x0000, 0x000e, 0x000a, 0x0032, 0x0098 },
+-	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
++	{ 0xffb7, 0x0000, 0x001a, 0x000a, 0x005d, 0x00ea },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
+ 	{ 0xffbe, 0x0000, 0x0013, 0x000a, 0x0008, 0x00a9 },
+ 	{ 0xffb6, 0x0000, 0x001b, 0x000a, 0x0026, 0x00a9 },
+ 	{ 0xffbe, 0x0000, 0x0013, 0x000a, 0x004c, 0x00a9 },
++	{ 0xffbe, 0x0000, 0x0013, 0x000a, 0x0060, 0x00e0 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_CA
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+ 	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
+ 	{ 0xffc5, 0x0000, 0x000e, 0x000a, 0x0032, 0x0098 },
+-	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
++	{ 0xffaa, 0x0000, 0x0027, 0x000a, 0x0056, 0x00ea },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
+ 	{ 0xffb0, 0x0000, 0x0021, 0x000a, 0x0001, 0x00a9 },
+ 	{ 0xffb8, 0x0000, 0x0019, 0x000a, 0x0027, 0x00a9 },
+ 	{ 0xffb4, 0x0000, 0x001d, 0x000a, 0x0047, 0x00a9 },
++	{ 0xffb6, 0x0000, 0x001b, 0x000a, 0x005c, 0x00e0 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_ZH
+ 	{ 0xffbf, 0x0000, 0x0014, 0x000a, 0x0000, 0x0098 },
+ 	{ 0xffb5, 0x0000, 0x001e, 0x000a, 0x0014, 0x0098 },
+ 	{ 0xffc5, 0x0000, 0x000e, 0x000a, 0x0032, 0x0098 },
+-	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
++	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x007b, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+ 	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
+ 	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x0009, 0x00a9 },
+ 	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x002b, 0x00a9 },
+ 	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x004d, 0x00a9 },
++	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x00ac, 0x00e0 },
++	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x0040, 0x0098 },
+ 
+ #else
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x00, 0x98 },
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x14, 0x98 },
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x28, 0x98 },
+-	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x3c, 0x98 },
++	{ 0xffb8, 0x0000, 0x0019, 0x000a, 0x0052, 0x00ea },
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x50, 0x98 },
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x64, 0x98 },
+ 	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x78, 0x98 },
+ 	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x0090, 0x00c5 },
+ 	{ 0xffbe, 0x0000, 0x0012, 0x000a, 0x00a6, 0x00c5 },
+ 	{ 0xffbb, 0x0000, 0x0016, 0x000a, 0x0090, 0x00cf },
++	{ 0xffb6, 0x0000, 0x001b, 0x000a, 0x005a, 0x00e0 },
++	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x3c, 0x98 },
+ #endif
+ };
+ 
+@@ -3617,6 +3637,15 @@ static int32_t moveGridCursor(void)
+ 	return moveGridId((MOVE_SELECT_BOX_Y - 0x6f) / 15 + MOVE_GRID_SCROLL, (MOVE_SELECT_BOX_X - 0x73) / 18);
+ }
+ 
++/* MOD (weapon and earth rows): where the two rows' tiles are in SYSTEM_W (v with the texture's 0x80). Chinese, whose
++ * menu words fill the corner the other languages leave free, keeps them elsewhere (data: the same code everywhere) */
++uint8_t TECH_ROW_TILES[2][2] =
++#if MOD_LANG_BUILD == MOD_LANG_ZH
++	{ { 144, 224 }, { 156, 224 } };
++#else
++	{ { 228, 236 }, { 240, 236 } };
++#endif
++
+ /* An element's icon (two tiles each). The three new rows have theirs, and a palette of their own, in cells of
+  * SYSTEM_W that nothing used (tools/localize/tech_rows_art.py). */
+ static void renderMoveIcon(int32_t x, int32_t y, int32_t special, int32_t tile, int32_t otz)
+@@ -3624,7 +3653,11 @@ static void renderMoveIcon(int32_t x, int32_t y, int32_t special, int32_t tile,
+ 	static const uint8_t own[3][2][2] = { { { 128, 163 }, { 140, 163 } }, { { 152, 163 }, { 164, 163 } }, { { 200, 200 }, { 200, 212 } } };
+ 	static const uint16_t cluts[7] = { 0x7a06, 0x7a06, 0x7a46, 0x7a46, 0x7a46, 0x7a86, 0x7a06 };
+ 
+-	if (special >= 7) {
++	if (special >= 10) {
++		/* the weapon and earth rows: one tile each, and the second palette for the other frame */
++		renderRectPolyFT4(x, y, 0xc, 0xc, TECH_ROW_TILES[special - 10][0], TECH_ROW_TILES[special - 10][1], 5,
++		                  tile ? 0x3fd6 : 0x3f96, otz, 0);
++	} else if (special >= 7) {
+ 		renderRectPolyFT4(x, y, 0xc, 0xc, own[special - 7][tile][0], own[special - 7][tile][1], 5, 0x3f56, otz, 0);
+ 	} else {
+ 		renderRectPolyFT4(x, y, 0xc, 0xc, tile * 0xc + (special * 0x18 + 0x24), 0x80, 5, cluts[special], otz, 0);
+diff --git a/src/main/item.c b/src/main/item.c
+index f2264971..869d58f0 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -98,16 +98,18 @@ InventoryTable INITIAL_INVENTORY_TYPES = {
+ STR_IS_SICK_TEXT
+ 
+ uint8_t TYPE_FACTORS[NUM_ELEMENTS][NUM_ELEMENTS] = {
+-	{ 0x0a, 0x0f, 0x05, 0x14, 0x14, 0x0f, 0x14, 0x0a, 0x0a, 0x0a },
+-	{ 0x0a, 0x0a, 0x02, 0x0f, 0x0a, 0x0a, 0x05, 0x0a, 0x0a, 0x0a },
+-	{ 0x0f, 0x0f, 0x0f, 0x05, 0x0f, 0x0f, 0x05, 0x0a, 0x0a, 0x0a },
+-	{ 0x05, 0x0f, 0x14, 0x0a, 0x0a, 0x05, 0x0f, 0x0a, 0x0a, 0x0a },
+-	{ 0x14, 0x0f, 0x05, 0x0f, 0x0a, 0x0f, 0x14, 0x0a, 0x0a, 0x0a },
+-	{ 0x0a, 0x0a, 0x05, 0x0a, 0x0a, 0x0a, 0x05, 0x0a, 0x0a, 0x0a },
+-	{ 0x05, 0x0f, 0x05, 0x02, 0x0a, 0x14, 0x02, 0x0a, 0x0a, 0x0a },
+-	{ 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
+-	{ 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
+-	{ 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x0a, 0x0f, 0x05, 0x14, 0x14, 0x0f, 0x14, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x0a, 0x0a, 0x02, 0x0f, 0x0a, 0x0a, 0x05, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x0f, 0x0f, 0x0f, 0x05, 0x0f, 0x0f, 0x05, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x05, 0x0f, 0x14, 0x0a, 0x0a, 0x05, 0x0f, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x14, 0x0f, 0x05, 0x0f, 0x0a, 0x0f, 0x14, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x0a, 0x0a, 0x05, 0x0a, 0x0a, 0x0a, 0x05, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x05, 0x0f, 0x05, 0x02, 0x0a, 0x14, 0x02, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
++	{ 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a },
+ };
+ 
+ uint8_t MOVE_LEARN_CHANCES[NUM_LEARNABLE_MOVES][3] = {
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 26928f5e..abac4719 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -5156,7 +5156,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 		p = putRecord(p, SAVE_TAG_CARD_STOCK, MOD_CARD_STOCK, sizeof(MOD_CARD_STOCK));
+ 		p = putRecord(p, SAVE_TAG_TAMER_LOOK, MOD_TAMER_STATE, TAMER_STATE_SIZE); /* MOD (tamer looks) */
+ 	}
+-	{ uint8_t layout = 2; p = putRecord(p, SAVE_TAG_TECHNIQUE_LAYOUT, &layout, 1); }
++	{ uint8_t layout = 3; p = putRecord(p, SAVE_TAG_TECHNIQUE_LAYOUT, &layout, 1); }
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+ 	p = &savegame->unknown4E1[3];
+@@ -5563,21 +5563,19 @@ static int32_t loadSaveCopy(int32_t copy)
+ 	SaveExtension *ext;
+ 	int32_t i;
+ 	int32_t layout = 0;
++	int32_t valid, tagged;
+ 
+ 	if (!isSaveVersionReadable(getSaveVersion(&SAVE_FILE.saves[copy]))) {
+ 		return 0;
+ 	}
+ 	if (copy != 0) {
+ 		SAVE_FILE.saves[0] = SAVE_FILE.saves[1];
+-		for (i = 0; i < saveExtSize(); i++) {
+-			saveExtOf(0)[i] = saveExtOf(1)[i];
+-		}
+-	}
+-	if (isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[0])) && isExtensionValid(0) &&
+-	    hasUnreadableRecord(saveExtOf(0))) {
+-		return 0; /* it holds something this build would silently drop */
++		memcpy(saveExtOf(0), saveExtOf(1), saveExtSize());
+ 	}
+-	if (isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[0])) && isExtensionValid(0)) {
++	valid = isExtensionValid(0);
++	tagged = valid && isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[0]));
++	if (tagged) {
++		if (hasUnreadableRecord(saveExtOf(0))) return 0; /* it holds something this build would silently drop */
+ 		layout = coherentSlotLayout(saveExtOf(0));
+ 		if (layout < 0) return 0;
+ 	}
+@@ -5591,8 +5589,8 @@ static int32_t loadSaveCopy(int32_t copy)
+ 	MOD_SWAP_FROM = MOD_SWAP_TO = 0;
+ 	MOD_SAVE_STORY = 1; /* MOD (story): a save from before the option was played with the story the disc had */
+ 	MOD_STORY_ARRIVE = 0;
+-	if (isExtensionValid(0)) {
+-		if (isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[0]))) {
++	if (valid) {
++		if (tagged) {
+ 			applyRecords(saveExtOf(0));
+ 		} else {
+ 			ext = (SaveExtension *)saveExtOf(0);
+@@ -5618,18 +5616,18 @@ static int32_t loadSaveCopy(int32_t copy)
+ 			SAVED_STATE.partnerStats.base.moves[i] = PARTNER_ENTITY.digimonEntity.stats.base.moves[i];
+ 		}
+ 	}
+-	if (layout < 2) {
+-		/* MOD (new technique rows): bits 64..87 meant nothing before (the Cheats menu set those of finishers): a
+-		 * partner that already has its form gets, once, the first technique of each new row of its species */
++	if (layout < 3) {
++		/* MOD (new technique rows): bits 64..103 meant nothing before (the Cheats menu set those of finishers): a
++		 * partner that already has its form gets, once, the first technique of each new row of its species. A
++		 * save of layout 2 keeps what it learned of the rows it had (bits 64..87, the first word) */
+ 		uint8_t *moves = DIGI_PARA(SAVED_STATE.partnerType).moves;
+-		uint32_t bits = 0;
+ 
++		if (layout < 2) PARTNER_ENTITY.learnedMoves[2] = 0; /* bit 64 is the first of the new rows (MOVE_BIT) */
++		PARTNER_ENTITY.learnedMoves[3] = 0;
+ 		for (i = 0; i < 16; i++) {
+-			uint32_t m = moves[i] - NEW_MOVE_FIRST;
+-
+-			if (m < NUM_NEW_MOVES && (m & 7) == 0) bits |= 1u << m;
++			/* the first of a row: 122, 130... (no technique has an id past the rows, and learnMove takes no other) */
++			if (((moves[i] - NEW_MOVE_FIRST) & 0xc7) == 0) learnMove(moves[i]);
+ 		}
+-		PARTNER_ENTITY.learnedMoves[2] = bits; /* bit 64 is the first of the new rows (MOVE_BIT) */
+ 	}
+ 	dropAbsentSaveContent();
+ 	/* The registration menu restores copy 1. Keep its used fields in the selected
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 32e7afc8..95e3f4b0 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -471,8 +471,8 @@ int32_t modLoadCardImage(int32_t id, void *buffer)
+ 	                           buffer, (id < 66 ? id : id - 66) * 14, 14);
+ }
+ 
+-/* MOD (cup rules): 41 names, was 23: the cups 23..40 */
+-char *TOURNAMENT_NAMES[41] = {
++/* MOD (cup rules): 43 names, was 23: the cups 23..42 */
++char *TOURNAMENT_NAMES[43] = {
+ 	STR_TOURNAMENT_NAME_GRADE_D,
+ 	STR_TOURNAMENT_NAME_GRADE_C,
+ 	STR_TOURNAMENT_NAME_GRADE_B,
+@@ -514,6 +514,8 @@ char *TOURNAMENT_NAMES[41] = {
+ 	STR_TOURNAMENT_NAME_DARK_CUP,
+ 	STR_TOURNAMENT_NAME_HOLY_CUP,
+ 	STR_TOURNAMENT_NAME_AQUA_CUP,
++	STR_TOURNAMENT_NAME_BLADE_CUP,
++	STR_TOURNAMENT_NAME_GAIA_CUP,
+ };
+ 
+ char *TOURNAMENT_GRADES[23] = {
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index dc967f2b..d6a0829b 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -1188,7 +1188,7 @@ int16_t STD_STAT_BAR_LIMITS[6] = {
+ 	0x270f, 0x270f, 0x03e7, 0x03e7, 0x03e7, 0x03e7,
+ };
+ 
+-RGB8 STD_INTRO_NAME_COLORS[10] = {
++RGB8 STD_INTRO_NAME_COLORS[12] = {
+ 	{ 0x80, 0x80, 0x80 },
+ 	{ 0xc8, 0x64, 0x32 },
+ 	{ 0x1e, 0xff, 0x1e },
+@@ -1199,6 +1199,8 @@ RGB8 STD_INTRO_NAME_COLORS[10] = {
+ 	{ 0xa0, 0x48, 0xe0 },
+ 	{ 0xf0, 0xe4, 0xa8 },
+ 	{ 0x38, 0x68, 0xff },
++	{ 0xb0, 0xb8, 0xc8 },
++	{ 0xb4, 0x78, 0x38 },
+ };
+ 
+ CameraPreset STD_CAMERA_PRESETS[9] = {
+@@ -5791,6 +5793,10 @@ int32_t STD_applyBuffMove(DigimonEntity *digimon, int32_t slot, int16_t anim)
+ 		STD_buffStats(digimon, slot, (int16_t)(stats->base.def * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100), &stats->base.def, 0xb, 4);
+ 		return 1;
+ 	}
++	if (modSpeciesMove(digimon->entity.type, anim)->status == TECH_OFF_UP) {
++		STD_buffStats(digimon, slot, (int16_t)(stats->base.off * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100), &stats->base.off, 0xb, 3);
++		return 1;
++	}
+ 	if (modSpeciesMove(digimon->entity.type, anim)->status == TECH_SPEED_UP) {
+ 		STD_buffStats(digimon, slot, (int16_t)(stats->base.speed * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100), &stats->base.speed, 0xb, 5);
+ 		return 1;
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index f40769a4..018b1bf8 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -158,10 +158,10 @@ int16_t STD_OPPONENT_BASE_STATS[24] = {
+ };
+ /* MOD (cup rules): the same number for the cups after the original's, 23 onwards (content/tables/tournament-rules.json,
+  * newCupStats; balance.py writes it here). */
+-int16_t STD_NEW_CUP_BASE_STATS[18] = {
+-	150, 200, 250, 220, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250,
++int16_t STD_NEW_CUP_BASE_STATS[20] = {
++	150, 200, 250, 220, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250,
+ };
+-#define STD_NEW_CUPS		18
++#define STD_NEW_CUPS		20
+ #define STD_NEW_CUP_SECTORS	17
+ static char STD_PATH_NEW_CUPS[] = "\\STDDAT\\GRADE\\NEWCUPS.BIN";
+ 
+diff --git a/src/vs/vs_intro.c b/src/vs/vs_intro.c
+index f84aa7a7..12973aac 100644
+--- a/src/vs/vs_intro.c
++++ b/src/vs/vs_intro.c
+@@ -96,7 +96,7 @@ int16_t VS__STAT_BAR_LIMITS[6] = {
+ 	0x270f, 0x270f, 0x03e7, 0x03e7, 0x03e7, 0x03e7,
+ };
+ 
+-RGB8 VS__INTRO_NAME_COLORS[10] = {
++RGB8 VS__INTRO_NAME_COLORS[12] = {
+ 	{ 0x80, 0x80, 0x80 },
+ 	{ 0xc8, 0x64, 0x32 },
+ 	{ 0x1e, 0xff, 0x1e },
+@@ -107,6 +107,8 @@ RGB8 VS__INTRO_NAME_COLORS[10] = {
+ 	{ 0xa0, 0x48, 0xe0 },
+ 	{ 0xf0, 0xe4, 0xa8 },
+ 	{ 0x38, 0x68, 0xff },
++	{ 0xb0, 0xb8, 0xc8 },
++	{ 0xb4, 0x78, 0x38 },
+ };
+ 
+ // clang-format on
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index 50a317ed..6051a21e 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -25,7 +25,7 @@
+ 
+ #include "common.h"
+ 
+-extern uint8_t TYPE_FACTORS[][10]; /* NUM_ELEMENTS */
++extern uint8_t TYPE_FACTORS[][12]; /* NUM_ELEMENTS */
+ extern int16_t ENEMY_COUNT;
+ extern int32_t NO_AI_FLAG;
+ extern int32_t VS_DISABLE_HITTING;
+@@ -285,6 +285,10 @@ int32_t VS_applyBuffMove(DigimonEntity *digimon, int32_t slot, int16_t anim)
+ 		VS_buffStats(digimon, slot, (int16_t)(stats->base.def * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100), &stats->base.def, 0xb, 4);
+ 		return 1;
+ 	}
++	if (modSpeciesMove(digimon->entity.type, anim)->status == TECH_OFF_UP) {
++		VS_buffStats(digimon, slot, (int16_t)(stats->base.off * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100), &stats->base.off, 0xb, 3);
++		return 1;
++	}
+ 	if (modSpeciesMove(digimon->entity.type, anim)->status == TECH_SPEED_UP) {
+ 		VS_buffStats(digimon, slot, (int16_t)(stats->base.speed * modSpeciesMove(digimon->entity.type, anim)->statusChance / 100), &stats->base.speed, 0xb, 5);
+ 		return 1;
+diff --git a/text/main/item.yaml b/text/main/item.yaml
+index 64929ee5..1633fb0f 100644
+--- a/text/main/item.yaml
++++ b/text/main/item.yaml
+@@ -435,6 +435,38 @@ MOVE_NAMES:
+       en_us: Tidal Wave
+     - ja: オーシャンフューリー
+       en_us: Ocean Fury
++    - ja: クイックスラッシュ
++      en_us: Quick Slash
++    - ja: ブレードスロー
++      en_us: Blade Throw
++    - ja: アーマーブレイク
++      en_us: Armor Break
++    - ja: ウォースタンス
++      en_us: War Stance
++    - ja: クロスカッター
++      en_us: Cross Cutter
++    - ja: ワーリングエッジ
++      en_us: Whirling Edge
++    - ja: ジャイアントクリーブ
++      en_us: Giant Cleave
++    - ja: ファイナルエッジ
++      en_us: Final Edge
++    - ja: ロックスロー
++      en_us: Rock Throw
++    - ja: サンドブラスト
++      en_us: Sand Blast
++    - ja: ストーンスキン
++      en_us: Stone Skin
++    - ja: ボルダークラッシュ
++      en_us: Boulder Crash
++    - ja: フィッシャー
++      en_us: Fissure
++    - ja: スタラグマイト
++      en_us: Stalagmite
++    - ja: ランドスライド
++      en_us: Landslide
++    - ja: ガイアクエイク
++      en_us: Gaia Quake
+ 
+ STR_IS_SICK:
+   ja: は病気になってしまった！
+diff --git a/text/main/script_common.yaml b/text/main/script_common.yaml
+index f21dfcb1..b1ee5989 100644
+--- a/text/main/script_common.yaml
++++ b/text/main/script_common.yaml
+@@ -388,6 +388,12 @@ TOURNAMENT_NAMES:
+     STR_TOURNAMENT_NAME_AQUA_CUP:
+       ja: みずカップ
+       en_us: Aqua Cup
++    STR_TOURNAMENT_NAME_BLADE_CUP:
++      ja: つるぎカップ
++      en_us: Blade Cup
++    STR_TOURNAMENT_NAME_GAIA_CUP:
++      ja: だいちカップ
++      en_us: Gaia Cup
+ 
+ TOURNAMENT_GRADES:
+   strings:
+-- 
+2.55.0
+

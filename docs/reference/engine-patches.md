@@ -480,21 +480,27 @@ Techniques are ready within about a second of contact when `BTL_REL` was read ah
 | 0231 | a selection with no end-of-selection marker let cancel continue from inside the first option's code, misaligned (23 such selections, 11 already block cancel; the one with a lasting effect is Piximon's Training Manual sale, which overwrote prosperity and the tournament day and cup with the date); cancel is now refused there |
 | `Move-a-battle-drop-out-of-a-wall-…` | battle moves skip the map collision, so a defeated enemy can stand inside a wall and its drop lie where the tamer never gets within one tile of it (Great Canyon Top Area, tile 78,46). A drop on a blocked tile, or with no room to stand within one tile, now moves toward the tamer to the first tile with standing room (`spawnDroppedItems`, battle overlay); proofs `tools/dev/playtest/drop_reach_host.py` and `drop_reach.py` |
 
-## The Darkness, Light and Water technique rows
+## The new technique rows
 
-- **Ten elements** (`NUM_ELEMENTS`): the type chart, the brain-training table, the Techset rows and the arena's intro
-  colours are sized by it; `content/tables/type-factors.json` is ten by ten.
-- **Techniques 122 to 145** (`IS_NEW_MOVE`, `NEW_MOVE_FIRST`): `MOVE_DATA`, the names and the effect table grow by
-  24 entries after the finishers'. Their learned bits are 64 to 87 of `learnedMoves` (`IS_GRID_MOVE` tells a
+Darkness, Light and Water came first; Weapon and Earth after them, with the same machinery.
+
+- **Twelve elements** (`NUM_ELEMENTS`): the type chart, the brain-training table, the Techset rows and the arena's intro
+  colours are sized by it; `content/tables/type-factors.json` is twelve by twelve.
+- **Techniques 122 to 161** (`IS_NEW_MOVE`, `NEW_MOVE_FIRST`): `MOVE_DATA`, the names and the effect table grow by
+  40 entries after the finishers'. Their learned bits are 64 to 103 of `learnedMoves` (`IS_GRID_MOVE` tells a
   technique from a finisher, which has no bit); the original left those bits unused, so the save layout keeps its
   size. The gift of an evolution into a species of a new row comes from that row's eight techniques.
-- **Support techniques** (`include/dw/tech_rules.h`): statuses 5 to 8 heal, raise Defense or Speed and lower the
-  target's Defense, with the same rules in `BTL`, `STD` and `VS` (`TechRules`: heals used per fighter slot and the
+- **Support techniques** (`include/dw/tech_rules.h`): statuses 5 to 9 heal, raise Defense or Speed, lower the
+  target's Defense and raise Offense, with the same rules in `BTL`, `STD` and `VS` (`TechRules`: heals used per fighter slot and the
   fighters already weakened; `techRulesReset` at the start of each fight). The healed amount is drawn by the damage
   number's code in green and rising.
 - **Authored effects**: an effect's launch table may say "any caster, from its entity point" (type -2,
   `BTL_checkTechCompatibility`), so one chunk serves every species; the chunks are made by `tools/technique_effects`.
-- **Techset**: ten rows in a window of seven, with a scroll bar; the cursor scrolls the window.
+- **Techset**: twelve rows in a window of seven, with a scroll bar; the cursor scrolls the window. The fourth row's
+  name is NATURE and the last row has the name the fourth had; the two last rows have one tile each and two
+  palettes.
+- **Save layout 3**: a save made before a set of rows learns the first technique of each of them on the species'
+  list at its first load.
 
 Details and the technique table: [mods/technique-rows.md](../mods/technique-rows.md).
 

@@ -139,7 +139,7 @@ STAT_KEYS = ('hp', 'mp', 'offense', 'defense', 'speed', 'brains')
 # ------------------------------------------------------------------ names of the values (docs/mods/species.md)
 LEVELS = ['none', 'fresh', 'in-training', 'rookie', 'champion', 'ultimate', 'mega']        # include/dw/level.h
 ATTRIBUTES = ['none', 'data', 'vaccine', 'virus']                   # FLEE_CHANCES rows (btl.c)
-ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water']   # TYPE_FACTORS rows
+ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water', 'weapon', 'earth']   # TYPE_FACTORS rows
 # the canon Fields of a species ("fields"); a cup can ask for one (the bit of its index in the cup tags)
 FIELDS = ['nature-spirits', 'deep-savers', 'nightmare-soldiers', 'wind-guardians', 'metal-empire', 'virus-busters',
           'dragons-roar', 'jungle-troopers', 'dark-area', 'unknown']
@@ -2606,7 +2606,7 @@ def lint(species, check_files=False):
             E('attribute', s['attribute'], 'a species that fights or is a partner needs data, vaccine or virus: the game '
               'indexes FLEE_CHANCES[(attribute - 1) * 3 + ...] (btl.c) and the status screen icon with attribute - 1')
         for i, e in enumerate(para['special']):
-            if e != 0xFF and not 0 <= e < len(ELEMENTS): E(f'specialties[{i}]', e, 'an element (fire .. water) or null')
+            if e != 0xFF and not 0 <= e < len(ELEMENTS): E(f'specialties[{i}]', e, 'an element (fire .. earth) or null')
         if (partner and not placeholder or fights) and para['special'][0] == 0xFF:
             W('specialties[0]', None, 'the main element is empty: learning on evolving and the AI use slot 0')
         for m in moves:

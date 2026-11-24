@@ -5,10 +5,11 @@
   "vanilla_as": 12,
   "off": {"level": "ultimate"},
   "attribute": "data",
-  "specialties": ["battle", null, "fire"],
+  "specialties": ["battle", "earth", "fire"],
   "fields": ["nature-spirits"],
   "techniques": ["Spit Fire", "Prominence Beam", "Red Inferno", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch",
-                 "Buster Dive", "Tremar", "War Cry", "Muscle Charge", "Blaze Blast"],
+                 "Buster Dive", "Tremar", "War Cry", "Muscle Charge", "Blaze Blast", "Stone Skin",
+                 "Boulder Crash", "Fissure", "Stalagmite", "Landslide"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 8,
   "model": {
@@ -19,7 +20,8 @@
     "height": 590,
     "skeleton": [[-1, -1], [-1, 0], [1, 1], [2, 2], [3, 3], [7, 2], [8, 5], [9, 6], [11, 7], [10, 7], [12, 7],
                  [16, 2], [17, 11], [18, 12], [20, 13], [19, 13], [21, 13], [0, 1], [4, 17],
-                 [5, 18], [6, 19], [13, 17], [14, 21], [15, 22], [22, 17], [23, 24], [24, 25]]
+                 [5, 18], [6, 19], [13, 17], [14, 21], [15, 22], [22, 17], [23, 24], [24, 25]],
+    "slot_aliases": [[57, 54], [58, 48], [59, 48], [60, 47], [61, 47]]
   },
   "texture": {"from": 124},
   "voice": 0,

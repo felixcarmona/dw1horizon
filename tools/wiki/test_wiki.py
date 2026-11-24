@@ -153,7 +153,7 @@ class WikiTests(unittest.TestCase):
             source=(root/f'{lang}.json').read_bytes()
             self.assertEqual(review['locales'][lang],hashlib.sha256(source).hexdigest())
             articles=json.loads(source)
-            self.assertEqual(len(articles),21)
+            self.assertEqual(len(articles),22)
             self.assertTrue(all(len(a['paragraphs'])>=3 for a in articles.values()))
             self.assertIn('{save_blocks}',articles['memory-cards']['paragraphs'][0])
     def test_bakemon_dialogue_comes_from_each_snapshot_and_language(self):

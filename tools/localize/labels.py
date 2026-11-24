@@ -123,14 +123,14 @@ def apply(files, language, work):
     check_care_button_cells(items)
     from tools.localize.status_art import check_cells
     check_cells(items)
-    elements = {'FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH', 'DARK', 'LIGHT', 'WATER'}
+    elements = {'FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH', 'DARK', 'LIGHT', 'WATER', 'WEAPON', 'NATURE'}
     for item in items:
         if item['es'] not in UI:
             continue
         text = word(item['es'], language)
         clut = item['clut_row']
         ink, bg, sh = (1, None, 8) if clut == 8 else (2, 0, 1) if clut == 9 else (14, 15, 13) if item['en'] in ('HAPPINESS', 'SPEED', 'BRAINS', 'SPEED (alternative)') else (10, 15, 13) if item['en'] in elements else (1, 15, 13)
-        rect = relocated_rect(item) or [item[k] for k in ('u','v','w','h')]
+        rect = relocated_rect(item, language) or [item[k] for k in ('u','v','w','h')]
         for path, entry in [('ETCDAT/SYSTEM_W.TIM',0), ('ETCDAT/ETCTIM.BIN',8)]:
             draw(path, rect, text, ink, bg, sh, entry, preserve=True)
 

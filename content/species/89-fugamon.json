@@ -5,10 +5,11 @@
   "level": "champion",
   "vanilla_as": 5,
   "attribute": "virus",
-  "specialties": ["air", "battle", "fire"],
+  "specialties": ["weapon", "air", "battle"],
   "fields": ["nightmare-soldiers"],
   "techniques": ["Spit Fire", "Magma Bomb", "Megaton Punch", "Static Elect", "Wind Cutter", "Hurricane",
-                 "Confused Storm", "War Cry", "Sonic Jab", "Tremar", "Pummel Whack"],
+                 "Confused Storm", "War Cry", "Sonic Jab", "Tremar", "Pummel Whack", "Quick Slash",
+                 "Blade Throw", "Armor Break", "War Stance", "Cross Cutter"],
   "drop": {"item": "Hispeed dsk", "percent": 10},
   "effects_like": 34,
   "model": {
@@ -19,7 +20,8 @@
     "height": 390,
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 2], [4, 5], [5, 6], [6, 2], [7, 8], [8, 9], [9, 1],
                  [10, 11], [11, 12], [12, 13], [13, 11], [14, 15], [15, 16]],
-    "slot_aliases": [[52, 51], [53, 48], [54, 48], [55, 48], [56, 48]]
+    "slot_aliases": [[52, 51], [53, 48], [54, 48], [55, 48], [56, 48], [57, 54], [58, 50], [59, 49], [60, 53],
+                     [61, 48]]
   },
   "texture": {"from": 89},
   "voice": 30,

@@ -1,4 +1,4 @@
-"""The eighteen new cups' banners: Gemini prompts. KEY: (material of the logo, glow)"""
+"""The twenty new cups' banners: Gemini prompts. KEY: (material of the logo, glow)"""
 LANGS = ['en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans']
 STYLE = {
  'ROOKIE_CUP': 'chunky glossy lime-green jelly letters with a bright yellow outline glow, playful and rounded',
@@ -19,8 +19,10 @@ STYLE = {
  'DARK_CUP': 'jet-black obsidian letters with sharp jagged edges and thin glowing blood-red cracks, with a dark crimson glow',
  'HOLY_CUP': 'pure white marble letters with pastel stained-glass inlays and a small golden halo ring over the word, with a soft golden-white glow',
  'AQUA_CUP': 'clear turquoise splashing water letters with white foam crests and flying droplets, like a breaking wave, with a bright cyan glow',
+ 'BLADE_CUP': 'mirror-polished silver sword-steel letters with razor-sharp pointed ends and a thin bright slash of light across the word, with a cold white-blue glow',
+ 'GAIA_CUP': 'letters carved from cracked sandstone and brown rock with moss in the cracks and small pebbles falling off, with a warm amber glow',
 }
-FAMILY = {k: 'level' for k in list(STYLE)[:4]} | {k: 'attribute' for k in list(STYLE)[4:7]} | {k: 'field' for k in list(STYLE)[7:13]} | {k: 'specialty' for k in list(STYLE)[13:]}
+FAMILY = {k: 'level' for k in list(STYLE)[:4]} | {k: 'attribute' for k in list(STYLE)[4:7]} | {k: 'field' for k in list(STYLE)[7:15]} | {k: 'specialty' for k in list(STYLE)[15:]}
 CUP = dict(zip(LANGS, ['CUP', 'COPA', 'COPA', 'COUPE', 'POKAL', 'COPPA', 'カップ', 'COPA', '杯']))
 WORD = {   # the logo word: the cup's name (text/<language>/names.json) without the word for cup
  'en': ['ROOKIE', 'CHAMPION', 'ULTIMATE', 'MEGA', 'VACCINE', 'DATA', 'VIRUS'],
@@ -33,10 +35,12 @@ WORD = {   # the logo word: the cup's name (text/<language>/names.json) without 
  'ca': ['NOVELL', 'CAMPIÓ', 'PERFECTE', 'MEGA', 'VACUNA', 'DADES', 'VIRUS'],
  'zh-hans': ['成长期', '成熟期', '完全体', '究极体', '疫苗', '数据', '病毒'],
 }
-SPECIALTY = {   # the cups of the Darkness, Light and Water rows
- 'en': ['DARK', 'HOLY', 'AQUA'], 'es': ['OSCURIDAD', 'LUZ', 'AGUA'], 'pt-br': ['TREVAS', 'LUZ', 'ÁGUA'],
- 'fr': ['TÉNÈBRES', 'LUMIÈRE', 'EAU'], 'de': ['FINSTERNIS', 'LICHT', 'WASSER'], 'it': ['TENEBRE', 'LUCE', 'ACQUA'],
- 'ja': ['やみ', 'ひかり', 'みず'], 'ca': ['FOSCOR', 'LLUM', 'AIGUA'], 'zh-hans': ['黑暗', '光明', '流水'],
+SPECIALTY = {   # the cups of the Darkness, Light, Water, Weapon and Earth rows
+ 'en': ['DARK', 'HOLY', 'AQUA', 'BLADE', 'GAIA'], 'es': ['OSCURIDAD', 'LUZ', 'AGUA', 'ESPADA', 'GAIA'],
+ 'pt-br': ['TREVAS', 'LUZ', 'ÁGUA', 'LÂMINA', 'GAIA'], 'fr': ['TÉNÈBRES', 'LUMIÈRE', 'EAU', 'LAME', 'GAÏA'],
+ 'de': ['FINSTERNIS', 'LICHT', 'WASSER', 'KLINGEN', 'GAIA'], 'it': ['TENEBRE', 'LUCE', 'ACQUA', 'LAMA', 'GAIA'],
+ 'ja': ['やみ', 'ひかり', 'みず', 'つるぎ', 'だいち'], 'ca': ['FOSCOR', 'LLUM', 'AIGUA', 'ESPASA', 'GAIA'],
+ 'zh-hans': ['黑暗', '光明', '流水', '利刃', '大地'],
 }
 FIELDS = ['NATURE SPIRITS', 'DEEP SAVERS', 'NIGHTMARE SOLDIERS', 'WIND GUARDIANS', 'METAL EMPIRE', 'VIRUS BUSTERS', "DRAGON'S ROAR", 'JUNGLE TROOPERS']
 FIELDS_JA = ['ネイチャースピリッツ', 'ディープセイバーズ', 'ナイトメアソルジャーズ', 'ウィンドガーディアンズ', 'メタルエンパイア', 'ウイルスバスターズ', 'ドラゴンズロアー', 'ジャングルトルーパーズ']
@@ -59,7 +63,7 @@ NAME = dict(zip(LANGS, ['English', 'Spanish', 'Brazilian Portuguese', 'French', 
 def words(key, lang):
     """(logo word, word for cup, caption)"""
     i = list(STYLE).index(key)
-    w = WORD[lang][i] if i < 7 else (FIELDS_JA if lang == 'ja' else FIELDS)[i - 7] if i < 13 else SPECIALTY[lang][i - 13]
+    w = WORD[lang][i] if i < 7 else (FIELDS_JA if lang == 'ja' else FIELDS)[i - 7] if i < 15 else SPECIALTY[lang][i - 15]
     return w, CUP[lang], CAPTION[FAMILY[key]][lang].format(w=w)
 
 MASTER = '''Images 1, 2 and 3 are tournament title banners from a 1990s PlayStation game. Make a new banner of the same family for another cup, in exactly their style: late-1990s pre-rendered 3D logo art, low-resolution and slightly soft, a big textured logo word, a smaller word "CUP" in a matching simpler style overlapping or beside it, and one small caption in plain bold capitals, all on a flat dark navy background (RGB 0,0,40: it is transparent in the game, so keep it perfectly flat, no gradient, no texture, no vignette, no frame).

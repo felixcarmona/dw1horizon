@@ -12,8 +12,10 @@ from tools.localize import tech_rows_art as art
 
 def cells(language):
     out = [(u, v, 12, 12) for pair in art.ICON_CELLS for u, v in pair] + [art.CLUT_RECT]
+    out += [(u, v, 12, 12) for u, v in art.icon_cells(language)] + [art.NEW_CLUT_RECT]
     if language == 'en':
-        out += [(u, v, *art.EN_CELL) for _, u, v in art.EN_NAMES]
+        wide = {key[0]: cell for key, cell in art.WIDE_CELLS.items()}
+        out += [wide.get(word, (u, v, *art.EN_CELL)) for word, u, v in art.EN_NAMES]
     return out
 
 
@@ -33,12 +35,15 @@ class TechRowsArt(unittest.TestCase):
 
     def test_cells_are_nobodys(self):
         taken = [TAG_RECT, BATTLES_RECT, ICON_RECT, CARE_BUTTON_CLUT_RECT, *CARE_BUTTON_RECTS, *CARE_BUTTON_GUARD_RECTS]
-        taken += [(u, v, *CHINESE_MENU_SIZE) for _, u, v in CHINESE_MENU_CELLS.values()]
-        taken += [(128, 110, 38, 12), (166, 110, 28, 12), (194, 110, 34, 12), (96, 84, 64, 12), (160, 84, 38, 12),
-                  (144, 96, 37, 9), (120, 96, 23, 9)]
-        mine = cells('fr')
+        taken += [(128, 110, 38, 12), (166, 110, 28, 12), (194, 110, 34, 12), (96, 84, 64, 12), (160, 84, 38, 12)]
+        chinese = [(u, v, *CHINESE_MENU_SIZE) for _, u, v in CHINESE_MENU_CELLS.values()]
+        mine = cells('fr') + list(art.WIDE_CELLS.values())
         for i, rect in enumerate(mine):
             self.assertFalse(any(overlaps(rect, other) for other in taken + mine[:i]), rect)
+        # Chinese has its menu words in the corner the other languages use, and its own cells for what came last
+        theirs = cells('zh-hans') + list(art.ZH_CELLS.values())
+        for i, rect in enumerate(theirs):
+            self.assertFalse(any(overlaps(rect, other) for other in taken + chinese + theirs[:i]), rect)
         # the English names sit where only a Spanish-layout label goes, which the English texture does not have
         english = cells('en')
         for i, rect in enumerate(english):
@@ -63,8 +68,10 @@ class TechRowsArt(unittest.TestCase):
             self.assertEqual(again, data)
 
     def test_english_names_fit(self):
-        self.assertEqual(len(art.english_widths()), 3)
-        self.assertTrue(all(w <= art.EN_CELL[0] for w in art.english_widths()))
+        widths = art.english_widths()
+        self.assertEqual(len(widths), 5)
+        self.assertTrue(all(w <= art.EN_CELL[0] for w in widths[:3]))
+        self.assertTrue(all(w <= cell[2] for w, cell in zip(widths[3:], art.WIDE_CELLS.values())))
 
 
 if __name__ == '__main__':

@@ -1,0 +1,21 @@
+{
+  "id": 147,
+  "name": "Blade Throw",
+  "element": "weapon",
+  "power": 150,
+  "mpCost": 24,
+  "distance": 160000,
+  "range": 2,
+  "accuracy": 70,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    26,
+    16,
+    12
+  ]
+}

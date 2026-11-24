@@ -1172,6 +1172,22 @@ class Tech(IntEnum):
     SeaCrush = 143
     TidalWave = 144
     OceanFury = 145
+    QuickSlash = 146
+    BladeThrow = 147
+    ArmorBreak = 148
+    WarStance = 149
+    CrossCutter = 150
+    WhirlingEdge = 151
+    GiantCleave = 152
+    FinalEdge = 153
+    RockThrow = 154
+    SandBlast = 155
+    StoneSkin = 156
+    BoulderCrash = 157
+    Fissure = 158
+    Stalagmite = 159
+    Landslide = 160
+    GaiaQuake = 161
 
 class Screen(IntEnum):
     """The screens of the game, by caption (a caption that repeats gets the screen number)."""

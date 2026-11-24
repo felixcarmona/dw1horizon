@@ -5,7 +5,7 @@ from pathlib import Path
 from tools.battle_audit import damage, table
 
 ROOT = Path(__file__).resolve().parents[1]
-ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water']
+ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water', 'weapon', 'earth']
 BEFORE = {87: ['filth', None, None], 231: ['filth', 'battle', None],
           264: ['filth', 'battle', None], 307: ['filth', 'battle', None]}
 ADDED = {87: ['Charm Perfume', 'Poison Powder'],

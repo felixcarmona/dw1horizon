@@ -1,0 +1,21 @@
+{
+  "id": 149,
+  "name": "War Stance",
+  "element": "weapon",
+  "power": 0,
+  "mpCost": 20,
+  "distance": 0,
+  "range": 4,
+  "accuracy": 100,
+  "status": 9,
+  "statusChance": 20,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    22,
+    14,
+    9
+  ]
+}

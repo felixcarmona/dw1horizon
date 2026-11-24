@@ -1,4 +1,4 @@
-"""The banners of the eighteen cups after the original's (cups 23..40): STDDAT/GRADE/NEWCUPS.BIN.
+"""The banners of the twenty cups after the original's (cups 23..42): STDDAT/GRADE/NEWCUPS.BIN.
 
     python3 -m tools.cup_banners build OUT.BIN      # the disc file
 
@@ -26,7 +26,8 @@ IMAGE_XY, CLUT_XY = (384, 0), (0, 486)
 LANGUAGES = ['en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans']      # include/dw/lang.h
 CUPS = ['ROOKIE_CUP', 'CHAMPION_CUP', 'ULTIMATE_CUP', 'MEGA_CUP', 'VACCINE_CUP', 'DATA_CUP', 'VIRUS_CUP',
         'NATURE_SPIRITS_CUP', 'DEEP_SAVERS_CUP', 'NIGHTMARE_SOLDIERS_CUP', 'WIND_GUARDIANS_CUP', 'METAL_EMPIRE_CUP',
-        'VIRUS_BUSTERS_CUP', 'DRAGONS_ROAR_CUP', 'JUNGLE_TROOPERS_CUP', 'DARK_CUP', 'HOLY_CUP', 'AQUA_CUP']
+        'VIRUS_BUSTERS_CUP', 'DRAGONS_ROAR_CUP', 'JUNGLE_TROOPERS_CUP', 'DARK_CUP', 'HOLY_CUP', 'AQUA_CUP',
+        'BLADE_CUP', 'GAIA_CUP']
 
 
 def tim(path):

@@ -6,11 +6,11 @@
   "vanilla_as": 12,
   "off": {"level": "ultimate"},
   "attribute": "data",
-  "specialties": ["fire", "battle", null],
+  "specialties": ["earth", "fire", "battle"],
   "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Meltdown", "Inifinity Burn",
                  "Prominence Beam", "Buster Dive", "Megaton Punch", "Counter", "Dynamite Kick (44)",
-                 "Tremar", "Mega Flame"],
+                 "Tremar", "Mega Flame", "Boulder Crash", "Landslide"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 36,
   "own_effect": {"technique": "Mega Flame", "chunk": 252},
@@ -23,7 +23,7 @@
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 1], [9, 9], [10, 1],
                  [11, 11], [12, 1], [13, 13], [14, 1], [15, 15], [16, 1], [17, 17], [18, 18]],
     "slot_aliases": [[49, 50], [53, 47], [54, 47], [55, 50], [56, 50], [57, 50], [58, 50], [59, 47], [62, 51],
-                     [51, 52], [52, 50], [50, 62]]
+                     [51, 52], [52, 50], [50, 62], [60, 50], [61, 53]]
   },
   "texture": {"file": "build/record-originals/126.TIM", "entry": 0},
   "voice": 32,

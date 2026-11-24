@@ -25,7 +25,13 @@ STATS = {'hp': 'HP', 'mp': 'MP', 'offense': 'Offense', 'defense': 'Defense',
          'speed': 'Speed', 'brain': 'Brains'}
 LEVELS = ['fresh', 'in-training', 'rookie', 'champion', 'ultimate', 'mega']
 RANGES = {0: 'Other', 1: 'Melee', 2: 'Ranged', 3: 'Area', 4: 'Self buff'}
-STATUSES = {0: '—', 1: 'Poison', 2: 'Confusion', 3: 'Stun', 4: 'Flatten'}
+STATUSES = {0: '—', 1: 'Poison', 2: 'Confusion', 3: 'Stun', 4: 'Flatten', 5: 'Heals HP', 6: 'Defense up', 7: 'Speed up',
+            8: 'Target Defense down', 9: 'Offense up'}
+
+
+def learnable(t):
+    """The seven original rows and the rows added after the finishers."""
+    return t['id'] < 58 or t['id'] >= 122
 
 
 def esc(value):
@@ -133,19 +139,20 @@ def render(commit, techniques, all_species, tree, version):
         return ', '.join(f'<a translate="no" href="#species-{i}">{esc(partners[i]["name"])}</a>' for i in ids) or '—'
     rows = []
     for t in sorted(techniques, key=lambda t: t['id']):
-        status = STATUSES[t['status']] + (f' ({t["statusChance"]}%)' if t['status'] else '')
-        kind = 'Learnable' if t['id'] < 58 else 'Finisher' if t['id'] <= 112 else 'Intrinsic / other'
+        status = STATUSES[t['status']] + (f' ({t["statusChance"]}%)' if 0 < t['status'] < 5 else
+                                          f' {t["statusChance"]}%' if t['status'] else '')
+        kind = 'Learnable' if learnable(t) else 'Finisher' if t['id'] <= 112 else 'Intrinsic / other'
         values = [cell(f'<span translate="no">{esc(t["name"])}</span> <small>#{t["id"]} · {kind}</small>', t['name']), cell(esc(t['element']).title()), cell(t['power'], t['power']), cell(base_mp(t), base_mp(t)), cell(RANGES[t['range']]), cell(status)]
         values += [cell(f'{c}%', c) for c in t['learnChances']] if 'learnChances' in t else [cell('—', -1)] * 3
         rows.append('<tr>' + ''.join(values) + '</tr>')
-    tech_table = table('techniques', 'Techniques', '''<p>Enemy execution of a normal technique records it for learning; it need not land a hit. At battle end, your partner must not already know it, must have it in its species list, and must have a matching specialty. The first matching slot selects the chance below. <strong>Brains does not affect this battle roll.</strong> If several techniques pass their rolls, one is learned at random. Repeated casts do not add extra rolls for the same technique.</p><p>Chances are per candidate roll, not a guaranteed final award. MP is the base battle cost (data cost ×3), before condition and Brains modifiers. Finishers cost no MP. Status percentages apply on a successful hit. Finishers and intrinsic moves have no battle learning chance. Shared names show their data IDs.</p>''', ['Technique', 'Specialty', 'Power', 'MP', 'Range type', 'Status', '1st', '2nd', '3rd'], rows)
+    tech_table = table('techniques', 'Techniques', '''<p>Enemy execution of a normal technique records it for learning; it need not land a hit. At battle end, your partner must not already know it, must have it in its species list, and must have a matching specialty. The first matching slot selects the chance below. <strong>Brains does not affect this battle roll.</strong> If several techniques pass their rolls, one is learned at random. Repeated casts do not add extra rolls for the same technique.</p><p>Chances are per candidate roll, not a guaranteed final award. MP is the base battle cost (data cost ×3), before condition and Brains modifiers. Finishers cost no MP. Status percentages apply on a successful hit; a support technique shows its amount instead. Finishers and intrinsic moves have no battle learning chance. Shared names show their data IDs.</p>''', ['Technique', 'Specialty', 'Power', 'MP', 'Range type', 'Status', '1st', '2nd', '3rd'], rows)
     rows, evolutions = [], []
     for s in ordered:
         moves = [resolve_move(n, techniques) for n in s['techniques'] if n is not None]
         learn = []
         intrinsic = []
         for t in moves:
-            if t['id'] < 58:
+            if learnable(t):
                 c = chance(s, t)
                 learn.append(f'<li><span translate="no">{esc(t["name"])}</span> <small>#{t["id"]}</small> — {str(c) + "%" if c is not None else "no matching specialty; no battle roll"}</li>')
             elif t['id'] > 112:

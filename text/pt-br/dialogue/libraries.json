@@ -2767,6 +2767,28 @@
    "Entrada: Digimon de Água"
   ]
  ],
+ "s209.sec10.u40": [
+  [
+   "- Copa Lâmina -",
+   "Decide o melhor Digimon",
+   "de especialidade Arma.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Arma"
+  ]
+ ],
+ "s209.sec10.u41": [
+  [
+   "- Copa Gaia -",
+   "Decide o melhor Digimon",
+   "de especialidade Terra.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Terra"
+  ]
+ ],
  "s210.sec51.u0": "Eu estava esperando por você, {color 6}{player}{color 1}. Finalmente, chegou o dia.",
  "s210.sec51.u1": "O que há de errado?",
  "s210.sec51.u2": [
@@ -3500,6 +3522,28 @@
    "",
    "Individual, 3 rodadas, 8 vagas",
    "Entrada: Digimon de Água"
+  ]
+ ],
+ "s213.sec10.u40": [
+  [
+   "- Copa Lâmina -",
+   "Decide o melhor Digimon",
+   "de especialidade Arma.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Arma"
+  ]
+ ],
+ "s213.sec10.u41": [
+  [
+   "- Copa Gaia -",
+   "Decide o melhor Digimon",
+   "de especialidade Terra.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Terra"
   ]
  ],
  "s213.sec54.u0": "Ei, você não entrou no torneio.",
@@ -4910,6 +4954,18 @@
   [
    "Prêmio do campeão: 5000 Bits!",
    "Recebeu 1 x {color 6}Gelo do poder{color 1}!"
+  ]
+ ],
+ "s220.sec51.u26": [
+  [
+   "Prêmio do campeão: 5000 Bits!",
+   "Recebeu 1 x {color 6}Chip de ataque{color 1}!"
+  ]
+ ],
+ "s220.sec51.u27": [
+  [
+   "Prêmio do campeão: 5000 Bits!",
+   "Recebeu 1 x {color 6}Chip de defesa{color 1}!"
   ]
  ],
  "s220.sec83.u0": [

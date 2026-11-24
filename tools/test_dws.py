@@ -66,7 +66,7 @@ GOLDEN = {   # sha256 of what each example compiled to with the retired quest co
     'jungle-newcomer': {
         'DG': 'e9b93ff819483db1727d2c37c0000e2cc17356038b2b598bda917bc2394f6821',
         'MAPHEAD': '6288c380c9bb7ef9fd233c30d2f445fde690b6443812c7fbc1482fea2737cb46',
-        'MAP/MAP1/TROP02.MAP': 'f3f7d5d7bcab8e6255fdc4141b71bb76c34b2a6fd4375c5cb74dc6963661c646',
+        'MAP/MAP1/TROP02.MAP': '2c86fa92e05ae3cd0d2d41d77ffa4c4cf66de4e69a59ebc9794af62a04ac5e7b',
     },
     'new-house-story': {
         'DG': '65a21396fd948c0688c21cc23fb2eb06d93101222080fd22206376de2f05d79b',

@@ -1,0 +1,21 @@
+{
+  "id": 151,
+  "name": "Whirling Edge",
+  "element": "weapon",
+  "power": 210,
+  "mpCost": 50,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 72,
+  "status": 3,
+  "statusChance": 10,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    18,
+    12,
+    8
+  ]
+}

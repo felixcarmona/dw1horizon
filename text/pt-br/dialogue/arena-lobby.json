@@ -374,6 +374,28 @@
    "Entrada: Digimon de Água"
   ]
  ],
+ "s168.sec10.u40": [
+  [
+   "- Copa Lâmina -",
+   "Decide o melhor Digimon",
+   "de especialidade Arma.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Arma"
+  ]
+ ],
+ "s168.sec10.u41": [
+  [
+   "- Copa Gaia -",
+   "Decide o melhor Digimon",
+   "de especialidade Terra.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Terra"
+  ]
+ ],
  "s168.sec53.u0": "Calma aí, esses são os assentos do público.",
  "s168.sec82.m0.o0": "Histórico",
  "s168.sec82.m0.o1": "Sobre torneios de classe",
