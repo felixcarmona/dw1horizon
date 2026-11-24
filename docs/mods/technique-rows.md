@@ -132,6 +132,10 @@ its form, so on that first load it learns the first technique of each new row it
 Spark, Bubble Shot); the rest it learns as any other. The Weapon and Earth rows take bits 88 to 103 and do the same
 for a save made before them (Quick Slash, Rock Throw); the save's layout number says which rows it has seen.
 
+A species list can change between releases, and a save keeps its selected techniques as list positions. On every load
+a selected position whose technique the partner never learned is dropped (`dropUnlearnedSelections`); a partner left
+with none selects its first learned technique, and one that has learned nothing of its list keeps what it had.
+
 ## Effects
 
 Every one of the 40 effects is ours: a script for the battle's effect machine and a small texture, both made by
