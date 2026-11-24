@@ -1,0 +1,82 @@
+From 3d21e3a3f50f095c58aefddb8644fb0fdefba408 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 19:05:00 +0000
+Subject: [PATCH] Bonus Try: the third reel stops where the player pressed
+
+The gym slot machine drew a hidden help value for every round. With no help
+(half the rounds) the third reel moved one or two symbols on whenever it was
+about to complete a triple, so those rounds could not be won; with the
+aligning help it did the same against a third jackpot symbol. Both slips are
+removed in TRN and TRN2: timing decides the prize in every round. The help
+that settles a reel on a matching symbol up to one step ahead stays, and so
+does the jackpot help. Overlay code only; the main executable is unchanged.
+---
+ src/trn/trn_slots.c   | 13 +++----------
+ src/trn2/trn2_slots.c | 13 +++----------
+ 2 files changed, 6 insertions(+), 20 deletions(-)
+
+diff --git a/src/trn/trn_slots.c b/src/trn/trn_slots.c
+index e3f67099..d7decdec 100644
+--- a/src/trn/trn_slots.c
++++ b/src/trn/trn_slots.c
+@@ -329,13 +329,8 @@ scan:
+ 	case 2:
+ 		switch (p->assist) {
+ 		case 0:
+-			if (p->targetSymbol[0] != p->targetSymbol[1]) {
+-				break;
+-			}
+-			if (p->targetSymbol[0] != TRN_D_8008F1AC[i][(p->reelPos[i] + 12) % 13]) {
+-				break;
+-			}
+-			p->stopSteps[i] = (rand() % 2) + 1;
++			/* MOD (fair Bonus Try): the reel stops where the player pressed; the original slipped one or two
++			 * symbols past a triple here, so half the rounds could not be won */
+ 			break;
+ 		case 1:
+ 			if (p->targetSymbol[0] != p->targetSymbol[1]) {
+@@ -354,9 +349,7 @@ scan:
+ 					p->stopSteps[i] = j - 1;
+ 					p->targetSymbol[i] = p->targetSymbol[0];
+ 				}
+-			} else if (TRN_D_8008F1AC[i][(p->reelPos[i] + 12) % 13] == 7) {
+-				p->stopSteps[i] = (rand() % 2) + 1;
+-			}
++			} /* MOD (fair Bonus Try): two jackpot symbols no longer make the third reel slip past the third one */
+ 			break;
+ 		case 2:
+ 			if ((p->targetSymbol[0] == 7) && (p->targetSymbol[1] == 7)) {
+diff --git a/src/trn2/trn2_slots.c b/src/trn2/trn2_slots.c
+index 253e26bd..895c5a17 100644
+--- a/src/trn2/trn2_slots.c
++++ b/src/trn2/trn2_slots.c
+@@ -329,13 +329,8 @@ scan:
+ 	case 2:
+ 		switch (p->assist) {
+ 		case 0:
+-			if (p->targetSymbol[0] != p->targetSymbol[1]) {
+-				break;
+-			}
+-			if (p->targetSymbol[0] != TRN2_D_8008DAA8[i][(p->reelPos[i] + 12) % 13]) {
+-				break;
+-			}
+-			p->stopSteps[i] = (rand() % 2) + 1;
++			/* MOD (fair Bonus Try): the reel stops where the player pressed; the original slipped one or two
++			 * symbols past a triple here, so half the rounds could not be won */
+ 			break;
+ 		case 1:
+ 			if (p->targetSymbol[0] != p->targetSymbol[1]) {
+@@ -354,9 +349,7 @@ scan:
+ 					p->stopSteps[i] = j - 1;
+ 					p->targetSymbol[i] = p->targetSymbol[0];
+ 				}
+-			} else if (TRN2_D_8008DAA8[i][(p->reelPos[i] + 12) % 13] == 7) {
+-				p->stopSteps[i] = (rand() % 2) + 1;
+-			}
++			} /* MOD (fair Bonus Try): two jackpot symbols no longer make the third reel slip past the third one */
+ 			break;
+ 		case 2:
+ 			if ((p->targetSymbol[0] == 7) && (p->targetSymbol[1] == 7)) {
+-- 
+2.55.0
+

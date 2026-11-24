@@ -60,3 +60,6 @@ the existing odds; removing the forced misses is a separate balance change.
 The changes here close a regression-test coverage gap and do not claim to fix
 the reported gameplay. No engine patch, executable or allocation changes are
 made, so the main executable and original-2-MB heap budget are unchanged.
+
+Later change (2026-11-24): the forced third-reel slips described above were removed and the jackpot lowered to x5
+([decision](../decisions.md)); the host test now asserts that no help mode moves the third reel off a triple.

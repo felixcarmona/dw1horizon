@@ -157,7 +157,7 @@
       "stepMs": 6000
     },
     "slots": {
-      "jackpot": 100,
+      "jackpot": 50,
       "match": 40,
       "triple": 20,
       "miss": 5
@@ -205,7 +205,7 @@
       "stepMs": 6000
     },
     "slots": {
-      "jackpot": 100,
+      "jackpot": 50,
       "match": 40,
       "triple": 20,
       "miss": 5
