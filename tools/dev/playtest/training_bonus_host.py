@@ -49,7 +49,7 @@ typedef struct {int16_t x,y,z,pad;} SVECTOR;
 typedef void (*TickFunction)(int32_t);
 typedef void (*RenderFunction)(int32_t);
 enum {MOD_TR_PAY_JACKPOT,MOD_TR_PAY_MATCH,MOD_TR_PAY_TRIPLE,MOD_TR_PAY_MISS};
-int MOD_TRAIN_RULES[]={100,40,20,5}, MOD_TRAIN2_RULES[]={100,40,20,5};
+int MOD_TRAIN_RULES[]={50,40,20,5}, MOD_TRAIN2_RULES[]={50,40,20,5};
 uint32_t POLLED_INPUT,POLLED_INPUT_PREVIOUS,rng;
 int CURRENT_SCREEN,DRAWING_OFFSET_X,DRAWING_OFFSET_Y,removed;
 struct {int state;} UI_BOX_DATA[4];
@@ -97,7 +97,7 @@ void finish(int delay){
   tick(1);tick(0);
  }
  for(int n=0;n<100 && P.result<0;n++)tick(0);
- assert(P.result==5 || P.result==20 || P.result==40 || P.result==100);
+ assert(P.result==5 || P.result==20 || P.result==40 || P.result==50);
  SESSION_TICK();SESSION_TICK();
  assert(SESSION[0]==P.result && UI_BOX_DATA[3].state==0);
 }
@@ -129,18 +129,20 @@ int main(void){
    assert(memcmp(&expected,&replay,sizeof replay)==0);
   }
  }
- // The reported extra symbol is reachable without any stale round state:
- // unassisted triple sevens deliberately slip on reel three.
- memset(&P,0,sizeof P);P.assist=0;P.targetSymbol[0]=P.targetSymbol[1]=7;
- for(int i=0;i<13;i++)if(REELS[2][i]==7)P.reelPos[2]=(i+1)%13;
- CHOOSE(2,&P);assert(P.stopSteps[2]==1 || P.stopSteps[2]==2);
- printf("PASS: 234 consecutive rounds; pre-spin/spinning state replay; forced miss slips %d symbols\n",P.stopSteps[2]);
+ // No round is decided against the player: with two reels matching, the third stops on the symbol under the press
+ // whatever help was drawn (the original slipped one or two symbols here: unhelped triples and helped 777).
+ for(int mode=0;mode<3;mode++)for(int symbol=1;symbol<=7;symbol++)for(int pos=0;pos<13;pos++){
+  if(REELS[2][pos]!=symbol)continue;
+  memset(&P,0,sizeof P);P.assist=mode;P.targetSymbol[0]=P.targetSymbol[1]=symbol;P.reelPos[2]=(pos+1)%13;
+  CHOOSE(2,&P);assert(P.stopSteps[2]==0);
+ }
+ puts("PASS: 234 consecutive rounds; pre-spin/spinning state replay; no forced miss in any help mode");
  // Once stopped, all original triples (including 777) still pay correctly.
  for(int stat=0;stat<6;stat++)for(int symbol=1;symbol<=7;symbol++){
   memset(&P,0,sizeof P);P.state=5;P.stat=stat;
   for(int reel=0;reel<3;reel++)for(int pos=0;pos<13;pos++)
    if(REELS[reel][pos]==symbol){P.reelPos[reel]=pos;break;}
-  tick(0);assert(P.payout==(symbol==7?100:symbol==stat+1?40:20));
+  tick(0);assert(P.payout==(symbol==7?50:symbol==stat+1?40:20));
  }
  // A held button stops one reel; the next reel requires a fresh edge.
  START(0);SESSION_TICK();SPIN();tick(0);tick(1);

@@ -99,11 +99,14 @@ def prepare(e, screen, prefix, gym, mode):
     e.run("resume")
 
 
-def finish(e, out, label, prefix, bonus, expected):
+REELS = {"TRN": "TRN_D_8008F1AC", "TRN2": "TRN2_D_8008DAA8"}
+
+
+def finish(e, out, label, prefix, bonus, expected, symbol=0):
     slot = prefix + "_SLOT_MACHINE"
     deadline = time.monotonic() + 110
     seen = []
-    payout = None
+    payout = trained = None
     cancel = "CROSS" if e.peek("MOD_OPT_BUTTONS", "i") else "TRIANGLE"
     cancel_held = False
     while time.monotonic() < deadline:
@@ -119,7 +122,12 @@ def finish(e, out, label, prefix, bonus, expected):
                 seen.append(st)
             if st >= 5:
                 payout = e.peek(slot + "+2", "h", ram)
+                trained = e.peek(slot + "+30", "h", ram)
             if st in (1, 2, 3):
+                if symbol:
+                    # Every stop completes a triple of this symbol, with no help drawn: the award path of a win.
+                    e.poke(REELS[prefix], bytes([symbol]) * 39)
+                    e.poke(slot + "+34", bytes([0]))
                 e.press("CONFIRM", 12)
             else:
                 e.wait(0.15)
@@ -188,7 +196,9 @@ def finish(e, out, label, prefix, bonus, expected):
     assert row["care"]["evoTimer"] == expected, row
     assert after == [a + b for a, b in zip(initial, pending)], row
     if bonus:
-        assert payout in (5, 20, 40, 100), row
+        assert payout in (5, 20, 40, 50), row
+        if symbol:
+            assert payout == (50 if symbol == 7 else 40 if symbol - 1 == trained else 20), row
     return row
 
 
@@ -242,6 +252,11 @@ def run(args):
                 # Wall-time-driven pad scheduling can change exact reel stops.
                 # Both runs must finish once; deterministic state equality is
                 # checked separately by training_bonus_host.py.
+                if args.wins:
+                    for symbol in (7, 1):
+                        e.run("load", str(checkpoint))
+                        prepare(e, screen, prefix, gym, 1)
+                        results.append(finish(e, out, f"{name}-win-{symbol}", prefix, True, 1, symbol))
                 (out / "gym.json").write_text(json.dumps(results, indent=2) + "\n")
     except BaseException:
         e.run("shot", str(out / "gym-failure.png"), check=False)
@@ -258,6 +273,7 @@ def main():
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--port", type=int, default=42421)
     p.add_argument("--state", type=Path, help="field checkpoint from this exact disc")
+    p.add_argument("--wins", action="store_true", help="also play a forced jackpot and a forced HP-symbol triple")
     p.add_argument(
         "--screens",
         type=lambda s: set(map(int, s.split(","))),
