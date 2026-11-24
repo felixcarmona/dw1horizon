@@ -245,6 +245,65 @@
    }
   },
   {
+   "id": "techniques",
+   "hidden": true,
+   "media": [
+    {
+     "type": "video",
+     "controls": true,
+     "src": "media/clips/techniques.mp4",
+     "poster": "media/clips/techniques.jpg",
+     "alt": {
+      "en": "The 40 new techniques, one after another",
+      "es": "Las 40 técnicas nuevas, una tras otra",
+      "pt-br": "As 40 técnicas novas, uma após a outra",
+      "fr": "Les 40 nouvelles techniques, l'une après l'autre",
+      "de": "Die 40 neuen Techniken, eine nach der anderen",
+      "it": "Le 40 nuove tecniche, una dopo l'altra",
+      "ja": "40の新しい技を順番に",
+      "ca": "Les 40 tècniques noves, una rere l'altra",
+      "zh-hans": "40个新技能逐一展示"
+     }
+    }
+   ],
+   "en": {
+    "title": "40 new techniques",
+    "body": "Five new technique rows: Darkness, Light, Water, Weapon and Earth, eight techniques each, every one with its own effect. Your partner learns them like any other technique, and wild Digimon use them against you too."
+   },
+   "es": {
+    "title": "40 técnicas nuevas",
+    "body": "Cinco filas nuevas de técnicas: Oscuridad, Luz, Agua, Arma y Tierra, ocho técnicas cada una, todas con su propio efecto. Tu compañero las aprende como cualquier otra técnica, y los Digimon salvajes también las usan contra ti."
+   },
+   "pt-br": {
+    "title": "40 técnicas novas",
+    "body": "Cinco novas fileiras de técnicas: Trevas, Luz, Água, Arma e Terra, oito técnicas cada, todas com efeito próprio. Seu parceiro as aprende como qualquer outra técnica, e os Digimon selvagens também as usam contra você."
+   },
+   "fr": {
+    "title": "40 nouvelles techniques",
+    "body": "Cinq nouvelles rangées de techniques : Ténèbres, Lumière, Eau, Arme et Terre, huit techniques chacune, toutes avec leur propre effet. Ton partenaire les apprend comme n'importe quelle autre technique, et les Digimon sauvages s'en servent aussi contre toi."
+   },
+   "de": {
+    "title": "40 neue Techniken",
+    "body": "Fünf neue Technikreihen: Finsternis, Licht, Wasser, Waffe und Erde, je acht Techniken, jede mit eigenem Effekt. Dein Partner lernt sie wie jede andere Technik, und wilde Digimon setzen sie auch gegen dich ein."
+   },
+   "it": {
+    "title": "40 nuove tecniche",
+    "body": "Cinque nuove file di tecniche: Oscurità, Luce, Acqua, Arma e Terra, otto tecniche ciascuna, tutte con il proprio effetto. Il tuo compagno le impara come qualsiasi altra tecnica, e anche i Digimon selvatici le usano contro di te."
+   },
+   "ja": {
+    "title": "40の新しい技",
+    "body": "暗黒・光・水・武器・大地の5つの技の列が加わりました。各列に8つの技があり、どれも固有のエフェクト付きです。パートナーはほかの技と同じように覚え、野生のデジモンも使ってきます。"
+   },
+   "ca": {
+    "title": "40 tècniques noves",
+    "body": "Cinc files noves de tècniques: Foscor, Llum, Aigua, Arma i Terra, vuit tècniques cadascuna, totes amb el seu propi efecte. El teu company les aprèn com qualsevol altra tècnica, i els Digimon salvatges també les fan servir contra tu."
+   },
+   "zh-hans": {
+    "title": "40个新技能",
+    "body": "新增五行技能：黑暗、光明、水、武器与大地，每行八个技能，每个都有自己的特效。搭档像学习其他技能一样学会它们，野生数码宝贝也会用它们对付你。"
+   }
+  },
+  {
    "id": "cards",
    "media": [
     {
