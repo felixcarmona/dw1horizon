@@ -126,8 +126,11 @@ a model of `TAMER.DAT` like the rest.
   original sleeves' and trousers' pixels, as tones of the new palette row) under a shading of the body's form, and
   bare skin is drawn in three tones of his face, chosen per polygon by where it looks while he stands.
 - The seat is part of the torso, so of the shirt, and its palette row is shared with the original hoodie: under other
-  trousers `lookTamerLoad` rewrites the shirt's first sixteen polygons (every shirt starts with the seat) to the
-  legs' palette row and to one texel of plain cloth, which the trousers' head sector names.
+  trousers `lookTamerLoad` rewrites the torso's last sixteen polygons (every shirt ends with the seat) to the
+  legs' palette row and to one texel of plain cloth, which the trousers' head sector names. Last, because with no
+  depth buffer the polygons that share a bucket of the ordering table are drawn last to first: the seat lies inside
+  the shirt, a few units behind its hem, and first in the torso it was drawn over the hem as flat patches of the
+  trousers' colour.
 - A boot's leg cannot be part of the foot, which turns at the ankle. It is eleven corners and ten polygons stored in
   the shoes' head sector, and it rides on the shin: slim trousers (a flag in their head sector) keep eleven unused
   corners at the start of each shin and room for ten polygons right before the shin's own, and the loader copies the
@@ -164,7 +167,7 @@ a model of `TAMER.DAT` like the rest.
 Add its row to `STYLES` in `tools/tamer_looks/shirts.py` (at the end: the number is saved), raise `TAMER_SHIRT_COUNT`
 in `include/dw/species.h`, give it a name (`lookPageClothes` in `game_menu.c`, `LAB_STR_SHIRT_*`), and run
 `tools/tamer_pack.py build` to see that every look still fits with it. The shirt may draw only in its rectangles of the
-texture (`RECTS`): the trousers and the shoes use the rest. Its torso must start with the seat's polygons.
+texture (`RECTS`): the trousers and the shoes use the rest. Its torso must end with the seat's polygons.
 
 Trousers, shoes and backpacks are added the same way: a row in `STYLES` of `legs.py`, `shoes.py` or `backpacks.py`,
 `TAMER_TROUSERS_COUNT`, `TAMER_SHOES_COUNT` or `TAMER_PACK_COUNT`, a name in `lookPageClothes` (`LAB_STR_TROUSERS_*`,
