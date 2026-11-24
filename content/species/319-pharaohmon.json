@@ -9,7 +9,7 @@
   "fields": ["nightmare-soldiers"],
   "techniques": ["Charm Perfume", "Poison Powder", "Bug", "Green Trap", "Danger Sting", "Poison Claw",
                  "Black Gate", "Mass Morph", "Megaton Punch", "Buster Dive", "Counter",
-                 "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Bit Bomb", "Abyss Requiem"],
+                 "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Bit Bomb", "Death Grip"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 40,
   "own_effect": {"technique": "Bit Bomb", "chunk": 176},

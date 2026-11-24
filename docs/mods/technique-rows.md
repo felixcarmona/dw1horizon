@@ -108,11 +108,16 @@ Fire). The wild Digimon and bosses of those species cast the new techniques (`co
 
 An Ultimate holds up to four techniques of its first new row and three of another, and a Mega four and two: where a
 list was full, the technique took the place of a weak original one that no wild Digimon of the species casts, and
-the list keeps at least three of each row it trains. Every technique of the five rows is on some list, and a wild
-Digimon or a boss casts each of them but the last of each row (Abyss Requiem, Grand Cross, Ocean Fury, Final Edge,
-Gaia Quake), which come only from brain training. ShogunGekomon casts
-Tidal Wave, WaruSeadramon Sea Crush, the Tekkamon of the Back Dimension Whirling Edge and the MetalMamemon of Freezeland
-Judgment Ray.
+the list keeps at least three of each row it trains. A species lists a technique only where it can learn it: the
+last two of a row have no chance for a third specialty, in battle or in the gym, so Pharaohmon, Phoenixmon, Marsmon
+and Baihumon hold a lower one of that row in place of the last.
+
+Every technique of the five rows is on some list and a wild Digimon or a boss casts each of them, Grand Cross
+excepted, which comes only from brain training. The last of the other rows are cast late in the game: Abyss Requiem
+by BlackWarGreymon, Ocean Fury by the WaruSeadramon of the Secret Beach Cave, Final Edge by a Tekkamon of the Back
+Dimension and Gaia Quake by a Brachiomon of the Ancient Glacial Region; Tekkamon, WaruSeadramon and Brachiomon have
+them on their lists for that. ShogunGekomon casts Tidal Wave, WaruSeadramon Sea Crush and another Tekkamon of the
+Back Dimension Whirling Edge.
 
 A model has an attack animation for each technique of its list. A species that got techniques added plays one of
 its own attack clips for each of them: an imported model names the clip in `technique_aliases`

@@ -8,7 +8,7 @@
   "specialties": ["weapon", "mech", "battle"],
   "fields": ["metal-empire"],
   "techniques": ["Megaton Punch", "Buster Dive", "Reverse Prog", "Full Potential", "DG Dimension", "All Range Beam",
-                 "Delete Program", "Pulse Laser", "Power Crane", "Whirling Edge", "Counter",
+                 "Delete Program", "Pulse Laser", "Final Edge", "Whirling Edge", "Counter",
                  "Dynamite Kick (44)", "Cross Cutter", "Spiral Sword", "War Stance", "Giant Cleave"],
   "drop": {"item": "S.Def.disk", "percent": 15},
   "effects_like": 41,

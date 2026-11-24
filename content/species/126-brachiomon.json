@@ -9,7 +9,7 @@
   "specialties": ["earth", "fire", "battle"],
   "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Fissure", "Meltdown", "Inifinity Burn",
-                 "Stalagmite", "Buster Dive", "Megaton Punch", "Counter", "Dynamite Kick (44)",
+                 "Stalagmite", "Buster Dive", "Megaton Punch", "Gaia Quake", "Dynamite Kick (44)",
                  "Tremar", "Mega Flame", "Boulder Crash", "Landslide"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 36,
