@@ -26,7 +26,7 @@ COPIES = [ZONES / f'{z}/script' for z in ('beetle-land/s102-106', 'libraries/s20
 LEVELS = {'fresh': 1, 'in-training': 2, 'rookie': 3, 'champion': 4, 'ultimate': 5, 'mega': 6}
 CUPS = ('D C B A S R Version1 Version2 Version3 Version4 Version0 Fire Grapple ThunderWind Cool Nature Metalic Filth '
         'Dino Wing Animal Human Beetle Rookie Champion Ultimate Mega Vaccine Data Virus NatureSpirits DeepSavers '
-        'NightmareSoldiers WindGuardians MetalEmpire VirusBusters').split()
+        'NightmareSoldiers WindGuardians MetalEmpire VirusBusters DragonsRoar JungleTroopers').split()
 RULE_MARK = 253
 VERSION_CUPS = {'Version1': range(3, 15), 'Version2': range(17, 29), 'Version3': range(31, 43), 'Version4': range(45, 57)}
 

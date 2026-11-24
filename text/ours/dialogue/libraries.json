@@ -1753,8 +1753,7 @@
    "step into this ring.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Rookie Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u23": [
@@ -1764,8 +1763,7 @@
    "step into this ring.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Champion Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u24": [
@@ -1775,8 +1773,7 @@
    "step into this ring.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Ultimate Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u25": [
@@ -1786,8 +1783,7 @@
    "step into this ring.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Mega Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u26": [
@@ -1797,8 +1793,7 @@
    "the Vaccine attribute.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Vaccine Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u27": [
@@ -1808,8 +1803,7 @@
    "the Data attribute.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Data Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u28": [
@@ -1819,8 +1813,7 @@
    "the Virus attribute.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Virus Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u29": [
@@ -1830,8 +1823,7 @@
    "Nature Spirits.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Nature Spirits"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u30": [
@@ -1841,8 +1833,7 @@
    "Deep Savers.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Deep Savers"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u31": [
@@ -1852,8 +1843,7 @@
    "Nightmare Soldiers.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Nightmare Soldiers"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u32": [
@@ -1863,8 +1853,7 @@
    "Wind Guardians.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Wind Guardians"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u33": [
@@ -1874,8 +1863,7 @@
    "Metal Empire.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Metal Empire"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s209.sec10.u34": [
@@ -1885,8 +1873,27 @@
    "Virus Busters.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Virus Busters"
+   "Singles, 3 rounds, 8 entrants"
+  ]
+ ],
+ "s209.sec10.u35": [
+  [
+   "- Dragon's Roar Cup -",
+   "For the Digimon of the Field",
+   "Dragon's Roar.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants"
+  ]
+ ],
+ "s209.sec10.u36": [
+  [
+   "- Jungle Troopers Cup -",
+   "For the Digimon of the Field",
+   "Jungle Troopers.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s210.sec51.u0": "I've been waiting for you, {color 6}{player}{color 1}. At last, the day has come.",
@@ -2410,8 +2417,7 @@
    "step into this ring.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Rookie Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u23": [
@@ -2421,8 +2427,7 @@
    "step into this ring.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Champion Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u24": [
@@ -2432,8 +2437,7 @@
    "step into this ring.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Ultimate Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u25": [
@@ -2443,8 +2447,7 @@
    "step into this ring.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Mega Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u26": [
@@ -2454,8 +2457,7 @@
    "the Vaccine attribute.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Vaccine Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u27": [
@@ -2465,8 +2467,7 @@
    "the Data attribute.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Data Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u28": [
@@ -2476,8 +2477,7 @@
    "the Virus attribute.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Virus Digimon"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u29": [
@@ -2487,8 +2487,7 @@
    "Nature Spirits.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Nature Spirits"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u30": [
@@ -2498,8 +2497,7 @@
    "Deep Savers.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Deep Savers"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u31": [
@@ -2509,8 +2507,7 @@
    "Nightmare Soldiers.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Nightmare Soldiers"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u32": [
@@ -2520,8 +2517,7 @@
    "Wind Guardians.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Wind Guardians"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u33": [
@@ -2531,8 +2527,7 @@
    "Metal Empire.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Metal Empire"
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec10.u34": [
@@ -2542,8 +2537,27 @@
    "Virus Busters.",
    "Time-limited matches.",
    "",
-   "Singles, 3 rounds, 8 entrants",
-   "Entry: Virus Busters"
+   "Singles, 3 rounds, 8 entrants"
+  ]
+ ],
+ "s213.sec10.u35": [
+  [
+   "- Dragon's Roar Cup -",
+   "For the Digimon of the Field",
+   "Dragon's Roar.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants"
+  ]
+ ],
+ "s213.sec10.u36": [
+  [
+   "- Jungle Troopers Cup -",
+   "For the Digimon of the Field",
+   "Jungle Troopers.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants"
   ]
  ],
  "s213.sec54.u0": "Hey, you haven't entered the tournament.",
@@ -3840,6 +3854,22 @@
   ]
  ],
  "s220.sec51.u21": "You can't carry any more!",
+ "s220.sec51.u22": [
+  [
+   "",
+   "Winner's purse: 5000 Bits!",
+   "",
+   "Won {color 6}Power Fruit{color 1}!"
+  ]
+ ],
+ "s220.sec51.u23": [
+  [
+   "",
+   "Winner's purse: 5000 Bits!",
+   "",
+   "Won {color 6}Sage Fruit{color 1}!"
+  ]
+ ],
  "s220.sec83.u0": [
   [
    "{color 7}Poyomon {color 1}",

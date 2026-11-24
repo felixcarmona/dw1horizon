@@ -231,14 +231,14 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
   list keeps the behaviour above, kind 0 draws only the recruited species of the rival list, and any other rule draws
   from every species that meets it (an original once recruited, a DIGI.DAT species always, never the partner's own),
   within one level of the partner while seven such exist when the rule is not a level. `startTournament` only stores the
-  cup and loads the overlay; `getSpeciesPartnersByLevel` is gone from the main executable. Cups 23 to 35 (the level,
+  cup and loads the overlay; `getSpeciesPartnersByLevel` is gone from the main executable. Cups 23 to 37 (the level,
   attribute and Field cups) have their names in `TOURNAMENT_NAMES`, their grade letters in `dget.c`, their rivals' base
   stat in `STD_NEW_CUP_BASE_STATS` (`newCupStats` in `content/tables/tournament-rules.json`) and their banners in one
-  file, `STDDAT/GRADE/NEWCUPS.BIN`: nine languages of thirteen 17-sector TIMs (`tools/cup_banners.py`), read with
+  file, `STDDAT/GRADE/NEWCUPS.BIN`: nine languages of fifteen 17-sector TIMs (`tools/cup_banners.py`), read with
   `loadStackedTIMEntry`. They set no won-cup trigger and have no medal.
   On the calendar a new cup's mark is one character (`NEW_CUP_GRADES`): `1` to `4` for the level cups from Rookie
   to Mega, `V` Vaccine, `E` Data, `U` Virus, and a small letter for a Field (`n`, `d`, `s`, `g`, `e`,
-  `b`). The calendar places every mark and every date with `TEXT_COLUMN` instead of trusting each glyph's advance, so
+  `b`, `r`, `j`). The calendar places every mark and every date with `TEXT_COLUMN` instead of trusting each glyph's advance, so
   narrow characters stay under their column; the dates below 10 used to drift left of theirs.
 
 Also fixed on the way: `getConditionFxOffset` returned a 2-aligned pointer into a cached record, and the GTE's `LWC2`
