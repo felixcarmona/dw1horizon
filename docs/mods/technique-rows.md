@@ -110,7 +110,7 @@ An Ultimate holds up to four techniques of its first new row and three of anothe
 list was full, the technique took the place of a weak original one that no wild Digimon of the species casts, and
 the list keeps at least three of each row it trains. Every technique of the five rows is on some list, and a wild
 Digimon or a boss casts each of them but the last of each row (Abyss Requiem, Grand Cross, Ocean Fury, Final Edge,
-Gaia Quake), which come from the gym and from evolving, as Dynamite Kick does in the original. ShogunGekomon casts
+Gaia Quake), which come only from brain training. ShogunGekomon casts
 Tidal Wave, WaruSeadramon Sea Crush, the Tekkamon of the Back Dimension Whirling Edge and the MetalMamemon of Freezeland
 Judgment Ray.
 
