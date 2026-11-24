@@ -106,7 +106,10 @@ a model of `TAMER.DAT` like the rest.
   found by position (the head's leading triangles in the hair's palette row, seven words each), never by walking header lengths.
 - The game draws one face of a polygon. The menu's close-up shows the hair from angles the field never does (under the
   fringe, between a lock and the cheek), so there `lookPageHairInside` sorts the hair a second time with two corners
-  swapped: the far faces are drawn and no gap shows what is behind the head.
+  swapped: the far faces are drawn and no gap shows what is behind the head. With no depth buffer those faces, sorted
+  among the model's own, painted the inside of a lock over the head or the other lock at back and side angles; they
+  go to the far half of the portrait's ordering table (buckets 256-511), behind every face of the model and still in
+  front of the panel.
 - A shirt is five objects of the model. Every model in `TAMER.DAT` comes without them; `lookTamerLoad` reads the
   chosen shirt's geometry right behind the model and points the five entries of the object table at it before the
   model is linked. The shirt's head sector (geometry size, the five entries, a palette recipe, the rectangles of the
