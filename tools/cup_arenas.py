@@ -1,9 +1,11 @@
 """The arenas of the cups after the original's: one slot per arena after the banners in STDDAT/GRADE/NEWCUPS.BIN.
 
-    python3 -m tools.cup_arenas preview NAME OUT.png        # a picture of an arena from the fight camera (needs Pillow)
+    python3 -m tools.cup_arenas size                        # the model's size
+    python3 -m tools.cup_arenas import NAME DIR             # DIR's generated pictures to content/arenas/NAME (Pillow)
 
-A slot is TIM_SECTORS of textures then TMD_SECTORS of model, read by STD_loadArenaAssets for a cup whose arena is not
-the File City one (STD_NEW_CUP_ARENA). Both stay within what the File City arena (STDDAT/T_TOGI) takes: its textures
+One slot per new cup, in cup order (content/arenas/arenas.json, which also describes each arena's pictures for the
+generator). A slot is TIM_SECTORS of textures then TMD_SECTORS of model, read by STD_loadArenaAssets in place of the
+File City arena's. Both stay within what the File City arena (STDDAT/T_TOGI) takes: its textures
 go to the same video memory and its model to the same heap block, so a new arena costs no memory.
 
 The model is ours, made here: a round floor with a medallion at the centre, a low wall round it, eight pillars and a
@@ -16,8 +18,10 @@ colours, the size of the places the File City arena's textures take in video mem
     a.png 256x240  floor tile (0,0)-(127,127), medallion (128,0)-(255,127), wall (0,128)-(255,239)
     b.png 256x120  cliff
     c.png 128x120  pillar
-No Pillow, no downloads: the player's build packs them too.
+`import` makes them from the generator's five pictures (floor.png, medallion.png, wall.png, cliff.png, pillar.png).
+No Pillow, no downloads to pack them: the player's build packs them too.
 """
+import json
 import math
 import os
 import struct
@@ -32,7 +36,7 @@ SECTOR = 2048
 TIM_SECTORS = 54                # STD_ARENA_TIM_SECTORS: T_TOGI.TIM is 109376 bytes
 TMD_SECTORS = 13                # STD_ARENA_TMD_SECTORS: the heap block T_TOGI.TMD takes (26264 bytes, rounded)
 SLOT_SECTORS = TIM_SECTORS + TMD_SECTORS
-ARENAS = ['dragons-roar']       # slot order; STD_NEW_CUP_ARENA names the slot of each cup
+ARENAS = [a['name'] for a in json.load(open(os.path.join(ART, 'arenas.json')))['arenas']]   # cup order
 
 # Video memory: the rectangles T_TOGI.TIM fills (x in 16-bit units), all 8-bit textures on one palette.
 PAGES = {'a': ((512, 0), (256, 240)), 'b': ((640, 0), (256, 120)), 'c': ((640, 120), (128, 120))}
@@ -245,6 +249,24 @@ def tim(name):
     return out
 
 
+def import_pictures(name, src):
+    """The generator's pictures scaled to their places and reduced together to one palette of 256 colours."""
+    from PIL import Image
+
+    def load(piece, w, h):
+        return Image.open(os.path.join(src, piece + '.png')).convert('RGB').resize((w, h), Image.LANCZOS)
+    a = Image.new('RGB', PAGES['a'][1])
+    for piece, (_, u0, v0, u1, v1) in (('floor', FLOOR), ('medallion', MEDALLION), ('wall', WALL)):
+        a.paste(load(piece, u1 + 1 - u0, v1 + 1 - v0), (u0, v0))
+    b, c = load('cliff', *PAGES['b'][1]), load('pillar', *PAGES['c'][1])
+    every = Image.new('RGB', (256, 480))
+    every.paste(a, (0, 0)), every.paste(b, (0, 240)), every.paste(c, (0, 360))
+    q = every.quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    os.makedirs(os.path.join(ART, name), exist_ok=True)
+    for page, box in (('a', (0, 0, 256, 240)), ('b', (0, 240, 256, 360)), ('c', (0, 360, 128, 480))):
+        q.crop(box).save(os.path.join(ART, name, page + '.png'))
+
+
 def slots():
     """Every arena's slot, in ARENAS order."""
     return b''.join(tim(n).ljust(TIM_SECTORS * SECTOR, b'\0') + tmd().ljust(TMD_SECTORS * SECTOR, b'\0')
@@ -254,5 +276,7 @@ def slots():
 if __name__ == '__main__':
     if len(sys.argv) == 2 and sys.argv[1] == 'size':
         print(len(tmd()), 'bytes of model')
+    elif len(sys.argv) == 4 and sys.argv[1] == 'import':
+        import_pictures(sys.argv[2], sys.argv[3])
     else:
         sys.exit(__doc__)
