@@ -9,7 +9,13 @@
                  "Aqua Jet", "Rain Dance"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 4,
-  "model": {"name": "EBET", "bones": 24, "radius": 160, "height": 160},
+  "model": {
+    "name": "EBET",
+    "bones": 24,
+    "radius": 160,
+    "height": 160,
+    "slot_aliases": [[51, 50], [52, 47], [53, 49]]
+  },
   "voice": 4,
   "battle_music": "normal-battle",
   "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},

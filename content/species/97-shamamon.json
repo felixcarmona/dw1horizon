@@ -9,7 +9,13 @@
                  "Evil Whisper"],
   "drop": {"item": "Meat", "percent": 10},
   "effects_like": 80,
-  "model": {"name": "SHAM", "bones": 23, "radius": 125, "height": 280},
+  "model": {
+    "name": "SHAM",
+    "bones": 23,
+    "radius": 125,
+    "height": 280,
+    "slot_aliases": [[51, 48], [52, 46], [53, 46]]
+  },
   "voice": 64,
   "battle_music": "normal-battle-2",
   "wild": {"hp": 1000, "mp": 2100, "off": 360, "def": 180, "speed": 100, "brain": 50, "bits": 300},

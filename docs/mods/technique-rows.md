@@ -132,6 +132,12 @@ Town.
 A model has an attack animation for each technique of its list. A species that got techniques added plays one of
 its own attack clips for each of them: an imported model names the clip in `technique_aliases`
 (`content/models/imports/models.json`), an original one in `model.slot_aliases` of its species file.
+That holds for the species only met as enemies too (the wild twins 128..179 and the other enemy-only originals):
+technique `i` of the list plays slot `0x2E + i` and the game reads the table entry without a bound, so a listed
+technique with no clip would play animation data as an offset. The build writes the aliased model of every disc
+original that has `model.slot_aliases` (the disc's model or its replacement `model.file`), and `species.py lint
+--files` fails on a listed technique whose slot has no clip. A field-only model with no attack clip at all (Analogman,
+Jijimon, Kuwagamon 169) is exempt.
 
 ## Saves
 

@@ -9,7 +9,13 @@
                  "Evil Whisper", "Nightmare", "Death Grip"],
   "drop": {"item": "HP Chip", "percent": 100},
   "effects_like": 34,
-  "model": {"name": "EOGR", "bones": 18, "radius": 180, "height": 390},
+  "model": {
+    "name": "EOGR",
+    "bones": 18,
+    "radius": 180,
+    "height": 390,
+    "slot_aliases": [[50, 47], [51, 49], [52, 49], [53, 49], [54, 47]]
+  },
   "voice": 30,
   "battle_music": "normal-battle",
   "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},

@@ -9,7 +9,13 @@
                  "Flash Burst"],
   "drop": {"item": "sm.recovery", "percent": 0},
   "effects_like": 48,
-  "model": {"name": "ELEO", "bones": 23, "radius": 160, "height": 400},
+  "model": {
+    "name": "ELEO",
+    "bones": 23,
+    "radius": 160,
+    "height": 400,
+    "slot_aliases": [[48, 46], [49, 47], [50, 46], [51, 46], [52, 47]]
+  },
   "voice": 42,
   "battle_music": "normal-battle",
   "wild": {"hp": 500, "mp": 500, "off": 100, "def": 100, "speed": 100, "brain": 100, "bits": 100},

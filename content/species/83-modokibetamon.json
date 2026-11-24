@@ -9,7 +9,13 @@
                  "Aqua Jet", "Rain Dance"],
   "drop": {"item": "sm.recovery", "percent": 40},
   "effects_like": 4,
-  "model": {"name": "MODO", "bones": 24, "radius": 160, "height": 160},
+  "model": {
+    "name": "MODO",
+    "bones": 24,
+    "radius": 160,
+    "height": 160,
+    "slot_aliases": [[51, 50], [52, 47], [53, 49]]
+  },
   "voice": 4,
   "battle_music": "normal-battle-2",
   "wild": {"hp": 300, "mp": 700, "off": 140, "def": 50, "speed": 60, "brain": 150, "bits": 150},
