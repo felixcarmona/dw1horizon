@@ -1,17 +1,35 @@
 """The effects of the Darkness, Light, Water, Weapon and Earth rows (tools/technique_effects): each one builds into a chunk of the
 machine's size, keeps what it leaves in memory inside what the disc's own effects keep, plays in the simulator to
-its end, sounds, and hits what its technique hits (one enemy, or all of them for the area ones)."""
+its end, sounds, and hits what its technique hits (one enemy, or all of them for the area ones). The ones that hit by
+position miss a target that walks away."""
 import json
 import os
-import struct
 import unittest
 
 from tools import efecompose as E
+from tools import efesim as S
 from tools.technique_effects import dark, earth, light, water, weapon
 
 ROWS = {'dark': dark, 'light': light, 'water': water, 'weapon': weapon, 'earth': earth}
 KEPT_MAX = 14 * 1024            # the largest of the disc's own effects keeps about 14 KB
-LAUNCH = struct.pack('<6h', -2, 0, 0, 0, 0, -1)
+# the single-target techniques whose hit is where the target stood, not the target (a shot's flight, a strike's spot)
+DODGED = (123, 128, 131, 135, 137, 138, 139, 142, 147, 154, 157)
+
+
+def play(chunk, walk=0):
+    """The chunk cast by fighter 1 on fighter 2, two more enemies beside it, at the distance techniques are cast
+    from; walk: what the target moves sideways every tick."""
+    f = [None] * 10
+    f[1] = S.Fighter(-2, (0, 0, 0), 0)
+    for k, pos in enumerate(((0, 0, -700), (450, 0, -920), (-450, 0, -920))):
+        f[2 + k] = S.Fighter(-2, pos, 0x800)
+    sim = S.Sim(chunk, f, 1, 2, seed=1)
+    for _ in range(240):
+        f[2].pos[0] -= walk
+        sim.step(reset_hits=False)
+        if not sim.live():
+            break
+    return sim
 
 
 def entries():
@@ -41,7 +59,7 @@ class TechniqueEffects(unittest.TestCase):
                 chunk, kept = ROWS[entry['authored']].EFFECTS[tid]().build(0x100 + key)
                 self.assertEqual(len(chunk), E.CHUNK)
                 self.assertLessEqual(kept, KEPT_MAX)
-                sim = E.run(bytes(chunk), LAUNCH)
+                sim = play(bytes(chunk))
                 self.assertFalse(sim.live(), 'still running after 240 ticks')
                 self.assertGreaterEqual(sim.tick, 20)
                 self.assertTrue(sim.sounds)
@@ -49,6 +67,8 @@ class TechniqueEffects(unittest.TestCase):
                 hit = sorted({h[1] for h in sim.hits})
                 wants = {3: [2, 3, 4]}.get(technique(tid)['range'], [2])    # range 3: every enemy; 4: the caster,
                 self.assertEqual(hit, wants)                                # which the game makes the target
+                if tid in DODGED:
+                    self.assertNotIn(2, {h[1] for h in play(bytes(chunk), walk=60).hits})
 
 if __name__ == '__main__':
     unittest.main()

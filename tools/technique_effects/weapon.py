@@ -99,7 +99,8 @@ def quick_slash():
 
 
 def blade_throw():
-    """A spinning blade flies from the caster to the target, leaving a thin trail, and bursts into sparks on it."""
+    """A spinning blade flies from the caster in the line of the target, leaving a thin trail, and bursts into sparks
+    on whoever it meets."""
     fx = Fx(delay=8, cast_sound=19)
     fx.palette(STEEL); fx.palette(EMBER)
     paint_all(fx, {1: knife(), 2: spark(), 5: glow(15, 1.2), 7: streak()})
@@ -111,14 +112,14 @@ def blade_throw():
     fx.label('main'); fx.when(0, 'throw'); fx.end(1)
     fx.label('throw')
     fx.vcopy(fx.AT, fx.CHEST); fx.vcopy(fx.DEST, fx.TCHEST); fx.call('blade'); fx.ret()
-    fx.travel('blade', 1, 12, 'blade_render', 'blade_arrive', every='blade_trail')
+    fx.shot('blade', 1, 62, 26, 'blade_render', 'blade_arrive', every='blade_trail')
     fx.label('blade_trail'); fx.emit('trail', POS); fx.ret()
     fx.label('blade_render')
     fx.lin(fx.T2, FRAME, 78)
     fx.sprite(POS, soft, 340, cell=5)
     fx.sprite(POS, tint, 300, cell=1, rot=fx.T2, blend=None); fx.ret()
     fx.label('blade_arrive')
-    fx.sound(20); fx.hit(); fx.emit('flash', POS); fx.emit('spark', times=10); fx.ret()
+    fx.sound(20); fx.emit('flash', POS); fx.emit('spark', times=10); fx.ret()
     return fx
 
 
@@ -253,7 +254,7 @@ def cross_cutter():
 
 
 def whirling_edge():
-    """A ring of spinning blades flies out and through every enemy; a slash cuts each one as the ring passes."""
+    """A ring of spinning blades flies out past the target; a slash cuts whoever the ring passes over."""
     fx = Fx(delay=8, cast_sound=19)
     fx.palette(STEEL); fx.palette(EMBER)
     paint_all(fx, {0: slash_arc(), 1: knife(), 2: spark(), 5: glow(15, 1.2), 6: ring(13, 2.2)})
@@ -262,12 +263,11 @@ def whirling_edge():
     fx.particle('spark', 14, 10, 2, (128, 128, 128), (60, 110), speed=55, lift=20, gravity=5, spread=80, clut=1,
                 grow=-6, fade=True)
     idx, far = fx.var(), fx.vec()
-    fx.label('main'); fx.when(0, 'launch'); fx.when(8, 'sweep'); fx.end(9)
+    fx.label('main'); fx.when(0, 'launch'); fx.end(1)
     fx.label('launch')
     fx.vcopy(far, fx.TCHEST); fx.vsub(far, fx.CHEST); fx.vdiv(far, 2); fx.vadd(far, fx.TCHEST)
-    fx.vcopy(fx.AT, fx.CHEST); fx.vcopy(fx.DEST, far); fx.call('wheel'); fx.sound(-55); fx.ret()
+    fx.vcopy(fx.AT, fx.CHEST); fx.vcopy(fx.DEST, far); fx.call('wheel'); fx.sound(-55); fx.set(idx, 0); fx.ret()
     fx.travel('wheel', 1, 16, 'wheel_render', 'wheel_end', every='wheel_trail')
-    fx.label('wheel_trail'); fx.emit('trail', POS); fx.ret()
     fx.label('wheel_end'); fx.ret()
     fx.label('wheel_render')
     fx.sprite(POS, soft, 980, cell=5)
@@ -279,13 +279,10 @@ def whirling_edge():
         fx.lin(fx.T, FRAME, 58, 90 * k)
         fx.sprite(fx.TV, tint, 380, cell=1, rot=fx.T, blend=None)
     fx.ret()
-    fx.label('sweep')
-    fx.sound(20); fx.set(idx, 0)
-
-    def one():
-        fx.hit(); fx.vcopy(fx.AT, fx.TCHEST); fx.lin(fx.SZ, at(fx.TSIZE, 1), 8, 150, 10)
-        fx.call('cut'); fx.add(idx, 1)
-    fx.each_target(one); fx.ret()
+    fx.label('wheel_trail'); fx.emit('trail', POS)
+    fx.strike(POS, 430); fx.br(fx.HIT, '==', 0, 'noop')
+    fx.sound(20); fx.vcopy(fx.AT, POS); fx.lin(fx.SZ, at(fx.TSIZE, 1), 8, 150, 10)
+    fx.call('cut'); fx.add(idx, 1); fx.ret()
     # a slash that opens a little after the one before it, so the cuts run along the row
     cut = fx.pool('cut', 3, 2)
     fx.begin('cut', cut, 'cut_render', inherit=False)

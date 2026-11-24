@@ -57,6 +57,23 @@ Power, MP and accuracy are `content/techniques/<id>-<name>.json`; the names of t
 | 160 | Landslide | 450 | 95 | area | may flatten (18%) |
 | 161 | Gaia Quake | 650 | 130 | area | may stun (15%) |
 
+## How they hit
+
+As in the original game, most shots and areas hit by position: the blow lands where the technique is, and a target
+that has walked away from there is not touched. The accuracy roll comes after, for those it reaches.
+
+- **A shot that flies** (Shining Arrow, Bubble Shot, Aqua Jet, Hydro Cannon, Blade Throw) is aimed when it leaves,
+  hits whoever it meets on the way and flies on a little past its mark when it meets nobody.
+- **A blow that lands on a spot** (Dark Bolt, Black Gate, Judgment Ray, Grand Cross, Rock Throw, Boulder Crash) hits
+  what stands on that spot when it lands.
+- **An area** (Abyss Requiem, Heaven's Ring, Fissure, Landslide) hits everybody inside its circle, and the moving
+  ones (Tidal Wave, Whirling Edge) everybody they pass over.
+- **Locked on its target**, which only the accuracy roll saves: Nightmare, Evil Whisper, Venom Mist, Flash Burst,
+  Whirlpool, Ocean Fury, Final Edge, Sand Blast, Stalagmite and Gaia Quake. About a third of the original's shots
+  and areas are locked too.
+
+`shot`, `strike` and `each_within` of `tools/technique_effects/kit.py` are the three ways; `hit` is the locked one.
+
 ## The support techniques
 
 `Move.status` says what a technique does besides damage and `Move.statusChance` is its percent

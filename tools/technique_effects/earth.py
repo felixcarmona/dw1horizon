@@ -132,7 +132,7 @@ def tumbler(fx, name, count, life, cell, size, speed, lift, gravity, spread, spi
 
 
 def rock_throw():
-    """A rock is thrown in an arc from the caster to the target and breaks into pebbles and dust."""
+    """A rock is thrown in an arc from the caster to where the target stands and breaks into pebbles and dust there."""
     fx = Fx(delay=8, cast_sound=1)
     fx.palette(BROWN); fx.palette(ROCK)
     paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2)})
@@ -154,7 +154,7 @@ def rock_throw():
     fx.call('rock_arc'); fx.lin(fx.T3, FRAME, 40)
     fx.sprite(fx.TV, tint, 270, cell=0, clut=1, rot=fx.T3, blend=None); fx.ret()
     fx.label('rock_land')
-    fx.sound(40); fx.hit(); fx.set(gnd, at(fx.TGT, 1))
+    fx.sound(40); fx.strike(POS, 140); fx.set(gnd, at(fx.TGT, 1))
     fx.emit('haze', POS); fx.emit('puff', times=3); fx.emit('chip', times=10); fx.ret()
     return fx
 
@@ -243,7 +243,8 @@ def stone_skin():
 
 
 def boulder_crash():
-    """A big boulder falls from high on the target and lands in a ring of dust, throwing stones."""
+    """A big boulder falls from high on the spot where the target stands, its shadow growing there, and lands in a
+    ring of dust, throwing stones."""
     fx = Fx(delay=8, cast_sound=1)
     fx.palette(BROWN); fx.palette(ROCK)
     paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 6: ring(12.5, 3.4)})
@@ -263,7 +264,7 @@ def boulder_crash():
     fx.lin(fx.T3, FRAME, 14)
     fx.sprite(POS, tint, big, big, cell=0, clut=1, rot=fx.T3, blend=None); fx.ret()
     fx.label('boulder_land')
-    fx.sound(40); fx.hit(); fx.set(gnd, at(fx.TGT, 1))
+    fx.sound(40); fx.strike(fx.TGT, 250); fx.set(gnd, at(fx.TGT, 1))
     fx.call('rest'); fx.call('wave')
     fx.emit('haze', fx.TGT); fx.emit('puff', fx.TCHEST, 5); fx.emit('chip', times=16); fx.emit('stone', times=3)
     fx.ret()
@@ -293,8 +294,8 @@ def boulder_crash():
 
 
 def fissure():
-    """A crack runs along the ground from the caster toward the enemies and bursts under each one, throwing up
-    stones and dust."""
+    """A crack runs along the ground from the caster to where the target stood and bursts under whoever stands round
+    its end, throwing up stones and dust."""
     fx = Fx(delay=8, cast_sound=1)
     fx.palette(BROWN); fx.palette(ROCK)
     paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 3: crack(4), 7: star_crack(6)})
@@ -312,7 +313,7 @@ def fissure():
     def one():
         fx.hit(); fx.set(gnd, at(fx.TGT, 1)); fx.vcopy(fx.AT, fx.TGT); fx.call('bloom')
         fx.emit('haze', fx.TGT); fx.emit('puff', fx.TCHEST, 3); fx.emit('chip', fx.TGT, 8); fx.call('stone')
-    fx.each_target(one); fx.ret()
+    fx.each_within(fx.DEST, 520, one); fx.ret()
     # the head of the crack: it runs from the caster's feet to the first enemy, laying a piece of crack a tick
     fx.travel('run', 1, 10, 'noop', 'run_end', every='lay')
     fx.label('lay')
@@ -406,12 +407,12 @@ def stalagmite():
 
 
 def landslide():
-    """Rocks of every size tumble across from the caster's side over all the enemies, a cloud of dust running with
-    them."""
+    """Rocks of every size tumble across from the caster's side to where the target stood, a cloud of dust running
+    with them, and bury whoever is there."""
     fx = Fx(delay=8, cast_sound=2)
     fx.palette(BROWN); fx.palette(ROCK)
     paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 6: ring(12.5, 3.4)})
-    tint, drift, gnd = fx.colour(128, 128, 128), fx.vec(), fx.var()
+    tint, drift, gnd, spot = fx.colour(128, 128, 128), fx.vec(), fx.var(), fx.vec()
     fx.particle('cloud', 12, 14, 2, (128, 118, 100), (260, 400), grow=24, speed=14, spread=300, drift=drift,
                 blend='half', spin=3)
     fx.particle('haze', 6, 12, 2, (80, 64, 40), (300, 420), grow=30, speed=12, spread=300, drift=drift, fade=True)
@@ -427,13 +428,13 @@ def landslide():
     fx.vcopy(fx.AT, fx.SRC); fx.sub_(at(fx.AT, 1), 120); fx.call('cloud'); fx.call('haze'); fx.ret()
     fx.label('done'); fx.end(15)
     fx.label('aimed')
-    fx.vcopy(drift, fx.TGT); fx.vsub(drift, fx.SRC); fx.vdiv(drift, 15); fx.ret()
+    fx.vcopy(spot, fx.TGT); fx.vcopy(drift, fx.TGT); fx.vsub(drift, fx.SRC); fx.vdiv(drift, 15); fx.ret()
     fx.label('bury')
     fx.sound(40)
 
     def one():
         fx.hit(); fx.set(gnd, at(fx.TGT, 1)); fx.emit('hang', fx.TCHEST, 3); fx.emit('chip', fx.TGT, 7)
-    fx.each_target(one); fx.ret()
+    fx.each_within(spot, 800, one); fx.ret()
     return fx
 
 

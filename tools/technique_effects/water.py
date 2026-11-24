@@ -77,7 +77,8 @@ def cloud(seed=2):
 
 
 def bubble_shot():
-    """A string of wobbling bubbles drifts to the target and bursts on it one by one."""
+    """A string of wobbling bubbles drifts towards the target, each to where it stands when it is blown; the first to
+    touch somebody bursts on it and the others drift on."""
     fx = Fx(delay=8, cast_sound=36)
     fx.palette(AQUA)
     fx.paint(0, bubble()); fx.paint(1, ring(12, 1.4)); fx.paint(2, glow(8, 1.0)); fx.paint(3, glow(15, 1.4))
@@ -90,9 +91,10 @@ def bubble_shot():
         fx.when(t, 'blow')
     fx.end(11)
     fx.label('blow')
-    fx.emit('puff', fx.CHEST)
-    fx.vcopy(fx.DEST, fx.TCHEST); fx.scatter(fx.DEST, 150); fx.call('bub'); fx.ret()
-    fx.travel('bub', 6, 13, 'bub_render', 'bub_arrive', fields=1)
+    fx.emit('puff', fx.CHEST); fx.aim()
+    fx.vcopy(fx.AT, fx.CHEST); fx.vcopy(fx.DEST, fx.TCHEST); fx.scatter(fx.DEST, 150); fx.call('bub'); fx.ret()
+    fx.shot('bub', 6, 50, 26, 'bub_render', 'bub_arrive', miss='bub_miss')
+    fx.label('bub_miss'); fx.emit('pop', POS); fx.ret()
     fx.label('bub_wave')
     fx.vcopy(fx.TV, POS)
     fx.lin(fx.T, FRAME, 430); fx.sin(fx.T2, fx.T, 110); fx.add(at(fx.TV, 1), fx.T2)
@@ -102,13 +104,13 @@ def bubble_shot():
     fx.lin(fx.T3, FRAME, 12, 210); fx.set(fx.T2, FRAME); fx.mod(fx.T2, 4); fx.mul(fx.T2, 8); fx.add(fx.T3, fx.T2)
     fx.sprite(fx.TV, tint, fx.T3, cell=0); fx.ret()
     fx.label('bub_arrive')
-    fx.sound(37); fx.hit(); fx.emit('pop', POS); fx.emit('bead', times=3); fx.ret()
+    fx.sound(37); fx.emit('pop', POS); fx.emit('bead', times=3); fx.ret()
     return fx
 
 
 def aqua_jet():
-    """A hard jet of water: a stream of fast slugs from the caster that sprays off the target for as long as it
-    lasts."""
+    """A hard jet of water: a stream of fast slugs from the caster, in the line the target stood in, that sprays off
+    whoever stands in it."""
     fx = Fx(delay=8, cast_sound=59)
     fx.palette(AQUA)
     fx.paint(0, blob()); fx.paint(1, glow(15, 1.2)); fx.paint(2, glow(8, 1.0)); fx.paint(3, foam())
@@ -123,12 +125,13 @@ def aqua_jet():
     for _ in range(2):
         fx.vcopy(fx.AT, fx.CHEST); fx.scatter(fx.AT, 50); fx.call('slug')
     fx.emit('muzzle', fx.CHEST); fx.ret()
-    fx.travel('slug', 16, 5, 'slug_render', 'slug_arrive')
+    fx.shot('slug', 24, 100, 11, 'slug_render', 'slug_arrive', miss='slug_miss')
+    fx.label('slug_miss'); fx.emit('mist', POS); fx.ret()
     fx.label('slug_render')
     fx.lin(fx.T3, FRAME, 22, 150)
     fx.sprite(POS, soft, fx.T3, cell=1); fx.sprite(POS, tint, fx.T3, cell=0); fx.ret()
     fx.label('slug_arrive')
-    fx.hit(); fx.emit('spray', POS, 2); fx.emit('mist'); fx.ret()
+    fx.sound(37); fx.emit('spray', POS, 8); fx.emit('mist'); fx.ret()
     return fx
 
 
@@ -256,7 +259,7 @@ def hydro_cannon():
     fx.br(FRAME, '>=', charge, 'ball_fire')
     fx.call('mote', 2); fx.ret()
     fx.label('ball_fire')
-    fx.sound(4); fx.vcopy(fx.AT, POS); fx.vcopy(fx.DEST, fx.TCHEST); fx.call('shot')
+    fx.sound(4); fx.aim(); fx.vcopy(fx.AT, POS); fx.vcopy(fx.DEST, fx.TCHEST); fx.call('shot')
     fx.emit('shock', POS); fx.jmp('die')
     fx.label('ball_render')
     fx.lin(fx.T, FRAME, 30, 80)
@@ -269,15 +272,17 @@ def hydro_cannon():
     fx.vsub(iv(FREE), POS); fx.vdiv(iv(FREE), 6); fx.ret()
     fx.label('mote_tick'); fx.life(5); fx.vadd(POS, iv(FREE)); fx.ret()
     fx.label('mote_render'); fx.sprite(POS, tint, 90, cell=2); fx.ret()
-    fx.travel('shot', 1, 6, 'shot_render', 'shot_arrive', every='shot_trail')
+    fx.shot('shot', 1, 95, 20, 'shot_render', 'shot_arrive', miss='shot_miss', every='shot_trail',
+            extent=(110, 220, 110))
+    fx.label('shot_miss'); fx.emit('mist', POS, 3); fx.ret()
     fx.label('shot_trail'); fx.emit('shock', POS); fx.ret()
     fx.label('shot_render')
     fx.sprite(POS, soft, 660, cell=1); fx.sprite(POS, tint, 440, cell=0); fx.ret()
     fx.label('shot_arrive')
-    fx.sound(40); fx.hit()
+    fx.sound(40)
     fx.lin(fx.SZ, at(fx.TSIZE, 1), 14, 420, 10)
-    fx.vcopy(fx.AT, fx.TGT); fx.lin(fx.T, fx.SZ, 1, 0, 3); fx.sub_(at(fx.AT, 1), fx.T); fx.call('burst')
-    fx.emit('mist', fx.TCHEST, 4); fx.emit('bead', times=18); fx.ret()
+    fx.vcopy(fx.AT, POS); fx.call('burst')
+    fx.emit('mist', POS, 4); fx.emit('bead', times=18); fx.ret()
     return fx
 
 
@@ -327,8 +332,8 @@ def sea_crush():
 
 
 def tidal_wave():
-    """A wall of water rises at the caster's feet and runs at the enemies, growing as it goes, and breaks on all of
-    them."""
+    """A wall of water rises at the caster's feet and runs to where the target stood, growing as it goes; it breaks on
+    whoever it runs over."""
     fx = Fx(delay=8, cast_sound=1)
     fx.palette(AQUA)
     fx.paint(0, column()); fx.paint(1, foam()); fx.paint(2, glow(15, 1.0)); fx.paint(3, glow(8, 1.0))
@@ -349,14 +354,13 @@ def tidal_wave():
     fx.label('wall_tick')
     fx.br(FRAME, '>', run, 'wall_break')
     fx.vadd(POS, step); fx.set(wf, FRAME)
-    fx.call('crest', 3); fx.ret()
+    fx.call('crest', 3)
+    fx.br(FRAME, '<', 5, 'noop')
+    fx.strike(POS, 520); fx.br(fx.HIT, '==', 0, 'noop')
+    fx.sound(40); fx.emit('splash', POS, 5); fx.emit('bead', times=5); fx.ret()
     fx.label('wall_break')
     fx.br(FRAME, '!=', run + 1, 'wall_after')
-    fx.sound(40)
-
-    def one():
-        fx.hit(); fx.emit('splash', fx.TCHEST, 5); fx.emit('bead', times=5)
-    fx.each_target(one); fx.ret()
+    fx.sound(40); fx.emit('splash', POS, 6); fx.ret()
     fx.label('wall_after'); fx.life(run + 3); fx.ret()
     # one column of the wall: somewhere along a line across the wave's path, running with it, swelling and sinking
     cr = fx.pool('crest', 30, 3)
