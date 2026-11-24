@@ -120,6 +120,15 @@ Judgment Ray by a Piddomon of Mt. Infinity and Grand Cross by two Piddomon, one 
 Dimension. Tekkamon, WaruSeadramon, Brachiomon, Coelamon and Piddomon have them on their lists for that, so these
 two Champions can learn the last of their row.
 
+The seven original rows are covered the same way: every technique is cast by wild Digimon that come back each time
+the screen is entered, not only by bosses and training. The Mech row comes from Guardromon (Power Crane, Metal
+Sprinter, All Range Beam, Full Potential, Reverse Prog in the Factorial Town), Tankmon (Pulse Laser in Toy Town and the
+Back Dimension, Delete Program in the Back Dimension), Hagurumon (Metal Sprinter, Reverse Prog) and the two Tekkamon of
+the Back Dimension (Delete Program, All Range Beam, Pulse Laser and, last of the row, DG Dimension). Inifinity Burn is
+cast by two Vermilimon of Mt. Infinity (it takes Spit Fire's place on their list), Aurora Freeze by the Hyogamon of
+Freezeland and the Ice Sanctuary, and Big Rnd Toss and Ult Poop Hell by the Geremon and PlatinumSukamon of the Factorial
+Town.
+
 A model has an attack animation for each technique of its list. A species that got techniques added plays one of
 its own attack clips for each of them: an imported model names the clip in `technique_aliases`
 (`content/models/imports/models.json`), an original one in `model.slot_aliases` of its species file.
