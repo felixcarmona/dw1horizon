@@ -1,0 +1,58 @@
+From 0f4b37d830e53e38351813fd4f29fd9cf5a41290 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 11:38:53 +0000
+Subject: [PATCH] Care HUD: longer bars, a 30-pixel slot, right edge unchanged
+
+---
+ src/main/partner_impl.c | 9 +++++----
+ src/trn/trn_block.h     | 2 +-
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 2f71632d..0c9fd0ee 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2396,22 +2396,23 @@ static void renderCareHUD(void)
+ 			/* Energy remaining; condition thresholds still use raw fatigue. */
+ 			value = max - PARTNER_PARA.tiredness;
+ 		}
+-		x = STATUS_UI_OFFSET_X + 28;
++		/* 56 pixels wide (a 30-pixel slot), right edge where the original bars end */
++		x = STATUS_UI_OFFSET_X + 20;
+ 		y = 49 + i * 12;
+ 		if (value < 0)
+ 			value = 0;
+ 		if (value > max)
+ 			value = max;
+-		pixels = ((uint32_t)value * 22 + (uint32_t)max / 2) / (uint32_t)max;
++		pixels = ((uint32_t)value * 30 + (uint32_t)max / 2) / (uint32_t)max;
+ 		if (value && !pixels)
+ 			pixels = 1;
+ 		clut = getClut(272, 500 + icon);
+ 		/* Native disliked-habitat phase: five worse-face ticks, five normal. */
+ 		if (i == 0 && MAP_TILE_DATA.partnerAreaResponse == 2 && !((PLAYTIME_FRAMES / 5) & 1))
+ 			clut = getClut(272, 511) - icon;
+-		renderRectPolyFT4(x, y, 48, 8, 144, 236, 31, getClut(272, 508), 15, 0);
++		renderRectPolyFT4(x, y, 56, 8, 144, 236, 31, getClut(272, 508), 15, 0);
+ 		if (pixels)
+-			renderRectPolyFT4(x + 18, y + 3, pixels, 2, 196, 236, 31, getClut(272, 507), 14, 0);
++			renderRectPolyFT4(x + 18, y + 3, pixels, 2, 200, 236, 31, getClut(272, 507), 14, 0);
+ 		/* The cap left of the slot's bevel is 15 pixels (frame columns 0..14): the 11-pixel icon is centred in it. */
+ 		renderRectPolyFT4(x + 2, y - 2, 11, 11, 144 + icon * 11, 224, 31, clut, 13, 0);
+ 	}
+diff --git a/src/trn/trn_block.h b/src/trn/trn_block.h
+index 8068137f..289976a9 100644
+--- a/src/trn/trn_block.h
++++ b/src/trn/trn_block.h
+@@ -88,7 +88,7 @@ void TB(renderCareHUD)(int32_t instanceId)
+ }
+ 
+ /* The skip row puts every lower box beside the care HUD. Keep their right edge
+-   at screen x=230, six pixels before the left icon column. */
++   at screen x=230, clear of the HUD's left edge (x=255). */
+ static int32_t TB_box2X(void)
+ {
+ 	return -118;
+-- 
+2.55.0
+
