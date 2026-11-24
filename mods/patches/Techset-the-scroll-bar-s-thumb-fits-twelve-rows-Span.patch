@@ -1,0 +1,177 @@
+From b086eaf58e779106220812530fa60ed1411e5b32 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 14:47:32 +0000
+Subject: [PATCH] Techset: the scroll bar fits twelve rows and the right
+ technique panel moves clear of it; Spanish and Portuguese panel arrows clear
+ of their labels
+
+---
+ src/main/game_menu.c | 93 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 57 insertions(+), 36 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 7251c4b..56a6d5c 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -621,25 +621,27 @@ Line DIGIMON_MOVE_INFO_LINES_LEFT[18] = {
+ 	{ 0xff73, 0x005f, 0xffc2, 0x005f, 0x00, 0x00 },
+ };
+ 
++/* MOD (new technique rows): the right panel is 9 px further left than the original's, so the Techset scroll bar
++ * stays visible beside it (the panel x offsets 0x94 and 0xc2 were 0x9d and 0xcb) */
+ Line DIGIMON_MOVE_INFO_LINES_RIGHT[18] = {
+-	{ 0x0037, 0x0001, 0x008d, 0x0001, 0x00, 0x00 },
+-	{ 0x0037, 0x0002, 0x008d, 0x0002, 0x01, 0x00 },
+-	{ 0x0037, 0x0003, 0x008d, 0x0003, 0x00, 0x00 },
+-	{ 0x000c, 0x0005, 0x000c, 0x0015, 0x00, 0x00 },
+-	{ 0x000d, 0x0005, 0x000d, 0x0015, 0x01, 0x00 },
+-	{ 0x000e, 0x0005, 0x000e, 0x0015, 0x00, 0x00 },
+-	{ 0x008e, 0x0005, 0x008e, 0x005c, 0x00, 0x00 },
+-	{ 0x008f, 0x0005, 0x008f, 0x005c, 0x01, 0x00 },
+-	{ 0x0090, 0x0005, 0x0090, 0x005c, 0x00, 0x00 },
+-	{ 0x0010, 0x0016, 0x008e, 0x0016, 0x00, 0x00 },
+-	{ 0x000f, 0x0017, 0x008e, 0x0017, 0x01, 0x00 },
+-	{ 0x0010, 0x0018, 0x008e, 0x0018, 0x00, 0x00 },
+-	{ 0x003a, 0x0019, 0x003a, 0x005c, 0x00, 0x00 },
+-	{ 0x003b, 0x0018, 0x003b, 0x005c, 0x01, 0x00 },
+-	{ 0x003c, 0x0019, 0x003c, 0x005c, 0x00, 0x00 },
+-	{ 0x003e, 0x005d, 0x008d, 0x005d, 0x00, 0x00 },
+-	{ 0x003e, 0x005e, 0x008d, 0x005e, 0x01, 0x00 },
+-	{ 0x003e, 0x005f, 0x008d, 0x005f, 0x00, 0x00 },
++	{ 0x002e, 0x0001, 0x0084, 0x0001, 0x00, 0x00 },
++	{ 0x002e, 0x0002, 0x0084, 0x0002, 0x01, 0x00 },
++	{ 0x002e, 0x0003, 0x0084, 0x0003, 0x00, 0x00 },
++	{ 0x0003, 0x0005, 0x0003, 0x0015, 0x00, 0x00 },
++	{ 0x0004, 0x0005, 0x0004, 0x0015, 0x01, 0x00 },
++	{ 0x0005, 0x0005, 0x0005, 0x0015, 0x00, 0x00 },
++	{ 0x0085, 0x0005, 0x0085, 0x005c, 0x00, 0x00 },
++	{ 0x0086, 0x0005, 0x0086, 0x005c, 0x01, 0x00 },
++	{ 0x0087, 0x0005, 0x0087, 0x005c, 0x00, 0x00 },
++	{ 0x0007, 0x0016, 0x0085, 0x0016, 0x00, 0x00 },
++	{ 0x0006, 0x0017, 0x0085, 0x0017, 0x01, 0x00 },
++	{ 0x0007, 0x0018, 0x0085, 0x0018, 0x00, 0x00 },
++	{ 0x0031, 0x0019, 0x0031, 0x005c, 0x00, 0x00 },
++	{ 0x0032, 0x0018, 0x0032, 0x005c, 0x01, 0x00 },
++	{ 0x0033, 0x0019, 0x0033, 0x005c, 0x00, 0x00 },
++	{ 0x0035, 0x005d, 0x0084, 0x005d, 0x00, 0x00 },
++	{ 0x0035, 0x005e, 0x0084, 0x005e, 0x01, 0x00 },
++	{ 0x0035, 0x005f, 0x0084, 0x005f, 0x00, 0x00 },
+ };
+ 
+ /* MOD (language): POTENCIA, ALC., EFECTO in the Spanish SYSTEM_W.TIM (tools/localize/textures/systemw/NOTES.md) */
+@@ -1157,6 +1159,22 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[NUM_ELEMENTS] = {
+ /* MOD (language): the move panel's labels (TECH. DATA, POWER, MP, RANG, SPEC; posX is added to the panel's x, texY
+  * with the 0x80 of the texture's v); Spanish DATOS TEC. (9 rows for the accent, 2 px higher), POTENCIA, MP, ALCANCE,
+  * EFECTO */
++/* MOD (language): the x of the move panel's four arrows and of its values. Spanish POTENCIA and ALCANCE, Portuguese
++ * ALCANCE, are wider than the original labels and ended under the arrow: there the arrow starts where the widest label
++ * ends and the values 4 px further right (data, not code: the nine languages must lay out the same code) */
++int16_t MOVES_SELECTED_ARROW_X =
++#if MOD_LANG_BUILD == MOD_LANG_ES || MOD_LANG_BUILD == MOD_LANG_PT_BR
++	-0x6c;
++#else
++	-0x71;
++#endif
++int16_t MOVES_SELECTED_VALUE_X =
++#if MOD_LANG_BUILD == MOD_LANG_ES || MOD_LANG_BUILD == MOD_LANG_PT_BR
++	-0x60;
++#else
++	-0x64;
++#endif
++
+ IconRect MOVES_SELECTED_LABELS[5] = {
+ #if MOD_LANG_BUILD == MOD_LANG_ES
+ 	{ 0xff74, 0xfffc, 0x0025, 0x0009, 0x0090, 0x00e0 },
+@@ -1965,6 +1983,8 @@ int8_t PLAYER_MENU_STATE;
+ int16_t MOVE_SELECT_BOX_Y;
+ int16_t MOVE_SELECT_BOX_X;
+ uint8_t MOVE_GRID_SCROLL; /* MOD (new technique rows): the first of the Techset grid's rows on screen */
++/* the scroll bar's thumb: the seven rows on screen of the track's 0x66 px for all the rows */
++#define MOVE_GRID_THUMB ((0x66 * 7 + NUM_ELEMENTS / 2) / NUM_ELEMENTS)
+ int8_t SELECTED_MEDAL;
+ int8_t MEDAL_SELECTOR_INDEX;
+ /* MOD (medal view): the medals the view shows, in order (one hidden by its OPTIONS switch is left out); the cursor
+@@ -4163,9 +4183,10 @@ void renderDigimonMovesView(void)
+ 		} else {
+ 			renderDigimonMovesSelected(1);
+ 		}
+-		/* the scrollbar, under the technique's panel when that is on its side: the thumb is the seven rows of the ten
++		/* the scrollbar, right of the technique's panel when that is on its side: the thumb is the seven rows on screen
+ 		 * (of two boxes at one depth the earlier one is on top: the panel's first, then the thumb, then the track) */
+-		renderBox(0x8b, MOVE_GRID_SCROLL * 31 / 3 - 7, 3, 0x47, 0xc0, 0xd0, 0xe8, 0, 4);
++		renderBox(0x8b, MOVE_GRID_SCROLL * (0x66 - MOVE_GRID_THUMB) / (NUM_ELEMENTS - 7) - 7, 3, MOVE_GRID_THUMB,
++		          0xc0, 0xd0, 0xe8, 0, 4);
+ 		renderBox(0x8b, -7, 3, 0x66, 0x10, 0x14, 0x30, 0, 4);
+ 		renderDigimonMoveBox();
+ 		break;
+@@ -4340,20 +4361,20 @@ void renderDigimonMovesSelected(int16_t panel)
+ 		renderSeparatorLines(DIGIMON_MOVE_INFO_LINES_RIGHT, 0x12, 4);
+ 	}
+ 
+-	renderRectPolyFT4((panel * 0x9d) - 0x91, 1, 4, 4, 0x78, 0x90, 5, 0x7b06, 4, 0);
+-	renderRectPolyFT4((panel * 0x9d) - 0x10, 1, 4, 4, 0x7c, 0x90, 5, 0x7b06, 4, 0);
+-	renderRectPolyFT4((panel * 0xcb) - 0x91, 0x5c, 4, 4, 0x78, 0x94, 5, 0x7b06, 4, 0);
+-	renderRectPolyFT4((panel * 0xcb) - 0x3e, 0x5c, 4, 4, 0x7c, 0x94, 5, 0x7b06, 4, 0);
++	renderRectPolyFT4((panel * 0x94) - 0x91, 1, 4, 4, 0x78, 0x90, 5, 0x7b06, 4, 0);
++	renderRectPolyFT4((panel * 0x94) - 0x10, 1, 4, 4, 0x7c, 0x90, 5, 0x7b06, 4, 0);
++	renderRectPolyFT4((panel * 0xc2) - 0x91, 0x5c, 4, 4, 0x78, 0x94, 5, 0x7b06, 4, 0);
++	renderRectPolyFT4((panel * 0xc2) - 0x3e, 0x5c, 4, 4, 0x7c, 0x94, 5, 0x7b06, 4, 0);
+ 	if (panel == 0) {
+ 		renderRectPolyFT4(-0x10, 0x15, 4, 4, 0x7c, 0x94, 5, 0x7b06, 4, 0);
+ 	} else {
+-		renderRectPolyFT4(0xc, 0x15, 4, 4, 0x78, 0x94, 5, 0x7b06, 4, 0);
++		renderRectPolyFT4(0x3, 0x15, 4, 4, 0x78, 0x94, 5, 0x7b06, 4, 0);
+ 	}
+-	renderBox((panel * 0x9d) - 0x8f, 3, 0x80, 0x13, 0x32, 0x32, 0x80, 0, 4);
+-	renderBox((panel * 0xcb) - 0x8f, 0x18, 0x57, 0x45, 0x32, 0x32, 0x80, 0, 4);
++	renderBox((panel * 0x94) - 0x8f, 3, 0x80, 0x13, 0x32, 0x32, 0x80, 0, 4);
++	renderBox((panel * 0xc2) - 0x8f, 0x18, 0x57, 0x45, 0x32, 0x32, 0x80, 0, 4);
+ 	for (i = 0; i < 5; i++) {
+ 		label = &MOVES_SELECTED_LABELS[i];
+-		renderRectPolyFT4(panel * (i == 0 ? 0x9d : 0xcb) + label->posX,
++		renderRectPolyFT4(panel * (i == 0 ? 0x94 : 0xc2) + label->posX,
+ 		                  label->posY,
+ 		                  label->width,
+ 		                  label->height,
+@@ -4362,7 +4383,7 @@ void renderDigimonMovesSelected(int16_t panel)
+ 	}
+ 
+ 	for (i = 0; i < 4; i++) {
+-		renderRectPolyFT4((panel * 0xcb) - 0x71, i * 0x11 + 0x1b, 0xa, 0xa, 0x8a, 0x8c, 5, 0x7b06, 3, 0);
++		renderRectPolyFT4((panel * 0xc2) + MOVES_SELECTED_ARROW_X, i * 0x11 + 0x1b, 0xa, 0xa, 0x8a, 0x8c, 5, 0x7b06, 3, 0);
+ 	}
+ 
+ 	moveId = moveGridCursor();
+@@ -4373,22 +4394,22 @@ void renderDigimonMovesSelected(int16_t panel)
+ 		clearTextSubArea(&rect);
+ 		drawStringMode(MOVE_NAMES[moveId], 0, 0x84,
+ 		              fitStringMode(MOVE_NAMES[moveId], MOVE_NAME_WIDTH));
+-		renderString(0, (panel * 0x9d) - 0x8a, 9, 0x78, 0xc, 0, 0x84, 3, 1);
+-		renderBoostedNumbers(moveId, (panel * 0xcb) - 0x64, 0x1b, 0);
+-		renderString(0, (panel * 0xcb) - 0x64, 0x3e, 0x24, 0xc, (move->range - 1) * 0x24, 0x78, 3, 1);
++		renderString(0, (panel * 0x94) - 0x8a, 9, 0x78, 0xc, 0, 0x84, 3, 1);
++		renderBoostedNumbers(moveId, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x1b, 0);
++		renderString(0, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x3e, 0x24, 0xc, (move->range - 1) * 0x24, 0x78, 3, 1);
+ #if !VERSION_IS(US)
+ 		status = move->status;
+ 		if (status == 1) {
+-			renderString(0, (panel * 0xcb) - 0x64, 0x4f, 0xc, 0xc, 0x84, 0x6c, 3, 1);
++			renderString(0, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x4f, 0xc, 0xc, 0x84, 0x6c, 3, 1);
+ 		} else if (status == 4) {
+-			renderString(0, (panel * 0xcb) - 0x64, 0x4f, 0x24, 0xc, 0xc0, 0x6c, 3, 1);
++			renderString(0, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x4f, 0x24, 0xc, 0xc0, 0x6c, 3, 1);
+ 		} else if (status != 0) {
+-			renderString(0, (panel * 0xcb) - 0x64, 0x4f, 0x18, 0xc, (status - 2) * 0x18 + 0x90, 0x6c, 3, 1);
++			renderString(0, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x4f, 0x18, 0xc, (status - 2) * 0x18 + 0x90, 0x6c, 3, 1);
+ 		}
+ #else
+ 		/* MOD (language): MOVE_STATUS_CROPS */
+ 		if (move->status >= 1 && move->status <= 4) {
+-			renderString(0, (panel * 0xcb) - 0x64, 0x4f, MOVE_STATUS_CROPS[move->status - 1].w, 0xc,
++			renderString(0, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x4f, MOVE_STATUS_CROPS[move->status - 1].w, 0xc,
+ 			             MOVE_STATUS_CROPS[move->status - 1].u, 0x6c, 3, 1);
+ 		}
+ #endif
+-- 
+2.55.0
+
