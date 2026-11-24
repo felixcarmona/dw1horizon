@@ -9,7 +9,13 @@
                  "Boulder Crash", "Fissure"],
   "drop": {"item": "HP Chip", "percent": 100},
   "effects_like": 8,
-  "model": {"name": "ETYR", "bones": 27, "radius": 230, "height": 400},
+  "model": {
+    "name": "ETYR",
+    "bones": 27,
+    "radius": 230,
+    "height": 400,
+    "slot_aliases": [[50, 47], [51, 48], [52, 49], [53, 47], [54, 48]]
+  },
   "voice": 8,
   "battle_music": "normal-battle",
   "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},

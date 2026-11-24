@@ -9,7 +9,13 @@
                  "Blade Throw", "Armor Break"],
   "drop": {"item": "Meat", "percent": 10},
   "effects_like": 80,
-  "model": {"name": "SNGB", "bones": 23, "radius": 125, "height": 280},
+  "model": {
+    "name": "SNGB",
+    "bones": 23,
+    "radius": 125,
+    "height": 280,
+    "slot_aliases": [[51, 46], [52, 49], [53, 46]]
+  },
   "voice": 64,
   "battle_music": "normal-battle-2",
   "wild": {"hp": 2300, "mp": 2900, "off": 510, "def": 260, "speed": 160, "brain": 50, "bits": 400},

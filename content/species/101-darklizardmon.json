@@ -9,7 +9,13 @@
                  "Shadow Claw", "Dark Bolt", "Evil Whisper"],
   "drop": {"item": "Medium MP", "percent": 10},
   "effects_like": 69,
-  "model": {"name": "DKRZ", "bones": 22, "radius": 130, "height": 280},
+  "model": {
+    "name": "DKRZ",
+    "bones": 22,
+    "radius": 130,
+    "height": 280,
+    "slot_aliases": [[52, 47], [53, 50], [54, 50]]
+  },
   "voice": 59,
   "battle_music": "normal-battle-2",
   "wild": {"hp": 900, "mp": 2100, "off": 320, "def": 160, "speed": 90, "brain": 100, "bits": 300},

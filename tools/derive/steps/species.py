@@ -275,11 +275,12 @@ def build(ctx):
                     s['texture']['file'] = x
                 S.write_file(os.path.join(out, S.file_name(s)), s)
             print(f'provider record_originals: {len(ro)} species')
-        # A disc original that plays an existing attack clip for an added technique (model.slot_aliases) and has no
-        # file of its own: its disc model with those table entries, made here from the player's disc.
+        # A disc original that plays an existing attack clip for an added technique (model.slot_aliases): its model
+        # (the disc's, or its replacement file) with those table entries, made here. A record original's are applied
+        # when its record is written.
         for t, s in S.load_content(out).items():
             m = s['model']
-            if t >= S.NUM_ORIGINAL or S.is_record_original(s) or 'file' in m or not m.get('slot_aliases'):
+            if t >= S.NUM_ORIGINAL or S.is_record_original(s) or not m.get('slot_aliases'):
                 continue
             data = S.species_model(s)[0]
             path = os.path.join(ctx.path('models'), f'{m["name"]}-techniques.MMD')

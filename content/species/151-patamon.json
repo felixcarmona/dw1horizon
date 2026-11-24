@@ -9,7 +9,13 @@
                  "Shining Arrow", "Sacred Shield"],
   "drop": {"item": "MP Floppy", "percent": 20},
   "effects_like": 31,
-  "model": {"name": "EPAT", "bones": 23, "radius": 130, "height": 180},
+  "model": {
+    "name": "EPAT",
+    "bones": 23,
+    "radius": 130,
+    "height": 180,
+    "slot_aliases": [[51, 46], [52, 48], [53, 50]]
+  },
   "voice": 27,
   "battle_music": "normal-battle",
   "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},
