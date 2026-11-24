@@ -134,7 +134,7 @@ and ShogunGekomon Blasting Spout 150 (Ultimate).
 | `behavior.hits` | Hits the effect shows. Damage is applied once, as for every DW1 finisher. |
 | `behavior.look` | What the effect shows, in words, for whoever builds it. |
 | `behavior.clip` | The attack clip: DW2 cast slot (`F0`, `G0`, `H0`) or `by eye`. |
-| `effect.status` | `source`: the source effect files are known (DW2 files, DCB `E.DRV` pack). `source-undecoded`: a DW2003 signature whose effect mapping is not decoded yet. `dw1-template`: no source effect; build it from DW1 effects, starting from `effect.template`. |
+| `effect.status` | `source`: the source effect files are known (DW2 files, DCB `E.DRV` pack). `source-undecoded`: a DW2003 signature whose effect mapping is not decoded yet. `dw1-template`: no source effect; build it from DW1 effects, starting from `effect.template`. `authored`: written here from nothing (`effect.logic` names the file), its behaviour its own. |
 | `effect.files`, `file_ids`, `file`, `shared_by_cards` | Where the source effect lives; for DCB, how many other cards share the pack. |
 | `move` | What the battle reads, field by field as in `content/techniques/*.json`. `range` 1 melee, 2 ranged (including dashes), 3 area, 4 buff. `distance` is squared. `flags` `T` = needs a target. Accuracy is always 100 and the stored cost 40: finishers use the gauge. |
 | `buff`, `fallback` | Accepted by the check for a support move; no shipped entry has them (see below). |
@@ -162,10 +162,11 @@ Kind decides range, distance and iframes. Every combination is one DW1's own fin
 | Canon attack, not on the discs | 17 |
 | Proposed (no canon attack found) | 17 |
 | Effect from the source files | 122 |
-| Effect still to decode (DW2003) | 23 |
-| Effect to build from DW1 templates | 34 |
+| Effect still to decode (DW2003) | 14 |
+| Effect to build from DW1 templates | 33 |
+| Effect written here | 10 |
 
-Kinds: 40 shot, 37 dash, 37 beam, 21 area, 14 thrown, 13 rain, 11 melee, 6 breath.
+Kinds: 41 shot, 36 beam, 35 dash, 22 area, 14 thrown, 13 rain, 12 melee, 6 breath.
 
 The 37 species without a distinct source signature (DW2003 enemy-only species, plus
 BlackGatomon, whose card shares Lightning Paw with Gatomon) have `basis` `canon` or `proposed`.

@@ -7438,27 +7438,27 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Writes a glowing charm and sends it.",
+    "look": "A paper charm thrown at the target that opens into a seal of light.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
     }
    },
    "move": {
-    "power": 228,
+    "power": 225,
     "element": "fire",
     "range": 2,
     "distance": 360000,
     "accuracy": 100,
-    "status": 0,
-    "statusChance": 0,
+    "status": 2,
+    "statusChance": 20,
     "iframes": 1,
     "flags": [
      "T"
@@ -7485,14 +7485,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A violet mandala over every enemy.",
+    "look": "A violet wheel of petals opens from her and reaches every enemy.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -7578,14 +7578,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Holy light from the shield.",
+    "look": "A ray of holy light from the shield.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 102,
      "name": "Spiral Sword"
@@ -7593,7 +7593,7 @@
    },
    "move": {
     "power": 255,
-    "element": "air",
+    "element": "weapon",
     "range": 2,
     "distance": 640000,
     "accuracy": 100,
@@ -7667,34 +7667,32 @@
     "name": "Blaze Blast"
    },
    "behavior": {
-    "kind": "dash",
+    "kind": "melee",
     "target": "one",
-    "hits": 1,
-    "look": "Arm blades charged with plasma.",
-    "dash": true,
+    "hits": 2,
+    "look": "Two crossing cuts of the plasma blades, close up.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 58,
      "name": "Blaze Blast"
     }
    },
    "move": {
-    "power": 163,
+    "power": 160,
     "element": "fire",
-    "range": 2,
-    "distance": 160000,
+    "range": 1,
+    "distance": 0,
     "accuracy": 100,
-    "status": 0,
-    "statusChance": 0,
+    "status": 3,
+    "statusChance": 10,
     "iframes": 1,
-    "flags": [
-     "T"
-    ],
+    "flags": [],
     "mpCost": 40
    }
   },
@@ -7946,21 +7944,21 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Twin chest cannons.",
+    "look": "Twin red beams from the chest cannons.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 77,
      "name": "Energy Bomb"
     }
    },
    "move": {
-    "power": 228,
+    "power": 220,
     "element": "mech",
     "range": 2,
     "distance": 640000,
@@ -8585,21 +8583,21 @@
     "kind": "rain",
     "target": "one",
     "hits": 6,
-    "look": "A storm of crystal shards.",
+    "look": "Crystal shards form overhead and rain on the spot where the target stood.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 70,
      "name": "Spiral Twister"
     }
    },
    "move": {
-    "power": 93,
+    "power": 90,
     "element": "battle",
     "range": 2,
     "distance": 360000,
@@ -8866,27 +8864,27 @@
     "name": "Dark Shot"
    },
    "behavior": {
-    "kind": "beam",
+    "kind": "shot",
     "target": "one",
-    "hits": 1,
-    "look": "An energy blast from the arm cannon.",
+    "hits": 3,
+    "look": "Three shots from the arm cannon through a drawn seal.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 80,
      "name": "Dark Shot"
     }
    },
    "move": {
-    "power": 255,
-    "element": "mech",
+    "power": 258,
+    "element": "dark",
     "range": 2,
-    "distance": 640000,
+    "distance": 360000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -8913,27 +8911,27 @@
     "name": "Nightmare Syndromer"
    },
    "behavior": {
-    "kind": "shot",
-    "target": "one",
+    "kind": "area",
+    "target": "all",
     "hits": 1,
-    "look": "A dark energy sphere hurled from overhead.",
+    "look": "A black sun gathered overhead and thrown down; its blast reaches every enemy.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 96,
      "name": "Nightmare Syndromer"
     }
    },
    "move": {
-    "power": 255,
-    "element": "fire",
-    "range": 2,
-    "distance": 360000,
+    "power": 250,
+    "element": "dark",
+    "range": 3,
+    "distance": 160000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -9142,27 +9140,27 @@
     "name": "Fireball"
    },
    "behavior": {
-    "kind": "dash",
+    "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Spins into a fire dragon.",
-    "dash": true,
+    "look": "A wheel of blue fire that flies as a dragon; it can be dodged.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 61,
      "name": "Fireball"
     }
    },
    "move": {
-    "power": 163,
+    "power": 172,
     "element": "fire",
     "range": 2,
-    "distance": 160000,
+    "distance": 360000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -9329,21 +9327,21 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A fireball from the mouth.",
+    "look": "A ball of fire grown in the mouth and spat at the target; it can be dodged.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 59,
      "name": "Pepper Breath"
     }
    },
    "move": {
-    "power": 93,
+    "power": 97,
     "element": "fire",
     "range": 2,
     "distance": 360000,

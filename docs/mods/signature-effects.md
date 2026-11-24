@@ -94,14 +94,11 @@ builds every port to its pin and runs the fidelity check against the original te
 | 162 | Nightmare Shock (composed) | 295 Vilemon | 62 Death Claw | 5,804 bytes (as Death Claw) | Death Claw's, purple |
 | 163 | Poison Cobweb (composed) | 298 Dokugumon | 72 Sweet Breath | 7,724 bytes (as Sweet Breath) | Sweet Breath's cloud replaced by chunk 105's web, green |
 | 226 | Cyclone Turbine (composed) | 306 GrapLeomon | 62 Death Claw | 5,804 bytes (as Death Claw) | chunk 15's wind streaks on a wider, taller ring, teal |
-| 232 | Talisman of Light (composed) | 315 Taomon | 63 Mega Flame | 2,600 bytes (as Mega Flame) | chunk 82's written strip in place of the fireball, gold |
 | 236 | Blade Twister (composed) | 322 Kyukimon | 62 Death Claw | 5,804 bytes (as Death Claw) | chunk 13's jagged blades on a wider ring, green |
 | 256 | Hawk Beam (composed) | 184 Hawkmon | 71 Boom Bubble | 6,036 bytes (as Boom Bubble) | chunk 9's streak in place of the air puff, red |
 | 262 | Metal Wolf Claw (composed) | 191 MetalGarurumon | 78 Genoside Attack | 13,872 bytes (as Genoside Attack) | chunk 20's ice crystal in place of the fire burst, icy blue, model 1.2x |
 | 265 | Ex-Laser (composed) | 194 ExVeemon | 63 Mega Flame | 2,600 bytes (as Mega Flame) | chunk 29's ring in place of the fireball, blue-white |
 | 321 | Thunder Volt (composed) | 252 Thundermon | 86 Solar Ray | 11,244 bytes (as Solar Ray) | chunk 66's lightning on the model and its spark on the orb, electric blue, model 1.3x |
-| 246 | Diamond Storm (composed) | 354 Renamon | 88 Ice Blast | as Ice Blast | Ice Blast's crystals, lilac, model 1.4x; the template (70) is a small flame |
-| 248 | Terra Destroyer (composed) | 404 BlackWarGreymon | 109 Crimson Flare | as Crimson Flare | chunk 94's ring in place of the fireball, crimson to gold, model 1.8x; the template (96) is a pair of demon hands |
 | 278 | Needle Spray (composed) | 208 Togemon | 91 Fist of the Beast King | as the template | chunk 69's streaks, green, model drawn out 1.8x |
 | 283 | V Wing Blade (composed) | 213 AeroVeedramon | 89 Iga School Knife Throw | as the template | chunk 39's crescent, blue, model 1.5x; the template (96) is a pair of demon hands |
 | 301 | Free Throw Bomb (composed) | 232 BomberNanimon | 73 Bit Bomb | as Bit Bomb | chunk 39's ball, orange, model 1.5x; the template (89) throws knives |
@@ -129,6 +126,31 @@ Chunks 251-329 are the Card Battle attacks', one per species of `content/finishe
 attacks whose conversion passed the fidelity check are entries here; the others keep their technique's own effect
 (`"fallback": "template"` and `why` in that file). `tools/test_dcb_ports.py` checks the wiring, and with the discs
 (`DCB_IMAGE`, `DCB_EU_IMAGE`, `DCB_JP_IMAGE`) builds every port to its pin.
+
+## Authored finishers
+
+Ten imported species play a finisher effect written here from nothing: its pictures are painted by the code, and
+its script, its flight and its hit are its own, so the finisher behaves as its design says (a shot that can be
+dodged, a rain on a spot, a blast that reaches every enemy). They are written with the same kit as the new
+technique rows ([the technique rows](technique-rows.md)), in `tools/technique_effects/finishers.py`, one
+function per species. An entry of `content/battle/own-effects.json` names it:
+`{"name": ..., "technique": <species>, "authored": "finishers"}`, and the species points at the chunk with
+`own_effect`. `tools/test_technique_effects.py` builds each one, plays it in the simulator to its end and checks
+that it hits what its design in `content/finishers/imports.json` says, and that the three that fly miss a target
+that walks away.
+
+| Chunk | Finisher | Species | What plays | Hits |
+|---|---|---|---|---|
+| 222 | Pyrosphere | 433 Guilmon | a ball of fire grown at the mouth and spat at the target | where the target stood: it can be dodged |
+| 246 | Diamond Storm | 354 Renamon | crystal shards that form overhead and rain down | the target, 6 hits |
+| 370 | Plasma Blade | 320 Growlmon | two crossing cuts of the arm blades, close up | the target, 2 hits, may stun |
+| 249 | Dragon Wheel | 409 Kyubimon | a wheel of blue fire that flies as a dragon | where the target stood: it can be dodged |
+| 210 | Atomic Blaster | 326 WarGrowlmon | twin red beams from the chest cannons | the target |
+| 232 | Talisman of Light | 315 Taomon | a paper charm thrown at the target that opens into a seal of light | the target, may confuse |
+| 208 | Final Purification | 318 Gallantmon | a ray of holy light from the shield | the target |
+| 206 | Amethyst Mandala | 316 Sakuyamon | a violet wheel of petals that opens from her | every enemy |
+| 190 | Corona Blaster | 403 Beelzemon | three shots from the arm cannon through a drawn seal | where the target stood, 3 shots: they can be dodged |
+| 248 | Terra Destroyer | 404 BlackWarGreymon | a black sun gathered overhead and thrown down | every enemy |
 
 ## Composed effects
 
@@ -216,7 +238,6 @@ fidelity check, a self-cast support technique), and the DW1 effect they play alr
 | 248 MarineAngemon | Ocean Love | Card Battle, larger than the slot | 60 Lovely Attack: hearts |
 | 256 VioletElecmon | Jamming Thunder | Card Battle, fidelity failed | 101 Super Thunder Strike: lightning |
 | 254 Tylomon | Torpedo Attack | Card Battle, fidelity failed | 87 Hydro Pressure: a sea Digimon's water jet; composed on Genoside Attack (78) its burst read bigger than any vanilla finisher |
-| 320 Growlmon | Plasma Blade | DW3, too large for a chunk | 58 Blaze Blast: a fire blast from the jaws, the flame its blades burn with; a composition cannot run on 58, and on 62 and 81 the technique dealt no damage |
 
 A sheet and a check take about 15 seconds. The chunk keeps the template's size, so the memory the battle keeps is
 the template's.

@@ -411,7 +411,6 @@ def composed_summary(rep):
 ANCHOR_REACH, ANCHOR_HEAD, ANCHOR_FLOOR = 1.5, 1.2, 0.25
 # Entries whose part starts away from the caster on the disc too (checked against the DW2003 script and model).
 ANCHOR_FAITHFUL = {
-    206: 'KongouKaimandara: the mandala opens 1.2 caster heights in front of Sakuyamon, as on the disc',
     216: 'Swing Swing: the thrown part first shows halfway through its flight, as on the disc',
 }
 

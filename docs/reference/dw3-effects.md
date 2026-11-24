@@ -317,6 +317,8 @@ drifts, a late burst is missing); Bastemon changes too seldom.
   WarGrowlmon, Gallantmon, Bulbmon and others). The conversion does not re-aim their parts, so the damage
   lands when the effect ends, not when a projectile arrives. Pyrosphere (Guilmon) is aimed (`"aim": true`). WarGrowlmon's Atomic
   Blaster is a beam that stops about halfway to the target and the hit comes after it ends: not aimed yet.
+  Ten species (Guilmon, WarGrowlmon, Gallantmon and Sakuyamon among them) no longer play their conversion: their
+  finisher is written here ([authored finishers](../mods/signature-effects.md#authored-finishers)).
 - **Camera.** DW2003 techniques move the camera; this game's effect engine keeps its own camera.
 - **Blending.** The 3D effects' blend meanings above are assumed; the sprites' are read from the frame records.
 

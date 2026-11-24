@@ -1,5 +1,5 @@
 {
-  "note": "Effect chunks of a species' own, appended to ETCHI/EFEDAT.EFE after the disc's 122 (tools/derive/steps/effects.py). Each is a Digimon World 2 technique converted from the player's DW2 disc (tools/dw2efe.py): its cast and hit effect objects, under the disc folder AAA/4.AAA/EFFECT, either [model, anim] (one object at slot 1) or [[DW2 slot, model, anim], ...] (every object of the technique; slot 0 above the head, 1 the launch point or mid height, 2 the feet). Indices no entry uses are left empty. stands_for: the chunk whose launch point (origin table) it takes. scale: DW2 units to this game's (the caster's height here against its DW2 head height); hit_scale: the hit object's, when DW2's close camera made it larger than a battle here shows well. reach: no longer used (the projectile flies to its target). area (optional): hit every enemy, for a range-3 technique; hits (optional): damage events per target. A species plays one with own_effect in its JSON. authored: a technique of the Darkness, Light, Water, Weapon and Earth rows, whose effect is written and painted in tools/technique_effects/<row>.py (no source disc).",
+  "note": "Effect chunks of a species' own, appended to ETCHI/EFEDAT.EFE after the disc's 122 (tools/derive/steps/effects.py). Each is a Digimon World 2 technique converted from the player's DW2 disc (tools/dw2efe.py): its cast and hit effect objects, under the disc folder AAA/4.AAA/EFFECT, either [model, anim] (one object at slot 1) or [[DW2 slot, model, anim], ...] (every object of the technique; slot 0 above the head, 1 the launch point or mid height, 2 the feet). Indices no entry uses are left empty. stands_for: the chunk whose launch point (origin table) it takes. scale: DW2 units to this game's (the caster's height here against its DW2 head height); hit_scale: the hit object's, when DW2's close camera made it larger than a battle here shows well. reach: no longer used (the projectile flies to its target). area (optional): hit every enemy, for a range-3 technique; hits (optional): damage events per target. A species plays one with own_effect in its JSON. authored: a technique of the Darkness, Light, Water, Weapon and Earth rows, whose effect is written and painted in tools/technique_effects/<row>.py (no source disc). An authored entry of tools/technique_effects/finishers.py is a species' finisher, written and painted the same way; its technique is the species id.",
   "122": {
     "name": "Metal Fireball",
     "stands_for": 63,
@@ -420,9 +420,8 @@
   "195": {"name": "Cat Laser", "stands_for": 62, "compose": {"recolour": {"ramp": ["#001810", "#00905a", "#40ffa0", "#e8fff4"]}, "scale": [3.5, 1, 0.12]}, "check": {"hue": 150}},
   "190": {
     "name": "Corona Blaster",
-    "stands_for": 80,
-    "compose": {"recolour": {"ramp": ["#0c0014", "#640a78", "#e038d0", "#ffe0f8"]}},
-    "check": {"hue": 305}
+    "technique": 403,
+    "authored": "finishers"
   },
   "185": {"name":"Vemmon Crash","stands_for":100,"compose":{"recolour":{"ramp":["#000000","#8a3008","#f07828","#fff0d0"]},"scale":2.35},"check":{"hue":25}},
   "174": {
@@ -505,10 +504,9 @@
     "dw3": {"model": "M436VALV", "slot": 9, "meft": [346], "pin": "7076e591495045c03a83dc7344d1b7c7b71e6a96"}
   },
   "206": {
-    "name": "KongouKaimandara",
-    "stands_for": 63,
-    "sounds": [[59, 41], [90, 12], [360, 45], [380, 12]],
-    "dw3": {"model": "M376SKYA", "slot": 11, "meft": [87], "leave_out": [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 8]], "pin": "73cf5d952f9c787db4125733affa6f6692d9cf15"}
+    "name": "Amethyst Mandala",
+    "technique": 316,
+    "authored": "finishers"
   },
   "207": {
     "name": "Sylph Storm",
@@ -518,9 +516,8 @@
   },
   "208": {
     "name": "Final Purification",
-    "stands_for": 102,
-    "sounds": [[123, 10], [152, 21], [277, 10], [297, 10]],
-    "dw3": {"model": "M369DUKE", "slot": 11, "meft": [95], "pin": "0cfe82fb38df5b3e33fcfa43f7addfb8fe88ef72"}
+    "technique": 318,
+    "authored": "finishers"
   },
   "209": {
     "name": "Blazing Mane",
@@ -530,9 +527,8 @@
   },
   "210": {
     "name": "Atomic Blaster",
-    "stands_for": 80,
-    "sounds": [[93, 10], [143, 29], [143, 25], [208, 10], [228, 10]],
-    "dw3": {"model": "M368MGRW", "slot": 11, "meft": [96], "pin": "ac0cae0b4f23cfcabf29811b56edaba01176fb51"}
+    "technique": 326,
+    "authored": "finishers"
   },
   "212": {
     "name": "Darkness Chaos",
@@ -596,9 +592,8 @@
   },
   "222": {
     "name": "Pyrosphere",
-    "stands_for": 59,
-    "sounds": [[165, 27], [165, 41], [275, 24]],
-    "dw3": {"model": "M366GIRU", "slot": 11, "meft": [102], "scale": 1.26, "aim": true, "pin": "c0371c73cc031e6ccdabb8d799f25982e7be5b96"}
+    "technique": 433,
+    "authored": "finishers"
   },
   "224": {
     "name": "Striking Fish",
@@ -674,9 +669,8 @@
   },
   "249": {
     "name": "Dragon Wheel",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#000818", "#103a9a", "#50a0ff", "#e8f4ff"]}, "scale": 1.3},
-    "check": {"hue": 218}
+    "technique": 409,
+    "authored": "finishers"
   },
   "251": {
     "name": "Wolf Claw",
@@ -1065,16 +1059,8 @@
   },
   "232": {
     "name": "Talisman of Light",
-    "stands_for": 63,
-    "compose": {"texture": [
-      {"from": 82, "rect": [68, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]},
-      {"from": 82, "rect": [68, 0, 32, 32], "to": [32, 0], "palettes": []},
-      {"from": 82, "rect": [68, 0, 32, 32], "to": [64, 0], "palettes": []},
-      {"from": 82, "rect": [68, 0, 32, 32], "to": [96, 0], "palettes": []},
-      {"from": 82, "rect": [68, 0, 32, 32], "to": [128, 0], "palettes": []},
-      {"from": 82, "rect": [68, 0, 32, 32], "to": [160, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#604008", "#d0a040", "#fff4c0"]}},
-    "check": {"hue": 48}
+    "technique": 315,
+    "authored": "finishers"
   },
   "321": {
     "name": "Thunder Volt",
@@ -1130,14 +1116,8 @@
   },
   "248": {
     "name": "Terra Destroyer",
-    "stands_for": 109,
-    "compose": {"texture": [
-      {"from": 94, "rect": [96, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]},
-      {"from": 94, "rect": [96, 0, 32, 32], "to": [32, 0], "palettes": []},
-      {"from": 94, "rect": [96, 0, 32, 32], "to": [64, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#8a1a00", "#ff8020", "#fff4d0"]},
-      "scale": 1.8},
-    "check": {"hue": 25}
+    "technique": 404,
+    "authored": "finishers"
   },
   "307": {
     "name": "Pulse Blast",
@@ -1172,10 +1152,8 @@
   },
   "246": {
     "name": "Diamond Storm",
-    "stands_for": 88,
-    "compose": {"recolour": {"ramp": ["#000000", "#5a3a8a", "#e0b0ff", "#ffffff"]},
-      "scale": 1.4},
-    "check": {"hue": 280}
+    "technique": 354,
+    "authored": "finishers"
   },
   "301": {
     "name": "Free Throw Bomb",
@@ -1423,5 +1401,10 @@
     "name": "Gaia Quake",
     "technique": 161,
     "authored": "earth"
+  },
+  "370": {
+    "name": "Plasma Blade",
+    "technique": 320,
+    "authored": "finishers"
   }
 }

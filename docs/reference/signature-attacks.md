@@ -62,11 +62,8 @@ the moment the attack starts.
 | 310 Assaultmon | Justice Strike (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0093) | 1 | plays its whole length (56 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy, 3 hits |
 | 312 Creepymon | Darkness Chaos (DW2003) | Nightmare Syndromer | 3D effect at the caster (MEFT0351) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Nightmare Syndromer | all enemies |
 | 313 Bulbmon | Mad Pump (DW2003) | Dark Shot | 3D effect at the caster (MEFT0346) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
-| 316 Sakuyamon | KongouKaimandara (DW2003) | Mega Flame | 3D effect at the caster (MEFT0087), 5 parts left out to fit | 1 | plays its whole length (148 frames at 30 fps), hits when it ends | none | one enemy, as for Mega Flame | all enemies |
 | 317 Fujinmon | Sylph Storm (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0370) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | all enemies |
-| 318 Gallantmon | Final Purification (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0095) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
 | 323 Lynxmon | Blazing Mane (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0332) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
-| 326 WarGrowlmon | Atomic Blaster (DW2003) | Dark Shot | 3D effect at the caster (MEFT0096) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
 | 329 Ghoulmon | Darkness Chaos (DW2003) | Dark Shot | 3D effect at the caster (MEFT0349) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
 | 333 Raijinmon | Electro Ball (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0363) | 1 | plays its whole length (41 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | all enemies |
 | 334 Mummymon | Dark Fear (DW2003) | Dark Shot | 3D effect at the caster (MEFT0335) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
@@ -77,7 +74,6 @@ the moment the attack starts.
 | 407 Armageddemon | Ultimate Flare (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0333) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
 | 408 Suijinmon | Mugen Cannon (DW2003) | Infinity Cannon | 3D effect at the caster (MEFT0364) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Infinity Cannon | one enemy, 4 hits |
 | 430 Zanbamon | Cross Slash (DW2003) | Death Claw | 3D effect at the caster (MEFT0039) | 1 | plays its whole length (30 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
-| 433 Guilmon | Pyrosphere (DW2003) | Pepper Breath | 3D effect at the caster (MEFT0102) | 1 | plays its whole length (45 frames at 30 fps), hits when it ends | none | one enemy, as for Pepper Breath | one enemy |
 | 304 Divermon | Striking Fish (DW2003) | Bone Boomerang | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Bone Boomerang | one enemy |
 | 305 Ebidramon | Pincer Crusher (DW2003) | Scissor Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #9) | 1 | plays its whole length (33 frames at 30 fps), hits when it ends | none | one enemy, as for Scissor Claw | one enemy |
 | 308 Dinohyumon | Lizard Dance (DW2003) | Scissor Claw | sprites at the caster as flat quads (E000COM1 #2, E386DINO #2021, E386DINO #2022, E386DINO #2023) | 1 | plays its whole length (77 frames at 30 fps), hits when it ends | none | one enemy, as for Scissor Claw | one enemy, 4 hits |
@@ -96,7 +92,6 @@ the moment the attack starts.
 | 311 Arukenimon | Spirit Needle (composed) | Bit Bomb | Bit Bomb's play with its projectile drawn as a thin violet-white needle and its burst as sharp violet sparkles | as Bit Bomb | as Bit Bomb | as Bit Bomb | as Bit Bomb | - |
 | 336 Raidenmon | Raiden Strike (composed) | Fireball | Fireball's play with its fireballs drawn as crackling amber-gold lightning | as Fireball | as Fireball | as Fireball | as Fireball | - |
 | 432 Bastemon | Cat Laser (composed) | Death Claw | Death Claw's play in green, its ring squeezed into a long thin laser beam | as Death Claw | as Death Claw | as Death Claw | as Death Claw | - |
-| 403 Beelzemon | Corona Blaster (composed) | Dark Shot | Dark Shot's play in hot magenta | as Dark Shot | as Dark Shot | as Dark Shot | as Dark Shot | - |
 | 331 Vemmon | Vemmon Crash (composed) | Scissor Claw | Scissor Claw's play as a heavy orange shock ring, 1.6 times larger | as Scissor Claw | as Scissor Claw | as Scissor Claw | as Scissor Claw | - |
 | 314 SkullSatamon | Nail Bone (composed) | Nightmare Syndromer | Nightmare Syndromer's play, its flying shapes drawn as fireballs in flame orange, 1.2 times larger | as Nightmare Syndromer | as Nightmare Syndromer | as Nightmare Syndromer | as Nightmare Syndromer | - |
 | 307 BlackKingNumemon | Royal Muck (composed) | Death Claw | Death Claw's play as a crown of muck lumps in brown-gold, its ring 1.5 times larger | as Death Claw | as Death Claw | as Death Claw | as Death Claw | - |
@@ -136,6 +131,14 @@ the moment the attack starts.
   attack is the enemy's move 1. Vilemon and Mummymon share Dark Fear, and Creepymon and Ghoulmon Darkness
   Chaos, and each plays it: the source effect wins over a composed look of its own. Species whose DW2003
   attack is an unnamed slot-5 move play that move's effect.
+
+## Finishers written here
+
+Guilmon (Pyrosphere), Renamon (Diamond Storm), Growlmon (Plasma Blade), Kyubimon (Dragon Wheel), WarGrowlmon
+(Atomic Blaster), Taomon (Talisman of Light), Gallantmon (Final Purification), Sakuyamon (Amethyst Mandala),
+Beelzemon (Corona Blaster) and BlackWarGreymon (Terra Destroyer) do not play the source game's effect: theirs is
+written for this game, pictures and behaviour, and is listed in
+[the signature effects notes](../mods/signature-effects.md#authored-finishers).
 
 ## Kept on the DW1 finisher
 
