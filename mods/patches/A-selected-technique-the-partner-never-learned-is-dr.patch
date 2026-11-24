@@ -1,0 +1,74 @@
+From 33c849ef01ff96df8063789da51e756f8053ebcd Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 15:49:38 +0000
+Subject: [PATCH] A selected technique the partner never learned is dropped
+ when the save loads
+
+---
+ src/main/main_menu.c |  3 +++
+ src/main/utils2.c    | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index abac4719..6c163019 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -5365,6 +5365,8 @@ static void modStoryRelocate(void)
+ 	MOD_STORY_ARRIVE = 1;
+ }
+ 
++void dropUnlearnedSelections(void); /* MOD (technique lists): utils2.c, resident: MENU has no room */
++
+ static void dropAbsentSaveContent(void)
+ {
+ 	uint32_t *learned = &PARTNER_ENTITY.learnedMoves[0]; /* 128 bits: the struct names 64 (unk1, unk2 follow) */
+@@ -5629,6 +5631,7 @@ static int32_t loadSaveCopy(int32_t copy)
+ 			if (((moves[i] - NEW_MOVE_FIRST) & 0xc7) == 0) learnMove(moves[i]);
+ 		}
+ 	}
++	dropUnlearnedSelections();
+ 	dropAbsentSaveContent();
+ 	/* The registration menu restores copy 1. Keep its used fields in the selected
+ 	 * layout too; unk24 contains that copy's inline extension and must stay intact. */
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index c0592aeb..045b2555 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -349,6 +349,34 @@ int32_t hasMove(int32_t move)
+ 	return 0;
+ }
+ 
++/* MOD (technique lists): a list entry replaced since the save leaves its slot selected with a technique that was
++ * never learned. The selection is dropped; a partner left with none takes its first learned technique, and one
++ * that has learned nothing of its list keeps what it had. Resident: the MENU overlay, which calls it, is full */
++void dropUnlearnedSelections(void)
++{
++	uint8_t *moves = DIGI_PARA(SAVED_STATE.partnerType).moves;
++	uint8_t *equipped = PARTNER_ENTITY.digimonEntity.stats.base.moves;
++	uint8_t kept[3];
++	int32_t i;
++	int32_t k;
++
++	for (i = 0; i < 3; i++) {
++		kept[i] = equipped[i];
++		k = equipped[i] - 0x2e;
++		if ((uint32_t)k < 16 && IS_GRID_MOVE(moves[k]) && !hasMove(moves[k])) equipped[i] = 0xff;
++	}
++	if (equipped[0] == 0xff && equipped[1] == 0xff && equipped[2] == 0xff) {
++		for (k = 0; k < 16 && !hasMove(moves[k]); k++) {
++		}
++		if (k < 16) {
++			equipped[0] = 0x2e + k;
++		} else {
++			for (i = 0; i < 3; i++) equipped[i] = kept[i];
++		}
++	}
++	for (i = 0; i < 3; i++) SAVED_STATE.partnerStats.base.moves[i] = equipped[i];
++}
++
+ void learnMove(int32_t move)
+ {
+ 	if (move == 0x2C || move == 0x30) {
+-- 
+2.55.0
+
