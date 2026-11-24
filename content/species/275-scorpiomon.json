@@ -26,7 +26,7 @@
   "texture": {"file": "build/batch8/Anomalocarimon.TIM", "entry": 0},
   "voice": 22,
   "battle_music": "normal-battle",
-  "boosted_technique": "Danger Sting",
+  "boosted_technique": "Stalagmite",
   "condition_bubble": [0, -253, -126, 2],
   "effect_origins": [[2, 60, 0, 10, 2, 0, 45, -63], [2, -70, 0, 210, 2, 0, -253, -126], [1, 0, 0, 0, 13, 0, 0, 0],
                      [2, -102, 0, 155, 2, 0, -233, -48]],

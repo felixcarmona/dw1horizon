@@ -113,12 +113,25 @@ third specialty, in battle or in the gym, so a species whose third specialty is 
 lower techniques of it. BlueMeramon is the exception: it keeps Black Gate because the wild ones cast it.
 
 Every technique of the five rows is on some list, and each is cast in a fight that can be had again: by wild
-Digimon that come back each time the screen is entered, and Abyss Requiem by BlackWarGreymon, who fights again
-whenever it is asked. Final Edge and Whirling Edge are cast by the two Tekkamon of the Back Dimension, Gaia Quake by
-a Brachiomon of the Ancient Glacial Region, Sea Crush, Tidal Wave and Ocean Fury by the Coelamon of Coela Point,
-Judgment Ray by a Piddomon of Mt. Infinity and Grand Cross by two Piddomon, one of Mt. Infinity and one of the Back
-Dimension. Tekkamon, WaruSeadramon, Brachiomon, Coelamon and Piddomon have them on their lists for that, so these
-two Champions can learn the last of their row.
+Digimon that come back each time the screen is entered. A move list in `content/maps/*.json` is not enough for that:
+the slot must be filled (MAPHEAD `set_digimon` or the script's `spawn`) and talking to it must fight. The Coelamon of
+Coela Point and the Brachiomon of the Ancient Glacial Region are scenery, and several named Digimon fight once.
+`tools/caster_audit.py` reads the three sources and prints who really casts what, and
+`tools/test_repeatable_casters.py` fails when a technique of the five rows loses its last repeatable caster.
+
+| Row | Lower techniques | Upper techniques |
+| --- | --- | --- |
+| Darkness | Goblimon, Tsukaimon, DarkLizardmon, Shamamon, Hyogamon, IceDevimon, Gururumon, Saberdramon, Soulmon | Venom Mist and Black Gate: BlueMeramon (Ice Sanctuary, Back Dimension) and Soulmon (Grey Lord's Mansion); Abyss Requiem: Soulmon, and BlackWarGreymon, who fights again whenever it is asked |
+| Light | Piddomon (Mt. Infinity, Back Dimension) | Judgment Ray, Heaven's Ring and Grand Cross: Piddomon |
+| Water | ModokiBetamon (Native Forest, Digimon Bridge, Mangrove Region), Gekomon (Geko Swamp) | Whirlpool, Hydro Cannon and Sea Crush: both; Tidal Wave and Ocean Fury: Gekomon |
+| Weapon | SnowGoblimon (Freezeland), Fugamon (Misty Trees) | War Stance, Cross Cutter, Whirling Edge, Giant Cleave and Final Edge: Fugamon and the two Tekkamon of the Back Dimension |
+| Earth | Gotsumon, SandYanmamon, NiseDrimogemon, Golemon, Vermilimon | Stalagmite and Landslide: Vermilimon and Golemon (Mt. Infinity); Gaia Quake: Golemon (Mt. Infinity, Back Dimension) |
+
+Light has one wild species that comes back, and the last two Water techniques and Gaia Quake have one: no other
+repeatable wild Digimon has the row. The last technique of a row is cast with a weight of 10 of 100. Soulmon,
+Fugamon, Golemon, Gekomon and Piddomon have the upper techniques on their lists for that (in place of techniques of
+rows they do not train, or weak ones no wild Digimon of the species casts), so these Champions can learn them when
+raised. ModokiBetamon is only met as an enemy.
 
 The seven original rows are covered the same way: every technique is cast by wild Digimon that come back each time
 the screen is entered, not only by bosses and training. The Mech row comes from Guardromon (Power Crane, Metal

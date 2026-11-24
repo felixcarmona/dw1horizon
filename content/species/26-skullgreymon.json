@@ -6,9 +6,9 @@
   "attribute": "virus",
   "specialties": ["dark", "battle", "ice"],
   "fields": ["nightmare-soldiers", "dragons-roar"],
-  "techniques": ["Sonic Jab", "Dynamite Kick (48)", "Megaton Punch", "Counter", "Buster Dive", "Venom Mist", "War Cry",
-                 "Muscle Charge", "Giga Freeze", "Ice Statue", "Winter Blast", "Pulse Laser",
-                 "Death Grip", "Dark Shot", "Nightmare", "Black Gate"],
+  "techniques": ["Sonic Jab", "Dynamite Kick (48)", "Megaton Punch", "Counter", "Buster Dive", "Venom Mist",
+                 "War Cry", "Muscle Charge", "Giga Freeze", "Ice Statue", "Winter Blast",
+                 "Pulse Laser", "Death Grip", "Dark Shot", "Nightmare", "Black Gate"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "model": {
     "name": "SKUL",
@@ -19,7 +19,7 @@
   },
   "voice": 24,
   "battle_music": "normal-battle",
-  "boosted_technique": "Pulse Laser",
+  "boosted_technique": "Death Grip",
   "partner": {
     "voice": 2,
     "hunger_hours": [4, 12, 20],

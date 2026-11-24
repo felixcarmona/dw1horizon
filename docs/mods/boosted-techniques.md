@@ -38,3 +38,9 @@ One per species, automatically, with three aims:
    its next best match. An evolution avoids repeating its pre-evolution's technique when it has another fit.
 3. **Usable.** A technique the species cannot learn in battle is not chosen, one it learns rarely is avoided, Ultimates
    and Megas avoid techniques under 200 and 250 power, and DG Dimension only goes to Megas.
+
+A species whose first specialty is one of the five new rows (Darkness, Light, Water, Weapon, Earth,
+`docs/mods/technique-rows.md`) is boosted in a technique of that row: the one of its list closest to the power its
+level fights with, under the same limits (eight species a technique, the floors for Ultimates and Megas, never one
+it cannot learn or the last of the row). A species whose NEW DIGIMON off list has no attacking technique of the row
+that clears its floor keeps its earlier one (Meteormon), and the Fresh and In-Training ones have none.

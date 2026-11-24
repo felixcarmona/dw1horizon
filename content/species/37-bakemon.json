@@ -19,7 +19,7 @@
   },
   "voice": 33,
   "battle_music": "normal-battle",
-  "boosted_technique": "Wind Cutter",
+  "boosted_technique": "Dark Bolt",
   "partner": {
     "voice": 0,
     "hunger_hours": [2, 6, 10, 14, 18, 22],

@@ -8,7 +8,7 @@
   "specialties": ["earth", "ice", "battle"],
   "fields": ["nature-spirits", "metal-empire", "unknown"],
   "techniques": ["Sonic Jab", "Muscle Charge", "Ice Needle", "Ice Statue", "Winter Blast", "Aurora Freeze",
-                 "Aqua Magic", "Tear Drop", "Water Blit", "Giga Freeze", "Pummel Whack",
+                 "Stalagmite", "Landslide", "Gaia Quake", "Giga Freeze", "Pummel Whack",
                  "Rock Throw", "Sand Blast", "Stone Skin", "Boulder Crash", "Fissure"],
   "drop": {"item": "Power Ice", "percent": 1},
   "effects_like": 23,
@@ -26,7 +26,7 @@
   "texture": {"from": 108},
   "voice": 21,
   "battle_music": "normal-battle",
-  "boosted_technique": "Giga Freeze",
+  "boosted_technique": "Boulder Crash",
   "wild": {"hp": 3400, "mp": 4700, "off": 630, "def": 330, "speed": 210, "brain": 150, "bits": 1600},
   "partner": {
     "voice": 3,

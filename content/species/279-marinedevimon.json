@@ -25,7 +25,7 @@
   "texture": {"file": "build/batch9/MarineDevimon.TIM", "entry": 0},
   "voice": 6,
   "battle_music": "normal-battle",
-  "boosted_technique": "Aurora Freeze",
+  "boosted_technique": "Death Grip",
   "condition_bubble": [0, -129, -94, 31],
   "effect_origins": [[4, -70, 70, 0, 31, 0, 69, -26], [17, 118, 0, 129, 6, -110, 69, -6],
                      [2, 230, -100, 0, 1, -56, -85, -156], [2, 0, 0, 0, 1, 0, 0, 0]],

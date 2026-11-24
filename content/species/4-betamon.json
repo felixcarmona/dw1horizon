@@ -22,7 +22,7 @@
   },
   "voice": 4,
   "battle_music": "normal-battle",
-  "boosted_technique": "Ice Needle",
+  "boosted_technique": "Bubble Shot",
   "partner": {
     "voice": 1,
     "hunger_hours": [0, 5, 9, 14, 19],

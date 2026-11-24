@@ -19,7 +19,7 @@
   },
   "voice": 32,
   "battle_music": "normal-battle",
-  "boosted_technique": "Dynamite Kick (48)",
+  "boosted_technique": "Cross Cutter",
   "partner": {
     "voice": 9,
     "hunger_hours": [2, 6, 11, 16, 21],

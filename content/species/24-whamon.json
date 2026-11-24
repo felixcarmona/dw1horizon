@@ -48,7 +48,7 @@
   },
   "voice": 22,
   "battle_music": "normal-battle",
-  "boosted_technique": "Water Blit",
+  "boosted_technique": "Hydro Cannon",
   "partner": {
     "voice": 5,
     "hunger_hours": [2, 6, 10, 14, 18, 21],

@@ -24,7 +24,7 @@
   "texture": {"file": "build/batch12/Gallantmon.TIM", "entry": 0},
   "voice": 36,
   "battle_music": "normal-battle",
-  "boosted_technique": "All Range Beam",
+  "boosted_technique": "Giant Cleave",
   "condition_bubble": [0, -215, -6, 8],
   "effect_origins": [[7, "any", 0, 0, 21, -56, 168, -99], [10, "any", 0, 0, 13, 97, -4, 106],
                      [1, "any", 0, 0, 24, 0, 0, 0], [6, "any", 0, 0, 4, -30, 220, -128]],

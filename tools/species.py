@@ -481,6 +481,7 @@ def techniques_from_json(v, where):
     return ids + [0xFF] * (16 - len(ids))
 
 
+NEW_ROW_FIRST = 122              # the first technique of the five new rows (docs/mods/technique-rows.md)
 COUNTER_TECH = 45                # Counter: reactive, never chosen like the others
 
 
@@ -491,7 +492,7 @@ def boosted_technique(s, where=None):
     if name is None: return None
     w = f'{where or s.get("_path", s.get("name"))}.boosted_technique'
     tech = id_of('techs', name, w)
-    if tech >= FINISHER_FIRST or tech == COUNTER_TECH: raise SystemExit(f'{w}: {name} is not a regular attacking technique')
+    if FINISHER_FIRST <= tech < NEW_ROW_FIRST or tech == COUNTER_TECH: raise SystemExit(f'{w}: {name} is not a regular attacking technique')
     for block in (s, s.get('off', {})):
         if 'techniques' in block and tech not in techniques_from_json(block['techniques'], w):
             raise SystemExit(f'{w}: {name} is not one of its techniques' + (' with NEW DIGIMON off' if block is not s else ''))
