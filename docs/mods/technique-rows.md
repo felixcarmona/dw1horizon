@@ -108,9 +108,9 @@ Fire). The wild Digimon and bosses of those species cast the new techniques (`co
 
 An Ultimate holds up to four techniques of its first new row and three of another, and a Mega four and two: where a
 list was full, the technique took the place of a weak original one that no wild Digimon of the species casts, and
-the list keeps at least three of each row it trains. A species lists a technique only where it can learn it: the
-last two of a row have no chance for a third specialty, in battle or in the gym, so Pharaohmon, Phoenixmon, Marsmon
-and Baihumon hold a lower one of that row in place of the last.
+the list keeps at least three of each row it trains. The last of a row has no learning chance for a
+third specialty, in battle or in the gym, so Pharaohmon, Phoenixmon, Marsmon and Baihumon hold a lower one of that
+row in its place.
 
 Every technique of the five rows is on some list and a wild Digimon or a boss casts each of them, Grand Cross
 excepted, which comes only from brain training. The last of the other rows are cast late in the game: Abyss Requiem
