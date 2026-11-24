@@ -26,7 +26,7 @@ COPIES = [ZONES / f'{z}/script' for z in ('beetle-land/s102-106', 'libraries/s20
 LEVELS = {'fresh': 1, 'in-training': 2, 'rookie': 3, 'champion': 4, 'ultimate': 5, 'mega': 6}
 CUPS = ('D C B A S R Version1 Version2 Version3 Version4 Version0 Fire Grapple ThunderWind Cool Nature Metalic Filth '
         'Dino Wing Animal Human Beetle Rookie Champion Ultimate Mega Vaccine Data Virus NatureSpirits DeepSavers '
-        'NightmareSoldiers WindGuardians MetalEmpire VirusBusters DragonsRoar JungleTroopers Dark Holy Aqua').split()
+        'NightmareSoldiers WindGuardians MetalEmpire VirusBusters DragonsRoar JungleTroopers Dark Holy Aqua Blade Gaia').split()
 RULE_MARK = 253
 VERSION_CUPS = {'Version1': range(3, 15), 'Version2': range(17, 29), 'Version3': range(31, 43), 'Version4': range(45, 57)}
 
@@ -124,7 +124,7 @@ class CupLists(unittest.TestCase):
     def test_a_specialty_cup_takes_every_species_of_that_first_specialty(self):
         for cup, element in (('Fire', 'fire'), ('Grapple', 'battle'), ('ThunderWind', 'air'), ('Cool', 'ice'),
                              ('Nature', 'nature'), ('Metalic', 'mech'), ('Filth', 'filth'), ('Dark', 'dark'),
-                             ('Holy', 'light'), ('Aqua', 'water')):
+                             ('Holy', 'light'), ('Aqua', 'water'), ('Blade', 'weapon'), ('Gaia', 'earth')):
             entrants = set(self.entrants(cup))
             for t, s in self.species.items():
                 if 'partner' in s and self.level(t) >= 3 and s['specialties'][0] == element:

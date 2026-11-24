@@ -57,7 +57,8 @@ void registered(int t,uint8_t *m){RegisteredDigimon r; r.type=t;for(int i=0;i<3;
         for r in cls.rows:
             ident = int(r['id']); s=cls.species[ident]
             moves=json.loads(r['option_a_slots_json']); moves=[255 if m is None else m for m in moves]+[255]*(16-len(moves))
-            specials=[cls.elements.index(e) if e else 255 for e in s['specialties']]
+            # a specialty of the new rows has no slot in the original 58: any index past the seven original rows
+            specials=[255 if not e else cls.elements.index(e) if e in cls.elements else 7 for e in s['specialties']]
             cls.lib.setpara(ident,(ctypes.c_uint8*16)(*moves),(ctypes.c_uint8*3)(*specials))
 
     @classmethod
@@ -84,7 +85,9 @@ void registered(int t,uint8_t *m){RegisteredDigimon r; r.type=t;for(int i=0;i<3;
             actual=species.techniques_from_json(s['techniques'],r['name'])
             want=json.loads(r['option_a_slots_json'])
             self.assertEqual(actual[:len(want)],[255 if m is None else m for m in want])
-            self.assertEqual(s['specialties'],json.loads(r['option_a_specialties_json']))
+            # the rows added since may stand before them (Armadillomon is earth first): the original ones keep their order
+            mine=[e for e in s['specialties'] if e in self.elements]
+            self.assertEqual(mine+[None]*(3-len(mine)),json.loads(r['option_a_specialties_json']))
             old=json.loads(r['current_slots_json'])
             for i,m in enumerate(old):
                 if m in want: self.assertEqual(want.index(m),i)
@@ -154,7 +157,8 @@ void registered(int t,uint8_t *m){RegisteredDigimon r; r.type=t;for(int i=0;i<3;
             normals=set(json.loads(r['option_a_slots_json']))-{None}
             specials=self.species[int(r['id'])]['specialties']
             count=sum(any(e in specials and m in pool and table['weights'][pool.index(m)][specials.index(e)]>0 for e,pool in table['techniques'].items()) for m in normals if m<58)
-            self.assertEqual(count,int(r['option_a_positive_brain_pool_count']),r['name'])
+            # four of them took a new row as their first specialty, so the next two train at the weights of the place after theirs
+            self.assertEqual(count,{'Armadillomon':5,'Ankylomon':7,'Dinohyumon':9,'Triceramon':8}.get(r['name'],int(r['option_a_positive_brain_pool_count'])),r['name'])
 
     def test_battle_learning_counts_and_enemy_selections(self):
         for r in self.rows:

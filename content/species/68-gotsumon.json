@@ -5,10 +5,10 @@
   "level": "rookie",
   "vanilla_as": 31,
   "attribute": "data",
-  "specialties": ["battle", null, null],
+  "specialties": ["earth", "battle", null],
   "fields": ["nature-spirits", "nightmare-soldiers", "metal-empire", "unknown"],
   "techniques": ["Megaton Punch", "Buster Dive", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab",
-                 "Dynamite Kick (44)", "Pummel Whack"],
+                 "Dynamite Kick (44)", "Pummel Whack", "Rock Throw", "Sand Blast", "Stone Skin"],
   "drop": {"item": "med.recovery", "percent": 10},
   "effects_like": 68,
   "model": {
@@ -20,7 +20,7 @@
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [-1, 2], [3, 5], [4, 6], [5, 7], [-1, 2], [6, 9],
                  [7, 10], [8, 11], [9, 1], [-1, 13], [10, 14], [11, 15], [12, 16], [-1, 13],
                  [13, 18], [14, 19], [15, 20]],
-    "slot_aliases": [[49, 47], [50, 47], [51, 46], [52, 46], [53, 47]]
+    "slot_aliases": [[49, 47], [50, 47], [51, 46], [52, 46], [53, 47], [54, 48], [55, 48], [56, 49]]
   },
   "texture": {"from": 68},
   "voice": 58,

@@ -1,0 +1,21 @@
+{
+  "id": 156,
+  "name": "Stone Skin",
+  "element": "earth",
+  "power": 0,
+  "mpCost": 24,
+  "distance": 0,
+  "range": 4,
+  "accuracy": 100,
+  "status": 6,
+  "statusChance": 30,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    22,
+    14,
+    9
+  ]
+}

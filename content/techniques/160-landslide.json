@@ -1,0 +1,21 @@
+{
+  "id": 160,
+  "name": "Landslide",
+  "element": "earth",
+  "power": 450,
+  "mpCost": 95,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 62,
+  "status": 4,
+  "statusChance": 18,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    14,
+    8,
+    0
+  ]
+}

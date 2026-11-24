@@ -103,13 +103,13 @@
     },
     "zones/libraries/s209/script.dws": {
       "original_sha256": "6a27f351779457ff546a842794e5cabf0597c379866ff22d29dcd3e6028bf371",
-      "reason": "Horizon bulk card purchase menu; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset)",
-      "authored_sha256": "69f5adf0dec6386848c45516141108cae09dac48cd321ea0cb94431127759f64"
+      "reason": "Horizon bulk card purchase menu; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)",
+      "authored_sha256": "8f2348ef1b24a53f4afa124d593abea21edf15f9f71046a1e96a4354e872e73b"
     },
     "zones/libraries/s209/script.py": {
       "original_sha256": "4afe64213b7bff228ea0ac4875b969fc33cd86cf2bdcd9992ade449a07ad366a",
-      "authored_sha256": "2f4471bcdf71b4edbddea379a5318df103e87b8616008916c8eaa5c84dbfee79",
-      "reason": "Horizon bulk card purchase menu; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset)"
+      "authored_sha256": "a3bd2f419b8560a5b6778d1eabd344976b40a55e1a6e3f3ff3bd15e940d15779",
+      "reason": "Horizon bulk card purchase menu; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
     "zones/libraries/s219/script.dws": {
       "original_sha256": "a66ba54da72f04a01196c435723097b04fe5f5d64ff723fd31fbba2602b691c7",
@@ -1138,13 +1138,13 @@
     },
     "zones/arena-lobby/s168-208-223/script.dws": {
       "original_sha256": "e40df84d29ee23a1f0c242b6888fc47fd773b3a0ca0ce2fd018ead8a60477a9c",
-      "authored_sha256": "478f92907a0256a30e65829007302bc38a5d4f7a8ab9ff61ce2e05378823e2db",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset)"
+      "authored_sha256": "3d676c225ecc9f270e3d49cadc3fd89e5338c5727a7bc91926c1f123b912a675",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
     "zones/arena-lobby/s168-208-223/script.py": {
       "original_sha256": "c571c7457ed7187eff0ebd4c3d6c94b4ee8bc0f442023e1717e34a01bdb52eac",
-      "authored_sha256": "64a6cb6ceaaeb16d023721c9fd01fe532a6aea038f55cd01cc2f3e01519d34cb",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset)"
+      "authored_sha256": "d9ebef5dfae75d619268316161207d55c7df123ec338d3b88ec5cb258b4e3be2",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
     "zones/digimon-curling/s191-235/script.dws": {
       "original_sha256": "04e218925840d4a5aee677975e2318b2c4472ce7be6ddb3b8d935dfb9e5db671",
@@ -1248,13 +1248,13 @@
     },
     "zones/libraries/s213/script.dws": {
       "original_sha256": "e89ee938109e81add7bdbf214c6addbbf1ce911aec5a663b4069287ecf02a502",
-      "authored_sha256": "5232caa384fc2547e4b0a3ecb92986e89b18f4b79d3259e37abafdbbacbe1433",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset)"
+      "authored_sha256": "b4fe7a675467bd7f67f7b4b7e53303fba70062dad7527e4095fd812046462d18",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
     "zones/libraries/s213/script.py": {
       "original_sha256": "1de7be9296f46c9c63231cc9410ff2e7c85e15366265eee47483f1a4bfe292b9",
-      "authored_sha256": "aaeb85c990eab2b2e8b25ed1e3ca615d724d04a8c5ff91b2628418bdcf4ffda9",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset)"
+      "authored_sha256": "1c0ad26a5320aa48e42ddad095629f681713c5bab2473b0d86d7ffdb75b5415c",
+      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
     "zones/mt-infinity/s184-225/script.dws": {
       "original_sha256": "fc0591047e6da560706fa90337a60c5469433532258458e5920f397d6b0de1c3",
@@ -1288,13 +1288,13 @@
     },
     "zones/beetle-land/s102-106/script.py": {
       "original_sha256": "2662c702ae7d0e2ef643469a0e9e5f314448e4f073858d1ce37fffa91e59176c",
-      "authored_sha256": "0e5cf9621ebfdf19dfa127a987a8d3885e02e487a695f3677908bf8368ef91be",
-      "reason": "The raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset)"
+      "authored_sha256": "b34bdd61b03b4fd7ede08ddbd6a19be42732503a2381abc5bb38739f516920c2",
+      "reason": "The raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
     "zones/beetle-land/s102-106/script.dws": {
       "original_sha256": "ab4a7cb6b3cb114a13fb53142b5dac4b322f8c91b05b89a213bb04d62e34a6c7",
-      "authored_sha256": "b0d73ae915d0da6cd5c1406efeacc8a538fef852566ddf603baeed506ed90c88",
-      "reason": "The raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset)"
+      "authored_sha256": "28f5d716e20630b1725200de7c674785d4ecef796f7fe652760a968e119c4be6",
+      "reason": "The raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
     "zones/libraries/s214/script.dws": {
       "original_sha256": "64a9b7868501fd67262b4d2995a36694d6c80d2dc170c1084604d785acfa64b4",
@@ -1308,13 +1308,13 @@
     },
     "zones/libraries/s220/script.dws": {
       "original_sha256": "33bb3da812ebac22ae7b737643f9cc244cab159eaf7f4a64c51d790db4021932",
-      "authored_sha256": "8568833bc6ac537734abbf7712a9781ca86308df8b7c6507003deab2bed1330f",
-      "reason": "the prizes of the thirteen cups after the original's (23 to 35); the prizes of the Dragon's Roar and Jungle Troopers cups (36, 37); the prizes of the Dark, Holy and Aqua cups (38 to 40); DWS synchronized with the authored Python source"
+      "authored_sha256": "1ddbdde978a7351e9eba450625c0f0c9b918f8941eddc1c24f93f35e17ee8857",
+      "reason": "the prizes of the thirteen cups after the original's (23 to 35); the prizes of the Dragon's Roar and Jungle Troopers cups (36, 37); the prizes of the Dark, Holy and Aqua cups (38 to 40); the prizes of the Blade and Gaia cups (41 and 42); DWS synchronized with the authored Python source"
     },
     "zones/libraries/s220/script.py": {
       "original_sha256": "d5c41422263af2177fe94da52c2278296f3f88cb310341375eb1a50bbd3f7ab1",
-      "authored_sha256": "8f75a2dc500fcc7ebdee094d41323b6125143e8479e4e315a17fcdc1243747a7",
-      "reason": "the prizes of the thirteen cups after the original's (23 to 35); the prizes of the Dragon's Roar and Jungle Troopers cups (36, 37); the prizes of the Dark, Holy and Aqua cups (38 to 40)"
+      "authored_sha256": "84c88b56d7c47d9c1ba18135b6dcd74cf87fbbe6835a2d58e77db1b9bbaf99b1",
+      "reason": "the prizes of the thirteen cups after the original's (23 to 35); the prizes of the Dragon's Roar and Jungle Troopers cups (36, 37); the prizes of the Dark, Holy and Aqua cups (38 to 40); the prizes of the Blade and Gaia cups (41 and 42)"
     }
   }
 }

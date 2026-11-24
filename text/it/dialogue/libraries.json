@@ -3869,6 +3869,28 @@
    "Accesso: Digimon Acqua"
   ]
  ],
+ "s209.sec10.u40": [
+  [
+   "- Coppa Lama -",
+   "Incorona il miglior Digimon",
+   "di specialità Arma.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Arma"
+  ]
+ ],
+ "s209.sec10.u41": [
+  [
+   "- Coppa Gaia -",
+   "Incorona il miglior Digimon",
+   "di specialità Terra.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Terra"
+  ]
+ ],
  "s210.sec51.u0": [
   [
    "Ti aspettavo, {color 6}{player}{color 1}.",
@@ -4958,6 +4980,28 @@
    "",
    "Singoli, 3 turni, 8 iscritti",
    "Accesso: Digimon Acqua"
+  ]
+ ],
+ "s213.sec10.u40": [
+  [
+   "- Coppa Lama -",
+   "Incorona il miglior Digimon",
+   "di specialità Arma.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Arma"
+  ]
+ ],
+ "s213.sec10.u41": [
+  [
+   "- Coppa Gaia -",
+   "Incorona il miglior Digimon",
+   "di specialità Terra.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Terra"
   ]
  ],
  "s213.sec54.u0": [
@@ -6999,6 +7043,18 @@
   [
    "Premio vittoria: 5000 Bits!",
    "Ottenuto: {color 6}Ghiaccio forza{color 1}!"
+  ]
+ ],
+ "s220.sec51.u26": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Chip Attacco{color 1}!"
+  ]
+ ],
+ "s220.sec51.u27": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Chip Difesa{color 1}!"
   ]
  ],
  "s220.sec83.u0": [

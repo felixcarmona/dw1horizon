@@ -84,6 +84,7 @@ UI = {
  'MUGRE': ('CRASSE', 'DRECK', 'SPORCO', 'よごれ'),
  'SOMBRA': ('OMBRE', 'DUNKEL', 'OMBRA', 'やみ'), 'LUZ': ('LUMIÈRE', 'LICHT', 'LUCE', 'ひかり'),
  'AGUA': ('EAU', 'WASSER', 'ACQUA', 'みず'),
+ 'ARMA': ('ARME', 'WAFFE', 'ARMA', 'ぶき'), 'NATURA': ('NATURE', 'NATUR', 'NATURA', 'しぜん'),
 }
 
 
@@ -129,7 +130,7 @@ CA_UI = {
  'POTENCIA':'POTÈNCIA','ALC.':'ABAST','ALCANCE':'ABAST','EFECTO':'EFECTE','DATOS TÉC.':'TÈCNIQUES',
  'OBJETO':'OBJECTE','PRECIO':'PREU','TÍTULO':'TÍTOL','LUGAR':'LLOC','PUNTOS':'PUNTS','CANT.':'QUANT.','Nº':'NÚM.',
  'FUEGO':'FOC','COMBATE':'COMBAT','AIRE':'AIRE','TIERRA':'TERRA','HIELO':'GEL','MECA':'MECA','MUGRE':'BRUTÍCIA',
- 'SOMBRA':'OMBRA','LUZ':'LLUM','AGUA':'AIGUA',
+ 'SOMBRA':'OMBRA','LUZ':'LLUM','AGUA':'AIGUA','ARMA':'ARMA','NATURA':'NATURA',
 }
 assert set(CA_SIGNS) == set(SIGNS)
 assert set(CA_CUPS) == set(CUPS)

@@ -5,11 +5,11 @@
   "level": "ultimate",
   "vanilla_as": 41,
   "attribute": "virus",
-  "specialties": ["mech", null, "battle"],
+  "specialties": ["weapon", "mech", "battle"],
   "fields": ["metal-empire"],
   "techniques": ["Megaton Punch", "Buster Dive", "Reverse Prog", "Full Potential", "DG Dimension", "All Range Beam",
                  "Delete Program", "Pulse Laser", "Power Crane", "Metal Sprinter", "Counter",
-                 "Dynamite Kick (44)", "Sonic Jab", "Spiral Sword"],
+                 "Dynamite Kick (44)", "Sonic Jab", "Spiral Sword", "War Stance", "Giant Cleave"],
   "drop": {"item": "S.Def.disk", "percent": 15},
   "effects_like": 41,
   "model": {
@@ -20,7 +20,7 @@
     "height": 300,
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [-1, 2], [1, 3], [2, 4], [3, 5], [-1, 2], [4, 7], [5, 8], [6, 9]],
     "slot_aliases": [[50, 48], [51, 48], [52, 48], [53, 48], [54, 48], [55, 48], [56, 46], [57, 46], [58, 46],
-                     [59, 48]]
+                     [59, 48], [60, 49], [61, 46]]
   },
   "texture": {"from": 90},
   "voice": 37,

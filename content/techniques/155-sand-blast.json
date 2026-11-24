@@ -1,0 +1,21 @@
+{
+  "id": 155,
+  "name": "Sand Blast",
+  "element": "earth",
+  "power": 110,
+  "mpCost": 28,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 66,
+  "status": 2,
+  "statusChance": 30,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    26,
+    16,
+    12
+  ]
+}

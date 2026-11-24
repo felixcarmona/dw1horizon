@@ -1,0 +1,21 @@
+{
+  "id": 161,
+  "name": "Gaia Quake",
+  "element": "earth",
+  "power": 650,
+  "mpCost": 130,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 64,
+  "status": 3,
+  "statusChance": 15,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    12,
+    7,
+    0
+  ]
+}

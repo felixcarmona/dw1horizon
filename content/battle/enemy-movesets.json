@@ -33,11 +33,11 @@
     "weights": [30, 30, 30, 10]
   },
   "79": {
-    "moves": ["Dynamite Kick (44)", "Buster Dive", "Tremar", null],
+    "moves": ["Dynamite Kick (44)", "Rock Throw", "Tremar", null],
     "weights": [35, 25, 30, 10]
   },
   "90": {
-    "moves": ["Megaton Punch", "Buster Dive", "Pulse Laser", null],
+    "moves": ["Megaton Punch", "Giant Cleave", "Pulse Laser", null],
     "weights": [30, 25, 35, 10]
   },
   "100": {
@@ -53,7 +53,7 @@
     "weights": [35, 25, 30, 10]
   },
   "108": {
-    "moves": ["Ice Needle", "Ice Statue", "Winter Blast", null],
+    "moves": ["Rock Throw", "Boulder Crash", "Winter Blast", null],
     "weights": [35, 15, 30, 20]
   },
   "112": {

@@ -1,0 +1,21 @@
+{
+  "id": 157,
+  "name": "Boulder Crash",
+  "element": "earth",
+  "power": 220,
+  "mpCost": 42,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 60,
+  "status": 4,
+  "statusChance": 20,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    20,
+    12,
+    8
+  ]
+}

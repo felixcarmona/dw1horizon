@@ -3881,6 +3881,28 @@
    "Accès : Digimon Eau"
   ]
  ],
+ "s209.sec10.u40": [
+  [
+   "- Coupe Lame -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Arme.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Arme"
+  ]
+ ],
+ "s209.sec10.u41": [
+  [
+   "- Coupe Gaïa -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Terre.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Terre"
+  ]
+ ],
  "s210.sec51.u0": [
   [
    "Je t'attendais, {color 6}{player}{color 1}.",
@@ -4974,6 +4996,28 @@
    "",
    "Duels, 3 tours, 8 inscrits",
    "Accès : Digimon Eau"
+  ]
+ ],
+ "s213.sec10.u40": [
+  [
+   "- Coupe Lame -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Arme.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Arme"
+  ]
+ ],
+ "s213.sec10.u41": [
+  [
+   "- Coupe Gaïa -",
+   "Couronne le meilleur Digimon",
+   "de spécialité Terre.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Terre"
   ]
  ],
  "s213.sec54.u0": [
@@ -7046,6 +7090,18 @@
   [
    "Prix du vainqueur : 5000 Bits !",
    "Objet gagné : {color 6}Glace de force{color 1} !"
+  ]
+ ],
+ "s220.sec51.u26": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Puce Attaque{color 1} !"
+  ]
+ ],
+ "s220.sec51.u27": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "Objet gagné : {color 6}Puce Défense{color 1} !"
   ]
  ],
  "s220.sec83.u0": [

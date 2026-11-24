@@ -334,7 +334,7 @@ class Pages:
             species=[s for s in self.data['species'] if any(m['id']==ident for m in s['moves'])]
             chance = ' / '.join(f'{i+1}: {n}%' for i,n in enumerate(move.get('learnChances',[]))) or '—'
             range_key={0:'other',1:'melee',2:'ranged',3:'area',4:'buff'}.get(move['range'],'other')
-            status_key={0:None,1:'poison',2:'confusion',3:'stun',4:'flatten',5:'heal',6:'defenseUp',7:'speedUp',8:'defenseDown'}.get(move['status'])
+            status_key={0:None,1:'poison',2:'confusion',3:'stun',4:'flatten',5:'heal',6:'defenseUp',7:'speedUp',8:'defenseDown',9:'offenseUp'}.get(move['status'])
             status=self.t('data.'+status_key)+f' ({move["statusChance"]}%)' if status_key else '—'
             stats=f'<dl class="facts"><dt>{self.t("data.range")}</dt><dd>{self.t("data."+range_key)}</dd><dt>{self.t("data.status")}</dt><dd>{status}</dd><dt>{self.t("data.specialty")}</dt><dd>{self.t("data."+str(move["element"] if isinstance(move["element"],str) else "other"))}</dd><dt>{self.t("data.power")}</dt><dd>{move["power"]}</dd><dt>{self.t("data.mp")}</dt><dd>{move["baseMP"]}</dd><dt>{self.t("wiki.learning")}</dt><dd>{chance}</dd></dl>'
             partner_heading = self.t("wiki.canLearn" if learning.learnable(ident) else "data.recruit.digimon")

@@ -1,4 +1,4 @@
-"""The effects of the Darkness, Light and Water rows (tools/technique_effects): each one builds into a chunk of the
+"""The effects of the Darkness, Light, Water, Weapon and Earth rows (tools/technique_effects): each one builds into a chunk of the
 machine's size, keeps what it leaves in memory inside what the disc's own effects keep, plays in the simulator to
 its end, sounds, and hits what its technique hits (one enemy, or all of them for the area ones)."""
 import json
@@ -7,9 +7,9 @@ import struct
 import unittest
 
 from tools import efecompose as E
-from tools.technique_effects import dark, light, water
+from tools.technique_effects import dark, earth, light, water, weapon
 
-ROWS = {'dark': dark, 'light': light, 'water': water}
+ROWS = {'dark': dark, 'light': light, 'water': water, 'weapon': weapon, 'earth': earth}
 KEPT_MAX = 14 * 1024            # the largest of the disc's own effects keeps about 14 KB
 LAUNCH = struct.pack('<6h', -2, 0, 0, 0, 0, -1)
 
@@ -29,7 +29,7 @@ def technique(tid):
 class TechniqueEffects(unittest.TestCase):
     def test_every_new_technique_has_its_effect(self):
         e = entries()
-        self.assertEqual(sorted(e), list(range(330, 354)))
+        self.assertEqual(sorted(e), list(range(330, 370)))
         for key, entry in e.items():
             self.assertEqual(entry['technique'], key - 330 + 122)
             self.assertIn(entry['technique'], ROWS[entry['authored']].EFFECTS)

@@ -43,9 +43,9 @@ FILE_BASE = {'SLUS_010.32': 0x80090000, 'TRN_REL.BIN': 0x80088800, 'TRN2_REL.BIN
              'STD_REL.BIN': 0x80052AE0, 'FISH_REL.BIN': 0x80070000, 'KAR_REL.BIN': 0x80053800,
              'BTL_REL.BIN': 0x80052AE0, 'VS_REL.BIN': 0x80052AE0}
 NUM_ORIGINAL = SP.NUM_ORIGINAL
-ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water']
-# the technique grid: rows of the learn-chance table are the 58 originals, then the new rows' techniques (122..145)
-NEW_TECH_FIRST, NUM_NEW_TECHS = 122, 24
+ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water', 'weapon', 'earth']
+# the technique grid: rows of the learn-chance table are the 58 originals, then the new rows' techniques (122..161)
+NEW_TECH_FIRST, NUM_NEW_TECHS = 122, 40
 def grid_tech(g): return g if g < 58 else g - 58 + NEW_TECH_FIRST
 
 MOVE_FIELDS = [('distance', 'i'), ('power', 'h'), ('mpCost', 'B'), ('iframes', 'B'), ('range', 'B'),
@@ -193,7 +193,7 @@ TABLES = [
     ('daytime', 'SLUS_010.32', 'MOD_DAYTIME', 18),
     ('tournamentRemap', 'STD_REL.BIN', 'STD_REMAP', 16),
     ('stdArena', 'SLUS_010.32', 'STD_ARENA_SCREEN', 2),
-    ('newCupStats', 'STD_REL.BIN', 'STD_NEW_CUP_BASE_STATS', 36),      # the cups after the original's (23..40)
+    ('newCupStats', 'STD_REL.BIN', 'STD_NEW_CUP_BASE_STATS', 40),      # the cups after the original's (23..42)
     ('vsUnlock', 'SLUS_010.32', 'MOD_VS_UNLOCK', 10),
     ('trainGain', 'TRN_REL.BIN', 'MOD_TRAIN_GAIN', 352),
     ('trainRules', 'TRN_REL.BIN', 'MOD_TRAIN_RULES', 68),
@@ -434,7 +434,7 @@ NAMED_RULES = {
     'stdArena': ['screen'],
     'newCupStats': ['rookie', 'champion', 'ultimate', 'mega', 'vaccine', 'data', 'virus', 'natureSpirits', 'deepSavers',
                     'nightmareSoldiers', 'windGuardians', 'metalEmpire', 'virusBusters', 'dragonsRoar', 'jungleTroopers',
-                    'dark', 'holy', 'aqua'],
+                    'dark', 'holy', 'aqua', 'blade', 'gaia'],
     'vsUnlock': ['species', 'techniques[0]', 'techniques[1]', 'techniques[2]', 'slot'],
     'evolutionSpecial': ['virus.threshold', 'virus.target', 'virus.notFor[0]', 'virus.notFor[1]', 'championCheck.level',
                          'championCheck.hours', 'scold.level', 'scold.discipline', 'scold.happiness'],
@@ -1070,7 +1070,7 @@ def validate(over, base, new_species):
         if i not in T: errs.append(f'{w}: no such technique (0..{len(T) - 1})'); continue
         _check_fields(errs, w, MOVE_FIELDS, o, skip=('learnChances',))
         if 'learnChances' in o:
-            if 'learnChances' not in T[i]: errs.append(f'{w}.learnChances: only techniques 0..57 and 122..145 are learnable')
+            if 'learnChances' not in T[i]: errs.append(f'{w}.learnChances: only techniques 0..57 and 122..161 are learnable')
             elif not (isinstance(o['learnChances'], list) and len(o['learnChances']) == 3 and all(0 <= x <= 100 for x in o['learnChances'])):
                 errs.append(f'{w}.learnChances: three percentages (main, second, third element)')
         if o.get('special', 0) != 0xFF and not 0 <= o.get('special', 0) < len(ELEMENTS): errs.append(f'{w}.special: element 0..{len(ELEMENTS) - 1} or 255')
@@ -1168,7 +1168,7 @@ def pad_rows(doc, exe):
     for key, fields in (('evoReqs', SP.REQ_FIELDS), ('evoGains', SP.GAIN_FIELDS)):
         for t in range(size(key) // struct.calcsize(SP._fmt(fields))):
             S.setdefault(str(t), {}).setdefault(key, zero_row(fields))
-    T = doc['techniques']                                   # the three new rows of techniques (122..145) and their elements
+    T = doc['techniques']                                   # the new rows of techniques (122..161) and their elements
     for t in range(len(T), size('techniques') // 16):
         T[str(t)] = dict(zero_row(MOVE_FIELDS), special=0xFF, **({'learnChances': [0, 0, 0]} if t >= NEW_TECH_FIRST else {}))
     n = int(size('typeFactors') ** .5); F = doc['typeFactors']

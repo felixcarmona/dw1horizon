@@ -137,8 +137,8 @@ def opening_technique(para, powers, learn=None):
     if learn is None:
         learn = json.loads((ROOT / 'content/tables/evolution-rules.json').read_text())['evolutionFormula']['learn']
     special = para['special'][0]
-    # the three new rows (specialties 7..9) teach from their own eight techniques, 122 onwards
-    base = learn['moveBase'][special] if special <= 6 else 122 + (special - 7) * 8 if special <= 9 else -1
+    # the new rows (specialties 7..11) teach from their own eight techniques, 122 onwards
+    base = learn['moveBase'][special] if special <= 6 else 122 + (special - 7) * 8 if special <= 11 else -1
     window = learn['window'] if special <= 6 else 7
     best = slot = None
     for i, move in enumerate(para['moves'][:16]):

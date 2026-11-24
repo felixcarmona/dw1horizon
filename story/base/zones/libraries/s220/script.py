@@ -33,7 +33,7 @@ def use3():    # section 83
     return
 
 @lib.on_step(0)
-def step0():    # section 51: the prizes of the cups after the original's (23 to 40); script 214 jumps here
+def step0():    # section 51: the prizes of the cups after the original's (23 to 42); script 214 jumps here
     if engine.result == 3:
         if tournament.cup == 23:
             give(bits=3000)
@@ -214,6 +214,26 @@ def step0():    # section 51: the prizes of the cups after the original's (23 to
                 pick_item()
                 take_picked(all=True)
                 give(Item.PowerIce)
+            jump_to_script(204, 51)
+        elif tournament.cup == 41:
+            give(bits=5000)
+            narrator.say(t51.u26)
+            give(Item.OffChip)
+            if engine.item_did_not_fit:
+                slot0.say(t51.u13)
+                pick_item()
+                take_picked(all=True)
+                give(Item.OffChip)
+            jump_to_script(204, 51)
+        elif tournament.cup == 42:
+            give(bits=5000)
+            narrator.say(t51.u27)
+            give(Item.DefChip)
+            if engine.item_did_not_fit:
+                slot0.say(t51.u13)
+                pick_item()
+                take_picked(all=True)
+                give(Item.DefChip)
             jump_to_script(204, 51)
     if tournament.cup == 23:
         give(bits=1000)

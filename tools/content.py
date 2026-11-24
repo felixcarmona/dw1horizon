@@ -27,9 +27,9 @@ CONTENT = os.path.join(ROOT, 'content')
 TECH_DIR, ITEM_DIR, TABLE_DIR, SCREEN_DIR = (os.path.join(CONTENT, d) for d in ('techniques', 'items', 'tables', 'screens'))
 NUM_SCREENS = 255            # the original screens: MAP_ENTRIES rows (the files of 255 and up are SCRN.DAT records, tools/screens.py)
 NUM_ALL_SCREENS = 1024       # include/dw/ids.h NUM_SCREENS
-ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water']
-NUM_TECHS, NUM_ITEMS, NUM_LEARN = 146, 128, 58
-def learnable(i): return i < NUM_LEARN or i >= 122       # the technique grid: the 58 originals and the new rows (122..145)
+ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water', 'weapon', 'earth']
+NUM_TECHS, NUM_ITEMS, NUM_LEARN = 162, 128, 58
+def learnable(i): return i < NUM_LEARN or i >= 122       # the technique grid: the 58 originals and the new rows (122..161)
 EVO_ITEM_FIRST, EVO_ITEM_LAST = 0x47, 0x72
 TECH_KEYS = ['id', 'name', 'element', 'power', 'mpCost', 'distance', 'range', 'accuracy', 'status',
              'statusChance', 'iframes', 'unk3', 'unk4', 'unk5', 'learnChances']

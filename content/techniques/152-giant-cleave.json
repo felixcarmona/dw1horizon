@@ -1,0 +1,21 @@
+{
+  "id": 152,
+  "name": "Giant Cleave",
+  "element": "weapon",
+  "power": 390,
+  "mpCost": 60,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 74,
+  "status": 3,
+  "statusChance": 10,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [
+    16,
+    9,
+    0
+  ]
+}

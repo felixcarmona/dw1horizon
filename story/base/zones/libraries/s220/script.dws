@@ -249,6 +249,30 @@ script 220 {
                     give_item(item("Power Ice"), 1);
                 }
                 jump_to_file(204, 51);
+            } else if (tournament.cup == 41) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u26"));
+                give_item(item("Off. Chip"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Off. Chip"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 42) {
+                give_bits(5000);
+                say(narrator, text("s220.sec51.u27"));
+                give_item(item("Def. Chip"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s220.sec51.u13"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Def. Chip"), 1);
+                }
+                jump_to_file(204, 51);
             }
         }
         if (tournament.cup == 23) {

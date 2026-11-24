@@ -193,6 +193,8 @@ def talk():    # section 10
         goto l77;
         goto l79;
         goto l81;
+        goto l83;
+        goto l85;
         l1:
         goto l2;
         goto L77;
@@ -519,6 +521,22 @@ def talk():    # section 10
         goto L90;
         goto L155;
         goto L90;
+        l82:
+        show_textbox(text("s102.sec10.u40"));
+        l83:
+        goto l82;
+        goto L77;
+        goto L90;
+        goto L156;
+        goto L90;
+        l84:
+        show_textbox(text("s102.sec10.u41"));
+        l85:
+        goto l84;
+        goto L77;
+        goto L90;
+        goto L157;
+        goto L90;
     """)
 
 @slot6.on_talk
@@ -682,7 +700,11 @@ def talk():    # section 11
         shared L154:
         data(253, 3, 9, 254);
         shared L155:
-        data(253, 3, 10, 254, 254);
+        data(253, 3, 10, 254);
+        shared L156:
+        data(253, 3, 11, 254);
+        shared L157:
+        data(253, 3, 12, 254, 254);
         end_section();
         end_script();
     """)

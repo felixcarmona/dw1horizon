@@ -88,8 +88,8 @@ def spawn_paths(body, visit, hours=frozenset(range(24)), conditional=False, guar
 
 
 def learnable(ident):
-    """The seven original rows (0..57) and the three new ones (122..145)."""
-    return ident < 58 or 122 <= ident <= 145
+    """The seven original rows (0..57) and the five new ones (122..161)."""
+    return ident < 58 or 122 <= ident <= 161
 
 
 def usable_moves(species, placement, techniques, group=False, group_bonus=20):
