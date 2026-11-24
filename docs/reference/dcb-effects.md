@@ -4,6 +4,10 @@ How Digital Card Battle (DCB, SLUS-01328) draws the attacks of its Digimon, and 
 `tools/dcbeffect.py` and `tools/dcbefe.py` turn them into Digimon World effects. Nothing here comes
 from the disc into the repository: the tools read the player's own image (`DCB_IMAGE`).
 
+No species plays these conversions now: every imported finisher is an effect written for this game
+([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter and its data stay in the
+repository, and this page describes them and what they gave when they were played.
+
 ## Short answer: 3D, not card art
 
 A DCB attack is not a 2D card animation. It is a small 3D scene: textured models (balls, rings, claws,

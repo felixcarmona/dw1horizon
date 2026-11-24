@@ -5,6 +5,10 @@ name and power, the caster's animation, the camera, the hits, and the visual eff
 carrying those effects into this game's effect engine gives today. Everything is read from the player's own
 disc with `tools/dw3effect.py`. Nothing from that disc is kept in the repository.
 
+No species plays these conversions now: every imported finisher is an effect written for this game
+([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter and its data stay in the
+repository, and this page describes them and what they gave when they were played.
+
 The PAL and USA discs hold the same tables at slightly different places. Every position below is found by
 the table's shape, so both discs work with the same tools. The two discs give every imported species the
 same technique, power and effect files. One script differs in length: Pharaohmon's Necro Mist is 330 frames
@@ -205,9 +209,9 @@ repeated sound plays once and at most two sounds start. Thunder Bolt
 Seven conversions passed the fidelity check but read as flat card art in the 3D fight. Most of the surface they
 draw is planar sprites that never turn, scale or fade, above the 90th percentile of DW1's own effects (4.3 % and
 7.7 %). They are Pincer Crusher (225), Lizard Dance (228), Thunder Bolt (237), Ura Sword (238), Roach Rush (242),
-Hot Head (244) and Bear Fist (245). Each is now a DW1 effect of its kind, recoloured to the attack's element
+Hot Head (244) and Bear Fist (245). Each was then a DW1 effect of its kind, recoloured to the attack's element
 (`compose` in `content/battle/own-effects.json`, docs/mods/signature-effects.md). Its `compose.sounds` maps the
-template's sounds to the converted cues above, so the attack keeps its own sounds. The table below still shows
+template's sounds to the converted cues above, so the attack keeps its own sounds. The table below shows
 the conversion as it was measured.
 
 ## Every imported species
@@ -280,8 +284,8 @@ means no part flies to the target on its own: the effect plays as on the disc an
 | 433 | Guilmon | Pyrosphere | 100 | 1 | 11 | 445 | MEFT0102 + 5 sprites | 4384 B, id 222, melee, faithful | Pyrosphere (shot, 1 hit) |
 Of the 56 imported species, 55 have a technique script; Kurisarimon has none. 27 techniques have a 3D effect.
 Each converts into one chunk, for its whole length; 26 pass the fidelity check. The sizes are the builds
-the game uses: gameplay-neutral, one enemy and one hit, as the finisher each stands for. All 26 ship (the
-[signature attacks](signature-attacks.md)): a source effect that passes wins over a composed one. The largest whole one,
+the game uses: gameplay-neutral, one enemy and one hit, as the finisher each stands for. All 26 shipped once (the
+[signature attacks](signature-attacks.md), as history); none is played now. The largest whole one,
 Cannondramon's, is 18 900 bytes of the 20 480 a chunk holds. Sakuyamon's leaves five small parts out (below).
 Gargoylemon's Dark Matter fails on timing alone (its coverage curve correlates 0.69): short flashes that this
 game's 20 Hz engine cannot place on the original's 30 fps frames. The conversion is kept out, and the species
@@ -317,8 +321,8 @@ drifts, a late burst is missing); Bastemon changes too seldom.
   WarGrowlmon, Gallantmon, Bulbmon and others). The conversion does not re-aim their parts, so the damage
   lands when the effect ends, not when a projectile arrives. Pyrosphere (Guilmon) is aimed (`"aim": true`). WarGrowlmon's Atomic
   Blaster is a beam that stops about halfway to the target and the hit comes after it ends: not aimed yet.
-  Ten species (Guilmon, WarGrowlmon, Gallantmon and Sakuyamon among them) no longer play their conversion: their
-  finisher is written here ([authored finishers](../mods/signature-effects.md#authored-finishers)).
+  Every species plays an effect written for this game now, so none of these conversions is played
+  ([authored finishers](../mods/signature-effects.md#authored-finishers)).
 - **Camera.** DW2003 techniques move the camera; this game's effect engine keeps its own camera.
 - **Blending.** The 3D effects' blend meanings above are assumed; the sprites' are read from the frame records.
 

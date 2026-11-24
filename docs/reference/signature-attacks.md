@@ -1,14 +1,20 @@
-# Signature attacks: how each one plays
+# Signature attacks: where each one comes from
 
-Some imported Digimon play the signature attack of the game they come from in place of the shared finisher
-picture. This page says, for each of them, what the attack does in a battle here and where it differs from the
-original game. How the effects are converted is in [the signature effects notes](../mods/signature-effects.md);
-the DW2 effect format is in [the DW2 effect notes](dw2-effects.md), and the DW2003 one in
-[the DW2003 effect notes](dw3-effects.md).
+Every imported Digimon has a finisher of its own, named and designed after the signature attack of the game it
+comes from. None of them plays the source game's effect: all 179 play an effect written for this game
+([the finishers written here](#finishers-written-here)). This page keeps the record of the source attacks: what each
+did in its game, and how the port of it played when the ports were still the effects in the battle. How those
+ports were made is in [the signature effects notes](../mods/signature-effects.md); the DW2 effect format is in
+[the DW2 effect notes](dw2-effects.md), and the DW2003 one in [the DW2003 effect notes](dw3-effects.md).
 
-The damage, the element, the cost and when the Digimon chooses the attack are the finisher's (the technique the
-attack stands in for), unless the species' finisher data says otherwise. Times are battle ticks (20 a second) from
-the moment the attack starts.
+The damage, the element, the cost and when the Digimon chooses the attack are the finisher's, as in
+[the unique finishers](../mods/unique-finishers.md). Times are battle ticks (20 a second) from the moment the
+attack starts.
+
+## The source attacks and their ports (history)
+
+The table describes the converted and composed ports that were played before the finishers were written here. No
+species plays them now. The "Target here" column is what the port did, not what the game does today.
 
 | Species | Attack (source game) | Stands in for | Kind | Hits | Launch / hit | Travel | Target here | Target in the source |
 |---|---|---|---|---|---|---|---|---|
@@ -97,7 +103,7 @@ the moment the attack starts.
 | 307 BlackKingNumemon | Royal Muck (composed) | Death Claw | Death Claw's play as a crown of muck lumps in brown-gold, its ring 1.5 times larger | as Death Claw | as Death Claw | as Death Claw | as Death Claw | - |
 | 327 Gargoylemon | Gargoyle Rush (composed) | Pummel Whack | Pummel Whack's play as an orange fist, its ring 1.3 times larger | as Pummel Whack | as Pummel Whack | as Pummel Whack | as Pummel Whack | - |
 
-## Where the port differs from the source
+## Where the port differed from the source (history)
 
 - **Voice.** In DW2 the caster shouts the attack's name; that line is a streamed voice the battles here cannot
   play. DW2 has no other sound of its own for its attacks (only a shared hit sound), so the attack keeps the
@@ -121,7 +127,7 @@ the moment the attack starts.
   than once while the target stands in them; the signature attacks that stand in for them hit once.
 - **Close-range finishers.** MarineDevimon (Death Claw) and Gazimon (Poison Ivy) walk up to their target first,
   as for those finishers, so their projectiles fly only a short way.
-- **Hagurumon** plays Darkness Gear in battle (species 122); its field twin 465 has no techniques.
+- **Hagurumon** (species 122) is the battle species; its field twin 465 has no techniques.
 
 - **DW2003 attacks** play their 3D effects as on the disc, at the caster, for their whole length, and hit when
   they end: nothing flies to the target on its own. They leave out the attack's flat sprites (sparks, flashes,
@@ -129,23 +135,17 @@ the moment the attack starts.
   beams or bursts that reach the target in DW2003 too.
 - **DW2003 enemy attacks.** Several of the imports are DW2003 enemies with no signature of their own: their
   attack is the enemy's move 1. Vilemon and Mummymon share Dark Fear, and Creepymon and Ghoulmon Darkness
-  Chaos, and each plays it: the source effect wins over a composed look of its own. Species whose DW2003
-  attack is an unnamed slot-5 move play that move's effect.
+  Chaos, and each port played it: the source effect won over a composed look of its own. Species whose DW2003
+  attack is an unnamed slot-5 move played that move's effect.
 
 ## Finishers written here
 
-Guilmon (Pyrosphere), Renamon (Diamond Storm), Growlmon (Plasma Blade), Kyubimon (Dragon Wheel), WarGrowlmon
-(Atomic Blaster), Taomon (Talisman of Light), Gallantmon (Final Purification), Sakuyamon (Amethyst Mandala),
-Beelzemon (Corona Blaster) and BlackWarGreymon (Terra Destroyer) do not play the source game's effect: theirs is
-written for this game, pictures and behaviour, and is listed in
-[the signature effects notes](../mods/signature-effects.md#authored-finishers).
+Every imported finisher, the 179 of them, is written for this game, pictures and behaviour. Each one hits as its
+design says: one enemy, every enemy, or where the target stood (34 of them, which a target that walks away
+dodges). The list, with what each plays and what it hits, is in
+[the signature effects notes](../mods/signature-effects.md#authored-finishers); the designs are in
+[the unique finishers](../mods/unique-finishers.md). The source attacks above remain where the names, the kinds and
+the looks come from.
 
-## Kept on the DW1 finisher
-
-These Digimon have a DW2 signature attack that converts, but they keep the shared finisher picture for now:
-
-- **Baihumon** (Kongou), **Tinmon** (Recovery Power): DW2 support techniques (a buff on the caster, a heal on an
-  ally). Their finishers here deal damage to an enemy, and a support picture that plays on the caster would not
-  show the hit.
-- **Mushroomon** (Fungus Cruncher): a support technique too, and its effect is 616 bytes larger than an effect
-  slot even at the coarsest detail.
+The support techniques Kongou (Baihumon), Recovery Power (Tinmon) and Fungus Cruncher (Mushroomon) are damage
+finishers here, not buffs or heals, so they play a picture that shows the hit on an enemy.

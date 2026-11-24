@@ -10,7 +10,8 @@ working. Only the numbers the battle reads and the name the player sees change, 
 - Check: `python3 -m tools.finisher_balance` (table and problems, exit 1 on a problem) and
   `python3 -m unittest tools.test_finisher_balance` (in `tools/selftest.sh`).
 - Effects: the visual effect of each finisher is the species JSON `own_effect`
-  (`docs/mods/signature-effects.md`, on branch `dw2-signature-skullmeramon` until it merges); this file decides what the finisher does.
+  ([the signature effects notes](signature-effects.md)): all 179 are authored, written for this game with the kit in
+  `tools/technique_effects`. This file decides what the finisher does.
 
 Status: built. `tools/species.py` writes every entry into its species record and the names into
 `DIGI.DAT`; patch `Give-each-species-its-own-finisher-numbers-and-name.patch` reads them in
@@ -114,7 +115,7 @@ and ShogunGekomon Blasting Spout 150 (Ultimate).
  "behavior": {"kind": "breath", "target": "one", "hits": 1, "look": "A foul green breath.",
               "dash": false, "clip": "F0"},
  "effect": {"files": ["EFFECT/EFFEWA/MEWA0300.BIN", "..."], "file_ids": [967, 929, 970, 932],
-            "logic": "...", "status": "source", "template": {"id": 62, "name": "Death Claw"}},
+            "logic": "...", "status": "authored", "template": {"id": 62, "name": "Death Claw"}},
  "move": {"power": 163, "element": "filth", "range": 2, "distance": 90000, "accuracy": 100,
           "status": 2, "statusChance": 20, "iframes": 15, "flags": ["T"], "mpCost": 40},
  "notes": "Source confuses."
@@ -134,7 +135,7 @@ and ShogunGekomon Blasting Spout 150 (Ultimate).
 | `behavior.hits` | Hits the effect shows. Damage is applied once, as for every DW1 finisher. |
 | `behavior.look` | What the effect shows, in words, for whoever builds it. |
 | `behavior.clip` | The attack clip: DW2 cast slot (`F0`, `G0`, `H0`) or `by eye`. |
-| `effect.status` | `source`: the source effect files are known (DW2 files, DCB `E.DRV` pack). `source-undecoded`: a DW2003 signature whose effect mapping is not decoded yet. `dw1-template`: no source effect; build it from DW1 effects, starting from `effect.template`. `authored`: written here from nothing (`effect.logic` names the file), its behaviour its own. |
+| `effect.status` | `authored` on every entry: the effect is written here from nothing (`effect.logic` names the file), its behaviour its own, and `effect.template` is the DW1 finisher it replaces. The older values `source` (the source effect files known), `source-undecoded` and `dw1-template` are no longer used by any entry. |
 | `effect.files`, `file_ids`, `file`, `shared_by_cards` | Where the source effect lives; for DCB, how many other cards share the pack. |
 | `move` | What the battle reads, field by field as in `content/techniques/*.json`. `range` 1 melee, 2 ranged (including dashes), 3 area, 4 buff. `distance` is squared. `flags` `T` = needs a target. Accuracy is always 100 and the stored cost 40: finishers use the gauge. |
 | `buff`, `fallback` | Accepted by the check for a support move; no shipped entry has them (see below). |
@@ -161,12 +162,9 @@ Kind decides range, distance and iframes. Every combination is one DW1's own fin
 | Source decoded from the disc | 145 (79 DCB, 43 DW2, 23 DW2003) |
 | Canon attack, not on the discs | 17 |
 | Proposed (no canon attack found) | 17 |
-| Effect from the source files | 122 |
-| Effect still to decode (DW2003) | 14 |
-| Effect to build from DW1 templates | 33 |
-| Effect written here | 10 |
+| Effect written here (`authored`) | 179 |
 
-Kinds: 41 shot, 36 beam, 35 dash, 22 area, 14 thrown, 13 rain, 12 melee, 6 breath.
+Kinds: 45 shot, 36 beam, 31 dash, 22 area, 14 thrown, 13 rain, 12 melee, 6 breath.
 
 The 37 species without a distinct source signature (DW2003 enemy-only species, plus
 BlackGatomon, whose card shares Lightning Paw with Gatomon) have `basis` `canon` or `proposed`.

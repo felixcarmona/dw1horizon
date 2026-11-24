@@ -12,6 +12,7 @@
                  "Bug", "Insect Plague", "Mass Morph", "Genoside Attack", "Nightmare", "Venom Mist"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
+  "own_effect": {"technique": "Genoside Attack", "chunk": 371},
   "model": {
     "file": "build/sizes-out/models/Infermon.MMD",
     "radius": 202,

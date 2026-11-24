@@ -11,6 +11,7 @@
                  "War Cry", "Super Thunder Strike"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 18,
+  "own_effect": {"technique": "Super Thunder Strike", "chunk": 377},
   "model": {
     "file": "build/batch7/Vi-Elecmon.MMD",
     "radius": 100,

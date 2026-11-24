@@ -12,6 +12,7 @@
                  "Aqua Jet", "Rain Dance", "Whirlpool", "Hydro Cannon"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 24,
+  "own_effect": {"technique": "Hydro Pressure", "chunk": 373},
   "model": {
     "file": "build/batch7/Tylomon.MMD",
     "radius": 204,

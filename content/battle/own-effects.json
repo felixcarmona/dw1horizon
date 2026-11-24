@@ -1,1410 +1,222 @@
 {
-  "note": "Effect chunks of a species' own, appended to ETCHI/EFEDAT.EFE after the disc's 122 (tools/derive/steps/effects.py). Each is a Digimon World 2 technique converted from the player's DW2 disc (tools/dw2efe.py): its cast and hit effect objects, under the disc folder AAA/4.AAA/EFFECT, either [model, anim] (one object at slot 1) or [[DW2 slot, model, anim], ...] (every object of the technique; slot 0 above the head, 1 the launch point or mid height, 2 the feet). Indices no entry uses are left empty. stands_for: the chunk whose launch point (origin table) it takes. scale: DW2 units to this game's (the caster's height here against its DW2 head height); hit_scale: the hit object's, when DW2's close camera made it larger than a battle here shows well. reach: no longer used (the projectile flies to its target). area (optional): hit every enemy, for a range-3 technique; hits (optional): damage events per target. A species plays one with own_effect in its JSON. authored: a technique of the Darkness, Light, Water, Weapon and Earth rows, whose effect is written and painted in tools/technique_effects/<row>.py (no source disc). An authored entry of tools/technique_effects/finishers.py is a species' finisher, written and painted the same way; its technique is the species id.",
-  "122": {
-    "name": "Metal Fireball",
-    "stands_for": 63,
-    "sounds": [[37, 27], [63, 27], [90, 47]],
-    "hit_sound": 47,
-    "cast": ["EFFEWA/MEWA0200.BIN", "EFFEWA/AEWA0200.BIN"],
-    "hit": ["EFFEWD/MEWD0100.BIN", "EFFEWD/AEWD0100.BIN"],
-    "scale": 0.266,
-    "hit_scale": 0.1,
-    "reach": 1100
-  },
-  "123": {
-    "name": "Buffalo Breath",
-    "stands_for": 62,
-    "sounds": [[23, 47], [90, 47]],
-    "hit_sound": 47,
-    "cast": ["EFFEWA/MEWA0300.BIN", "EFFEWA/AEWA0300.BIN"],
-    "hit": ["EFFEWD/MEWD0200.BIN", "EFFEWD/AEWD0200.BIN"],
-    "scale": 0.269,
-    "hit_scale": 0.1,
-    "reach": 1100
-  },
-  "124": {
-    "name": "Darkness Gear",
-    "stands_for": 66,
-    "sounds": [],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA2700.BIN", "EFFESA/AESA2700.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.252,
-    "hit_scale": 0.152
-  },
-  "125": {
-    "name": "Poison Wing",
-    "stands_for": 63,
-    "sounds": [[6, 47], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEBA/MEBA1800.BIN", "EFFEBA/AEBA1800.BIN"], [2, "EFFEBA/MEBA1900.BIN", "EFFEBA/AEBA1900.BIN"]],
-    "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
-    "scale": 0.326,
-    "hit_scale": 0.1
-  },
-  "126": {
-    "name": "Tri-Horn Attack",
-    "stands_for": 73,
-    "sounds": [[56, 0]],
-    "cast": [[1, "EFFEUA/MEUA3900.BIN", "EFFEUA/AEUA3900.BIN"], [2, "EFFEUA/MEUA4000.BIN", "EFFEUA/AEUA4000.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.307,
-    "hit_scale": 0.1
-  },
-  "127": {
-    "name": "Howling Crusher",
-    "stands_for": 62,
-    "sounds": [[90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
-    "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
-    "scale": 0.359,
-    "hit_scale": 0.25
-  },
-  "128": {
-    "name": "Duo Scissor Claw",
-    "stands_for": 73,
-    "sounds": [[12, 0], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
-    "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
-    "scale": 0.3,
-    "hit_scale": 0.25
-  },
-  "129": {
-    "name": "Fire Blast II",
-    "stands_for": 74,
-    "sounds": [[6, 19], [18, 45], [40, 27], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA0000.BIN", "EFFESA/AESA0000.BIN"]],
-    "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
-    "scale": 0.205,
-    "hit_scale": 0.1
-  },
-  "130": {
-    "name": "Strong Carapace",
-    "stands_for": 89,
-    "sounds": [[6, 0], [76, 56], [92, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA6000.BIN", "EFFESA/AESA6000.BIN"], [2, "EFFESA/MESA6100.BIN", "EFFESA/AESA6100.BIN"]],
-    "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
-    "scale": 0.268,
-    "hit_scale": 0.111
-  },
-  "131": {
-    "name": "Brown Stinger",
-    "stands_for": 69,
-    "sounds": [[6, 27], [37, 27], [64, 27], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA4000.BIN", "EFFESA/AESA4000.BIN"], [2, "EFFESA/MESA4100.BIN", "EFFESA/AESA4100.BIN"]],
-    "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
-    "scale": 0.31,
-    "hit_scale": 0.2
-  },
-  "132": {
-    "name": "Fire Blast",
-    "stands_for": 96,
-    "sounds": [[77, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEFA/MEFA0900.BIN", "EFFEFA/AEFA0900.BIN"], [2, "EFFEFA/MEFA1000.BIN", "EFFEFA/AEFA1000.BIN"]],
-    "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
-    "scale": 0.246,
-    "hit_scale": 0.1
-  },
-  "133": {
-    "name": "Pretty Attack",
-    "stands_for": 60,
-    "sounds": [[75, 23], [91, 44]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEMA/MEMA4500.BIN", "EFFEMA/AEMA4500.BIN"], [2, "EFFEMA/MEMA4600.BIN", "EFFEMA/AEMA4600.BIN"]],
-    "hit": [[1, "EFFESD/MESD7100.BIN", "EFFESD/AESD7100.BIN"]],
-    "scale": 0.287,
-    "hit_scale": 0.2
-  },
-  "134": {
-    "name": "Tusk Crusher",
-    "stands_for": 111,
-    "sounds": [[25, 54], [40, 45], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEUA/MEUA3900.BIN", "EFFEUA/AEUA3900.BIN"], [2, "EFFEUA/MEUA4000.BIN", "EFFEUA/AEUA4000.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.294,
-    "hit_scale": 0.2
-  },
-  "135": {
-    "name": "S-Bone Crusher",
-    "stands_for": 111,
-    "sounds": [],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA9100.BIN", "EFFESA/AESA9100.BIN"], [2, "EFFESA/MESA9200.BIN", "EFFESA/AESA9200.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.256,
-    "hit_scale": 0.2
-  },
-  "136": {
-    "name": "Junk Chunker",
-    "stands_for": 77,
-    "sounds": [[29, 45], [43, 45], [71, 45], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA6200.BIN", "EFFESA/AESA6200.BIN"], [2, "EFFESA/MESA6300.BIN", "EFFESA/AESA6300.BIN"]],
-    "hit": [[2, "EFFESD/MESD3800.BIN", "EFFESD/AESD3800.BIN"]],
-    "scale": 0.654,
-    "hit_scale": 0.244
-  },
-  "137": {
-    "name": "Smiley Warhead",
-    "stands_for": 68,
-    "sounds": [[5, 47], [60, 45], [89, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEUA/MEUA2000.BIN", "EFFEUA/AEUA2000.BIN"], [2, "EFFEUA/MEUA2100.BIN", "EFFEUA/AEUA2100.BIN"]],
-    "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
-    "scale": 0.288,
-    "hit_scale": 0.1
-  },
-  "138": {
-    "name": "Sad Water Blast",
-    "stands_for": 111,
-    "sounds": [[0, 2]],
-    "hit_sound": 28,
-    "cast": [[1, "EFFEMA/MEMA6100.BIN", "EFFEMA/AEMA6100.BIN"], [2, "EFFEMA/MEMA6200.BIN", "EFFEMA/AEMA6200.BIN"]],
-    "hit": [[2, "EFFESD/MESD3200.BIN", "EFFESD/AESD3200.BIN"]],
-    "scale": 0.249,
-    "hit_scale": 0.1
-  },
-  "139": {
-    "name": "Twig Tap",
-    "stands_for": 72,
-    "sounds": [[40, 45], [61, 45], [88, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEUA/MEUA3100.BIN", "EFFEUA/AEUA3100.BIN"], [2, "EFFEUA/MEUA3200.BIN", "EFFEUA/AEUA3200.BIN"]],
-    "hit": [[1, "EFFESD/MESD7600.BIN", "EFFESD/AESD7600.BIN"]],
-    "scale": 0.263,
-    "hit_scale": 0.133
-  },
-  "140": {
-    "name": "Rain of Pollen",
-    "stands_for": 98,
-    "sounds": [],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEMA/MEMA3300.BIN", "EFFEMA/AEMA3300.BIN"], [2, "EFFEMA/MEMA3400.BIN", "EFFEMA/AEMA3400.BIN"]],
-    "hit": [[1, "EFFEBD/MEBD0000.BIN", "EFFEBD/AEBD0000.BIN"]],
-    "scale": 0.274,
-    "hit_scale": 0.141
-  },
-  "141": {
-    "name": "Ninja Flower",
-    "stands_for": 72,
-    "sounds": [[26, 45], [52, 45], [74, 45], [92, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA6800.BIN", "EFFESA/AESA6800.BIN"], [2, "EFFESA/MESA6900.BIN", "EFFESA/AESA6900.BIN"]],
-    "hit": [[1, "EFFEWD/MEWD0200.BIN", "EFFEWD/AEWD0200.BIN"]],
-    "scale": 0.238,
-    "hit_scale": 0.1
-  },
-  "142": {
-    "name": "Tail Blade",
-    "stands_for": 111,
-    "sounds": [[47, 45], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEUA/MEUA2800.BIN", "EFFEUA/AEUA2800.BIN"], [2, "EFFEUA/MEUA2900.BIN", "EFFEUA/AEUA2900.BIN"]],
-    "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
-    "scale": 0.311,
-    "hit_scale": 0.1
-  },
-  "143": {
-    "name": "Spurting Ink",
-    "stands_for": 87,
-    "sounds": [[24, 27], [57, 27], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA4800.BIN", "EFFESA/AESA4800.BIN"], [2, "EFFESA/MESA4900.BIN", "EFFESA/AESA4900.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.284,
-    "hit_scale": 0.1
-  },
-  "144": {
-    "name": "Evil Wind",
-    "stands_for": 62,
-    "sounds": [[28, 45], [44, 47], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA2600.BIN", "EFFESA/AESA2600.BIN"]],
-    "hit": [[1, "EFFEWD/MEWD0300.BIN", "EFFEWD/AEWD0300.BIN"]],
-    "scale": 0.209,
-    "hit_scale": 0.115
-  },
-  "145": {
-    "name": "Trick or Treat",
-    "stands_for": 61,
-    "sounds": [[17, 0]],
-    "cast": [[1, "EFFEMA/MEMA4200.BIN", "EFFEMA/AEMA4200.BIN"], [2, "EFFEMA/MEMA4400.BIN", "EFFEMA/AEMA4400.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.329,
-    "hit_scale": 0.1
-  },
-  "146": {
-    "name": "Hyper Heat",
-    "stands_for": 61,
-    "sounds": [[6, 0], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEBA/MEBA0600.BIN", "EFFEBA/AEBA0600.BIN"], [2, "EFFEBA/MEBA0700.BIN", "EFFEBA/AEBA0700.BIN"]],
-    "hit": [[2, "EFFEFD/MEFD0400.BIN", "EFFEFD/AEFD0400.BIN"]],
-    "scale": 0.209,
-    "hit_scale": 0.1
-  },
-  "147": {
-    "name": "Pummel Peck",
-    "stands_for": 72,
-    "sounds": [[55, 27], [90, 47]],
-    "cast": [[1, "EFFESA/MESA4200.BIN", "EFFESA/AESA4200.BIN"], [2, "EFFESA/MESA4300.BIN", "EFFESA/AESA4300.BIN"]],
-    "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
-    "scale": 0.225,
-    "hit_scale": 0.111
-  },
-  "148": {
-    "name": "Pearl Shot",
-    "stands_for": 90,
-    "sounds": [],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA2900.BIN", "EFFESA/AESA2900.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.304,
-    "hit_scale": 0.17
-  },
-  "149": {
-    "name": "Scissor Magic",
-    "stands_for": 100,
-    "sounds": [[16, 27], [68, 45], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
-    "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
-    "scale": 0.391,
-    "hit_scale": 0.25
-  },
-  "150": {
-    "name": "E-Stun Blast",
-    "stands_for": 98,
-    "sounds": [[3, 47], [69, 45], [91, 44]],
-    "cast": [[1, "EFFESA/MESA2500.BIN", "EFFESA/AESA2500.BIN"]],
-    "hit": [[1, "EFFESD/MESD0200.BIN", "EFFESD/AESD0200.BIN"]],
-    "scale": 0.329,
-    "hit_scale": 0.151
-  },
-  "151": {
-    "name": "Royal Smasher",
-    "stands_for": 91,
-    "sounds": [],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA7800.BIN", "EFFESA/AESA7800.BIN"], [2, "EFFESA/MESA7900.BIN", "EFFESA/AESA7900.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.274,
-    "hit_scale": 0.1
-  },
-  "152": {
-    "name": "Waking Dream",
-    "stands_for": 86,
-    "sounds": [[25, 0]],
-    "cast": [[1, "EFFEMA/MEMA3100.BIN", "EFFEMA/AEMA3100.BIN"], [2, "EFFEMA/MEMA3200.BIN", "EFFEMA/AEMA3200.BIN"]],
-    "hit": [[2, "EFFESD/MESD3400.BIN", "EFFESD/AESD3400.BIN"]],
-    "scale": 0.39,
-    "hit_scale": 0.194
-  },
-  "153": {
-    "name": "Tomahawk Crunch",
-    "stands_for": 79,
-    "sounds": [[18, 45], [54, 19], [66, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA8700.BIN", "EFFESA/AESA8700.BIN"], [2, "EFFESA/MESA8800.BIN", "EFFESA/AESA8800.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.258,
-    "hit_scale": 0.1
-  },
-  "154": {
-    "name": "Chaos Cannon",
-    "stands_for": 77,
-    "sounds": [[51, 0]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEBA/MEBA2400.BIN", "EFFEBA/AEBA2400.BIN"], [2, "EFFEBA/MEBA2500.BIN", "EFFEBA/AEBA2500.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.257,
-    "hit_scale": 0.1
-  },
-  "155": {
-    "name": "Chrono Breaker",
-    "stands_for": 78,
-    "sounds": [],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEMA/MEMA5300.BIN", "EFFEMA/AEMA5300.BIN"], [2, "EFFEMA/MEMA5400.BIN", "EFFEMA/AEMA5400.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.244,
-    "hit_scale": 0.1
-  },
-  "156": {
-    "name": "Tentacle Claw",
-    "stands_for": 111,
-    "sounds": [[6, 27], [56, 27], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA6600.BIN", "EFFESA/AESA6600.BIN"], [2, "EFFESA/MESA6700.BIN", "EFFESA/AESA6700.BIN"]],
-    "hit": [[1, "EFFESD/MESD0600.BIN", "EFFESD/AESD0600.BIN"]],
-    "scale": 0.295,
-    "hit_scale": 0.1
-  },
-  "157": {
-    "name": "Triple Forces",
-    "stands_for": 63,
-    "sounds": [[45, 27], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEBA/MEBA0200.BIN", "EFFEBA/AEBA0200.BIN"], [2, "EFFEBA/MEBA0300.BIN", "EFFEBA/AEBA0300.BIN"]],
-    "hit": [[1, "EFFESD/MESD6800.BIN", "EFFESD/AESD6800.BIN"]],
-    "scale": 0.268,
-    "hit_scale": 0.1
-  },
-  "158": {
-    "name": "Legendary Blade",
-    "stands_for": 62,
-    "sounds": [[4, 45], [43, 27], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA2000.BIN", "EFFESA/AESA2000.BIN"]],
-    "hit": [[1, "EFFESD/MESD0400.BIN", "EFFESD/AESD0400.BIN"]],
-    "scale": 0.282,
-    "hit_scale": 0.1
-  },
-  "159": {
-    "name": "Digital Bomb",
-    "stands_for": 68,
-    "sounds": [[89, 47]],
-    "cast": [[1, "EFFESA/MESA7200.BIN", "EFFESA/AESA7200.BIN"], [2, "EFFESA/MESA7300.BIN", "EFFESA/AESA7300.BIN"]],
-    "hit": [[2, "EFFESD/MESD0000.BIN", "EFFESD/AESD0000.BIN"]],
-    "scale": 0.404,
-    "hit_scale": 0.22
-  },
-  "160": {
-    "name": "Needle Squall",
-    "stands_for": 111,
-    "sounds": [[41, 27], [90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFESA/MESA9300.BIN", "EFFESA/AESA9300.BIN"], [2, "EFFESA/MESA9400.BIN", "EFFESA/AESA9400.BIN"]],
-    "hit": [[1, "EFFESD/MESD7400.BIN", "EFFESD/AESD7400.BIN"]],
-    "scale": 0.489,
-    "hit_scale": 0.208
-  },
-  "161": {
-    "name": "Blind Attack",
-    "stands_for": 109,
-    "sounds": [[90, 47]],
-    "hit_sound": 47,
-    "cast": [[1, "EFFEUA/MEUA1400.BIN", "EFFEUA/AEUA1400.BIN"], [2, "EFFEUA/MEUA1500.BIN", "EFFEUA/AEUA1500.BIN"]],
-    "hit": [[1, "EFFESD/MESD1500.BIN", "EFFESD/AESD1500.BIN"]],
-    "scale": 0.187,
-    "hit_scale": 0.1
-  },
-  "164": {
-    "name": "Trident Arm",
-    "stands_for": 79,
-    "compose": {"recolour": {"ramp": ["#080c12", "#34445a", "#8aa4c0", "#d4e4f4"]}, "scale": 1.2, "texture": [{"from": 24, "rect": [32, 0, 64, 32], "to": [128, 0], "palettes": []}]},
-    "check": {"hue": 210}
-  },
-  "170": {
-    "name": "Bunny Blades",
-    "stands_for": 62,
-    "compose": {"recolour": {"ramp": ["#1e0a00", "#8a3c0a", "#f09030", "#fff0c0"]}, "scale": 0.9},
-    "check": {"hue": 30}
-  },
-  "176": {
-    "name": "Pyramid Power",
-    "stands_for": 73,
-    "compose": {"recolour": {"ramp": ["#1a1400", "#7a6010", "#f0d040", "#fffbd0"]}, "scale": 1.2, "texture": [{"from": 24, "rect": [32, 0, 96, 32], "to": [0, 0], "palettes": [[0, 0], [1, 1]]}, {"from": 24, "rect": [4, 4, 24, 24], "to": [128, 0], "palettes": [[0, 2]]}, {"from": 24, "rect": [4, 4, 24, 24], "to": [152, 0], "palettes": []}, {"from": 24, "rect": [4, 4, 24, 24], "to": [176, 0], "palettes": []}]},
-    "check": {"hue": 50}
-  },
-  "194": {"name": "Data Crusher", "stands_for": 73, "compose": {"recolour": {"ramp": ["#001420", "#0a5a8a", "#30c0f0", "#e0faff"]}, "texture": [{"from": 28, "rect": [132, 4, 24, 24], "to": [128, 0], "palettes": [[0, 2]]}, {"from": 28, "rect": [164, 4, 24, 24], "to": [152, 0], "palettes": []}, {"from": 28, "rect": [196, 4, 24, 24], "to": [176, 0], "palettes": []}, {"from": 28, "rect": [132, 4, 24, 24], "to": [200, 0], "palettes": [[0, 4]]}]}, "check": {"hue": 195}},
-  "171": {"name": "Spirit Needle", "stands_for": 73, "compose": {"recolour": {"ramp": ["#0a0018", "#4a2a8c", "#a080ff", "#f0e8ff"]}, "scale": [0.2, 0.2, 3.5], "texture": [{"from": 8, "rect": [0, 0, 96, 32], "palettes": [[0, 0]]}, {"from": 22, "rect": [0, 0, 24, 24], "to": [200, 0], "palettes": [[0, 4]]}, {"from": 22, "rect": [0, 0, 24, 24], "to": [128, 0], "palettes": [[0, 2]]}, {"from": 22, "rect": [0, 0, 24, 24], "to": [152, 0], "palettes": [[0, 2]]}, {"from": 22, "rect": [0, 0, 24, 24], "to": [176, 0], "palettes": [[0, 2]]}]}, "check": {"hue": 260}},
-  "189": {"name": "Raiden Strike", "stands_for": 61, "compose": {"recolour": {"ramp": ["#180800", "#8a4800", "#ffb000", "#fff0c0"]}, "texture": [{"from": 86, "rect": [16, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]}, {"from": 86, "rect": [56, 0, 32, 32], "to": [32, 0], "palettes": [[0, 1]]}]}, "check": {"hue": 42}},
-  "195": {"name": "Cat Laser", "stands_for": 62, "compose": {"recolour": {"ramp": ["#001810", "#00905a", "#40ffa0", "#e8fff4"]}, "scale": [3.5, 1, 0.12]}, "check": {"hue": 150}},
-  "190": {
-    "name": "Corona Blaster",
-    "technique": 403,
-    "authored": "finishers"
-  },
-  "185": {"name":"Vemmon Crash","stands_for":100,"compose":{"recolour":{"ramp":["#000000","#8a3008","#f07828","#fff0d0"]},"scale":2.35},"check":{"hue":25}},
-  "174": {
-    "name": "Nail Bone",
-    "stands_for": 96,
-    "compose": {"texture": [{"from": 3, "rect": [0, 0, 32, 32], "to": [160, 0], "palettes": [[0, 3]]}],
-                 "recolour": {"ramp": ["#1c0400", "#8c2008", "#ff7a20", "#fff0c0"]}, "scale": 1.2},
-    "check": {"hue": 20}
-  },
-  "169": {
-    "name": "Royal Muck",
-    "stands_for": 62,
-    "compose": {"texture": [{"from": 56, "rect": [0, 0, 32, 32], "palettes": [[0, 0], [1, 1]]}], "recolour": {"ramp": ["#1a1000", "#6a4a10", "#c89a30", "#f4dc90"]}, "scale": 1.67},
-    "check": {"hue": 40}
-  },
-  "181": {
-    "name": "Gargoyle Rush",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#180800", "#6a2a08", "#e08030", "#fff0c8"]}, "scale": 1.3},
-    "check": {"hue": 25}
-  },
-  "196": {
-    "name": "Dark Fear",
-    "stands_for": 62,
-    "sounds": [[0, 50], [0, 41], [55, 41], [125, 10]],
-    "dw3": {"model": "M170IVRU", "slot": 9, "meft": [335], "scale": 1.31, "pin": "15c4ebdbe40c03a33e58079a132de92c515645c8"}
-  },
-  "197": {
-    "name": "Mugenhadou",
-    "stands_for": 63,
-    "sounds": [[160, 10], [220, 47], [240, 30]],
-    "dw3": {"model": "M394MARS", "slot": 11, "meft": [97], "pin": "9869578ddd7c0e9cba9da6c01ee4189faa19264f"}
-  },
-  "198": {
-    "name": "Poison Cobweb",
-    "stands_for": 73,
-    "sounds": [[70, 15], [140, 15]],
-    "dw3": {"model": "M166DKGM", "slot": 5, "meft": [328], "pin": "a918f18a3b16ec6dca01e5450015bef8021f5bc1"}
-  },
-  "199": {
-    "name": "Captain Cannon",
-    "stands_for": 80,
-    "sounds": [[132, 47], [162, 27], [192, 45], [212, 10]],
-    "dw3": {"model": "M387PIRT", "slot": 11, "meft": [91], "pin": "246619cc25d461c1947410b55da4ed4c7e6450c5"}
-  },
-  "200": {
-    "name": "Golden Ripper",
-    "stands_for": 62,
-    "sounds": [[135, 35], [175, 35], [235, 35], [255, 12]],
-    "dw3": {"model": "M392SLAG", "slot": 11, "meft": [100], "pin": "dd311e5635f71c4038dc07177d50aeb8d2a8ae49"}
-  },
-  "201": {
-    "name": "Atomic Ray",
-    "stands_for": 102,
-    "sounds": [[0, 50], [0, 22], [65, 30], [140, 10], [200, 30]],
-    "dw3": {"model": "M356HAND", "slot": 9, "meft": [361], "pin": "9525310064f97ceb4e54d7fb37f17e28731bc09b"}
-  },
-  "202": {
-    "name": "Dark Spirits DX",
-    "stands_for": 92,
-    "sounds": [[0, 50], [80, 15], [150, 45]],
-    "dw3": {"model": "M250KGET", "slot": 5, "meft": [324], "scale": 1.1, "pin": "a74df9abfae32323594216946e2a7218e96d88e8"}
-  },
-  "203": {
-    "name": "Justice Strike",
-    "stands_for": 78,
-    "sounds": [[148, 41], [223, 7], [253, 7], [279, 7], [309, 7], [339, 47], [359, 47], [379, 47]],
-    "dw3": {"model": "M390ASLT", "slot": 11, "meft": [93], "scale": 1.13, "pin": "6c8e43ff7b2ec137ccf69764d01a630e95b555f8"}
-  },
-  "204": {
-    "name": "Darkness Chaos",
-    "stands_for": 96,
-    "sounds": [[0, 50], [0, 41], [60, 40], [143, 10]],
-    "dw3": {"model": "M247DEMN", "slot": 9, "meft": [351], "pin": "149cd836cfed4036dbc7b3202de70b9c27b03436"}
-  },
-  "205": {
-    "name": "Mad Pump",
-    "stands_for": 80,
-    "sounds": [[0, 50], [0, 41], [83, 40], [169, 45]],
-    "dw3": {"model": "M436VALV", "slot": 9, "meft": [346], "pin": "7076e591495045c03a83dc7344d1b7c7b71e6a96"}
-  },
-  "206": {
-    "name": "Amethyst Mandala",
-    "technique": 316,
-    "authored": "finishers"
-  },
-  "207": {
-    "name": "Sylph Storm",
-    "stands_for": 102,
-    "sounds": [[0, 50], [0, 41], [78, 40], [169, 35]],
-    "dw3": {"model": "M439FUJI", "slot": 9, "meft": [370], "pin": "990adebeaa68897dbdb0b17c44085f3045f059a0"}
-  },
-  "208": {
-    "name": "Final Purification",
-    "technique": 318,
-    "authored": "finishers"
-  },
-  "209": {
-    "name": "Blazing Mane",
-    "stands_for": 109,
-    "sounds": [[70, 15], [150, 47]],
-    "dw3": {"model": "M327RUNX", "slot": 5, "meft": [332], "pin": "f0a19d4ea0e4221e6734904435735592b8c2e2a1"}
-  },
-  "210": {
-    "name": "Atomic Blaster",
-    "technique": 326,
-    "authored": "finishers"
-  },
-  "212": {
-    "name": "Darkness Chaos",
-    "stands_for": 80,
-    "sounds": [[0, 50], [0, 41], [45, 15], [116, 10]],
-    "dw3": {"model": "M312DETH", "slot": 9, "meft": [349], "pin": "93e3abfc421ba5a4d3e86eccf184f6ad0ef1595a"}
-  },
-  "213": {
-    "name": "Electro Ball",
-    "stands_for": 78,
-    "sounds": [[0, 50], [0, 22], [40, 29], [132, 40]],
-    "dw3": {"model": "M441RAIZ", "slot": 9, "meft": [363], "pin": "bc4d3ff86af9aaad183d1c0f9f93601a8ecfa8b4"}
-  },
-  "214": {
-    "name": "Dark Fear",
-    "stands_for": 80,
-    "sounds": [[0, 50], [0, 41], [82, 41], [152, 10]],
-    "dw3": {"model": "M364MUMY", "slot": 9, "meft": [335], "pin": "5709d5f99d53d99a13b8839d94045069414454ba"}
-  },
-  "215": {
-    "name": "Giant Missile",
-    "stands_for": 78,
-    "sounds": [[133, 41], [217, 47], [287, 10], [307, 47]],
-    "dw3": {"model": "M372SGRG", "slot": 11, "meft": [85], "pin": "e53f68ee6a5d173b0c7efafab73b9caa93610ebf"}
-  },
-  "216": {
-    "name": "Swing Swing",
-    "stands_for": 71,
-    "sounds": [[156, 12], [186, 8], [246, 45]],
-    "dw3": {"model": "M384KOET", "slot": 11, "meft": [89], "scale": 1.72, "pin": "adc7d3bd454a8c8d97a25cede96d9a882a3f6bc9"}
-  },
-  "217": {
-    "name": "DynamoCannon",
-    "stands_for": 78,
-    "sounds": [[128, 10], [183, 29], [243, 10], [263, 47]],
-    "dw3": {"model": "M393CNND", "slot": 11, "meft": [94], "pin": "caf9da3fd898a140eab9cdfd48b2a77aff21f21b"}
-  },
-  "218": {
-    "name": "Melting Blood",
-    "stands_for": 96,
-    "sounds": [[122, 30], [163, 29], [258, 10], [278, 10]],
-    "dw3": {"model": "M378BVND", "slot": 11, "meft": [92], "pin": "893dc60df6a85e2fce1ba286d39d785bea1ce4fd"}
-  },
-  "219": {
-    "name": "Ultimate Flare",
-    "stands_for": 109,
-    "sounds": [[76, 6], [206, 10]],
-    "dw3": {"model": "M382ARMG", "slot": 5, "meft": [333], "pin": "8974771337c6d7f5fbe951e7d1abdfc232146db4"}
-  },
-  "220": {
-    "name": "Mugen Cannon",
-    "stands_for": 106,
-    "sounds": [[0, 50], [9, 6], [120, 10], [150, 10], [180, 10], [210, 10]],
-    "dw3": {"model": "M440SIJN", "slot": 5, "meft": [364], "pin": "136b20c3296ccb6dbc97ed4e4bcba7f12948b65e"}
-  },
-  "221": {
-    "name": "Cross Slash",
-    "stands_for": 62,
-    "sounds": [[17, 24], [57, 47]],
-    "dw3": {"model": "M337ZAMB", "slot": 5, "meft": [39], "pin": "9d4abcefbf8d0d59cb3ac73de570252b043eb614"}
-  },
-  "222": {
-    "name": "Pyrosphere",
-    "technique": 433,
-    "authored": "finishers"
-  },
-  "224": {
-    "name": "Striking Fish",
-    "stands_for": 85,
-    "sounds": [[0, 51], [10, 45], [20, 51]],
-    "dw3": {"model": "M241HNGY", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "scale": 1.26, "pin": "94a91d52a09be712747c667bf3ecf9f19b37d6cf"}
-  },
-  "225": {
-    "name": "Pincer Crusher",
-    "stands_for": 79,
-    "compose": {"recolour": {"ramp": ["#000a1a", "#18407a", "#60a8e8", "#eaf6ff"]}, "scale": 1.2, "sounds": {"44": 56, "15": 45, "47": 4}},
-    "check": {"hue": 210}
-  },
-  "228": {
-    "name": "Lizard Dance",
-    "stands_for": 102,
-    "compose": {"recolour": {"ramp": ["#001a04", "#106a20", "#58e060", "#eaffe0"]}, "scale": 1.2, "sounds": {"6": 56, "19": 4, "47": 50}},
-    "check": {"hue": 120}
-  },
-  "235": {
-    "name": "Berserk Sword",
-    "stands_for": 102,
-    "sounds": [[0, 13], [0, 26], [7, 13], [30, 45], [40, 13], [40, 26], [47, 13]],
-    "dw3": {"model": "M178KNGT", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "75b2ef494180608c6f2ef5f64129c278fd4f2704"}
-  },
-  "237": {
-    "name": "Thunder Bolt",
-    "stands_for": 93,
-    "compose": {"recolour": {"ramp": ["#141000", "#8a7000", "#ffe040", "#fffff0"]}, "scale": 1.3, "sounds": {"15": 40}},
-    "check": {"hue": 52}
-  },
-  "238": {
-    "name": "Ura Sword",
-    "stands_for": 89,
-    "compose": {"recolour": {"ramp": ["#10001a", "#4a0a80", "#b060ff", "#f0e0ff"]}, "scale": 1.3, "sounds": {"0": 56, "44": 4, "27": 10, "47": 56}},
-    "check": {"hue": 310}
-  },
-  "239": {
-    "name": "Twin Sickles",
-    "stands_for": 73,
-    "sounds": [[0, 56], [0, 4], [5, 56], [10, 45], [20, 56], [20, 4], [25, 56]],
-    "dw3": {"model": "M238SNAI", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "pin": "fc081a4fa01eebe6c91d4b4784731ca8d0b554f6"}
-  },
-  "240": {
-    "name": "Darkside Quake",
-    "stands_for": 81,
-    "sounds": [[0, 56], [0, 4], [5, 56], [10, 45], [20, 56], [20, 4], [25, 56]],
-    "dw3": {"model": "M172MTAR", "slot": 5, "meft": [], "sprites": {"2": ["E000COM1.BIN", 2, 0, 38]}, "scale": 1.26, "pin": "10bfba2087701bfe2ad0d60fc4263cfa25339b75"}
-  },
-  "242": {
-    "name": "Roach Rush",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#120800", "#5a3010", "#b07a40", "#f8ecd8"]}, "scale": 1.2, "sounds": {"2": 10, "29": 51, "6": 51}},
-    "check": {"hue": 30}
-  },
-  "244": {
-    "name": "Hot Head",
-    "stands_for": 62,
-    "compose": {"recolour": {"ramp": ["#1a0000", "#a01000", "#ff5020", "#fff0c0"]}, "scale": 1.3, "sounds": {"17": 12, "20": 51, "56": 24}},
-    "check": {"hue": 12}
-  },
-  "245": {
-    "name": "Bear Fist",
-    "stands_for": 91,
-    "compose": {"recolour": {"ramp": ["#140600", "#803a00", "#f09030", "#fff0d8"]}, "scale": 1.3, "sounds": {"2": 51, "20": 45, "15": 51}},
-    "check": {"hue": 30}
-  },
-  "223": {
-    "name": "Maul Attack",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#120600", "#6a3010", "#d07030", "#fff0d8"]}, "scale": 2.2},
-    "check": {"hue": 25}
-  },
-  "249": {
-    "name": "Dragon Wheel",
-    "technique": 409,
-    "authored": "finishers"
-  },
-  "251": {
-    "name": "Wolf Claw",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#000a1a", "#1a5aa0", "#70d0ff", "#f0fcff"]}, "scale": 1.5},
-    "check": {"hue": 222}
-  },
-  "259": {
-    "name": "Mach Impulse",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#06080c", "#4a5a6c", "#c8d8ec", "#ffffff"]}, "scale": 1.2},
-    "check": {"hue": 210}
-  },
-  "276": {
-    "name": "Gate of Destiny",
-    "stands_for": 96,
-    "compose": {"recolour": {"ramp": ["#141000", "#a08018", "#fff080", "#ffffff"]}, "scale": 1.3},
-    "check": {"hue": 52}
-  },
-  "287": {
-    "name": "Marching Fishes",
-    "stands_for": 87,
-    "compose": {"recolour": {"ramp": ["#180800", "#8a3c08", "#ff9a30", "#fff4e0"]}, "scale": 1.3},
-    "check": {"hue": 30}
-  },
-  "289": {
-    "name": "Vulcan's Hammer",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#140c00", "#7a5a10", "#f0c840", "#fff8d8"]}, "scale": 1.4},
-    "check": {"hue": 48}
-  },
-  "292": {
-    "name": "Cat's Eyes",
-    "stands_for": 80,
-    "compose": {"recolour": {"ramp": ["#0a0014", "#40107a", "#a060f0", "#f0e4ff"]}},
-    "check": {"hue": 272}
-  },
-  "295": {
-    "name": "Top Gun",
-    "stands_for": 80,
-    "compose": {"recolour": {"ramp": ["#1a0004", "#8a1020", "#ff6070", "#fff0f0"]}},
-    "check": {"hue": 355}
-  },
-  "296": {
-    "name": "Angry Spike",
-    "stands_for": 85,
-    "compose": {"recolour": {"ramp": ["#140c04", "#6a5030", "#d8b880", "#fff4e0"]}, "scale": 1.33},
-    "check": {"hue": 35}
-  },
-  "314": {
-    "name": "Trump Sword",
-    "stands_for": 89,
-    "compose": {"recolour": {"ramp": ["#000418", "#1030a0", "#5090ff", "#e8f0ff"]}, "scale": 1.5},
-    "check": {"hue": 250}
-  },
-  "324": {
-    "name": "Feral Sword",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#120c00", "#806020", "#f4d070", "#fffbe8"]}, "scale": 1.2},
-    "check": {"hue": 45}
-  },
-  "261": {
-    "name": "Celestial Arrow",
-    "stands_for": 89,
-    "compose": {"recolour": {"ramp": ["#100c08", "#a08060", "#ffe8c0", "#ffffff"]}, "scale": 1.2},
-    "check": {"hue": 40}
-  },
-  "329": {
-    "name": "Transcendent Sword",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#00040c", "#305080", "#c0e0ff", "#ffffff"]}, "scale": 1.6},
-    "check": {"hue": 205}
-  },
-  "252": {
-    "name": "Brachio Bubble",
-    "stands_for": 63,
-    "sounds": [[0, 24], [0, 41], [0, 50], [12, 24], [12, 41], [12, 50], [24, 24], [24, 41], [24, 50], [36, 24], [36, 41], [36, 50], [48, 24], [48, 41], [48, 50], [60, 24], [60, 41], [60, 50], [72, 24], [72, 41], [72, 50], [84, 24], [84, 41], [84, 50], [96, 24], [96, 41], [96, 50], [108, 24], [108, 41], [108, 50]],
-    "hit_sound": 24,
-    "dcb": {"attack": 569, "hit": 437, "fit": [4, 1, 24], "pin": "4d84daf3fb4eae63a1bc9e024eb80db2688682b9"}
-  },
-  "253": {
-    "name": "Vee Head Butt",
-    "stands_for": 62,
-    "compose": {"recolour": {"ramp": ["#1a0a00", "#a04a00", "#ffb030", "#fffbe8"]}, "scale": 1.2, "sounds": {"17": 50, "20": 50, "56": 41}},
-    "check": {"hue": 35}
-  },
-  "254": {
-    "name": "Puppet Pummel",
-    "stands_for": 73,
-    "sounds": [],
-    "hit_sound": 41,
-    "dcb": {"attack": 1279, "hit": 435, "fit": [4, 1, 24], "pin": "6e2810e0b20fb99ecb2ae31b29c2c6c0118d7fb8"}
-  },
-  "255": {
-    "name": "Sticky Net",
-    "stands_for": 98,
-    "sounds": [[18, 24], [216, 22], [216, 0]],
-    "hit_sound": 22,
-    "dcb": {"attack": 1033, "hit": 2021, "fit": [2, 1, 96], "scale": 1.24, "pin": "deae8528abdcf9aa0a5209d59839610b7be7a9f6"}
-  },
-  "257": {
-    "name": "Diamond Shell",
-    "stands_for": 75,
-    "dcb": {"attack": 1039, "hit": 2000, "fit": [4, 1, 24], "pin": "45523ba117fe3db70956413166a11d96faeee3ca"}
-  },
-  "258": {
-    "name": "Spiking Strike",
-    "stands_for": 62,
-    "sounds": [[180, 22], [180, 50], [240, 20], [276, 20], [366, 41], [366, 20]],
-    "dcb": {"attack": 1063, "hit": 2004, "fit": [2, 2, 12], "pin": "069b731ec54c96eeff64506306f4f4284e111bee"}
-  },
-  "260": {
-    "name": "Tail Hammer",
-    "stands_for": 75,
-    "sounds": [[0, 24], [120, 59], [154, 59], [278, 30], [346, 41]],
-    "dcb": {"attack": 1069, "hit": 2004, "fit": [4, 1, 24], "pin": "c10f9087200ef89e8b041cc531edf78b617962d3"}
-  },
-  "263": {
-    "name": "Mega Fire",
-    "stands_for": 77,
-    "sounds": [[0, 24], [246, 50], [294, 41]],
-    "hit_sound": 30,
-    "dcb": {"attack": 1129, "hit": 2043, "fit": [2, 2, 12], "pin": "2bd98250501d03a51bbe803cc45974df8631eb4b"}
-  },
-  "264": {
-    "name": "Gold Rush",
-    "stands_for": 75,
-    "sounds": [[0, 24], [0, 50], [10, 50], [20, 50], [30, 50], [40, 50], [50, 50], [60, 50], [70, 50], [80, 50], [90, 50], [170, 41], [170, 0]],
-    "dcb": {"attack": 1174, "hit": 406, "fit": [4, 1, 24], "pin": "2ceb3308b030eb6d575f43c9d5c91b2e8da0a3b7"}
-  },
-  "266": {
-    "name": "Fire Rocket",
-    "stands_for": 81,
-    "compose": {"recolour": {"ramp": ["#1a0400", "#b03000", "#ff9020", "#fff4d0"]}, "scale": 1.3, "sounds": {"2": 50, "29": 24, "6": 41}},
-    "check": {"hue": 25}
-  },
-  "268": {
-    "name": "Plasma Shot",
-    "stands_for": 77,
-    "dcb": {"attack": 1153, "hit": 450, "fit": [4, 1, 24], "pin": "c6976b22457fa58a9b01c8a92461d71f3da8ea56"}
-  },
-  "269": {
-    "name": "Rocking Stone",
-    "stands_for": 86,
-    "sounds": [[28, 24], [42, 24], [300, 41]],
-    "hit_sound": 41,
-    "dcb": {"attack": 1180, "hit": 435, "fit": [4, 1, 24], "pin": "81e6ec0b93bda3686d521fbd57dd9ff4d2e53a6b"}
-  },
-  "272": {
-    "name": "Lightning Blast",
-    "stands_for": 93,
-    "compose": {"recolour": {"ramp": ["#000a1a", "#2050c0", "#80c0ff", "#f8fcff"]}, "scale": 1.2, "sounds": {"23": 23, "25": 20, "15": 50}},
-    "check": {"hue": 215}
-  },
-  "273": {
-    "name": "Submarine Attack",
-    "stands_for": 90,
-    "dcb": {"attack": 1177, "hit": 2059, "fit": [4, 1, 24], "pin": "eda5e955407178cd251736513f996581bbfd376f"}
-  },
-  "274": {
-    "name": "V-Nova Blast",
-    "stands_for": 63,
-    "sounds": [[0, 0], [270, 0]],
-    "dcb": {"attack": 824, "hit": 449, "fit": [4, 1, 24], "pin": "5a0304331fa07cf4bf2f757feb3b2c9ce1cc5271"}
-  },
-  "275": {
-    "name": "Horn Buster",
-    "stands_for": 93,
-    "compose": {"recolour": {"ramp": ["#0a001a", "#6020c0", "#c090ff", "#fcf8ff"]}, "scale": 1.3, "sounds": {"23": 22, "25": 41, "15": 24}},
-    "check": {"hue": 270}
-  },
-  "277": {
-    "name": "Seventh Heaven",
-    "stands_for": 61,
-    "sounds": [[0, 24], [210, 22]],
-    "hit_sound": 41,
-    "dcb": {"attack": 1138, "hit": 2046, "fit": [4, 1, 24], "pin": "834f5d7f2e22c159aa240731f60d097ed1d1c9ec"}
-  },
-  "279": {
-    "name": "Flower Cannon",
-    "stands_for": 73,
-    "sounds": [[0, 24], [240, 22], [240, 47]],
-    "dcb": {"attack": 1015, "hit": 400, "fit": [4, 1, 24], "pin": "c35219df794300f4261d29d4b97a6db635af5685"}
-  },
-  "280": {
-    "name": "X-Scissor Claw",
-    "stands_for": 73,
-    "sounds": [[80, 20], [180, 24], [250, 56], [250, 41], [350, 56], [350, 41]],
-    "hit_sound": 56,
-    "dcb": {"attack": 1132, "hit": 2064, "fit": [2, 2, 12], "pin": "9f4ba13875a553b54b317f72e4a14c30fa89dbed"}
-  },
-  "281": {
-    "name": "River of Power",
-    "stands_for": 111,
-    "sounds": [[0, 24], [160, 22]],
-    "hit_sound": 41,
-    "dcb": {"attack": 1273, "hit": 2033, "fit": [2, 1, 16], "pin": "ea680e5392a7bac27a53a895b60df324f65f6193"}
-  },
-  "282": {
-    "name": "Venom Infusion",
-    "stands_for": 96,
-    "sounds": [[0, 24], [164, 24], [180, 24], [192, 24], [234, 24], [236, 24]],
-    "hit_sound": 41,
-    "dcb": {"attack": 1117, "hit": 435, "fit": [4, 1, 24], "pin": "03cd27387646e595badad0c82ea96d3ceb34bbd9"}
-  },
-  "285": {
-    "name": "Fire Tornado",
-    "stands_for": 109,
-    "sounds": [[0, 24], [150, 41]],
-    "hit_sound": 22,
-    "dcb": {"attack": 1144, "hit": 2015, "fit": [4, 1, 24], "pin": "d6ea673993fee183c9456c62e184c6891edc11c9"}
-  },
-  "288": {
-    "name": "Harpoon Torpedo",
-    "stands_for": 85,
-    "sounds": [[116, 41], [148, 50], [168, 41], [168, 0]],
-    "dcb": {"attack": 1045, "hit": 406, "fit": [4, 1, 24], "pin": "beb16230bfeacf32c6a15490ace2e9d7e282adf8"}
-  },
-  "290": {
-    "name": "Arctic Blizzard",
-    "stands_for": 111,
-    "sounds": [[86, 50], [206, 24], [290, 30]],
-    "hit_sound": 30,
-    "dcb": {"attack": 1141, "hit": 2014, "fit": [4, 1, 24], "pin": "68ad7085129c3811f15fdfc5d06a9e3482aec831"}
-  },
-  "291": {
-    "name": "Puppy Howling",
-    "stands_for": 71,
-    "sounds": [[222, 50]],
-    "hit_sound": 50,
-    "dcb": {"attack": 1021, "hit": 2063, "fit": [4, 1, 24], "pin": "5b0a60c01f161e662a2077c8d8dd6001d0314807"}
-  },
-  "293": {
-    "name": "Darkness Wave",
-    "stands_for": 75,
-    "sounds": [[0, 24], [190, 24]],
-    "hit_sound": 50,
-    "dcb": {"attack": 1078, "hit": 2025, "fit": [4, 1, 24], "pin": "fcb2c09d7e33deb403a83adc1524950a1736a609"}
-  },
-  "294": {
-    "name": "Double Stars",
-    "stands_for": 89,
-    "dcb": {"attack": 1162, "hit": 2057, "fit": [4, 1, 24], "scale": 1.16, "pin": "a96f70c5f74fdaf0ebf5671836d9016b87d7dde0"}
-  },
-  "297": {
-    "name": "Dancing Meteor",
-    "stands_for": 94,
-    "sounds": [[374, 24]],
-    "hit_sound": 41,
-    "dcb": {"attack": 1171, "hit": 2044, "fit": [4, 1, 24], "pin": "48a9f2d5ed29053250ccaa2908293fb77efa5e76"}
-  },
-  "298": {
-    "name": "Shadow Scythe",
-    "stands_for": 111,
-    "sounds": [[0, 24], [342, 24]],
-    "dcb": {"attack": 1075, "hit": 2075, "fit": [4, 1, 24], "pin": "d21c17ef57c39c83bdea4966c8ad744275ba8b22"}
-  },
-  "299": {
-    "name": "Throny Whipping",
-    "stands_for": 73,
-    "dcb": {"attack": 1102, "hit": 2054, "fit": [4, 1, 24], "pin": "07611c73cf80fc80fe67b1f9653fff27c7b2e834"}
-  },
-  "300": {
-    "name": "Shell's Attack",
-    "stands_for": 89,
-    "sounds": [[0, 47], [80, 24], [80, 50], [422, 41]],
-    "dcb": {"attack": 1255, "hit": 2000, "fit": [4, 1, 24], "pin": "0af67f8626854d1eb317ef34efe5a08c9af285cc"}
-  },
-  "302": {
-    "name": "Boiling Bubble",
-    "stands_for": 61,
-    "sounds": [[0, 24], [20, 24], [40, 24], [60, 24], [80, 24], [100, 24], [120, 24], [140, 24], [160, 24]],
-    "hit_sound": 24,
-    "dcb": {"attack": 1189, "hit": 2017, "fit": [4, 1, 24], "pin": "49573578a004500f0bc92e43c9a360a3b15ebf69"}
-  },
-  "304": {
-    "name": "Flame Bomber",
-    "stands_for": 99,
-    "sounds": [[0, 24], [40, 24], [40, 20], [60, 22], [60, 20], [60, 24]],
-    "dcb": {"attack": 1186, "hit": 400, "fit": [4, 1, 24], "pin": "33e2acd65eb0fae109852c00a72ed364cdb975de"}
-  },
-  "306": {
-    "name": "Inferno Missile",
-    "stands_for": 80,
-    "sounds": [[150, 41], [192, 24], [314, 24], [354, 22], [354, 41], [354, 24]],
-    "hit_sound": 41,
-    "dcb": {"attack": 1123, "hit": 435, "fit": [4, 1, 24], "pin": "e9df02cd6129904e7aa5f967fc150bb30871c7a2"}
-  },
-  "308": {
-    "name": "Spiral Saw",
-    "stands_for": 95,
-    "sounds": [[20, 24], [60, 50], [196, 24], [208, 24], [220, 24], [232, 24]],
-    "dcb": {"attack": 1207, "hit": 2000, "fit": [4, 1, 24], "pin": "a0455e97f9beeb8c8458b6ab51b090de3bdbcf0a"}
-  },
-  "309": {
-    "name": "Coral Crusher",
-    "stands_for": 87,
-    "sounds": [[120, 24], [220, 50], [230, 50]],
-    "hit_sound": 30,
-    "dcb": {"attack": 1231, "hit": 2065, "fit": [4, 1, 24], "pin": "4fa1566be9e3e1763a41f20eb9498940d6a6a9e3"}
-  },
-  "310": {
-    "name": "Thunder Ball",
-    "stands_for": 93,
-    "compose": {"recolour": {"ramp": ["#1a1400", "#a08a00", "#ffe040", "#fffff0"]}, "scale": 1.2, "sounds": {"15": 24}},
-    "check": {"hue": 52}
-  },
-  "312": {
-    "name": "Meteor Stream",
-    "stands_for": 94,
-    "sounds": [[48, 24]],
-    "dcb": {"attack": 1246, "hit": 450, "fit": [2, 1, 16], "pin": "32db2aacc65fb720b91fda5379f2b5252de8c118"}
-  },
-  "313": {
-    "name": "Comet Cluster",
-    "stands_for": 61,
-    "sounds": [[0, 24], [48, 24], [280, 41], [290, 41], [300, 41], [310, 41], [320, 41], [330, 41], [340, 41], [350, 41], [360, 41], [370, 41], [380, 41], [390, 41], [400, 41], [410, 41], [420, 41]],
-    "hit_sound": 41,
-    "dcb": {"attack": 1285, "hit": 435, "fit": [2, 2, 12], "pin": "0366d87c79af52210042a95566ecacda6aa95b27"}
-  },
-  "316": {
-    "name": "Mini Scissor Claws",
-    "stands_for": 66,
-    "sounds": [[0, 24], [88, 30], [108, 30], [228, 41], [282, 41], [328, 41], [378, 41]],
-    "dcb": {"attack": 1198, "hit": 472, "fit": [4, 1, 24], "scale": 1.4, "pin": "946b027be9b1a7f7d02efb4c1bd4f406684052fb"}
-  },
-  "318": {
-    "name": "Freezing Wave",
-    "stands_for": 69,
-    "sounds": [[0, 24]],
-    "hit_sound": 56,
-    "dcb": {"attack": 1159, "hit": 2039, "fit": [2, 2, 12], "pin": "957adb8e6ed8fcb3a341739bf2dd6c10b3ae6762"}
-  },
-  "319": {
-    "name": "Flare Buster",
-    "stands_for": 61,
-    "sounds": [[0, 41], [44, 41], [224, 41], [244, 41], [264, 41]],
-    "hit_sound": 41,
-    "dcb": {"attack": 1156, "hit": 435, "fit": [4, 1, 24], "pin": "ef1a2e6d915b7c7b1d3a5c0e27f2ca891307420b"}
-  },
-  "322": {
-    "name": "Slamming Tusk",
-    "stands_for": 75,
-    "sounds": [[346, 22], [416, 41]],
-    "dcb": {"attack": 1057, "hit": 2004, "fit": [4, 1, 24], "pin": "54cd8220fc708952cf57f500db0f9f47950c833d"}
-  },
-  "326": {
-    "name": "Terra Force",
-    "stands_for": 109,
-    "sounds": [[4, 50], [20, 50], [150, 41]],
-    "hit_sound": 41,
-    "dcb": {"attack": 1105, "hit": 435, "fit": [4, 1, 24], "pin": "4f27c1c69d65ccfb645616031d1d353712a367b4"}
-  },
-  "328": {
-    "name": "Wing Blade",
-    "stands_for": 63,
-    "sounds": [],
-    "hit_sound": 41,
-    "dcb": {"attack": 1006, "hit": 495, "fit": [2, 1, 16], "pin": "da4ac27adf27c02b1d29f11bc4f91edceaa1dba8"}
-  },
-  "256": {
-    "name": "Hawk Beam",
-    "stands_for": 71,
-    "compose": {"texture": [
-      {"from": 9, "rect": [116, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]},
-      {"from": 9, "rect": [116, 0, 32, 32], "to": [32, 0], "palettes": []},
-      {"from": 9, "rect": [116, 0, 32, 32], "to": [64, 0], "palettes": []},
-      {"from": 9, "rect": [116, 0, 32, 32], "to": [96, 0], "palettes": []},
-      {"from": 9, "rect": [116, 0, 32, 32], "to": [128, 0], "palettes": []},
-      {"from": 9, "rect": [116, 0, 32, 32], "to": [160, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#8a0a0a", "#ff4030", "#fff0e0"]}},
-    "check": {"hue": 5}
-  },
-  "265": {
-    "name": "Ex-Laser",
-    "stands_for": 63,
-    "compose": {"texture": [
-      {"from": 29, "rect": [32, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]},
-      {"from": 29, "rect": [32, 0, 32, 32], "to": [32, 0], "palettes": []},
-      {"from": 29, "rect": [32, 0, 32, 32], "to": [64, 0], "palettes": []},
-      {"from": 29, "rect": [32, 0, 32, 32], "to": [96, 0], "palettes": []},
-      {"from": 29, "rect": [32, 0, 32, 32], "to": [128, 0], "palettes": []},
-      {"from": 29, "rect": [32, 0, 32, 32], "to": [160, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#0a3a80", "#3a90e0", "#d0ecff"]}},
-    "check": {"hue": 210}
-  },
-  "232": {
-    "name": "Talisman of Light",
-    "technique": 315,
-    "authored": "finishers"
-  },
-  "321": {
-    "name": "Thunder Volt",
-    "stands_for": 86,
-    "compose": {"texture": [
-      {"from": 66, "rect": [0, 0, 128, 32], "to": [0, 0], "palettes": [[0, 0]]},
-      {"from": 66, "rect": [224, 0, 32, 32], "to": [128, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#1a40a0", "#80c0ff", "#ffffff"]}, "scale": 1.3},
-    "check": {"hue": 215}
-  },
-  "226": {
-    "name": "Cyclone Turbine",
-    "stands_for": 62,
-    "compose": {"texture": [
-      {"from": 15, "rect": [0, 0, 40, 24], "to": [0, 0], "palettes": [[0, 0]]}],
-      "recolour": {"ramp": ["#000000", "#1a7a6a", "#80ffe0", "#f0fffa"]}, "scale": [1.8, 4, 1.8]},
-    "check": {"hue": 165}
-  },
-  "236": {
-    "name": "Blade Twister",
-    "stands_for": 62,
-    "compose": {"texture": [
-      {"from": 13, "rect": [32, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]}],
-      "recolour": {"ramp": ["#000000", "#4a7a10", "#c0ff60", "#fafff0"]}, "scale": [1.5, 1, 1.5]},
-    "check": {"hue": 90}
-  },
-  "262": {
-    "name": "Metal Wolf Claw",
-    "stands_for": 78,
-    "compose": {"texture": [
-      {"from": 20, "rect": [96, 0, 32, 32], "to": [80, 0], "palettes": [[0, 0]]}],
-      "recolour": {"ramp": ["#000000", "#1a5a9a", "#90d8ff", "#ffffff"]}, "scale": 1.2},
-    "check": {"hue": 205}
-  },
-  "278": {
-    "name": "Needle Spray",
-    "stands_for": 91,
-    "compose": {"texture": [
-      {"from": 69, "rect": [0, 0, 64, 32], "to": [0, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#3a6a10", "#a0e040", "#f8ffe0"]},
-      "scale": [1, 1, 1.8]},
-    "check": {"hue": 90}
-  },
-  "283": {
-    "name": "V Wing Blade",
-    "stands_for": 89,
-    "compose": {"texture": [
-      {"from": 39, "rect": [64, 0, 32, 32], "to": [32, 0], "palettes": []},
-      {"from": 39, "rect": [64, 0, 32, 32], "to": [64, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#1a4a8a", "#70c0ff", "#f4fbff"]},
-      "scale": 1.5},
-    "check": {"hue": 265}
-  },
-  "248": {
-    "name": "Terra Destroyer",
-    "technique": 404,
-    "authored": "finishers"
-  },
-  "307": {
-    "name": "Pulse Blast",
-    "stands_for": 90,
-    "compose": {"texture": [
-      {"from": 112, "rect": [4, 4, 24, 24], "to": [0, 0], "palettes": []},
-      {"from": 112, "rect": [4, 4, 24, 24], "to": [24, 0], "palettes": []},
-      {"from": 112, "rect": [32, 0, 32, 32], "to": [48, 0], "palettes": []},
-      {"from": 112, "rect": [32, 0, 32, 32], "to": [80, 0], "palettes": []},
-      {"from": 112, "rect": [32, 0, 32, 32], "to": [112, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#004a6a", "#20b0e0", "#80f0ff"]}, "scale": [1, 2.5, 1]},
-    "check": {"hue": 190}
-  },
-  "327": {
-    "name": "Darkness Zone",
-    "stands_for": 74,
-    "compose": {"texture": [
-      {"from": 35, "rect": [32, 0, 32, 32], "to": [40, 0], "palettes": [[0, 0]]},
-      {"from": 35, "rect": [64, 0, 32, 32], "to": [8, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#10021e", "#5a1890", "#b070f0"]},
-      "scale": 1.6},
-    "check": {"hue": 280}
-  },
-  "320": {
-    "name": "Solar Flare",
-    "stands_for": 86,
-    "compose": {"texture": [
-      {"from": 94, "rect": [96, 0, 32, 32], "to": [128, 0], "palettes": [[0, 1]]}],
-      "recolour": {"ramp": ["#000000", "#a03000", "#ffb020", "#fffff0"]},
-      "scale": 1.4},
-    "check": {"hue": 35}
-  },
-  "246": {
-    "name": "Diamond Storm",
-    "technique": 354,
-    "authored": "finishers"
-  },
-  "301": {
-    "name": "Free Throw Bomb",
-    "stands_for": 73,
-    "compose": {"texture": [
-      {"from": 39, "rect": [0, 0, 32, 32], "to": [8, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#6a2a10", "#e07030", "#fff0d0"]},
-      "scale": 1.5},
-    "check": {"hue": 20}
-  },
-  "165": {
-    "name": "Fungus Cruncher",
-    "stands_for": 72,
-    "compose": {"texture": [
-      {"from": 28, "rect": [0, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]},
-      {"from": 28, "rect": [32, 0, 32, 32], "to": [32, 0], "palettes": []},
-      {"from": 28, "rect": [64, 0, 32, 32], "to": [64, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#3a1a5a", "#a060d0", "#e8ffd0"]}},
-    "check": {"hue": 280}
-  },
-  "271": {
-    "name": "Star Shower",
-    "stands_for": 93,
-    "compose": {"texture": [
-      {"from": 24, "rect": [0, 0, 32, 32], "to": [32, 0], "palettes": [[0, 0]]},
-      {"from": 24, "rect": [0, 0, 32, 32], "to": [64, 0], "palettes": []},
-      {"from": 24, "rect": [0, 0, 32, 32], "to": [96, 0], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#8a6000", "#ffd840", "#fffff0"]}},
-    "check": {"hue": 48}
-  },
-  "267": {
-    "name": "Tempest Wing",
-    "stands_for": 106,
-    "compose": {"texture": [
-      {"from": 15, "rect": [0, 0, 80, 24], "to": [176, 4], "palettes": []}],
-      "recolour": {"ramp": ["#000000", "#1a6a3a", "#80ffb0", "#f4fff8"]},
-      "scale": [1.3, 1.3, 1]},
-    "check": {"hue": 140}
-  },
-  "166": {
-    "name": "Kongou",
-    "stands_for": 81,
-    "compose": {"texture": [
-      {"from": 105, "rect": [0, 0, 32, 32], "to": [0, 0], "palettes": [[0, 0]]}],
-      "recolour": {"ramp": ["#000000", "#806a20", "#f0e0a0", "#ffffff"]},
-      "scale": 1.4},
-    "check": {"hue": 48}
-  },
-  "330": {
-    "name": "Shadow Claw",
-    "technique": 122,
-    "authored": "dark"
-  },
-  "331": {
-    "name": "Dark Bolt",
-    "technique": 123,
-    "authored": "dark"
-  },
-  "332": {
-    "name": "Nightmare",
-    "technique": 124,
-    "authored": "dark"
-  },
-  "333": {
-    "name": "Evil Whisper",
-    "technique": 125,
-    "authored": "dark"
-  },
-  "334": {
-    "name": "Death Grip",
-    "technique": 126,
-    "authored": "dark"
-  },
-  "335": {
-    "name": "Venom Mist",
-    "technique": 127,
-    "authored": "dark"
-  },
-  "336": {
-    "name": "Black Gate",
-    "technique": 128,
-    "authored": "dark"
-  },
-  "337": {
-    "name": "Abyss Requiem",
-    "technique": 129,
-    "authored": "dark"
-  },
-  "338": {
-    "name": "Holy Spark",
-    "technique": 130,
-    "authored": "light"
-  },
-  "339": {
-    "name": "Shining Arrow",
-    "technique": 131,
-    "authored": "light"
-  },
-  "340": {
-    "name": "Blessing",
-    "technique": 132,
-    "authored": "light"
-  },
-  "341": {
-    "name": "Sacred Shield",
-    "technique": 133,
-    "authored": "light"
-  },
-  "342": {
-    "name": "Flash Burst",
-    "technique": 134,
-    "authored": "light"
-  },
-  "343": {
-    "name": "Judgment Ray",
-    "technique": 135,
-    "authored": "light"
-  },
-  "344": {
-    "name": "Heaven's Ring",
-    "technique": 136,
-    "authored": "light"
-  },
-  "345": {
-    "name": "Grand Cross",
-    "technique": 137,
-    "authored": "light"
-  },
-  "346": {
-    "name": "Bubble Shot",
-    "technique": 138,
-    "authored": "water"
-  },
-  "347": {
-    "name": "Aqua Jet",
-    "technique": 139,
-    "authored": "water"
-  },
-  "348": {
-    "name": "Rain Dance",
-    "technique": 140,
-    "authored": "water"
-  },
-  "349": {
-    "name": "Whirlpool",
-    "technique": 141,
-    "authored": "water"
-  },
-  "350": {
-    "name": "Hydro Cannon",
-    "technique": 142,
-    "authored": "water"
-  },
-  "351": {
-    "name": "Sea Crush",
-    "technique": 143,
-    "authored": "water"
-  },
-  "352": {
-    "name": "Tidal Wave",
-    "technique": 144,
-    "authored": "water"
-  },
-  "353": {
-    "name": "Ocean Fury",
-    "technique": 145,
-    "authored": "water"
-  },
-  "354": {
-    "name": "Quick Slash",
-    "technique": 146,
-    "authored": "weapon"
-  },
-  "355": {
-    "name": "Blade Throw",
-    "technique": 147,
-    "authored": "weapon"
-  },
-  "356": {
-    "name": "Armor Break",
-    "technique": 148,
-    "authored": "weapon"
-  },
-  "357": {
-    "name": "War Stance",
-    "technique": 149,
-    "authored": "weapon"
-  },
-  "358": {
-    "name": "Cross Cutter",
-    "technique": 150,
-    "authored": "weapon"
-  },
-  "359": {
-    "name": "Whirling Edge",
-    "technique": 151,
-    "authored": "weapon"
-  },
-  "360": {
-    "name": "Giant Cleave",
-    "technique": 152,
-    "authored": "weapon"
-  },
-  "361": {
-    "name": "Final Edge",
-    "technique": 153,
-    "authored": "weapon"
-  },
-  "362": {
-    "name": "Rock Throw",
-    "technique": 154,
-    "authored": "earth"
-  },
-  "363": {
-    "name": "Sand Blast",
-    "technique": 155,
-    "authored": "earth"
-  },
-  "364": {
-    "name": "Stone Skin",
-    "technique": 156,
-    "authored": "earth"
-  },
-  "365": {
-    "name": "Boulder Crash",
-    "technique": 157,
-    "authored": "earth"
-  },
-  "366": {
-    "name": "Fissure",
-    "technique": 158,
-    "authored": "earth"
-  },
-  "367": {
-    "name": "Stalagmite",
-    "technique": 159,
-    "authored": "earth"
-  },
-  "368": {
-    "name": "Landslide",
-    "technique": 160,
-    "authored": "earth"
-  },
-  "369": {
-    "name": "Gaia Quake",
-    "technique": 161,
-    "authored": "earth"
-  },
-  "370": {
-    "name": "Plasma Blade",
-    "technique": 320,
-    "authored": "finishers"
-  }
+  "note": "Effect chunks of a species' own, appended to ETCHI/EFEDAT.EFE after the disc's 122 (tools/derive/steps/effects.py). Every entry is authored: {name, technique, authored}, where authored is the module of tools/technique_effects that writes and paints the effect (no source disc): the technique rows (Darkness, Light, Water, Weapon, Earth) are in <row>.py, a species' finisher is in finishers.py or finishers_<kind>.py and its technique is the species id. A species plays a chunk with own_effect in its JSON. The converters of other games' effects (DW2, DW2003, Card Battle) and the composer are still in tools/, but no entry uses them.",
+  "122": {"name": "Metal Fireball", "technique": 277, "authored": "finishers_area"},
+  "123": {"name": "Buffalo Breath", "technique": 264, "authored": "finishers_close"},
+  "124": {"name": "Darkness Gear", "technique": 122, "authored": "finishers_thrown"},
+  "125": {"name": "Poison Wing", "technique": 182, "authored": "finishers_shot_a"},
+  "126": {"name": "Tri-Horn Attack", "technique": 257, "authored": "finishers_dash_a"},
+  "127": {"name": "Howling Crusher", "technique": 258, "authored": "finishers_dash_b"},
+  "128": {"name": "Duo Scissor Claw", "technique": 259, "authored": "finishers_area"},
+  "129": {"name": "Nuclear Laser", "technique": 260, "authored": "finishers_shot_a"},
+  "130": {"name": "Strong Carapace", "technique": 261, "authored": "finishers_area"},
+  "131": {"name": "Brown Stinger", "technique": 262, "authored": "finishers_shot_a"},
+  "132": {"name": "Fire Blast", "technique": 265, "authored": "finishers_area"},
+  "133": {"name": "Pretty Attack", "technique": 266, "authored": "finishers_shot_a"},
+  "134": {"name": "Tusk Crusher", "technique": 267, "authored": "finishers_dash_b"},
+  "135": {"name": "S-Bone Crusher", "technique": 268, "authored": "finishers_area"},
+  "136": {"name": "Junk Chunker", "technique": 269, "authored": "finishers_thrown"},
+  "137": {"name": "Smiley Warhead", "technique": 270, "authored": "finishers_shot_b"},
+  "138": {"name": "Sad Water Blast", "technique": 271, "authored": "finishers_area"},
+  "139": {"name": "Twig Tap", "technique": 272, "authored": "finishers_close"},
+  "140": {"name": "Rain of Pollen", "technique": 273, "authored": "finishers_shot_b"},
+  "141": {"name": "Ninja Flower", "technique": 274, "authored": "finishers_area"},
+  "142": {"name": "Tail Blade", "technique": 275, "authored": "finishers_dash_b"},
+  "143": {"name": "Spurting Ink", "technique": 278, "authored": "finishers_shot_b"},
+  "144": {"name": "Evil Wind", "technique": 279, "authored": "finishers_area"},
+  "145": {"name": "Trick or Treat", "technique": 280, "authored": "finishers_area"},
+  "146": {"name": "Hyper Heat", "technique": 281, "authored": "finishers_close"},
+  "147": {"name": "Pummel Peck", "technique": 282, "authored": "finishers_shot_b"},
+  "148": {"name": "Pearl Shot", "technique": 283, "authored": "finishers_shot_b"},
+  "149": {"name": "Scissor Magic", "technique": 284, "authored": "finishers_close"},
+  "150": {"name": "E-Stun Blast", "technique": 285, "authored": "finishers_shot_b"},
+  "151": {"name": "Royal Smasher", "technique": 286, "authored": "finishers_thrown"},
+  "152": {"name": "Waking Dream", "technique": 287, "authored": "finishers_shot_b"},
+  "153": {"name": "Tomahawk Crunch", "technique": 288, "authored": "finishers_area"},
+  "154": {"name": "Chaos Cannon", "technique": 289, "authored": "finishers_area"},
+  "155": {"name": "Chrono Breaker", "technique": 290, "authored": "finishers_shot_b"},
+  "156": {"name": "Tentacle Claw", "technique": 291, "authored": "finishers_thrown"},
+  "157": {"name": "Triple Forces", "technique": 292, "authored": "finishers_area"},
+  "158": {"name": "Legendary Blade", "technique": 293, "authored": "finishers_area"},
+  "159": {"name": "Digital Bomb", "technique": 294, "authored": "finishers_area"},
+  "160": {"name": "Needle Squall", "technique": 401, "authored": "finishers_area"},
+  "161": {"name": "Blind Attack", "technique": 402, "authored": "finishers_dash_b"},
+  "162": {"name": "Clay Bomb", "technique": 214, "authored": "finishers_thrown"},
+  "163": {"name": "Demi Dart", "technique": 236, "authored": "finishers_thrown"},
+  "164": {"name": "Trident Arm", "technique": 224, "authored": "finishers_thrown"},
+  "165": {"name": "Fungus Cruncher", "technique": 263, "authored": "finishers_shot_a"},
+  "166": {"name": "Kongou", "technique": 276, "authored": "finishers_dash_b"},
+  "167": {"name": "Desperado Blaster", "technique": 199, "authored": "finishers_rain"},
+  "168": {"name": "Crystal Cloud", "technique": 242, "authored": "finishers_close"},
+  "169": {"name": "Royal Muck", "technique": 307, "authored": "finishers_thrown"},
+  "170": {"name": "Bunny Blades", "technique": 309, "authored": "finishers_dash_b"},
+  "171": {"name": "Spirit Needle", "technique": 311, "authored": "finishers_shot_b"},
+  "174": {"name": "Nail Bone", "technique": 314, "authored": "finishers_beam_b"},
+  "176": {"name": "Pyramid Power", "technique": 319, "authored": "finishers_beam_b"},
+  "181": {"name": "Gargoyle Rush", "technique": 327, "authored": "finishers_dash_b"},
+  "185": {"name": "Vemmon Crash", "technique": 331, "authored": "finishers_close"},
+  "189": {"name": "Raiden Strike", "technique": 336, "authored": "finishers_beam_b"},
+  "190": {"name": "Corona Blaster", "technique": 403, "authored": "finishers"},
+  "194": {"name": "Data Crusher", "technique": 431, "authored": "finishers_shot_b"},
+  "195": {"name": "Cat Laser", "technique": 432, "authored": "finishers_beam_b"},
+  "196": {"name": "Nightmare Shock", "technique": 295, "authored": "finishers_beam_b"},
+  "197": {"name": "Mugen Hadou", "technique": 297, "authored": "finishers_beam_b"},
+  "198": {"name": "Poison Cobweb", "technique": 298, "authored": "finishers_shot_b"},
+  "199": {"name": "Captain Cannon", "technique": 299, "authored": "finishers_shot_b"},
+  "200": {"name": "Golden Ripper", "technique": 300, "authored": "finishers_dash_b"},
+  "201": {"name": "Atomic Ray", "technique": 302, "authored": "finishers_beam_b"},
+  "202": {"name": "Dark Spirits DX", "technique": 303, "authored": "finishers_area"},
+  "203": {"name": "Justice Strike", "technique": 310, "authored": "finishers_rain"},
+  "204": {"name": "Evil Inferno", "technique": 312, "authored": "finishers_area"},
+  "205": {"name": "Bulb Flash", "technique": 313, "authored": "finishers_beam_b"},
+  "206": {"name": "Amethyst Mandala", "technique": 316, "authored": "finishers"},
+  "207": {"name": "Divine Wind", "technique": 317, "authored": "finishers_area"},
+  "208": {"name": "Final Purification", "technique": 318, "authored": "finishers"},
+  "209": {"name": "Blazing Mane", "technique": 323, "authored": "finishers_close"},
+  "210": {"name": "Atomic Blaster", "technique": 326, "authored": "finishers"},
+  "212": {"name": "Necro Eye", "technique": 329, "authored": "finishers_beam_b"},
+  "213": {"name": "Raijin Thunder", "technique": 333, "authored": "finishers_area"},
+  "214": {"name": "Necrophobia", "technique": 334, "authored": "finishers_shot_b"},
+  "215": {"name": "Giant Missile", "technique": 335, "authored": "finishers_shot_b"},
+  "216": {"name": "Swing Swing", "technique": 352, "authored": "finishers_close"},
+  "217": {"name": "Dynamo Cannon", "technique": 405, "authored": "finishers_beam_b"},
+  "218": {"name": "Melting Blood", "technique": 406, "authored": "finishers_close"},
+  "219": {"name": "Ultimate Flare", "technique": 407, "authored": "finishers_beam_b"},
+  "220": {"name": "Water Spiral", "technique": 408, "authored": "finishers_beam_b"},
+  "221": {"name": "Zanba Blade", "technique": 430, "authored": "finishers_dash_b"},
+  "222": {"name": "Pyrosphere", "technique": 433, "authored": "finishers"},
+  "223": {"name": "Maul Attack", "technique": 296, "authored": "finishers_dash_b"},
+  "224": {"name": "Striking Fish", "technique": 304, "authored": "finishers_shot_b"},
+  "225": {"name": "Pincer Crusher", "technique": 305, "authored": "finishers_close"},
+  "226": {"name": "Cyclone Turbine", "technique": 306, "authored": "finishers_dash_b"},
+  "228": {"name": "Lizard Dance", "technique": 308, "authored": "finishers_dash_b"},
+  "232": {"name": "Talisman of Light", "technique": 315, "authored": "finishers"},
+  "235": {"name": "Berserk Sword", "technique": 321, "authored": "finishers_dash_b"},
+  "236": {"name": "Blade Twister", "technique": 322, "authored": "finishers_dash_b"},
+  "237": {"name": "Mail Bomber", "technique": 324, "authored": "finishers_shot_b"},
+  "238": {"name": "Ura Sword", "technique": 325, "authored": "finishers_dash_b"},
+  "239": {"name": "Twin Sickles", "technique": 328, "authored": "finishers_thrown"},
+  "240": {"name": "Darkside Quake", "technique": 330, "authored": "finishers_area"},
+  "242": {"name": "Roach Rush", "technique": 332, "authored": "finishers_dash_b"},
+  "244": {"name": "Hot Head", "technique": 351, "authored": "finishers_dash_b"},
+  "245": {"name": "Bear Fist", "technique": 353, "authored": "finishers_close"},
+  "246": {"name": "Diamond Storm", "technique": 354, "authored": "finishers"},
+  "248": {"name": "Terra Destroyer", "technique": 404, "authored": "finishers"},
+  "249": {"name": "Dragon Wheel", "technique": 409, "authored": "finishers"},
+  "251": {"name": "Wolf Claw", "technique": 62, "authored": "finishers_dash_a"},
+  "252": {"name": "Brachio Bubble", "technique": 126, "authored": "finishers_shot_a"},
+  "253": {"name": "Vee Head Butt", "technique": 180, "authored": "finishers_dash_a"},
+  "254": {"name": "Puppet Pummel", "technique": 181, "authored": "finishers_dash_a"},
+  "255": {"name": "Sticky Net", "technique": 183, "authored": "finishers_shot_a"},
+  "256": {"name": "Hawk Beam", "technique": 184, "authored": "finishers_beam_a"},
+  "257": {"name": "Diamond Shell", "technique": 185, "authored": "finishers_dash_a"},
+  "258": {"name": "Spiking Strike", "technique": 187, "authored": "finishers_dash_a"},
+  "259": {"name": "Mach Impulse", "technique": 188, "authored": "finishers_dash_a"},
+  "260": {"name": "Tail Hammer", "technique": 189, "authored": "finishers_close"},
+  "261": {"name": "Celestial Arrow", "technique": 190, "authored": "finishers_shot_a"},
+  "262": {"name": "Metal Wolf Claw", "technique": 191, "authored": "finishers_beam_a"},
+  "263": {"name": "Positron Laser", "technique": 192, "authored": "finishers_beam_a"},
+  "264": {"name": "Gold Rush", "technique": 193, "authored": "finishers_rain"},
+  "265": {"name": "Ex-Laser", "technique": 194, "authored": "finishers_beam_a"},
+  "266": {"name": "Fire Rocket", "technique": 195, "authored": "finishers_dash_a"},
+  "267": {"name": "Tempest Wing", "technique": 196, "authored": "finishers_beam_a"},
+  "268": {"name": "Plasma Shot", "technique": 197, "authored": "finishers_rain"},
+  "269": {"name": "Rocking Stone", "technique": 198, "authored": "finishers_thrown"},
+  "271": {"name": "Star Shower", "technique": 200, "authored": "finishers_rain"},
+  "272": {"name": "Lightning Blast", "technique": 201, "authored": "finishers_beam_a"},
+  "273": {"name": "Submarine Attack", "technique": 202, "authored": "finishers_dash_a"},
+  "274": {"name": "V-Nova Blast", "technique": 203, "authored": "finishers_beam_a"},
+  "275": {"name": "Horn Buster", "technique": 205, "authored": "finishers_beam_a"},
+  "276": {"name": "Gate of Destiny", "technique": 206, "authored": "finishers_beam_a"},
+  "277": {"name": "Seventh Heaven", "technique": 207, "authored": "finishers_rain"},
+  "278": {"name": "Needle Spray", "technique": 208, "authored": "finishers_rain"},
+  "279": {"name": "Flower Cannon", "technique": 209, "authored": "finishers_beam_a"},
+  "280": {"name": "X-Scissor Claw", "technique": 210, "authored": "finishers_dash_a"},
+  "281": {"name": "River of Power", "technique": 211, "authored": "finishers_beam_a"},
+  "282": {"name": "Venom Infusion", "technique": 212, "authored": "finishers_beam_a"},
+  "283": {"name": "V Wing Blade", "technique": 213, "authored": "finishers_beam_a"},
+  "285": {"name": "Fire Tornado", "technique": 215, "authored": "finishers_beam_a"},
+  "287": {"name": "Marching Fishes", "technique": 217, "authored": "finishers_rain"},
+  "288": {"name": "Harpoon Torpedo", "technique": 218, "authored": "finishers_shot_a"},
+  "289": {"name": "Vulcan's Hammer", "technique": 219, "authored": "finishers_close"},
+  "290": {"name": "Arctic Blizzard", "technique": 220, "authored": "finishers_close"},
+  "291": {"name": "Puppy Howling", "technique": 221, "authored": "finishers_beam_a"},
+  "292": {"name": "Cat's Eyes", "technique": 222, "authored": "finishers_beam_a"},
+  "293": {"name": "Darkness Wave", "technique": 223, "authored": "finishers_rain"},
+  "294": {"name": "Double Stars", "technique": 225, "authored": "finishers_thrown"},
+  "295": {"name": "Top Gun", "technique": 226, "authored": "finishers_shot_a"},
+  "296": {"name": "Angry Spike", "technique": 227, "authored": "finishers_thrown"},
+  "297": {"name": "Dancing Meteor", "technique": 228, "authored": "finishers_rain"},
+  "298": {"name": "Shadow Scythe", "technique": 229, "authored": "finishers_dash_a"},
+  "299": {"name": "Thorny Whipping", "technique": 230, "authored": "finishers_close"},
+  "300": {"name": "Shell Attack", "technique": 231, "authored": "finishers_dash_a"},
+  "301": {"name": "Free Throw Bomb", "technique": 232, "authored": "finishers_thrown"},
+  "302": {"name": "Boiling Bubble", "technique": 233, "authored": "finishers_shot_a"},
+  "304": {"name": "Flame Bomber", "technique": 235, "authored": "finishers_shot_a"},
+  "306": {"name": "Inferno Missile", "technique": 237, "authored": "finishers_beam_b"},
+  "307": {"name": "Pulse Blast", "technique": 238, "authored": "finishers_beam_b"},
+  "308": {"name": "Spiral Saw", "technique": 239, "authored": "finishers_dash_a"},
+  "309": {"name": "Coral Crusher", "technique": 240, "authored": "finishers_shot_a"},
+  "310": {"name": "Thunder Ball", "technique": 241, "authored": "finishers_shot_a"},
+  "312": {"name": "Meteor Stream", "technique": 243, "authored": "finishers_rain"},
+  "313": {"name": "Comet Cluster", "technique": 244, "authored": "finishers_rain"},
+  "314": {"name": "Trump Sword", "technique": 245, "authored": "finishers_thrown"},
+  "316": {"name": "Mini Scissor Claws", "technique": 247, "authored": "finishers_close"},
+  "318": {"name": "Freezing Wave", "technique": 249, "authored": "finishers_close"},
+  "319": {"name": "Flare Buster", "technique": 250, "authored": "finishers_beam_b"},
+  "320": {"name": "Solar Flare", "technique": 251, "authored": "finishers_beam_b"},
+  "321": {"name": "Thunder Volt", "technique": 252, "authored": "finishers_shot_a"},
+  "322": {"name": "Slamming Tusk", "technique": 253, "authored": "finishers_dash_a"},
+  "324": {"name": "Feral Sword", "technique": 255, "authored": "finishers_dash_a"},
+  "326": {"name": "Terra Force", "technique": 373, "authored": "finishers_shot_b"},
+  "327": {"name": "Darkness Zone", "technique": 400, "authored": "finishers_shot_b"},
+  "328": {"name": "Wing Blade", "technique": 460, "authored": "finishers_shot_b"},
+  "329": {"name": "Transcendent Sword", "technique": 461, "authored": "finishers_dash_b"},
+  "330": {"name": "Shadow Claw", "technique": 122, "authored": "dark"},
+  "331": {"name": "Dark Bolt", "technique": 123, "authored": "dark"},
+  "332": {"name": "Nightmare", "technique": 124, "authored": "dark"},
+  "333": {"name": "Evil Whisper", "technique": 125, "authored": "dark"},
+  "334": {"name": "Death Grip", "technique": 126, "authored": "dark"},
+  "335": {"name": "Venom Mist", "technique": 127, "authored": "dark"},
+  "336": {"name": "Black Gate", "technique": 128, "authored": "dark"},
+  "337": {"name": "Abyss Requiem", "technique": 129, "authored": "dark"},
+  "338": {"name": "Holy Spark", "technique": 130, "authored": "light"},
+  "339": {"name": "Shining Arrow", "technique": 131, "authored": "light"},
+  "340": {"name": "Blessing", "technique": 132, "authored": "light"},
+  "341": {"name": "Sacred Shield", "technique": 133, "authored": "light"},
+  "342": {"name": "Flash Burst", "technique": 134, "authored": "light"},
+  "343": {"name": "Judgment Ray", "technique": 135, "authored": "light"},
+  "344": {"name": "Heaven's Ring", "technique": 136, "authored": "light"},
+  "345": {"name": "Grand Cross", "technique": 137, "authored": "light"},
+  "346": {"name": "Bubble Shot", "technique": 138, "authored": "water"},
+  "347": {"name": "Aqua Jet", "technique": 139, "authored": "water"},
+  "348": {"name": "Rain Dance", "technique": 140, "authored": "water"},
+  "349": {"name": "Whirlpool", "technique": 141, "authored": "water"},
+  "350": {"name": "Hydro Cannon", "technique": 142, "authored": "water"},
+  "351": {"name": "Sea Crush", "technique": 143, "authored": "water"},
+  "352": {"name": "Tidal Wave", "technique": 144, "authored": "water"},
+  "353": {"name": "Ocean Fury", "technique": 145, "authored": "water"},
+  "354": {"name": "Quick Slash", "technique": 146, "authored": "weapon"},
+  "355": {"name": "Blade Throw", "technique": 147, "authored": "weapon"},
+  "356": {"name": "Armor Break", "technique": 148, "authored": "weapon"},
+  "357": {"name": "War Stance", "technique": 149, "authored": "weapon"},
+  "358": {"name": "Cross Cutter", "technique": 150, "authored": "weapon"},
+  "359": {"name": "Whirling Edge", "technique": 151, "authored": "weapon"},
+  "360": {"name": "Giant Cleave", "technique": 152, "authored": "weapon"},
+  "361": {"name": "Final Edge", "technique": 153, "authored": "weapon"},
+  "362": {"name": "Rock Throw", "technique": 154, "authored": "earth"},
+  "363": {"name": "Sand Blast", "technique": 155, "authored": "earth"},
+  "364": {"name": "Stone Skin", "technique": 156, "authored": "earth"},
+  "365": {"name": "Boulder Crash", "technique": 157, "authored": "earth"},
+  "366": {"name": "Fissure", "technique": 158, "authored": "earth"},
+  "367": {"name": "Stalagmite", "technique": 159, "authored": "earth"},
+  "368": {"name": "Landslide", "technique": 160, "authored": "earth"},
+  "369": {"name": "Gaia Quake", "technique": 161, "authored": "earth"},
+  "370": {"name": "Plasma Blade", "technique": 320, "authored": "finishers"},
+  "371": {"name": "Hades' Grenade", "technique": 246, "authored": "finishers_shot_a"},
+  "372": {"name": "Ocean Love", "technique": 248, "authored": "finishers_shot_a"},
+  "373": {"name": "Torpedo Attack", "technique": 254, "authored": "finishers_shot_a"},
+  "374": {"name": "Crimson Claw", "technique": 216, "authored": "finishers_dash_a"},
+  "375": {"name": "Lightning Paw", "technique": 234, "authored": "finishers_dash_a"},
+  "376": {"name": "Recovery Power", "technique": 123, "authored": "finishers_beam_a"},
+  "377": {"name": "Jamming Thunder", "technique": 256, "authored": "finishers_beam_b"}
 }

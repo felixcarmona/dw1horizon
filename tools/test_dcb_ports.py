@@ -68,16 +68,21 @@ class Wiring(unittest.TestCase):
                     self.assertIn(e['hit_sound'], battle_sounds)
 
     def test_rows_that_did_not_pass_keep_the_template(self):
+        """A chunk whose effect was since written for this game (tools/technique_effects) is that effect, whatever
+        the conversion gave."""
         ported = ports()
+        own = _json('content/battle/own-effects.json')
         for chunk, r in sorted(rows().items()):
             with self.subTest(chunk=chunk, name=r['species_name']):
                 self.assertIn(chunk, CHUNKS)
-                if r['result'] == 'converted':
+                composed = own.get(str(chunk))
+                if composed and 'authored' in composed:
+                    self.assertEqual(species_of(chunk)['id'], composed['technique'])
+                elif r['result'] == 'converted':
                     self.assertIn(chunk, ported)
                 else:
                     self.assertNotIn(chunk, ported)
                     self.assertTrue(r.get('why'))
-                    composed = _json('content/battle/own-effects.json').get(str(chunk))
                     if r.get('fallback') == 'composed':     # the template's own look contradicted the attack's kind
                         self.assertIn('compose', composed)
                         self.assertEqual(species_of(chunk)['id'], r['species'])

@@ -4,6 +4,10 @@ This page explains how Digimon World 2 (USA) stores and plays a technique's visu
 what carrying one into this game's effect engine would take. Everything here is read from the player's own
 DW2 disc with `tools/dw2effect.py`. Nothing from that disc is kept in the repository.
 
+No species plays these conversions now: every imported finisher is an effect written for this game
+([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter and its data stay in the
+repository, and this page describes them and what they gave when they were played.
+
 ## Where a technique's effect lives
 
 Every disc file is addressed by a number, its *file id*. The DW2 boot executable (`SLUS_011.93`) holds a

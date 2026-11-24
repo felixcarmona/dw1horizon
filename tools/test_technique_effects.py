@@ -1,22 +1,30 @@
 """The effects of the Darkness, Light, Water, Weapon and Earth rows (tools/technique_effects): each one builds into a chunk of the
 machine's size, keeps what it leaves in memory inside what the disc's own effects keep, plays in the simulator to
 its end, sounds, and hits what its technique hits (one enemy, or all of them for the area ones). The ones that hit by
-position miss a target that walks away. The finishers written the same way (finishers.py) pass the same checks,
+position miss a target that walks away. The finishers written the same way (finishers.py, finishers_<kind>.py) pass the same checks,
 against the range of their own design (content/finishers/imports.json)."""
+import importlib
 import json
 import os
 import unittest
 
 from tools import efecompose as E
 from tools import efesim as S
-from tools.technique_effects import dark, earth, finishers, light, water, weapon
+from tools.technique_effects import dark, earth, light, water, weapon
 
 ROWS = {'dark': dark, 'light': light, 'water': water, 'weapon': weapon, 'earth': earth}
 KEPT_MAX = 14 * 1024            # the largest of the disc's own effects keeps about 14 KB
 # the single-target techniques whose hit is where the target stood, not the target (a shot's flight, a strike's spot)
 DODGED = (123, 128, 131, 135, 137, 138, 139, 142, 147, 154, 157)
 # the finishers (by species) that fly to where the target stood
-FINISHERS_DODGED = (433, 409, 403)
+FINISHERS_DODGED = (433, 409, 403,
+                    185, 190, 195, 202, 205, 213, 214, 218, 225, 227, 228, 232, 235, 236, 240, 244,
+                    246, 254, 269, 273, 278, 282, 285, 286, 291, 299, 304, 307, 311, 322, 460)
+
+
+def finisher_effects(module):
+    """{species: effect} of one of the finishers' modules (finishers.py, finishers_<kind>.py)."""
+    return importlib.import_module('tools.technique_effects.' + module).EFFECTS
 
 
 def play(chunk, walk=0):
@@ -39,7 +47,7 @@ def entries(finisher=False):
     with open(os.path.join('content', 'battle', 'own-effects.json')) as f:
         spec = json.load(f)
     return {int(k): e for k, e in spec.items() if k != 'note' and 'authored' in e
-            and (e['authored'] == 'finishers') == finisher}
+            and e['authored'].startswith('finishers') == finisher}
 
 
 def finisher_moves():
@@ -72,20 +80,22 @@ class TechniqueEffects(unittest.TestCase):
         for key, entry in entries(finisher=True).items():
             species = entry['technique']
             with self.subTest(species=species, name=entry['name']):
-                self.assertIn(species, finishers.EFFECTS)
+                self.assertIn(species, finisher_effects(entry['authored']))
                 self.assertEqual(moves[species]['name'], entry['name'])
                 self.assertEqual(moves[species]['effect']['status'], 'authored')
                 own = own_effect(species)
                 self.assertEqual(own['chunk'], key)
                 self.assertEqual(own['technique'], moves[species]['replaces']['name'])
-        self.assertEqual(sorted(e['technique'] for e in entries(finisher=True).values()), sorted(finishers.EFFECTS))
+        modules = {e['authored'] for e in entries(finisher=True).values()}
+        self.assertEqual(sorted(e['technique'] for e in entries(finisher=True).values()),
+                         sorted(s for m in modules for s in finisher_effects(m)))
 
     def test_each_finisher_builds_plays_and_hits(self):
         moves = finisher_moves()
         for key, entry in sorted(entries(finisher=True).items()):
             species = entry['technique']
             with self.subTest(species=species, name=entry['name']):
-                chunk, kept = finishers.EFFECTS[species]().build(0x100 + key)
+                chunk, kept = finisher_effects(entry['authored'])[species]().build(0x100 + key)
                 self.assertEqual(len(chunk), E.CHUNK)
                 self.assertLessEqual(kept, KEPT_MAX)
                 sim = play(bytes(chunk))
