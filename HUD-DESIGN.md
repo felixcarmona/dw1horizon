@@ -1,4 +1,28 @@
-# Field care HUD: B5a implementation and design history
+# Field care HUD: native stacked bars, with the B5a design history
+
+## Current: five native bars stacked (2026-11-24)
+
+B5a's grey icon blocks and thin green/blue bars did not match the rest of the game's UI and were replaced.
+The HUD is now **five short copies of the native field status bar** in one column at the bottom right, top to
+bottom: happiness, discipline, hunger, toilet, tiredness. Each row is the original bar frame (SYSTEM_W, the
+76×8 bar of the original happiness/discipline HUD) with its slot cut from 50 to 22 pixels, the icon drawn on the
+frame's left cap exactly as the original game draws its two bars (one pixel right, two up), and a fill in the
+native MP bar's two blues. Rows are 12 pixels apart; the column spans x=263..310, y=167..224, so its right and
+bottom edges are the original bars'.
+
+- **One colour.** Every fill is the same blue. The mood bars no longer turn green or red, and the need bars no
+  longer blink when a need approaches or tint their icon when it is active: the condition bubbles carry the
+  warnings. The mood faces still change (happy/sad, disciplined/undisciplined) and the disliked-habitat face
+  blink is the original game's and stays.
+- **Values** keep the B5a meanings: happiness −100..100, discipline 0..100, time to the next meal
+  (`foodLevel`/180), time to the toilet (`poopLevel` over twice the species' `poopTimer`), energy left
+  (100 − tiredness). 22 fill steps.
+- **Cost.** Art in unused ETCTIM entry 1 cells (`tools/field_hud_art.py`: icons at 144,32; frame 144,44; fill
+  196,44; CLUT rows 500–508), no new upload or RAM. Three quads a row, 15 a frame (600 bytes of the packet buffer).
+
+- The status screen's care panels keep their own bars.
+
+Everything below is the B5a implementation and design history.
 
 The project adopted **B5a** on 2026-11-06. The field and training care HUD and status-screen care panels are always enabled. The review material below is historical design evidence.
 

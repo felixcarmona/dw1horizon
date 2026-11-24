@@ -1,16 +1,24 @@
 #!/usr/bin/env python3
-"""B5a field gauges in unused ETCTIM.BIN texels and CLUT rows.
+"""Field care HUD art in unused ETCTIM.BIN texels and CLUT rows.
 
-Entry 1 (960,448; 256x64; CLUT 272,496) has no native sprite in
-these cells. Seven 34x13 tiles contain a common grey icon block and empty
-outlined track. Rows 500..506 preserve native icon colours; 507 holds the
-status screen's green/red fills and the light-blue need fills. Rows 508..510
-blend the whole need icon 55% towards luminance-scaled brick red. The track
-uses separate palette indices so it cannot inherit an icon tint. No allocation
-is added. Native pixels come from SYSTEM_W (entry 8) and the toilet-need
-condition frame (entry 3), fitted whole to 11x11. The two mood tiles encode
-normal/disliked colour pairs; spare CLUT rows (272,511) and (256,511) select
-the original worse expressions without adding a tile, draw packet or RAM data.
+Entry 1 (960,448; 256x64; CLUT 272,496) has no native sprite in these cells.
+The HUD is five short copies of the native field status bar stacked in one
+column: happiness, discipline, hunger, toilet, tiredness. Each row draws three
+quads: the bar frame, its icon on the frame's left cap (as the original game
+draws its two bars) and the native two-tone blue fill.
+
+- FRAME (48x8): the native 76x8 bar from SYSTEM_W (entry 8, CLUT row 500),
+  its 50-texel slot cut to 22 and the slot's blue interior made the dark
+  empty track. CLUT row 508.
+- ICONS (7 x 11x11): happy, sad, disciplined, undisciplined, meat, toilet,
+  tired; native pixels with no background, CLUT rows 500..506. The meat and
+  tired sprites lose their baked grey block. The two mood icons encode
+  (normal, disliked) colour pairs; spare CLUT rows (272,511) and (256,511)
+  select the original worse expressions without adding a tile.
+- FILL (22x2): the native MP bar's two blue rows, CLUT row 507.
+
+No allocation is added. Native pixels come from SYSTEM_W (entry 8) and the
+toilet-need condition frame (entry 3), fitted whole to 11x11.
 """
 import argparse
 from pathlib import Path
@@ -21,24 +29,24 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.localize.build import tim_entries
 
 PATH = 'ETCDAT/ETCTIM.BIN'
-CELLS = ((144,32), (178,32), (212,32), (144,45), (178,45), (212,45), (110,50))
+ICON = 11
+ICONS = tuple((144 + k * ICON, 32) for k in range(7))
 # Happy, sad, disciplined, undisciplined, meat, toilet, tired.
 SOURCES = ((64,244,503,11), (97,244,503,11), (22,244,498,11),
            (33,244,498,11), (72,140,488,12), (208,400,483,16), (108,140,489,12))
+FRAME = (144, 44)
+FRAME_W, FRAME_H = 48, 8
+SLOT = 22                      # fill texels; the native slot is 50
+NATIVE_BAR = (0, 236, 500)     # SYSTEM_W u, v, CLUT row: the original field bar
+FILL = (196, 44)
+FILL_COLOURS = ((205,230,246), (0,106,189))   # the native MP bar's two rows
+EMPTY_COLOURS = ((40,40,40), (24,24,24))
+CLUT_ICON, CLUT_FILL, CLUT_FRAME = 4, 11, 12  # rows 500, 507, 508
 
 
 def rgb15(rgb):
     r,g,b = (v >> 3 for v in rgb)
     return r | g << 5 | b << 10
-
-
-def active_tint(colour):
-    """Option B: blend 55% towards luminance * (235,90,80), then PSX RGB15."""
-    if not colour:
-        return 0
-    rgb = [((colour >> shift) & 31) * 255 / 31 for shift in (0,5,10)]
-    luminance = sum(c*w for c,w in zip(rgb,(.299,.587,.114))) / 255
-    return rgb15([round(.45*c + .55*luminance*t) for c,t in zip(rgb,(235,90,80))]) or 0x8000
 
 
 def build(data):
@@ -73,76 +81,71 @@ def build(data):
         p = clut+row*32
         if any(d[p:p+32]):
             raise ValueError(f'field HUD CLUT row is occupied: {496+row}')
+        if len(colours) > 16:
+            raise ValueError(f'field HUD CLUT row {496+row} needs {len(colours)} colours')
         struct.pack_into('<16H',d,p,*(colours+[0]*(16-len(colours))))
 
+    def native_palette(cy):
+        return struct.unpack_from('<16H',d,src-12-512+(cy-488)*32)
+
     grey, light, shadow = map(rgb15, ((144,144,144),(184,184,184),(64,64,64)))
-    outline, top, bottom = map(rgb15, ((16,24,32),(112,112,112),(88,88,88)))
-    for k, ((u,v), source) in enumerate(zip(CELLS,SOURCES)):
-        tile = [[0]*34 for _ in range(13)]
-        for y in range(13):
-            for x in range(13):
-                tile[y][x] = light if y==0 or x==0 else shadow if y==12 or x==12 else grey
+
+    # Icons: native glyphs on a transparent background.
+    for k, ((u,v), source) in enumerate(zip(ICONS,SOURCES)):
         sx,sy,cy,size = source
         pixels,base_y,clut_y = (need,384,480) if k==5 else (src,128,488)
         native = struct.unpack_from('<16H',d,pixels-12-512+(cy-clut_y)*32)
-        # Mood tiles encode (normal, disliked) colours in each texel index.
-        # Switching the CLUT preserves the native disliked-habitat expressions.
-        if k < 2:
-            tile = [[(c,c) for c in row] for row in tile]
-        for y in range(11):
-            for x in range(11):
+        tile = [[0]*ICON for _ in range(ICON)]
+        for y in range(ICON):
+            for x in range(ICON):
                 a,b = ((2*t+1)*size//22 for t in (x,y))
                 colour = native[pixel(pixels,sx+a,sy-base_y+b)]
+                # The meat and tired sprites carry the status page's grey block.
                 if k in (4,6) and colour in (grey,light,shadow):
                     colour = 0
                 if k < 2:
                     worse = native[pixel(src,sx+x+11,sy-128+y)]
-                    tile[y+1][x+1] = (colour or grey, worse or grey)
-                elif colour:
-                    tile[y+1][x+1] = colour
-        for y in range(5,9):
-            for x in range(14,34):
-                tile[y][x] = top if y==6 and 15<=x<33 else bottom if y==7 and 15<=x<33 else outline
+                    colour = (colour, worse)
+                tile[y][x] = colour
         if k < 2:
-            for y in range(5,9):
-                for x in range(14,34):
-                    c = tile[y][x]
-                    tile[y][x] = (c,c)
             colours = list(dict.fromkeys([(0,0)]+[c for row in tile for c in row]))
-            if len(colours)>16:
-                raise ValueError(f'HUD mood {k} exceeds its native palette')
-            palette(4+k,[c[0] for c in colours])
+            palette(CLUT_ICON+k,[c[0] for c in colours])
             # Spare CLUT rows: BTLCOMND (272,511), FI_INFO (256,511).
             alt = clut+15*32 if k==0 else entries[4][0]-12-512+15*32
             if any(d[alt:alt+32]):
                 raise ValueError('HUD mood CLUT row is occupied')
             struct.pack_into('<16H',d,alt,*([c[1] for c in colours]+[0]*(16-len(colours))))
-            for y,row in enumerate(tile):
-                for x,c in enumerate(row):
-                    put(u+x,v+y,colours.index(c))
-            continue
-        # Keep track indices distinct even if a glyph shares a track ink.
-        colours = list(dict.fromkeys([0]+[tile[y][x] for y in range(13) for x in range(13)]))
-        icon_colours = len(colours)
-        colours += [outline,top,bottom]
-        if len(colours)>16:
-            raise ValueError(f'HUD tile {k} exceeds its native palette: {len(colours)}')
-        palette(4+k,colours)
-        if k >= 4:
-            palette(8+k,[active_tint(c) for c in colours[:icon_colours]]+colours[icon_colours:])
+        else:
+            colours = list(dict.fromkeys([0]+[c for row in tile for c in row]))
+            palette(CLUT_ICON+k,colours)
         for y,row in enumerate(tile):
             for x,c in enumerate(row):
-                index = icon_colours + [outline,top,bottom].index(c) if x>=14 and 5<=y<9 else colours.index(c)
-                put(u+x,v+y,index)
-    colours = [0] + list(map(rgb15, ((117,218,96),(48,200,40),(234,117,96),(224,48,40),
-                                    (160,210,255),(120,190,255))))
-    palette(11,colours)
-    for y in range(4):
-        for x in range(18):
-            put(144+x,59+y,1+y)
+                if colours.index(c):
+                    put(u+x,v+y,colours.index(c))
+
+    # Frame: the native bar, slot shortened, interior emptied.
+    bu,bv,bc = NATIVE_BAR
+    bar_palette = native_palette(bc)
+    keep = list(range(0,18)) + [18]*SLOT + list(range(68,76))
+    blue = rgb15((96,176,240))
+    frame = [[bar_palette[pixel(src,bu+sx,bv-128+y)] for sx in keep] for y in range(FRAME_H)]
+    for y in (3,4):
+        for x in range(18,18+SLOT):
+            if frame[y][x] != blue:
+                raise ValueError('unexpected native bar slot')
+            frame[y][x] = rgb15(EMPTY_COLOURS[y-3])
+    colours = list(dict.fromkeys([0]+[c for row in frame for c in row]))
+    palette(CLUT_FRAME,colours)
+    for y,row in enumerate(frame):
+        for x,c in enumerate(row):
+            if colours.index(c):
+                put(FRAME[0]+x,FRAME[1]+y,colours.index(c))
+
+    # Fill: two rows of the native MP blue.
+    palette(CLUT_FILL,[0]+[rgb15(c) for c in FILL_COLOURS])
     for y in range(2):
-        for x in range(18):
-            put(164+x,59+y,5+y)
+        for x in range(SLOT):
+            put(FILL[0]+x,FILL[1]+y,1+y)
     return bytes(d)
 
 
