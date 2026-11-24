@@ -140,10 +140,9 @@
     "title": "Darkness, Light and Water",
     "summary": "Three more technique rows, healing and their cups.",
     "paragraphs": [
-      "Three rows join the seven of the original: Darkness, Light and Water, eight techniques each. A partner learns them like any other: the technique must be on its species list and the row among its specialties. The Techset screen scrolls through the ten rows.",
+      "Three rows join the seven of the original: Darkness, Light and Water, eight techniques each. A partner learns them like any other: the technique must be on its species list and the row among its specialties. The Techset screen scrolls through the ten rows. A save from an earlier version loads as it is. On that first load the partner learns the first technique of each new row on its species list: Shadow Claw, Holy Spark or Bubble Shot. It learns the rest like any other technique.",
       "Blessing gives back 10% of the full HP, and the amount rises in green over the Digimon. A partner heals three times a battle and an enemy twice; nobody heals at full HP. Left alone, a partner heals only below 60% of its HP; your order heals at any HP below the full. Sacred Shield raises Defense, Rain Dance raises Speed, and Evil Whisper takes a fifth of the target's Defense, once per fighter and battle.",
-      "Darkness and Light do double damage to each other and half to their own row. Water does double damage to Fire and Filth and half to Nature, Ice and Water; Air does double damage to Water. Three cups of the arena take only the species whose first specialty is their row: the Dark Cup, the Holy Cup and the Aqua Cup, twice each in the 30 days of the calendar. The winner takes 5000 bits and a Muscle Yam, a Sage Fruit or a Power Ice.",
-      "A save from an earlier version loads as it is. On that first load the partner learns the first technique of each new row on its species list: Shadow Claw, Holy Spark or Bubble Shot. It learns the rest like any other technique."
+      "Darkness and Light do double damage to each other and half to their own row. Water does double damage to Fire and Filth and half to Nature, Ice and Water; Air does double damage to Water. Three cups of the arena take only the species whose first specialty is their row: the Dark Cup, the Holy Cup and the Aqua Cup, twice each in the 30 days of the calendar. The winner takes 5000 bits and a Muscle Yam, a Sage Fruit or a Power Ice."
     ]
   },
   "file-city": {
