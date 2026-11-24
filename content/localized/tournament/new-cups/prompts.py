@@ -1,4 +1,4 @@
-"""The thirteen new cups' banners: Gemini prompts. KEY: (material of the logo, glow)"""
+"""The fifteen new cups' banners: Gemini prompts. KEY: (material of the logo, glow)"""
 LANGS = ['en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans']
 STYLE = {
  'ROOKIE_CUP': 'chunky glossy lime-green jelly letters with a bright yellow outline glow, playful and rounded',
@@ -14,6 +14,8 @@ STYLE = {
  'WIND_GUARDIANS_CUP': 'sky-blue and white letters made of clouds and feathers with swirls of wind, with a pale glow',
  'METAL_EMPIRE_CUP': 'grey riveted steel plate letters with bolts and orange rust at the edges, with a cold steel glow',
  'VIRUS_BUSTERS_CUP': 'shining holy gold letters with white light rays and small white feathers, with a warm white glow',
+ 'DRAGONS_ROAR_CUP': 'dark crimson dragon-scale letters with sharp horn-like spikes and cracks of fire, with a fiery orange glow',
+ 'JUNGLE_TROOPERS_CUP': 'mossy carved jungle-temple stone letters with tropical leaves and small orange flowers, with a warm amber glow',
 }
 FAMILY = {k: 'level' for k in list(STYLE)[:4]} | {k: 'attribute' for k in list(STYLE)[4:7]} | {k: 'field' for k in list(STYLE)[7:]}
 CUP = dict(zip(LANGS, ['CUP', 'COPA', 'COPA', 'COUPE', 'POKAL', 'COPPA', 'カップ', 'COPA', '杯']))
@@ -28,8 +30,8 @@ WORD = {   # the logo word: the cup's name (text/<language>/names.json) without 
  'ca': ['NOVELL', 'CAMPIÓ', 'PERFECTE', 'MEGA', 'VACUNA', 'DADES', 'VIRUS'],
  'zh-hans': ['成长期', '成熟期', '完全体', '究极体', '疫苗', '数据', '病毒'],
 }
-FIELDS = ['NATURE SPIRITS', 'DEEP SAVERS', 'NIGHTMARE SOLDIERS', 'WIND GUARDIANS', 'METAL EMPIRE', 'VIRUS BUSTERS']
-FIELDS_JA = ['ネイチャースピリッツ', 'ディープセイバーズ', 'ナイトメアソルジャーズ', 'ウィンドガーディアンズ', 'メタルエンパイア', 'ウイルスバスターズ']
+FIELDS = ['NATURE SPIRITS', 'DEEP SAVERS', 'NIGHTMARE SOLDIERS', 'WIND GUARDIANS', 'METAL EMPIRE', 'VIRUS BUSTERS', "DRAGON'S ROAR", 'JUNGLE TROOPERS']
+FIELDS_JA = ['ネイチャースピリッツ', 'ディープセイバーズ', 'ナイトメアソルジャーズ', 'ウィンドガーディアンズ', 'メタルエンパイア', 'ウイルスバスターズ', 'ドラゴンズロアー', 'ジャングルトルーパーズ']
 CAPTION = {
  'level': dict(zip(LANGS, ['COME TOGETHER !! {w} LEVEL ONLY', '¡¡VENID TODOS!! SOLO NIVEL {w}', 'VENHAM TODOS!! SÓ NÍVEL {w}',
      'VENEZ TOUS !! NIVEAU {w} SEULEMENT', 'KOMMT ALLE!! NUR {w}-LEVEL', 'VENITE TUTTI!! SOLO LIVELLO {w}',
@@ -61,7 +63,8 @@ Large main logo, in exactly the same material and style as image 1's (narrower l
 Keep the lettering hierarchy, thick and readable at 256x128 pixels, clear of the edges.'''
 
 SPLIT_JA = {'ネイチャースピリッツ': 'ネイチャー / スピリッツ', 'ディープセイバーズ': 'ディープ / セイバーズ', 'ナイトメアソルジャーズ': 'ナイトメア / ソルジャーズ',
-            'ウィンドガーディアンズ': 'ウィンド / ガーディアンズ', 'メタルエンパイア': 'メタル / エンパイア', 'ウイルスバスターズ': 'ウイルス / バスターズ'}
+            'ウィンドガーディアンズ': 'ウィンド / ガーディアンズ', 'メタルエンパイア': 'メタル / エンパイア', 'ウイルスバスターズ': 'ウイルス / バスターズ',
+            'ドラゴンズロアー': 'ドラゴンズ / ロアー', 'ジャングルトルーパーズ': 'ジャングル / トルーパーズ'}
 def lines(w):
     if w in SPLIT_JA: return f', on two lines: {SPLIT_JA[w]} (no Latin letter may remain anywhere in the picture)'
     return ', on two lines as in image 1' if ' ' in w else ', on one line'

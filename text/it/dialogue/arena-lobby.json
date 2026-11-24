@@ -251,8 +251,7 @@
    "possono salire sul ring.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Digimon Intermedi"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u23": [
@@ -262,8 +261,7 @@
    "possono salire sul ring.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Digimon Campioni"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u24": [
@@ -273,8 +271,7 @@
    "possono salire sul ring.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Digimon Evoluti"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u25": [
@@ -284,8 +281,7 @@
    "possono salire sul ring.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Digimon Mega"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u26": [
@@ -295,8 +291,7 @@
    "di attributo Vaccino.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: attributo Vaccino"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u27": [
@@ -306,8 +301,7 @@
    "di attributo Dati.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: attributo Dati"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u28": [
@@ -317,8 +311,7 @@
    "di attributo Virus.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: attributo Virus"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u29": [
@@ -328,8 +321,7 @@
    "Nature Spirits.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Nature Spirits"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u30": [
@@ -339,8 +331,7 @@
    "Deep Savers.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Deep Savers"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u31": [
@@ -350,8 +341,7 @@
    "Nightmare Soldiers.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Nightmare Soldiers"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u32": [
@@ -361,8 +351,7 @@
    "Wind Guardians.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Wind Guardians"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u33": [
@@ -372,8 +361,7 @@
    "Metal Empire.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Metal Empire"
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec10.u34": [
@@ -383,8 +371,27 @@
    "Virus Busters.",
    "Incontri a tempo limitato.",
    "",
-   "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Virus Busters"
+   "Singoli, 3 turni, 8 iscritti"
+  ]
+ ],
+ "s168.sec10.u35": [
+  [
+   "- Coppa Dragon's Roar -",
+   "Per i Digimon del Field",
+   "Dragon's Roar.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti"
+  ]
+ ],
+ "s168.sec10.u36": [
+  [
+   "- Coppa Jungle Troopers -",
+   "Per i Digimon del Field",
+   "Jungle Troopers.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti"
   ]
  ],
  "s168.sec53.u0": [

@@ -291,6 +291,8 @@ script 209 {
         goto l67;
         goto l69;
         goto l71;
+        goto l73;
+        goto l75;
         l1:
         goto l2;
         goto L92;
@@ -577,6 +579,22 @@ script 209 {
         goto L105;
         goto L165;
         goto L105;
+        l72:
+        show_textbox(text("s209.sec10.u35"));
+        l73:
+        goto l72;
+        goto L92;
+        goto L105;
+        goto L166;
+        goto L105;
+        l74:
+        show_textbox(text("s209.sec10.u36"));
+        l75:
+        goto l74;
+        goto L92;
+        goto L105;
+        goto L167;
+        goto L105;
     }
     on talk(slot6) replace {    // talk
         data(12, 13, 14, 26, 27, 28, 40, 41, 42, 54, 55, 56, 59, 60, 61);
@@ -728,6 +746,10 @@ script 209 {
         data(253, 4, 4, 254);
         shared L165:
         data(253, 4, 5, 254);
+        shared L166:
+        data(253, 4, 6, 254);
+        shared L167:
+        data(253, 4, 7, 254);
         end_section();
         end_script();
     }

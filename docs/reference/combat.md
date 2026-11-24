@@ -734,8 +734,8 @@ PStat 4 (species) and triggers 37, 38, 39. `updateTournamentRegistration`
 until something clears that bit (not seen here). Cups: 0–5 Grade D, C, B, A,
 S, R; 6–10 Version 1–4 and 0; 11–17 Fire, Grapple, Thunder Wind, Cool, Nature,
 Metalic, Filth; 18–22 Dino, Wing, Animal, Human, Beetle (`TOURNAMENT_NAMES`).
-Horizon adds cups 23–35 (Rookie, Champion, Ultimate, Mega; Vaccine, Data, Virus; Nature Spirits, Deep Savers,
-Nightmare Soldiers, Wind Guardians, Metal Empire, Virus Busters) and lets list 3 state a rule in its first three bytes
+Horizon adds cups 23–37 (Rookie, Champion, Ultimate, Mega; Vaccine, Data, Virus; Nature Spirits, Deep Savers,
+Nightmare Soldiers, Wind Guardians, Metal Empire, Virus Busters, Dragon's Roar, Jungle Troopers) and lets list 3 state a rule in its first three bytes
 (`253, kind, value`); the rivals are then chosen in the arena overlay (`STD_pickOpponents`), not in `startTournament`:
 see [engine-patches.md](engine-patches.md), Tournaments.
 

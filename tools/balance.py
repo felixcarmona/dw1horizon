@@ -190,7 +190,7 @@ TABLES = [
     ('daytime', 'SLUS_010.32', 'MOD_DAYTIME', 18),
     ('tournamentRemap', 'STD_REL.BIN', 'STD_REMAP', 16),
     ('stdArena', 'SLUS_010.32', 'STD_ARENA_SCREEN', 2),
-    ('newCupStats', 'STD_REL.BIN', 'STD_NEW_CUP_BASE_STATS', 26),      # the cups after the original's (23..35)
+    ('newCupStats', 'STD_REL.BIN', 'STD_NEW_CUP_BASE_STATS', 30),      # the cups after the original's (23..37)
     ('vsUnlock', 'SLUS_010.32', 'MOD_VS_UNLOCK', 10),
     ('trainGain', 'TRN_REL.BIN', 'MOD_TRAIN_GAIN', 352),
     ('trainRules', 'TRN_REL.BIN', 'MOD_TRAIN_RULES', 68),
@@ -430,7 +430,7 @@ NAMED_RULES = {
                 'clock.dayFrom', 'clock.dayTo'],
     'stdArena': ['screen'],
     'newCupStats': ['rookie', 'champion', 'ultimate', 'mega', 'vaccine', 'data', 'virus', 'natureSpirits', 'deepSavers',
-                    'nightmareSoldiers', 'windGuardians', 'metalEmpire', 'virusBusters'],
+                    'nightmareSoldiers', 'windGuardians', 'metalEmpire', 'virusBusters', 'dragonsRoar', 'jungleTroopers'],
     'vsUnlock': ['species', 'techniques[0]', 'techniques[1]', 'techniques[2]', 'slot'],
     'evolutionSpecial': ['virus.threshold', 'virus.target', 'virus.notFor[0]', 'virus.notFor[1]', 'championCheck.level',
                          'championCheck.hours', 'scold.level', 'scold.discipline', 'scold.happiness'],

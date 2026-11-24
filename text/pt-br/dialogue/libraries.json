@@ -2591,8 +2591,7 @@
    "podem subir a este ringue.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Digimon Novatos"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u23": [
@@ -2602,8 +2601,7 @@
    "podem subir a este ringue.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Digimon Campeões"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u24": [
@@ -2613,8 +2611,7 @@
    "podem subir a este ringue.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Digimon Perfeitos"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u25": [
@@ -2624,8 +2621,7 @@
    "podem subir a este ringue.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Digimon Mega"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u26": [
@@ -2635,8 +2631,7 @@
    "de atributo Vacina.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: atributo Vacina"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u27": [
@@ -2646,8 +2641,7 @@
    "de atributo Dados.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: atributo Dados"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u28": [
@@ -2657,8 +2651,7 @@
    "de atributo Vírus.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: atributo Vírus"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u29": [
@@ -2668,8 +2661,7 @@
    "Nature Spirits.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Nature Spirits"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u30": [
@@ -2679,8 +2671,7 @@
    "Deep Savers.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Deep Savers"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u31": [
@@ -2690,8 +2681,7 @@
    "Nightmare Soldiers.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Nightmare Soldiers"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u32": [
@@ -2701,8 +2691,7 @@
    "Wind Guardians.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Wind Guardians"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u33": [
@@ -2712,8 +2701,7 @@
    "Metal Empire.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Metal Empire"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s209.sec10.u34": [
@@ -2723,8 +2711,27 @@
    "Virus Busters.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Virus Busters"
+   "Individual, 3 rodadas, 8 vagas"
+  ]
+ ],
+ "s209.sec10.u35": [
+  [
+   "- Copa Dragon's Roar -",
+   "Para os Digimon do Field",
+   "Dragon's Roar.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas"
+  ]
+ ],
+ "s209.sec10.u36": [
+  [
+   "- Copa Jungle Troopers -",
+   "Para os Digimon do Field",
+   "Jungle Troopers.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s210.sec51.u0": "Eu estava esperando por você, {color 6}{player}{color 1}. Finalmente, chegou o dia.",
@@ -3286,8 +3293,7 @@
    "podem subir a este ringue.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Digimon Novatos"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u23": [
@@ -3297,8 +3303,7 @@
    "podem subir a este ringue.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Digimon Campeões"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u24": [
@@ -3308,8 +3313,7 @@
    "podem subir a este ringue.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Digimon Perfeitos"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u25": [
@@ -3319,8 +3323,7 @@
    "podem subir a este ringue.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Digimon Mega"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u26": [
@@ -3330,8 +3333,7 @@
    "de atributo Vacina.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: atributo Vacina"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u27": [
@@ -3341,8 +3343,7 @@
    "de atributo Dados.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: atributo Dados"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u28": [
@@ -3352,8 +3353,7 @@
    "de atributo Vírus.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: atributo Vírus"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u29": [
@@ -3363,8 +3363,7 @@
    "Nature Spirits.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Nature Spirits"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u30": [
@@ -3374,8 +3373,7 @@
    "Deep Savers.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Deep Savers"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u31": [
@@ -3385,8 +3383,7 @@
    "Nightmare Soldiers.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Nightmare Soldiers"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u32": [
@@ -3396,8 +3393,7 @@
    "Wind Guardians.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Wind Guardians"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u33": [
@@ -3407,8 +3403,7 @@
    "Metal Empire.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Metal Empire"
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec10.u34": [
@@ -3418,8 +3413,27 @@
    "Virus Busters.",
    "Combates com limite de tempo.",
    "",
-   "Individual, 3 rodadas, 8 vagas",
-   "Entrada: Virus Busters"
+   "Individual, 3 rodadas, 8 vagas"
+  ]
+ ],
+ "s213.sec10.u35": [
+  [
+   "- Copa Dragon's Roar -",
+   "Para os Digimon do Field",
+   "Dragon's Roar.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas"
+  ]
+ ],
+ "s213.sec10.u36": [
+  [
+   "- Copa Jungle Troopers -",
+   "Para os Digimon do Field",
+   "Jungle Troopers.",
+   "Combates com limite de tempo.",
+   "",
+   "Individual, 3 rodadas, 8 vagas"
   ]
  ],
  "s213.sec54.u0": "Ei, você não entrou no torneio.",
@@ -4808,6 +4822,18 @@
   ]
  ],
  "s220.sec51.u21": "Você não pode mais carregar!",
+ "s220.sec51.u22": [
+  [
+   "Prêmio do campeão: 5000 Bits!",
+   "Recebeu 1 x {color 6}Fruta do poder{color 1}!"
+  ]
+ ],
+ "s220.sec51.u23": [
+  [
+   "Prêmio do campeão: 5000 Bits!",
+   "Recebeu 1 x {color 6}Fruta sábia{color 1}!"
+  ]
+ ],
  "s220.sec83.u0": [
   [
    "{color 7}Poyomon {color 1}",
