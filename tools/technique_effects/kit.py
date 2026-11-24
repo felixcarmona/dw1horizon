@@ -69,6 +69,8 @@ class Fx:
         self.F1, self.F2 = self.var(), self.var()
         self.AT = self.vec()                # where the next particle() or travel() instance starts
         self.DEST = self.vec()              # where the next travel() instance goes
+        self.HIT = self.var()               # 1 after strike() or a shot() touched somebody
+        self.KEEP = self.vec()
         self.root = self.pool('root', 1)
         a = self.a
         a.label('start')
@@ -353,6 +355,46 @@ class Fx:
         self.ret()
         return pool
 
+    def shot(self, name, count, speed, reach, render, arrive, miss=None, every=None, extent=(70, 170, 70)):
+        """Define the routine `name`: an instance thrown from AT towards DEST at `speed` a tick, which flies on in a
+        straight line, past DEST, for up to `reach` ticks. It hits the first fighter it touches (not the caster; a box
+        of that half extent around it) and calls the label `arrive`, standing where it hit. If it touches nobody it
+        calls `miss` at the end of its reach. A target that walked away after the throw is not hit. every: a label
+        called each tick of the flight. Its step is the instance vector at FREE."""
+        pool = self.pool(name, count, 3)
+        step = iv(FREE)
+        ext = self.vec(); self.inits.append((ext, extent))
+        over, go, ok = self.label(), self.label(), self.label()
+        self.begin(name, pool, render, inherit=False)
+        self.vcopy(POS, self.AT)
+        self.vcopy(step, self.DEST)
+        self.vsub(step, self.AT)
+        self.vlen(self.T, step)
+        self.br(self.T, '>', 0, ok)
+        self.set(self.T, 1)
+        self.a.label(ok)
+        self.vmul(step, speed)
+        self.vdiv(step, self.T)
+        self.ret()
+        self.a.label(name + '_tick')
+        self.br(FRAME, '>=', reach, over)
+        self.vadd(POS, step)
+        if every:
+            self.a.call(every)
+        self.a.pusha(*ext); self.a.pusha(*self.HIT); self.a.sub('checkCollisionWithDefaultPower')
+        self.br(self.HIT, '!=', 0, go)
+        self.ret()
+        self.a.label(go)
+        self.a.call(arrive)
+        self.set(FRAME, -1)
+        self.ret()
+        self.a.label(over)
+        if miss:
+            self.a.call(miss)
+        self.set(FRAME, -1)
+        self.ret()
+        return pool
+
     def when(self, tick, label):
         """In main: at that tick, call the label."""
         skip = self.label()
@@ -407,6 +449,30 @@ class Fx:
     def hit_self(self):
         """A support technique: its target is the caster."""
         self.a.sub('addAttackObjectToTarget')
+
+    def strike(self, where, radius):
+        """Hit every fighter (not the caster) that stands within `radius` of that point now; HIT is 1 if somebody
+        was there. Whoever walked out of it is not hit."""
+        self.vcopy(self.KEEP, POS)
+        self.vcopy(POS, where)
+        self._push(radius); self.a.pusha(*self.HIT); self.a.sub('applyRadiusAttackHit')
+        self.vcopy(POS, self.KEEP)
+
+    def each_within(self, centre, radius, body):
+        """Hit the fighters that stand within `radius` of a point, as strike() does, and run body() for each of
+        them as each_target() does (the engine walks the fighters once a cast: a second loop finds none, so the hit
+        itself does not depend on it)."""
+        self.strike(centre, radius)
+
+        def inside():
+            skip = self.label()
+            self.vcopy(self.KEEP, self.TGT); self.vsub(self.KEEP, centre); self.set(at(self.KEEP, 1), 0)
+            self.vlen(self.T, self.KEEP)
+            self.lin(self.T2, at(self.TSIZE, 0), 1, radius)
+            self.br(self.T, '>', self.T2, skip)
+            body()
+            self.a.label(skip)
+        self.each_target(inside)
 
     def each_target(self, body):
         """Run body() once for every enemy not hit yet, each as the current target (TGT, TSIZE, TCHEST set); the

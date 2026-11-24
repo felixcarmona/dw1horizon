@@ -26,7 +26,8 @@ def dark_orb(seed=23):
 
 
 def dark_bolt():
-    """A dark orb gathers motes over the caster, then a jagged bolt strikes the target and throws shards."""
+    """A dark orb gathers motes over the caster and marks the spot where the target stands; a moment later a jagged
+    bolt strikes that spot and throws shards."""
     fx = Fx(delay=8, cast_sound=0)
     fx.palette(VIOLET)
     a, b = bolt_links(7)
@@ -35,6 +36,7 @@ def dark_bolt():
     step, idx = fx.vec(), fx.var()
     charge, links = 16, 12
     fx.particle('shard', 12, 11, 3, (90, 40, 128), 200, grow=-14, speed=55, spread=60)
+    fx.particle('mark', 1, 9, 2, (60, 20, 110), 60, grow=30, fade=True)
 
     fx.label('main'); fx.when(0, 'open'); fx.end(1)
     fx.label('open')
@@ -47,7 +49,9 @@ def dark_bolt():
     fx.vcopy(POS, fx.AT); fx.sound(-55); fx.ret()
     fx.label('orb_tick')
     fx.br(FRAME, '>=', charge, 'orb_fire')
+    fx.after(charge - 6, 'orb_aim')
     fx.call('mote', 2); fx.ret()
+    fx.label('orb_aim'); fx.aim(); fx.emit('mark', fx.TCHEST); fx.ret()
     fx.label('orb_fire')
     fx.br(FRAME, '!=', charge, 'orb_after')
     fx.vcopy(step, fx.TCHEST); fx.vsub(step, POS); fx.vdiv(step, links)
@@ -57,7 +61,7 @@ def dark_bolt():
     fx.br(FRAME, '==', charge + 3, 'orb_hit')
     fx.life(charge + 8); fx.ret()
     fx.label('orb_hit')
-    fx.sound(16); fx.hit(); fx.emit('shard', fx.TCHEST, 12); fx.ret()
+    fx.sound(16); fx.strike(fx.TGT, 120); fx.emit('shard', fx.TCHEST, 12); fx.ret()
     fx.label('orb_render')
     fx.br(FRAME, '>', charge + 2, 'noop')
     fx.lin(fx.T, FRAME, 13, 50)
@@ -321,7 +325,7 @@ def black_gate():
     fx.vcopy(fx.AT, fx.TGT); fx.sub_(at(fx.AT, 1), 40); fx.call('lance')
     fx.when(11, 'strike'); fx.ret()
     fx.label('open'); fx.vcopy(fx.AT, fx.TGT); fx.call('gate'); fx.ret()
-    fx.label('strike'); fx.sound(47); fx.hit(); fx.emit('shard', fx.TCHEST, 10); fx.ret()
+    fx.label('strike'); fx.sound(47); fx.strike(fx.TGT, 300); fx.emit('shard', fx.TCHEST, 10); fx.ret()
     gate = fx.pool('gate', 1)
     fx.begin('gate', gate, 'gate_render', inherit=False); fx.vcopy(POS, fx.AT); fx.sub_(at(POS, 1), 12); fx.ret()
     fx.label('gate_tick'); fx.life(30); fx.ret()
@@ -353,6 +357,7 @@ def abyss_requiem():
     fx.paint(0, dark_orb(31)); fx.paint(1, glow(15, 0.8)); fx.paint(2, star(4, 3, 10, 6) ** 1.2)
     fx.paint(3, ring(13.5, 1.8)); fx.paint(4, streak())
     rim, shade, dark = fx.colour(110, 50, 128), fx.vec(), fx.colour(128, 128, 128)
+    spot = fx.vec()
     swell = 22
     fx.particle('shard', 16, 14, 2, (100, 50, 128), 220, grow=-13, speed=70, lift=50, gravity=9, spread=150)
     fx.particle('pyre', 4, 10, 4, (128, 80, 128), 520, grow=50, sy=40, fade=True)
@@ -364,7 +369,7 @@ def abyss_requiem():
     fx.lin(fx.T, fx.NOW, -6, 6 * (swell + 16))
     fx.label('draw_dim'); fx.vset(shade, fx.T, fx.T, fx.T); fx.overlay(shade); fx.ret()
     fx.label('rise')
-    fx.vcopy(fx.AT, fx.TGT); fx.lin(fx.T, at(fx.TSIZE, 1), 1, 420); fx.sub_(at(fx.AT, 1), fx.T); fx.call('sun'); fx.ret()
+    fx.vcopy(spot, fx.TGT); fx.vcopy(fx.AT, fx.TGT); fx.lin(fx.T, at(fx.TSIZE, 1), 1, 420); fx.sub_(at(fx.AT, 1), fx.T); fx.call('sun'); fx.ret()
     sun = fx.pool('sun', 1)
     fx.begin('sun', sun, 'sun_render', inherit=False); fx.vcopy(POS, fx.AT); fx.ret()
     fx.label('sun_tick')
@@ -376,7 +381,7 @@ def abyss_requiem():
 
     def one():
         fx.hit(); fx.vcopy(fx.AT, fx.TGT); fx.sub_(at(fx.AT, 1), 500); fx.call('pyre'); fx.emit('shard', fx.TCHEST, 5)
-    fx.each_target(one); fx.ret()
+    fx.each_within(spot, 900, one); fx.ret()
     fx.label('sun_after'); fx.life(swell + 5); fx.ret()
     fx.label('sun_render')
     fx.lin(fx.T, FRAME, 26, 100); fx.br(FRAME, '<=', swell, 'sun_draw')
@@ -395,7 +400,7 @@ def abyss_requiem():
     fx.label('mote_render'); fx.sprite(POS, rim, 110, cell=2); fx.ret()
     # the shock of the break: a ring racing out over the ground
     wave = fx.pool('wave', 1)
-    fx.begin('wave', wave, 'wave_render', inherit=False); fx.vcopy(POS, fx.TGT); fx.sub_(at(POS, 1), 20); fx.ret()
+    fx.begin('wave', wave, 'wave_render', inherit=False); fx.vcopy(POS, spot); fx.sub_(at(POS, 1), 20); fx.ret()
     fx.label('wave_tick'); fx.life(12); fx.ret()
     fx.label('wave_render')
     fx.lin(fx.T3, FRAME, 150, 200)
