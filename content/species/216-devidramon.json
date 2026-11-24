@@ -26,7 +26,7 @@
   "texture": {"file": "build/batch3/Devidramon.TIM", "entry": 0},
   "voice": 12,
   "battle_music": "normal-battle",
-  "boosted_technique": "Electric Cloud",
+  "boosted_technique": "Dark Bolt",
   "condition_bubble": [-3, -89, -29, 3],
   "effect_origins": [[4, 260, 30, 0, 3, -3, 3, -168], [9, 0, 75, 50, 7, 37, -24, 36],
                      [9, 192, 32, 0, 7, 20, 101, 70], [1, 0, 0, 0, 15, 0, 0, 0],

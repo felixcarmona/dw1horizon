@@ -24,7 +24,7 @@
   "texture": {"from": 109},
   "voice": 66,
   "battle_music": "normal-battle-2",
-  "boosted_technique": "Tear Drop",
+  "boosted_technique": "Bubble Shot",
   "wild": {"hp": 1100, "mp": 1000, "off": 150, "def": 150, "speed": 150, "brain": 150, "bits": 50},
   "partner": {
     "voice": 14,

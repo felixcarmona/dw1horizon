@@ -27,7 +27,7 @@
   "texture": {"file": "build/batch5/Gesomon.TIM", "entry": 0},
   "voice": 31,
   "battle_music": "normal-battle",
-  "boosted_technique": "Water Blit",
+  "boosted_technique": "Whirlpool",
   "condition_bubble": [0, -313, -164, 1],
   "effect_origins": [[4, -70, 70, 0, 1, 0, -93, -130], [17, 118, 0, 129, 21, -37, 76, -110],
                      [2, 230, -100, 0, 1, 0, -163, -71], [2, 0, 0, 0, 1, 0, -70, 105]],

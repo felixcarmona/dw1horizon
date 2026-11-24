@@ -6,7 +6,7 @@
   "specialties": ["water", "ice", "air"],
   "fields": ["nature-spirits", "deep-savers"],
   "techniques": ["Static Elect", "Electric Cloud", "Water Blit", "Aqua Magic", "Electric Shock", "Bubble Shot",
-                 "Aqua Jet", "Rain Dance"],
+                 "Aqua Jet", "Rain Dance", "Whirlpool", "Hydro Cannon", "Sea Crush"],
   "drop": {"item": "sm.recovery", "percent": 40},
   "effects_like": 4,
   "model": {
@@ -14,7 +14,7 @@
     "bones": 24,
     "radius": 160,
     "height": 160,
-    "slot_aliases": [[51, 50], [52, 47], [53, 49]]
+    "slot_aliases": [[51, 50], [52, 47], [53, 49], [54, 48], [55, 50], [56, 50]]
   },
   "voice": 4,
   "battle_music": "normal-battle-2",

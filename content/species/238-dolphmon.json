@@ -25,7 +25,7 @@
   "texture": {"file": "build/batch5/Dolphmon.TIM", "entry": 0},
   "voice": 10,
   "battle_music": "normal-battle",
-  "boosted_technique": "Water Blit",
+  "boosted_technique": "Aqua Jet",
   "condition_bubble": [0, -229, -43, 1],
   "effect_origins": [[3, 50, 0, 90, 1, -1, -114, -138], [3, 50, 0, 150, 1, -1, -131, -203]],
   "wild": {"hp": 1670, "mp": 1430, "off": 220, "def": 230, "speed": 185, "brain": 180, "bits": 600},

@@ -24,7 +24,7 @@
   "texture": {"file": "build/batch2/Submarimon.TIM", "entry": 0},
   "voice": 22,
   "battle_music": "normal-battle",
-  "boosted_technique": "Ice Needle",
+  "boosted_technique": "Aqua Jet",
   "condition_bubble": [5, -222, -118, 1],
   "effect_origins": [[2, 60, 0, 10, 1, -1, 41, -55], [2, -70, 0, 210, 1, 5, -222, -118], [1, 0, 0, 0, 1, -1, 40, 1],
                      [2, -102, 0, 155, 7, 0, 0, -180]],

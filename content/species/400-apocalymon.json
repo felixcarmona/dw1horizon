@@ -25,7 +25,7 @@
   "texture": {"file": "build/meshfix2-out/Apocalymon.TIM", "entry": 0},
   "voice": 56,
   "battle_music": "normal-battle",
-  "boosted_technique": "DG Dimension",
+  "boosted_technique": "Black Gate",
   "condition_bubble": [-56, -93, -50, 6],
   "effect_origins": [[4, 90, 0, 0, 6, 37, 37, -108], [8, 330, 0, 0, 17, 48, -64, -237], [1, 0, 0, 0, 1, 0, -28, 0]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},

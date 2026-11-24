@@ -23,7 +23,7 @@
   "texture": {"file": "build/batch4/Gomamon.TIM", "entry": 0},
   "voice": 4,
   "battle_music": "normal-battle",
-  "boosted_technique": "Tear Drop",
+  "boosted_technique": "Bubble Shot",
   "condition_bubble": [0, -135, 16, 21],
   "effect_origins": [[3, 60, 0, 0, 21, -1, -58, -32], [3, 120, 0, 0, 21, -3, -53, -86], [1, 0, 0, 0, 21, 0, 0, 0],
                      [3, 100, 14, 0, 21, -3, -68, -69]],

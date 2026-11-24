@@ -27,7 +27,7 @@
   "texture": {"file": "build/batch3/Seraphimon.TIM", "entry": 0},
   "voice": 18,
   "battle_music": "normal-battle",
-  "boosted_technique": "Thunder Justice",
+  "boosted_technique": "Judgment Ray",
   "condition_bubble": [0, -68, 1, 2],
   "effect_origins": [[7, 60, 0, 0, 6, 10, 88, 12], [3, 85, -55, 0, 2, -1, 149, -13],
                      [10, 50, -210, 0, 10, 43, 107, -297], [3, 80, -20, 0, 2, -1, 111, -48],

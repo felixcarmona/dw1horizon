@@ -26,7 +26,7 @@
   "texture": {"from": 112},
   "voice": 69,
   "battle_music": "normal-battle",
-  "boosted_technique": "Ice Statue",
+  "boosted_technique": "Sea Crush",
   "wild": {"hp": 4500, "mp": 4600, "off": 560, "def": 280, "speed": 230, "brain": 100, "bits": 2800},
   "partner": {
     "voice": 5,

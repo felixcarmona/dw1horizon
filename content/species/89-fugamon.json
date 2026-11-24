@@ -7,9 +7,9 @@
   "attribute": "virus",
   "specialties": ["weapon", "air", "battle"],
   "fields": ["nightmare-soldiers"],
-  "techniques": ["Spit Fire", "Magma Bomb", "Megaton Punch", "Static Elect", "Wind Cutter", "Hurricane",
-                 "Confused Storm", "War Cry", "Sonic Jab", "Tremar", "Pummel Whack", "Quick Slash",
-                 "Blade Throw", "Armor Break", "War Stance", "Cross Cutter"],
+  "techniques": ["Whirling Edge", "Magma Bomb", "Final Edge", "Static Elect", "Wind Cutter", "Hurricane",
+                 "Confused Storm", "War Cry", "Sonic Jab", "Giant Cleave", "Pummel Whack",
+                 "Quick Slash", "Blade Throw", "Armor Break", "War Stance", "Cross Cutter"],
   "drop": {"item": "Hispeed dsk", "percent": 10},
   "effects_like": 34,
   "model": {
@@ -26,7 +26,7 @@
   "texture": {"from": 89},
   "voice": 30,
   "battle_music": "normal-battle",
-  "boosted_technique": "Hurricane",
+  "boosted_technique": "Whirling Edge",
   "wild": {"hp": 2300, "mp": 3800, "off": 520, "def": 270, "speed": 170, "brain": 200, "bits": 600},
   "partner": {
     "voice": 3,

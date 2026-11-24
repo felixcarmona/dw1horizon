@@ -24,7 +24,7 @@
   "texture": {"file": "build/batch6/Piedmon.TIM", "entry": 0},
   "voice": 56,
   "battle_music": "normal-battle",
-  "boosted_technique": "Spinning Shot",
+  "boosted_technique": "Black Gate",
   "condition_bubble": [0, -126, 3, 3],
   "effect_origins": [[4, 90, 0, 0, 3, 0, -43, -80], [8, 330, 0, 0, 21, 117, 150, -239], [1, 0, 0, 0, 20, 0, 0, 0]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},

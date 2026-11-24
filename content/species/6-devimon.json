@@ -20,7 +20,7 @@
   },
   "voice": 6,
   "battle_music": "normal-battle",
-  "boosted_technique": "Electric Cloud",
+  "boosted_technique": "Dark Bolt",
   "wild": {"hp": 500, "mp": 500, "off": 10, "def": 100, "speed": 100, "brain": 100, "bits": 100},
   "partner": {
     "voice": 3,

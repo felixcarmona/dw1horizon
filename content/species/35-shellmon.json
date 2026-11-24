@@ -23,7 +23,7 @@
   },
   "voice": 31,
   "battle_music": "normal-battle",
-  "boosted_technique": "Giga Freeze",
+  "boosted_technique": "Aqua Jet",
   "partner": {
     "voice": 6,
     "hunger_hours": [0, 4, 8, 12, 16, 20],

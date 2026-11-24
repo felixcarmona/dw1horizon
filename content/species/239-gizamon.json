@@ -23,7 +23,7 @@
   "texture": {"file": "build/batch5/Gizamon.TIM", "entry": 0},
   "voice": 4,
   "battle_music": "normal-battle",
-  "boosted_technique": "Tear Drop",
+  "boosted_technique": "Bubble Shot",
   "condition_bubble": [0, -128, -140, 1],
   "effect_origins": [[5, 30, 0, -55, 3, 0, -2, -37], [5, 45, 0, -45, 3, 0, 13, -45], [7, 40, 0, 0, 1, 0, -104, -46]],
   "wild": {"hp": 660, "mp": 550, "off": 110, "def": 100, "speed": 95, "brain": 80, "bits": 200},

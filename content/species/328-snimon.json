@@ -27,7 +27,7 @@
   "texture": {"file": "build/batch13/Snimon.TIM", "entry": 0},
   "voice": 57,
   "battle_music": "normal-battle",
-  "boosted_technique": "Wind Cutter",
+  "boosted_technique": "Blade Throw",
   "condition_bubble": [0, -178, -104, 22],
   "effect_origins": [[4, -70, 70, 0, 22, 0, 85, -42], [17, 118, 0, 129, 3, -27, 99, -134],
                      [2, 230, -100, 0, 1, 0, -85, -99], [2, 0, 0, 0, 1, 0, 28, 115]],

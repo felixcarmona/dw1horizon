@@ -23,7 +23,7 @@
   "texture": {"file": "build/batch9/Boltmon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
-  "boosted_technique": "Buster Dive",
+  "boosted_technique": "Giant Cleave",
   "condition_bubble": [-41, -73, 48, 16],
   "effect_origins": [[7, 0, 0, 0, 12, 0, 0, 0], [10, 0, 0, 0, 15, 0, 0, 0], [18, 0, 0, 0, 8, -14, 57, -23]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
