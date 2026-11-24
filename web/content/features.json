@@ -188,7 +188,25 @@
   },
   {
    "id": "finishers",
-   "media": [],
+   "media": [
+    {
+     "type": "video",
+     "controls": true,
+     "src": "media/clips/finishers-tour.mp4",
+     "poster": "media/clips/finishers-tour.jpg",
+     "alt": {
+      "en": "Coming in the next version: every imported Digimon's finisher, remade from scratch",
+      "es": "En la próxima versión: los remates de todos los Digimon importados, rehechos desde cero",
+      "pt-br": "Na próxima versão: os golpes finais de todos os Digimon importados, refeitos do zero",
+      "fr": "Dans la prochaine version : les finishers de tous les Digimon importés, refaits de zéro",
+      "de": "In der nächsten Version: die Finisher aller importierten Digimon, von Grund auf neu gemacht",
+      "it": "Nella prossima versione: i finisher di tutti i Digimon importati, rifatti da zero",
+      "ja": "次のバージョンで登場：取り込まれた全デジモンのフィニッシャーを一から作り直しました",
+      "ca": "A la pròxima versió: els remats de tots els Digimon importats, refets des de zero",
+      "zh-hans": "下个版本推出：所有导入数码宝贝的终结技，全部从零重制"
+     }
+    }
+   ],
    "en": {
     "title": "Signature finishers",
     "body": "Imported Digimon now have finishers with their own names and effects, some adapted from Digital Card Battle and Digimon World 2 and 3. Their power fits the evolution stage: gentler for Rookies, stronger for Megas."
