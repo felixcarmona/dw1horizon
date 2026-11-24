@@ -54,12 +54,14 @@ PILLAR = ('c', 0, 120, 127, 239)
 # the floor reaches the File City arena's cage at 3120.
 SEGMENTS = 24
 MEDALLION_R = 1000
-FLOOR_RINGS = [1000, 1750, 2450, 3260]       # the last ring passes under the wall, so no gap shows at its foot
+FLOOR_RINGS = [1000, 1500, 2050, 2650, 3260]  # the last ring passes under the wall, so no gap shows at its foot
 WALL_R, WALL_H, WALL_T = 3120, 560, 200
-TERRACE_R = 4300
-PILLARS, PILLAR_R, PILLAR_W, PILLAR_H = 8, 3720, 380, 3000
-CLIFF_SEGMENTS, CLIFF_TIERS, CLIFF_H = 32, 3, 3300
-SKY_TOP = -5200
+# The cup's opening shot and the bracket look from about 5150 out and 3430 up (GS_VIEWPOINT, measured): the cliff
+# stands beyond that and rises above it, and the pillars stay below the line from there to the centre.
+TERRACE_R, TERRACE_RINGS = 5900, 2
+PILLARS, PILLAR_R, PILLAR_W, PILLAR_H = 8, 4500, 380, 2400
+CLIFF_SEGMENTS, CLIFF_TIERS, CLIFF_H = 16, 4, 4200
+SKY_TOP = -6500
 SKY = [(72, 66, 70), (36, 33, 38), (14, 13, 18)]   # the vault's shade (128 = as drawn): cliff top, middle, top
 
 
@@ -81,14 +83,18 @@ class Mesh:
         colors = list(color) if isinstance(color[0], (tuple, list)) else [color] * 4
         p, both = facing(p, list(zip(uv, colors)), toward)
         uv, colors = [t[0] for t in both], [t[1] for t in both]
-        self.prims.append(dict(mode=0x3D, flag=1, uv=[tuple(int(round(c)) for c in t) for t in uv], cba=CBA,
+        flat = all(c == colors[0] for c in colors)       # one colour: the flat kind, 12 bytes smaller
+        colors = colors[:1] if flat else colors
+        self.prims.append(dict(mode=0x2D if flat else 0x3D, flag=1, uv=[tuple(int(round(c)) for c in t) for t in uv], cba=CBA,
                                tsb=TSB[page], colors=[tuple(c) + (0,) for c in colors], verts=[self.v(*q) for q in p]))
 
     def tri(self, p, uv, region, color=(128, 128, 128), toward=None):
         page = region[0]
-        p, uv = facing(p, uv, toward)
+        colors = list(color) if isinstance(color[0], (tuple, list)) else [color] * 3
+        p, both = facing(p, list(zip(uv, colors)), toward)
+        uv, colors = [t[0] for t in both], [t[1] for t in both]
         self.prims.append(dict(mode=0x35, flag=1, uv=[tuple(int(round(c)) for c in t) for t in uv], cba=CBA,
-                               tsb=TSB[page], colors=[tuple(color) + (0,)] * 3, verts=[self.v(*q) for q in p]))
+                               tsb=TSB[page], colors=[tuple(c) + (0,) for c in colors], verts=[self.v(*q) for q in p]))
 
 
 def facing(p, extra, toward):
@@ -118,32 +124,55 @@ def ring(r, k, n, y=0):
     return (r * math.sin(a), y, r * math.cos(a))
 
 
+def piece(region, i, n, j, m):
+    """The corners' texture coordinates of the piece (i of n across, j of m down) of a region: the picture repeats
+    seamlessly, so neighbouring quads that take the next pieces continue it."""
+    _, u0, v0, u1, v1 = region
+    w, h = (u1 + 1 - u0) // n, (v1 + 1 - v0) // m
+    ua, va = u0 + w * i, v0 + h * j
+    return [(ua, va), (ua + w - 1, va), (ua, va + h - 1), (ua + w - 1, va + h - 1)]
+
+
 def floor_object():
     m = Mesh()
     _, u0, v0, u1, v1 = MEDALLION
     cu, cv, ru, rv = (u0 + u1) / 2, (v0 + v1) / 2, (u1 - u0) / 2, (v1 - v0) / 2
+    uv = lambda p: (cu + p[0] / MEDALLION_R * ru, cv + p[2] / MEDALLION_R * rv)
+    half = MEDALLION_R // 2
     for k in range(SEGMENTS):
-        a, b = ring(MEDALLION_R, k, SEGMENTS), ring(MEDALLION_R, k + 1, SEGMENTS)
-        uv = lambda p: (cu + p[0] / MEDALLION_R * ru, cv + p[2] / MEDALLION_R * rv)
+        a, b = ring(half, k, SEGMENTS), ring(half, k + 1, SEGMENTS)
         m.tri([(0, 0, 0), b, a], [uv((0, 0, 0)), uv(b), uv(a)], MEDALLION, toward=ABOVE)
-    _, u0, v0, u1, v1 = FLOOR
-    for r0, r1 in zip(FLOOR_RINGS, FLOOR_RINGS[1:]):
+        c, d = ring(MEDALLION_R, k, SEGMENTS), ring(MEDALLION_R, k + 1, SEGMENTS)
+        m.quad([b, a, d, c], [uv(b), uv(a), uv(d), uv(c)], MEDALLION, toward=ABOVE)
+    # Narrow rings: the low cameras of the fight look along the floor, where a long quad folds its picture (affine
+    # mapping). The picture spans two segments and two rings, about 11 units a texel: finer, its lines shimmer as
+    # the camera moves (no mipmaps on the PlayStation).
+    for i, (r0, r1) in enumerate(zip(FLOOR_RINGS, FLOOR_RINGS[1:])):
         for k in range(SEGMENTS):
             p = [ring(r0, k, SEGMENTS), ring(r0, k + 1, SEGMENTS), ring(r1, k, SEGMENTS), ring(r1, k + 1, SEGMENTS)]
-            m.quad([p[1], p[0], p[3], p[2]], [(u0, v0), (u1, v0), (u0, v1), (u1, v1)], FLOOR, toward=ABOVE)
+            m.quad([p[1], p[0], p[3], p[2]], piece(FLOOR, k % 2, 2, i % 2, 2), FLOOR, toward=ABOVE)
+    return m
+
+
+def wall_object(m):
+    """The wall round the floor, in the depth-sorted object with the pillars: the floor object is divided 2x2 by
+    the game once the bracket is over, so it keeps to the File City floor's polygon count."""
     _, u0, v0, u1, v1 = WALL
     top = v0 + 14
     for k in range(SEGMENTS):
         a0, a1 = ring(WALL_R, k, SEGMENTS), ring(WALL_R, k + 1, SEGMENTS)
         t0, t1 = ring(WALL_R, k, SEGMENTS, -WALL_H), ring(WALL_R, k + 1, SEGMENTS, -WALL_H)
-        m.quad([t0, t1, a0, a1], [(u0, top), (u1, top), (u0, v1), (u1, v1)], WALL, toward=CENTRE)   # the inner face
+        # half the picture's width per segment, so the wall is drawn in proportion and not squeezed
+        ua, ub = (u0, u0 + 127) if k % 2 == 0 else (u0 + 128, u1)
+        m.quad([t0, t1, a0, a1], [(ua, top), (ub, top), (ua, v1), (ub, v1)], WALL, toward=CENTRE)   # the inner face
         o0, o1 = ring(WALL_R + WALL_T, k, SEGMENTS, -WALL_H), ring(WALL_R + WALL_T, k + 1, SEGMENTS, -WALL_H)
-        m.quad([o0, o1, t0, t1], [(u0, v0), (u1, v0), (u0, top), (u1, top)], WALL, toward=ABOVE)    # the capstones
+        m.quad([o0, o1, t0, t1], [(ua, v0), (ub, v0), (ua, top), (ub, top)], WALL, toward=ABOVE)    # the capstones
     return m
 
 
 def pillar_object():
     m = Mesh()
+    wall_object(m)
     _, u0, v0, u1, v1 = PILLAR
     h = PILLAR_W / 2
     for k in range(PILLARS):
@@ -166,35 +195,34 @@ def pillar_object():
 
 def surround_object():
     m = Mesh()
-    _, u0, v0, u1, v1 = FLOOR
-    for k in range(SEGMENTS):
-        p = [ring(FLOOR_RINGS[-1] - 10, k, SEGMENTS), ring(FLOOR_RINGS[-1] - 10, k + 1, SEGMENTS),
-             ring(TERRACE_R + 60, k, SEGMENTS), ring(TERRACE_R + 60, k + 1, SEGMENTS)]
-        m.quad([p[1], p[0], p[3], p[2]], [(u0, v0), (u1, v0), (u0, v1), (u1, v1)], FLOOR, (96, 96, 96), toward=ABOVE)
-    _, u0, v0, u1, v1 = CLIFF
     n = CLIFF_SEGMENTS
+    radii = [FLOOR_RINGS[-1] - 10 + (TERRACE_R + 70 - FLOOR_RINGS[-1]) * i // TERRACE_RINGS for i in range(TERRACE_RINGS + 1)]
+    for r0, r1 in zip(radii, radii[1:]):
+        for k in range(n):
+            p = [ring(r0, k, n), ring(r0, k + 1, n), ring(r1, k, n), ring(r1, k + 1, n)]
+            m.quad([p[1], p[0], p[3], p[2]], piece(FLOOR, k % 2, 2, 0, 1), FLOOR, (96, 96, 96), toward=ABOVE)
+    _, u0, v0, u1, v1 = CLIFF
     for k in range(n):
         for t in range(CLIFF_TIERS):
             ya, yb = -CLIFF_H * (t + 1) / CLIFF_TIERS, -CLIFF_H * t / CLIFF_TIERS + (60 if t == 0 else 0)
             p0, p1 = ring(TERRACE_R, k, n, ya), ring(TERRACE_R, k + 1, n, ya)
             q0, q1 = ring(TERRACE_R, k, n, yb), ring(TERRACE_R, k + 1, n, yb)
-            # the picture once from the foot to the top of the cliff, a quarter of its width per segment
-            ua, ub = u0 + (u1 + 1 - u0) * (k % 4) // 4, u0 + (u1 + 1 - u0) * (k % 4 + 1) // 4 - 1
+            # the picture once from the foot to the top of the cliff, half its width per segment
+            ua, ub = u0 + (u1 + 1 - u0) * (k % 2) // 2, u0 + (u1 + 1 - u0) * (k % 2 + 1) // 2 - 1
             va, vb = v1 - (v1 - v0) * (t + 1) // CLIFF_TIERS, v1 - (v1 - v0) * t // CLIFF_TIERS
             m.quad([p0, p1, q0, q1], [(ua, va), (ub, va), (ua, vb), (ub, vb)], CLIFF, toward=CENTRE)
     # The dark vault above the cliff: the rough top of the cliff picture, darker towards the top. Textured like
     # everything else: of the untextured kinds the game's GsSortObject4 has no working handler.
     mid_r, mid_y = TERRACE_R * .8, (-CLIFF_H + SKY_TOP) / 2 - 300
     for k in range(n):
-        ua, ub = u0 + (u1 + 1 - u0) * (k % 4) // 4, u0 + (u1 + 1 - u0) * (k % 4 + 1) // 4 - 1
-        uv = [(ua, v0), (ub, v0), (ua, v0 + 40), (ub, v0 + 40)]
+        ua, ub = u0 + (u1 + 1 - u0) * (k % 2) // 2, u0 + (u1 + 1 - u0) * (k % 2 + 1) // 2 - 1
         a0, a1 = ring(TERRACE_R, k, n, -CLIFF_H), ring(TERRACE_R, k + 1, n, -CLIFF_H)
         b0, b1 = ring(mid_r, k, n, mid_y), ring(mid_r, k + 1, n, mid_y)
-        m.quad([b0, b1, a0, a1], uv, CLIFF, [SKY[1], SKY[1], SKY[0], SKY[0]], toward=CENTRE)
-        c0, c1 = ring(TERRACE_R * .3, k, n, SKY_TOP + 200), ring(TERRACE_R * .3, k + 1, n, SKY_TOP + 200)
-        m.quad([c0, c1, b0, b1], uv, CLIFF, [SKY[2], SKY[2], SKY[1], SKY[1]], toward=CENTRE)
-        top = (0, SKY_TOP, 0)
-        m.quad([c0, c1, top, top], uv, CLIFF, [SKY[2]] * 4, toward=CENTRE)
+        m.quad([b0, b1, a0, a1], [(ua, v0), (ub, v0), (ua, v0 + 40), (ub, v0 + 40)], CLIFF,
+               [SKY[1], SKY[1], SKY[0], SKY[0]], toward=CENTRE)
+        # up to the top as one triangle a segment, its tip on one texel of the picture (no sheared picture)
+        m.tri([b0, b1, (0, SKY_TOP, 0)], [(ua, v0), (ub, v0), ((ua + ub) // 2, v0)], CLIFF,
+              [SKY[1], SKY[1], SKY[2]], toward=CENTRE)
     return m
 
 
