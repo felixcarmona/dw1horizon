@@ -1,233 +1,231 @@
 {
  "s168.sec10.u0": [
   [
-   "- Klasse D - Vor allem für",
-   "Rookie-Digimon. Einzel, 3",
-   "Runden, 8 Teilnehmer Teilnahme:"
-  ],
-  [
-   "offen für alle"
+   "- Kategorie D -",
+   "Ein Turnier vor allem für",
+   "Rookie-Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
   ]
  ],
  "s168.sec10.u1": [
   [
-   "- Klasse C - Vor allem für",
-   "Champion-Digimon. Einzel, 3",
-   "Runden, 8 Teilnehmer Teilnahme:"
-  ],
-  [
-   "offen für alle"
+   "- Kategorie C -",
+   "Ein Turnier vor allem für",
+   "Champion-Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
   ]
  ],
  "s168.sec10.u2": [
   [
-   "- Klasse B - Für Champions,",
-   "die auf ihre Stärke vertrauen.",
-   "Einzel, 3 Runden, 8 Teilnehmer"
-  ],
-  [
+   "- Kategorie B -",
+   "Für Champion-Digimon, die",
+   "sich ihrer Stärke sicher sind.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
    "Teilnahme: offen für alle"
   ]
  ],
  "s168.sec10.u3": [
   [
-   "- Klasse A - Vor allem für",
-   "Ultra-Digimon. Einzel, 3",
-   "Runden, 8 Teilnehmer Teilnahme:"
-  ],
-  [
-   "offen für alle"
+   "- Kategorie A -",
+   "Ein Turnier vor allem für",
+   "Ultra-Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
   ]
  ],
  "s168.sec10.u4": [
   [
-   "- Klasse S - Hier treffen",
-   "sich die stärksten Digimon.",
-   "Einzel, 3 Runden, 8 Teilnehmer"
-  ],
-  [
-   "Teilnahme: Sieger Klasse A"
+   "- Kategorie S -",
+   "Hier treffen sich die",
+   "stärksten Digimon von allen.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Sieger Kategorie A"
   ]
  ],
  "s168.sec10.u5": [
   [
-   "- Klasse R - Eine wilde",
-   "Schlacht mit List und Taktik",
-   "gewinnen. Vierkampf, 2 Runden,"
-  ],
-  [
-   "8 Starter Teilnahme: offen für",
-   "alle"
+   "- Kategorie R -",
+   "Ein Battle Royale, gewonnen",
+   "mit List und Taktik.",
+   "",
+   "",
+   "Vierer, 2 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
   ]
  ],
  "s168.sec10.u6": [
   [
-   "- Version-1-Pokal - Kürt",
-   "das beste Digimon der Version",
-   "1. Kämpfe mit Zeitlimit."
-  ],
-  [
+   "- Version-1-Pokal -",
+   "Krönt die besten",
+   "Digimon der Version 1.",
+   "Kämpfe mit Zeitlimit.",
+   "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Digimon der Version",
-   "1"
+   "Teilnahme: Version-1-Digimon"
   ]
  ],
  "s168.sec10.u7": [
   [
-   "- Version-2-Pokal - Kürt",
-   "das beste Digimon der Version",
-   "2. Kämpfe mit Zeitlimit."
-  ],
-  [
+   "- Version-2-Pokal -",
+   "Krönt die besten",
+   "Digimon der Version 2.",
+   "Kämpfe mit Zeitlimit.",
+   "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Digimon der Version",
-   "2"
+   "Teilnahme: Version-2-Digimon"
   ]
  ],
  "s168.sec10.u8": [
   [
-   "- Version-3-Pokal - Kürt",
-   "das beste Digimon der Version",
-   "3. Kämpfe mit Zeitlimit."
-  ],
-  [
+   "- Version-3-Pokal -",
+   "Krönt die besten",
+   "Digimon der Version 3.",
+   "Kämpfe mit Zeitlimit.",
+   "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Digimon der Version",
-   "3"
+   "Teilnahme: Version-3-Digimon"
   ]
  ],
  "s168.sec10.u9": [
   [
-   "- Version-4-Pokal - Kürt",
-   "das beste Digimon der Version",
-   "4. Kämpfe mit Zeitlimit."
-  ],
-  [
+   "- Version-4-Pokal -",
+   "Krönt die besten",
+   "Digimon der Version 4.",
+   "Kämpfe mit Zeitlimit.",
+   "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Digimon der Version",
-   "4"
+   "Teilnahme: Version-4-Digimon"
   ]
  ],
  "s168.sec10.u10": [
   [
-   "- Version-O-Pokal - Kürt",
-   "das beste Digimon außerhalb der",
-   "Versionen 1-4. Kämpfe mit"
-  ],
-  [
-   "Zeitlimit. Einzel, 3 Runden, 8",
-   "Teilnehmer Teilnahme: außer",
-   "Version 1-4"
+   "- Version-O-Pokal -",
+   "Krönt die besten Digimon",
+   "außerhalb Version 1 bis 4.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: nicht Version 1-4"
   ]
  ],
  "s168.sec10.u11": [
   [
-   "- Feuer-Pokal - Kürt den",
-   "König der lodernden Digimon.",
-   "Kämpfe mit Zeitlimit. Einzel, 3"
-  ],
-  [
-   "Runden, 8 Teilnehmer Teilnahme:",
-   "Feuer"
+   "- Feuer-Pokal -",
+   "Krönt den König der",
+   "glühendsten Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Feuer-Digimon"
   ]
  ],
  "s168.sec10.u12": [
   [
-   "- Kampf-Pokal - Kürt den",
-   "Meister der",
-   "Digimon-Kampfkünste. Kämpfe"
-  ],
-  [
-   "mit Zeitlimit. Einzel, 3",
-   "Runden, 8 Teilnehmer Teilnahme:",
-   "Kampf"
+   "- Kampf-Pokal -",
+   "Krönt den König der",
+   "Digimon-Kampfkünste.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Kampf-Digimon"
   ]
  ],
  "s168.sec10.u13": [
   [
    "- Donner-und-Wind-Pokal -",
-   "Kürt den König der Digimon von",
-   "Himmel und Sturm. Kämpfe mit"
-  ],
-  [
-   "Zeitlimit. Einzel, 3 Runden, 8",
-   "Teilnehmer Teilnahme: Luft"
+   "Krönt den König der",
+   "Himmels- und Sturm-Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Luft-Digimon"
   ]
  ],
  "s168.sec10.u14": [
   [
-   "- Eis-Pokal - Kürt den",
-   "König der eisigsten Digimon.",
-   "Kämpfe mit Zeitlimit. Einzel, 3"
-  ],
-  [
-   "Runden, 8 Teilnehmer Teilnahme:",
-   "Eis"
+   "- Eis-Pokal -",
+   "Krönt den König der",
+   "coolsten Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Eis-Digimon"
   ]
  ],
  "s168.sec10.u15": [
   [
-   "- Natur-Pokal - Kürt den",
-   "König der naturliebenden",
-   "Digimon. Kämpfe mit Zeitlimit."
-  ],
-  [
+   "- Natur-Pokal -",
+   "Krönt den König der",
+   "naturliebenden Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Natur"
+   "Teilnahme: Natur-Digimon"
   ]
  ],
  "s168.sec10.u16": [
   [
-   "- Metall-Pokal - Kürt den",
-   "König der",
-   "Supermaschinen-Digimon. Kämpfe"
-  ],
-  [
-   "mit Zeitlimit. Einzel, 3",
-   "Runden, 8 Teilnehmer Teilnahme:",
-   "Maschinen"
+   "- Metall-Pokal -",
+   "Krönt den König der",
+   "Supermaschinen-Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Maschinen-Digimon"
   ]
  ],
  "s168.sec10.u17": [
   [
-   "- Dreck-Pokal - Kürt den",
-   "König der dreeeckigsten",
-   "Digimon. Kämpfe mit Zeitlimit."
-  ],
-  [
+   "- Dreck-Pokal -",
+   "Krönt den König der",
+   "dreeeckigsten Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Dreck"
+   "Teilnahme: Dreck-Digimon"
   ]
  ],
  "s168.sec10.u18": [
   [
-   "- Dino-Pokal - Digimon mit",
-   "uraltem Blut messen ihre",
-   "Kräfte. Kämpfe mit Zeitlimit."
-  ],
-  [
+   "- Dino-Pokal -",
+   "Digimon uralten Blutes",
+   "messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
    "Einzel, 3 Runden, 8 Teilnehmer",
    "Teilnahme: ???"
   ]
  ],
  "s168.sec10.u19": [
   [
-   "- Flügel-Pokal - Digimon,",
-   "stolz auf ihre Flügel, messen",
-   "ihre Kräfte. Kämpfe mit"
-  ],
-  [
-   "Zeitlimit. Einzel, 3 Runden, 8",
-   "Teilnehmer Teilnahme: ???"
+   "- Flügel-Pokal -",
+   "Digimon, stolz auf ihre",
+   "Flügel, messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
   ]
  ],
  "s168.sec10.u20": [
   [
-   "- Tier-Pokal - Digimon mit",
-   "tierischem Blut messen ihre",
-   "Kräfte. Kämpfe mit Zeitlimit."
-  ],
-  [
+   "- Tier-Pokal -",
+   "Digimon mit Tierblut",
+   "messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
    "Einzel, 3 Runden, 8 Teilnehmer",
    "Teilnahme: ???"
   ]
@@ -235,12 +233,12 @@
  "s168.sec10.u21": [
   [
    "- Menschen-Pokal -",
-   "Menschenähnliche Digimon messen",
-   "ihre Kräfte. Kämpfe mit"
-  ],
-  [
-   "Zeitlimit. Einzel, 3 Runden, 8",
-   "Teilnehmer Teilnahme: ???"
+   "Menschenähnliche Digimon",
+   "messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
   ]
  ],
  "s168.sec10.u22": [

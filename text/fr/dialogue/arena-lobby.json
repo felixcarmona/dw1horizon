@@ -1,243 +1,244 @@
 {
  "s168.sec10.u0": [
   [
-   "- Rang D - Tournoi destiné",
-   "surtout aux Digimon Disciples.",
-   "Duels, 3 tours, 8 inscrits"
-  ],
-  [
+   "- Catégorie D -",
+   "Un tournoi surtout pour",
+   "les Digimon Disciples.",
+   "",
+   "",
+   "Duels, 3 tours, 8 inscrits",
    "Accès : ouvert à tous"
   ]
  ],
  "s168.sec10.u1": [
   [
-   "- Rang C - Tournoi destiné",
-   "surtout aux Digimon Champions.",
-   "Duels, 3 tours, 8 inscrits"
-  ],
-  [
+   "- Catégorie C -",
+   "Un tournoi surtout pour",
+   "les Digimon Champions.",
+   "",
+   "",
+   "Duels, 3 tours, 8 inscrits",
    "Accès : ouvert à tous"
   ]
  ],
  "s168.sec10.u2": [
   [
-   "- Rang B - Pour les",
-   "Champions sûrs de leur force.",
-   "Duels, 3 tours, 8 inscrits"
-  ],
-  [
+   "- Catégorie B -",
+   "Pour les Digimon Champions",
+   "sûrs de leur force.",
+   "",
+   "",
+   "Duels, 3 tours, 8 inscrits",
    "Accès : ouvert à tous"
   ]
  ],
  "s168.sec10.u3": [
   [
-   "- Rang A - Tournoi destiné",
-   "surtout aux Digimon Ultimes.",
-   "Duels, 3 tours, 8 inscrits"
-  ],
-  [
+   "- Catégorie A -",
+   "Un tournoi surtout pour",
+   "les Digimon Ultimes.",
+   "",
+   "",
+   "Duels, 3 tours, 8 inscrits",
    "Accès : ouvert à tous"
   ]
  ],
  "s168.sec10.u4": [
   [
-   "- Rang S - Les Digimon les",
-   "plus puissants se réunissent.",
-   "Duels, 3 tours, 8 inscrits"
-  ],
-  [
-   "Accès : vainqueurs du rang A"
+   "- Catégorie S -",
+   "Là où se réunissent",
+   "les Digimon les plus forts.",
+   "",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : vainqueurs Catégorie A"
   ]
  ],
  "s168.sec10.u5": [
   [
-   "- Rang R - Une mêlée gagnée",
-   "par la ruse et la tactique. À",
-   "quatre, 2 tours, 8 inscrits"
-  ],
-  [
+   "- Catégorie R -",
+   "Une bataille royale gagnée",
+   "par la ruse et la tactique.",
+   "",
+   "",
+   "À quatre, 2 tours, 8 inscrits",
    "Accès : ouvert à tous"
   ]
  ],
  "s168.sec10.u6": [
   [
-   "- Coupe Version 1 - Couronne",
-   "le meilleur Digimon de la",
-   "version 1. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : Digimon de",
-   "version 1"
+   "- Coupe Version 1 -",
+   "Couronne le meilleur des",
+   "Digimon de la Version 1.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Version 1"
   ]
  ],
  "s168.sec10.u7": [
   [
-   "- Coupe Version 2 - Couronne",
-   "le meilleur Digimon de la",
-   "version 2. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : Digimon de",
-   "version 2"
+   "- Coupe Version 2 -",
+   "Couronne le meilleur des",
+   "Digimon de la Version 2.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Version 2"
   ]
  ],
  "s168.sec10.u8": [
   [
-   "- Coupe Version 3 - Couronne",
-   "le meilleur Digimon de la",
-   "version 3. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : Digimon de",
-   "version 3"
+   "- Coupe Version 3 -",
+   "Couronne le meilleur des",
+   "Digimon de la Version 3.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Version 3"
   ]
  ],
  "s168.sec10.u9": [
   [
-   "- Coupe Version 4 - Couronne",
-   "le meilleur Digimon de la",
-   "version 4. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : Digimon de",
-   "version 4"
+   "- Coupe Version 4 -",
+   "Couronne le meilleur des",
+   "Digimon de la Version 4.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Version 4"
   ]
  ],
  "s168.sec10.u10": [
   [
    "- Coupe Version O -",
    "Couronne le meilleur Digimon",
-   "hors des versions 1 à 4."
-  ],
-  [
-   "Combats à durée limitée. Duels,",
-   "3 tours, 8 inscrits Accès :",
-   "hors versions 1-4"
+   "hors des Versions 1 à 4.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : hors Versions 1 à 4"
   ]
  ],
  "s168.sec10.u11": [
   [
-   "- Coupe Feu - Couronne le",
-   "roi des Digimon des flammes.",
-   "Combats à durée limitée. Duels,"
-  ],
-  [
-   "3 tours, 8 inscrits Accès :",
-   "Feu"
+   "- Coupe Feu -",
+   "Couronne le roi des",
+   "Digimon les plus ardents.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Feu"
   ]
  ],
  "s168.sec10.u12": [
   [
-   "- Coupe Combat - Couronne le",
-   "maître des arts martiaux",
-   "Digimon. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : Combat"
+   "- Coupe Combat -",
+   "Couronne le roi des arts",
+   "martiaux Digimon.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Combat"
   ]
  ],
  "s168.sec10.u13": [
   [
    "- Coupe Tonnerre et Vent -",
-   "Couronne le roi des Digimon du",
-   "ciel et des tempêtes. Combats"
-  ],
-  [
-   "à durée limitée. Duels, 3",
-   "tours, 8 inscrits Accès : Air"
+   "Couronne le roi des Digimon",
+   "du ciel et de la tempête.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Air"
   ]
  ],
  "s168.sec10.u14": [
   [
-   "- Coupe Glace - Couronne le",
-   "roi des Digimon les plus froids.",
-   "Combats à durée limitée. Duels,"
-  ],
-  [
-   "3 tours, 8 inscrits Accès :",
-   "Glace"
+   "- Coupe Glace -",
+   "Couronne le roi des",
+   "Digimon les plus cool.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Glace"
   ]
  ],
  "s168.sec10.u15": [
   [
-   "- Coupe Nature - Couronne le",
-   "roi des Digimon qui aiment la",
-   "nature. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : Nature"
+   "- Coupe Nature -",
+   "Couronne le roi des Digimon",
+   "amoureux de la nature.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Nature"
   ]
  ],
  "s168.sec10.u16": [
   [
-   "- Coupe Métal - Couronne le",
-   "roi des Digimon supermachines.",
-   "Combats à durée limitée. Duels,"
-  ],
-  [
-   "3 tours, 8 inscrits Accès :",
-   "Mécaniques"
+   "- Coupe Métal -",
+   "Couronne le roi des Digimon",
+   "super-machines.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Méca"
   ]
  ],
  "s168.sec10.u17": [
   [
-   "- Coupe Crasse - Couronne le",
-   "roi des Digimon les plus",
-   "crasseux. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : Crasse"
+   "- Coupe Crasse -",
+   "Couronne le roi des Digimon",
+   "les plus crassseux.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : Digimon Crasse"
   ]
  ],
  "s168.sec10.u18": [
   [
-   "- Coupe Dino - Les Digimon",
-   "au sang ancien mesurent leurs",
-   "forces. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : ???"
+   "- Coupe Dino -",
+   "Les Digimon au sang ancien",
+   "mesurent leur force.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : ???"
   ]
  ],
  "s168.sec10.u19": [
   [
-   "- Coupe Ailes - Les Digimon",
-   "fiers de leurs ailes mesurent",
-   "leurs forces. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : ???"
+   "- Coupe Ailes -",
+   "Les Digimon fiers de leurs",
+   "ailes mesurent leur force.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : ???"
   ]
  ],
  "s168.sec10.u20": [
   [
-   "- Coupe Animaux - Les",
-   "Digimon au sang bestial",
-   "mesurent leurs forces. Combats"
-  ],
-  [
-   "à durée limitée. Duels, 3",
-   "tours, 8 inscrits Accès : ???"
+   "- Coupe Animaux -",
+   "Les Digimon au sang de bête",
+   "mesurent leur force.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : ???"
   ]
  ],
  "s168.sec10.u21": [
   [
-   "- Coupe Humaine - Les",
-   "Digimon humanoïdes mesurent",
-   "leurs forces. Combats à durée"
-  ],
-  [
-   "limitée. Duels, 3 tours, 8",
-   "inscrits Accès : ???"
+   "- Coupe Humaine -",
+   "Les Digimon humanoïdes",
+   "mesurent leur force.",
+   "Combats à durée limitée.",
+   "",
+   "Duels, 3 tours, 8 inscrits",
+   "Accès : ???"
   ]
  ],
  "s168.sec10.u22": [

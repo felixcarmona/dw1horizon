@@ -3446,8 +3446,8 @@
  ],
  "s209.sec10.u0": [
   [
-   "- Grado D -",
-   "Torneo soprattutto per",
+   "- Categoria D -",
+   "Un torneo pensato per i",
    "Digimon Intermedi.",
    "",
    "",
@@ -3457,8 +3457,8 @@
  ],
  "s209.sec10.u1": [
   [
-   "- Grado C -",
-   "Torneo soprattutto per",
+   "- Categoria C -",
+   "Un torneo pensato per i",
    "Digimon Campioni.",
    "",
    "",
@@ -3468,9 +3468,9 @@
  ],
  "s209.sec10.u2": [
   [
-   "- Grado B -",
-   "Per i Campioni sicuri",
-   "della propria forza.",
+   "- Categoria B -",
+   "Per i Digimon Campioni",
+   "sicuri della loro forza.",
    "",
    "",
    "Singoli, 3 turni, 8 iscritti",
@@ -3479,8 +3479,8 @@
  ],
  "s209.sec10.u3": [
   [
-   "- Grado A -",
-   "Torneo soprattutto per",
+   "- Categoria A -",
+   "Un torneo pensato per i",
    "Digimon Evoluti.",
    "",
    "",
@@ -3490,19 +3490,19 @@
  ],
  "s209.sec10.u4": [
   [
-   "- Grado S -",
-   "Si radunano i Digimon",
-   "più forti in assoluto.",
+   "- Categoria S -",
+   "Dove si riuniscono i",
+   "Digimon più forti di tutti.",
    "",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: vincitori grado A"
+   "Accesso: vincitori Categoria A"
   ]
  ],
  "s209.sec10.u5": [
   [
-   "- Grado R -",
-   "Una mischia da vincere",
+   "- Categoria R -",
+   "Una battaglia reale vinta",
    "con astuzia e tattica.",
    "",
    "",
@@ -3513,140 +3513,140 @@
  "s209.sec10.u6": [
   [
    "- Coppa Versione 1 -",
-   "Incorona il miglior",
-   "Digimon della versione 1.",
+   "Incorona il migliore dei",
+   "Digimon della Versione 1.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Digimon versione 1"
+   "Accesso: Digimon Versione 1"
   ]
  ],
  "s209.sec10.u7": [
   [
    "- Coppa Versione 2 -",
-   "Incorona il miglior",
-   "Digimon della versione 2.",
+   "Incorona il migliore dei",
+   "Digimon della Versione 2.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Digimon versione 2"
+   "Accesso: Digimon Versione 2"
   ]
  ],
  "s209.sec10.u8": [
   [
    "- Coppa Versione 3 -",
-   "Incorona il miglior",
-   "Digimon della versione 3.",
+   "Incorona il migliore dei",
+   "Digimon della Versione 3.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Digimon versione 3"
+   "Accesso: Digimon Versione 3"
   ]
  ],
  "s209.sec10.u9": [
   [
    "- Coppa Versione 4 -",
-   "Incorona il miglior",
-   "Digimon della versione 4.",
+   "Incorona il migliore dei",
+   "Digimon della Versione 4.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Digimon versione 4"
+   "Accesso: Digimon Versione 4"
   ]
  ],
  "s209.sec10.u10": [
   [
    "- Coppa Versione O -",
    "Incorona il miglior Digimon",
-   "fuori dalle versioni 1-4.",
+   "fuori dalle Versioni 1-4.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: fuori versioni 1-4"
+   "Accesso: fuori Versioni 1-4"
   ]
  ],
  "s209.sec10.u11": [
   [
    "- Coppa Fuoco -",
    "Incorona il re dei",
-   "Digimon delle fiamme.",
+   "Digimon più ardenti.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Fuoco"
+   "Accesso: Digimon Fuoco"
   ]
  ],
  "s209.sec10.u12": [
   [
    "- Coppa Lotta -",
-   "Incorona il re delle",
-   "arti marziali Digimon.",
+   "Incorona il re delle arti",
+   "marziali Digimon.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Lotta"
+   "Accesso: Digimon Lotta"
   ]
  ],
  "s209.sec10.u13": [
   [
    "- Coppa Tuono e Vento -",
    "Incorona il re dei Digimon",
-   "del cielo e delle tempeste.",
+   "del cielo e della tempesta.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Aria"
+   "Accesso: Digimon Aria"
   ]
  ],
  "s209.sec10.u14": [
   [
    "- Coppa Gelo -",
    "Incorona il re dei",
-   "Digimon più gelidi.",
+   "Digimon più cool.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Ghiaccio"
+   "Accesso: Digimon Gelo"
   ]
  ],
  "s209.sec10.u15": [
   [
    "- Coppa Natura -",
    "Incorona il re dei Digimon",
-   "che amano la natura.",
+   "amanti della natura.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Natura"
+   "Accesso: Digimon Natura"
   ]
  ],
  "s209.sec10.u16": [
   [
    "- Coppa Metallo -",
-   "Incorona il re dei",
-   "Digimon supermacchine.",
+   "Incorona il re dei Digimon",
+   "supermacchina.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Macchina"
+   "Accesso: Digimon Macchina"
   ]
  ],
  "s209.sec10.u17": [
   [
    "- Coppa Sporco -",
    "Incorona il re dei",
-   "Digimon più spooorchi.",
+   "Digimon più sooozzi.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
-   "Accesso: Sporco"
+   "Accesso: Digimon Sporco"
   ]
  ],
  "s209.sec10.u18": [
   [
    "- Coppa Dino -",
    "I Digimon di sangue antico",
-   "misurano le proprie forze.",
+   "misurano la loro forza.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
@@ -3656,8 +3656,8 @@
  "s209.sec10.u19": [
   [
    "- Coppa Ali -",
-   "I Digimon fieri delle ali",
-   "misurano le proprie forze.",
+   "I Digimon fieri delle loro",
+   "ali misurano la loro forza.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
@@ -3667,8 +3667,8 @@
  "s209.sec10.u20": [
   [
    "- Coppa Animale -",
-   "I Digimon dal sangue bestiale",
-   "misurano le proprie forze.",
+   "I Digimon di sangue bestiale",
+   "misurano la loro forza.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
@@ -3678,8 +3678,8 @@
  "s209.sec10.u21": [
   [
    "- Coppa Umana -",
-   "I Digimon umanoidi",
-   "misurano le proprie forze.",
+   "I Digimon simili agli umani",
+   "misurano la loro forza.",
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti",
@@ -4504,249 +4504,244 @@
  ],
  "s213.sec10.u0": [
   [
-   "- Categoria D - Torneo",
-   "pensato appositamente per",
-   "Digimon Novato. Individuale, 3"
-  ],
-  [
-   "giri, 8 seri Input: free"
+   "- Categoria D -",
+   "Un torneo pensato per i",
+   "Digimon Intermedi.",
+   "",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: aperto a tutti"
   ]
  ],
  "s213.sec10.u1": [
   [
-   "- Categoria C - Torneo",
-   "pensato appositamente per",
-   "Digimon Champion. Individuale,"
-  ],
-  [
-   "3 giri, 8 seri Input: free"
+   "- Categoria C -",
+   "Un torneo pensato per i",
+   "Digimon Campioni.",
+   "",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: aperto a tutti"
   ]
  ],
  "s213.sec10.u2": [
   [
-   "- Categoria B - A Digimon",
-   "Campione che si fida della sua",
-   "forza. Individuale, 3 giri, 8"
-  ],
-  [
-   "seri Input: free"
+   "- Categoria B -",
+   "Per i Digimon Campioni",
+   "sicuri della loro forza.",
+   "",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: aperto a tutti"
   ]
  ],
  "s213.sec10.u3": [
   [
-   "- Categoria A - Torneo",
-   "pensato appositamente per",
-   "Digimon Perfetto. Individuale,"
-  ],
-  [
-   "3 giri, 8 seri Input: free"
+   "- Categoria A -",
+   "Un torneo pensato per i",
+   "Digimon Evoluti.",
+   "",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: aperto a tutti"
   ]
  ],
  "s213.sec10.u4": [
   [
-   "- Categoria S - E' cosi' che",
-   "si riuniscono. Digimon più",
-   "potente di tutti loro."
-  ],
-  [
-   "Individuale, 3 round, 8 posti",
-   "di lavoro Ingresso: guadagno",
-   "Categoria A"
+   "- Categoria S -",
+   "Dove si riuniscono i",
+   "Digimon più forti di tutti.",
+   "",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: vincitori Categoria A"
   ]
  ],
  "s213.sec10.u5": [
   [
-   "- Categoria R - Questa e'",
-   "una battaglia tattica e",
-   "martellante. A quattro, 2 giri,"
-  ],
-  [
-   "8 foto ingresso: libero"
+   "- Categoria R -",
+   "Una battaglia reale vinta",
+   "con astuzia e tattica.",
+   "",
+   "",
+   "A quattro, 2 turni, 8 iscritti",
+   "Accesso: aperto a tutti"
   ]
  ],
  "s213.sec10.u6": [
   [
-   "- versione 1 - Corona per la",
-   "migliore versione Digimon 1.",
-   "Ventilatore con limite di"
-  ],
-  [
-   "tempo. Individuale, 3 giri, 8",
-   "foto Ingresso: Digimon",
-   "Versione 1"
+   "- Coppa Versione 1 -",
+   "Incorona il migliore dei",
+   "Digimon della Versione 1.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Versione 1"
   ]
  ],
  "s213.sec10.u7": [
   [
-   "- Versione Copa 2 - Corona",
-   "al meglio Digimon Versione 2.",
-   "Ventilatore con limite di"
-  ],
-  [
-   "tempo. Individuale, 3 round, 8",
-   "foto Ingresso: Digimon",
-   "Versione 2"
+   "- Coppa Versione 2 -",
+   "Incorona il migliore dei",
+   "Digimon della Versione 2.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Versione 2"
   ]
  ],
  "s213.sec10.u8": [
   [
-   "- versione 3 - Corona per la",
-   "migliore versione Digimon 3.",
-   "Ventilatore con limite di"
-  ],
-  [
-   "tempo. Individuale, 3 round, 8",
-   "foto Ingresso: Digimon",
-   "Versione 3"
+   "- Coppa Versione 3 -",
+   "Incorona il migliore dei",
+   "Digimon della Versione 3.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Versione 3"
   ]
  ],
  "s213.sec10.u9": [
   [
-   "- versione 4 - Corona per la",
-   "migliore versione Digimon 4.",
-   "Ventilatore con limite di"
-  ],
-  [
-   "tempo. Individuale, 3 round, 8",
-   "foto Ingresso: Digimon",
-   "Versione 4"
+   "- Coppa Versione 4 -",
+   "Incorona il migliore dei",
+   "Digimon della Versione 4.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Versione 4"
   ]
  ],
  "s213.sec10.u10": [
   [
-   "- Versione di Coppa O - Il",
-   "meglio Digimon fuori da 1-4",
-   "versioni. Ventilatore con"
-  ],
-  [
-   "limite di tempo. Individuale, 3",
-   "round, 8 foto Ingresso: fuori",
-   "dalla versione 1-4"
+   "- Coppa Versione O -",
+   "Incorona il miglior Digimon",
+   "fuori dalle Versioni 1-4.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: fuori Versioni 1-4"
   ]
  ],
  "s213.sec10.u11": [
   [
-   "- Coppa Fuoco - Corona al re",
-   "del più caldo Digimon.",
-   "Ventilatore con limite di"
-  ],
-  [
-   "tempo. Individuale, 3 giri, 8",
-   "foto Ingresso: Digimon Fire"
+   "- Coppa Fuoco -",
+   "Incorona il re dei",
+   "Digimon più ardenti.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Fuoco"
   ]
  ],
  "s213.sec10.u12": [
   [
-   "- Coppa di lotta - Corona al",
-   "re delle arti marziali Digimon.",
-   "Ventilatore con limite di"
-  ],
-  [
-   "tempo. Individuale, 3 giri, 8",
-   "foto Ingresso: Digimon",
-   "Riempimento"
+   "- Coppa Lotta -",
+   "Incorona il re delle arti",
+   "marziali Digimon.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Lotta"
   ]
  ],
  "s213.sec10.u13": [
   [
-   "- Thunder and Wind Cup -",
-   "Corona al re del cielo e della",
-   "tempesta Digimon. Ventilatore"
-  ],
-  [
-   "con limite di tempo.",
-   "Individuale, 3 giri, 8 foto",
-   "Ingresso: Digimon Air"
+   "- Coppa Tuono e Vento -",
+   "Incorona il re dei Digimon",
+   "del cielo e della tempesta.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Aria"
   ]
  ],
  "s213.sec10.u14": [
   [
-   "- Copa Cool - Corona al re",
-   "del migliore Digimon.",
-   "Ventilatore con limite di"
-  ],
-  [
-   "tempo. Individuale, 3 giri, 8",
-   "foto Ingresso: Digimon Ice"
+   "- Coppa Gelo -",
+   "Incorona il re dei",
+   "Digimon più cool.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Gelo"
   ]
  ],
  "s213.sec10.u15": [
   [
-   "- Nature Cup - Corona a",
-   "King del Digimon Earth Filling.",
-   "Ventilatore con limite di"
-  ],
-  [
-   "tempo. Individuale, 3 giri, 8",
-   "foto Ingresso: Digimon dalla",
-   "Terra"
+   "- Coppa Natura -",
+   "Incorona il re dei Digimon",
+   "amanti della natura.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Natura"
   ]
  ],
  "s213.sec10.u16": [
   [
-   "- Coppa del metallo - Corona",
-   "al re della supermacchina",
-   "Digimon. Ventilatore con limite"
-  ],
-  [
-   "di tempo. Individuale, 3 giri,",
-   "8 foto Ingresso: Digimon Mecca"
+   "- Coppa Metallo -",
+   "Incorona il re dei Digimon",
+   "supermacchina.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Macchina"
   ]
  ],
  "s213.sec10.u17": [
   [
-   "- Coppa Sucia - Corona al re",
-   "del migliore Digimon.",
-   "Ventilatore con limite di"
-  ],
-  [
-   "tempo. Individuale, 3 giri, 8",
-   "posti a sedere Ingresso:",
-   "Digimon da combattimento"
+   "- Coppa Sporco -",
+   "Incorona il re dei",
+   "Digimon più sooozzi.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Sporco"
   ]
  ],
  "s213.sec10.u18": [
   [
-   "- Tazza di Dino - Digimon con",
-   "il sangue vecchio misurano la",
-   "loro forza. Ventilatore con"
-  ],
-  [
-   "limite di tempo. Individuale, 3",
-   "giri, 8 posti ingresso: ???"
+   "- Coppa Dino -",
+   "I Digimon di sangue antico",
+   "misurano la loro forza.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: ???"
   ]
  ],
  "s213.sec10.u19": [
   [
-   "- Coppa vincente - Digimon",
-   "fiero delle sue ali misura la",
-   "sua forza. Ventilatore con"
-  ],
-  [
-   "limite di tempo. Individuale, 3",
-   "giri, 8 posti ingresso: ???"
+   "- Coppa Ali -",
+   "I Digimon fieri delle loro",
+   "ali misurano la loro forza.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: ???"
   ]
  ],
  "s213.sec10.u20": [
   [
-   "- Coppa degli animali - Digimon",
-   "con sangue selvatico misurano",
-   "la loro forza. Ventilatore con"
-  ],
-  [
-   "limite di tempo. Individuale, 3",
-   "giri, 8 posti ingresso: ???"
+   "- Coppa Animale -",
+   "I Digimon di sangue bestiale",
+   "misurano la loro forza.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: ???"
   ]
  ],
  "s213.sec10.u21": [
   [
-   "- Coppa del Mondo - Digimon e",
-   "la forma umana misurano la loro",
-   "forza. Ventilatore con limite"
-  ],
-  [
-   "di tempo. Individuale, 3 giri,",
-   "8 posti ingresso: ???"
+   "- Coppa Umana -",
+   "I Digimon simili agli umani",
+   "misurano la loro forza.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: ???"
   ]
  ],
  "s213.sec10.u22": [

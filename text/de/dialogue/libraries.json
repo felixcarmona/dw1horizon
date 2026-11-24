@@ -3570,8 +3570,8 @@
  ],
  "s209.sec10.u0": [
   [
-   "- Klasse D -",
-   "Vor allem für",
+   "- Kategorie D -",
+   "Ein Turnier vor allem für",
    "Rookie-Digimon.",
    "",
    "",
@@ -3581,8 +3581,8 @@
  ],
  "s209.sec10.u1": [
   [
-   "- Klasse C -",
-   "Vor allem für",
+   "- Kategorie C -",
+   "Ein Turnier vor allem für",
    "Champion-Digimon.",
    "",
    "",
@@ -3592,9 +3592,9 @@
  ],
  "s209.sec10.u2": [
   [
-   "- Klasse B -",
-   "Für Champions, die auf",
-   "ihre Stärke vertrauen.",
+   "- Kategorie B -",
+   "Für Champion-Digimon, die",
+   "sich ihrer Stärke sicher sind.",
    "",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
@@ -3603,8 +3603,8 @@
  ],
  "s209.sec10.u3": [
   [
-   "- Klasse A -",
-   "Vor allem für",
+   "- Kategorie A -",
+   "Ein Turnier vor allem für",
    "Ultra-Digimon.",
    "",
    "",
@@ -3614,162 +3614,162 @@
  ],
  "s209.sec10.u4": [
   [
-   "- Klasse S -",
+   "- Kategorie S -",
    "Hier treffen sich die",
-   "stärksten Digimon.",
+   "stärksten Digimon von allen.",
    "",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Sieger Klasse A"
+   "Teilnahme: Sieger Kategorie A"
   ]
  ],
  "s209.sec10.u5": [
   [
-   "- Klasse R -",
-   "Eine wilde Schlacht mit",
-   "List und Taktik gewinnen.",
+   "- Kategorie R -",
+   "Ein Battle Royale, gewonnen",
+   "mit List und Taktik.",
    "",
    "",
-   "Vierkampf, 2 Runden, 8 Starter",
+   "Vierer, 2 Runden, 8 Teilnehmer",
    "Teilnahme: offen für alle"
   ]
  ],
  "s209.sec10.u6": [
   [
    "- Version-1-Pokal -",
-   "Kürt das beste Digimon",
-   "der Version 1.",
+   "Krönt die besten",
+   "Digimon der Version 1.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Digimon der Version 1"
+   "Teilnahme: Version-1-Digimon"
   ]
  ],
  "s209.sec10.u7": [
   [
    "- Version-2-Pokal -",
-   "Kürt das beste Digimon",
-   "der Version 2.",
+   "Krönt die besten",
+   "Digimon der Version 2.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Digimon der Version 2"
+   "Teilnahme: Version-2-Digimon"
   ]
  ],
  "s209.sec10.u8": [
   [
    "- Version-3-Pokal -",
-   "Kürt das beste Digimon",
-   "der Version 3.",
+   "Krönt die besten",
+   "Digimon der Version 3.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Digimon der Version 3"
+   "Teilnahme: Version-3-Digimon"
   ]
  ],
  "s209.sec10.u9": [
   [
    "- Version-4-Pokal -",
-   "Kürt das beste Digimon",
-   "der Version 4.",
+   "Krönt die besten",
+   "Digimon der Version 4.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Digimon der Version 4"
+   "Teilnahme: Version-4-Digimon"
   ]
  ],
  "s209.sec10.u10": [
   [
    "- Version-O-Pokal -",
-   "Kürt das beste Digimon",
-   "außerhalb der Versionen 1-4.",
+   "Krönt die besten Digimon",
+   "außerhalb Version 1 bis 4.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: außer Version 1-4"
+   "Teilnahme: nicht Version 1-4"
   ]
  ],
  "s209.sec10.u11": [
   [
    "- Feuer-Pokal -",
-   "Kürt den König der",
-   "lodernden Digimon.",
+   "Krönt den König der",
+   "glühendsten Digimon.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Feuer"
+   "Teilnahme: Feuer-Digimon"
   ]
  ],
  "s209.sec10.u12": [
   [
    "- Kampf-Pokal -",
-   "Kürt den Meister der",
+   "Krönt den König der",
    "Digimon-Kampfkünste.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Kampf"
+   "Teilnahme: Kampf-Digimon"
   ]
  ],
  "s209.sec10.u13": [
   [
    "- Donner-und-Wind-Pokal -",
-   "Kürt den König der Digimon",
-   "von Himmel und Sturm.",
+   "Krönt den König der",
+   "Himmels- und Sturm-Digimon.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Luft"
+   "Teilnahme: Luft-Digimon"
   ]
  ],
  "s209.sec10.u14": [
   [
    "- Eis-Pokal -",
-   "Kürt den König der",
-   "eisigsten Digimon.",
+   "Krönt den König der",
+   "coolsten Digimon.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Eis"
+   "Teilnahme: Eis-Digimon"
   ]
  ],
  "s209.sec10.u15": [
   [
    "- Natur-Pokal -",
-   "Kürt den König der",
+   "Krönt den König der",
    "naturliebenden Digimon.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Natur"
+   "Teilnahme: Natur-Digimon"
   ]
  ],
  "s209.sec10.u16": [
   [
    "- Metall-Pokal -",
-   "Kürt den König der",
+   "Krönt den König der",
    "Supermaschinen-Digimon.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Maschinen"
+   "Teilnahme: Maschinen-Digimon"
   ]
  ],
  "s209.sec10.u17": [
   [
    "- Dreck-Pokal -",
-   "Kürt den König der",
+   "Krönt den König der",
    "dreeeckigsten Digimon.",
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer",
-   "Teilnahme: Dreck"
+   "Teilnahme: Dreck-Digimon"
   ]
  ],
  "s209.sec10.u18": [
   [
    "- Dino-Pokal -",
-   "Digimon mit uraltem Blut",
+   "Digimon uralten Blutes",
    "messen ihre Kräfte.",
    "Kämpfe mit Zeitlimit.",
    "",
@@ -3791,7 +3791,7 @@
  "s209.sec10.u20": [
   [
    "- Tier-Pokal -",
-   "Digimon mit tierischem Blut",
+   "Digimon mit Tierblut",
    "messen ihre Kräfte.",
    "Kämpfe mit Zeitlimit.",
    "",
@@ -4652,245 +4652,244 @@
  ],
  "s213.sec10.u0": [
   [
-   "- Kategorie D - Turnier",
-   "gedacht besonders für Digimon",
-   "Newbie. Individuelle, 3 Runden,"
-  ],
-  [
-   "8 Sitzleuchten Eingang: frei"
+   "- Kategorie D -",
+   "Ein Turnier vor allem für",
+   "Rookie-Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
   ]
  ],
  "s213.sec10.u1": [
   [
-   "- Kategorie C - Turnier",
-   "gedacht besonders für Digimon",
-   "Champ. Individuelle, 3 Runden,"
-  ],
-  [
-   "8 Sitzleuchten Eingang: frei"
+   "- Kategorie C -",
+   "Ein Turnier vor allem für",
+   "Champion-Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
   ]
  ],
  "s213.sec10.u2": [
   [
-   "- Kategorie B - bis Digimon",
-   "Champion, der seiner Stärke",
-   "vertraut. Individuelle, 3"
-  ],
-  [
-   "Runden, 8 Sitzleuchten",
-   "Eingang: frei"
+   "- Kategorie B -",
+   "Für Champion-Digimon, die",
+   "sich ihrer Stärke sicher sind.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
   ]
  ],
  "s213.sec10.u3": [
   [
-   "- Kategorie A - Turnier",
-   "gedacht besonders für Digimon",
-   "Das ist gut. Individuelle, 3"
-  ],
-  [
-   "Runden, 8 Sitzleuchten",
-   "Eingang: frei"
+   "- Kategorie A -",
+   "Ein Turnier vor allem für",
+   "Ultra-Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
   ]
  ],
  "s213.sec10.u4": [
   [
-   "- Kategorie S - So kommen",
-   "sie zusammen. Digimon Mächtiger",
-   "von allen. Einzelne, 3 Runden,"
-  ],
-  [
-   "8 Jobs Eingang: gewinnen",
-   "Kategorie A"
+   "- Kategorie S -",
+   "Hier treffen sich die",
+   "stärksten Digimon von allen.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Sieger Kategorie A"
   ]
  ],
  "s213.sec10.u5": [
   [
-   "- Kategorie R - Das ist ein",
-   "Schlag- und Taktikkampf. Zu",
-   "vier, 2 Runden, 8 Bilder"
-  ],
-  [
-   "Eingang: frei"
+   "- Kategorie R -",
+   "Ein Battle Royale, gewonnen",
+   "mit List und Taktik.",
+   "",
+   "",
+   "Vierer, 2 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
   ]
  ],
  "s213.sec10.u6": [
   [
-   "- Cup Version 1 - Corona zum",
-   "besten Digimon Version 1. Fan",
-   "mit Zeitlimit. Individuelle, 3"
-  ],
-  [
-   "Runden, 8 Bilder Eingang:",
-   "Digimon Version 1"
+   "- Version-1-Pokal -",
+   "Krönt die besten",
+   "Digimon der Version 1.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Version-1-Digimon"
   ]
  ],
  "s213.sec10.u7": [
   [
-   "- Copa Version 2 - Corona",
-   "zum besten Digimon Version 2.",
-   "Fan mit Zeitlimit."
-  ],
-  [
-   "Individuelle, 3 Runden, 8",
-   "Bilder Eingang: Digimon Version",
-   "2"
+   "- Version-2-Pokal -",
+   "Krönt die besten",
+   "Digimon der Version 2.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Version-2-Digimon"
   ]
  ],
  "s213.sec10.u8": [
   [
-   "- Cup Version 3 - Corona zur",
-   "besten Digimon Version 3. Fan",
-   "mit Zeitlimit. Individuelle, 3"
-  ],
-  [
-   "Runden, 8 Bilder Eingang:",
-   "Digimon Version 3"
+   "- Version-3-Pokal -",
+   "Krönt die besten",
+   "Digimon der Version 3.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Version-3-Digimon"
   ]
  ],
  "s213.sec10.u9": [
   [
-   "- Cup Version 4 - Corona zur",
-   "besten Digimon Version 4. Fan",
-   "mit Zeitlimit. Individuelle, 3"
-  ],
-  [
-   "Runden, 8 Bilder Eingang:",
-   "Digimon Version 4"
+   "- Version-4-Pokal -",
+   "Krönt die besten",
+   "Digimon der Version 4.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Version-4-Digimon"
   ]
  ],
  "s213.sec10.u10": [
   [
-   "- Cup Version O - Corona",
-   "zum besten Digimon außerhalb",
-   "der Version 1-4. Fan mit"
-  ],
-  [
-   "Zeitlimit. Individuelle, 3",
-   "Runden, 8 Bilder Eingang: aus",
-   "Version 1-4"
+   "- Version-O-Pokal -",
+   "Krönt die besten Digimon",
+   "außerhalb Version 1 bis 4.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: nicht Version 1-4"
   ]
  ],
  "s213.sec10.u11": [
   [
-   "- Cup Fire - Corona zum",
-   "König des heißesten Digimon.",
-   "Fan mit Zeitlimit."
-  ],
-  [
-   "Individuelle, 3 Runden, 8",
-   "Bilder Eingang: Digimon Feuer"
+   "- Feuer-Pokal -",
+   "Krönt den König der",
+   "glühendsten Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Feuer-Digimon"
   ]
  ],
  "s213.sec10.u12": [
   [
-   "- Cup Fight - Corona zum",
-   "König der Kampfkünste Digimon.",
-   "Fan mit Zeitlimit."
-  ],
-  [
-   "Individuelle, 3 Runden, 8",
-   "Bilder Eingang: Digimon Füllung"
+   "- Kampf-Pokal -",
+   "Krönt den König der",
+   "Digimon-Kampfkünste.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Kampf-Digimon"
   ]
  ],
  "s213.sec10.u13": [
   [
-   "- Donner und Wind Cup - An",
-   "den König der Digimon vom",
-   "Himmel und vom Sturm. Fan mit"
-  ],
-  [
-   "Zeitlimit. Individuelle, 3",
-   "Runden, 8 Bilder Eingang:",
-   "Digimon Air"
+   "- Donner-und-Wind-Pokal -",
+   "Krönt den König der",
+   "Himmels- und Sturm-Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Luft-Digimon"
   ]
  ],
  "s213.sec10.u14": [
   [
-   "- Copa Cool - Corona zum",
-   "König des besten Digimon. Fan",
-   "mit Zeitlimit. Individuelle, 3"
-  ],
-  [
-   "Runden, 8 Bilder Eingang:",
-   "Digimon Eis"
+   "- Eis-Pokal -",
+   "Krönt den König der",
+   "coolsten Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Eis-Digimon"
   ]
  ],
  "s213.sec10.u15": [
   [
-   "- Nature Cup - Corona zum",
-   "König der Digimon Erdfüllung.",
-   "Fan mit Zeitlimit."
-  ],
-  [
-   "Individuelle, 3 Runden, 8",
-   "Bilder Eingang: Digimon von der",
-   "Erde"
+   "- Natur-Pokal -",
+   "Krönt den König der",
+   "naturliebenden Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Natur-Digimon"
   ]
  ],
  "s213.sec10.u16": [
   [
-   "- Metallschale - An den König",
-   "der Digimon Supermaschine. Fan",
-   "mit Zeitlimit. Individuelle, 3"
-  ],
-  [
-   "Runden, 8 Bilder Eingang:",
-   "Digimon Mekka"
+   "- Metall-Pokal -",
+   "Krönt den König der",
+   "Supermaschinen-Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Maschinen-Digimon"
   ]
  ],
  "s213.sec10.u17": [
   [
-   "- Cup Sucia - Corona zum",
-   "König des besten Digimon. Fan",
-   "mit Zeitlimit. Individuelle, 3"
-  ],
-  [
-   "Runden, 8 Sitzplatz Eingabe:",
-   "Digimon von Fight"
+   "- Dreck-Pokal -",
+   "Krönt den König der",
+   "dreeeckigsten Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Dreck-Digimon"
   ]
  ],
  "s213.sec10.u18": [
   [
-   "- Dino Cup - Digimon Mit",
-   "altem Blut messen Sie ihre",
-   "Stärke. Fan mit Zeitlimit."
-  ],
-  [
-   "Einzelperson, 3 Runden, 8",
-   "Plätze Eingang: ???"
+   "- Dino-Pokal -",
+   "Digimon uralten Blutes",
+   "messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
   ]
  ],
  "s213.sec10.u19": [
   [
-   "- Winged Cup - Digimon Stolz",
-   "auf seine Flügel messen seine",
-   "Stärke. Fan mit Zeitlimit."
-  ],
-  [
-   "Einzelperson, 3 Runden, 8",
-   "Plätze Eingang: ???"
+   "- Flügel-Pokal -",
+   "Digimon, stolz auf ihre",
+   "Flügel, messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
   ]
  ],
  "s213.sec10.u20": [
   [
-   "- Tierbecher - Digimon Mit",
-   "wildem Blut messen Sie ihre",
-   "Stärke. Fan mit Zeitlimit."
-  ],
-  [
-   "Einzelperson, 3 Runden, 8",
-   "Plätze Eingang: ???"
+   "- Tier-Pokal -",
+   "Digimon mit Tierblut",
+   "messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
   ]
  ],
  "s213.sec10.u21": [
   [
-   "- Menschlicher Cup - Digimon",
-   "Und die menschliche Gestalt",
-   "misst ihre Stärke. Fan mit"
-  ],
-  [
-   "Zeitlimit. Einzelperson, 3",
-   "Runden, 8 Plätze Eingang: ???"
+   "- Menschen-Pokal -",
+   "Menschenähnliche Digimon",
+   "messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
   ]
  ],
  "s213.sec10.u22": [
