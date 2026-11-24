@@ -1,4 +1,4 @@
-From 11dd9488d011f65dbd7653e384f845f455ae307f Mon Sep 17 00:00:00 2001
+From 571d8567189efa77445e349bc553a3b57abee53a Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Tue, 24 Nov 2026 06:41:48 +0000
 Subject: [PATCH] Techset shows ten technique rows with a scroll bar; arena
@@ -6,10 +6,10 @@ Subject: [PATCH] Techset shows ten technique rows with a scroll bar; arena
 
 ---
  include/dw/cup_rules.h |   2 +-
- src/main/game_menu.c   | 350 +++++++++++++++++------------------------
+ src/main/game_menu.c   | 368 ++++++++++++++++++-----------------------
  src/std/std_main.c     |  11 +-
  src/vs/vs_intro.c      |  11 +-
- 4 files changed, 163 insertions(+), 211 deletions(-)
+ 4 files changed, 178 insertions(+), 214 deletions(-)
 
 diff --git a/include/dw/cup_rules.h b/include/dw/cup_rules.h
 index c0d87172..20d3ccd1 100644
@@ -25,7 +25,7 @@ index c0d87172..20d3ccd1 100644
  #define CUP_TAG_RIVAL		(1 << 18) /* a species of DIGI.DAT the arena can draw: raised by players, Rookie or higher */
  
 diff --git a/src/main/game_menu.c b/src/main/game_menu.c
-index 74891147..baefa1f8 100644
+index 74891147..8fce74c6 100644
 --- a/src/main/game_menu.c
 +++ b/src/main/game_menu.c
 @@ -1012,7 +1012,18 @@ IconRect STATS_VIEW_ELEMENTS[21] = {
@@ -138,7 +138,30 @@ index 74891147..baefa1f8 100644
  #endif
  };
  
-@@ -1895,6 +1933,7 @@ int8_t DIGIMON_MENU_STATE;
+@@ -1490,9 +1528,20 @@ uint16_t TECH_TITLE_PIECES[4] = {
+ #endif
+ };
+ 
+-/* the technique grid's "Tech" over "help" (the Digimon tab's word): Técnicas is wider, centred over ayuda */
++/* the technique grid's "Tech" over "help" (the Digimon tab's word): each language's word centred in the help box
++ * (inside it from -138 to -87; the word starts at the crop's first pixel and is 40, 42, 53, 21 or 32 wide) */
+ LabelCrop TECH_GRID_TITLE_CROP = {
+-#if MOD_LANG_BUILD != MOD_LANG_EN
++#if MOD_LANG_BUILD == MOD_LANG_ES || MOD_LANG_BUILD == MOD_LANG_PT_BR || MOD_LANG_BUILD == MOD_LANG_IT
++	-0x84, 0x3c, 0x40,
++#elif MOD_LANG_BUILD == MOD_LANG_FR
++	-0x85, 0x3c, 0x40,
++#elif MOD_LANG_BUILD == MOD_LANG_DE
++	-0x8a, 0x3c, 0x40,
++#elif MOD_LANG_BUILD == MOD_LANG_JA
++	-0x7b, 0x3c, 0x40,
++#elif MOD_LANG_BUILD == MOD_LANG_CA
++	-0x80, 0x3c, 0x40,
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	-0x95, 0x3c, 0x40,
+ #else
+ 	-0x87, 0x3c, 0x30,
+@@ -1895,6 +1944,7 @@ int8_t DIGIMON_MENU_STATE;
  int8_t PLAYER_MENU_STATE;
  int16_t MOVE_SELECT_BOX_Y;
  int16_t MOVE_SELECT_BOX_X;
@@ -146,7 +169,7 @@ index 74891147..baefa1f8 100644
  int8_t SELECTED_MEDAL;
  int8_t MEDAL_SELECTOR_INDEX;
  /* MOD (medal view): the medals the view shows, in order (one hidden by its OPTIONS switch is left out); the cursor
-@@ -2485,11 +2524,22 @@ void tickDigimonMenu(void)
+@@ -2485,11 +2535,22 @@ void tickDigimonMenu(void)
  		}
  		previousX = MOVE_SELECT_BOX_X;
  		previousY = MOVE_SELECT_BOX_Y;
@@ -171,7 +194,7 @@ index 74891147..baefa1f8 100644
  		}
  		if (CHANGED_INPUT & 0x8000) {
  			MOVE_SELECT_BOX_X -= 0x12;
-@@ -3517,30 +3567,65 @@ void renderFeedingItem(int16_t arg)
+@@ -3517,30 +3578,65 @@ void renderFeedingItem(int16_t arg)
  	renderOverworldItem(&TAMER_ITEM.worldItem);
  }
  
@@ -256,7 +279,7 @@ index 74891147..baefa1f8 100644
  	for (slot = 0; slot < 3; slot++) {
  		if ((moveId == 0x2c) && (EQUIPPED_MOVES[slot] == 0x30)) {
  			return slot;
-@@ -3558,29 +3643,11 @@ int8_t getEquippedSlot(void)
+@@ -3558,29 +3654,11 @@ int8_t getEquippedSlot(void)
  void equipMove(void)
  {
  	RECT textArea;
@@ -287,7 +310,7 @@ index 74891147..baefa1f8 100644
  	if (hasMove(moveId) == 0) {
  		playSound(0, 4);
  		return;
-@@ -3746,11 +3813,9 @@ void renderDigimonStatsView(void)
+@@ -3746,11 +3824,9 @@ void renderDigimonStatsView(void)
  	int16_t w;
  	int16_t k;
  	int16_t special;
@@ -299,7 +322,7 @@ index 74891147..baefa1f8 100644
  
  	cluts = STATS_VIEW_ELEMENT_CLUT;
  	switch (MENU_STATE) {
-@@ -3817,18 +3882,7 @@ void renderDigimonStatsView(void)
+@@ -3817,18 +3893,7 @@ void renderDigimonStatsView(void)
  		for (i = 0, k = 0; i < 3; i++) {
  			special = DIGI_PARA(ENTITY_TABLE[1]->type).special[i];
  			if (special != 0xff) {
@@ -319,7 +342,14 @@ index 74891147..baefa1f8 100644
  				k += 0xc;
  			}
  		}
-@@ -4048,9 +4102,10 @@ void renderDigimonMovesView(void)
+@@ -4043,14 +4108,16 @@ void renderDigimonMovesView(void)
+ 		renderString(0x10, -0x80, 0x4c, 0xc, 0xc, 0x24, 0x6c, 5, 1);
+ 		renderString(0, -0x74, 0x4c, 0x18, 0xc, 0x30, 0x6c, 5, 1);
+ #else
+-		renderString(0xc, -0x74, 0x4c, 0x18, 0xc, 0x30, 0x6c, 5, 1);
++		/* MOD (language): only the square's 12 px: in other languages the next cell of the row holds a word */
++		renderString(0xc, -0x74, 0x4c, 0xc, 0xc, 0x30, 0x6c, 5, 1);
+ #endif
  		renderRectPolyFT4(-0x74, 0x3c, 10, 10, 0x80, 0x8c, 5, 0x7b06, 5, 0);
  		j = 0;
  		while (j < 7) {
@@ -333,7 +363,7 @@ index 74891147..baefa1f8 100644
  			j++;
  		}
  		j = 0;
-@@ -4071,6 +4126,10 @@ void renderDigimonMovesView(void)
+@@ -4071,6 +4138,10 @@ void renderDigimonMovesView(void)
  		} else {
  			renderDigimonMovesSelected(1);
  		}
@@ -344,7 +374,7 @@ index 74891147..baefa1f8 100644
  		renderDigimonMoveBox();
  		break;
  	case 7:
-@@ -4233,8 +4292,6 @@ void renderDigimonMovesSelected(int16_t panel)
+@@ -4233,8 +4304,6 @@ void renderDigimonMovesSelected(int16_t panel)
  	IconRect *label;
  	Move *move;
  	int32_t i;
@@ -353,7 +383,7 @@ index 74891147..baefa1f8 100644
  #if !VERSION_IS(US)
  	uint8_t status;
  #endif
-@@ -4271,23 +4328,7 @@ void renderDigimonMovesSelected(int16_t panel)
+@@ -4271,23 +4340,7 @@ void renderDigimonMovesSelected(int16_t panel)
  		renderRectPolyFT4((panel * 0xcb) - 0x71, i * 0x11 + 0x1b, 0xa, 0xa, 0x8a, 0x8c, 5, 0x7b06, 3, 0);
  	}
  
@@ -378,7 +408,7 @@ index 74891147..baefa1f8 100644
  
  	if (hasMove(moveId)) {
  		move = modSpeciesMove(PARTNER_ENTITY.digimonEntity.entity.type, moveId);
-@@ -4319,146 +4360,46 @@ void renderDigimonMovesSelected(int16_t panel)
+@@ -4319,146 +4372,46 @@ void renderDigimonMovesSelected(int16_t panel)
  
  void renderDigimonMoveBox(void)
  {
@@ -466,10 +496,7 @@ index 74891147..baefa1f8 100644
 -			moveId = row * 8 + col;
 -			if (moveId >= 0x30) {
 -				moveId++;
-+			id = moveGridId(row + MOVE_GRID_SCROLL, col);
-+			alt = id == 0x2c ? 0x30 : id == 0x37 ? 0x39 : id;
-+			for (j = 0; j < 16 && list[j] != id && list[j] != alt; j++) {
- 			}
+-			}
 -			j = 0;
 -			if (moveId == 0x2c) {
 -				for (j = 0; j < 0x10; j++) {
@@ -480,7 +507,10 @@ index 74891147..baefa1f8 100644
 -						renderBox(0x1e, 8, 0xc, 0xc, 0x68, 0x68, 0x68, 3, 4);
 -					}
 -				}
--			}
++			id = moveGridId(row + MOVE_GRID_SCROLL, col);
++			alt = id == 0x2c ? 0x30 : id == 0x37 ? 0x39 : id;
++			for (j = 0; j < 16 && list[j] != id && list[j] != alt; j++) {
+ 			}
 -			if (moveId == 0x37) {
 -				for (j = 0; j < 0x10; j++) {
 -					if (moves[j] == 0x37 || moves[j] == 0x39) {
@@ -552,7 +582,7 @@ index 74891147..baefa1f8 100644
  			}
  		}
  	}
-@@ -7153,6 +7094,7 @@ int32_t drawDigimonMovesText(void)
+@@ -7153,6 +7106,7 @@ int32_t drawDigimonMovesText(void)
  		DRAW_STRING_PIECES(TECH_VIEW_LABELS[0], 0, 0x78, 0, 0x24, 0x48, 0x6c);
  		MOVE_SELECT_BOX_X = 0x73;
  		MOVE_SELECT_BOX_Y = 0x6f;
