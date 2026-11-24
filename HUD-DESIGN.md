@@ -5,9 +5,9 @@
 B5a's grey icon blocks and thin green/blue bars did not match the rest of the game's UI and were replaced.
 The HUD is now **five short copies of the native field status bar** in one column at the bottom right, top to
 bottom: happiness, discipline, hunger, toilet, tiredness. Each row is the original bar frame (SYSTEM_W, the
-76×8 bar of the original happiness/discipline HUD) with its slot cut from 50 to 22 pixels, the icon drawn on the
-frame's left cap exactly as the original game draws its two bars (one pixel right, two up), and a fill in the
-native MP bar's two blues. Rows are 12 pixels apart; the column spans x=263..310, y=167..224, so its right and
+76×8 bar of the original happiness/discipline HUD) with its slot cut from 50 to 30 pixels (56 pixels wide), the icon centred in the
+frame's 15-pixel left cap (two pixels right, two up), and a fill in the
+native MP bar's two blues. Rows are 12 pixels apart; the column spans x=255..310, y=167..224, so its right and
 bottom edges are the original bars'.
 
 - **One colour.** Every fill is the same blue. The mood bars no longer turn green or red, and the need bars no
@@ -16,9 +16,9 @@ bottom edges are the original bars'.
   blink is the original game's and stays.
 - **Values** keep the B5a meanings: happiness −100..100, discipline 0..100, time to the next meal
   (`foodLevel`/180), time to the toilet (`poopLevel` over twice the species' `poopTimer`), energy left
-  (100 − tiredness). 22 fill steps.
+  (100 − tiredness). 30 fill steps.
 - **Cost.** Art in unused ETCTIM entry 1 cells (`tools/field_hud_art.py`: icons at 144,32; frame 144,44; fill
-  196,44; CLUT rows 500–508), no new upload or RAM. Three quads a row, 15 a frame (600 bytes of the packet buffer).
+  200,44; CLUT rows 500–508), no new upload or RAM. Three quads a row, 15 a frame (600 bytes of the packet buffer).
 
 - The Status page's happiness, discipline and tiredness bars are the original game's textured bars again (the
   0162–0164/0218 flat green/red fills are gone).

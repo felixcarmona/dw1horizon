@@ -7,15 +7,15 @@ column: happiness, discipline, hunger, toilet, tiredness. Each row draws three
 quads: the bar frame, its icon on the frame's left cap (as the original game
 draws its two bars) and the native two-tone blue fill.
 
-- FRAME (48x8): the native 76x8 bar from SYSTEM_W (entry 8, CLUT row 500),
-  its 50-texel slot cut to 22 and the slot's blue interior made the dark
+- FRAME (56x8): the native 76x8 bar from SYSTEM_W (entry 8, CLUT row 500),
+  its 50-texel slot cut to 30 and the slot's blue interior made the dark
   empty track. CLUT row 508.
 - ICONS (7 x 11x11): happy, sad, disciplined, undisciplined, meat, toilet,
   tired; native pixels with no background, CLUT rows 500..506. The meat and
   tired sprites lose their baked grey block. The two mood icons encode
   (normal, disliked) colour pairs; spare CLUT rows (272,511) and (256,511)
   select the original worse expressions without adding a tile.
-- FILL (22x2): the native MP bar's two blue rows, CLUT row 507.
+- FILL (30x2): the native MP bar's two blue rows, CLUT row 507.
 
 No allocation is added. Native pixels come from SYSTEM_W (entry 8) and the
 toilet-need condition frame (entry 3), fitted whole to 11x11.
@@ -35,10 +35,10 @@ ICONS = tuple((144 + k * ICON, 32) for k in range(7))
 SOURCES = ((64,244,503,11), (97,244,503,11), (22,244,498,11),
            (33,244,498,11), (72,140,488,12), (208,400,483,16), (108,140,489,12))
 FRAME = (144, 44)
-FRAME_W, FRAME_H = 48, 8
-SLOT = 22                      # fill texels; the native slot is 50
+FRAME_W, FRAME_H = 56, 8
+SLOT = 30                      # fill texels; the native slot is 50
 NATIVE_BAR = (0, 236, 500)     # SYSTEM_W u, v, CLUT row: the original field bar
-FILL = (196, 44)
+FILL = (200, 44)
 FILL_COLOURS = ((205,230,246), (0,106,189))   # the native MP bar's two rows
 EMPTY_COLOURS = ((40,40,40), (24,24,24))
 CLUT_ICON, CLUT_FILL, CLUT_FRAME = 4, 11, 12  # rows 500, 507, 508
