@@ -1,0 +1,74 @@
+From 2df926eb483e28d76b2892c9922c7beae9dcf9e2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 10:33:13 +0000
+Subject: [PATCH] Status page: the original game's happiness and discipline
+ bars
+
+The Status page draws its care bars as the original game did: the native blue texture fills the first half of the range and the second texture grows over it from the left. The flat green/red bars and their grey track are gone; tiredness uses the same native bar.
+---
+ src/main/game_menu.c | 30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 8fce74c..0f62c53 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -3736,30 +3736,22 @@ void renderCardCount(void)
+    one fill over the whole range on a grey track, red below the midpoint and
+    green from it, where the icons change, the top row lighter. Sorted fill first: the later box is drawn under it.
+    A bar where more is worse (tiredness) has the colours the other way round: red from the midpoint */
+-static void renderMenuStatusBar(int32_t y, int32_t value, int32_t max, int32_t moreIsWorse)
++/* The original Status page bar: the native blue texture fills the first half of the range, then the second texture
++   grows over it from the left, exactly as the original drew happiness and discipline (tiredness uses it too). */
++static void renderMenuStatusBar(int32_t y, int32_t value, int32_t max)
+ {
+-	int32_t w;
+-	uint8_t r;
+-	uint8_t g;
++	int32_t half = max / 2;
+ 
+ 	if (value < 0)
+ 		value = 0;
+ 	if (value > max)
+ 		value = max;
+-	w = value * 0x32 / max;
+-	if ((value * 2 < max) != (moreIsWorse != 0)) {
+-		r = 0xE0;
+-		g = 0x30;
++	if (value >= half) {
++		renderRectPolyFT4(-0x54, y, (value - half) * 0x32 / half, 6, 0x18, 0xf0, 0x18, GetClut(0x70, 0x1f6), 5, 0);
++		renderRectPolyFT4(-0x54, y, 0x32, 6, 0x4a, 0xf0, 0x18, GetClut(0x70, 0x1f5), 5, 0);
+ 	} else {
+-		r = 0x30;
+-		g = 0xC8;
+-	}
+-	if (w > 0) {
+-		renderBox(-0x54, y, w, 1, r + (0xFF - r) / 3, g + (0xFF - g) / 3, 0x60, 0, 5);
+-		renderBox(-0x54, y + 1, w, 5, r, g, 0x28, 0, 5);
++		renderRectPolyFT4(-0x54, y, value * 0x32 / half, 6, 0x4a, 0xf0, 0x18, GetClut(0x70, 0x1f5), 5, 0);
+ 	}
+-	renderBox(-0x54, y, 0x32, 1, 0x70, 0x70, 0x70, 0, 5);
+-	renderBox(-0x54, y + 1, 0x32, 5, 0x58, 0x58, 0x58, 0, 5);
+ }
+ 
+ /* The stats view's left block holds four care rows, tiredness third,
+@@ -3918,13 +3910,13 @@ void renderDigimonStatsView(void)
+ 		                  GetClut(0x60, 0x1f2), 5, 0);
+ 		renderRectPolyFT4(-0x8a, STATS_VIEW_TEXT[1].posY, 0xb, 0xb, PARTNER_PARA.discipline >= 0x32 ? 0x16 : 0x21, 0xf4, 5,
+ 		                  GetClut(0x60, 0x1f2), 5, 0);
+-		renderMenuStatusBar(0x34, PARTNER_PARA.happiness + 100, 200, 0);
+-		renderMenuStatusBar(0x40, PARTNER_PARA.discipline, 100, 0);
++		renderMenuStatusBar(0x34, PARTNER_PARA.happiness + 100, 200);
++		renderMenuStatusBar(0x40, PARTNER_PARA.discipline, 100);
+ 
+ 		renderBox(-0x54, 0x57, PARTNER_PARA.virusBar * 3, 6, 0xc8, 0xc8, 0x3c, 0, 5);
+ 		renderRectPolyFT4(-0x8a, 0x48, 0xc, 0xc, 5 * 0xc + 0x30, 0x8c, 5, 0x7a46, 5, 0);
+ 		renderString(3, -0x7c, 0x49, STATS_CARE_LABEL_W[0], 0xc, 0, STATS_CARE_TEXT_V, 5, 1);
+-		renderMenuStatusBar(0x4c, PARTNER_PARA.tiredness, 100, 1);
++		renderMenuStatusBar(0x4c, PARTNER_PARA.tiredness, 100);
+ 		renderInsetBox(75, 194, 50, 8, 5);
+ 		renderStatsCareNumber(0, HAPPINESS_SHOWN(PARTNER_PARA.happiness));
+ 		renderStatsCareNumber(1, PARTNER_PARA.discipline);
+-- 
+2.55.0
+

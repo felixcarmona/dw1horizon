@@ -20,7 +20,8 @@ bottom edges are the original bars'.
 - **Cost.** Art in unused ETCTIM entry 1 cells (`tools/field_hud_art.py`: icons at 144,32; frame 144,44; fill
   196,44; CLUT rows 500–508), no new upload or RAM. Three quads a row, 15 a frame (600 bytes of the packet buffer).
 
-- The status screen's care panels keep their own bars.
+- The Status page's happiness, discipline and tiredness bars are the original game's textured bars again (the
+  0162–0164/0218 flat green/red fills are gone).
 
 Everything below is the B5a implementation and design history.
 
