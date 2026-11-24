@@ -400,10 +400,13 @@ from the exact same disc. `--case navigation` runs only the list checks.
 
 ## Enemy life bars
 
-Enemy life bars are permanent. The 32×3 fill sits in a black frame above each
-living, on-screen enemy's species height, with its current HP in outlined 3×5
-clock digits immediately to the right. The fill keeps at least one pixel until
-the enemy dies. The group moves inside the screen and below the top corner HUDs;
+Enemy life bars are permanent and look like the original game's: a 55×7 green
+outline above each living, on-screen enemy's species height, the original HUD
+strip inside it tinted green to yellow to orange as HP drops, and the current HP
+in the big battle digits above the outline's right end. The number is
+right-aligned in a four-digit field (five past 9999), so it stays in place as it
+loses digits. The fill keeps at least one pixel until the enemy dies. The group
+moves inside the screen and below the top corner HUDs;
 finishers, cutscenes and results suppress the new head bars. Arena and VS keep
 their fixed HP/MP panels and add the same head bar for the opponent.
 
