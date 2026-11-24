@@ -1,0 +1,17 @@
+{
+  "id": 135,
+  "name": "Judgment Ray",
+  "element": "light",
+  "power": 410,
+  "mpCost": 70,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 84,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [16, 9, 0]
+}

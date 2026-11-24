@@ -93,7 +93,7 @@ class Record(unittest.TestCase):
 
     def test_bad_values_stop_the_build(self):
         data = copy.deepcopy(DATA)
-        data['finishers'][0]['move']['element'] = 'water'
+        data['finishers'][0]['move']['element'] = 'plasma'
         with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False) as f:
             json.dump(data, f)
         try:

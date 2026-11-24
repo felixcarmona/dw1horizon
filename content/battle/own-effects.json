@@ -1,5 +1,5 @@
 {
-  "note": "Effect chunks of a species' own, appended to ETCHI/EFEDAT.EFE after the disc's 122 (tools/derive/steps/effects.py). Each is a Digimon World 2 technique converted from the player's DW2 disc (tools/dw2efe.py): its cast and hit effect objects, under the disc folder AAA/4.AAA/EFFECT, either [model, anim] (one object at slot 1) or [[DW2 slot, model, anim], ...] (every object of the technique; slot 0 above the head, 1 the launch point or mid height, 2 the feet). Indices no entry uses are left empty. stands_for: the chunk whose launch point (origin table) it takes. scale: DW2 units to this game's (the caster's height here against its DW2 head height); hit_scale: the hit object's, when DW2's close camera made it larger than a battle here shows well. reach: no longer used (the projectile flies to its target). area (optional): hit every enemy, for a range-3 technique; hits (optional): damage events per target. A species plays one with own_effect in its JSON.",
+  "note": "Effect chunks of a species' own, appended to ETCHI/EFEDAT.EFE after the disc's 122 (tools/derive/steps/effects.py). Each is a Digimon World 2 technique converted from the player's DW2 disc (tools/dw2efe.py): its cast and hit effect objects, under the disc folder AAA/4.AAA/EFFECT, either [model, anim] (one object at slot 1) or [[DW2 slot, model, anim], ...] (every object of the technique; slot 0 above the head, 1 the launch point or mid height, 2 the feet). Indices no entry uses are left empty. stands_for: the chunk whose launch point (origin table) it takes. scale: DW2 units to this game's (the caster's height here against its DW2 head height); hit_scale: the hit object's, when DW2's close camera made it larger than a battle here shows well. reach: no longer used (the projectile flies to its target). area (optional): hit every enemy, for a range-3 technique; hits (optional): damage events per target. A species plays one with own_effect in its JSON. authored: a technique of the Darkness, Light and Water rows, whose effect is written and painted in tools/technique_effects/<row>.py (no source disc).",
   "122": {
     "name": "Metal Fireball",
     "stands_for": 63,
@@ -1223,5 +1223,125 @@
       "recolour": {"ramp": ["#000000", "#806a20", "#f0e0a0", "#ffffff"]},
       "scale": 1.4},
     "check": {"hue": 48}
+  },
+  "330": {
+    "name": "Shadow Claw",
+    "technique": 122,
+    "authored": "dark"
+  },
+  "331": {
+    "name": "Dark Bolt",
+    "technique": 123,
+    "authored": "dark"
+  },
+  "332": {
+    "name": "Nightmare",
+    "technique": 124,
+    "authored": "dark"
+  },
+  "333": {
+    "name": "Evil Whisper",
+    "technique": 125,
+    "authored": "dark"
+  },
+  "334": {
+    "name": "Death Grip",
+    "technique": 126,
+    "authored": "dark"
+  },
+  "335": {
+    "name": "Venom Mist",
+    "technique": 127,
+    "authored": "dark"
+  },
+  "336": {
+    "name": "Black Gate",
+    "technique": 128,
+    "authored": "dark"
+  },
+  "337": {
+    "name": "Abyss Requiem",
+    "technique": 129,
+    "authored": "dark"
+  },
+  "338": {
+    "name": "Holy Spark",
+    "technique": 130,
+    "authored": "light"
+  },
+  "339": {
+    "name": "Shining Arrow",
+    "technique": 131,
+    "authored": "light"
+  },
+  "340": {
+    "name": "Blessing",
+    "technique": 132,
+    "authored": "light"
+  },
+  "341": {
+    "name": "Sacred Shield",
+    "technique": 133,
+    "authored": "light"
+  },
+  "342": {
+    "name": "Flash Burst",
+    "technique": 134,
+    "authored": "light"
+  },
+  "343": {
+    "name": "Judgment Ray",
+    "technique": 135,
+    "authored": "light"
+  },
+  "344": {
+    "name": "Heaven's Ring",
+    "technique": 136,
+    "authored": "light"
+  },
+  "345": {
+    "name": "Grand Cross",
+    "technique": 137,
+    "authored": "light"
+  },
+  "346": {
+    "name": "Bubble Shot",
+    "technique": 138,
+    "authored": "water"
+  },
+  "347": {
+    "name": "Aqua Jet",
+    "technique": 139,
+    "authored": "water"
+  },
+  "348": {
+    "name": "Rain Dance",
+    "technique": 140,
+    "authored": "water"
+  },
+  "349": {
+    "name": "Whirlpool",
+    "technique": 141,
+    "authored": "water"
+  },
+  "350": {
+    "name": "Hydro Cannon",
+    "technique": 142,
+    "authored": "water"
+  },
+  "351": {
+    "name": "Sea Crush",
+    "technique": 143,
+    "authored": "water"
+  },
+  "352": {
+    "name": "Tidal Wave",
+    "technique": 144,
+    "authored": "water"
+  },
+  "353": {
+    "name": "Ocean Fury",
+    "technique": 145,
+    "authored": "water"
   }
 }

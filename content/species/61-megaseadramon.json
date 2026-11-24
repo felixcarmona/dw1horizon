@@ -8,13 +8,19 @@
     "evolution": {"from": [10, 24, 35, 49, 22], "to": [211, 271, 408, -1, -1, -1]}
   },
   "attribute": "data",
-  "specialties": ["ice", "air", null],
+  "specialties": ["water", "ice", "air"],
   "fields": ["deep-savers"],
   "techniques": ["Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit", "Ice Statue", "Winter Blast",
                  "Aurora Freeze", "Aqua Magic", "Wind Cutter", "Confused Storm", "Hurricane",
-                 "Mail Strome"],
+                 "Mail Strome", "Whirlpool", "Hydro Cannon", "Sea Crush", "Tidal Wave"],
   "drop": {"item": "sm.recovery", "percent": 10},
-  "model": {"name": "MGSD", "bones": 15, "radius": 200, "height": 340},
+  "model": {
+    "name": "MGSD",
+    "bones": 15,
+    "radius": 200,
+    "height": 340,
+    "slot_aliases": [[59, 56], [60, 47], [61, 50]]
+  },
   "voice": 55,
   "battle_music": "normal-battle",
   "boosted_technique": "Ice Statue",

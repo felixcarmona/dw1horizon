@@ -136,6 +136,15 @@
       "Cada espècie que es pot criar té una tècnica potenciada, indicada a la seva fitxa i amb una fletxa al menú de tècniques. Quan aquest company la fa servir, la potència puja un vuitè més 30 i gasta una quarta part menys de PM; les taules d’espècie ja mostren aquests valors. La millora també val per als dos lluitadors del mode VS i mai per als enemics."
     ]
   },
+  "darkness-light-water": {
+    "title": "Foscor, Llum i Aigua",
+    "summary": "Tres files més de tècniques, la curació i les seves copes.",
+    "paragraphs": [
+      "Tres files s'afegeixen a les set de l'original: Foscor, Llum i Aigua, amb vuit tècniques cadascuna. Un company les aprèn com les altres: la tècnica ha de ser a la llista de la seva espècie i la fila entre les seves especialitats. La pantalla de tècniques es desplaça per les deu files.",
+      "Benedicció torna el 10% dels PV totals, i la quantitat puja en verd sobre el Digimon. Un company es cura tres vegades per combat i un enemic dues; ningú no es cura amb els PV al màxim. Pel seu compte, un company només es cura per sota del 60% dels seus PV; amb la teva ordre es cura amb qualsevol quantitat per sota del màxim. Escut sagrat puja la Defensa, Dansa de la pluja puja la Velocitat i Xiuxiueig maligne treu una cinquena part de la Defensa de l'objectiu, una vegada per lluitador i combat.",
+      "Foscor i Llum es fan el doble de dany entre elles i la meitat a la seva pròpia fila. Aigua fa el doble de dany a Foc i Brutícia i la meitat a Natura, Gel i Aigua; Aire fa el doble de dany a Aigua. Tres copes de l'arena, una per fila, admeten només les espècies que tenen aquesta fila com a primera especialitat."
+    ]
+  },
   "file-city": {
     "title": "File City i els habitants",
     "summary": "Serveis, prosperitat i requisits de reclutament.",

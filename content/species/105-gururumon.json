@@ -5,10 +5,11 @@
   "level": "champion",
   "vanilla_as": 51,
   "attribute": "virus",
-  "specialties": ["battle", "ice", null],
+  "specialties": ["battle", "ice", "dark"],
   "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Megaton Punch", "Buster Dive", "War Cry", "Giga Freeze", "Ice Statue", "Winter Blast",
-                 "Muscle Charge", "Sonic Jab", "Tremar", "Aqua Magic", "Ice Blast"],
+                 "Muscle Charge", "Sonic Jab", "Tremar", "Aqua Magic", "Ice Blast", "Shadow Claw",
+                 "Dark Bolt", "Evil Whisper", "Nightmare", "Death Grip"],
   "drop": {"item": "med.recovery", "percent": 10},
   "effects_like": 22,
   "model": {
@@ -20,7 +21,8 @@
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 4], [-1, 2], [4, 6], [5, 7], [6, 8], [-1, 2],
                  [7, 10], [8, 11], [9, 12], [10, 1], [17, 14], [18, 15], [19, 16], [-1, 14],
                  [11, 18], [12, 19], [13, 20], [-1, 14], [14, 22], [15, 23], [16, 24]],
-    "slot_aliases": [[52, 48], [53, 46], [54, 48], [55, 51], [56, 49]]
+    "slot_aliases": [[52, 48], [53, 46], [54, 48], [55, 51], [56, 49], [57, 53], [58, 54], [59, 48], [60, 51],
+                     [61, 46]]
   },
   "texture": {"from": 105},
   "voice": 20,

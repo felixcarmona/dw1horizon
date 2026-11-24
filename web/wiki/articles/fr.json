@@ -136,6 +136,15 @@
       "Chaque espèce que l’on peut élever a une technique renforcée, signalée sur sa fiche et par une flèche dans le menu des techniques. Quand ce partenaire l’utilise, sa puissance augmente d’un huitième plus 30 et elle coûte un quart de PM en moins ; les tableaux d’espèce affichent déjà ces valeurs. Le bonus vaut aussi pour les deux combattants du mode VS et jamais pour les ennemis."
     ]
   },
+  "darkness-light-water": {
+    "title": "Ténèbres, Lumière et Eau",
+    "summary": "Trois rangées de techniques en plus, le soin et leurs coupes.",
+    "paragraphs": [
+      "Trois rangées s'ajoutent aux sept de l'original : Ténèbres, Lumière et Eau, huit techniques chacune. Un partenaire les apprend comme les autres : la technique doit figurer dans la liste de son espèce et la rangée parmi ses spécialités. L'écran des techniques défile sur les dix rangées.",
+      "Bénédiction rend 10 % des PV totaux, et le montant s'élève en vert au-dessus du Digimon. Un partenaire se soigne trois fois par combat et un ennemi deux fois ; personne ne se soigne avec tous ses PV. De lui-même, un partenaire ne se soigne qu'en dessous de 60 % de ses PV ; sur ton ordre, il se soigne dès qu'il lui en manque. Bouclier sacré augmente la Défense, Danse de la pluie augmente la Vitesse et Murmure maudit retire un cinquième de la Défense de la cible, une fois par combattant et par combat.",
+      "Ténèbres et Lumière s'infligent le double de dégâts l'une à l'autre et la moitié à leur propre rangée. Eau inflige le double de dégâts à Feu et Saleté et la moitié à Nature, Glace et Eau ; Air inflige le double de dégâts à Eau. Trois coupes de l'arène, une par rangée, n'acceptent que les espèces dont la première spécialité est cette rangée."
+    ]
+  },
   "file-city": {
     "title": "File City et ses habitants",
     "summary": "Services, prospérité et conditions de recrutement.",

@@ -5,7 +5,7 @@
   "level": "in-training",
   "vanilla_as": 2,
   "attribute": "data",
-  "specialties": ["ice", "battle", null],
+  "specialties": ["water", "ice", "battle"],
   "fields": ["deep-savers"],
   "techniques": ["Bubble (117)"],
   "drop": {"item": "sm.recovery", "percent": 0},

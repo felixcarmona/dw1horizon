@@ -8,13 +8,19 @@
     "evolution": {"from": [4, -1, -1, -1, -1], "to": [54, 61, 64, 112, -1, -1]}
   },
   "attribute": "data",
-  "specialties": ["ice", "nature", "fire"],
+  "specialties": ["water", "ice", "nature"],
   "fields": ["deep-savers"],
   "techniques": ["Spit Fire", "Magma Bomb", "Danger Sting", "Charm Perfume", "Poison Powder", "Tear Drop",
                  "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast", "Aqua Magic",
-                 "Ice Blast"],
+                 "Ice Blast", "Bubble Shot", "Aqua Jet", "Rain Dance", "Whirlpool"],
   "drop": {"item": "sm.recovery", "percent": 0},
-  "model": {"name": "SEAD", "bones": 17, "radius": 200, "height": 340},
+  "model": {
+    "name": "SEAD",
+    "bones": 17,
+    "radius": 200,
+    "height": 340,
+    "slot_aliases": [[58, 51], [59, 49], [60, 56], [61, 49]]
+  },
   "voice": 10,
   "battle_music": "normal-battle",
   "boosted_technique": "Giga Freeze",

@@ -1,8 +1,20 @@
 {
   "_comment": "DWS enemy defaults: specialty attacks and a weighted four-second idle choice. IceLeomon keeps three physical choices shared with NEW DIGIMON off. Animation slots and move timing stay unchanged. Native encounter rows are authored explicitly in content/maps.",
   "6": {
-    "moves": ["Megaton Punch", "Spinning Shot", "Giga Freeze", null],
+    "moves": ["Megaton Punch", "Dark Bolt", "Giga Freeze", null],
     "weights": [40, 25, 15, 20]
+  },
+  "20": {
+    "moves": ["Dynamite Kick (44)", "Megalo Spark", "Shining Arrow", "Blessing"],
+    "weights": [35, 25, 30, 10]
+  },
+  "35": {
+    "moves": ["Tear Drop", "Water Blit", "Aqua Jet", "Bubble Shot"],
+    "weights": [25, 25, 30, 20]
+  },
+  "61": {
+    "moves": ["Giga Freeze", "Aurora Freeze", "Sea Crush", "Tidal Wave"],
+    "weights": [30, 25, 20, 25]
   },
   "62": {
     "moves": ["Megaton Punch", "Magma Bomb", "Giga Freeze", null],
@@ -11,6 +23,10 @@
   "63": {
     "moves": ["Megaton Punch", "Buster Dive", "Winter Blast", "Dynamite Kick (44)"],
     "weights": [30, 20, 30, 20]
+  },
+  "66": {
+    "moves": ["Megaton Punch", "Thunder Justice", "Nightmare", "Black Gate"],
+    "weights": [30, 25, 25, 20]
   },
   "75": {
     "moves": ["Dynamite Kick (48)", "Megalo Spark", "Electric Cloud", null],
@@ -25,31 +41,39 @@
     "weights": [30, 25, 35, 10]
   },
   "100": {
-    "moves": ["Giga Freeze", "Ice Statue", "Megaton Punch", null],
+    "moves": ["Giga Freeze", "Nightmare", "Megaton Punch", null],
     "weights": [40, 15, 25, 20]
   },
   "101": {
-    "moves": ["Magma Bomb", "Heat Laser", "Red Inferno", null],
+    "moves": ["Magma Bomb", "Heat Laser", "Dark Bolt", null],
     "weights": [35, 30, 25, 10]
   },
   "105": {
-    "moves": ["Megaton Punch", "Giga Freeze", "Winter Blast", null],
+    "moves": ["Megaton Punch", "Giga Freeze", "Dark Bolt", null],
     "weights": [35, 25, 30, 10]
   },
   "108": {
     "moves": ["Ice Needle", "Ice Statue", "Winter Blast", null],
     "weights": [35, 15, 30, 20]
   },
+  "112": {
+    "moves": ["Giga Freeze", "Aurora Freeze", "Whirlpool", "Tidal Wave"],
+    "weights": [30, 25, 20, 25]
+  },
   "130": {
-    "moves": ["Megaton Punch", "Giga Freeze", "Megalo Spark", null],
-    "weights": [40, 25, 15, 20]
+    "moves": ["Megaton Punch", "Giga Freeze", "Dark Bolt", null],
+    "weights": [40, 15, 25, 20]
+  },
+  "229": {
+    "moves": ["Megalo Spark", "Thunder Justice", "Nightmare", "Black Gate"],
+    "weights": [35, 25, 20, 20]
   },
   "242": {
     "moves": ["Giga Freeze", "Ice Statue", "Wind Cutter", null],
     "weights": [35, 15, 30, 20]
   },
   "314": {
-    "moves": ["Megaton Punch", "Buster Dive", "Prominence Beam", null],
+    "moves": ["Megaton Punch", "Buster Dive", "Black Gate", null],
     "weights": [30, 30, 30, 10]
   },
   "327": {
@@ -57,7 +81,7 @@
     "weights": [30, 30, 30, 10]
   },
   "404": {
-    "moves": ["Inifinity Burn", "Megaton Punch", "Buster Dive", "Nightmare Syndromer"],
-    "weights": [35, 25, 25, 15]
+    "moves": ["Inifinity Burn", "Megaton Punch", "Abyss Requiem", "Nightmare Syndromer"],
+    "weights": [35, 30, 20, 15]
   }
 }

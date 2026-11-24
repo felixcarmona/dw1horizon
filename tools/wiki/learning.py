@@ -87,12 +87,17 @@ def spawn_paths(body, visit, hours=frozenset(range(24)), conditional=False, guar
     return states
 
 
+def learnable(ident):
+    """The seven original rows (0..57) and the three new ones (122..145)."""
+    return ident < 58 or 122 <= ident <= 145
+
+
 def usable_moves(species, placement, techniques, group=False, group_bonus=20):
     """BTL_isMoveUsable / BTL_selectEnemyMove, including zero-weight exceptions.
 
     Counter is reactive, never selected. Buffs gain priority over time; area
     attacks can gain priority with another living enemy. Finishers and innate
-    attacks (IDs >=58) never enter battleMoveLearning's normal-move bitset.
+    attacks (IDs 58 to 121) never enter battleMoveLearning's normal-move bitset.
     """
     def stat(key):
         base = species.get('wild', {}).get(key, 0)
@@ -111,7 +116,7 @@ def usable_moves(species, placement, techniques, group=False, group_bonus=20):
             continue
         move = resolve(names[slot], techniques)
         ident = move['id']
-        if ident >= 58 or mp < move['mpCost'] * 3:
+        if not learnable(ident) or mp < move['mpCost'] * 3:
             continue
         reactive = ident == 45 and stat('speed') > 0
         buff = move['range'] == 4 and stat('brain') >= 0

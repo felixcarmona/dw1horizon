@@ -136,6 +136,15 @@
       "Ogni specie allevabile ha una tecnica potenziata, indicata nella sua pagina e con una freccia nel menu delle tecniche. Quando quel partner la usa, la potenza sale di un ottavo più 30 e costa un quarto di MP in meno; le tabelle della specie mostrano già questi valori. Il potenziamento vale anche per entrambi i lottatori della modalità VS e mai per i nemici."
     ]
   },
+  "darkness-light-water": {
+    "title": "Oscurità, Luce e Acqua",
+    "summary": "Tre file di tecniche in più, la cura e le loro coppe.",
+    "paragraphs": [
+      "Tre file si aggiungono alle sette dell'originale: Oscurità, Luce e Acqua, otto tecniche ciascuna. Un compagno le impara come le altre: la tecnica deve essere nella lista della sua specie e la fila tra le sue specialità. La schermata delle tecniche scorre sulle dieci file.",
+      "Benedizione restituisce il 10% dei PV totali, e la quantità sale in verde sopra il Digimon. Un compagno si cura tre volte per battaglia e un nemico due; nessuno si cura con i PV al massimo. Da solo, un compagno si cura soltanto sotto il 60% dei suoi PV; con il tuo ordine si cura con qualsiasi quantità sotto il massimo. Scudo Sacro alza la Difesa, Danza della Pioggia alza la Velocità e Sussurro Maligno toglie un quinto della Difesa del bersaglio, una volta per combattente e battaglia.",
+      "Oscurità e Luce si infliggono il doppio dei danni a vicenda e la metà alla propria fila. Acqua infligge il doppio dei danni a Fuoco e Sporcizia e la metà a Natura, Ghiaccio e Acqua; Aria infligge il doppio dei danni ad Acqua. Tre coppe dell'arena, una per fila, ammettono solo le specie che hanno quella fila come prima specialità."
+    ]
+  },
   "file-city": {
     "title": "File City e i residenti",
     "summary": "Servizi, prosperità e requisiti di reclutamento.",

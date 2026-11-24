@@ -5,10 +5,11 @@
   "level": "champion",
   "vanilla_as": 38,
   "attribute": "virus",
-  "specialties": ["ice", "battle", null],
+  "specialties": ["ice", "battle", "dark"],
   "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Sonic Jab", "Counter", "War Cry", "Giga Freeze", "Ice Statue", "Muscle Charge",
-                 "Dynamite Kick (44)", "Megaton Punch", "Aqua Magic", "Tear Drop", "Death Claw"],
+                 "Dynamite Kick (44)", "Megaton Punch", "Aqua Magic", "Tear Drop", "Death Claw",
+                 "Shadow Claw", "Dark Bolt", "Evil Whisper", "Nightmare", "Death Grip"],
   "drop": {"item": "Speed Leaf", "percent": 1},
   "effects_like": 6,
   "model": {
@@ -20,7 +21,8 @@
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [-1, 2], [1, 3], [-1, 2], [5, 5], [6, 6], [7, 7], [8, 8], [-1, 2],
                  [9, 10], [10, 11], [11, 12], [12, 13], [-1, 2], [2, 15], [-1, 2], [3, 17], [4, 1],
                  [-1, 19], [13, 20], [14, 21], [15, 22], [-1, 19], [16, 24], [17, 25], [18, 26]],
-    "slot_aliases": [[51, 48], [52, 47], [53, 47], [54, 49], [55, 49], [56, 47]]
+    "slot_aliases": [[51, 48], [52, 47], [53, 47], [54, 49], [55, 49], [56, 47], [57, 46], [58, 49], [59, 48],
+                     [60, 55], [61, 47]]
   },
   "texture": {"from": 100},
   "voice": 6,

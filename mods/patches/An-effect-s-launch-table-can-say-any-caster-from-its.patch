@@ -1,0 +1,66 @@
+From 76b229396388390de1c4c00232be0d048a7596af Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 06:41:48 +0000
+Subject: [PATCH] An effect's launch table can say 'any caster, from its entity
+ point'
+
+---
+ src/btl/battle_effect.c | 6 ++++++
+ src/std/std_effect.c    | 6 ++++++
+ src/vs/vs_effect.c      | 6 ++++++
+ 3 files changed, 18 insertions(+)
+
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 922b5ad0..1c7cc1c6 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -5693,6 +5693,12 @@ void BTL_checkTechCompatibility(void)
+ 
+ 	entry = EFE_POP1(EfeTechBoneOffset *);
+ 	table = entry;
++	if (entry->type == -2) {
++		/* MOD (new rows): an authored effect starts at its caster's entity point, whoever casts it */
++		EFE_BONE_OFFSET = &entry->offset;
++		EFE_SCRIPT_CONTEXT->boneOffset = EFE_BONE_OFFSET;
++		return;
++	}
+ 	type = (int16_t)getOriginalType(EFE_SCRIPT_CONTEXT->sourceEntity->type);
+ 	while (entry->type != type) {
+ 		if (entry->type < 0) {
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index 0b85247b..42390172 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -4737,6 +4737,12 @@ void STD_checkTechCompatibility(void)
+ 
+ 	entry = EFE_POP1(EfeTechBoneOffset *);
+ 	table = entry;
++	if (entry->type == -2) {
++		/* MOD (new rows): an authored effect starts at its caster's entity point, whoever casts it */
++		EFE_BONE_OFFSET = &entry->offset;
++		EFE_SCRIPT_CONTEXT->boneOffset = EFE_BONE_OFFSET;
++		return;
++	}
+ 	type = (int16_t)getOriginalType(EFE_SCRIPT_CONTEXT->sourceEntity->type);
+ 	while (entry->type != type) {
+ 		if (entry->type < 0) {
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 56dd70c1..5e194fb0 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -4337,6 +4337,12 @@ void VS_checkTechCompatibility(void)
+ 
+ 	entry = EFE_POP1(EfeTechBoneOffset *);
+ 	table = entry;
++	if (entry->type == -2) {
++		/* MOD (new rows): an authored effect starts at its caster's entity point, whoever casts it */
++		EFE_BONE_OFFSET = &entry->offset;
++		EFE_SCRIPT_CONTEXT->boneOffset = EFE_BONE_OFFSET;
++		return;
++	}
+ 	type = (int16_t)getOriginalType(EFE_SCRIPT_CONTEXT->sourceEntity->type);
+ 	while (entry->type != type) {
+ 		if (entry->type < 0) {
+-- 
+2.55.0
+

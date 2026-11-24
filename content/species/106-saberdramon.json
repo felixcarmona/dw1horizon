@@ -5,10 +5,11 @@
   "level": "champion",
   "vanilla_as": 21,
   "attribute": "virus",
-  "specialties": ["fire", "air", null],
+  "specialties": ["fire", "air", "dark"],
   "fields": ["nightmare-soldiers", "wind-guardians"],
   "techniques": ["Spit Fire", "Prominence Beam", "Red Inferno", "Wind Cutter", "Spinning Shot", "Hurricane",
-                 "Heat Laser", "Fire Tower", "Magma Bomb", "Static Elect", "Meteor Wing"],
+                 "Heat Laser", "Fire Tower", "Magma Bomb", "Static Elect", "Meteor Wing",
+                 "Shadow Claw", "Dark Bolt", "Evil Whisper", "Nightmare", "Death Grip"],
   "drop": {"item": "Various", "percent": 10},
   "effects_like": 21,
   "model": {
@@ -20,7 +21,8 @@
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 4], [4, 2], [5, 6], [6, 7], [7, 2], [8, 9], [9, 10],
                  [10, 2], [11, 12], [12, 13], [13, 14], [14, 2], [15, 16], [16, 17], [17, 18],
                  [18, 2], [19, 20], [20, 21], [21, 22]],
-    "slot_aliases": [[52, 48], [53, 47], [54, 47], [55, 51], [56, 47]]
+    "slot_aliases": [[52, 48], [53, 47], [54, 47], [55, 51], [56, 47], [57, 55], [58, 49], [59, 46], [60, 52],
+                     [61, 55]]
   },
   "texture": {"from": 106},
   "voice": 19,

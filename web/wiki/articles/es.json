@@ -136,6 +136,15 @@
       "Cada especie que se puede criar tiene una técnica potenciada, señalada en su ficha y con una flecha en el menú de técnicas. Cuando ese compañero la usa, su potencia sube un octavo más 30 y gasta una cuarta parte menos de PM; las tablas de especie ya muestran esos valores. La mejora también vale para los dos luchadores del modo VS y nunca para los enemigos."
     ]
   },
+  "darkness-light-water": {
+    "title": "Oscuridad, Luz y Agua",
+    "summary": "Tres filas más de técnicas, la curación y sus copas.",
+    "paragraphs": [
+      "Tres filas se suman a las siete del original: Oscuridad, Luz y Agua, con ocho técnicas cada una. Un compañero las aprende como las demás: la técnica tiene que estar en la lista de su especie y la fila entre sus especialidades. La pantalla de técnicas se desplaza por las diez filas.",
+      "Bendición devuelve el 10% de los PV totales, y la cantidad sube en verde sobre el Digimon. Un compañero se cura tres veces por combate y un enemigo dos; nadie se cura con los PV al máximo. Por su cuenta, un compañero solo se cura por debajo del 60% de sus PV; con tu orden se cura con cualquier cantidad por debajo del máximo. Escudo Sagrado sube la Defensa, Danza de Lluvia sube la Velocidad y Susurro Maligno quita una quinta parte de la Defensa del objetivo, una vez por luchador y combate.",
+      "Oscuridad y Luz se hacen el doble de daño entre sí y la mitad a su propia fila. Agua hace el doble de daño a Fuego y Suciedad y la mitad a Naturaleza, Hielo y Agua; Aire hace el doble de daño a Agua. Tres copas de la arena, una por fila, admiten solo a las especies cuya primera especialidad es esa fila."
+    ]
+  },
   "file-city": {
     "title": "Ciudad File y sus habitantes",
     "summary": "Servicios, prosperidad y requisitos de reclutamiento.",

@@ -58,7 +58,7 @@ GOLDEN = {   # sha256 of what each example compiled to with the retired quest co
     'forest-garurumon': {
         'DG': '55aed903bfec06f31f269dd60dfd4c8bb345425c4e4a955588bc2420e7ab32f3',
         'MAPHEAD': 'dcf8c29b3b839911cb6ef68042ab958099aff5b3fc30b4dd666f88102c9a5896',
-        'MAP/MAP1/MAYO01.MAP': 'c18900d5a6b8163f8e9c9d5cf6675605eb6c18036c5a1a553fcb21aaa7f57fac',
+        'MAP/MAP1/MAYO01.MAP': 'e71fbed0f3af8eac59183a274f02dbc2334276b46e8bd34040f08c3693afa673',
     },
     'jijimon-errand': {     # DG pinned after the change that made a 32-character row now wraps (backend.MAX_UNITS: it ran on into the next row)
         'DG': '0e17ec8f1f615c447350b8ed65ef8eebe1cef67591cec1fa91a00e4524c8f48c',
@@ -66,7 +66,7 @@ GOLDEN = {   # sha256 of what each example compiled to with the retired quest co
     'jungle-newcomer': {
         'DG': 'e9b93ff819483db1727d2c37c0000e2cc17356038b2b598bda917bc2394f6821',
         'MAPHEAD': '6288c380c9bb7ef9fd233c30d2f445fde690b6443812c7fbc1482fea2737cb46',
-        'MAP/MAP1/TROP02.MAP': 'ee387fd5095225cc5b8b22d0d0906e95c705ab901315c7fb774b8eb878d56e1b',
+        'MAP/MAP1/TROP02.MAP': 'f3f7d5d7bcab8e6255fdc4141b71bb76c34b2a6fd4375c5cb74dc6963661c646',
     },
     'new-house-story': {
         'DG': '65a21396fd948c0688c21cc23fb2eb06d93101222080fd22206376de2f05d79b',
@@ -75,7 +75,7 @@ GOLDEN = {   # sha256 of what each example compiled to with the retired quest co
     'species-180': {
         'DG': '83b78b2ca7720b75b3fd26509bf3d4a77e2e2c1db969c5b951a5a4b4c8630787',
         'MAPHEAD': 'e9edad1de2d4fea3d84dae97a971a6ddc51d97146aa1ac4875da2aa9b0bb0d05',
-        'MAP/MAP1/MAYO03.MAP': 'c0f5d9ebceb02fc28a4c8c3f9039c4b963589d9e461dc33d5febd81955848675',
+        'MAP/MAP1/MAYO03.MAP': '1f316347dbdfa29407ead0f8fe44c7c15ee885a033872790b88ece66b3f64793',
     },
     'tokomon-sparring': {
         'DG': '6f3a8f73d7750a323d610cec7548cc1d7b32a0a9bdb6fa1d6bdee51c0d4e3635',

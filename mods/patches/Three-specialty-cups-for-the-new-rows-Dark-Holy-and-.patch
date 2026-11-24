@@ -1,0 +1,103 @@
+From b6723d221051336293fc5962c6b335d5e6756323 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 06:41:48 +0000
+Subject: [PATCH] Three specialty cups for the new rows: Dark, Holy and Aqua
+
+---
+ src/dget/dget.c              | 9 +++++----
+ src/main/script_common.c     | 7 +++++--
+ src/std/std_setup.c          | 6 +++---
+ text/main/script_common.yaml | 9 +++++++++
+ 4 files changed, 22 insertions(+), 9 deletions(-)
+
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index 2a61f133..5956f90a 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -92,15 +92,16 @@ static void *dget_sbss_order[] = {
+ 	&DGET_BUFFER,
+ };
+ 
+-/* MOD (cup rules): Rookie, Champion, Ultimate, Mega; Vaccine, Data, Virus; the eight Fields */
+-#define NEW_CUP_COUNT	15
++/* MOD (cup rules): Rookie, Champion, Ultimate, Mega; Vaccine, Data, Virus; the eight Fields; Dark, Holy, Aqua */
++#define NEW_CUP_COUNT	18
+ /*
+  * one character each, as the calendar's cells hold (the original's are single letters too): 1..4 the level cups by their
+  * order, V E U Vaccine, Data, Virus, and in small letters the Fields: n d s g e b r j (Nature Spirits, Deep Savers,
+- * Nightmare Soldiers, Wind Guardians, Metal Empire, Virus Busters, Dragon's Roar, Jungle Troopers)
++ * Nightmare Soldiers, Wind Guardians, Metal Empire, Virus Busters, Dragon's Roar, Jungle Troopers), and k h a the cups
++ * of the new technique rows (Dark, Holy, Aqua)
+  */
+ static char NEW_CUP_GRADES[NEW_CUP_COUNT][2] = {
+-	"1", "2", "3", "4", "V", "E", "U", "n", "d", "s", "g", "e", "b", "r", "j",
++	"1", "2", "3", "4", "V", "E", "U", "n", "d", "s", "g", "e", "b", "r", "j", "k", "h", "a",
+ };
+ 
+ void fillEnabledTournamentTable(void)
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index a0c7ff02..32e7afc8 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -471,8 +471,8 @@ int32_t modLoadCardImage(int32_t id, void *buffer)
+ 	                           buffer, (id < 66 ? id : id - 66) * 14, 14);
+ }
+ 
+-/* MOD (cup rules): 38 names, was 23: the cups 23..37 */
+-char *TOURNAMENT_NAMES[38] = {
++/* MOD (cup rules): 41 names, was 23: the cups 23..40 */
++char *TOURNAMENT_NAMES[41] = {
+ 	STR_TOURNAMENT_NAME_GRADE_D,
+ 	STR_TOURNAMENT_NAME_GRADE_C,
+ 	STR_TOURNAMENT_NAME_GRADE_B,
+@@ -511,6 +511,9 @@ char *TOURNAMENT_NAMES[38] = {
+ 	STR_TOURNAMENT_NAME_VIRUS_BUSTERS_CUP,
+ 	STR_TOURNAMENT_NAME_DRAGONS_ROAR_CUP,
+ 	STR_TOURNAMENT_NAME_JUNGLE_TROOPERS_CUP,
++	STR_TOURNAMENT_NAME_DARK_CUP,
++	STR_TOURNAMENT_NAME_HOLY_CUP,
++	STR_TOURNAMENT_NAME_AQUA_CUP,
+ };
+ 
+ char *TOURNAMENT_GRADES[23] = {
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index d82a1cc2..f40769a4 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -158,10 +158,10 @@ int16_t STD_OPPONENT_BASE_STATS[24] = {
+ };
+ /* MOD (cup rules): the same number for the cups after the original's, 23 onwards (content/tables/tournament-rules.json,
+  * newCupStats; balance.py writes it here). */
+-int16_t STD_NEW_CUP_BASE_STATS[15] = {
+-	150, 200, 250, 220, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250,
++int16_t STD_NEW_CUP_BASE_STATS[18] = {
++	150, 200, 250, 220, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250,
+ };
+-#define STD_NEW_CUPS		15
++#define STD_NEW_CUPS		18
+ #define STD_NEW_CUP_SECTORS	17
+ static char STD_PATH_NEW_CUPS[] = "\\STDDAT\\GRADE\\NEWCUPS.BIN";
+ 
+diff --git a/text/main/script_common.yaml b/text/main/script_common.yaml
+index dd0acd36..f21dfcb1 100644
+--- a/text/main/script_common.yaml
++++ b/text/main/script_common.yaml
+@@ -379,6 +379,15 @@ TOURNAMENT_NAMES:
+     STR_TOURNAMENT_NAME_JUNGLE_TROOPERS_CUP:
+       ja: ジャングルトルーパーズカップ
+       en_us: Jungle Troopers Cup
++    STR_TOURNAMENT_NAME_DARK_CUP:
++      ja: やみカップ
++      en_us: Dark Cup
++    STR_TOURNAMENT_NAME_HOLY_CUP:
++      ja: ひかりカップ
++      en_us: Holy Cup
++    STR_TOURNAMENT_NAME_AQUA_CUP:
++      ja: みずカップ
++      en_us: Aqua Cup
+ 
+ TOURNAMENT_GRADES:
+   strings:
+-- 
+2.55.0
+

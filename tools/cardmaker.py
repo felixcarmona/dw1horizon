@@ -71,6 +71,9 @@ ELEMENTS = {
     'air':    ('purple', 'an open sky with drifting clouds above a distant landscape'),
     'battle': ('orange', 'a rocky canyon arena under a warm sky'),
     'filth':  ('yellow', 'a murky swamp with sludge pools and dead trees'),
+    'dark':   ('purple', 'a moonlit graveyard with twisted trees and drifting mist'),
+    'light':  ('yellow', 'a sunlit temple of white marble above the clouds'),
+    'water':  ('blue',   'a coral seabed with shafts of light through clear water'),
 }
 DEFAULT_ELEMENT = 'battle'
 # how the creature is rendered: 'faithful' (keeps the model's own look) is the default

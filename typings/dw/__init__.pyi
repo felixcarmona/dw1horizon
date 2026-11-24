@@ -1148,6 +1148,30 @@ class Tech(IntEnum):
     Bubble118 = 118
     Bubble119 = 119
     Bubble120 = 120
+    ShadowClaw = 122
+    DarkBolt = 123
+    Nightmare = 124
+    EvilWhisper = 125
+    DeathGrip = 126
+    VenomMist = 127
+    BlackGate = 128
+    AbyssRequiem = 129
+    HolySpark = 130
+    ShiningArrow = 131
+    Blessing = 132
+    SacredShield = 133
+    FlashBurst = 134
+    JudgmentRay = 135
+    HeavenSRing = 136
+    GrandCross = 137
+    BubbleShot = 138
+    AquaJet = 139
+    RainDance = 140
+    Whirlpool = 141
+    HydroCannon = 142
+    SeaCrush = 143
+    TidalWave = 144
+    OceanFury = 145
 
 class Screen(IntEnum):
     """The screens of the game, by caption (a caption that repeats gets the screen number)."""

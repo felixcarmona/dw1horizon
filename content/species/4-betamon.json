@@ -8,12 +8,18 @@
     "evolution": {"from": [44, -1, -1, -1, -1], "to": [10, 24, 35, 49, 238, -1]}
   },
   "attribute": "virus",
-  "specialties": ["ice", null, "air"],
+  "specialties": ["water", "ice", "air"],
   "fields": ["nature-spirits"],
   "techniques": ["Static Elect", "Electric Cloud", "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast",
-                 "Aqua Magic", "Electric Shock"],
+                 "Aqua Magic", "Electric Shock", "Bubble Shot", "Aqua Jet", "Rain Dance"],
   "drop": {"item": "MP Floppy", "percent": 30},
-  "model": {"name": "BETA", "bones": 24, "radius": 160, "height": 160},
+  "model": {
+    "name": "BETA",
+    "bones": 24,
+    "radius": 160,
+    "height": 160,
+    "slot_aliases": [[54, 47], [55, 49], [56, 52]]
+  },
   "voice": 4,
   "battle_music": "normal-battle",
   "boosted_technique": "Ice Needle",

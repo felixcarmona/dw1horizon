@@ -5,10 +5,10 @@
   "level": "rookie",
   "vanilla_as": 46,
   "attribute": "data",
-  "specialties": ["ice", null, null],
+  "specialties": ["water", "ice", null],
   "fields": ["nature-spirits", "deep-savers"],
   "techniques": ["Tear Drop", "Water Blit", "Aqua Magic", "Winter Blast", "Ice Needle", "Giga Freeze", "Ice Statue",
-                 "Super Slap"],
+                 "Super Slap", "Bubble Shot", "Aqua Jet", "Rain Dance"],
   "drop": {"item": "MP Floppy", "percent": 0},
   "effects_like": 109,
   "model": {
@@ -19,7 +19,7 @@
     "height": 190,
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 2], [4, 5], [5, 1], [6, 7], [7, 8], [8, 9], [9, 7],
                  [10, 11], [11, 7], [12, 13]],
-    "slot_aliases": [[48, 47], [49, 47], [50, 47], [51, 47], [52, 47], [53, 47]]
+    "slot_aliases": [[48, 47], [49, 47], [50, 47], [51, 47], [52, 47], [53, 47], [54, 46], [55, 50], [56, 48]]
   },
   "texture": {"from": 109},
   "voice": 66,

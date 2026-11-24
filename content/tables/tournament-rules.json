@@ -16,5 +16,5 @@
   "stdArena": {"screen": 106},
   "newCupStats": {"rookie": 150, "champion": 200, "ultimate": 250, "mega": 220, "vaccine": 250, "data": 250, "virus": 250,
                   "natureSpirits": 250, "deepSavers": 250, "nightmareSoldiers": 250, "windGuardians": 250, "metalEmpire": 250,
-                  "virusBusters": 250, "dragonsRoar": 250, "jungleTroopers": 250}
+                  "virusBusters": 250, "dragonsRoar": 250, "jungleTroopers": 250, "dark": 250, "holy": 250, "aqua": 250}
 }

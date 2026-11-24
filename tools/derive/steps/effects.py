@@ -188,6 +188,13 @@ def own_effects(ctx, archive):
     for key, e in spec.items():
         if key == 'note':
             continue
+        if 'authored' in e:             # a technique of the new rows: drawn and scripted here (tools/technique_effects)
+            import importlib
+            row = importlib.import_module('tools.technique_effects.' + e['authored'])
+            chunk, kept = row.EFFECTS[e['technique']]().build(0x100 + int(key))
+            out[int(key)] = bytes(chunk)
+            ctx.log(f'own effect {key} {e["name"]}: authored, kept {kept}')
+            continue
         like = bytes(archive[e['stands_for'] * CHUNK_SIZE:(e['stands_for'] + 1) * CHUNK_SIZE])
         if 'dw3' in e:
             out[int(key)], info = dw3_effect(ctx.path(*DW3_SOURCE), key, e, launch_table(like), area=int(key) in area,

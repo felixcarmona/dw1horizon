@@ -139,7 +139,7 @@ STAT_KEYS = ('hp', 'mp', 'offense', 'defense', 'speed', 'brains')
 # ------------------------------------------------------------------ names of the values (docs/mods/species.md)
 LEVELS = ['none', 'fresh', 'in-training', 'rookie', 'champion', 'ultimate', 'mega']        # include/dw/level.h
 ATTRIBUTES = ['none', 'data', 'vaccine', 'virus']                   # FLEE_CHANCES rows (btl.c)
-ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth']                     # TYPE_FACTORS rows
+ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water']   # TYPE_FACTORS rows
 # the canon Fields of a species ("fields"); a cup can ask for one (the bit of its index in the cup tags)
 FIELDS = ['nature-spirits', 'deep-savers', 'nightmare-soldiers', 'wind-guardians', 'metal-empire', 'virus-busters',
           'dragons-roar', 'jungle-troopers', 'dark-area', 'unknown']
@@ -727,12 +727,12 @@ def content_files(content=None):
 
 def cup_tag(s, listed=False):
     """The cup tag of a species (CUP_TAG_* of include/dw/cup_rules.h): bits 0-9 its Fields, 10-11 the attribute,
-    12-14 the first specialty + 1 (0: none), 15-17 the level, 18 set for a species of the archive's partner list
-    (`listed`) that is a Rookie or higher: the ones the arena draws as rivals without being recruited."""
+    15-17 the level, 18 set for a species of the archive's partner list (`listed`) that is a Rookie or higher: the ones
+    the arena draws as rivals without being recruited; 19-22 the first specialty + 1 (0: none)."""
     first = s['specialties'][0]
     level = LEVELS.index(s['level'])
     return (sum(1 << FIELDS.index(f) for f in s.get('fields', [])) | ATTRIBUTES.index(s['attribute']) << 10
-            | (ELEMENTS.index(first) + 1 if first else 0) << 12 | level << 15 | (listed and level >= 3) << 18)
+            | level << 15 | (listed and level >= 3) << 18 | (ELEMENTS.index(first) + 1 if first else 0) << 19)
 
 
 def validate(s):
@@ -1270,7 +1270,7 @@ def materialize(old, from_files=False):
 
 # ------------------------------------------------------------------ unique finishers (docs/mods/unique-finishers.md)
 FINISHERS = os.path.join(ROOT, 'content', 'finishers', 'imports.json')
-FINISHER_ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth']   # Move.special (finisher_balance.ELEMENTS)
+FINISHER_ELEMENTS = ELEMENTS   # Move.special (finisher_balance.ELEMENTS)
 FINISHER_PRESENT, FINISHER_SPREADS = 1, 2   # record 0x1D3 (species.h SPECIES_FINISHER_*)
 FINISHER_IDS = (58, 112)
 FINISHER_NAME_SLOT = 32          # bytes per name in the name sectors: the text and its terminator (species.c keeps 28)
@@ -2606,7 +2606,7 @@ def lint(species, check_files=False):
             E('attribute', s['attribute'], 'a species that fights or is a partner needs data, vaccine or virus: the game '
               'indexes FLEE_CHANCES[(attribute - 1) * 3 + ...] (btl.c) and the status screen icon with attribute - 1')
         for i, e in enumerate(para['special']):
-            if e != 0xFF and not 0 <= e < len(ELEMENTS): E(f'specialties[{i}]', e, 'an element (fire .. filth) or null')
+            if e != 0xFF and not 0 <= e < len(ELEMENTS): E(f'specialties[{i}]', e, 'an element (fire .. water) or null')
         if (partner and not placeholder or fights) and para['special'][0] == 0xFF:
             W('specialties[0]', None, 'the main element is empty: learning on evolving and the AI use slot 0')
         for m in moves:

@@ -5,10 +5,10 @@
   "level": "rookie",
   "vanilla_as": 31,
   "attribute": "virus",
-  "specialties": ["battle", "air", null],
+  "specialties": ["dark", "battle", "air"],
   "fields": ["nature-spirits", "nightmare-soldiers", "wind-guardians"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Buster Dive", "War Cry", "Wind Cutter", "Spinning Shot",
-                 "Confused Storm", "Boom Bubble"],
+                 "Confused Storm", "Boom Bubble", "Shadow Claw", "Dark Bolt", "Evil Whisper"],
   "drop": {"item": "Meat", "percent": 30},
   "effects_like": 31,
   "model": {
@@ -20,7 +20,7 @@
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 3], [6, 7], [7, 8], [8, 2], [9, 10],
                  [10, 11], [11, 2], [12, 13], [13, 14], [14, 1], [15, 16], [16, 17], [17, 18],
                  [18, 16], [19, 20], [20, 21]],
-    "slot_aliases": [[52, 51], [53, 48]]
+    "slot_aliases": [[52, 51], [53, 48], [54, 46], [55, 50], [56, 49]]
   },
   "texture": {"from": 96},
   "voice": 27,

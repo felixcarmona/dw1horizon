@@ -1,0 +1,17 @@
+{
+  "id": 129,
+  "name": "Abyss Requiem",
+  "element": "dark",
+  "power": 620,
+  "mpCost": 125,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 82,
+  "status": 2,
+  "statusChance": 20,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [12, 7, 0]
+}

@@ -1,0 +1,17 @@
+{
+  "id": 124,
+  "name": "Nightmare",
+  "element": "dark",
+  "power": 110,
+  "mpCost": 36,
+  "distance": 810000,
+  "range": 2,
+  "accuracy": 80,
+  "status": 2,
+  "statusChance": 45,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [22, 14, 9]
+}

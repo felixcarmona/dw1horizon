@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'content/finishers/imports.json'
-ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth']
+ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water']
 STATUS_NAMES = {0: None, 1: 'poison', 2: 'confusion', 3: 'stun', 4: 'flatten'}
 STATUS_WEIGHT = {'poison': 0.15, 'confusion': 0.15, 'stun': 0.25, 'flatten': 0.25}
 STATUS_CHANCE_MAX = 20

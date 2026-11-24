@@ -1,0 +1,17 @@
+{
+  "id": 143,
+  "name": "Sea Crush",
+  "element": "water",
+  "power": 300,
+  "mpCost": 62,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 68,
+  "status": 3,
+  "statusChance": 12,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [17, 10, 5]
+}

@@ -299,7 +299,7 @@ class Sim:
             t = st.pop()
             while True:
                 ty = self.rd(t, 2)
-                if ty == c.source.type:
+                if ty == c.source.type or ty == -2:      # -2: an authored effect, any caster's entity point
                     break
                 if ty < 0:
                     self.pc = 0
@@ -388,6 +388,12 @@ class Sim:
             t.is_hit = 1
             t.hits += 1
             self.hits.append((self.tick, self.fighters.index(t), tuple(self.vec(cur + 4))))
+        elif name == 'markFinished':                # the technique effects' own end mark; live() already sees it
+            pass
+        elif name == 'renderScreenOverlay':         # a full-screen tint: no part of the hit or sound evidence
+            st.pop(), st.pop(), st.pop()
+        elif name == 'isTargetUnhit':
+            self.wr(st.pop(), 0 if c.target.is_hit else 1)
         elif not self.native(name, st):
             raise RuntimeError(f'sub-opcode {name} not modelled')
 

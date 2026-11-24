@@ -5,7 +5,7 @@
   "level": "fresh",
   "vanilla_as": 1,
   "attribute": "data",
-  "specialties": ["ice", null, null],
+  "specialties": ["water", "ice", null],
   "fields": ["deep-savers"],
   "techniques": ["Bubble (117)"],
   "drop": {"item": "sm.recovery", "percent": 0},

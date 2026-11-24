@@ -1,0 +1,17 @@
+{
+  "id": 123,
+  "name": "Dark Bolt",
+  "element": "dark",
+  "power": 170,
+  "mpCost": 30,
+  "distance": 160000,
+  "range": 2,
+  "accuracy": 66,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [26, 16, 12]
+}

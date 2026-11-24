@@ -5,10 +5,11 @@
   "level": "champion",
   "vanilla_as": 48,
   "attribute": "virus",
-  "specialties": ["air", "ice", null],
+  "specialties": ["dark", "air", "ice"],
   "fields": ["nightmare-soldiers"],
   "techniques": ["Static Elect", "Megalo Spark", "Electric Cloud", "Thunder Justice", "Giga Freeze", "Wind Cutter",
-                 "Confused Storm", "Aqua Magic", "Tear Drop", "Winter Blast", "Dark Claw"],
+                 "Confused Storm", "Aqua Magic", "Tear Drop", "Winter Blast", "Dark Claw",
+                 "Shadow Claw", "Dark Bolt", "Evil Whisper", "Nightmare", "Death Grip"],
   "drop": {"item": "Medium MP", "percent": 10},
   "effects_like": 107,
   "model": {
@@ -18,7 +19,8 @@
     "radius": 150,
     "height": 370,
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 4], [4, 2], [5, 6], [6, 7], [7, 2]],
-    "slot_aliases": [[52, 49], [53, 50], [54, 50], [55, 50], [56, 51], [51, 49]]
+    "slot_aliases": [[52, 49], [53, 50], [54, 50], [55, 50], [56, 51], [51, 49], [57, 46], [58, 51], [59, 53],
+                     [60, 48], [61, 46]]
   },
   "texture": {"from": 107},
   "voice": 33,

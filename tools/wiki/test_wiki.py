@@ -145,7 +145,7 @@ class WikiTests(unittest.TestCase):
         secret=next(r for r in self.data['recruits'] if r['id']==6)
         self.assertFalse(public['hidden']);self.assertTrue(secret['hidden'])
 
-    def test_twenty_articles_and_nine_reviewed_translations(self):
+    def test_articles_and_nine_reviewed_translations(self):
         import hashlib
         root=model.ROOT/'web/wiki/articles'
         review=json.loads((root/'review.json').read_text())
@@ -153,7 +153,7 @@ class WikiTests(unittest.TestCase):
             source=(root/f'{lang}.json').read_bytes()
             self.assertEqual(review['locales'][lang],hashlib.sha256(source).hexdigest())
             articles=json.loads(source)
-            self.assertEqual(len(articles),20)
+            self.assertEqual(len(articles),21)
             self.assertTrue(all(len(a['paragraphs'])>=3 for a in articles.values()))
             self.assertIn('{save_blocks}',articles['memory-cards']['paragraphs'][0])
     def test_bakemon_dialogue_comes_from_each_snapshot_and_language(self):

@@ -1,0 +1,17 @@
+{
+  "id": 131,
+  "name": "Shining Arrow",
+  "element": "light",
+  "power": 170,
+  "mpCost": 34,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 78,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [26, 16, 12]
+}

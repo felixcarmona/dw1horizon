@@ -27,8 +27,9 @@ CONTENT = os.path.join(ROOT, 'content')
 TECH_DIR, ITEM_DIR, TABLE_DIR, SCREEN_DIR = (os.path.join(CONTENT, d) for d in ('techniques', 'items', 'tables', 'screens'))
 NUM_SCREENS = 255            # the original screens: MAP_ENTRIES rows (the files of 255 and up are SCRN.DAT records, tools/screens.py)
 NUM_ALL_SCREENS = 1024       # include/dw/ids.h NUM_SCREENS
-ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth']
-NUM_TECHS, NUM_ITEMS, NUM_LEARN = 122, 128, 58
+ELEMENTS = ['fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water']
+NUM_TECHS, NUM_ITEMS, NUM_LEARN = 146, 128, 58
+def learnable(i): return i < NUM_LEARN or i >= 122       # the technique grid: the 58 originals and the new rows (122..145)
 EVO_ITEM_FIRST, EVO_ITEM_LAST = 0x47, 0x72
 TECH_KEYS = ['id', 'name', 'element', 'power', 'mpCost', 'distance', 'range', 'accuracy', 'status',
              'statusChance', 'iframes', 'unk3', 'unk4', 'unk5', 'learnChances']
@@ -205,7 +206,7 @@ def doc():
     for i in range(NUM_TECHS):
         if i not in T:
             r = dict(EMPTY_TECH)
-            if i < NUM_LEARN: r['learnChances'] = [0, 0, 0]
+            if learnable(i): r['learnChances'] = [0, 0, 0]
             out['techniques'][str(i)] = r; continue
         x = T[i]
         bad = [k for k in x if not k.startswith('_') and k not in TECH_KEYS]
@@ -213,12 +214,12 @@ def doc():
         el = x['element']
         r = {'special': ELEMENTS.index(el) if isinstance(el, str) else el}
         for k in TECH_KEYS[3:-1]: r[k] = x[k]
-        if i < NUM_LEARN:
+        if learnable(i):
             lc = x.get('learnChances')
-            if not (isinstance(lc, list) and len(lc) == 3): raise SystemExit(f'{x["_path"]}: learnChances: [main, second, third] (ids 0..{NUM_LEARN - 1})')
+            if not (isinstance(lc, list) and len(lc) == 3): raise SystemExit(f'{x["_path"]}: learnChances: [main, second, third] (ids 0..{NUM_LEARN - 1} and 122..{NUM_TECHS - 1})')
             r['learnChances'] = list(lc)
         elif 'learnChances' in x:
-            raise SystemExit(f'{x["_path"]}: learnChances: only techniques 0..{NUM_LEARN - 1} are learned in battle')
+            raise SystemExit(f'{x["_path"]}: learnChances: only techniques 0..{NUM_LEARN - 1} and 122..{NUM_TECHS - 1} are learned in battle')
         out['techniques'][str(i)] = r
     I = load_items() or {}
     out['items'] = {}; out['evolutionItems'] = {}; out['itemEffects'] = {}

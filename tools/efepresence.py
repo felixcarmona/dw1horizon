@@ -86,7 +86,7 @@ def check(spec, table):
     """The reasons the table fails for the spec (empty when every entry passes)."""
     fails = []
     for key, e in spec.items():
-        if key == 'note':
+        if key == 'note' or 'authored' in e:        # the new rows' techniques: tools/test_technique_effects.py
             continue
         m = table.get(key)
         if m is None:

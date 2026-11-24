@@ -3836,6 +3836,39 @@
    "Singoli, 3 turni, 8 iscritti"
   ]
  ],
+ "s209.sec10.u37": [
+  [
+   "- Coppa Tenebre -",
+   "Incorona il miglior Digimon",
+   "di specialità Tenebre.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Tenebre"
+  ]
+ ],
+ "s209.sec10.u38": [
+  [
+   "- Coppa Luce -",
+   "Incorona il miglior Digimon",
+   "di specialità Luce.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Luce"
+  ]
+ ],
+ "s209.sec10.u39": [
+  [
+   "- Coppa Acqua -",
+   "Incorona il miglior Digimon",
+   "di specialità Acqua.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Acqua"
+  ]
+ ],
  "s210.sec51.u0": [
   [
    "Ti aspettavo, {color 6}{player}{color 1}.",
@@ -4892,6 +4925,39 @@
    "Incontri a tempo limitato.",
    "",
    "Singoli, 3 turni, 8 iscritti"
+  ]
+ ],
+ "s213.sec10.u37": [
+  [
+   "- Coppa Tenebre -",
+   "Incorona il miglior Digimon",
+   "di specialità Tenebre.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Tenebre"
+  ]
+ ],
+ "s213.sec10.u38": [
+  [
+   "- Coppa Luce -",
+   "Incorona il miglior Digimon",
+   "di specialità Luce.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Luce"
+  ]
+ ],
+ "s213.sec10.u39": [
+  [
+   "- Coppa Acqua -",
+   "Incorona il miglior Digimon",
+   "di specialità Acqua.",
+   "Incontri a tempo limitato.",
+   "",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Digimon Acqua"
   ]
  ],
  "s213.sec54.u0": [
@@ -6921,6 +6987,18 @@
   [
    "Premio vittoria: 5000 Bits!",
    "Ottenuto: {color 6}Frutto saggio{color 1}!"
+  ]
+ ],
+ "s220.sec51.u24": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Patata forzuta{color 1}!"
+  ]
+ ],
+ "s220.sec51.u25": [
+  [
+   "Premio vittoria: 5000 Bits!",
+   "Ottenuto: {color 6}Ghiaccio forza{color 1}!"
   ]
  ],
  "s220.sec83.u0": [

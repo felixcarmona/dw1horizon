@@ -1,0 +1,17 @@
+{
+  "id": 137,
+  "name": "Grand Cross",
+  "element": "light",
+  "power": 600,
+  "mpCost": 120,
+  "distance": 360000,
+  "range": 2,
+  "accuracy": 90,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [12, 7, 0]
+}

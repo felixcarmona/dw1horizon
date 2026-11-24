@@ -3960,6 +3960,39 @@
    "Einzel, 3 Runden, 8 Teilnehmer"
   ]
  ],
+ "s209.sec10.u37": [
+  [
+   "- Finsternis-Pokal -",
+   "Kürt das beste Digimon",
+   "mit Spezialität Finsternis.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Finsternis-Digimon"
+  ]
+ ],
+ "s209.sec10.u38": [
+  [
+   "- Licht-Pokal -",
+   "Kürt das beste Digimon",
+   "mit Spezialität Licht.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Licht-Digimon"
+  ]
+ ],
+ "s209.sec10.u39": [
+  [
+   "- Wasser-Pokal -",
+   "Kürt das beste Digimon",
+   "mit Spezialität Wasser.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Wasser-Digimon"
+  ]
+ ],
  "s210.sec51.u0": [
   [
    "Ich hatte dich erwartet,",
@@ -5040,6 +5073,39 @@
    "Kämpfe mit Zeitlimit.",
    "",
    "Einzel, 3 Runden, 8 Teilnehmer"
+  ]
+ ],
+ "s213.sec10.u37": [
+  [
+   "- Finsternis-Pokal -",
+   "Kürt das beste Digimon",
+   "mit Spezialität Finsternis.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Finsternis-Digimon"
+  ]
+ ],
+ "s213.sec10.u38": [
+  [
+   "- Licht-Pokal -",
+   "Kürt das beste Digimon",
+   "mit Spezialität Licht.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Licht-Digimon"
+  ]
+ ],
+ "s213.sec10.u39": [
+  [
+   "- Wasser-Pokal -",
+   "Kürt das beste Digimon",
+   "mit Spezialität Wasser.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Wasser-Digimon"
   ]
  ],
  "s213.sec54.u0": [
@@ -7066,6 +7132,18 @@
   [
    "Siegprämie: 5000 Bits!",
    "Gewonnen: {color 6}Weisheitsfrucht{color 1}!"
+  ]
+ ],
+ "s220.sec51.u24": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Muskelknolle{color 1}!"
+  ]
+ ],
+ "s220.sec51.u25": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Krafteis{color 1}!"
   ]
  ],
  "s220.sec83.u0": [
