@@ -2,7 +2,7 @@
 
 The four leg objects leave every model (shirts.strip) and a pair of trousers brings them, read behind the model like a
 shirt. Trousers 0 are the original ones. The others draw their cloth on the legs' own part of the texture and colour it
-through the legs' palette row; the seat, which is part of the torso and so of every shirt (its first SEAT polygons),
+through the legs' palette row; the seat, which is part of the torso and so of every shirt (its last PELVIS polygons),
 is then drawn with one plain texel of that cloth (SEAT_AT): the game rewrites those polygons when it loads.
 
 The shins of slim trousers (SLIM: a narrow or bare shin) start with SHAFT_CORNERS corners and normals that are a
@@ -209,7 +209,7 @@ def seat(parts):
     verts, norms, prims = parts[shirts.TORSO]
     out = []
     for i, p in enumerate(prims):
-        if i < len(shirts.PELVIS):
+        if i >= len(prims) - len(shirts.PELVIS):
             d = p.decode()
             shirts.set_row(d, ROW)
             d['uv'] = [SEAT_AT] * len(d['uv'])

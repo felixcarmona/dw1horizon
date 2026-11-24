@@ -1,0 +1,41 @@
+From 80063171d9ded9f7cf0ee3be364ff3991c7189c2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 16:49:17 +0000
+Subject: [PATCH] Tamer looks: the seat is the torso's last polygons, under the
+ shirt's hem
+
+---
+ src/main/mod_species.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index c5e3fef8..df7d3302 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -1061,7 +1061,7 @@ void lookHairPalette(uint16_t *row, uint8_t *rgb, uint8_t *levels);
+ #define LOOK_SHIRT_STRAPS	4	/* and one more drawing follows its own: its trunk with a backpack's straps */
+ #define LOOK_SHIRT_OWN		16	/* any garment: the tamer's own, which keeps its colours with colour 0 */
+ #define LOOK_SHIRT_SLEEVES	32	/* a shirt whose arms are drawn in the row two below its own, in the same tones */
+-#define LOOK_SEAT_PRIMS	16	/* a shirt's first polygons are the seat: the trousers' cloth when they are not the original's */
++#define LOOK_SEAT_PRIMS	16	/* a shirt's last polygons are the seat: the trousers' cloth when they are not the original's */
+ LookShirtRecipe lookShirtRecipe[LOOK_GARMENTS];
+ uint16_t lookShirtRow[LOOK_GARMENTS][16];
+ void lookShirtPalette(uint16_t *row, LookShirtRecipe *recipe, uint8_t *rgb);
+@@ -1390,8 +1390,13 @@ int32_t lookTamerLoad(void *component)
+ 		to = TAMER_MODEL_BUFFER + at[g] * 4;
+ 		readFileSectors(TAMER_LOOK_FILE, to, sectors[g][0] + 1, sectors[g][1]);
+ 		if (g == 0 && seat != 0) {
+-			/* the seat under other trousers: their palette row, the next one, and one texel of their cloth */
++			/* the seat under other trousers: their palette row, the next one, and one texel of their cloth. It is the
++			 * torso's last polygons: with no depth buffer, polygons that share a bucket of the ordering table are drawn
++			 * last to first, so the seat, inside the shirt, goes under its hem instead of over it */
+ 			prim = (uint32_t *)(to + t[4]);
++			for (i = LOOK_SEAT_PRIMS; i < t[5]; i++) {
++				prim += 1 + ((prim[0] >> 8) & 0xFF);
++			}
+ 			for (i = 0; i < LOOK_SEAT_PRIMS; i++) {
+ 				k = (prim[0] >> 24) & 8 ? 4 : 3; /* a quad or a triangle: so many texture coordinates */
+ 				prim[1] += 0x400000;
+-- 
+2.55.0
+
