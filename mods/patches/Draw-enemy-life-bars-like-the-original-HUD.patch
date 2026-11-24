@@ -1,23 +1,27 @@
-From ef286eb7442ec5a810f42c4172c00219766b27f0 Mon Sep 17 00:00:00 2001
+From 007ac5e7d7105d79e86eb37d8618c84591d3d339 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Tue, 24 Nov 2026 11:13:27 +0000
 Subject: [PATCH] Enemy life bars: the original green frame, textured strip and
- battle digits above the head
+ battle digits above the head, in wild battles only
 
 ---
- include/dw/enemy_bars.h | 109 +++++++++++++++++++++-------------------
- 1 file changed, 58 insertions(+), 51 deletions(-)
+ include/dw/enemy_bars.h | 115 +++++++++++++++++++++-------------------
+ src/btl/battle_main.c   |   2 +-
+ src/std/std_hud.c       |   6 ---
+ src/vs/vs_hud.c         |   6 ---
+ 4 files changed, 61 insertions(+), 68 deletions(-)
 
 diff --git a/include/dw/enemy_bars.h b/include/dw/enemy_bars.h
-index 9a62c787..9dd8efb1 100644
+index 9a62c787..4cd1dde5 100644
 --- a/include/dw/enemy_bars.h
 +++ b/include/dw/enemy_bars.h
-@@ -1,17 +1,15 @@
+@@ -1,17 +1,16 @@
  #ifndef DW_ENEMY_BARS_H
  #define DW_ENEMY_BARS_H
  
 -/* Compiled only into BTL/STD/VS: no resident code or digit table. */
-+/* Compiled only into BTL/STD/VS: no resident code. */
++/* Compiled only into BTL: no resident code. Arena and VS show the opponent's
++ * HP in their own top-right panel, so only wild battles draw the head bar. */
  #include <dw/btl.h>
  #include <dw/params.h>
  #include <dw/mod_options.h>
@@ -33,7 +37,12 @@ index 9a62c787..9dd8efb1 100644
  
  static void enemyHPRect(int x, int y, int w, int h, int r, int g, int b, int z)
  {
-@@ -28,7 +26,8 @@ static void renderEnemyHeadHP(DigimonEntity *d, FighterData *fighter, int battle
+@@ -24,15 +23,16 @@ static void enemyHPRect(int x, int y, int w, int h, int r, int g, int b, int z)
+ 	GsSetWorkBase((PACKET *)p);
+ }
+ 
+-static void renderEnemyHeadHP(DigimonEntity *d, FighterData *fighter, int battleState)
++static void renderEnemyHeadHP(DigimonEntity *d, FighterData *fighter)
  {
  	SVECTOR world;
  	DVECTOR head, feet;
@@ -43,7 +52,12 @@ index 9a62c787..9dd8efb1 100644
  
  	hp = d->stats.current.currentHP;
  	max = d->stats.base.hp;
-@@ -50,57 +49,65 @@ static void renderEnemyHeadHP(DigimonEntity *d, FighterData *fighter, int battle
+-	if (GAME_STATE != battleState || NO_AI_FLAG ||
++	if (GAME_STATE != 1 || NO_AI_FLAG ||
+ 	    hp <= 0 || max <= 0 || (fighter->flags & FIGHTER_FLAG_DEAD)) return;
+ 
+ 	/* Feet decide visibility; a tall head can project above the top edge. */
+@@ -50,57 +50,62 @@ static void renderEnemyHeadHP(DigimonEntity *d, FighterData *fighter, int battle
  	head.vx -= 160 - DRAWING_OFFSET_X;
  	head.vy -= 120 - DRAWING_OFFSET_Y;
  
@@ -64,19 +78,18 @@ index 9a62c787..9dd8efb1 100644
 -	if (x + width > 159) x = 159 - width;
 -	if (y < -118) y = -118; /* digit outline extends one pixel above frame */
 -	if (y > 114) y = 114;
-+	if (x > 145 - ENEMY_BAR_W) x = 145 - ENEMY_BAR_W;
-+	if (y < -108) y = -108;
-+	if (y > 112) y = 112;
- 	/* Wild: portrait/Auto label at left, partner HP/MP at right.
+-	/* Wild: portrait/Auto label at left, partner HP/MP at right.
 -	 * Arena/VS: wider HP/MP panels at both corners. Include the digit outline. */
-+	 * Arena/VS: wider HP/MP panels at both corners. */
- 	if (battleState == 1) {
+-	if (battleState == 1) {
 -		if (y < -50 && x < -96) y = -50;
 -		if (y < -74 && x + width > 43) y = -74;
 -	} else if (y < -74 && (x < -32 || x + width > 35)) y = -74;
-+		if (y < -41 && x < -96) y = -41;
-+		if (y < -65 && x + ENEMY_BAR_W + 14 > 43) y = -65;
-+	} else if (y < -65 && (x < -32 || x + ENEMY_BAR_W + 14 > 35)) y = -65;
++	if (x > 145 - ENEMY_BAR_W) x = 145 - ENEMY_BAR_W;
++	if (y < -108) y = -108;
++	if (y > 112) y = 112;
++	/* Clear of the portrait/Auto label at left and the partner HP/MP at right. */
++	if (y < -41 && x < -96) y = -41;
++	if (y < -65 && x + ENEMY_BAR_W + 14 > 43) y = -65;
  
 -	fill = hp * 32 / max;
 -	if (fill < 1) fill = 1;
@@ -154,6 +167,67 @@ index 9a62c787..9dd8efb1 100644
 +	drawEntityText(0, digits, x + ENEMY_BAR_W - 22 - (digits - 4) * 9, y - 9, hp, 7);
  }
  #endif
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 6f359da5..4da2e914 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -2390,7 +2390,7 @@ void BTL_renderEnemyHPBars(void)
+ 		/* HP animation remains gameplay state, even while the HUD is hidden. */
+ 		if (d->stats.current.currentHP <= 0) fighter->hpDamageBuffer = 0;
+ 		if (fighter->hpDamageBuffer) damageTick(fighter, &d->stats);
+-		renderEnemyHeadHP(d, fighter, 1);
++		renderEnemyHeadHP(d, fighter);
+ 	}
+ }
+ 
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 97f45631..67833deb 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -2114,8 +2114,6 @@ void STD_addFighterStatusBars(id)
+ 	addObject(0x19c, id, NULL, (RenderFunction)STD_renderFighterStatusBars);
+ }
+ 
+-#include <dw/enemy_bars.h>
+-
+ // clang-format off
+ void STD_renderFighterStatusBars(id)
+ 	int16_t id;
+@@ -2153,10 +2151,6 @@ void STD_renderFighterStatusBars(id)
+ 		*mpPtr = 0;
+ 	}
+ 
+-	if (id == 1) {
+-		renderEnemyHeadHP((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[id]], fighter, 4);
+-	}
+-
+ 	for (bar = 0; bar < 2; bar++) {
+ 		p = &STD_STATUS_BAR_SPRITES[bar * 3 + 2];
+ 		if (bar == 0) {
+diff --git a/src/vs/vs_hud.c b/src/vs/vs_hud.c
+index 30f1139c..a9871fe1 100644
+--- a/src/vs/vs_hud.c
++++ b/src/vs/vs_hud.c
+@@ -2294,8 +2294,6 @@ void VS_addFighterStatusBars(id)
+ 	addObject(0x19c, id, NULL, VS_renderFighterStatusBars);
+ }
+ 
+-#include <dw/enemy_bars.h>
+-
+ // clang-format off
+ void VS_renderFighterStatusBars(id)
+ 	int16_t id;
+@@ -2333,10 +2331,6 @@ void VS_renderFighterStatusBars(id)
+ 		*mpPtr = 0;
+ 	}
+ 
+-	if (id == 1) {
+-		renderEnemyHeadHP((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[id]], fighter, 4);
+-	}
+-
+ 	for (bar = 0; bar < 2; bar++) {
+ 		p = &VS_STATUS_BAR_SPRITES[bar * 3 + 2];
+ 		if (bar == 0) {
 -- 
 2.55.0
 

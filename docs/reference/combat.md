@@ -824,13 +824,13 @@ the start (`INITIAL_COMBAT_STATS`) and restores it at the end.
 ### Enemy head bars (0276)
 
 `BTL_renderEnemyHPBars` always uses `dw/enemy_bars.h`, compiled only into
-BTL/STD/VS overlays. The original floating renderer and brief-display mode have
+the BTL overlay. The original floating renderer and brief-display mode have
 been removed.
-STD and VS add the head bar for fighter 1 alongside their existing fixed panels;
-the opponent panels stay visible, and finisher state keeps ticking.
+STD and VS (arena and two-player) draw no head bar: their fixed opponent panel
+already shows its HP.
 The head uses `DIGI_PARA(type).height` and world projection, as `renderFleeBubble`
 does, including the scrolling camera offset conversion; the body bone is not the anchor. The group clamps to the screen and clears the wild portrait/Auto label and
-partner HP/MP panel, or the two wider arena/VS HP/MP panels. Off-screen feet, dead fighters, `NO_AI_FLAG`
+partner HP/MP panel. Off-screen feet, dead fighters, `NO_AI_FLAG`
 (finisher/cinematic) and non-combat states suppress the new bar. Its OT levels
 7–10 match the battle HUD, above models and below menus/inventory.
 
