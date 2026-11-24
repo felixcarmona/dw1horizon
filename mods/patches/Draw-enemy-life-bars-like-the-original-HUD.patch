@@ -1,18 +1,18 @@
-From 12818ebfd913bf2bd308f3fa4e21f08f6b8f2dbc Mon Sep 17 00:00:00 2001
+From ef286eb7442ec5a810f42c4172c00219766b27f0 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Tue, 24 Nov 2026 11:13:27 +0000
 Subject: [PATCH] Enemy life bars: the original green frame, textured strip and
  battle digits above the head
 
 ---
- include/dw/enemy_bars.h | 107 +++++++++++++++++++++-------------------
- 1 file changed, 55 insertions(+), 52 deletions(-)
+ include/dw/enemy_bars.h | 109 +++++++++++++++++++++-------------------
+ 1 file changed, 58 insertions(+), 51 deletions(-)
 
 diff --git a/include/dw/enemy_bars.h b/include/dw/enemy_bars.h
-index 9a62c78..92670ea 100644
+index 9a62c787..9dd8efb1 100644
 --- a/include/dw/enemy_bars.h
 +++ b/include/dw/enemy_bars.h
-@@ -1,17 +1,13 @@
+@@ -1,17 +1,15 @@
  #ifndef DW_ENEMY_BARS_H
  #define DW_ENEMY_BARS_H
  
@@ -23,16 +23,17 @@ index 9a62c78..92670ea 100644
  #include <dw/mod_options.h>
  
  int32_t worldPosToScreenPos(SVECTOR *pos, DVECTOR *out);
--
++void drawEntityText(int32_t color, int32_t n, int32_t x, int32_t y, int32_t value, int32_t layer);
+ 
 -static const uint8_t ENEMY_HP_DIGITS[10][5] = {
 -	{ 7, 5, 5, 5, 7 }, { 2, 6, 2, 2, 7 }, { 7, 1, 7, 4, 7 }, { 7, 1, 3, 1, 7 }, { 5, 5, 7, 1, 1 },
 -	{ 7, 4, 7, 1, 7 }, { 7, 4, 7, 5, 7 }, { 7, 1, 1, 1, 1 }, { 7, 5, 7, 5, 7 }, { 7, 5, 7, 1, 7 },
 -};
-+void drawEntityText(int32_t color, int32_t n, int32_t x, int32_t y, int32_t value, int32_t layer);
++#define ENEMY_BAR_W 50 /* the original is 55 */
  
  static void enemyHPRect(int x, int y, int w, int h, int r, int g, int b, int z)
  {
-@@ -28,7 +24,8 @@ static void renderEnemyHeadHP(DigimonEntity *d, FighterData *fighter, int battle
+@@ -28,7 +26,8 @@ static void renderEnemyHeadHP(DigimonEntity *d, FighterData *fighter, int battle
  {
  	SVECTOR world;
  	DVECTOR head, feet;
@@ -42,7 +43,7 @@ index 9a62c78..92670ea 100644
  
  	hp = d->stats.current.currentHP;
  	max = d->stats.base.hp;
-@@ -50,57 +47,63 @@ static void renderEnemyHeadHP(DigimonEntity *d, FighterData *fighter, int battle
+@@ -50,57 +49,65 @@ static void renderEnemyHeadHP(DigimonEntity *d, FighterData *fighter, int battle
  	head.vx -= 160 - DRAWING_OFFSET_X;
  	head.vy -= 120 - DRAWING_OFFSET_Y;
  
@@ -53,17 +54,17 @@ index 9a62c78..92670ea 100644
 -	for (width = 41, fill = max > hp ? max : hp; fill >= 10; fill /= 10) width += 4;
 -	x = head.vx - 17;
 -	y = head.vy - 8; /* three clear pixels between frame and head */
-+	/* The original bar: a 55x7 green outline, the 50x3 HUD strip inside and the
-+	 * big battle digits above its right end. The number is right-aligned in a
-+	 * fixed field, so its last digit stays put as the HP loses digits. The
-+	 * group spans x..x+68 and y-10..y+6. */
-+	x = head.vx - 27;
++	/* The original bar's look, shortened: a green outline, the HUD strip inside
++	 * and the big battle digits above its right end. The number is
++	 * right-aligned in a fixed field, so its last digit stays put as the HP
++	 * loses digits. The group spans x..x+ENEMY_BAR_W+13 and y-10..y+6. */
++	x = head.vx - ENEMY_BAR_W / 2;
 +	y = head.vy - 10; /* three clear pixels between frame and head */
  	if (x < -159) x = -159;
 -	if (x + width > 159) x = 159 - width;
 -	if (y < -118) y = -118; /* digit outline extends one pixel above frame */
 -	if (y > 114) y = 114;
-+	if (x > 90) x = 90;
++	if (x > 145 - ENEMY_BAR_W) x = 145 - ENEMY_BAR_W;
 +	if (y < -108) y = -108;
 +	if (y > 112) y = 112;
  	/* Wild: portrait/Auto label at left, partner HP/MP at right.
@@ -74,13 +75,8 @@ index 9a62c78..92670ea 100644
 -		if (y < -74 && x + width > 43) y = -74;
 -	} else if (y < -74 && (x < -32 || x + width > 35)) y = -74;
 +		if (y < -41 && x < -96) y = -41;
-+		if (y < -65 && x + 69 > 43) y = -65;
-+	} else if (y < -65 && (x < -32 || x + 69 > 35)) y = -65;
-+
-+	enemyHPRect(x, y, 55, 1, 10, 180, 10, 7);
-+	enemyHPRect(x, y + 6, 55, 1, 10, 180, 10, 7);
-+	enemyHPRect(x, y + 1, 1, 5, 10, 180, 10, 7);
-+	enemyHPRect(x + 54, y + 1, 1, 5, 10, 180, 10, 7);
++		if (y < -65 && x + ENEMY_BAR_W + 14 > 43) y = -65;
++	} else if (y < -65 && (x < -32 || x + ENEMY_BAR_W + 14 > 35)) y = -65;
  
 -	fill = hp * 32 / max;
 -	if (fill < 1) fill = 1;
@@ -90,8 +86,13 @@ index 9a62c78..92670ea 100644
 -	if (ratio >= 15) {
 -		r = (50 - (ratio > 50 ? 50 : ratio)) * 254 / 35;
 -		g = 254;
-+	/* Width and green -> yellow -> orange modulation as BTL_renderEnemyHPBars;
-+	 * a living enemy keeps at least one pixel. */
++	enemyHPRect(x, y, ENEMY_BAR_W, 1, 10, 180, 10, 7);
++	enemyHPRect(x, y + 6, ENEMY_BAR_W, 1, 10, 180, 10, 7);
++	enemyHPRect(x, y + 1, 1, 5, 10, 180, 10, 7);
++	enemyHPRect(x + ENEMY_BAR_W - 1, y + 1, 1, 5, 10, 180, 10, 7);
++
++	/* Green -> yellow -> orange modulation as BTL_renderEnemyHPBars, on its
++	 * 50-step scale; a living enemy keeps at least one pixel of fill. */
 +	w = hp * 50 / max;
 +	if (w < 1) w = 1;
 +	if (w > 50) w = 50;
@@ -114,7 +115,9 @@ index 9a62c78..92670ea 100644
 +	fill.attribute = 0;
 +	fill.x = x + 2;
 +	fill.y = y + 2;
-+	fill.w = w;
++	fill.w = hp * (ENEMY_BAR_W - 5) / max;
++	if (fill.w < 1) fill.w = 1;
++	if (fill.w > ENEMY_BAR_W - 5) fill.w = ENEMY_BAR_W - 5;
 +	fill.h = 3;
 +	fill.tpage = 0x1f;
 +	fill.u = 0x58;
@@ -148,7 +151,7 @@ index 9a62c78..92670ea 100644
 -	}
 +	/* Four digits as the original (9999); five only past it, extending left. */
 +	digits = (max > 9999 || hp > 9999) ? 5 : 4;
-+	drawEntityText(0, digits, x + 0x21 - (digits - 4) * 9, y - 9, hp, 7);
++	drawEntityText(0, digits, x + ENEMY_BAR_W - 22 - (digits - 4) * 9, y - 9, hp, 7);
  }
  #endif
 -- 
