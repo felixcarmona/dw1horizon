@@ -5,6 +5,7 @@ import numpy as np
 
 BROWN = ['#000000', '#2c1808', '#5c3414', '#9c6428', '#d09c50', '#f4e0b0']
 ROCK = ['#000000', '#1c1c20', '#44464c', '#74767c', '#a8aab0', '#dcdcdc']
+SHADE = (96, 112, 128)   # what a crack takes from the ground: a little less red, so it darkens to brown
 
 
 def rock(seed=3, radius=13.0, lump=0.55):
@@ -34,76 +35,57 @@ def dust(seed=2):
     return clip(lum * (0.55 + 0.6 * fbm(seed)))
 
 
-def crack_lines(dist, width):
-    """A dark crack with a lighter lip along it, from the distance to the crack's line and its width there."""
-    core = (dist < width) * 0.1
-    lip = np.where((dist >= width) & (dist < width + 1.8), 0.7 * (1 - (dist - width) / 1.8) + 0.12, 0.0)
-    return core + lip
-
-
 def crack(seed=4):
-    """A jagged crack running straight across the cell, level at both ends, so cells run on into one another."""
+    """The shadow of a jagged crack running straight across the cell, level at both ends, so cells run on into one
+    another. It is drawn subtracted from the ground: soft at its edges, with nothing lighter than the ground."""
     x, y = grid()
     r = np.random.RandomState(seed)
     xs = np.linspace(0, 32, 9)
     ys = 16 + r.uniform(-4.5, 4.5, 9) * np.sin(np.pi * xs / 32)
     yc = np.interp(x[0], xs, ys)[None, :] + 0 * y
-    width = 1.2 + 1.4 * noise(32, 32, 8, seed)
-    return clip(crack_lines(np.abs(y - yc), width))
+    width = 0.7 + 1.5 * noise(32, 32, 8, seed)
+    return clip(1.1 - (np.abs(y - yc) - width) / 2.2) ** 1.4 * (np.abs(y - yc) < width + 2.4)
 
 
 def star_crack(seed=6):
-    """Cracks fanning out from a dark hole in the middle."""
+    """The shadow of cracks fanning out from a hole in the middle, each thinning to nothing; drawn subtracted."""
     x, y = grid()
     r = np.random.RandomState(seed)
-    dmin = np.full((32, 32), 99.0)
-    wid = np.zeros((32, 32))
+    dark = np.zeros((32, 32))
     for k in range(6):
         a = k * np.pi / 3 + r.uniform(-0.25, 0.25)
         px, py = 16.0, 16.0
         for step in range(4):
             a2 = a + r.uniform(-0.5, 0.5)
-            ln = r.uniform(3.2, 5.0)
+            ln = r.uniform(3.0, 4.6)
             qx, qy = px + ln * np.cos(a2), py + ln * np.sin(a2)
-            d = 255 * (1 - segment(px, py, qx, qy, 1.0))  # keep the distance field of the line
-            d = 1.0 * np.hypot(x - np.clip(x, min(px, qx), max(px, qx)), y - np.clip(y, min(py, qy), max(py, qy)))
             t = np.clip(((x - px) * (qx - px) + (y - py) * (qy - py)) / (ln * ln), 0, 1)
             d = np.hypot(x - (px + t * (qx - px)), y - (py + t * (qy - py)))
-            w = 1.9 - 0.4 * step
-            better = d - w < dmin - wid
-            dmin = np.where(better, d, dmin)
-            wid = np.where(better, w, wid)
+            w = 1.5 - 0.42 * (step + t)
+            dark = np.maximum(dark, clip(1.0 - (d - w) / 1.8) * (0.95 - 0.16 * (step + t)))
             px, py = qx, qy
-    centre = (np.hypot(x - 16, y - 16) < 3.4) * 0.1
-    return clip(crack_lines(dmin, wid) + centre)
+    hole = clip(1.25 - np.hypot(x - 16, y - 16) / 4.6)
+    return clip(np.maximum(dark, hole)) ** 1.3
 
 
-def spike():
-    """A stone spike standing on its base: lit on one face, banded, sharp at the top."""
+def spike(seed=5):
+    """A spire of rock standing on its base: an uneven outline, a lit face and a dark one either side of a ridge
+    that wanders, facets, and a dark rim, as the boulders have. No outline lighter than the stone."""
     x, y = grid()
-    dx = x - 16
-    hw = 0.5 + 12.5 * (y / 31) ** 0.85
-    body = clip((hw - np.abs(dx)) / 1.0) * (y < 31.5)
-    ridge = 0.8 * dx / np.maximum(hw, 1)
-    lum = np.where(dx >= ridge * 3, 0.82, 0.36) + 0.1 * np.sin(y * 0.8 + x * 0.35)
-    lum = lum * (0.8 + 0.4 * noise(32, 32, 4, 5)) + 0.25 * clip(1 - (hw - np.abs(dx)) / 1.6)
-    return clip(body * np.clip(lum, 0.18, 1))
-
-
-def slab():
-    """A thick slab of stone: a bright bevelled edge, a lit face and two dark cracks."""
-    x, y = grid()
-    pts = [(5, 2), (27, 3), (28, 28), (16, 30.5), (4, 27)]
-    ds = []
-    for (x0, y0), (x1, y1) in zip(pts, pts[1:] + pts[:1]):
-        ln = np.hypot(x1 - x0, y1 - y0)
-        ds.append(((x1 - x0) * (y - y0) - (y1 - y0) * (x - x0)) / ln)
-    d = np.min(ds, axis=0)
-    mask = clip(d + 0.5)
-    face = 0.42 + 0.22 * fbm(9) + 0.2 * clip((32 - x - y * 0.5) / 32)
-    lum = np.where(d < 2.2, 0.9 - 0.1 * (d > 1.2), face)
-    lum = lum - 0.5 * np.maximum(segment(9, 8, 17, 15, 0.8), segment(17, 15, 14, 25, 0.8))
-    return clip(mask * np.clip(lum, 0.15, 1))
+    t = y / 31
+    r = np.random.RandomState(seed)
+    rows = np.arange(32)
+    jl = np.interp(rows, np.linspace(0, 31, 7), r.uniform(-1.6, 1.6, 7))[:, None] * t
+    jr = np.interp(rows, np.linspace(0, 31, 7), r.uniform(-1.6, 1.6, 7))[:, None] * t
+    hw = 0.7 + 11.0 * t ** 0.9
+    left, right = 15.5 - hw + jl, 15.5 + hw + jr
+    inside = np.minimum(x - left, right - x)
+    ridge = 15.5 + (jl + jr) + 2.2 * np.sin(y * 0.33 + seed) * t - 1.5 * t
+    lum = np.where(x < ridge, 0.76, 0.42)
+    lum = lum + 0.16 * clip(1 - np.abs(ridge - 0.8 - x) / 1.2) * (x < ridge)
+    lum = lum + 0.2 * (np.floor(fbm(seed + 3) * 4) / 4 - 0.4)
+    lum = lum * (1.0 - 0.3 * t) * (0.62 + 0.38 * clip(inside / 2.6))
+    return clip((inside > 0) * np.clip(lum, 0.16, 1))
 
 
 def paint_all(fx, cells):
@@ -220,43 +202,43 @@ def sand_blast():
 
 
 def stone_skin():
-    """Stone plates rise from the ground and close round the caster, then a dull flash: its Defense rises."""
+    """Rocks rise out of the ground round the caster, circle in and close on it, then a dull flash: its Defense
+    rises."""
     fx = Fx(delay=8, cast_sound=45)
     fx.palette(BROWN); fx.palette(ROCK)
-    paint_all(fx, {1: rock(11, 10.0), 2: dust(2), 5: slab()})
+    paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2)})
     tint, gnd = fx.colour(128, 128, 128), fx.var()
     reach, high, idx = fx.var(), fx.var(), fx.var()
     fx.particle('puff', 10, 9, 2, (128, 118, 100), (150, 230), grow=26, speed=12, lift=8, spread=520, blend='half')
     fx.particle('shine', 1, 9, 2, (128, 118, 96), None, grow=45, fade=True)
     tumbler(fx, 'chip', 12, 13, 1, (60, 110), 36, 40, 7, 400, 16, gnd, tint)
-    fx.label('main'); fx.when(0, 'gather'); fx.when(12, 'flash')
-    fx.br(fx.NOW, '>', 9, 'done')
+    fx.label('main'); fx.when(0, 'gather'); fx.when(14, 'flash')
+    fx.br(fx.NOW, '>', 11, 'done')
     fx.vcopy(fx.AT, fx.SRC); fx.call('puff'); fx.ret()
-    fx.label('done'); fx.end(14)
+    fx.label('done'); fx.end(16)
     fx.label('gather')
-    fx.lin(reach, at(fx.SSIZE, 0), 1, 330); fx.lin(high, at(fx.SSIZE, 1), 9, 60, 10)
-    fx.set(idx, 0); fx.call('slab', 6); fx.sound(-55); fx.ret()
+    fx.lin(reach, at(fx.SSIZE, 0), 1, 420); fx.lin(high, at(fx.SSIZE, 1), 6, 0, 10)
+    fx.set(idx, 0); fx.call('stone', 7); fx.sound(-55); fx.ret()
     fx.label('flash')
     fx.sound(11); fx.hit_self(); fx.set(gnd, at(fx.SRC, 1))
     fx.lin(fx.SZ, at(fx.SSIZE, 1), 10, 300, 10)
-    fx.emit('shine', fx.CHEST); fx.emit('chip', fx.SRC, 10); fx.emit('puff', fx.SRC, 3); fx.ret()
-    slab_ = fx.pool('slab', 6, 2)
-    fx.begin('slab', slab_, 'slab_render', inherit=False)
-    fx.vcopy(POS, fx.SRC); fx.lin(iv(FREE), idx, 683); fx.set(iv(FREE + 4), idx); fx.add(idx, 1); fx.ret()
-    fx.label('slab_tick'); fx.life(24); fx.ret()
-    fx.label('slab_render')
-    # the plates stand up one after another and draw in from afar to the caster, hold, and sink at the end
-    fx.set(fx.T2, FRAME); fx.sub_(fx.T2, iv(FREE + 4)); fx.br(fx.T2, '<', 1, 'noop')
-    fx.set(fx.T3, 420); fx.br(FRAME, '<', 4, 'slab_at')
-    fx.lin(fx.T3, FRAME, -60, 660); fx.br(fx.T3, '>', 0, 'slab_at'); fx.set(fx.T3, 0)
-    fx.label('slab_at')
-    fx.add(fx.T3, reach); fx.circle(fx.TV, iv(FREE), fx.T3, 0); fx.vadd(fx.TV, POS)
-    fx.mul(fx.T2, high); fx.div(fx.T2, 4); fx.br(fx.T2, '<=', high, 'slab_up'); fx.set(fx.T2, high)
-    fx.label('slab_up')
-    fx.br(FRAME, '<', 18, 'slab_draw')
-    fx.set(fx.T2, high); fx.lin(fx.T, FRAME, -1, 24); fx.mul(fx.T2, fx.T); fx.div(fx.T2, 6)
-    fx.label('slab_draw')
-    fx.pillar(fx.TV, 250, fx.T2, tint, cell=5, clut=1, blend=None); fx.ret()
+    fx.emit('shine', fx.CHEST); fx.emit('chip', fx.CHEST, 10); fx.emit('puff', fx.SRC, 3); fx.ret()
+    stone = fx.pool('stone', 7, 2)
+    fx.begin('stone', stone, 'stone_render', inherit=False)
+    fx.vcopy(POS, fx.SRC); fx.lin(iv(FREE), idx, 585); fx.set(iv(FREE + 4), idx); fx.add(idx, 1); fx.ret()
+    fx.label('stone_tick'); fx.life(14); fx.ret()
+    fx.label('stone_render')
+    # each rock comes up out of the ground a tick after the one before, circles in as it climbs to the caster's
+    # middle, and is gone into it as the flash comes
+    fx.set(fx.T, FRAME); fx.sub_(fx.T, iv(FREE + 4)); fx.br(fx.T, '<', 0, 'noop')
+    fx.br(fx.T, '<=', 7, 'stone_in'); fx.set(fx.T, 7)
+    fx.label('stone_in')
+    fx.lin(fx.T3, fx.T, -1, 7); fx.mul(fx.T3, reach); fx.div(fx.T3, 7)          # the radius, closing
+    fx.lin(fx.T2, fx.T, 150); fx.add(fx.T2, iv(FREE))                           # the angle, turning
+    fx.circle(fx.TV, fx.T2, fx.T3, 0); fx.vadd(fx.TV, POS)
+    fx.set(fx.T2, fx.T); fx.mul(fx.T2, high); fx.div(fx.T2, 7); fx.add(fx.T2, -40); fx.sub_(at(fx.TV, 1), fx.T2)
+    fx.lin(fx.T3, fx.T, -14, 250); fx.lin(fx.T2, FRAME, 22); fx.add(fx.T2, iv(FREE))
+    fx.sprite(fx.TV, tint, fx.T3, cell=0, clut=1, rot=fx.T2, blend=None); fx.ret()
     return fx
 
 
@@ -264,7 +246,7 @@ def boulder_crash():
     """A big boulder falls from high on the target and lands in a ring of dust, throwing stones."""
     fx = Fx(delay=8, cast_sound=1)
     fx.palette(BROWN); fx.palette(ROCK)
-    paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 6: ring(13, 2.4)})
+    paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 6: ring(12.5, 3.4)})
     tint, gnd, fade, big = fx.colour(128, 128, 128), fx.var(), fx.vec(), fx.var()
     fx.particle('puff', 8, 11, 2, (128, 118, 100), (220, 340), grow=26, speed=22, spread=400, blend='half')
     fx.particle('haze', 4, 10, 2, (80, 64, 40), 380, grow=45, fade=True)
@@ -305,7 +287,7 @@ def boulder_crash():
     fx.label('wave_tick'); fx.life(10); fx.ret()
     fx.label('wave_render')
     fx.lin(fx.T3, FRAME, 100, 180)
-    fx.lin(fx.T, FRAME, -11, 124); fx.vset(fade, fx.T, fx.T, fx.T)
+    fx.lin(fx.T, FRAME, -7, 76); fx.vset(fade, fx.T, fx.T, fx.T)
     fx.flat(POS, fx.T3, fade, cell=6); fx.ret()
     return fx
 
@@ -316,7 +298,7 @@ def fissure():
     fx = Fx(delay=8, cast_sound=1)
     fx.palette(BROWN); fx.palette(ROCK)
     paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 3: crack(4), 7: star_crack(6)})
-    tint, gnd, pv = fx.colour(128, 128, 128), fx.var(), fx.vec()
+    tint, gnd, pv, dark = fx.colour(128, 128, 128), fx.var(), fx.vec(), fx.colour(*SHADE)
     fx.particle('puff', 10, 10, 2, (128, 118, 100), (150, 250), grow=24, speed=18, spread=240, blend='half')
     fx.particle('haze', 4, 9, 2, (80, 64, 40), 320, grow=40, fade=True)
     tumbler(fx, 'chip', 30, 15, 1, (70, 150), 50, 80, 10, 160, 16, gnd, tint)
@@ -354,9 +336,9 @@ def fissure():
     for p in q:
         fx.sub_(at(p, 1), 8)
     fx.br(iv(FREE + 32), '==', 0, 'seg_flip')
-    fx.quad(q[0], q[1], q[2], q[3], tint, cell=3, blend=None); fx.ret()
+    fx.quad(q[0], q[1], q[2], q[3], dark, cell=3, clut=1, blend='sub'); fx.ret()
     fx.label('seg_flip')
-    fx.quad(q[2], q[3], q[0], q[1], tint, cell=3, blend=None); fx.ret()
+    fx.quad(q[2], q[3], q[0], q[1], dark, cell=3, clut=1, blend='sub'); fx.ret()
     # the ground splits in a star under an enemy
     bloom = fx.pool('bloom', 3)
     fx.begin('bloom', bloom, 'bloom_render', inherit=False); fx.vcopy(POS, fx.AT); fx.sub_(at(POS, 1), 8); fx.ret()
@@ -364,7 +346,7 @@ def fissure():
     fx.label('bloom_render')
     fx.lin(fx.T3, FRAME, 70, 140); fx.br(FRAME, '<', 5, 'bloom_draw'); fx.set(fx.T3, 420)
     fx.label('bloom_draw')
-    fx.flat(POS, fx.T3, tint, cell=7, blend=None); fx.ret()
+    fx.flat(POS, fx.T3, dark, cell=7, clut=1, blend='sub'); fx.ret()
     return fx
 
 
@@ -374,6 +356,7 @@ def stalagmite():
     fx.palette(BROWN); fx.palette(ROCK)
     paint_all(fx, {1: rock(11, 10.0), 2: dust(2), 4: spike(), 7: star_crack(6)})
     tint, gnd, idx, high = fx.colour(128, 128, 128), fx.var(), fx.var(), fx.var()
+    dark = fx.colour(*SHADE)
     fx.particle('puff', 10, 10, 2, (128, 118, 100), (160, 260), grow=24, speed=14, spread=320, blend='half')
     fx.particle('haze', 4, 9, 2, (80, 64, 40), 340, grow=40, fade=True)
     tumbler(fx, 'chip', 22, 15, 1, (70, 150), 46, 80, 9, 360, 16, gnd, tint)
@@ -416,9 +399,9 @@ def stalagmite():
     fx.begin('bloom', bloom, 'bloom_render', inherit=False); fx.vcopy(POS, fx.TGT); fx.sub_(at(POS, 1), 8); fx.ret()
     fx.label('bloom_tick'); fx.life(20); fx.ret()
     fx.label('bloom_render')
-    fx.lin(fx.T3, FRAME, 50, 200); fx.br(FRAME, '<', 6, 'bloom_draw'); fx.set(fx.T3, 500)
+    fx.lin(fx.T3, FRAME, 40, 160); fx.br(FRAME, '<', 6, 'bloom_draw'); fx.set(fx.T3, 380)
     fx.label('bloom_draw')
-    fx.flat(POS, fx.T3, tint, cell=7, blend=None); fx.ret()
+    fx.flat(POS, fx.T3, dark, cell=7, clut=1, blend='sub'); fx.ret()
     return fx
 
 
@@ -427,7 +410,7 @@ def landslide():
     them."""
     fx = Fx(delay=8, cast_sound=2)
     fx.palette(BROWN); fx.palette(ROCK)
-    paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 6: ring(13, 2.4)})
+    paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 6: ring(12.5, 3.4)})
     tint, drift, gnd = fx.colour(128, 128, 128), fx.vec(), fx.var()
     fx.particle('cloud', 12, 14, 2, (128, 118, 100), (260, 400), grow=24, speed=14, spread=300, drift=drift,
                 blend='half', spin=3)
@@ -459,8 +442,9 @@ def gaia_quake():
     every enemy, boulders fly up and fall, and a last flash."""
     fx = Fx(delay=8, cast_sound=48, draw=True)
     fx.palette(BROWN); fx.palette(ROCK)
-    paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 4: spike(), 6: ring(13, 2.4), 7: star_crack(6)})
+    paint_all(fx, {0: rock(3), 1: rock(11, 10.0), 2: dust(2), 4: spike(), 6: ring(12.5, 3.4), 7: star_crack(6)})
     tint, gnd, shade, fade, high = fx.colour(128, 128, 128), fx.var(), fx.vec(), fx.vec(), fx.var()
+    dark = fx.colour(*SHADE)
     surge, burst = 14, 26
     fx.particle('pour', 20, 8, 1, (128, 128, 128), (60, 120), flat=((0, 0), (80, 105), (0, 0)), spread=1700,
                 blend=None, clut=0, spin=18)
@@ -515,14 +499,14 @@ def gaia_quake():
     fx.label('shake_tick'); fx.life(12); fx.ret()
     fx.label('shake_render')
     fx.lin(fx.T3, FRAME, 210, 200)
-    fx.lin(fx.T, FRAME, -10, 126); fx.vset(fade, fx.T, fx.T, fx.T)
+    fx.lin(fx.T, FRAME, -6, 72); fx.vset(fade, fx.T, fx.T, fx.T)
     fx.flat(POS, fx.T3, fade, cell=6); fx.ret()
     bloom = fx.pool('bloom', 3)
     fx.begin('bloom', bloom, 'bloom_render', inherit=False); fx.vcopy(POS, fx.AT); fx.sub_(at(POS, 1), 8); fx.ret()
     fx.label('bloom_tick'); fx.life(10); fx.ret()
     fx.label('bloom_render')
     fx.lin(fx.T3, FRAME, 40, 160)
-    fx.flat(POS, fx.T3, tint, cell=7, blend=None); fx.ret()
+    fx.flat(POS, fx.T3, dark, cell=7, clut=1, blend='sub'); fx.ret()
     # a pillar of rock under an enemy: it bursts up, holds and sinks
     col = fx.pool('column', 3)
     fx.begin('column', col, 'column_render', inherit=False); fx.vcopy(POS, fx.AT); fx.ret()
