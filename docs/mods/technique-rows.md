@@ -106,6 +106,14 @@ sixteen Earth (Gotsumon, Golemon, Drimogemon, Monochromon, Triceramon and other 
 a few more as a second or third. Where a species took a new row it gave up one that did not suit it (Devimon's Ice, Seadramon's
 Fire). The wild Digimon and bosses of those species cast the new techniques (`content/maps/*.json`).
 
+An Ultimate holds up to four techniques of its first new row and three of another, and a Mega four and two: where a
+list was full, the technique took the place of a weak original one that no wild Digimon of the species casts, and
+the list keeps at least three of each row it trains. Every technique of the five rows is on some list, and a wild
+Digimon or a boss casts each of them but the last of each row (Abyss Requiem, Grand Cross, Ocean Fury, Final Edge,
+Gaia Quake), which come from the gym and from evolving, as Dynamite Kick does in the original. ShogunGekomon casts
+Tidal Wave, WaruSeadramon Sea Crush, the Tekkamon of the Back Dimension Whirling Edge and the MetalMamemon of Freezeland
+Judgment Ray.
+
 A model has an attack animation for each technique of its list. A species that got techniques added plays one of
 its own attack clips for each of them: an imported model names the clip in `technique_aliases`
 (`content/models/imports/models.json`), an original one in `model.slot_aliases` of its species file.

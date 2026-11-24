@@ -7,7 +7,7 @@
   "attribute": "virus",
   "specialties": ["battle", "nature", "dark"],
   "fields": ["nightmare-soldiers"],
-  "techniques": ["Dynamite Kick (44)", "Counter", "Buster Dive", "Megaton Punch", "Tremar", "Sonic Jab",
+  "techniques": ["Dynamite Kick (44)", "Counter", "Buster Dive", "Megaton Punch", "Tremar", "Death Grip",
                  "Muscle Charge", "War Cry", "Charm Perfume", "Bug", "Green Trap", "Danger Sting",
                  "Poison Powder", "Death Claw", "Nightmare", "Black Gate"],
   "drop": {"item": "S.speed.disk", "percent": 30},

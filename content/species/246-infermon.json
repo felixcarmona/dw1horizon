@@ -8,7 +8,7 @@
   "specialties": ["mech", "nature", "dark"],
   "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Pulse Laser", "Metal Sprinter", "DG Dimension", "All Range Beam", "Delete Program",
-                 "Reverse Prog", "Power Crane", "Full Potential", "Poison Claw", "Poison Powder",
+                 "Reverse Prog", "Power Crane", "Full Potential", "Death Grip", "Poison Powder",
                  "Bug", "Insect Plague", "Mass Morph", "Genoside Attack", "Nightmare", "Black Gate"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,

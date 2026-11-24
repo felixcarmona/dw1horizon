@@ -8,8 +8,8 @@
   "specialties": ["light", "ice", "battle"],
   "fields": ["deep-savers", "virus-busters"],
   "techniques": ["Tear Drop", "Aqua Magic", "Aurora Freeze", "Ice Statue", "Giga Freeze", "Water Blit",
-                 "Ice Needle", "Winter Blast", "Dynamite Kick (44)", "Buster Dive", "Megaton Punch",
-                 "Counter", "Tremar", "Sonic Jab", "Lovely Attack", "Grand Cross"],
+                 "Judgment Ray", "Heaven's Ring", "Dynamite Kick (44)", "Buster Dive", "Megaton Punch",
+                 "Counter", "Flash Burst", "Sonic Jab", "Lovely Attack", "Grand Cross"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 28,
   "model": {

@@ -7,7 +7,7 @@
   "attribute": "data",
   "specialties": ["battle", "mech", "earth"],
   "fields": ["nature-spirits", "metal-empire", "unknown"],
-  "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
+  "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Landslide", "Sonic Jab",
                  "Muscle Charge", "War Cry", "DG Dimension", "All Range Beam", "Delete Program",
                  "Pulse Laser", "Reverse Prog", "Power Crane", "Genoside Attack", "Gaia Quake"],
   "drop": {"item": "sm.recovery", "percent": 10},
