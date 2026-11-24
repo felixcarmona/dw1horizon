@@ -9,7 +9,7 @@
   "fields": ["nature-spirits", "nightmare-soldiers"],
   "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Cross Cutter",
                  "Muscle Charge", "War Cry", "Hurricane", "Thunder Justice", "Spinning Shot",
-                 "Megalo Spark", "Confused Storm", "Death Claw", "War Stance", "Giant Cleave"],
+                 "Megalo Spark", "Confused Storm", "Death Claw", "War Stance", "Whirling Edge"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
   "own_effect": {"technique": "Death Claw", "chunk": 226},

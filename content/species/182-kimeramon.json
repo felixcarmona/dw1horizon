@@ -9,7 +9,7 @@
   "fields": ["nightmare-soldiers", "unknown"],
   "techniques": ["Heat Laser", "Prominence Beam", "Inifinity Burn", "Meltdown", "Magma Bomb", "Red Inferno",
                  "Fire Tower", "Spit Fire", "Megaton Punch", "Buster Dive", "Counter",
-                 "Death Grip", "Tremar", "Mega Flame", "Nightmare", "Black Gate"],
+                 "Death Grip", "Tremar", "Mega Flame", "Nightmare", "Venom Mist"],
   "drop": {"item": "Restore", "percent": 20},
   "effects_like": 12,
   "own_effect": {"technique": "Mega Flame", "chunk": 125},

@@ -108,9 +108,9 @@ Fire). The wild Digimon and bosses of those species cast the new techniques (`co
 
 An Ultimate holds up to four techniques of its first new row and three of another, and a Mega four and two: where a
 list was full, the technique took the place of a weak original one that no wild Digimon of the species casts, and
-the list keeps at least three of each row it trains. The last of a row has no learning chance for a
-third specialty, in battle or in the gym, so Pharaohmon, Phoenixmon, Marsmon and Baihumon hold a lower one of that
-row in its place.
+the list keeps at least three of each row it trains. The last three of a row have no learning chance for a
+third specialty, in battle or in the gym, so a species whose third specialty is one of the five rows holds only the
+lower techniques of it. BlueMeramon is the exception: it keeps Black Gate because the wild ones cast it.
 
 Every technique of the five rows is on some list, and each is cast in a fight that can be had again: by wild
 Digimon that come back each time the screen is entered, and Abyss Requiem by BlackWarGreymon, who fights again

@@ -7,7 +7,7 @@
   "attribute": "vaccine",
   "specialties": ["battle", "fire", "light"],
   "fields": ["nature-spirits", "virus-busters"],
-  "techniques": ["Megaton Punch", "Sonic Jab", "Buster Dive", "Counter", "Dynamite Kick (44)", "Heaven's Ring",
+  "techniques": ["Megaton Punch", "Sonic Jab", "Buster Dive", "Counter", "Dynamite Kick (44)", "Sacred Shield",
                  "Muscle Charge", "War Cry", "Inifinity Burn", "Prominence Beam", "Meltdown",
                  "Magma Bomb", "Red Inferno", "Fire Tower", "Mega Flame", "Flash Burst"],
   "drop": {"item": "sm.recovery", "percent": 10},

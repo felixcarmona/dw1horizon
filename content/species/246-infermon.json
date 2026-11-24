@@ -9,7 +9,7 @@
   "fields": ["nightmare-soldiers", "dark-area"],
   "techniques": ["Pulse Laser", "Metal Sprinter", "DG Dimension", "All Range Beam", "Delete Program",
                  "Reverse Prog", "Power Crane", "Full Potential", "Death Grip", "Poison Powder",
-                 "Bug", "Insect Plague", "Mass Morph", "Genoside Attack", "Nightmare", "Black Gate"],
+                 "Bug", "Insect Plague", "Mass Morph", "Genoside Attack", "Nightmare", "Venom Mist"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
   "model": {
