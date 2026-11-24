@@ -6,8 +6,9 @@ carrying those effects into this game's effect engine gives today. Everything is
 disc with `tools/dw3effect.py`. Nothing from that disc is kept in the repository.
 
 No species plays these conversions now: every imported finisher is an effect written for this game
-([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter and its data stay in the
-repository, and this page describes them and what they gave when they were played.
+([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter this page
+describes and its data were removed with them (the repository's history has them); the page stays as notes on the
+format.
 
 The PAL and USA discs hold the same tables at slightly different places. Every position below is found by
 the table's shape, so both discs work with the same tools. The two discs give every imported species the

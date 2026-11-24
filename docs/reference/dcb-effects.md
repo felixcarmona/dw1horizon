@@ -5,8 +5,9 @@ How Digital Card Battle (DCB, SLUS-01328) draws the attacks of its Digimon, and 
 from the disc into the repository: the tools read the player's own image (`DCB_IMAGE`).
 
 No species plays these conversions now: every imported finisher is an effect written for this game
-([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter and its data stay in the
-repository, and this page describes them and what they gave when they were played.
+([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter this page
+describes and its data were removed with them (the repository's history has them); the page stays as notes on the
+format.
 
 ## Short answer: 3D, not card art
 

@@ -5,8 +5,9 @@ what carrying one into this game's effect engine would take. Everything here is 
 DW2 disc with `tools/dw2effect.py`. Nothing from that disc is kept in the repository.
 
 No species plays these conversions now: every imported finisher is an effect written for this game
-([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter and its data stay in the
-repository, and this page describes them and what they gave when they were played.
+([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter this page
+describes and its data were removed with them (the repository's history has them); the page stays as notes on the
+format.
 
 ## Where a technique's effect lives
 

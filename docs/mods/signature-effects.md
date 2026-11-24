@@ -25,95 +25,11 @@ the signature attacks of the games the species come from, listed in
   kind ([the technique rows](technique-rows.md)).
 - Every effect is written here with the kit in `tools/technique_effects`: its pictures are painted by the code and
   its script, its flight and its hit are its own. No effect is converted from another game's disc and none is
-  composed from the disc's own chunks. The converters below are still in the repository, with their data, but no
-  species plays what they make.
-
-## Converting a DW2 technique
-
-No species plays a DW2 conversion now: all imported finishers are authored. This section says how the converter
-works.
-
-`tools/dw2efe.py` turns a DW2 technique's effect objects into one chunk: every cast object (DW2 slots 0 above the
-head, 1 the launch point, 2 the feet) and every hit object. `convert_skill(casts, hits, ...)` takes them as
-`(slot, effect)` lists, and the build uses it for every own effect; `convert(cast, hit, ...)` is its one-cast,
-one-hit form. It reads them from the player's DW2 disc (`derive build --source-disc dw2=IMAGE`). The format of DW2
-effects is in [the DW2 effect notes](../reference/dw2-effects.md).
-
-- **Model.** Every drawn bone becomes TMD objects of flat, textured, unlit prims, semi-transparent with the DW2
-  prim's blend mode. A flat or mirrored part is written with both windings, so it shows from behind as well. Prims
-  whose texels are all transparent, and faces DW2 lists twice, are left out. Each object keeps only the vertices
-  its prims use, and bones that draw the same card share one object.
-- **Poses.** A pose is any rotation (as Y, X, Z angles), a scale per axis (negative for a mirror) and a 3D
-  translation; only a shear, which `drawTMDYXZ` cannot draw, stops the converter. The distinct poses are nine
-  tables (one per field, or a constant), and each part has a table of pose ids per tick. The battle logic ticks at
-  20 Hz, so tick t shows DW2 frame 1.5 t.
-- **Flipbooks.** A DW2 texture animation (a rectangle copied each frame) becomes a UV animation: its frames sit side
-  by side in the strip and the engine's `initializeUVAnim` steps the prims' UVs through them, one engine tick per
-  DW2 frame step. They are started once and run while the chunk is loaded.
-- **Texture.** The chunk's texture slot is 256x32 texels with 6 palette rows. Each DW2 block is reduced (2 by
-  default; more, or turned on its side, when it does not fit): each f x f group becomes the palette colour closest
-  to its average, or transparent when half of it is. The factors are reported per conversion.
-- **Palettes.** More than 6 palettes are merged into 6: the two closest by the colours their texels use, never
-  merging a transparent, solid or blending colour with another kind, so blending stays as DW2 has it. Here only
-  colours with the top bit blend, and colour 0 is transparent. A DW2 palette with neither (Metal Fireball's ring,
-  0x3f80: a plain blue-to-green gradient) would draw its whole square opaque, so the converter makes its colour 0
-  transparent and the others blend.
-- **Fitting the slot.** When the chunk is over 0x5000 bytes the converter retries coarser, in order: each pose held
-  2-4 ticks, translations and scales rounded to 2-4 units (angles to 32-64), the texture strip limited to 128 wide,
-  and last one-sided flat parts. The level used is reported (`detail`).
-- **Scale.** `scale` turns DW2 units into this game's (0.266: the DW2 SkullMeramon's head height against this
-  game's). `hit_scale` sets the hit objects' own (0.1): DW2's hit objects were made for a close camera. A support
-  technique's hit objects play on the caster at the cast's scale.
-- **Travellers and hits.** A cast object whose lead part moves forward at least 30% of the way between the rows is
-  a traveller: before its launch tick it plays at the launch point; from the launch it flies to the target, its
-  forward travel stretched to the real distance, and the hit comes on arrival. Without a traveller the hit comes at
-  the end of the cast (at most 40 ticks), at the target. The hit objects play at the target (slot 0 above the head,
-  1 mid height, 2 the feet), turned toward the caster; the damage is `addAttackObjectToTarget`, once per hit event
-  (`hits` spread over the hit objects' life).
-- **All enemies.** With `area` (a range-3 technique, DW2 target "all enemies") the chunk does what DW1's own range-3
-  chunks do: it walks the fighters with `selectNextTargetEntity` and starts the hit (and a traveller) once per
-  target, up to three, so every enemy is hit. Like DW1's own area chunks it walks every living fighter but the caster.
-- **Sound.** The chunk plays this game's sound effects 2 (start) and 14 (launch, travellers only). In DW2 the caster
-  shouts the technique's name: a voice line streamed from the disc as XA audio (Metal Fireball:
-  `AAA/2.XAP/SHOT0011.XAP`, channel 1). This game's battles have no voice lines, so it is not carried.
-- The build would need the DW2 disc for these chunks; the build makes none now.
-
-## Converting a DW2003 technique
-
-No species plays a DW2003 conversion now: all imported finishers are authored. This section says how the converter
-works.
-
-`tools/dw3efe.py` turns a DW2003 technique's 3D effects (the `MEFT####.BIN` files its battle model's script
-spawns) into one chunk through the same converter: each effect placed where the script spawns it, in the caster's
-frame, at the field's scale (this game's fighters stand 2700 units apart, DW2003's 10 752), for its whole length,
-played as on the disc with the hit when it ends. The format and the conversion are in
-[the DW2003 effect notes](../reference/dw3-effects.md). The build reads the model and the effect files from the
-player's DW2003 or Digimon World 3 disc (`derive build --source-disc dw2003=IMAGE`; `tools/discs.py`
-`DW3_EFFECT_FILES` pins them, equal on all three releases). The models' scripts and the effect files give the same
-chunks on the European, USA and Japanese discs, and `pin` records that chunk's SHA-1.
-`tools/test_dw3_ports.py` checks the wiring, and with the discs (`DW3_IMAGE`, `DW3_US_IMAGE`, `DW3_JP_IMAGE`)
-builds every port to its pin and runs the fidelity check against the original technique. Chunks 196 to 222 are the
-3D effects' (`EFFECT_IDS`).
-
-## Converting a Digital Card Battle attack
-
-No species plays a Card Battle conversion now: all imported finishers are authored. This section says how the
-converter works.
-
-`tools/dcbefe.py` turns a Card Battle attack (the card's own script and the shared hit script, with their effect
-packs) into one chunk through the same converter; the format and the conversion are in
-[the Card Battle effect notes](../reference/dcb-effects.md). An entry has `"dcb"`: `{"attack": 1105, "hit": 435,
-"fit": [4, 1, 24], "pin": SHA-1}`, `fit` being the animated sprite frames, the texture reduction and the alike
-objects per script it was converted at (`null`: all). Like a DW2003 port it is gameplay-neutral: one target, one hit,
-as the finisher it stands for. The build reads `F.DRV` (the scripts) and `E.DRV` (the packs) from the player's Card
-Battle disc, which it already reads for the imported species (`derive build --source-disc dcb=IMAGE`); both are
-pinned per release in `content/imports/releases/dcb-*.json`. The USA and European discs give the same chunks; the
-Japanese one has its own `pins` where it differs.
-
-Its data is `content/finishers/dcb-effects.json`, one entry per Card Battle attack; the attacks whose conversion
-passed the fidelity check have the converted effect there, the others a `why` and a fallback (`"fallback"` and
-`why` in that file). None of them is played now. `tools/test_dcb_ports.py` checks the wiring, and with the discs
-(`DCB_IMAGE`, `DCB_EU_IMAGE`, `DCB_JP_IMAGE`) builds every port to its pin.
+  composed from the disc's own chunks. The build reads no effect file of another game: the converters that once
+  made these chunks from Digimon World 2, Digimon World 2003 and Digital Card Battle are gone, and the patcher no
+  longer checks or extracts those games' effect files (their format notes stay in
+  [DW2](../reference/dw2-effects.md), [DW2003](../reference/dw3-effects.md) and
+  [Card Battle](../reference/dcb-effects.md)).
 
 ## Authored finishers
 
@@ -398,12 +314,10 @@ A sheet and a check take about 15 seconds. The chunk keeps the template's size, 
 the template's.
 
 The chunk's data (every effect, whatever its source) lives in the battle's effect heap (0x41000 bytes), loaded with the battle's other effects: up to
-16 chunks, 4 fighters x 4 techniques. The largest conversions keep about 17 KB; four of them with the twelve largest
-native chunks come to 0x39584, under the heap. The main executable grows by 112 B: `getSpeciesTechEffect`'s
+16 chunks, 4 fighters x 4 techniques. The main executable grows by 112 B: `getSpeciesTechEffect`'s
 140 less 28 its two resident call sites save (the patches after it, which call `digimonPara`, `raiseRow`
-and the evolution rows out of line, give 2,656 B back); the converter needs no engine change.
+and the evolution rows out of line, give 2,656 B back).
 
-Validation: `python3 -m unittest tools.test_dw2efe` converts small made-up effects and runs the chunks in
-`tools/efesim.py`, a model of the effect script interpreter and the sub-opcodes the converter uses: one hit on the
-target on arrival, every enemy with `area`, several hits, none for a support technique, flipbooks, rotations,
-palette and texture reduction.
+Validation: `python3 -m unittest tools.test_technique_effects` builds every authored effect and runs its chunk in
+`tools/efesim.py`, a model of the effect script interpreter: it ends, sounds, draws, and hits what its technique
+hits (one enemy, or all of them), and the ones that fly to where the target stood miss a target that walks away.
