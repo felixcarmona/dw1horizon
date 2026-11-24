@@ -64,7 +64,8 @@ def leg(mesh, rings, ns, phase, outer, x0):
             if kind == 's':
                 mesh.face(vs, BARE_SKIN, ROW, radial)
             elif kind == 'h':
-                mesh.face(vs, patch(CUFF, .4, .6), ROW, (1, 0, 0))
+                # the cloth itself: in the second colour its far rim came and went under the near one as a light line
+                mesh.face(vs, patch(CLOTH, .1, .3), ROW, (1, 0, 0))
             elif kind == 't' and j == outer:
                 mesh.face(vs, patch(STRIPE, a, b), ROW, radial)
             elif kind == 'p' and j == outer:

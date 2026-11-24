@@ -110,7 +110,7 @@ a model of `TAMER.DAT` like the rest.
   fringe, between a lock and the cheek), so there `lookPageHairInside` sorts the hair a second time with two corners
   swapped: the far faces are drawn and no gap shows what is behind the head. With no depth buffer those faces, sorted
   among the model's own, painted the inside of a lock over the head or the other lock at back and side angles; they
-  go to the far half of the portrait's ordering table (buckets 256-511), behind every face of the model and still in
+  go to the last quarter of the portrait's ordering table (buckets 384-511), behind every face of the model and still in
   front of the panel.
 - A shirt is five objects of the model. Every model in `TAMER.DAT` comes without them; `lookTamerLoad` reads the
   chosen shirt's geometry right behind the model and points the five entries of the object table at it before the
@@ -134,10 +134,14 @@ a model of `TAMER.DAT` like the rest.
   the shirt, a few units behind its hem, and first in the torso it was drawn over the hem as flat patches of the
   trousers' colour. Its two corners at the back of the hips sit well inside the shirt (`PELVIS_MOVED`): closer to
   it, those polygons averaged a bucket nearer than the shirt's back at three-quarter angles.
-- A thigh's top lies inside the shirt and comes out under its hem, and a skirt or shorts flare out from there: their
-  wide polygons' average depth fell a bucket nearer than the hem that covers them, and the trousers showed through the
-  shirt's lower edge from the back. On the Look page `lookPageThighDepth` sorts the two thighs 16 units deeper (half a
-  bucket): it scales their screen matrix about the eye, so every corner stays where it was on the screen.
+- The portrait sorts the tamer's own look in 4-unit depth buckets (`LOOK_SORT_SHIFT` 0; every other portrait keeps
+  shift 3, 32 units). The close-up is full of parts that touch (collar and hair, sleeve and trunk, thigh and shin, hem
+  and skirt): in 32-unit buckets whole parts shared one, the order they were sent in decided which covered the other,
+  and it changed with every step of the turn. A model of the portrait (the ordering table against a depth buffer, 64
+  steps of the turn) counted twelve times fewer wrongly covered pixels with 4 units, and no depth offset for a part
+  improved on it. The tamer stands in buckets 270-315 of the table's 512; the hair's far faces go to its last quarter.
+- The ring that closes a skirt's or shorts' rim to the bare thigh is drawn in the cloth itself: in the second colour
+  its far rim showed under the near one as a light line at some angles and not at others.
 - A boot's leg cannot be part of the foot, which turns at the ankle. It is eleven corners and ten polygons stored in
   the shoes' head sector, and it rides on the shin: slim trousers (a flag in their head sector) keep eleven unused
   corners at the start of each shin and room for ten polygons right before the shin's own, and the loader copies the

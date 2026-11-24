@@ -1,0 +1,112 @@
+From 1571cb660955988a2a6e7e924081685cd24e2e07 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 20:35:55 +0000
+Subject: [PATCH] Tamer looks: the tamer's own look sorts in 4-unit depth
+ buckets in the portrait
+
+---
+ src/main/game_menu.c | 56 +++++++++++++++-----------------------------
+ 1 file changed, 19 insertions(+), 37 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 465c6c6f..1ab53137 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2677,9 +2677,6 @@ void free3(void *ptr);
+ #define LOOK_SCROLL_X	(LOOK_VALUE_X + LOOK_VALUE_W + 7)	/* the scroll bar: right of the value boxes, as tall as the rows shown */
+ #define LOOK_SCROLL_H	((LOOK_SHOWN - 1) * 0x14 + 14)
+ #define LOOK_HEAD_OBJECT	1
+-#define LOOK_THIGH_LEFT		8
+-#define LOOK_THIGH_RIGHT	11
+-#define LOOK_THIGH_DEPTH	16	/* half a bucket of the portrait's table (shift 3) */
+ #define LOOK_HAIR_MODE		0x34u	/* textured gouraud triangle: seven words */
+ #define LOOK_HAIR_WORDS		7
+ #define LOOK_HAIR_ROW		1	/* the hair's palette row (tools/tamer_looks/wig.py) */
+@@ -2962,9 +2959,10 @@ static void lookPageKeep(void)
+ /* The game draws one face of a polygon, and the menu's close-up shows the hair from angles the field never does (under
+  * the fringe, inside a lock): there the hair is sorted a second time with two corners swapped, which draws its far faces.
+  * With no depth buffer, those far faces sorted among the model's own put the inside of a lock over the head or the other
+- * lock at some angles. They go to the far half of the portrait's table instead (buckets 256-511, half the depth
+- * resolution, 64 units): still in depth order among themselves, behind every face of the model (nearer than depth 8192,
+- * in buckets 0-255) and in front of the panel, since the whole table is one entry of the frame's. */
++ * lock at some angles. They go to the last quarter of the portrait's table instead (buckets 384-511, a quarter of the
++ * depth resolution, 16 units): still in depth order among themselves, behind every face of the model (nearer than depth
++ * 1536, in buckets 0-383) and in front of the panel, since the whole table is one entry of the frame's. */
++#define LOOK_SORT_SHIFT	0	/* the tamer's own look in the portrait: 4 depth units a bucket */
+ void lookPageHairInside(GsDOBJ2 *obj, GsOT *ot)
+ {
+ 	struct TMD_STRUCT *tmd = (struct TMD_STRUCT *)obj->tmd;
+@@ -2997,34 +2995,14 @@ void lookPageHairInside(GsDOBJ2 *obj, GsOT *ot)
+ 		}
+ 		if (pass == 0) {
+ 			tmd->primn = hair;
+-			back.length = ot->length - 1;
+-			back.org = ot->org + (1 << back.length);
+-			GsSortObject4(obj, &back, 4, getScratchAddr(0));
++			back.length = ot->length - 2;
++			back.org = ot->org + 3 * (1 << back.length);
++			GsSortObject4(obj, &back, LOOK_SORT_SHIFT + 2, getScratchAddr(0));
+ 			tmd->primn = count;
+ 		}
+ 	}
+ }
+ 
+-/* The thighs' tops lie inside the shirt and come out under its hem, and a skirt or wide shorts flare out from there:
+- * their polygons' average depth can then be a bucket nearer than the hem that covers them, and the trousers showed
+- * through the shirt's lower edge. On the Look page they sort a little deeper: the matrix that takes them to the screen
+- * is scaled about the eye, which keeps every corner where it was on the screen and only adds depth. */
+-static void lookPageThighDepth(MATRIX *m)
+-{
+-	int32_t z = m->t[2];
+-	int32_t i, j;
+-
+-	if (z <= 0) {
+-		return;
+-	}
+-	for (i = 0; i < 3; i++) {
+-		for (j = 0; j < 3; j++) {
+-			m->m[i][j] = (int16_t)(m->m[i][j] * (z + LOOK_THIGH_DEPTH) / z);
+-		}
+-		m->t[i] = m->t[i] * (z + LOOK_THIGH_DEPTH) / z;
+-	}
+-}
+-
+ int32_t lookPageOpen(void)
+ {
+ 	RECT rect;
+@@ -7053,20 +7031,24 @@ int8_t entityId;
+ 			GsGetLw(pos->obj.coord2, &m);
+ 			GsSetLightMatrix(&m);
+ 			GsGetLs(pos->obj.coord2, &m);
+-			/* MOD (tamer looks): the thighs a little deeper, under the shirt's hem */
+-			if (entityId == 0 && MOD_TAMER_LOOK > 1 &&
+-			    ((void *)pos->obj.tmd == (void *)&TAMER_MODEL.modelPtr->obj[LOOK_THIGH_LEFT] ||
+-			     (void *)pos->obj.tmd == (void *)&TAMER_MODEL.modelPtr->obj[LOOK_THIGH_RIGHT])) {
+-				lookPageThighDepth(&m);
+-			}
+ 			GsSetLsMatrix(&m);
+ 			/* MOD (status portrait): shift 3, not 5. With 5 the 512-entry OT
+ 			 * buckets are 128 depth units deep, and a portrait camera farther
+ 			 * than the native ones put a mouth's inside or the far side of a
+ 			 * head in the same or a nearer bucket than the face: Agumon's
+ 			 * closed mouth drew as a black hole. 32-unit buckets order them;
+-			 * the table still reaches depth 16384, past every portrait. */
+-			GsSortObject4(&pos->obj, FRAMEBUFFER_OT[ACTIVE_FRAMEBUFFER], 3,
++			 * the table still reaches depth 16384, past every portrait.
++			 *
++			 * MOD (tamer looks): the tamer's own look sorts with shift 0,
++			 * 4-unit buckets. Its close-up fills the panel with parts that
++			 * touch (collar and hair, sleeve and trunk, thigh and shin, hem
++			 * and skirt), and 32 units put whole parts in one bucket, where
++			 * the order they were sent in decided which one covered the
++			 * other: it changed with every step of the turn. The tamer
++			 * stands at depth 1100-1250, buckets 270-315 of the table's
++			 * 512, and the hair's far faces take the last 128. */
++			GsSortObject4(&pos->obj, FRAMEBUFFER_OT[ACTIVE_FRAMEBUFFER],
++			              (entityId == 0 && MOD_TAMER_LOOK > 1) ? LOOK_SORT_SHIFT : 3,
+ 			              getScratchAddr(0));
+ 			/* MOD (tamer looks): the hair's far faces too */
+ 			if (entityId == 0 && MOD_TAMER_LOOK > 1 &&
+-- 
+2.55.0
+
