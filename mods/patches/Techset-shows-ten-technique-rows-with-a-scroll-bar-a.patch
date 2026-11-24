@@ -1,4 +1,4 @@
-From f60553b76e15fcfb15bea3fa594f050c425e1438 Mon Sep 17 00:00:00 2001
+From 11dd9488d011f65dbd7653e384f845f455ae307f Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Tue, 24 Nov 2026 06:41:48 +0000
 Subject: [PATCH] Techset shows ten technique rows with a scroll bar; arena
@@ -25,7 +25,7 @@ index c0d87172..20d3ccd1 100644
  #define CUP_TAG_RIVAL		(1 << 18) /* a species of DIGI.DAT the arena can draw: raised by players, Rookie or higher */
  
 diff --git a/src/main/game_menu.c b/src/main/game_menu.c
-index 74891147..bfbfa87f 100644
+index 74891147..baefa1f8 100644
 --- a/src/main/game_menu.c
 +++ b/src/main/game_menu.c
 @@ -1012,7 +1012,18 @@ IconRect STATS_VIEW_ELEMENTS[21] = {
@@ -319,7 +319,7 @@ index 74891147..bfbfa87f 100644
  				k += 0xc;
  			}
  		}
-@@ -4048,11 +4102,16 @@ void renderDigimonMovesView(void)
+@@ -4048,9 +4102,10 @@ void renderDigimonMovesView(void)
  		renderRectPolyFT4(-0x74, 0x3c, 10, 10, 0x80, 0x8c, 5, 0x7b06, 5, 0);
  		j = 0;
  		while (j < 7) {
@@ -332,13 +332,18 @@ index 74891147..bfbfa87f 100644
 +			renderRectPolyFT4(MOVES_VIEW_RIGHT_NAME_X(icon->width), j * 0xf - 8 + icon->posY, icon->width, icon->height, icon->texX, icon->texY, 5, 0x7b06, 5, 0);
  			j++;
  		}
-+		/* the scrollbar, over the technique's panel when that is on its side: the thumb is the seven rows of the ten
-+		 * (drawn first: of two boxes at one depth the earlier one is on top) */
+ 		j = 0;
+@@ -4071,6 +4126,10 @@ void renderDigimonMovesView(void)
+ 		} else {
+ 			renderDigimonMovesSelected(1);
+ 		}
++		/* the scrollbar, under the technique's panel when that is on its side: the thumb is the seven rows of the ten
++		 * (of two boxes at one depth the earlier one is on top: the panel's first, then the thumb, then the track) */
 +		renderBox(0x8b, MOVE_GRID_SCROLL * 31 / 3 - 7, 3, 0x47, 0xc0, 0xd0, 0xe8, 0, 4);
 +		renderBox(0x8b, -7, 3, 0x66, 0x10, 0x14, 0x30, 0, 4);
- 		j = 0;
- 		while (j < 8) {
- 			renderRectPolyFT4(j * 0x12 - 0x26, -0xf, 4, 5, j * 4 + 0x94, 0x8c, 5, 0x7b06, 5, 0);
+ 		renderDigimonMoveBox();
+ 		break;
+ 	case 7:
 @@ -4233,8 +4292,6 @@ void renderDigimonMovesSelected(int16_t panel)
  	IconRect *label;
  	Move *move;

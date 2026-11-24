@@ -1,4 +1,4 @@
-From 05ba939bbb64c6a9d147dfb841f71bfb0f73665a Mon Sep 17 00:00:00 2001
+From 61bc8deeb950ab8b235550f37c5291299a93a5af Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Tue, 24 Nov 2026 06:41:48 +0000
 Subject: [PATCH] An effect's launch table can say 'any caster, from its entity
