@@ -7,6 +7,7 @@ import sys
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
+import build
 import model
 
 
@@ -153,7 +154,8 @@ class WikiTests(unittest.TestCase):
             source=(root/f'{lang}.json').read_bytes()
             self.assertEqual(review['locales'][lang],hashlib.sha256(source).hexdigest())
             articles=json.loads(source)
-            self.assertEqual(len(articles),22)
+            self.assertEqual(len(articles),36)
+            self.assertEqual(sorted(articles),sorted(i for _,ids in build.SECTIONS for i in ids))
             self.assertTrue(all(len(a['paragraphs'])>=3 for a in articles.values()))
             self.assertIn('{save_blocks}',articles['memory-cards']['paragraphs'][0])
     def test_bakemon_dialogue_comes_from_each_snapshot_and_language(self):

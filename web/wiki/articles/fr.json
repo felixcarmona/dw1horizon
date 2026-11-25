@@ -13,7 +13,7 @@
     "summary": "BIOS, fichiers, réglages par jeu et sauvegardes.",
     "paragraphs": [
       "Configurez votre BIOS PlayStation et ajoutez le dossier de Horizon. Le .cue doit rester à côté du .bin : un fichier absent ou renommé empêche de retrouver la piste.",
-      "Utilisez les réglages propres à Horizon. Activez les 8 Mo de RAM étendue pour le chinois simplifié ; les autres langues fonctionnent avec 2 Mo. AUTO adapte l’affichage à la scène, en visant 60, 30 ou 20 images/s. Accélérer le processeur émulé peut aider à maintenir une fréquence élevée, mais AUTO n’exige plus d’overclock pour la tenter.",
+      "Utilisez les réglages propres à Horizon. Activez les 8 Mo de RAM étendue pour le chinois simplifié ; les autres langues fonctionnent avec 2 Mo. AUTO adapte l’affichage à la scène, en visant 60, 30 ou 20 images/s. Accélérer le processeur émulé peut aider à maintenir une fréquence élevée ; AUTO n’en a pas besoin pour la tenter.",
       "Attribuez une carte avec {save_blocks} blocs libres. Une carte par jeu évite de partager l’espace. Après avoir renommé le disque ou mis à jour, vérifiez la carte et chargez une sauvegarde du jeu après un nouveau démarrage."
     ]
   },
@@ -72,11 +72,50 @@
       "Changez le CPU émulé, pas l’avance rapide. Vérifiez les réglages détectés au titre. L’appareil doit tenir la vitesse d’émulation choisie. Redémarrez après un changement de RAM."
     ]
   },
+  "options": {
+    "title": "Le menu OPTIONS",
+    "summary": "Chaque ligne des options du titre et ce qu’elle change.",
+    "headings": [
+      "Où le trouver",
+      "Contenu du jeu",
+      "Combat et terrain",
+      "Écran et langue"
+    ],
+    "paragraphs": [
+      "OPTIONS est la cinquième ligne du menu du titre, sous BATTLE MODE. Les valeurs sont inscrites dans chaque sauvegarde, et ce que vous réglez au titre l’emporte sur ce que contient la sauvegarde : vous pouvez changer n’importe quelle ligne puis choisir CONTINUER. Les barres de soin, l’horloge numérique et les barres de vie des ennemis sont toujours actives et n’ont pas de ligne.",
+      "NOUV. DIGIMON, activé, ajoute les espèces importées et le niveau Méga ; désactivé, il ne laisse que les espèces d’origine, les quatre œufs d’origine et les neuf partenaires de départ d’origine, et un partenaire d’une nouvelle espèce s’affiche comme une espèce d’origine voisine jusqu’à la réactivation. NOUV. CARTES, activé, ajoute 240 cartes à l’album ; désactivé, il les masque partout et conserve leurs nombres. HIST. ÉTENDUE, activée, ajoute les nouvelles zones et résidents ; l’activer sur une partie en cours vous déplace, vous et votre partenaire, à la maison de Jijimon et conserve votre progression. GUIDE ÉVOL., activé, affiche les lignes du tableau d’évolution et la fenêtre des conditions.",
+      "DIFFICULTÉ vaut FACILE, NORMAL ou DIFFICILE. DÉPART RAPIDE, activé, lance les combats de terrain aussitôt, sans la longue entrée en scène. ALERTE DANGER, activée, signale les Digimon sauvages bien plus forts que votre partenaire. BOUTONS JAP. échange confirmer et annuler sur Rond et Croix ; il démarre activé sur un disque japonais. TRICHE (désactivée) ajoute un menu de test à l’écran de pause.",
+      "IMAGES/S vaut AUTO, 60 ou 20. POLICE vaut NOUVELLE, CLASSIQUE ou ORIGINAL ; le chinois n’a pas ORIGINAL. LANGUE change tous les textes d’un coup. PANNEAUX choisit entre les panneaux tels que dessinés dans l’original et leurs versions TRADUITS."
+    ]
+  },
+  "controls": {
+    "title": "Commandes et raccourcis",
+    "summary": "Course, soins rapides, vitesse de combat et boutons de chaque menu.",
+    "headings": [
+      "Sur le terrain",
+      "En combat",
+      "Dans les menus"
+    ],
+    "paragraphs": [
+      "Maintenez R1 pour courir : vous et votre partenaire allez 40 % plus vite. Maintenez R2 pour marcher lentement. Croix parle et confirme, Triangle ouvre le menu et annule ; avec BOUTONS JAP., Rond confirme et Croix annule. Quand un badge Carré rose apparaît au-dessus du partenaire, Carré ouvre les soins rapides : nourriture, remède, toilettes, sommeil ou réprimande selon ce qui convient maintenant, le besoin urgent en premier et l’aliment préféré marqué.",
+      "R2 alterne la vitesse du combat entre normale et double, sur le terrain, dans l’arène et en VS. La vitesse revient à la normale quand le menu d’objets est ouvert et n’est pas sauvegardée. Quand la jauge de coup de grâce est pleine, Carré lance le coup de grâce ; appuyez alors vite sur L1 et R1 pour le charger, et une bonne charge augmente ses dégâts jusqu’au double. La liste d’objets d’un combat n’affiche que les objets utilisables à cet endroit.",
+      "Dans le tableau d’évolution, Carré sur une cible ouvre le tableau de ce qu’elle exige à côté de ce que possède votre partenaire, et L1 et R1 changent d’onglet. Quand vous choisissez un œuf, Carré en tire un au hasard. Le bouton de confirmation passe le décompte des gains après un entraînement ou un combat. Dans les éditeurs de Triches, gauche et droite changent la valeur, haut et bas la taille du pas."
+    ]
+  },
+  "faq": {
+    "title": "FAQ et dépannage",
+    "summary": "Mises à jour, sauvegardes, lenteurs et rapports utiles.",
+    "paragraphs": [
+      "Si Continuer manque, vérifiez carte, blocs libres et nom du disque pour les cartes par jeu. Horizon exige {save_blocks} blocs libres pour un nouveau fichier. Copiez la carte, démarrez le disque mis à jour et chargez dans le jeu.",
+      "Créer le disque sur téléphone peut être lent. Pour les quotas, utilisez une fenêtre normale, libérez de l’espace et réessayez ; le logiciel de bureau est une alternative. Les autres disques fournissent des espèces ; une copie modifiée ou incompatible échoue aux contrôles.",
+      "Pour un texte incorrect, notez version, disque de base, langue, émulateur et graphismes. Sur Android affecté, essayez de désactiver Enable Texture Cache. Joignez déclencheur exact et capture : un symptôme seul n’identifie pas sa cause."
+    ]
+  },
   "first-day": {
     "title": "Le premier jour du partenaire",
     "summary": "Une petite routine pour une nouvelle vie sur File Island.",
     "paragraphs": [
-      "Choisissez le partenaire avec les questions de Jijimon. Découvrez soins, inventaire et services proches avant de partir loin. Emportez des soins et gardez de la place pour les trouvailles.",
+      "Choisissez le partenaire avec les questions de Jijimon. Une nouvelle partie commence avec 20 Viandes et 1000 bits. Découvrez soins, inventaire et services proches avant de partir loin. Emportez des soins et gardez de la place pour les trouvailles.",
       "Nourrissez-le quand il a faim, trouvez des toilettes et respectez son sommeil. La fiche indique aliment préféré et horaires. Ne passez pas toute la journée à entraîner sans vérifier ses besoins.",
       "Essayez une courte séance, puis observez statistiques et fatigue. Explorez, rentrez et sauvegardez sur carte. L’évolution dépend aussi du poids et des soins : choisissez une cible avant d’entraîner toutes les statistiques sans objectif."
     ]
@@ -85,9 +124,25 @@
     "title": "Erreurs de soin et discipline",
     "summary": "Comprenez les alertes avant de viser une statistique.",
     "paragraphs": [
-      "Faim, toilettes, sommeil et fatigue sont distincts. Ignorer la faim ou laisser le partenaire faire au sol peut ajouter des erreurs ; maladie et épuisement ont leurs conséquences. Consultez régulièrement les indicateurs et le panneau de soins.",
-      "Discipline et bonheur sont différents. Féliciter et gronder n’ont pas les mêmes effets et ne résolvent pas tout. Préférences alimentaires et sommeil comptent aussi. Dans un habitat que le partenaire n’aime pas, son visage d’humeur alterne de nouveau entre triste et heureux, comme dans le jeu original.",
-      "Une évolution peut exiger un minimum ou un maximum d’erreurs. En viser beaucoup est un choix précis, pas un conseil général de négligence. Les compteurs ordinaires concernent la forme actuelle ; lisez les quatre groupes ensemble."
+      "Faim, toilettes, sommeil et fatigue sont distincts. Ignorer la faim, laisser le partenaire faire au sol ou le garder éveillé après l’heure du coucher ajoute des erreurs ; maladie et épuisement ont leurs conséquences. Les cinq barres de soin et les bulles au-dessus du partenaire indiquent ce qu’il faut faire ; la page Statut affiche le nombre d’erreurs.",
+      "Discipline et bonheur sont différents. Féliciter et gronder n’ont pas les mêmes effets et ne résolvent pas tout. Préférences alimentaires et sommeil comptent aussi. Dans un habitat que le partenaire n’aime pas, l’icône de bonheur des barres de soin clignote.",
+      "Une évolution peut exiger un minimum ou un maximum d’erreurs. En viser beaucoup est un choix précis, pas un conseil général de négligence. Le compteur repart de zéro à chaque évolution et à la renaissance : il concerne donc toujours la forme actuelle ; lisez les quatre groupes ensemble."
+    ]
+  },
+  "screen-indicators": {
+    "title": "Barres, bulles et alertes",
+    "summary": "Ce que signifient les barres de soin, les bulles au-dessus du partenaire et les avertissements.",
+    "headings": [
+      "Barres de soin et horloge",
+      "Bulles et badges",
+      "Page Statut",
+      "Alerte danger"
+    ],
+    "paragraphs": [
+      "Cinq barres se trouvent en bas à droite avec l’horloge, et pendant l’entraînement : bonheur, discipline, faim, toilettes et énergie. Une barre pleine signifie que tout va bien ; une barre vide, que ce besoin est à satisfaire. L’icône de bonheur clignote dans un habitat que le partenaire n’aime pas. L’horloge affiche aussi l’heure en chiffres sous le cadran.",
+      "Une bulle au-dessus du partenaire indique ce dont il a besoin : faim, toilettes, sommeil, fatigue, maladie, blessure, PV bas ou PM bas, tous deux sous 30 %. Une bulle Gronder apparaît quand une réprimande est méritée, après un aliment refusé ou juste avant un accident. Le badge Carré rose signifie que les soins rapides ont quelque chose à proposer. Une bulle de viande au-dessus du fermier signifie qu’une récolte attend.",
+      "La page Statut affiche le bonheur et la discipline de 0 à 100, la fatigue et la jauge virus avec leurs chiffres, les erreurs de soin de la forme actuelle et les combats gagnés. Le menu pause affiche les PV et PM du partenaire. Dans les combats sauvages, chaque ennemi a une barre de vie avec ses PV ; les adversaires de l’arène et de l’histoire n’en ont pas.",
+      "Avec ALERTE DANGER activée, un petit diablotin violet flotte au-dessus d’un Digimon sauvage nettement plus fort que votre partenaire : ses PV × (Attaque + Défense) valent au moins 2,5 fois ceux de votre partenaire. Il n’apparaît que sur les Digimon qui lancent un combat au contact, jamais sur les personnages qui se contentent de parler, et seulement tant que vous pouvez bouger. C’est un avertissement, pas un verdict."
     ]
   },
   "training": {
@@ -96,16 +151,47 @@
     "paragraphs": [
       "Chaque atelier entraîne une statistique. Les gains de base ci-dessous sont les valeurs de base ; partenaire, améliorations, objets et résultat peuvent les modifier. L’entraînement d’intelligence a ses propres seuils d’apprentissage, distincts des combats.",
       "L’entraînement fait passer le temps et coûte nourriture, fatigue et durée de vie. Vérifiez faim, toilettes et sommeil avant. Continuer fatigué peut entraîner des pénalités ; un gain supérieur n’est pas du temps gratuit.",
-      "Le x5 applique plusieurs récompenses normales avec des contrôles entre chacune. Utilisez x1 près d’un objectif de poids ou d’évolution. Reposez-vous et répondez aux besoins avant un autre bloc."
+      "Chaque menu du gymnase propose aussi Entraînement normal x5, qui enchaîne cinq séances ordinaires avec des contrôles de soins entre chacune. Faites des séances isolées près d’un objectif de poids ou d’évolution. Reposez-vous et répondez aux besoins avant un autre bloc."
     ]
   },
   "gym-x5": {
-    "title": "Comment fonctionne le gymnase x5",
-    "summary": "Plusieurs séances, coûts normaux et arrêts anticipés.",
+    "title": "Entraînement x5 et entraînement bonus",
+    "summary": "Cinq séances d’affilée, avec les coûts normaux et des arrêts anticipés.",
     "paragraphs": [
-      "Pendant une séance, R2 alterne x1 et x5. Le bloc joue l’animation initiale puis applique chaque récompense dans l’ordre. Ce n’est pas un multiplicateur gratuit par cinq.",
-      "Il peut s’arrêter après une séance provoquant faim, besoin de toilettes, sommeil, fatigue ou malaise. Il vérifie aussi évolution, durée de vie et messages du gymnase. Le résultat montre les séances terminées : pas forcément cinq.",
-      "Bonus Try est indépendant des blocs. Chaque rouleau s’arrête là où vous appuyez, sans rien de caché pour le pousser hors du gain : un échec donne la moitié, trois symboles identiques doublent, trois symboles de la statistique entraînée donnent x4 et trois crottes dorées donnent x5. Résolvez le besoin signalé avant de recommencer. Pour une seule récompense, sélectionnez x1 avant de confirmer plutôt que de compter sur un arrêt d’urgence."
+      "Chaque menu du gymnase a quatre lignes : entraînement normal, Entraînement normal x5, Entraînement bonus et quitter. L’entraînement normal x5 joue l’entraînement une fois, puis accorde cinq séances ordinaires l’une après l’autre. Chaque séance coûte son heure habituelle, sa nourriture, sa fatigue et sa durée de vie ; ce n’est pas un multiplicateur par cinq gratuit.",
+      "Maintenez le bouton d’annulation environ une demi-seconde entre deux séances pour arrêter le bloc à cet endroit. Le bloc s’arrête aussi tout seul quand le partenaire a faim, doit aller aux toilettes, a sommeil ou est fatigué, est blessé ou malade, quand une évolution est due, quand sa vie s’achève ou quand le gymnase a quelque chose à dire, comme une technique apprise. La fenêtre de résultat compte les séances réellement effectuées. Le bouton de confirmation passe le décompte des gains.",
+      "L’entraînement bonus mise une séance sur la machine à sous. Chaque rouleau s’arrête là où vous appuyez, sans rien de caché pour le pousser hors du gain : un échec donne la moitié, trois symboles identiques doublent, trois symboles de la statistique entraînée donnent x4 et le jackpot donne x5. Il coûte autant de temps et de soins qu’une séance normale."
+    ]
+  },
+  "rebirth": {
+    "title": "Durée de vie, vies et renaissance",
+    "summary": "Combien de temps vit un partenaire, ce qu’il garde et comment recommencer volontairement.",
+    "headings": [
+      "Durée de vie et vies",
+      "Renaissance",
+      "Œufs",
+      "Évoluer en perdant une vie"
+    ],
+    "spoiler_paragraphs": [
+      3
+    ],
+    "paragraphs": [
+      "Un partenaire naît avec 408 heures de vie. Un bonheur faible la raccourcit ; atteindre Ultime ajoute 96 heures et Méga 120 ; certains aliments en ajoutent davantage. L’avertissement rouge de la fenêtre d’évolution indique quand la vie s’achèvera avant une évolution. Un partenaire a aussi trois vies en combat : une défaite en coûte une et vous renvoie à la maison de Jijimon.",
+      "La machine de sauvegarde de la maison de Jijimon propose une entrée Renaissance pour un partenaire de niveau Champion ou plus. Elle demande deux fois confirmation, ne coûte rien et laisse le partenaire partir comme lors d’une mort naturelle : vous choisissez donc le prochain œuf. Le nouveau partenaire garde les techniques apprises, vos objets, vos bits et son nom, et hérite d’une part des statistiques qui grandit avec votre niveau de Dresseur. Si le bonheur était d’au moins 20, il commence avec bonheur et discipline à 80 ; sinon à 50.",
+      "Après une mort naturelle ou une renaissance, vous choisissez l’œuf ; Carré en tire un au hasard. Il y a quatre œufs avec NOUV. DIGIMON désactivé et huit avec : les nouveaux donnent Pabumon, Pichimon, YukimiBotamon et Nyokimon. Un partenaire qui meurt au combat ou de maladie sans vie restante reçoit un œuf au hasard.",
+      "Quand un partenaire perd une vie et qu’il lui en reste une, il peut évoluer chez Jijimon. Agumon, Betamon, Gabumon, Elecmon, Patamon, Kunemon, Biyomon et Palmon deviennent Bakemon dans 30 % des cas ; MetalGreymon et Megadramon deviennent SkullGreymon et Kokatorimon devient Phoenixmon à 30 % ; Angemon avec une discipline inférieure à 50 devient Devimon à 50 %. Si les statistiques de la nouvelle forme sont déjà atteintes, 30 % chacun : Greymon en SkullGreymon, Meramon en SkullMeramon, Mammothmon en SkullMammothmon et Garudamon en Phoenixmon. Les nouvelles espèces exigent NOUV. DIGIMON activé."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Mécaniques cachées des partenaires",
+    "summary": "Préférences, emplacements de spécialité et évolutions hors tableau.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Chaque partenaire a ses préférences et son sommeil. Les spécialités définissent les techniques apprises en combat. Un emplacement vide compte encore pour le jet, même si le résumé ne l’affiche pas.",
+      "Le guide du jeu et l’arbre expliquent les cibles. Transformations spéciales et objets ont leurs propres conditions ; une ligne statistique ordinaire ne décrit pas toutes les façons d’obtenir une espèce. Perdre une vie peut aussi transformer le partenaire sur-le-champ : l’article sur la durée de vie et la renaissance liste ces évolutions et leurs probabilités."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "evolution-requirements": {
@@ -114,7 +200,7 @@
     "paragraphs": [
       "L’évolution ordinaire évalue erreurs de soin, poids, statistiques et bonus. Il faut {pass_points} points. Tous les seuils statistiques forment un seul groupe ; deux statistiques ne donnent pas deux points. Une cible Rookie utilise la statistique la plus élevée.",
       "Le poids accepte une plage. Les erreurs peuvent avoir un minimum ou un maximum. Une seule condition de bonus suffit ; les alternatives ne sont pas toutes obligatoires. Le nombre maximal d’erreurs de soin est inclusif. Rater ce groupe fait perdre son point ; cela ne bloque pas l’évolution si les autres groupes atteignent le score requis. Augmenter uniquement les erreurs ne permet donc pas d’exclure une cible de façon fiable.",
-      "Touchez la cible de l’arbre pour lire ses conditions. La ligne « Temps (h) » de la fenêtre montre la condition de temps, et un avertissement rouge signale une vie restante insuffisante. Temps dans la forme, déclencheurs spéciaux, NEW DIGIMON et autres candidats influencent le résultat. PV/PM utilisent les unités du joueur ; bonheur utilise l’échelle 0–100 du statut."
+      "Touchez la cible de l’arbre pour lire ses conditions. La ligne « Temps (h) » de la fenêtre montre la condition de temps, et un avertissement rouge signale une vie restante insuffisante. Temps dans la forme, déclencheurs spéciaux, NOUV. DIGIMON et autres candidats influencent le résultat. PV/PM utilisent les unités du joueur ; bonheur utilise l’échelle 0–100 du statut."
     ]
   },
   "evolution-timing": {
@@ -122,8 +208,47 @@
     "summary": "Les conditions ne sont qu’une partie du choix.",
     "paragraphs": [
       "Les heures ci-dessous sont passées dans la forme actuelle, pas l’âge total. Remplir les statistiques tôt ne provoque pas d’évolution immédiate. Les voies Ultimate temporisées vérifient aussi les conditions ; objets et voies spéciales ont leurs propres déclencheurs.",
-      "Pour Rookie vers Champion et Champion vers Ultimate, atteindre le score requis rend une cible admissible ; quatre points ne battent pas trois. Le jeu tire au sort à chances égales parmi les cibles admissibles au moment de l’évolution. Les routes sont examinées dans leur ordre : dès qu’une cible jamais élevée est admise, les cibles déjà élevées suivantes sont ignorées ; celles admises avant restent dans le tirage. La disponibilité du modèle et NEW DIGIMON s’appliquent toujours. Recharger la même sauvegarde de carte mémoire en variant le moment peut donner un autre résultat, sans le garantir. Pour In-Training vers Rookie, le meilleur score gagne, puis la première cible en cas d’égalité. Les évolutions spéciales et par objet gardent leurs règles.",
+      "Pour Rookie vers Champion et Champion vers Ultimate, atteindre le score requis rend une cible admissible ; quatre points ne battent pas trois. Le jeu tire au sort à chances égales parmi les cibles admissibles au moment de l’évolution. Les routes sont examinées dans leur ordre : dès qu’une cible jamais élevée est admise, les cibles déjà élevées suivantes sont ignorées ; celles admises avant restent dans le tirage. La disponibilité du modèle et NOUV. DIGIMON s’appliquent toujours. Recharger la même sauvegarde de carte mémoire en variant le moment peut donner un autre résultat, sans le garantir. Pour In-Training vers Rookie, le meilleur score gagne, puis la première cible en cas d’égalité. Les évolutions spéciales et par objet gardent leurs règles.",
       "La ligne « Temps (h) » de la fenêtre compare les heures passées dans la forme actuelle aux heures exigées par la cible. Le verdict indique « prêt » seulement si le score des conditions, la place du modèle et le temps sont suffisants ; « Dans N h » signifie que seul le temps manque. L’avertissement rouge « Vie trop courte (N h de vie) » indique que la vie restante est plus courte que l’attente nécessaire ; N est la durée de vie restante. Les voies indépendantes du temps affichent « Voie spéciale ». Les Mégas importés exigent aussi {mega_hours} heures de jeu passées en Ultime. Si sa durée de vie s’épuise avant, le partenaire meurt de vieillesse. {chain_melon} (Chain Melon) ajoute {chain_melon_hours} heures de vie ; {digiseabass} en ajoute {digiseabass_hours}. Ils prolongent la vie restante, pas le temps déjà passé dans la forme actuelle."
+    ]
+  },
+  "new-digimon": {
+    "title": "Nouveaux Digimon et niveau Méga",
+    "summary": "Ce que NOUV. DIGIMON ajoute à l’élevage et comment l’arbre s’agrandit.",
+    "spoiler_paragraphs": [
+      2
+    ],
+    "paragraphs": [
+      "Avec NOUV. DIGIMON activé, il y a 291 Digimon à élever : les originaux, 175 venus d’autres jeux Digimon sur PlayStation et huit In-Training dessinés pour Horizon. Un cinquième niveau, Méga, se place au-dessus d’Ultime avec 54 espèces. Chaque espèce a sa page ici, avec ses conditions, ses techniques, son aliment préféré et ses heures de sommeil.",
+      "L’arbre est régulier : chaque In-Training a six Rookies, chaque Rookie au moins quatre Champions, chaque Champion au moins deux Ultimes et chaque Ultime deux Mégas. L’évolution naturelle ne saute jamais de niveau. Un Méga exige {mega_hours} heures en Ultime en plus de ses conditions. Option désactivée, seules existent les espèces et les voies d’origine ; un partenaire d’une nouvelle espèce s’affiche comme une espèce d’origine voisine et revient quand on réactive l’option.",
+      "Deux résidents peuvent remodeler un Digimon en un autre du même niveau pour 2000 bits : Guardromon à la Ville des usines et, de temps en temps, Andromon à File City. Une fois sur dix, le résultat est une forme spéciale, cinq fois sur dix la forme habituelle, sinon cela échoue. Ils travaillent sur Mamemon, Numemon, Geremon, MegaSeadramon, WaruSeadramon et MetalGreymon (Virus) ; Andromon seulement sur Mamemon."
+    ]
+  },
+  "new-game-quiz": {
+    "title": "Questionnaire initial : points et partenaires",
+    "summary": "Les sept réponses alimentent trois groupes de scores.",
+    "paragraphs": [
+      "Le tableau donne les points par position de réponse aux questions de Jijimon, dans l’ordre du jeu. Les scores choisissent élément, attribut et tempérament ; leur combinaison détermine le partenaire dans la grille.",
+      "Le score maximal gagne dans chaque groupe. Une égalité favorise le soutien le plus récent ; si la même réponse soutient les deux, le premier du groupe gagne. Ordre : Combat, Feu, Glace, Nature, Air ; Vaccin, Données, Virus ; Audacieux, Calme, Rusé.",
+      "Jijimon garde la surprise : tu découvriras ton partenaire à tes côtés au réveil. Lui donner un nom est facultatif et les dialogues ne révèlent pas son espèce. Les colonnes correspondent à NOUVEAUX DIGIMON activé ou désactivé. Réponses, points et tableau des partenaires de départ sont dans le spoiler ci-dessous."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
+    ]
+  },
+  "battles": {
+    "title": "Combats : vitesse, coups de grâce et types",
+    "summary": "Ce qui se passe dans un combat et comment les douze types s’affrontent.",
+    "headings": [
+      "Bases",
+      "Coups de grâce",
+      "Types"
+    ],
+    "paragraphs": [
+      "Avec DÉPART RAPIDE, un combat de terrain commence dès que vous touchez l’ennemi. R2 double la vitesse de n’importe quel combat. Dans les combats sauvages, chaque ennemi affiche une barre de vie avec ses PV. Après une victoire, chaque statistique a une chance de progresser d’après celles de l’ennemi le plus fort, et la liste d’objets d’un combat n’affiche que ce qui peut y servir.",
+      "La jauge de coup de grâce se remplit pendant que le partenaire se bat, plus vite avec plus de Vitesse. Quand elle est pleine, Carré lance le coup de grâce, et appuyer vite sur L1 et R1 le charge pour jusqu’au double de dégâts. 179 espèces ont un coup de grâce à elles, plus fort à chaque niveau ; certains touchent tous les ennemis à la fois et quelques-uns peuvent être esquivés. Un coup de grâce ne coûte aucun PM.",
+      "Les dégâts d’une technique dépendent de sa rangée et du type du Digimon touché. Dans le tableau ci-dessous, la rangée est la technique attaquante et la colonne le défenseur ; une case vide correspond à des dégâts normaux. Saleté subit le double de presque tout, et Ténèbres et Lumière sont forts l’un contre l’autre."
     ]
   },
   "learning-techniques": {
@@ -140,18 +265,41 @@
     "title": "Ténèbres, Lumière et Eau",
     "summary": "Trois rangées de techniques en plus, le soin et leurs coupes.",
     "paragraphs": [
-      "Trois rangées s'ajoutent aux sept de l'original : Ténèbres, Lumière et Eau, huit techniques chacune. Un partenaire les apprend comme les autres : la technique doit figurer dans la liste de son espèce et la rangée parmi ses spécialités. L'écran des techniques défile sur les rangées. Une sauvegarde d'une version précédente se charge telle quelle. À ce premier chargement, le partenaire apprend la première technique de chaque nouvelle rangée présente dans la liste de son espèce : Griffe d'ombre, Étincelle sacrée ou Tir de bulles. Il apprend les autres comme n'importe quelle technique.",
+      "Ténèbres, Lumière et Eau sont trois des cinq rangées que Horizon ajoute aux sept de l'original, avec huit techniques chacune. Un partenaire les apprend comme les autres : la technique doit figurer dans la liste de son espèce et la rangée parmi ses spécialités. L'écran des techniques défile sur les douze rangées. Une sauvegarde faite avant l'existence de ces rangées se charge telle quelle, et le partenaire apprend la première technique de chaque nouvelle rangée présente dans la liste de son espèce : Griffe d'ombre, Étincelle sacrée ou Tir de bulles.",
       "Bénédiction rend 10 % des PV totaux, et le montant s'élève en vert au-dessus du Digimon. Un partenaire se soigne trois fois par combat et un ennemi deux fois ; personne ne se soigne avec tous ses PV. De lui-même, un partenaire ne se soigne qu'en dessous de 60 % de ses PV ; sur ton ordre, il se soigne dès qu'il lui en manque. Bouclier sacré augmente la Défense, Danse de la pluie augmente la Vitesse et Murmure maudit retire un cinquième de la Défense de la cible, une fois par combattant et par combat. La plupart des attaques des trois rangées touchent par position, comme la plupart des tirs de l'original. Un tir est visé à son départ, et un coup ou une zone tombe sur un point : la cible qui s'en est éloignée n'est pas touchée. Cauchemar, Murmure maudit, Brume toxique, Éclat aveuglant, Tourbillon et Furie océane suivent leur cible, et seule leur précision peut les faire échouer.",
-      "Ténèbres et Lumière s'infligent le double de dégâts l'une à l'autre et la moitié à leur propre rangée. Eau inflige le double de dégâts à Feu et Saleté et la moitié à Nature, Glace et Eau ; Air inflige le double de dégâts à Eau. Trois coupes de l'arène n'acceptent que les espèces dont la première spécialité est leur rangée : la Coupe Ténèbres, la Coupe Lumière et la Coupe Eau, deux fois chacune dans les 30 jours du calendrier. Le vainqueur reçoit 5000 bits et une Patate musclée, un Fruit sage ou une Glace de force."
+      "Ténèbres et Lumière s'infligent le double de dégâts l'une à l'autre et la moitié à leur propre rangée. Eau inflige le double de dégâts à Feu, Saleté et Terre, une fois et demie à Machine, et la moitié à Nature, Glace et Eau ; Air inflige le double à Eau. Le tableau complet est dans l'article Combats. Trois coupes de l'arène n'acceptent que les espèces dont la première spécialité est leur rangée, deux fois chacune dans les 30 jours du calendrier : la Coupe Ténèbres rapporte 5000 bits et une Patate musclée, la Coupe Lumière 5000 bits et un Fruit sage, et la Coupe Eau 5000 bits et une Glace de force."
     ]
   },
   "weapon-earth": {
     "title": "Arme et Terre",
     "summary": "Deux rangées de techniques en plus et leurs coupes.",
     "paragraphs": [
-      "Deux rangées de plus rejoignent l'écran des techniques : Arme et Terre, huit techniques chacune, soit douze rangées. La quatrième rangée du jeu d'origine, que l'écran appelait Terre, s'appelle désormais Nature, le nom que ce wiki lui a toujours donné ; ses techniques sont les mêmes. Une sauvegarde d'une version précédente se charge telle quelle. À ce premier chargement, le partenaire apprend la première technique de chaque nouvelle rangée présente dans la liste de son espèce : Entaille vive ou Jet de pierre. Il apprend les autres comme n'importe quelle technique.",
+      "Arme et Terre complètent les douze rangées de l'écran des techniques, avec huit techniques chacune. La quatrième rangée du jeu d'origine s'appelle Nature, dans le jeu et dans ce wiki ; ses techniques sont celles d'origine. Une sauvegarde faite avant l'existence de ces rangées se charge telle quelle, et le partenaire apprend la première technique de chaque nouvelle rangée présente dans la liste de son espèce : Entaille vive ou Jet de pierre. Il apprend les autres comme n'importe quelle technique.",
       "Arme est la rangée des lames. Entaille vive, Lancer de lame, Coupe croisée, Lame tournoyante, Fendoir géant et Lame finale infligent des dégâts ; Brise-armure retire un quart de la Défense de la cible, une fois par combattant et par combat, et Posture de guerre augmente l'Attaque d'un cinquième. Terre est la rangée de la roche. Jet de pierre, Rafale de sable, Chute de roc, Fissure, Stalagmite, Éboulement et Séisme de Gaïa infligent des dégâts, Rafale de sable peut rendre confus et Peau de pierre augmente la Défense. La plupart des attaques des deux rangées touchent par position, comme la plupart des tirs de l'original : la cible qui s'est éloignée de l'endroit où tombe le coup n'est pas touchée. Lame finale, Rafale de sable, Stalagmite et Séisme de Gaïa suivent leur cible, et seule leur précision peut les faire échouer.",
-      "Arme inflige une fois et demie les dégâts à Nature et la moitié à Machine et Terre. Terre inflige le double à Machine, une fois et demie à Feu et la moitié à Air, Nature et Terre. Machine inflige une fois et demie les dégâts à Arme et Nature la moitié ; Eau inflige le double à Terre, Nature et Glace une fois et demie, Feu et Arme la moitié. Deux coupes de l'arène n'acceptent que les espèces dont la première spécialité est leur rangée : la Coupe Lame et la Coupe Gaïa, deux fois chacune dans les 30 jours du calendrier. Le vainqueur reçoit 5000 bits et un objet : Puce Attaque ou Puce Défense."
+      "Arme inflige le double de dégâts à Saleté, une fois et demie à Nature et la moitié à Machine et Terre. Terre inflige le double à Machine et Saleté, une fois et demie à Feu et la moitié à Air, Nature et Terre. En retour, Machine inflige une fois et demie les dégâts à Arme, et Eau inflige le double à Terre. Le tableau complet est dans l'article Combats. Deux coupes de l'arène n'acceptent que les espèces dont la première spécialité est leur rangée, deux fois chacune dans les 30 jours du calendrier : la Coupe Lame rapporte 5000 bits et une Puce Attaque, et la Coupe Gaïa 5000 bits et une Puce Défense."
+    ]
+  },
+  "difficulty": {
+    "title": "FACILE, NORMAL et DIFFICILE",
+    "summary": "Ce que chaque réglage de DIFFICULTÉ change en combat.",
+    "paragraphs": [
+      "DIFFICULTÉ est une ligne des OPTIONS du titre. NORMAL conserve les chiffres d’origine des combats, avec une étape en fin de partie : les ennemis dont les PV d’origine dépassent 3500 gagnent des PV en ligne droite, jusqu’à 150 % à 6500, et chaque coup inflige un petit minimum de dégâts pour qu’une Défense très élevée ne puisse pas l’annuler. FACILE double les dégâts du partenaire et divise par deux les dégâts et le poison qu’il subit, arrondis au supérieur, sans étape de fin de partie.",
+      "DIFFICILE part de NORMAL puis applique à chaque ennemi les valeurs ci-dessous : plus de PV, d’Attaque, de Défense, de Vitesse et d’Intelligence, des coups de grâce plus puissants et des dégâts directs du partenaire légèrement réduits.",
+      "Aucun réglage ne réécrit les statistiques sauvegardées du partenaire, sa croissance ni les récompenses d’un combat, et les dégâts en pourcentage des scripts suivent leurs règles. Les réglages concernent les combats de terrain et les tournois, jamais le VS à deux. La valeur est conservée dans la sauvegarde et peut être changée au titre à tout moment."
+    ]
+  },
+  "arena-cups": {
+    "title": "Coupes de l’arène et calendrier",
+    "summary": "Qui peut entrer dans chaque coupe, les règles d’un match et les récompenses.",
+    "headings": [
+      "Règles",
+      "Coupes d’origine",
+      "Nouvelles coupes"
+    ],
+    "paragraphs": [
+      "L’arène suit un calendrier de 30 jours. Une coupe se joue en trois tours entre huit participants. Un match dure 99 au compteur ; si personne ne tombe, le combattant qui a subi le moins de dégâts gagne et une égalité compte comme une défaite. Entre deux matchs, le partenaire récupère 20 % de ses PV et de ses PM. Rien ne se gagne ni ne s’apprend dans l’arène ; la récompense vient après la finale.",
+      "Les coupes Catégorie D, C, B et A remplissent la plupart des jours, et la Catégorie S, les jours 7, 14, 21 et 28, est réservée aux vainqueurs de la Catégorie A. Les coupes Version 1 à 4 n’acceptent que les douze Digimon du jouet virtuel correspondant et la Version 0 a sa propre liste. Les coupes de spécialité (Feu, Combat, Tonnerre et Vent, Glace, Nature, Métal et Crasse) vont selon la première spécialité, et les nouvelles espèces peuvent y entrer. Dino, Ailes, Animaux et Humaine vont selon le corps, et la Coupe Scarabée a lieu le jour 22.",
+      "Horizon ajoute des coupes, deux fois chacune dans les 30 jours et chacune dans une arène à part. Par niveau : Disciple (3000 bits et une Puce Vitesse), Champion (5000 et une Puce DV A), Ultime (7000 et une Puce DV D ; dix résidents requis) et Méga (10000 et une Puce DV E ; dix résidents et la Catégorie A gagnée). Par attribut : Vaccin (Puce HP), Donnée (Puce Esprit) et Virus (Puce Attaque). Par domaine : Nature Spirits (Super légume), Deep Savers (Digibar), Nightmare Soldiers (Truite noire), Wind Guardians (Feuille rapide), Metal Empire (Puce Défense), Virus Busters (Puce MP), Dragon's Roar (Fruit de force) et Jungle Troopers (Fruit sage). Par rangée : Ténèbres, Lumière, Eau, Lame et Gaïa. Toutes rapportent 5000 bits avec leur objet."
     ]
   },
   "file-city": {
@@ -160,53 +308,87 @@
     "paragraphs": [
       "L’annuaire de recrutement regroupe habitants, lieux, services et contributions à la prospérité dans des spoilers repliés.",
       "Les étapes restent masquées jusqu’à l’ouverture du volet spoilers. Les horaires suivent l’horloge du jeu. Vérifiez lieu et prérequis : étape de la ville, autre recrue ou événement peuvent être nécessaires.",
-      "Le tableau des échanges de Mojyamon se trouve dans le spoiler fermé ci-dessous : les huit premières lignes autorisent un objet par jour de jeu ; la neuvième, une seule fois par sauvegarde. Si votre jeu affiche une liste différente ou ancienne, vous avez chargé un état d’émulateur d’une ancienne version. Démarrez le nouveau disque à neuf et chargez plutôt la sauvegarde de la carte mémoire. Copiez d’abord la carte par précaution. Mushroomon peut désormais être trouvé et recruté : il apparaît dans la Zone des Spores du mont Panorama accessible par le chemin normal. Les trois Soulmon de l’écran de Haunted/Phantomon sont de retour le jour (00:00–19:59) et après le recrutement de Phantomon."
+      "Le tableau des échanges de Mojyamon se trouve dans le spoiler fermé ci-dessous : les huit premières lignes autorisent un objet par jour de jeu ; la neuvième, une seule fois par sauvegarde. Si la liste de votre jeu diffère, vous avez chargé un état d’émulateur d’une autre version. Démarrez le disque à neuf et chargez plutôt la sauvegarde de la carte mémoire. Copiez d’abord la carte par précaution."
     ],
     "spoiler_paragraphs": [
       2
     ]
   },
-  "hidden-mechanics": {
-    "title": "Mécaniques cachées des partenaires",
-    "summary": "Mécaniques cachées des partenaires.",
+  "shops": {
+    "title": "Boutiques, machines et trouvailles du jour",
+    "summary": "D’où viennent les bits et les objets, et les petits services de l’île.",
     "paragraphs": [
-      "{bakemon_mechanic}",
-      "Chaque partenaire a ses préférences et son sommeil. Les spécialités définissent les techniques apprises en combat. Un emplacement vide compte encore pour le jet, même si le résumé ne l’affiche pas.",
-      "Le guide du jeu et l’arbre expliquent les cibles. Transformations spéciales et objets ont leurs propres conditions ; une ligne statistique ordinaire ne décrit pas toutes les façons d’obtenir une espèce. Spoiler : quand un partenaire perd une vie et qu’il lui en reste une, il y a 30 % de chances d’une évolution spéciale chez Jijimon : Greymon en SkullGreymon, Meramon en SkullMeramon, Mammothmon en SkullMammothmon et Garudamon en Phoenixmon, mais seulement s’il a déjà les statistiques que demande la nouvelle forme."
-    ],
+      "Une nouvelle partie commence avec 20 Viandes et 1000 bits, et la Viande coûte 30 bits. Les boutiques demandent la quantité avec une boîte de montant, et le dépôt d’objets affiche l’icône de chaque objet. Les bits gagnés en combat valent une fois et demie le montant d’origine.",
+      "Le travail en boutique de Monochromon est un service de vingt clients qui se termine par l’affichage de votre bénéfice. Une fois qu’il habite en ville, Tuskmon tient la boutique et propose une affaire du jour que vous pouvez marchander deux fois ; un marchandage raté ferme l’affaire jusqu’à demain. Chaque distributeur a son propre stock : champignons au lac Oeil-de-dragon, viandes dans la région glaciaire antique, objets de soin dans la savane des engrenages et un tirage à 1000 bits dans la jungle tropicale. Les boutiques de cartes vendent aussi des cartes.",
+      "Les endroits au sol qui cachent un objet le donnent une fois par jour de jeu. Les échanges de Mojyamon sont aussi quotidiens ; l’article sur File City donne le tableau. Sukamon nettoie toutes les crottes de l’île pour 1000 bits. Le manoir du Seigneur Gris et le sanctuaire de glace s’ouvrent à tout partenaire une fois que leur Digimon habite en ville."
+    ]
+  },
+  "extended-story": {
+    "title": "L’histoire étendue",
+    "summary": "Ce qu’ajoute HIST. ÉTENDUE, sans spoiler hors du volet replié.",
     "spoiler_paragraphs": [
       2
-    ]
-  },
-  "new-game-quiz": {
-    "title": "Questionnaire initial : points et partenaires",
-    "summary": "Les sept réponses alimentent trois groupes de scores.",
-    "paragraphs": [
-      "Le tableau donne les points par position de réponse aux questions de Jijimon, dans l’ordre du jeu. Les scores choisissent élément, attribut et tempérament ; leur combinaison détermine le partenaire dans la grille.",
-      "Le score maximal gagne dans chaque groupe. Une égalité favorise le soutien le plus récent ; si la même réponse soutient les deux, le premier du groupe gagne. Ordre : Combat, Feu, Glace, Nature, Air ; Vaccin, Données, Virus ; Audacieux, Calme, Rusé.",
-      "Jijimon garde la surprise : tu découvriras ton partenaire à tes côtés au réveil. Lui donner un nom est facultatif et les dialogues ne révèlent pas son espèce. Les colonnes correspondent à NOUVEAUX DIGIMON activé ou désactivé. Réponses, points et tableau des partenaires de départ sont dans le spoiler ci-dessous."
     ],
+    "paragraphs": [
+      "HIST. ÉTENDUE, activée par défaut, ajoute une seconde histoire qui court à côté de l’originale : 69 nouveaux écrans accessibles depuis les zones que vous connaissez déjà, et 22 nouveaux résidents, ce qui fait 72 pour la ville au lieu de 50. L’histoire d’origine, ses recrues et sa fin restent intactes.",
+      "Les nouvelles zones s’ouvrent à mesure que l’histoire avance. Aucune décision ne ferme jamais une recrue, un service ou une voie : répondez comme vous voulez. Activer l’option sur une partie en cours vous déplace, vous et votre partenaire, à la maison de Jijimon et conserve tout ce que vous aviez ; désactivée, les nouvelles zones et résidents sont simplement absents, et les médailles qui en dépendent sont masquées.",
+      "La première nouvelle zone, les Collines de fer, s’atteint depuis la savane des engrenages une fois la route du nord ouverte. Après la fin, un combat facultatif contre BlackWarGreymon attend dans l’Autre dimension ; la première victoire donne une Puce Attaque et une Puce Défense."
+    ]
+  },
+  "curling": {
+    "title": "Curling",
+    "summary": "Matchs rapides, modes par équipes et les cinq coupes de la patinoire des Terres gelées.",
+    "headings": [
+      "Bases",
+      "Pierres",
+      "Coupes"
+    ],
+    "paragraphs": [
+      "La patinoire est aux Terres gelées. Une fois que Penguinmon habite en ville, il ouvre le menu de la patinoire. Un match rapide coûte un poisson de n’importe quelle sorte et vos rivaux sont des résidents de la ville. En plus de Simple, il y a Double et des matchs Chacun pour soi de trois ou quatre équipes.",
+      "Les pierres s’échangent leur vitesse le long de la ligne qui joint leurs centres. Un choc de plein fouet arrête la pierre lancée et envoie l’autre plus loin ; un choc sur le côté dévie les deux ; un frôlement déplace à peine la cible.",
+      "Cinq coupes en simple se jouent d’une traite, trois tours chacune : Débutant, Amateur, Expert, Élite et Légende. Chacune exige la précédente gagnée et ses sept rivaux habitant en ville. L’entrée est un poisson : Digianchois, Digidorade, Digitruite, Digisilure et Digibar. La récompense est toujours un objet, jamais des bits. La première Coupe Légende donne aussi la médaille Légende du curling et une puce de chaque sorte ; Penguinmon garde les puces que vous ne pouvez pas porter."
+    ]
+  },
+  "cards": {
+    "title": "Cartes et album",
+    "summary": "305 cartes, où les obtenir et à quoi servent les doubles.",
     "spoiler_paragraphs": [
-      0,
-      1
+      2
+    ],
+    "paragraphs": [
+      "L’album contient les cartes d’origine avec leur illustration d’origine et, avec NOUV. CARTES activé, 240 nouvelles, numéros 66 à 305. Il défile et compte vos cartes sur 305, ou sur 65 option désactivée, ce qui masque partout les nouvelles cartes et conserve leurs nombres. Vous pouvez avoir jusqu’à neuf exemplaires d’une carte.",
+      "Les boutiques de cartes vendent un paquet de trois cartes pour 500 bits, et la machine à cartes de la boutique d’objets donne une carte pour 100. Un comptoir quotidien propose six cartes par jour, au prix de 50 à 5000 bits selon la rareté, et rachète les vôtres à moitié prix. ShogunGekomon échange des cartes en double contre des points de mérite, de 1 à 100 par carte selon la rareté, et le mérite contre des objets avec une boîte de montant : un Super soin coûte 60, un Super régén. 250 et une puce de statistique 800. Les échanges de cartes des personnages d’origine demeurent.",
+      "Deux cartes sont spéciales. La carte 0 est donnée à votre première visite à la boutique de cartes de la savane des engrenages, et la carte 65 vient avec la fin."
     ]
   },
-  "difficulty": {
-    "title": "EASY, NORMAL et HARD",
-    "summary": "EASY, NORMAL et HARD.",
+  "medals": {
+    "title": "Médailles",
+    "summary": "Les 21 médailles, quelles options en masquent certaines et où les voir.",
+    "spoiler_paragraphs": [
+      2
+    ],
     "paragraphs": [
-      "NORMAL utilise les règles ordinaires. EASY double les dégâts du partenaire et divise les dégâts reçus par deux, arrondis au supérieur avant les limites. Il réduit aussi de moitié le poison sur le partenaire. Cela concerne combats et tournois solo, pas le VS à deux.",
-      "La difficulté ne réécrit pas les statistiques sauvegardées. Les dégâts en pourcentage des scripts suivent leurs règles. Choisissez au titre et vérifiez les options disponibles.",
-      "Choisissez une difficulté dans les options du titre. Les ajustements de combat figurent ci-dessous et ne modifient pas la croissance permanente du partenaire. ALERTE DANGER, dans les options du titre et activée par défaut, place un petit diablotin violet au-dessus d’un Digimon sauvage nettement plus fort que votre partenaire : sa force de combat, PV × (Attaque + Défense), vaut au moins 2,5 fois celle de votre partenaire. Elle n’apparaît que sur les Digimon qui lancent un combat au contact, jamais sur les personnages qui se contentent de parler, et seulement tant que vous pouvez bouger. Servez-vous-en pour éviter les combats que vous perdriez largement ; c’est un avertissement, pas une garantie."
+      "La page Médailles se trouve dans l’onglet Joueur du menu pause. Elle liste d’abord les médailles d’origine ; un coin doré marque les six que Horizon ajoute. Les médailles sont un souvenir : aucune ne donne d’objet, même si élever tous les Digimon d’origine augmente aussi votre niveau de Dresseur, comme toujours.",
+      "Une médaille qui dépend d’un élément désactivé dans les OPTIONS est masquée et ne peut pas être obtenue tant qu’il l’est : Maître Horizon avec NOUV. DIGIMON désactivé, Ville Horizon avec HIST. ÉTENDUE désactivée et Collection complète avec NOUV. CARTES désactivé. Les médailles déjà obtenues sont conservées.",
+      "Médailles d’origine : coupes de rang, de version, de type et spéciales de l’arène, 100 victoires, Techniques classiques (les 57 techniques d’origine), Maître classique (tous les Digimon d’origine élevés), Sommet classique (PV et PM à 9999, les autres statistiques à 999), Curling parfait, 100 poissons, Game Clear, Ville classique (50 résidents), Collection classique (les cartes d’origine), Bits au maximum (999999 bits) et 10e anniversaire (300 jours depuis le début). Médailles Horizon : Légende du curling (la Coupe Légende), Maître Horizon (tous les Digimon élevés), Brise-limites (PV et PM à 15000, les autres statistiques à 1500), Ville Horizon (tous les résidents), Collection complète (toutes les cartes) et Maître des techniques (les techniques d’origine et 40 des nouvelles)."
     ]
   },
-  "faq": {
-    "title": "FAQ et dépannage",
-    "summary": "Mises à jour, sauvegardes, lenteurs et rapports utiles.",
+  "tamer-looks": {
+    "title": "L’apparence de votre dresseur",
+    "summary": "Garçon ou fille, peau, cheveux, vêtements et sac à dos, librement modifiables à tout moment.",
     "paragraphs": [
-      "Si Continuer manque, vérifiez carte, blocs libres et nom du disque pour les cartes par jeu. Horizon exige {save_blocks} blocs libres pour un nouveau fichier. Copiez la carte, démarrez le disque mis à jour et chargez dans le jeu.",
-      "Créer le disque sur téléphone peut être lent. Pour les quotas, utilisez une fenêtre normale, libérez de l’espace et réessayez ; le logiciel de bureau est une alternative. Les autres disques fournissent des espèces ; une copie modifiée ou incompatible échoue aux contrôles. Le créateur web sur téléphone Android ne rencontre plus d’erreur d’autorisation de fichier pendant la copie du disque.",
-      "Pour un texte incorrect, notez version, disque de base, langue, émulateur et graphismes. Sur Android affecté, essayez de désactiver Enable Texture Cache. Joignez déclencheur exact et capture : un symptôme seul n’identifie pas sa cause. Le visage de WarGrowlmon n’a plus de trous."
+      "Dans une nouvelle partie, Jijimon demande si vous êtes un garçon ou une fille après ses sept questions, et la page Look s’ouvre. Plus tard, elle se trouve dans l’onglet Joueur du menu pause, à côté de votre nom. Changer d’apparence est gratuit, possible à tout moment et conservé dans la sauvegarde.",
+      "Gauche et droite changent la ligne en surbrillance, L1 et R1 font tourner le dresseur, confirmer sauvegarde et annuler abandonne. Les lignes sont Tamer (garçon ou fille, ce qui détermine le visage, les mains et les vêtements proposés), Peau (six teintes), coiffure et couleur des cheveux, Haut, Pantalon, Chaussures et Sac à dos, chacun avec sa couleur.",
+      "Chaque ligne garde l’original comme premier choix : le bonnet, le haut, le pantalon, les chaussures et le sac à dos du dresseur d’origine. Il y a onze coiffures en plus du bonnet et du crâne chauve, vingt couleurs de cheveux, quinze hauts, huit pantalons dont un short et une jupe, neuf paires de chaussures et cinq sacs à dos, ou aucun. Les vêtements existent en seize couleurs."
+    ]
+  },
+  "cheats": {
+    "title": "Le menu Triches",
+    "summary": "Un menu de test pour essayer des choses : ce que fait chaque ligne.",
+    "paragraphs": [
+      "Réglez TRICHE sur OUI dans les OPTIONS du titre. Sur le terrain, mettez en pause avec START et appuyez sur SELECT ; la boîte de pause le rappelle avec « SELECT : triches ». Le menu sert aux tests et aux joueurs qui veulent explorer ; il modifie votre sauvegarde comme n’importe quelle partie, gardez donc une copie de la carte mémoire.",
+      "Les lignes : Ajouter 10000 Bits, Satisfaire les besoins, Modifier Digimon, Faire digivoluer, Téléportation, Soigner Digimon, Raccourcis SELECT, Sauvegarder, Charger une partie, Retour au menu principal, Mourir de vieillesse, Apprendre une technique, Apprendre toutes les techniques et Débloquer le tableau d'évolution. Mourir de vieillesse demande d’abord confirmation et équivaut à une mort naturelle : vous choisissez l’œuf. Avec Raccourcis SELECT activés, maintenir SELECT et appuyer sur L1 ou R1 change de partenaire, et L2 ou R2 saute d’une carte à l’autre.",
+      "Dans l’éditeur, gauche et droite changent une valeur du pas, haut et bas changent le pas ; L1 et R1 ajoutent ou retirent 10, L2 et R2 100. La durée de vie ne peut pas descendre sous une heure. Les longues listes bouclent, et gauche et droite sautent de dix lignes."
     ]
   }
 }

@@ -13,7 +13,7 @@
     "summary": "BIOS, game files, per-game settings and saves.",
     "paragraphs": [
       "Configure your own PlayStation BIOS in DuckStation. Add the directory containing Horizon, keeping the .cue beside its .bin. Launch the .cue; a renamed or missing .bin prevents the cue sheet from finding its track.",
-      "Use per-game settings for Horizon. Enable expanded 8 MB RAM for Simplified Chinese; other languages work with standard 2 MB RAM. AUTO adjusts drawing to the scene, aiming for 60, 30 or 20 fps. More emulated CPU speed can help sustain higher frame rates; it is no longer a prerequisite for AUTO to try them.",
+      "Use per-game settings for Horizon. Enable expanded 8 MB RAM for Simplified Chinese; other languages work with standard 2 MB RAM. AUTO adjusts drawing to the scene, aiming for 60, 30 or 20 fps. More emulated CPU speed can help sustain higher frame rates; AUTO does not need it to try them.",
       "Assign a memory card, leaving {save_blocks} free blocks. A per-game card avoids sharing space with other games. When changing disc filenames or updating Horizon, verify the card assignment and load an in-game save after a fresh boot."
     ]
   },
@@ -72,11 +72,50 @@
       "Change emulated CPU speed rather than fast-forward speed. The title reports detected settings; use it to check your emulator configuration. The host device must still run the selected emulation speed fast enough. Restart after changing RAM."
     ]
   },
+  "options": {
+    "title": "The OPTIONS menu",
+    "summary": "Every row of the title options and what it changes.",
+    "headings": [
+      "Where it is",
+      "Game content",
+      "Battle and field",
+      "Screen and language"
+    ],
+    "paragraphs": [
+      "OPTIONS is the fifth row of the title menu, under BATTLE MODE. The values are written into every save, and what you set at the title wins over what the save holds, so you can change any row and then Continue. The care bars, the digital clock and the enemy life bars are always on and have no row.",
+      "NEW DIGIMON (ON) adds the imported species and the Mega level; OFF leaves only the original species, the four original eggs and the nine original starters, and a partner of a new species is shown as a similar original one until you switch it back. NEW CARDS (ON) adds 240 cards to the album; OFF hides them everywhere and keeps their counts. EXTENDED STORY (ON) adds the new areas and residents; switching it on a save in progress moves you and your partner to Jijimon’s house and keeps your progress. EVOLVE GUIDE (ON) shows the evolution chart’s lines and the requirements popup.",
+      "DIFFICULTY is EASY, NORMAL or HARD. QUICK BATTLE START (ON) begins field battles at once, without the long entrance. DANGER ALERT (ON) marks wild Digimon much stronger than your partner. JP CONTROLS swaps confirm and cancel to Circle and Cross; it starts ON on a Japanese disc. CHEATS (OFF) adds a test menu to the pause screen.",
+      "FRAME RATE is AUTO, 60 or 20. FONT is NEW, CLASSIC or ORIGINAL; Chinese has no ORIGINAL. LANGUAGE changes every text at once. MAP SIGNS chooses between the signs as drawn in the original and their TRANSLATED versions."
+    ]
+  },
+  "controls": {
+    "title": "Controls and shortcuts",
+    "summary": "Running, quick care, battle speed and the buttons of each menu.",
+    "headings": [
+      "On the field",
+      "In battle",
+      "In menus"
+    ],
+    "paragraphs": [
+      "Hold R1 to run: you and your partner move 40% faster. Hold R2 to walk slowly. Cross talks and confirms, Triangle opens the menu and cancels; with JP CONTROLS, Circle confirms and Cross cancels. When a pink Square badge shows over the partner, Square opens quick care: the food, cure, toilet, sleep or scolding that fits right now, with the urgent need first and the favourite food marked.",
+      "R2 switches the battle between normal and double speed, in the field, the arena and VS. The speed returns to normal while the item menu is open and is not saved. When the finisher gauge is full, Square fires the finisher; then press L1 and R1 quickly to charge it, and a good charge raises its damage up to double. The item list of a battle shows only the items that can be used there.",
+      "In the evolution chart, Square on a target opens the table of what it needs beside what your partner has, and L1 and R1 change tab. When you choose an egg, Square picks one at random. The confirm button skips the count of gains after training or a battle. In the Cheats editors, left and right change the value, up and down the size of the step."
+    ]
+  },
+  "faq": {
+    "title": "Player FAQ and troubleshooting",
+    "summary": "Updates, missing saves, slow patching and useful reports.",
+    "paragraphs": [
+      "If Continue is missing, check the assigned card, its free blocks and the disc filename used by per-game cards. Horizon needs {save_blocks} free blocks for a new save. Back up the card before updating, boot the new disc and load an in-game save.",
+      "Phone patching can be slow. For storage quota errors, use a normal browser window, free space and retry; the desktop patcher is another option. The source-disc checks are intentional: the extra games provide imported species, and a modified or unsupported dump will not match.",
+      "For broken or stale text, record your game version, base disc, language, emulator build and graphics settings. On affected Android builds, try disabling Enable Texture Cache. Include the exact trigger and a screenshot in a bug report; a symptom alone does not identify its cause."
+    ]
+  },
   "first-day": {
     "title": "Your partner’s first day",
     "summary": "A small routine for a new life on File Island.",
     "paragraphs": [
-      "Choose your partner through Jijimon’s new-game questions. Get familiar with the care indicators, inventory and nearby city services before heading farther out. Keep healing supplies and leave room for useful finds.",
+      "Choose your partner through Jijimon’s new-game questions. A new game starts with 20 Meat and 1000 bits. Get familiar with the care indicators, inventory and nearby city services before heading farther out. Keep healing supplies and leave room for useful finds.",
       "Feed your partner when hungry, reach a toilet when needed and allow sleep when tired. Check the species page for its favourite food and sleep cycle. Avoid spending the whole day training without checking needs.",
       "Try a short gym session and inspect the stat and tiredness changes. Explore, return to town and make an in-game memory-card save. Evolution requirements depend on care and weight as well as stats, so decide which target you want before training every stat indiscriminately."
     ]
@@ -85,9 +124,25 @@
     "title": "Care mistakes and discipline",
     "summary": "Understand warnings before chasing a stat target.",
     "paragraphs": [
-      "Hunger, toilet needs, sleep and tiredness are different systems. Neglecting a hunger warning or letting a partner use the ground can add care mistakes; sickness and exhaustion have their own consequences. Respond to the indicators and check the care panel regularly.",
-      "Discipline and happiness are separate values. Praise and scolding affect them differently, so they are not interchangeable cures for every care problem. A partner’s food preferences and sleep schedule also matter. In a habitat the partner dislikes, its mood face blinks between sad and happy again, as in the original.",
-      "Evolution rows may ask for a maximum or a minimum number of mistakes. A high-mistake target is deliberate care planning, not a general recommendation to neglect a partner. Counts used by ordinary evolution refer to the current form; read the target’s four requirement groups together."
+      "Hunger, toilet needs, sleep and tiredness are different systems. Ignoring hunger, letting a partner use the ground or keeping it awake past its bedtime adds care mistakes; sickness and exhaustion have their own consequences. The five care bars and the bubbles over the partner tell you what is due; the Status page shows the mistake count.",
+      "Discipline and happiness are separate values. Praise and scolding affect them differently, so they are not interchangeable cures for every care problem. A partner’s food preferences and sleep schedule also matter. In a habitat the partner dislikes, the happiness icon of the care bars flickers.",
+      "Evolution rows may ask for a maximum or a minimum number of mistakes. A high-mistake target is deliberate care planning, not a general recommendation to neglect a partner. The count starts again at every evolution and at rebirth, so it always refers to the current form; read the target’s four requirement groups together."
+    ]
+  },
+  "screen-indicators": {
+    "title": "Bars, bubbles and alerts",
+    "summary": "What the care bars, the bubbles over your partner and the warnings mean.",
+    "headings": [
+      "Care bars and clock",
+      "Bubbles and badges",
+      "Status page",
+      "Danger alert"
+    ],
+    "paragraphs": [
+      "Five bars sit at the bottom right with the clock and during training: happiness, discipline, hunger, toilet and energy. A full bar means all is well; an empty one means that need is due. The happiness icon flickers in a habitat the partner dislikes. The clock also shows the hour in digits under the dial.",
+      "A bubble over the partner names what it needs: hungry, toilet, sleepy, tired, sick, injured, low HP or low MP, both under 30%. A Scold bubble appears when a scolding is deserved, after refused food or just before an accident. The pink Square badge means quick care has something to offer. A meat bubble over the farmer means a harvest is waiting.",
+      "The Status page shows happiness and discipline from 0 to 100, tiredness and the virus bar with their numbers, the care mistakes of the current form and the battles won. The pause menu shows the partner’s HP and MP. In wild battles each enemy has a life bar with its HP; arena and story opponents do not.",
+      "With DANGER ALERT on, a small purple devil floats over a wild Digimon that is clearly stronger than your partner: its HP × (Offense + Defense) is at least 2.5 times your partner’s. It appears only on Digimon that start a battle when touched, never on characters who just talk, and only while you are free to move. It is a warning, not a verdict."
     ]
   },
   "training": {
@@ -96,16 +151,47 @@
     "paragraphs": [
       "Each gym trains a particular stat. The base gains below are base values; the final award can also depend on the partner, upgrades, items and the training result. Brains training has its own learning thresholds, separate from learning after a battle.",
       "Training advances time and costs food, tiredness and lifetime. Check hunger, toilet and sleep before starting. Continuing while tired can carry penalties; a larger stat gain is not free time.",
-      "Training x5 runs several ordinary awards with care checks between them. Use x1 when you need to stop near an evolution weight or timing target. Rest and meet care needs before another block."
+      "Every gym menu also offers Normal training x5, which runs five ordinary sessions with care checks between them. Train single sessions when you need to stop near an evolution weight or timing target. Rest and meet care needs before another block."
     ]
   },
   "gym-x5": {
-    "title": "How gym x5 works",
-    "summary": "Several sessions, with normal costs and early stops.",
+    "title": "Training x5 and Bonus Try",
+    "summary": "Five sessions in a row, with normal costs and early stops.",
     "paragraphs": [
-      "During a gym session, R2 switches the training block between x1 and x5. The block plays the initial animation, then applies each session’s award in sequence. It is not a five-times multiplier without time or care costs.",
-      "A block can stop after a session leaves the partner hungry, needing the toilet, sleepy, tired or unwell; it also checks evolution, lifetime and the gym’s own messages. The result box shows what actually completed. Do not assume five sessions always ran.",
-      "Bonus Try is separate from block training. Each reel stops where you press, with nothing hidden pushing it past a match: a miss gives half the award, any three matching symbols double it, three symbols of the stat you are training give x4, and three golden poops give x5. Feed, rest or deal with the reported need before starting again. If you only want one award, switch to x1 before the session is committed rather than relying on an emergency stop."
+      "Every gym menu has four rows: normal training, Normal training x5, Bonus Try and leaving. Normal training x5 plays the training once and then awards five ordinary sessions one after another. Each session costs its usual hour, food, tiredness and lifetime; it is not a five-times multiplier for free.",
+      "Hold the cancel button for about half a second between two sessions to end the block there. The block also stops by itself when the partner becomes hungry, needs the toilet, gets sleepy or tired, is hurt or sick, when an evolution is due, when its life ends or when the gym has something to say, such as a learned technique. The result box counts the sessions that really ran. The confirm button skips the tally of the gains.",
+      "Bonus Try bets one session on the slot machine. Each reel stops where you press, with nothing hidden pushing it past a match: a miss gives half the award, any three matching symbols double it, three symbols of the stat you are training give x4 and the jackpot gives x5. It costs the same time and care as a normal session."
+    ]
+  },
+  "rebirth": {
+    "title": "Lifetime, lives and Rebirth",
+    "summary": "How long a partner lives, what it keeps and how to start again on purpose.",
+    "headings": [
+      "Lifetime and lives",
+      "Rebirth",
+      "Eggs",
+      "Evolving on a lost life"
+    ],
+    "spoiler_paragraphs": [
+      3
+    ],
+    "paragraphs": [
+      "A partner is born with 408 hours of life. Low happiness shortens it, and reaching Ultimate adds 96 hours and Mega 120; some foods add more. The red warning in the evolution popup tells you when life will end before an evolution. A partner also has three lives in battle: a defeat costs one and sends you back to Jijimon’s house.",
+      "The save machine in Jijimon’s house has a Rebirth entry for a partner that is Champion or higher. It asks twice, costs nothing and lets the partner go as a natural death would, so you choose the next egg. The new partner keeps the learned techniques, your items, bits and name, and inherits a share of the stats that grows with your tamer level. If happiness was 20 or more it starts with happiness and discipline at 80; otherwise at 50.",
+      "After a natural death or a Rebirth you choose the egg; Square picks one at random. There are four eggs with NEW DIGIMON off and eight with it on: the new ones hatch Pabumon, Pichimon, YukimiBotamon and Nyokimon. A partner that dies in battle or of sickness with no lives left gets a random egg.",
+      "When a partner loses a life and still has one left, it may evolve in Jijimon’s house. Agumon, Betamon, Gabumon, Elecmon, Patamon, Kunemon, Biyomon and Palmon become Bakemon 30% of the time; MetalGreymon and Megadramon become SkullGreymon and Kokatorimon becomes Phoenixmon at 30%; Angemon with discipline under 50 becomes Devimon at 50%. With the stats of the new form already met, 30% each: Greymon into SkullGreymon, Meramon into SkullMeramon, Mammothmon into SkullMammothmon and Garudamon into Phoenixmon. The new species need NEW DIGIMON on."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Hidden partner mechanics",
+    "summary": "Preferences, specialty slots and evolutions outside the chart.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Partners have individual food preferences and sleep cycles. Their specialties also control which techniques they can learn in battle. An empty specialty slot still counts when selecting the learning probability, even though the summary omits empty slots.",
+      "The in-game evolution guide and the wiki’s tree help explain possible targets. Special transformations and item routes have separate conditions; a normal stat row alone does not describe every way a species can appear. Losing a life can also change the partner on the spot: the article on lifetime and Rebirth lists those evolutions and their odds."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "evolution-requirements": {
@@ -126,56 +212,16 @@
       "The popup’s “Time (h)” row compares hours spent in the current form with the hours the target needs. The verdict says “ready” only when the requirement score, model fit and time all pass; “In N h” means only time is missing. A red “Life runs out first (N h left)” warns that remaining lifetime is shorter than the wait still needed; N is the remaining lifetime. Non-clock routes show “Special route”. Imported Megas also require {mega_hours} in-game hours spent as an Ultimate. If lifetime runs out first, the partner dies of old age. {chain_melon} (Chain Melon) adds {chain_melon_hours} lifetime hours; {digiseabass} adds {digiseabass_hours}. These extend remaining lifetime, not time already spent in the current form."
     ]
   },
-  "learning-techniques": {
-    "title": "Learning techniques",
-    "summary": "Species lists, specialty slots and candidate rolls.",
-    "paragraphs": [
-      "An enemy executing a normal technique records it as a learning candidate; it does not need to hit your partner. After battle, the move must be on the species list, have a matching specialty and not already be known. The first matching specialty slot selects its roll.",
-      "Brains does not change that battle learning roll. Repeated uses of the same move do not create extra candidate rolls. If multiple candidates pass, one is chosen at random; a displayed percentage is not a guaranteed final award.",
-      "Brains training uses separate rules. Technique pages show base battle MP cost before condition and Brains modifiers; finishers cost no MP. Shared move names retain their IDs, and a species-specific finisher can override the ordinary move’s values.",
-      "Each species that can be raised has one boosted technique, marked on its page and with an arrow in the Tech menu. When that partner uses it, its power rises by one eighth plus 30 and it costs a quarter less MP; species tables already show those values. The boost also applies to both fighters in VS mode and never to enemies."
-    ]
-  },
-  "darkness-light-water": {
-    "title": "Darkness, Light and Water",
-    "summary": "Three more technique rows, healing and their cups.",
-    "paragraphs": [
-      "Three rows join the seven of the original: Darkness, Light and Water, eight techniques each. A partner learns them like any other: the technique must be on its species list and the row among its specialties. The Techset screen scrolls through the rows. A save from an earlier version loads as it is. On that first load the partner learns the first technique of each new row on its species list: Shadow Claw, Holy Spark or Bubble Shot. It learns the rest like any other technique.",
-      "Blessing gives back 10% of the full HP, and the amount rises in green over the Digimon. A partner heals three times a battle and an enemy twice; nobody heals at full HP. Left alone, a partner heals only below 60% of its HP; your order heals at any HP below the full. Sacred Shield raises Defense, Rain Dance raises Speed, and Evil Whisper takes a fifth of the target's Defense, once per fighter and battle. Most attacks of the three rows hit by position, as most shots of the original do. A shot is aimed when it leaves, and a blow or an area lands on a spot: a target that has walked away from there is not touched. Nightmare, Evil Whisper, Venom Mist, Flash Burst, Whirlpool and Ocean Fury follow their target, and only their accuracy can make them miss.",
-      "Darkness and Light do double damage to each other and half to their own row. Water does double damage to Fire and Filth and half to Nature, Ice and Water; Air does double damage to Water. Three cups of the arena take only the species whose first specialty is their row: the Dark Cup, the Holy Cup and the Aqua Cup, twice each in the 30 days of the calendar. The winner takes 5000 bits and a Muscle Yam, a Sage Fruit or a Power Ice."
-    ]
-  },
-  "weapon-earth": {
-    "title": "Weapon and Earth",
-    "summary": "Two more technique rows and their cups.",
-    "paragraphs": [
-      "Two more rows join the Techset: Weapon and Earth, eight techniques each, which makes twelve rows. The fourth row of the original, which the screen called Earth, is now called Nature, the name this wiki always gave it; its techniques are the same. A save from an earlier version loads as it is. On that first load the partner learns the first technique of each new row on its species list: Quick Slash or Rock Throw. It learns the rest like any other technique.",
-      "Weapon is the row of blades. Quick Slash, Blade Throw, Cross Cutter, Whirling Edge, Giant Cleave and Final Edge do damage; Armor Break takes a quarter of the target's Defense, once per fighter and battle, and War Stance raises Offense by a fifth. Earth is the row of rock. Rock Throw, Sand Blast, Boulder Crash, Fissure, Stalagmite, Landslide and Gaia Quake do damage, Sand Blast may confuse, and Stone Skin raises Defense. Most attacks of the two rows hit by position, as most shots of the original do: a target that has walked away from where the blow lands is not touched. Final Edge, Sand Blast, Stalagmite and Gaia Quake follow their target, and only their accuracy can make them miss.",
-      "Weapon does one and a half times the damage to Nature and half to Mech and Earth. Earth does double damage to Mech, one and a half times to Fire and half to Air, Nature and Earth. Mech does one and a half times the damage to Weapon and Nature half; Water does double damage to Earth, Nature and Ice one and a half times, and Fire and Weapon half. Two cups of the arena take only the species whose first specialty is their row: the Blade Cup and the Gaia Cup, twice each in the 30 days of the calendar. The winner takes 5000 bits and an Offense Chip or a Defense Chip."
-    ]
-  },
-  "file-city": {
-    "title": "File City and recruiting residents",
-    "summary": "Find services, prosperity and recruit prerequisites.",
-    "paragraphs": [
-      "The recruitment directory lists residents, locations, city services and prosperity contributions inside closed spoilers.",
-      "Recruitment steps are hidden until you open the spoiler disclosure. Times use the game clock. Check prerequisites as well as the place; a resident may depend on a city milestone, another recruit or a story event.",
-      "Mojyamon’s exchange table is in the closed spoiler below: the first eight rows allow one item per in-game day; the ninth is once per save. If the list in your game differs or shows old exchanges, you loaded an emulator save state from an older version. Boot the new disc fresh and load the memory-card save instead. Back up the card first. Mushroomon can now be found and recruited: it appears in the Spore Area of Mt. Panorama that the normal route leads to. The three Soulmon on the Haunted/Phantomon screen are back during the day (00:00–19:59) and after Phantomon is recruited."
-    ],
+  "new-digimon": {
+    "title": "New Digimon and the Mega level",
+    "summary": "What NEW DIGIMON adds to raising and how the bigger tree is built.",
     "spoiler_paragraphs": [
       2
-    ]
-  },
-  "hidden-mechanics": {
-    "title": "Hidden partner mechanics",
-    "summary": "Hidden partner mechanics.",
-    "paragraphs": [
-      "{bakemon_mechanic}",
-      "Partners have individual food preferences and sleep cycles. Their specialties also control which techniques they can learn in battle. An empty specialty slot still counts when selecting the learning probability, even though the summary omits empty slots.",
-      "The in-game evolution guide and the wiki’s tree help explain possible targets. Special transformations and item routes have separate conditions; a normal stat row alone does not describe every way a species can appear. Spoiler: when a partner loses a life and still has one left, there is a 30% chance of a special evolution in Jijimon's house: Greymon into SkullGreymon, Meramon into SkullMeramon, Mammothmon into SkullMammothmon and Garudamon into Phoenixmon, but only if the partner already has the stats the new form asks for."
     ],
-    "spoiler_paragraphs": [
-      2
+    "paragraphs": [
+      "With NEW DIGIMON on there are 291 Digimon to raise: the originals, 175 brought from other Digimon games on PlayStation and eight In-Training Digimon drawn for Horizon. A fifth level, Mega, sits above Ultimate with 54 species. Every species has its own page here with its requirements, techniques, favourite food and sleep hours.",
+      "The tree is regular: each In-Training Digimon has six Rookies, every Rookie at least four Champions, every Champion at least two Ultimates and every Ultimate two Megas. Natural evolution never skips a level. A Mega asks for {mega_hours} hours as an Ultimate besides its requirements. With the option off, only the original species and routes exist; a partner of a new species is shown as a similar original one and returns when you switch the option on again.",
+      "Two residents can remodel a Digimon into another of the same level for 2000 bits: Guardromon in Factorial Town and, now and then, Andromon in File City. One time in ten the result is a special form, five in ten the usual one, and otherwise it fails. They work on Mamemon, Numemon, Geremon, MegaSeadramon, WaruSeadramon and MetalGreymon (Virus); Andromon only on Mamemon."
     ]
   },
   "new-game-quiz": {
@@ -191,22 +237,158 @@
       1
     ]
   },
-  "difficulty": {
-    "title": "EASY, NORMAL and HARD",
-    "summary": "EASY, NORMAL and HARD.",
+  "battles": {
+    "title": "Battles: speed, finishers and types",
+    "summary": "What happens in a fight and how the twelve types match up.",
+    "headings": [
+      "Basics",
+      "Finishers",
+      "Types"
+    ],
     "paragraphs": [
-      "NORMAL uses the ordinary battle rules. EASY doubles the partner’s damage and halves damage received, rounding up before the usual limits. It also halves poison damage to the partner. These changes cover single-player field battles and tournaments, not two-player VS.",
-      "Difficulty does not rewrite the partner’s saved stats. Scripted percentage damage follows its own rules. Choose difficulty at the title’s options and check the available settings.",
-      "Choose from the difficulty settings shown in the title options. Battle adjustments come from the game’s settings below; they do not change permanent partner growth. DANGER ALERT, in the title options and on by default, puts a small purple devil over a wild Digimon that is clearly stronger than your partner: its fight strength, HP × (Offense + Defense), is at least 2.5 times your partner’s. It appears only on Digimon that start a battle when touched, never on characters who just talk, and only while you are free to move. Use it to steer clear of fights you would lose badly; it is a warning, not a guarantee."
+      "With QUICK BATTLE START, a field battle begins as soon as you touch the enemy. R2 doubles the speed of any battle. In wild battles each enemy shows a life bar with its HP. After a win, every stat has a chance to grow from the strongest enemy’s, and the item list of a battle shows only what can be used in it.",
+      "The finisher gauge fills as the partner fights, faster with more Speed. When it is full, Square fires the finisher, and pressing L1 and R1 quickly charges it for up to double damage. 179 species have a finisher of their own, stronger at each level; some hit every enemy at once and a few can be dodged. A finisher costs no MP.",
+      "A technique’s damage depends on its row and on the type of the Digimon it hits. In the chart below the row is the attacking technique and the column the defender; an empty cell is normal damage. Filth takes double from almost everything, and Darkness and Light are strong against each other."
     ]
   },
-  "faq": {
-    "title": "Player FAQ and troubleshooting",
-    "summary": "Updates, missing saves, slow patching and useful reports.",
+  "learning-techniques": {
+    "title": "Learning techniques",
+    "summary": "Species lists, specialty slots and candidate rolls.",
     "paragraphs": [
-      "If Continue is missing, check the assigned card, its free blocks and the disc filename used by per-game cards. Horizon needs {save_blocks} free blocks for a new save. Back up the card before updating, boot the new disc and load an in-game save.",
-      "Phone patching can be slow. For storage quota errors, use a normal browser window, free space and retry; the desktop patcher is another option. The source-disc checks are intentional: the extra games provide imported species, and a modified or unsupported dump will not match. The web builder on Android phones no longer fails with a file permission error while copying the disc.",
-      "For broken or stale text, record your game version, base disc, language, emulator build and graphics settings. On affected Android builds, try disabling Enable Texture Cache. Include the exact trigger and a screenshot in a bug report; a symptom alone does not identify its cause. WarGrowlmon’s face no longer has holes."
+      "An enemy executing a normal technique records it as a learning candidate; it does not need to hit your partner. After battle, the move must be on the species list, have a matching specialty and not already be known. The first matching specialty slot selects its roll.",
+      "Brains does not change that battle learning roll. Repeated uses of the same move do not create extra candidate rolls. If multiple candidates pass, one is chosen at random; a displayed percentage is not a guaranteed final award.",
+      "Brains training uses separate rules. Technique pages show base battle MP cost before condition and Brains modifiers; finishers cost no MP. Shared move names retain their IDs, and a species-specific finisher can override the ordinary move’s values.",
+      "Each species that can be raised has one boosted technique, marked on its page and with an arrow in the Tech menu. When that partner uses it, its power rises by one eighth plus 30 and it costs a quarter less MP; species tables already show those values. The boost also applies to both fighters in VS mode and never to enemies."
+    ]
+  },
+  "darkness-light-water": {
+    "title": "Darkness, Light and Water",
+    "summary": "Three more technique rows, healing and their cups.",
+    "paragraphs": [
+      "Darkness, Light and Water are three of the five rows Horizon adds to the seven of the original, with eight techniques each. A partner learns them like any other: the technique must be on its species list and the row among its specialties. The Techset screen scrolls through the twelve rows. A save made before these rows existed loads as it is, and the partner learns the first technique of each new row on its species list: Shadow Claw, Holy Spark or Bubble Shot.",
+      "Blessing gives back 10% of the full HP, and the amount rises in green over the Digimon. A partner heals three times a battle and an enemy twice; nobody heals at full HP. Left alone, a partner heals only below 60% of its HP; your order heals at any HP below the full. Sacred Shield raises Defense, Rain Dance raises Speed, and Evil Whisper takes a fifth of the target's Defense, once per fighter and battle. Most attacks of the three rows hit by position, as most shots of the original do. A shot is aimed when it leaves, and a blow or an area lands on a spot: a target that has walked away from there is not touched. Nightmare, Evil Whisper, Venom Mist, Flash Burst, Whirlpool and Ocean Fury follow their target, and only their accuracy can make them miss.",
+      "Darkness and Light do double damage to each other and half to their own row. Water does double damage to Fire, Filth and Earth, one and a half times to Mech, and half to Nature, Ice and Water; Air does double damage to Water. The whole chart is in the Battles article. Three arena cups take only the species whose first specialty is their row, twice each in the 30 days of the calendar: the Dark Cup pays 5000 bits and a Muscle Yam, the Holy Cup 5000 bits and a Sage Fruit, and the Aqua Cup 5000 bits and a Power Ice."
+    ]
+  },
+  "weapon-earth": {
+    "title": "Weapon and Earth",
+    "summary": "Two more technique rows and their cups.",
+    "paragraphs": [
+      "Weapon and Earth complete the twelve rows of the Techset, with eight techniques each. The fourth row of the original is called Nature, in the game and in this wiki; its techniques are the original ones. A save made before these rows existed loads as it is, and the partner learns the first technique of each new row on its species list: Quick Slash or Rock Throw. It learns the rest like any other technique.",
+      "Weapon is the row of blades. Quick Slash, Blade Throw, Cross Cutter, Whirling Edge, Giant Cleave and Final Edge do damage; Armor Break takes a quarter of the target's Defense, once per fighter and battle, and War Stance raises Offense by a fifth. Earth is the row of rock. Rock Throw, Sand Blast, Boulder Crash, Fissure, Stalagmite, Landslide and Gaia Quake do damage, Sand Blast may confuse, and Stone Skin raises Defense. Most attacks of the two rows hit by position, as most shots of the original do: a target that has walked away from where the blow lands is not touched. Final Edge, Sand Blast, Stalagmite and Gaia Quake follow their target, and only their accuracy can make them miss.",
+      "Weapon does double damage to Filth, one and a half times to Nature and half to Mech and Earth. Earth does double damage to Mech and Filth, one and a half times to Fire and half to Air, Nature and Earth. In return Mech does one and a half times the damage to Weapon, and Water does double damage to Earth. The whole chart is in the Battles article. Two arena cups take only the species whose first specialty is their row, twice each in the 30 days of the calendar: the Blade Cup pays 5000 bits and an Offense Chip, and the Gaia Cup 5000 bits and a Defense Chip."
+    ]
+  },
+  "difficulty": {
+    "title": "EASY, NORMAL and HARD",
+    "summary": "What each DIFFICULTY setting changes in battle.",
+    "paragraphs": [
+      "DIFFICULTY is a row of the title OPTIONS. NORMAL keeps the original battle numbers, with one late-game step: enemies whose original HP is above 3500 gain HP on a straight line, up to 150% at 6500, and every hit does a small minimum of damage so that a very high Defense cannot cancel it. EASY doubles the partner’s damage and halves the damage and the poison it receives, rounding up, and has no late-game step.",
+      "HARD starts from NORMAL and then scales every enemy with the values below: more HP, Offense, Defense, Speed and Brains, stronger finishers and slightly less direct damage from the partner.",
+      "No setting rewrites the partner’s saved stats, its growth or the rewards of a battle, and scripted percentage damage follows its own rules. The settings cover field battles and tournaments, never two-player VS. The value is kept in the save and can be changed at the title at any time."
+    ]
+  },
+  "arena-cups": {
+    "title": "Arena cups and the calendar",
+    "summary": "Who may enter each cup, the rules of a match and the prizes.",
+    "headings": [
+      "Rules",
+      "Original cups",
+      "New cups"
+    ],
+    "paragraphs": [
+      "The arena follows a 30-day calendar. A cup is three rounds between eight entrants. A match lasts 99 on the timer; if nobody falls, the fighter that took less damage wins and a draw counts as a defeat. Between matches the partner recovers 20% of its HP and MP. Nothing is earned or learned inside the arena; the prize comes after the final.",
+      "The Grade D, C, B and A cups fill most days, and Grade S, on days 7, 14, 21 and 28, is for winners of Grade A. Version 1 to 4 take only the twelve Digimon of that virtual pet and Version 0 has its own list. The specialty cups (Fire, Grapple, Thunder Wind, Cool, Nature, Metallic and Filth) go by the first specialty, and the new species can enter them. Dino, Wing, Animal and Human go by body, and the Beetle Cup is on day 22.",
+      "Horizon adds cups, twice each in the 30 days and each in an arena of its own. By level: Rookie (3000 bits and a Quick Chip), Champion (5000 and a DV Chip A), Ultimate (7000 and a DV Chip D; ten residents needed) and Mega (10000 and a DV Chip E; ten residents and Grade A won). By attribute: Vaccine (HP Chip), Data (Brain Chip) and Virus (Offense Chip). By field: Nature Spirits (Super Veggy), Deep Savers (Digiseabass), Nightmare Soldiers (Black Trout), Wind Guardians (Speed Leaf), Metal Empire (Defense Chip), Virus Busters (MP Chip), Dragon’s Roar (Power Fruit) and Jungle Troopers (Sage Fruit). By row: Dark, Holy, Aqua, Blade and Gaia. All of these pay 5000 bits with their item."
+    ]
+  },
+  "file-city": {
+    "title": "File City and recruiting residents",
+    "summary": "Find services, prosperity and recruit prerequisites.",
+    "paragraphs": [
+      "The recruitment directory lists residents, locations, city services and prosperity contributions inside closed spoilers.",
+      "Recruitment steps are hidden until you open the spoiler disclosure. Times use the game clock. Check prerequisites as well as the place; a resident may depend on a city milestone, another recruit or a story event.",
+      "Mojyamon’s exchange table is in the closed spoiler below: the first eight rows allow one item per in-game day; the ninth is once per save. If the list in your game differs, you loaded an emulator save state from another version. Boot the disc fresh and load the memory-card save instead. Back up the card first."
+    ],
+    "spoiler_paragraphs": [
+      2
+    ]
+  },
+  "shops": {
+    "title": "Shops, machines and daily finds",
+    "summary": "Where bits and items come from, and the small services around the island.",
+    "paragraphs": [
+      "A new game starts with 20 Meat and 1000 bits, and Meat costs 30 bits. Shops ask how many you want with an amount box, and the Item Bank shows the icon of every item. Bits won in battle are one and a half times the original amount.",
+      "Monochromon’s shop job is a shift of twenty customers that ends showing your profit. Once he lives in the city, Tuskmon keeps the shop and offers a deal of the day that you can haggle down twice; a failed haggle closes the deal until tomorrow. Each vending machine has its own stock: mushrooms at Dragon Eye Lake, meats in the Ancient Glacial Region, recovery items in Gear Savanna and a 1000-bit prize draw in the Tropical Jungle. Card shops sell cards as well.",
+      "The spots on the ground that hide an item give it once per in-game day. Mojyamon’s exchanges are daily too; File City’s article has the table. Sukamon clears every poop on the island for 1000 bits. Grey Lord’s Mansion and the Ice Sanctuary open to any partner once their Digimon lives in the city."
+    ]
+  },
+  "extended-story": {
+    "title": "The extended story",
+    "summary": "What EXTENDED STORY adds, with no spoilers outside the fold.",
+    "spoiler_paragraphs": [
+      2
+    ],
+    "paragraphs": [
+      "EXTENDED STORY, on by default, adds a second story that runs beside the original one: 69 new screens reached from the areas you already know, and 22 new residents, which makes 72 for the city instead of 50. The original story, its recruits and its ending are untouched.",
+      "New areas open as the story advances. No decision you take ever closes a recruit, a service or a route, so answer as you like. Switching the option on a save in progress moves you and your partner to Jijimon’s house and keeps everything you had; with it off the new areas and residents are simply not there, and the medals that need them are hidden.",
+      "The first new area, the Iron Hills, is reached from Gear Savanna once the road north is open. After the ending, an optional fight against BlackWarGreymon waits in the Back Dimension; the first win gives an Offense Chip and a Defense Chip."
+    ]
+  },
+  "curling": {
+    "title": "Curling",
+    "summary": "Quick matches, team modes and the five cups of the Freezeland rink.",
+    "headings": [
+      "Basics",
+      "Stones",
+      "Cups"
+    ],
+    "paragraphs": [
+      "The rink is in Freezeland. Once Penguinmon lives in the city he opens the rink menu. A quick match costs one fish of any kind and your rivals are residents of the city. Besides Singles there are Doubles and free-for-all matches of three or four teams.",
+      "Stones trade their speed along the line between their centres. A square hit stops the thrown stone and sends the other one on; a hit on the side deflects both; a graze barely moves the target.",
+      "Five singles cups are played in one go, three rounds each: Rookie, Amateur, Expert, Elite and Legend. Each needs the one before it won and all seven of its rivals living in the city. The entry is a fish: Digianchovy, Digisnapper, DigiTrout, Digicatfish and Digiseabass. The prize is always an item, never bits. The first Legend Cup also gives the Curling Legend medal and one chip of each kind; Penguinmon keeps the chips you cannot carry."
+    ]
+  },
+  "cards": {
+    "title": "Cards and the album",
+    "summary": "305 cards, where to get them and what the spare ones are for.",
+    "spoiler_paragraphs": [
+      2
+    ],
+    "paragraphs": [
+      "The album holds the original cards with their original art and, with NEW CARDS on, 240 new ones, numbers 66 to 305. It scrolls and counts what you have out of 305, or out of 65 with the option off, which hides the new cards everywhere and keeps their counts. You can hold up to nine copies of a card.",
+      "Card shops sell a pack of three cards for 500 bits, and the card machine in the item shop gives one card for 100. A daily counter offers six cards a day, priced by rarity from 50 to 5000 bits, and buys yours at half price. ShogunGekomon trades spare cards for merit points, from 1 to 100 a card by rarity, and merit for items with an amount box: a Sup. Recovery costs 60, a Sup. Restore 250 and a stat chip 800. The card trades of the original characters remain.",
+      "Two cards are special. Card 0 is given on your first visit to the card shop of Gear Savanna, and card 65 comes with the ending."
+    ]
+  },
+  "medals": {
+    "title": "Medals",
+    "summary": "The 21 medals, which options hide some of them and where to see them.",
+    "spoiler_paragraphs": [
+      2
+    ],
+    "paragraphs": [
+      "The Medals page is on the Player tab of the pause menu. It lists the original medals first; a gold corner marks the six that Horizon adds. Medals are a record: none gives an item, though raising all the original Digimon also raises your tamer level, as it always did.",
+      "A medal that needs something switched off in OPTIONS is hidden and cannot be earned meanwhile: Horizon Master with NEW DIGIMON off, Horizon City with EXTENDED STORY off and Full Collection with NEW CARDS off. Medals already earned are kept.",
+      "Original medals: the Grade, Version, Type and Special cups of the arena, 100 Wins, Classic Techniques (the 57 original techniques), Classic Master (every original Digimon raised), Classic Peak (HP and MP 9999, the other stats 999), Perfect Curling, 100 Fish, Game Clear, Classic City (50 residents), Classic Collection (the original cards), Bits Maxed (999999 bits) and 10th Anniversary (300 days since you began). Horizon medals: Curling Legend (the Legend Cup), Horizon Master (every Digimon raised), Limit Breaker (HP and MP 15000, the other stats 1500), Horizon City (every resident), Full Collection (every card) and Technique Master (the original techniques and 40 of the new ones)."
+    ]
+  },
+  "tamer-looks": {
+    "title": "Your tamer’s look",
+    "summary": "Boy or girl, skin, hair, clothes and backpack, free to change at any time.",
+    "paragraphs": [
+      "In a new game Jijimon asks whether you are a boy or a girl after his seven questions, and the Look page opens. Later it is on the Player tab of the pause menu, beside your name. Changing the look is free, works at any time and is kept in the save.",
+      "Left and right change the highlighted row, L1 and R1 turn the tamer, confirm saves and cancel discards. The rows are Tamer (boy or girl, which sets the face, the hands and the clothes on offer), Skin (six tones), hairstyle and hair colour, Shirt, Trousers, Shoes and Backpack, each with its colour.",
+      "Every row keeps the original as its first choice: the cap, the shirt, the trousers, the shoes and the backpack of the original tamer. There are eleven hairstyles besides the cap and a bald head, twenty hair colours, fifteen shirts, eight trousers including shorts and a skirt, nine pairs of shoes and five backpacks, or none. Clothes come in sixteen colours."
+    ]
+  },
+  "cheats": {
+    "title": "The Cheats menu",
+    "summary": "A test menu for trying things out: what each row does.",
+    "paragraphs": [
+      "Set CHEATS to ON in the title OPTIONS. On the field, pause with START and press SELECT; the pause box reminds you with “SELECT: Cheats”. The menu is meant for testing and for players who want to look around; it changes your save like any other play, so keep a copy of the memory card.",
+      "The rows: Add 10000 bits, Satisfy all needs, Edit Digimon, Evolve Digimon, Teleport to map, Heal Digimon, SELECT shortcuts, Save game, Load game, Return to main menu, Die of old age, Learn technique, Learn all techniques and Unlock evolution chart. Die of old age asks first and is a natural death, so you choose the egg. With SELECT shortcuts on, holding SELECT and pressing L1 or R1 changes the partner, and L2 or R2 jumps between maps.",
+      "In the editor, left and right change a value by the step and up and down change the step; L1 and R1 add or take 10, L2 and R2 100. Lifetime cannot go below one hour. Long lists wrap around, and left and right jump ten rows."
     ]
   }
 }

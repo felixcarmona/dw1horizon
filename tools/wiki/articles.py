@@ -33,6 +33,8 @@ def validate(root):
             marked = article.get('spoiler_paragraphs', [])
             if marked != english[ident].get('spoiler_paragraphs', []) or any(type(i) != int or i < 0 or i >= len(article['paragraphs']) for i in marked):
                 raise ValueError('Article spoiler classification differs: ' + lang + '/' + ident)
+            if len(article['paragraphs']) != len(english[ident]['paragraphs']) or len(article.get('headings', article['paragraphs'])) != len(article['paragraphs']) or ('headings' in article) != ('headings' in english[ident]):
+                raise ValueError('Article sections differ: ' + lang + '/' + ident)
             tokens = lambda value: sorted(re.findall(r'\{\w+\}', json.dumps(value, ensure_ascii=False)))
             if tokens(article) != tokens(english[ident]):
                 raise ValueError('Article variables differ: ' + lang + '/' + ident)

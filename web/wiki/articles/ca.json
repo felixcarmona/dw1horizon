@@ -13,7 +13,7 @@
     "summary": "BIOS, fitxers, ajustos per joc i partides.",
     "paragraphs": [
       "Configura la teva BIOS de PlayStation i afegeix la carpeta de Horizon. Mantén el .cue al costat del .bin; si falta o canvia de nom, no trobarà la pista.",
-      "Fes servir els ajustos per joc de Horizon. Activa els 8 MB de RAM ampliada per al xinès simplificat; els altres idiomes funcionen amb 2 MB. AUTO adapta les imatges a cada escena i busca 60, 30 o 20 fps. Augmentar la velocitat de la CPU emulada pot ajudar a mantenir taxes altes, però AUTO ja no necessita overclock per provar-les.",
+      "Fes servir els ajustos per joc de Horizon. Activa els 8 MB de RAM ampliada per al xinès simplificat; els altres idiomes funcionen amb 2 MB. AUTO adapta les imatges a cada escena i busca 60, 30 o 20 fps. Augmentar la velocitat de la CPU emulada pot ajudar a mantenir taxes altes, però AUTO no la necessita per provar-les.",
       "Assigna una targeta amb {save_blocks} blocs lliures. Una targeta per joc evita compartir espai. Després de canviar el nom del disc o actualitzar, comprova la targeta i carrega dins del joc després d’arrencar de nou."
     ]
   },
@@ -72,11 +72,50 @@
       "Canvia la CPU emulada, no l’avanç ràpid. Comprova els ajustos detectats al títol. El dispositiu ha de mantenir la velocitat triada. Reinicia després de canviar la RAM."
     ]
   },
+  "options": {
+    "title": "El menú OPTIONS",
+    "summary": "Cada fila de les opcions del títol i què canvia.",
+    "headings": [
+      "On és",
+      "Contingut del joc",
+      "Combat i camp",
+      "Pantalla i idioma"
+    ],
+    "paragraphs": [
+      "OPTIONS és la cinquena fila del menú del títol, sota BATTLE MODE. Els valors s’escriuen a cada partida desada, i el que fixes al títol preval sobre el que té la partida, així que pots canviar qualsevol fila i després triar CONTINUAR. Les barres de cura, el rellotge digital i les barres de vida dels enemics sempre són actius i no tenen fila.",
+      "NOUS DIGIMON (SÍ) afegeix les espècies importades i el nivell Mega; NO deixa només les espècies originals, els quatre ous originals i els nou inicials originals, i un company d’espècie nova es mostra com un d’original semblant fins que ho tornis a activar. CARTES NOVES (SÍ) afegeix 240 cartes a l’àlbum; NO les amaga arreu i en conserva els recomptes. HIST. EXTRA (SÍ) afegeix les àrees i els habitants nous; si l’actives en una partida començada, tu i el teu company aneu a casa d’en Jijimon i es conserva el progrés. GUIA EVOL. (SÍ) mostra les línies de la taula d’evolució i la finestra de requisits.",
+      "DIFICULTAT és FÀCIL, NORMAL o DIFÍCIL. INICI RÀPID (SÍ) comença els combats de camp d’un cop, sense l’entrada llarga. ALERTA PERILL (SÍ) marca els Digimon salvatges molt més forts que el teu company. BOTONS JAP. intercanvia confirmar i cancel·lar a Cercle i Creu; comença en SÍ en un disc japonès. TRUCS (NO) afegeix un menú de proves a la pantalla de pausa.",
+      "FOTOGRAMES és AUTO, 60 o 20. FONT és NEW, CLASSIC o ORIGINAL; el xinès no té ORIGINAL. IDIOMA canvia tots els textos alhora. RÈTOLS tria entre els cartells tal com estaven dibuixats a l’original i les seves versions TRADUÏTS."
+    ]
+  },
+  "controls": {
+    "title": "Controls i dreceres",
+    "summary": "Córrer, cures ràpides, velocitat de combat i els botons de cada menú.",
+    "headings": [
+      "Al camp",
+      "Al combat",
+      "Als menús"
+    ],
+    "paragraphs": [
+      "Mantén R1 per córrer: tu i el teu company us moveu un 40% més de pressa. Mantén R2 per caminar a poc a poc. Creu parla i confirma, Triangle obre el menú i cancel·la; amb BOTONS JAP., Cercle confirma i Creu cancel·la. Quan apareix una insígnia rosa de Quadrat sobre el company, Quadrat obre la cura ràpida: el menjar, la cura, el lavabo, el son o la renyina que toca ara, amb la necessitat urgent primer i el menjar preferit marcat.",
+      "R2 alterna el combat entre velocitat normal i doble, al camp, a l’arena i al VS. La velocitat torna a la normal mentre el menú d’objectes és obert i no es desa. Quan la barra del remat és plena, Quadrat llança el remat; després prem L1 i R1 de pressa per carregar-lo, i una bona càrrega en puja el dany fins al doble. La llista d’objectes d’un combat només mostra els que s’hi poden usar.",
+      "A la taula d’evolució, Quadrat sobre un objectiu obre la taula del que demana al costat del que té el teu company, i L1 i R1 canvien de pestanya. Quan tries un ou, Quadrat en tria un a l’atzar. El botó de confirmar salta el recompte de guanys després d’un entrenament o un combat. Als editors de Trucs, esquerra i dreta canvien el valor, i amunt i avall la mida del pas."
+    ]
+  },
+  "faq": {
+    "title": "Preguntes i resolució de problemes",
+    "summary": "Actualitzacions, partides, lentitud i informes útils.",
+    "paragraphs": [
+      "Si falta Continua, comprova targeta, blocs i nom del disc amb targetes per joc. Calen {save_blocks} blocs lliures per a una partida nova. Fes còpia, arrenca el disc actualitzat i carrega dins del joc.",
+      "Crear el disc al mòbil pot ser lent. Per errors de quota usa finestra normal, allibera espai i repeteix; també hi ha el pedaçador d’escriptori. Els discos extra aporten espècies; còpies modificades o incompatibles fallen les comprovacions.",
+      "Per text incorrecte anota versió, disc base, llengua, compilació i gràfics. En Android afectat prova de desactivar Enable Texture Cache. Inclou el desencadenant i una captura: el símptoma sol no identifica la causa."
+    ]
+  },
   "first-day": {
     "title": "El primer dia del company",
     "summary": "Una rutina petita per a la vida a File Island.",
     "paragraphs": [
-      "Tria el company amb les preguntes de Jijimon. Coneix indicadors de cures, inventari i serveis propers abans d’allunyar-te. Porta curacions i deixa espai per a troballes.",
+      "Tria el company amb les preguntes de Jijimon. Una partida nova comença amb 20 Carn i 1000 bits. Coneix indicadors de cures, inventari i serveis propers abans d’allunyar-te. Porta curacions i deixa espai per a troballes.",
       "Alimenta’l quan tingui gana, busca un lavabo i respecta el son. La fitxa indica menjar preferit i horaris. No entrenis tot el dia sense revisar les necessitats.",
       "Prova una sessió curta i revisa atributs i cansament. Explora, torna i desa a la targeta. L’evolució també depèn del pes i les cures: tria un objectiu abans d’entrenar-ho tot sense criteri."
     ]
@@ -85,9 +124,25 @@
     "title": "Errors de cura i disciplina",
     "summary": "Entén els avisos abans de buscar atributs.",
     "paragraphs": [
-      "Gana, lavabo, son i cansament són sistemes diferents. Ignorar la gana o deixar fer les necessitats a terra pot sumar errors; malaltia i esgotament tenen efectes propis. Revisa indicadors i cures sovint.",
-      "Disciplina i felicitat són diferents. Elogiar i renyar tenen efectes diferents i no resolen qualsevol problema. També compten menjar i son. En un hàbitat que no agrada al company, la cara d’ànim torna a alternar entre trista i contenta, com a l’original.",
-      "Les evolucions poden demanar mínim o màxim d’errors. Buscar-ne molts és una decisió específica, no un consell general. Els comptadors normals són de la forma actual; llegeix els quatre grups junts."
+      "Gana, lavabo, son i cansament són sistemes diferents. Ignorar la gana, deixar fer les necessitats a terra o mantenir el company despert passada l’hora d’anar a dormir suma errors de cura; malaltia i esgotament tenen efectes propis. Les cinc barres de cura i les bombolles sobre el company indiquen què toca; la pàgina Estat mostra el nombre d’errors.",
+      "Disciplina i felicitat són diferents. Elogiar i renyar tenen efectes diferents i no resolen qualsevol problema. També compten menjar i son. En un hàbitat que no agrada al company, la icona de felicitat de les barres de cura parpelleja.",
+      "Les evolucions poden demanar mínim o màxim d’errors. Buscar-ne molts és una decisió específica, no un consell general. El recompte torna a començar a cada evolució i en renéixer, de manera que sempre és el de la forma actual; llegeix els quatre grups junts."
+    ]
+  },
+  "screen-indicators": {
+    "title": "Barres, bombolles i avisos",
+    "summary": "Què signifiquen les barres de cura, les bombolles sobre el company i els avisos.",
+    "headings": [
+      "Barres de cura i rellotge",
+      "Bombolles i insígnies",
+      "Pàgina Estat",
+      "Alerta de perill"
+    ],
+    "paragraphs": [
+      "Cinc barres són a baix a la dreta amb el rellotge i durant l’entrenament: felicitat, disciplina, gana, lavabo i energia. Una barra plena vol dir que tot va bé; una de buida, que aquella necessitat toca. La icona de felicitat parpelleja en un hàbitat que no agrada al company. El rellotge també mostra l’hora en xifres sota l’esfera.",
+      "Una bombolla sobre el company diu què necessita: gana, lavabo, son, cansament, malaltia, ferida, PV baixos o PM baixos, tots dos per sota del 30%. Apareix una bombolla de Renyar quan una renyina és merescuda, després d’un menjar rebutjat o just abans d’un accident. La insígnia rosa de Quadrat vol dir que la cura ràpida té alguna cosa a oferir. Una bombolla de carn sobre el granger vol dir que hi ha una collita esperant.",
+      "La pàgina Estat mostra la felicitat i la disciplina de 0 a 100, el cansament i la barra de virus amb els seus números, els errors de cura de la forma actual i els combats guanyats. El menú de pausa mostra els PV i els PM del company. Als combats salvatges cada enemic té una barra de vida amb els seus PV; els rivals de l’arena i de la història, no.",
+      "Amb ALERTA PERILL activada, un petit diable lila flota sobre un Digimon salvatge clarament més fort que el teu company: els seus PV × (Atac + Defensa) són almenys 2,5 vegades els del teu company. Només apareix als Digimon que inicien un combat en tocar-los, mai als personatges que només parlen, i únicament mentre et pots moure. És un avís, no una sentència."
     ]
   },
   "training": {
@@ -96,16 +151,47 @@
     "paragraphs": [
       "Cada gimnàs entrena un atribut. Els augments base de sota són valors base; company, millores, objectes i resultat poden canviar-los. La intel·ligència té llindars d’aprenentatge propis, separats del combat.",
       "Entrenar consumeix temps, menjar, cansament i vida. Comprova gana, lavabo i son abans. Continuar cansat pot penalitzar; més guany no és temps gratuït.",
-      "x5 dona diverses recompenses normals amb comprovacions entre elles. Usa x1 prop d’objectius de pes o evolució. Descansa i atén les necessitats abans d’un altre bloc."
+      "Cada menú del gimnàs ofereix també Entrenament normal x5, que fa cinc sessions normals amb comprovacions entre elles. Entrena sessions soltes quan vulguis aturar-te a prop d’un pes o d’un moment d’evolució. Descansa i atén les necessitats abans d’un altre bloc."
     ]
   },
   "gym-x5": {
-    "title": "Com funciona el gimnàs x5",
-    "summary": "Diverses sessions amb costos normals i aturades.",
+    "title": "Entrenament x5 i Bonus Try",
+    "summary": "Cinc sessions seguides, amb costos normals i aturades.",
     "paragraphs": [
-      "R2 alterna x1 i x5 durant una sessió. El bloc mostra l’animació inicial i aplica les recompenses en ordre. No és un multiplicador gratuït per cinc.",
-      "Pot aturar-se després de gana, lavabo, son, cansament o malestar; també comprova evolució, vida i missatges del gimnàs. El resultat indica les sessions acabades, no sempre cinc.",
-      "Bonus Try és separat dels blocs. Cada rodet s’atura on prems, sense res amagat que l’empenyi fora del premi: si falles reps la meitat, tres símbols iguals donen el doble, tres de l’atribut que entrenes donen x4 i tres caques daurades donen x5. Resol la necessitat indicada abans de repetir. Per a una sola recompensa, tria x1 abans de confirmar en lloc de confiar en una aturada d’emergència."
+      "Cada menú del gimnàs té quatre files: entrenament normal, Entrenament normal x5, Bonus Try i sortir. L’Entrenament normal x5 mostra l’entrenament una vegada i després dona cinc sessions normals una darrere l’altra. Cada sessió costa la seva hora, menjar, cansament i vida de sempre; no és un multiplicador per cinc gratuït.",
+      "Mantén premut el botó de cancel·lar mig segon entre dues sessions per acabar el bloc allà. El bloc també s’atura sol quan el company té gana, necessita el lavabo, té son o està cansat, s’ha ferit o està malalt, quan toca una evolució, quan se li acaba la vida o quan el gimnàs té alguna cosa a dir, com una tècnica apresa. El quadre de resultats compta les sessions que s’han fet de debò. El botó de confirmar salta el recompte dels guanys.",
+      "Bonus Try aposta una sessió a la màquina escurabutxaques. Cada rodet s’atura on prems, sense res amagat que l’empenyi fora del premi: si falles reps la meitat, tres símbols iguals donen el doble, tres de l’atribut que entrenes donen x4 i el premi gros dona x5. Costa el mateix temps i les mateixes cures que una sessió normal."
+    ]
+  },
+  "rebirth": {
+    "title": "Vida, vides i Renaixement",
+    "summary": "Quant viu un company, què conserva i com tornar a començar a propòsit.",
+    "headings": [
+      "Vida i vides",
+      "Renaixement",
+      "Ous",
+      "Evolucionar en perdre una vida"
+    ],
+    "spoiler_paragraphs": [
+      3
+    ],
+    "paragraphs": [
+      "Un company neix amb 408 hores de vida. Una felicitat baixa l’escurça, i arribar a Perfecte n’afegeix 96 i a Mega 120; alguns menjars n’afegeixen més. L’avís vermell de la finestra d’evolució t’indica quan la vida s’acabarà abans d’una evolució. Un company també té tres vides al combat: una derrota en costa una i et torna a casa d’en Jijimon.",
+      "La màquina de desar de casa d’en Jijimon té una entrada Renaixement per a un company que sigui Campió o superior. Ho pregunta dues vegades, no costa res i deixa marxar el company com ho faria una mort natural, de manera que triïs l’ou següent. El nou company conserva les tècniques apreses, els teus objectes, els bits i el nom, i hereta una part dels atributs que creix amb el nivell de tamer. Si la felicitat era de 20 o més, comença amb felicitat i disciplina a 80; si no, a 50.",
+      "Després d’una mort natural o d’un Renaixement tries l’ou; Quadrat en tria un a l’atzar. Hi ha quatre ous amb NOUS DIGIMON desactivat i vuit amb l’opció activada: els nous naixen Pabumon, Pichimon, YukimiBotamon i Nyokimon. Un company que mor en combat o de malaltia sense vides restants rep un ou a l’atzar.",
+      "Quan un company perd una vida i encara en té una, pot evolucionar a casa d’en Jijimon. Agumon, Betamon, Gabumon, Elecmon, Patamon, Kunemon, Biyomon i Palmon es converteixen en Bakemon el 30% de les vegades; MetalGreymon i Megadramon es converteixen en SkullGreymon i Kokatorimon en Phoenixmon al 30%; Angemon amb disciplina per sota de 50 es converteix en Devimon al 50%. Amb els atributs de la forma nova ja assolits, 30% cadascun: Greymon a SkullGreymon, Meramon a SkullMeramon, Mammothmon a SkullMammothmon i Garudamon a Phoenixmon. Les espècies noves necessiten NOUS DIGIMON activat."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Mecàniques ocultes dels companys",
+    "summary": "Preferències, caselles d’especialitat i evolucions fora de la taula.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Cada company té menjar i son propis. Les especialitats determinen les tècniques apreses al combat. Les caselles buides continuen comptant en la tirada, tot i que el resum les ometi.",
+      "La guia del joc i l’arbre expliquen els objectius. Transformacions especials i objectes tenen condicions pròpies; una fila normal no descriu totes les maneres d’obtenir una espècie. Perdre una vida també pot canviar el company a l’instant: l’article sobre la vida i el Renaixement enumera aquestes evolucions i les seves probabilitats."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "evolution-requirements": {
@@ -114,7 +200,7 @@
     "paragraphs": [
       "L’evolució normal puntua errors, pes, atributs i bonificació. Calen {pass_points} punts. Tots els atributs exigits formen un grup; dos atributs no donen dos punts. Per a objectius Rookie compta l’atribut més alt.",
       "El pes admet una banda; els errors poden tenir mínim o màxim. Una sola alternativa de bonificació dona el punt; no són totes obligatòries. El màxim d’errors de cura és inclusiu. No complir aquest grup fa perdre el seu punt; no impedeix evolucionar si els altres grups arriben a la puntuació necessària. Per tant, augmentar només els errors no descarta un objectiu de manera fiable.",
-      "Toca l’objectiu de l’arbre. La fila «Temps (h)» de la finestra mostra la comprovació del temps, i un avís vermell indica si la vida restant és insuficient. Temps en la forma, desencadenants especials, NEW DIGIMON i altres candidats influeixen. PV/PM són unitats del jugador; felicitat usa l’escala 0–100 de l’estat."
+      "Toca l’objectiu de l’arbre. La fila «Temps (h)» de la finestra mostra la comprovació del temps, i un avís vermell indica si la vida restant és insuficient. Temps en la forma, desencadenants especials, NOUS DIGIMON i altres candidats influeixen. PV/PM són unitats del jugador; felicitat usa l’escala 0–100 de l’estat."
     ]
   },
   "evolution-timing": {
@@ -122,8 +208,47 @@
     "summary": "Els requisits només són part de l’elecció.",
     "paragraphs": [
       "Les hores de sota són en la forma actual, no edat total. Complir aviat els atributs no provoca evolució immediata. Les rutes Ultimate temporitzades també comproven requisits; especials i objectes tenen altres desencadenants.",
-      "De Rookie a Champion i de Champion a Ultimate, assolir la puntuació requerida admet un destí; quatre punts no guanyen a tres. El joc tria amb la mateixa probabilitat entre els destins aptes en el moment d’evolucionar. Es comproven en l’ordre de les rutes: després d’admetre un destí mai criat, s’ometen els ja criats que apareixen més tard; els admesos abans continuen al sorteig. Es mantenen la disponibilitat del model i NEW DIGIMON. Tornar a carregar la mateixa partida de targeta i variar el moment pot donar un altre resultat, però no ho garanteix. D’In-Training a Rookie es manté la puntuació més alta i, en empat, el primer de la llista. Les evolucions especials i per objecte mantenen les seves regles.",
+      "De Rookie a Champion i de Champion a Ultimate, assolir la puntuació requerida admet un destí; quatre punts no guanyen a tres. El joc tria amb la mateixa probabilitat entre els destins aptes en el moment d’evolucionar. Es comproven en l’ordre de les rutes: després d’admetre un destí mai criat, s’ometen els ja criats que apareixen més tard; els admesos abans continuen al sorteig. Es mantenen la disponibilitat del model i NOUS DIGIMON. Tornar a carregar la mateixa partida de targeta i variar el moment pot donar un altre resultat, però no ho garanteix. D’In-Training a Rookie es manté la puntuació més alta i, en empat, el primer de la llista. Les evolucions especials i per objecte mantenen les seves regles.",
       "La fila «Temps (h)» de la finestra compara les hores passades en la forma actual amb les que exigeix l’objectiu. El veredicte només diu «a punt» quan es compleixen la puntuació dels requisits, la comprovació que el model cap a la memòria i el temps; «En N h» indica que només falta temps. L’avís vermell «La vida s’acaba abans (N h)» indica que la vida restant és més curta que l’espera pendent; N és la vida restant. Les rutes que no depenen del temps mostren «Ruta especial». Els Megas importats també exigeixen passar {mega_hours} hores de joc com a Perfecte. Si abans s’esgota la vida restant, el company mor de vellesa. {chain_melon} (Chain Melon) afegeix {chain_melon_hours} hores de vida; {digiseabass}, {digiseabass_hours}. Allarguen la vida restant, no el temps ja passat en la forma actual."
+    ]
+  },
+  "new-digimon": {
+    "title": "Nous Digimon i el nivell Mega",
+    "summary": "Què afegeix NOUS DIGIMON a la cria i com es construeix l’arbre ampliat.",
+    "spoiler_paragraphs": [
+      2
+    ],
+    "paragraphs": [
+      "Amb NOUS DIGIMON activat hi ha 291 Digimon per criar: els originals, 175 portats d’altres jocs de Digimon per a PlayStation i vuit Digimon In-Training dibuixats per a Horizon. Un cinquè nivell, Mega, és per sobre de Perfecte amb 54 espècies. Cada espècie té la seva pàgina aquí amb els requisits, les tècniques, el menjar preferit i les hores de son.",
+      "L’arbre és regular: cada In-Training té sis Novells, cada Novell almenys quatre Campions, cada Campió almenys dos Perfectes i cada Perfecte dos Megas. L’evolució natural mai se salta un nivell. Un Mega demana {mega_hours} hores com a Perfecte a més dels seus requisits. Amb l’opció desactivada només existeixen les espècies i rutes originals; un company d’espècie nova es mostra com un d’original semblant i torna quan tornes a activar l’opció.",
+      "Dos habitants poden remodelar un Digimon en un altre del mateix nivell per 2000 bits: Guardromon a la Ciutat de les fàbriques i, de tant en tant, Andromon a la Ciutat File. Una vegada de cada deu el resultat és una forma especial, cinc de cada deu l’habitual, i altrament falla. Treballen amb Mamemon, Numemon, Geremon, MegaSeadramon, WaruSeadramon i MetalGreymon (Virus); Andromon només amb Mamemon."
+    ]
+  },
+  "new-game-quiz": {
+    "title": "Qüestionari inicial: punts i companys",
+    "summary": "Les set respostes aporten a tres grups.",
+    "paragraphs": [
+      "La taula mostra punts per posició de resposta al qüestionari de Jijimon, en l’ordre del joc. Les puntuacions trien element, atribut i temperament; la combinació determina el company a la quadrícula.",
+      "Guanya el màxim del grup. Els empats afavoreixen la resposta de suport més recent; si és la mateixa per als dos, guanya el primer del grup. Ordre: Combat, Foc, Gel, Natura, Aire; Vacuna, Dades, Virus; Agosarat, Calmat, Astut.",
+      "Jijimon manté el teu company en secret: el veuràs al teu costat quan et despertis. Posar-li nom és opcional i els missatges no revelen l’espècie. Les columnes mostren NOUS DIGIMON activat i desactivat. Les respostes, els punts i la taula de companys inicials són a l’espòiler de sota."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
+    ]
+  },
+  "battles": {
+    "title": "Combats: velocitat, remats i tipus",
+    "summary": "Què passa en un combat i com s’enfronten els dotze tipus.",
+    "headings": [
+      "Bàsics",
+      "Remats",
+      "Tipus"
+    ],
+    "paragraphs": [
+      "Amb INICI RÀPID, un combat de camp comença tan bon punt toques l’enemic. R2 dobla la velocitat de qualsevol combat. Als combats salvatges cada enemic mostra una barra de vida amb els seus PV. Després d’una victòria, cada atribut té una probabilitat de créixer a partir dels de l’enemic més fort, i la llista d’objectes d’un combat només mostra el que s’hi pot usar.",
+      "La barra del remat s’omple mentre el company lluita, més de pressa com més Velocitat. Quan és plena, Quadrat llança el remat, i prémer L1 i R1 de pressa el carrega per fer fins al doble de dany. 179 espècies tenen un remat propi, més fort a cada nivell; alguns colpegen tots els enemics alhora i uns quants es poden esquivar. Un remat no gasta PM.",
+      "El dany d’una tècnica depèn de la seva fila i del tipus del Digimon que colpeja. A la taula de sota la fila és la tècnica atacant i la columna el defensor; una cel·la buida és dany normal. Brutícia rep el doble de gairebé tot, i Foscor i Llum són fortes l’una contra l’altra."
     ]
   },
   "learning-techniques": {
@@ -140,18 +265,41 @@
     "title": "Foscor, Llum i Aigua",
     "summary": "Tres files més de tècniques, la curació i les seves copes.",
     "paragraphs": [
-      "Tres files s'afegeixen a les set de l'original: Foscor, Llum i Aigua, amb vuit tècniques cadascuna. Un company les aprèn com les altres: la tècnica ha de ser a la llista de la seva espècie i la fila entre les seves especialitats. La pantalla de tècniques es desplaça per les files. Una partida d'una versió anterior es carrega tal com és. En aquesta primera càrrega el company aprèn la primera tècnica de cada fila nova que sigui a la llista de la seva espècie: Urpa d'ombra, Espurna sagrada o Tret de bombolles. La resta les aprèn com qualsevol altra tècnica.",
+      "Foscor, Llum i Aigua són tres de les cinc files que Horizon afegeix a les set de l'original, amb vuit tècniques cadascuna. Un company les aprèn com les altres: la tècnica ha de ser a la llista de la seva espècie i la fila entre les seves especialitats. La pantalla de tècniques es desplaça per les dotze files. Una partida feta abans que existissin aquestes files es carrega tal com és, i el company aprèn la primera tècnica de cada fila nova que sigui a la llista de la seva espècie: Urpa d'ombra, Espurna sagrada o Tret de bombolles. La resta les aprèn com qualsevol altra tècnica.",
       "Benedicció torna el 10% dels PV totals, i la quantitat puja en verd sobre el Digimon. Un company es cura tres vegades per combat i un enemic dues; ningú no es cura amb els PV al màxim. Pel seu compte, un company només es cura per sota del 60% dels seus PV; amb la teva ordre es cura amb qualsevol quantitat per sota del màxim. Escut sagrat puja la Defensa, Dansa de la pluja puja la Velocitat i Xiuxiueig maligne treu una cinquena part de la Defensa de l'objectiu, una vegada per lluitador i combat. La majoria dels atacs de les tres files colpegen per posició, com la majoria dels trets de l'original. Un tret s'apunta en sortir, i un cop o una àrea cau en un punt: l'objectiu que se n'ha apartat no rep el cop. Malson, Xiuxiueig maligne, Boira verinosa, Esclat de llum, Remolí i Fúria oceànica segueixen el seu objectiu, i només la seva precisió els pot fer fallar.",
-      "Foscor i Llum es fan el doble de dany entre elles i la meitat a la seva pròpia fila. Aigua fa el doble de dany a Foc i Brutícia i la meitat a Natura, Gel i Aigua; Aire fa el doble de dany a Aigua. Tres copes de l'arena admeten només les espècies que tenen la fila de la copa com a primera especialitat: la Copa Foscor, la Copa Llum i la Copa Aigua, dues vegades cadascuna en els 30 dies del calendari. El guanyador s'endú 5000 bits i un Moniato forçut, una Fruita sàvia o un Gel poder."
+      "Foscor i Llum es fan el doble de dany entre elles i la meitat a la seva pròpia fila. Aigua fa el doble de dany a Foc, Brutícia i Terra, una vegada i mitja a Màquina i la meitat a Natura, Gel i Aigua; Aire fa el doble de dany a Aigua. La taula completa és a l'article Combats. Tres copes de l'arena admeten només les espècies que tenen la fila de la copa com a primera especialitat, dues vegades cadascuna en els 30 dies del calendari: la Copa Foscor paga 5000 bits i un Moniato forçut, la Copa Llum 5000 bits i una Fruita sàvia, i la Copa Aigua 5000 bits i un Gel poder."
     ]
   },
   "weapon-earth": {
     "title": "Arma i Terra",
     "summary": "Dues files més de tècniques i les seves copes.",
     "paragraphs": [
-      "Dues files més s'afegeixen a la pantalla de tècniques: Arma i Terra, amb vuit tècniques cadascuna; ja són dotze files. La quarta fila de l'original, que la pantalla anomenava Terra, passa a dir-se Natura, el nom que aquesta wiki li ha donat sempre; les seves tècniques són les mateixes. Una partida d'una versió anterior es carrega tal com és. En aquesta primera càrrega el company aprèn la primera tècnica de cada fila nova que sigui a la llista de la seva espècie: Tall veloç o Llançament de roca. La resta les aprèn com qualsevol altra tècnica.",
+      "Arma i Terra completen les dotze files de la pantalla de tècniques, amb vuit tècniques cadascuna. La quarta fila de l'original es diu Natura, al joc i en aquesta wiki; les seves tècniques són les de l'original. Una partida feta abans que existissin aquestes files es carrega tal com és, i el company aprèn la primera tècnica de cada fila nova que sigui a la llista de la seva espècie: Tall veloç o Llançament de roca. La resta les aprèn com qualsevol altra tècnica.",
       "Arma és la fila de les fulles. Tall veloç, Arma llancívola, Tall creuat, Tall giratori, Tall gegant i Tall final fan mal; Trencacuirasses treu una quarta part de la Defensa de l'objectiu, una vegada per lluitador i combat, i Posa de guerra puja l'Atac una cinquena part. Terra és la fila de la roca. Llançament de roca, Ràfega de sorra, Cop de roca, Fissura, Estalagmita, Esllavissada i Sisme de Gaia fan mal, Ràfega de sorra pot confondre i Pell de pedra puja la Defensa. La majoria dels atacs de les dues files colpegen per posició, com la majoria dels trets de l'original: l'objectiu que s'ha apartat d'on cau el cop no el rep. Tall final, Ràfega de sorra, Estalagmita i Sisme de Gaia segueixen el seu objectiu, i només la seva precisió els pot fer fallar.",
-      "Arma fa una vegada i mitja el mal a Natura i la meitat a Màquina i Terra. Terra fa el doble de mal a Màquina, una vegada i mitja a Foc i la meitat a Aire, Natura i Terra. Màquina fa una vegada i mitja el mal a Arma i Natura la meitat; Aigua fa el doble de mal a Terra, Natura i Gel una vegada i mitja, i Foc i Arma la meitat. Dues copes de l'arena admeten només les espècies que tenen la fila de la copa com a primera especialitat: la Copa Espasa i la Copa Gaia, dues vegades cadascuna en els 30 dies del calendari. El guanyador s'endú 5000 bits i un objecte: Xip Atac o Xip Defensa."
+      "Arma fa el doble de mal a Brutícia, una vegada i mitja a Natura i la meitat a Màquina i Terra. Terra fa el doble de mal a Màquina i Brutícia, una vegada i mitja a Foc i la meitat a Aire, Natura i Terra. A canvi, Màquina fa una vegada i mitja el mal a Arma, i Aigua fa el doble de mal a Terra. La taula completa és a l'article Combats. Dues copes de l'arena admeten només les espècies que tenen la fila de la copa com a primera especialitat, dues vegades cadascuna en els 30 dies del calendari: la Copa Espasa paga 5000 bits i un Xip Atac, i la Copa Gaia 5000 bits i un Xip Defensa."
+    ]
+  },
+  "difficulty": {
+    "title": "FÀCIL, NORMAL i DIFÍCIL",
+    "summary": "Què canvia cada ajust de DIFICULTAT al combat.",
+    "paragraphs": [
+      "DIFICULTAT és una fila de les OPTIONS del títol. NORMAL manté els números originals del combat, amb un pas al final del joc: els enemics amb més de 3500 HP originals guanyen HP en línia recta, fins al 150% als 6500, i cada cop fa un petit dany mínim perquè una Defensa molt alta no el pugui anul·lar. FÀCIL dobla el dany del company i divideix entre dos el dany i el verí que rep, arrodonint amunt, i no té el pas del final del joc.",
+      "DIFÍCIL parteix de NORMAL i després escala cada enemic amb els valors de sota: més HP, Atac, Defensa, Velocitat i Intel·ligència, remats més forts i una mica menys de dany directe del company.",
+      "Cap ajust reescriu els atributs desats del company, el seu creixement ni les recompenses d’un combat, i el dany percentual dels guions té regles pròpies. Els ajustos afecten els combats de camp i els tornejos, mai el VS de dos jugadors. El valor es desa a la partida i es pot canviar al títol en qualsevol moment."
+    ]
+  },
+  "arena-cups": {
+    "title": "Copes de l’arena i el calendari",
+    "summary": "Qui pot entrar a cada copa, les regles d’un combat i els premis.",
+    "headings": [
+      "Regles",
+      "Copes originals",
+      "Copes noves"
+    ],
+    "paragraphs": [
+      "L’arena segueix un calendari de 30 dies. Una copa són tres rondes entre vuit participants. Un combat dura 99 al temporitzador; si ningú cau, guanya el lluitador que ha rebut menys dany i un empat compta com a derrota. Entre combats el company recupera el 20% dels seus PV i PM. A l’arena no es guanya ni s’aprèn res; el premi arriba després de la final.",
+      "Les copes de Grau D, C, B i A omplen la majoria de dies, i el Grau S, els dies 7, 14, 21 i 28, és per als guanyadors del Grau A. Les copes Versió 1 a 4 només admeten els dotze Digimon d’aquella mascota virtual i la Versió O té la seva pròpia llista. Les copes d’especialitat (Foc, Lluita, Tro i Vent, Gel, Naturalesa, Metàl·lica i Bruta) van per la primera especialitat, i les espècies noves hi poden entrar. Dino, Ales, Animal i Humana van pel cos, i la Copa Escarabat és el dia 22.",
+      "Horizon afegeix copes, dues vegades cadascuna en els 30 dies i cadascuna en una arena pròpia. Per nivell: Novell (3000 bits i un Xip Velocitat), Campió (5000 i un Xip DV A), Perfecte (7000 i un Xip DV D; calen deu habitants) i Mega (10000 i un Xip DV E; calen deu habitants i el Grau A guanyat). Per atribut: Vacuna (Xip HP), Dades (Xip Intel·lecte) i Virus (Xip Atac). Per camp: Nature Spirits (Superverdura), Deep Savers (Digillobarro), Nightmare Soldiers (Truita negra), Wind Guardians (Fulla veloç), Metal Empire (Xip Defensa), Virus Busters (Xip MP), Dragon's Roar (Fruita poder) i Jungle Troopers (Fruita sàvia). Per fila: Foscor, Llum, Aigua, Espasa i Gaia. Totes paguen 5000 bits amb el seu objecte."
     ]
   },
   "file-city": {
@@ -160,53 +308,87 @@
     "paragraphs": [
       "El directori de reclutament recull habitants, llocs, serveis i aportacions a la prosperitat dins d’espòilers plegats.",
       "Els passos queden ocults fins a obrir els espòilers. Les hores segueixen el joc. Comprova lloc i requisits: pot caldre progrés de ciutat, un altre recluta o un esdeveniment.",
-      "La taula d’intercanvis de Mojyamon és a l’espòiler tancat de sota: les vuit primeres files permeten un objecte per dia de joc; la novena, una sola vegada per partida desada. Si al joc apareix una llista diferent o antiga, has carregat un estat de l’emulador d’una versió anterior. Arrenca el disc nou de zero i carrega la partida de la targeta de memòria. Fes primer una còpia de la targeta. Ara es pot trobar i reclutar Mushroomon: apareix a la Zona d’Espores del Mont Panorama accessible pel camí normal. Els tres Soulmon de la pantalla de Haunted/Phantomon tornen durant el dia (00:00–19:59) i després de reclutar Phantomon."
+      "La taula d’intercanvis de Mojyamon és a l’espòiler tancat de sota: les vuit primeres files permeten un objecte per dia de joc; la novena, una sola vegada per partida desada. Si al joc apareix una llista diferent, has carregat un estat de l’emulador d’una altra versió. Arrenca el disc de zero i carrega la partida de la targeta de memòria. Fes primer una còpia de la targeta."
     ],
     "spoiler_paragraphs": [
       2
     ]
   },
-  "hidden-mechanics": {
-    "title": "Mecàniques ocultes dels companys",
-    "summary": "Mecàniques ocultes dels companys.",
+  "shops": {
+    "title": "Botigues, màquines i troballes diàries",
+    "summary": "D’on surten els bits i els objectes, i els petits serveis de l’illa.",
     "paragraphs": [
-      "{bakemon_mechanic}",
-      "Cada company té menjar i son propis. Les especialitats determinen les tècniques apreses al combat. Les caselles buides continuen comptant en la tirada, tot i que el resum les ometi.",
-      "La guia del joc i l’arbre expliquen els objectius. Transformacions especials i objectes tenen condicions pròpies; una fila normal no descriu totes les maneres d’obtenir una espècie. Spoiler: quan un company perd una vida i encara n’hi queda alguna, hi ha un 30% de probabilitat d’una evolució especial a casa d’en Jijimon: Greymon a SkullGreymon, Meramon a SkullMeramon, Mammothmon a SkullMammothmon i Garudamon a Phoenixmon, però només si ja té les estadístiques que demana la nova forma."
-    ],
+      "Una partida nova comença amb 20 Carn i 1000 bits, i la Carn costa 30 bits. Les botigues pregunten quants en vols amb un quadre de quantitat, i el Banc d’objectes mostra la icona de cada objecte. Els bits guanyats al combat són una vegada i mitja la quantitat original.",
+      "La feina de Monochromon a la botiga és un torn de vint clients que acaba mostrant el teu benefici. Quan ja viu a la ciutat, Tuskmon porta la botiga i ofereix una oferta del dia que pots regatejar a la baixa dues vegades; un regateig fallit tanca l’oferta fins demà. Cada màquina expenedora té el seu estoc: bolets al Llac Ull de Drac, carns a la Regió glacial antiga, objectes de recuperació a la Sabana dels engranatges i un sorteig de premis de 1000 bits a la Selva tropical. Les botigues de cartes també venen cartes.",
+      "Els punts del terra que amaguen un objecte el donen una vegada per dia de joc. Els intercanvis de Mojyamon també són diaris; l’article de la Ciutat File té la taula. Sukamon neteja totes les caques de l’illa per 1000 bits. La Mansió del Senyor Gris i el Santuari de gel s’obren a qualsevol company quan el seu Digimon viu a la ciutat."
+    ]
+  },
+  "extended-story": {
+    "title": "La història ampliada",
+    "summary": "Què afegeix HIST. EXTRA, sense espòilers fora del plec.",
     "spoiler_paragraphs": [
       2
-    ]
-  },
-  "new-game-quiz": {
-    "title": "Qüestionari inicial: punts i companys",
-    "summary": "Les set respostes aporten a tres grups.",
-    "paragraphs": [
-      "La taula mostra punts per posició de resposta al qüestionari de Jijimon, en l’ordre del joc. Les puntuacions trien element, atribut i temperament; la combinació determina el company a la quadrícula.",
-      "Guanya el màxim del grup. Els empats afavoreixen la resposta de suport més recent; si és la mateixa per als dos, guanya el primer del grup. Ordre: Combat, Foc, Gel, Natura, Aire; Vacuna, Dades, Virus; Agosarat, Calmat, Astut.",
-      "Jijimon manté el teu company en secret: el veuràs al teu costat quan et despertis. Posar-li nom és opcional i els missatges no revelen l’espècie. Les columnes mostren NOUS DIGIMON activat i desactivat. Les respostes, els punts i la taula de companys inicials són a l’espòiler de sota."
     ],
+    "paragraphs": [
+      "HIST. EXTRA, activada per defecte, afegeix una segona història que corre al costat de l’original: 69 pantalles noves a les quals s’arriba des de les àrees que ja coneixes, i 22 habitants nous, de manera que la ciutat en té 72 en lloc de 50. La història original, els seus reclutes i el seu final no es toquen.",
+      "Les àrees noves s’obren a mesura que avança la història. Cap decisió que prenguis tanca mai un recluta, un servei o una ruta, així que respon com vulguis. Activar l’opció en una partida començada porta tu i el teu company a casa d’en Jijimon i conserva tot el que tenies; amb l’opció desactivada les àrees i els habitants nous simplement no hi són, i les medalles que els necessiten s’amaguen.",
+      "La primera àrea nova, els Turons de Ferro, s’assoleix des de la Sabana dels engranatges un cop obert el camí cap al nord. Després del final, a l’Altra dimensió t’espera un combat opcional contra BlackWarGreymon; la primera victòria dona un Xip Atac i un Xip Defensa."
+    ]
+  },
+  "curling": {
+    "title": "Cúrling",
+    "summary": "Partides ràpides, modes per equips i les cinc copes de la pista de Terra gelada.",
+    "headings": [
+      "Bàsics",
+      "Pedres",
+      "Copes"
+    ],
+    "paragraphs": [
+      "La pista és a Terra gelada. Quan Penguinmon viu a la ciutat, ell obre el menú de la pista. Una partida ràpida costa un peix de qualsevol tipus i els teus rivals són habitants de la ciutat. A part d’Individual hi ha Dobles i partides de tots contra tots de tres o quatre equips.",
+      "Les pedres es cedeixen la velocitat al llarg de la línia entre els seus centres. Un cop de ple atura la pedra llançada i envia l’altra; un cop de costat les desvia totes dues; un ròssec gairebé no mou l’objectiu.",
+      "Les cinc copes individuals es juguen d’una tirada, de tres rondes cadascuna: Novell, Aficionat, Expert, Elit i Llegenda. Cadascuna demana haver guanyat l’anterior i que els set rivals visquin a la ciutat. L’entrada és un peix: Digiseitó, Digipargo, Digitruita, Digisilur i Digillobarro. El premi és sempre un objecte, mai bits. La primera Copa Llegenda també dona la medalla Llegenda del cúrling i un xip de cada tipus; Penguinmon guarda els xips que no pots portar."
+    ]
+  },
+  "cards": {
+    "title": "Cartes i l’àlbum",
+    "summary": "305 cartes, on aconseguir-les i per a què serveixen les repetides.",
     "spoiler_paragraphs": [
-      0,
-      1
+      2
+    ],
+    "paragraphs": [
+      "L’àlbum conté les cartes originals amb el seu art original i, amb CARTES NOVES activat, 240 de noves, de la 66 a la 305. Es desplaça i compta les que tens sobre 305, o sobre 65 amb l’opció desactivada, que amaga les cartes noves arreu i en conserva els recomptes. Pots tenir fins a nou còpies d’una carta.",
+      "Les botigues de cartes venen un sobre de tres cartes per 500 bits, i la màquina de cartes de la botiga d’objectes dona una carta per 100. Un taulell diari ofereix sis cartes al dia, amb preu segons la raresa de 50 a 5000 bits, i compra les teves a meitat de preu. ShogunGekomon canvia cartes repetides per punts de mèrit, d’1 a 100 per carta segons la raresa, i mèrit per objectes amb un quadre de quantitat: una Supercura costa 60, una Superregen. 250 i un xip d’atribut 800. Es mantenen els intercanvis de cartes dels personatges originals.",
+      "Dues cartes són especials. La carta 0 es dona en la primera visita a la botiga de cartes de la Sabana dels engranatges, i la carta 65 arriba amb el final."
     ]
   },
-  "difficulty": {
-    "title": "EASY, NORMAL i HARD",
-    "summary": "EASY, NORMAL i HARD.",
+  "medals": {
+    "title": "Medalles",
+    "summary": "Les 21 medalles, quines opcions n’amaguen algunes i on veure-les.",
+    "spoiler_paragraphs": [
+      2
+    ],
     "paragraphs": [
-      "NORMAL usa les regles habituals. EASY dobla el dany del company i divideix el rebut entre dos, arrodonit amunt abans dels límits. També redueix a la meitat el verí del company. Afecta camp i tornejos individuals, no VS de dos.",
-      "La dificultat no reescriu atributs desats. El dany percentual dels guions té regles pròpies. Tria al títol i comprova les opcions disponibles.",
-      "Tria una dificultat a les opcions del títol. Els ajustos de combat es mostren a sota i no canvien el creixement permanent del company. ALERTA PERILL, a les opcions del títol i activada per defecte, posa un petit diable lila sobre un Digimon salvatge clarament més fort que el teu company: la seva força de combat, PS × (Atac + Defensa), és almenys 2,5 vegades la del teu company. Només apareix als Digimon que inicien un combat en tocar-los, mai als personatges que només parlen, i únicament mentre et pots moure. Fes-la servir per evitar combats que perdries de molt; és un avís, no una garantia."
+      "La pàgina de Medalles és a la pestanya Jugador del menú de pausa. Llista primer les medalles originals; una cantonada daurada marca les sis que afegeix Horizon. Les medalles són un registre: cap dona un objecte, tot i que criar tots els Digimon originals també puja el teu nivell de tamer, com sempre.",
+      "Una medalla que necessita alguna cosa desactivada a OPTIONS s’amaga i no es pot obtenir mentrestant: Mestre Horizon amb NOUS DIGIMON desactivat, Ciutat Horizon amb HIST. EXTRA desactivada i Col·lecció completa amb CARTES NOVES desactivat. Les medalles ja obtingudes es conserven.",
+      "Medalles originals: les copes de Grau, de Versió, de Tipus i Especials de l’arena, 100 victòries, Tècniques clàssiques (les 57 tècniques originals), Mestre clàssic (tots els Digimon originals criats), Cim clàssic (PV i PM 9999, la resta d’atributs 999), Cúrling perfecte, 100 peixos, Game Clear, Ciutat clàssica (50 habitants), Col·lecció clàssica (les cartes originals), Bits al màxim (999999 bits) i 10è aniversari (300 dies des de l'inici). Medalles d’Horizon: Llegenda del cúrling (la Copa Llegenda), Mestre Horizon (tots els Digimon criats), Trencalímits (PV i PM 15000, la resta d’atributs 1500), Ciutat Horizon (tots els habitants), Col·lecció completa (totes les cartes) i Mestre de tècniques (les tècniques originals i 40 de les noves)."
     ]
   },
-  "faq": {
-    "title": "Preguntes i resolució de problemes",
-    "summary": "Actualitzacions, partides, lentitud i informes útils.",
+  "tamer-looks": {
+    "title": "L’aspecte del teu tamer",
+    "summary": "Noi o noia, pell, cabells, roba i motxilla, es pot canviar lliurement en qualsevol moment.",
     "paragraphs": [
-      "Si falta Continua, comprova targeta, blocs i nom del disc amb targetes per joc. Calen {save_blocks} blocs lliures per a una partida nova. Fes còpia, arrenca el disc actualitzat i carrega dins del joc.",
-      "Crear el disc al mòbil pot ser lent. Per errors de quota usa finestra normal, allibera espai i repeteix; també hi ha el pedaçador d’escriptori. Els discos extra aporten espècies; còpies modificades o incompatibles fallen les comprovacions. El creador web en telèfons Android ja no falla amb un error de permisos en copiar el disc.",
-      "Per text incorrecte anota versió, disc base, llengua, compilació i gràfics. En Android afectat prova de desactivar Enable Texture Cache. Inclou el desencadenant i una captura: el símptoma sol no identifica la causa. La cara de WarGrowlmon ja no té forats."
+      "En una partida nova, Jijimon et pregunta si ets noi o noia després de les seves set preguntes, i s’obre la pàgina Aspecte. Més endavant és a la pestanya Jugador del menú de pausa, al costat del teu nom. Canviar l’aspecte és gratuït, es pot fer en qualsevol moment i es desa a la partida.",
+      "Esquerra i dreta canvien la fila ressaltada, L1 i R1 giren el tamer, confirmar desa i cancel·lar descarta. Les files són Tamer (noi o noia, que fixa la cara, les mans i la roba disponible), Pell (sis tons), pentinat i color dels cabells, Samarreta, Pantalons, Sabates i Motxilla, cadascuna amb el seu color.",
+      "Cada fila manté l’original com a primera opció: la gorra, la samarreta, els pantalons, les sabates i la motxilla del tamer original. Hi ha onze pentinats a part de la gorra i el cap calb, vint colors de cabells, quinze samarretes, vuit pantalons incloent-hi uns curts i una faldilla, nou parells de sabates i cinc motxilles, o cap. La roba té setze colors."
+    ]
+  },
+  "cheats": {
+    "title": "El menú Trucs",
+    "summary": "Un menú de proves per provar coses: què fa cada fila.",
+    "paragraphs": [
+      "Posa TRUCS en SÍ a les OPTIONS del títol. Al camp, fes pausa amb START i prem SELECT; el quadre de pausa t’ho recorda amb «SELECT: trucs». El menú és per a proves i per a jugadors que vulguin explorar; canvia la teva partida com qualsevol altra manera de jugar, així que guarda una còpia de la targeta de memòria.",
+      "Les files: Afegir 10000 Bits, Saciar necessitats, Editar Digimon, Evolucionar Digimon, Teleport a mapa, Curar Digimon, Dreceres amb SELECT, Desar partida, Carregar partida, Tornar al menú principal, Morir de vell, Aprendre una tècnica, Aprendre totes les tècniques i Desbloquejar la taula d’evolució. Morir de vell pregunta primer i és una mort natural, de manera que tries l’ou. Amb les dreceres amb SELECT activades, mantenir SELECT i prémer L1 o R1 canvia el company, i L2 o R2 salta entre mapes.",
+      "A l’editor, esquerra i dreta canvien un valor segons el pas, i amunt i avall canvien el pas; L1 i R1 sumen o resten 10, L2 i R2 100. La vida no pot baixar d’una hora. Les llistes llargues donen la volta, i esquerra i dreta salten deu files."
     ]
   }
 }
