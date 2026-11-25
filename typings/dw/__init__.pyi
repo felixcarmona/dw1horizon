@@ -1766,11 +1766,13 @@ class anim:
     unhappy: int = 19    # partner
 
 class _engine:
+    new_game_plus_count: Var    # var 20: New Game Plus runs started on this save (C adds 1, stops at 255)
     prosperity: Var    # var 1: recomputed by C on every save and game start
     shop_hi: Var    # var 243: SHOP_VARIABLE, high byte
     shop_lo: Var    # var 244: SHOP_VARIABLE, low byte
     death_map_entry: Var    # var 124: 1 while Jijimon's house was loaded by the partner's death or lost life (C, not saved)
     rite_keepsake: Var    # var 125: 1 from the rite of return to the rebirth after it: the baby keeps the happy farewell (unsaved)
+    new_game_plus: Var    # var 126: 1 makes routine save_machine start a New Game Plus instead of opening the menu (unsaved)
     music_mode: Var    # var 245
     object: Var    # var 247: CALL_ROUTINE argument: map object / script entity
     animation: Var    # var 248: CALL_ROUTINE argument: animation / exit / mood
@@ -1790,6 +1792,9 @@ class _engine:
     no_cancel: Flag    # flag 49: a selection cannot be cancelled
     card_machine: Flag    # flag 42: routine card_shop sells the item shop's machine cards (patch 0237)
     game_beaten: Flag    # flag 50
+    new_game_plus_unlocked: Flag    # flag 642: set by a New Game Plus: the save machine keeps the option in the new run
+    medal_new_beginning: Flag    # flag 643: medal 21, New Beginning: set by every New Game Plus
+    medal_second_journey: Flag    # flag 644: medal 22, Second Journey: the island saved in a New Game Plus run
 engine: _engine
 glances: Var    # var 101
 

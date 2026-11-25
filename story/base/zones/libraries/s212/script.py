@@ -86,6 +86,37 @@ def step23():    # section 74: the rite of return, from the save machine of Jiji
     raw.set_stat(13, 65535)
     tamer.turn(0)
 
+@lib.on_step(24)
+def step24():    # section 75: New Game Plus, from the save machine of Jijimon's houses once the game is beaten
+    slot0.face(tamer)
+    tamer.face(slot0)
+    wait(250)
+    slot0.say(text.ngplus.explain)
+    match slot0.choose(a=text.ngplus.yes, b=text.ngplus.no):
+        case "a":
+            pass
+        case "b":
+            tamer.turn(0)
+            return
+        case _:
+            tamer.turn(0)
+            return
+    slot0.say(text.ngplus.sure)
+    match slot0.choose(a=text.ngplus.sure_yes, b=text.ngplus.no):
+        case "a":
+            pass
+        case "b":
+            tamer.turn(0)
+            return
+        case _:
+            tamer.turn(0)
+            return
+    slot0.say(text.ngplus.go)
+    hide_hud()
+    engine.new_game_plus.set(1)
+    call(Routine.save_machine)
+    wait(10000)
+
 @lib.on_step(21)
 def step21():    # section 72
     engine.no_escape.clear()

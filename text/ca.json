@@ -18,6 +18,13 @@
  "rite.farewell_ultimate": "Pocs arriben tan lluny. L'illa recordarà aquest.",
  "rite.farewell_mega": "Ho ho... En vuitanta anys he vist aquesta forma només unes poques vegades. Descansa ara, gran.",
  "rite.city": "Tota la ciutat ja ho sap. Algú ha deixat flors a la porta, i la plaça s'ha quedat en silenci.",
+ "ngplus.menu": "Nova partida+",
+ "ngplus.explain": "Ho ho... Has salvat l'illa, noi, així que la màquina pot fer una cosa més. Et pot tornar al dia que vas arribar. L'illa oblida: la ciutat, el teu Digimon, la bossa i els bits tornen a començar. Tu conserves el que saps: la taula, les medalles i copes, les cartes, les tècniques i el teu nivell de tamer.",
+ "ngplus.yes": "Tornar a començar",
+ "ngplus.no": "Encara no",
+ "ngplus.sure": "El que vas desar a la targeta hi continua fins que tornis a desar. Però aquests dies es perdran, noi. N'estàs segur?",
+ "ngplus.sure_yes": "N'estic segur",
+ "ngplus.go": "Doncs tanca els ulls. Ens tornarem a veure... per primera vegada.",
  "qol.mansion_key_used_up": "Totes les portes de la mansió ja són obertes. Ja no necessites la {color 6}Clau de mansió{color 1}.",
  "name.ask_partner": [
   "{color 7}Jijimon {color 1}",

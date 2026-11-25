@@ -3,7 +3,7 @@ and an append-only lock file (story.lock), against a capacity profile.
 
 Profile `original` (the original executable; docs/mods/scripts.md "Free triggers and pstats"):
   persistent flag   trigger 717-788 (72, saved to the memory card)
-  persistent var    pstats 7-15 and 20 (the only free pstats below 35, saved; u8 only)
+  persistent var    pstats 7-15 (the only free pstats below 35, saved; u8 only; 20 is new_game_plus_count)
   session/temp var  pstats 45-93 (not saved; 94-99 are the compiler's scratch registers; u8 only)
 Profile `extended-save` (extended saved state; three blocks per save slot):
   persistent flag   story bits 0-16383 (trigger 800 + n)       persistent var   v0-v1023, i32 (saved)
@@ -29,7 +29,7 @@ class Pool:
 
 ORIGINAL_POOLS = {
     ('flag', 'save'): Pool(range(717, 789), 'trigger', 1, 'trigger'),
-    ('var', 'save'): Pool([7, 8, 9, 10, 11, 12, 13, 14, 15, 20], 'saved pstat', 8),
+    ('var', 'save'): Pool([7, 8, 9, 10, 11, 12, 13, 14, 15], 'saved pstat', 8),
     ('var', 'temp'): Pool(range(45, 94), 'scratch pstat', 8),
 }
 EXTENDED_SAVE_POOLS = {

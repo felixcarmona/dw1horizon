@@ -108,7 +108,7 @@ class ModLock:
         if n is None:
             free = free_range(kind, 3)
             pool = ('the original engine\'s free flags are 717-788; on the story-state engine, story flags such as "12100-12199"' if kind == 'flags'
-                    else 'the original engine\'s free saved counters are 7-15 and 20; on the story-state engine, story variables')
+                    else 'the original engine\'s free saved counters are 7-15; on the story-state engine, story variables')
             err = PyError(f'the {kind} range {lo}-{hi} of {mod.mod} (mod.toml) is full: save.lock gives its numbers to '
                           + ', '.join(sorted(table, key=table.get)),
                           None, f'a name in save.lock that the mod no longer has keeps its number: remove it there if no saved game '
@@ -844,7 +844,7 @@ class Module:
         toml = os.path.relpath(lock.toml, ROOT) if lock.toml.startswith(ROOT + os.sep) else lock.toml
         add = f'{kind} = "{rng}"' if lock.has_save else f'[save]\n        {kind} = "{rng}"'
         pool = ('the original engine\'s free flags are 717-788; on the story-state engine, story flags such as "12100-12199"' if kind == 'flags'
-                else 'the original engine\'s free saved counters are 7-15 and 20')
+                else 'the original engine\'s free saved counters are 7-15')
         return self.err(node, f'mod {self.mod} reserves no save {kind} in mod.toml: its {what} would get numbers that change with '
                               f'the other mods installed, and a saved game would read the wrong ones',
                         f'add to {toml}{" (under [save])" if lock.has_save else ""}:\n        {add}\n      ({pool}; '
