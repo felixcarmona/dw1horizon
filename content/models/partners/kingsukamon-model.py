@@ -13,7 +13,7 @@ eye frames sit at the same texture rectangles (open at 0,32; rolled 16,0; half-c
 At full size the King is 800 high (radius 450), far above the biggest partners
 (MasterTyrannomon 590, the scaled Cherrymon 550, the original Megadramon and Gigadramon
 500). At 0.7 it still filled Jijimon's house and hid the tamer, so the mesh is scaled by
-SCALE = 0.62: about 500 high, the size of the biggest original partners.
+SCALE = 0.49: about 390 high, 1.3 times the tamer.
 
 Every distinct SCUM animation (39, in 47 slots) is played tick by tick like the engine
 (mmd.AnimPlayer); each bone's translation is multiplied by that bone's SCUD/SCUM rest
@@ -38,7 +38,7 @@ import sys
 from tools.models.partners.support import ROOT, mmd, mmd_path, play, check, SlotSet, write, scale_mesh, PARTNER_SLOTS  # noqa: E402
 
 TYPE, SRC_TYPE = 120, 39
-SCALE = 0.62
+SCALE = 0.49
 OWN_SLOTS = (0x00, 0x1E)          # SCUD's own: the King's idle and its NPC scene
 
 

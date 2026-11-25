@@ -164,8 +164,11 @@ class ModelProvider(unittest.TestCase):
         # preceding field recipe covered without applying it over that repair.
         self.assertEqual(records['226'], {'model': '226-Silphymon.MMD', 'aliases_applied': True})
         selected['226'] = model.OVERLAYS['silphymon-field']
-        # Gesomon's walk, run, idle and tired walk are baked into its plain delta (gesomon.py, gesomon_rest.py).
-        self.assertEqual(records['240'], {'model': '240-Gesomon.MMD', 'aliases_applied': True, 'movement_sound': 17})
+        # Gesomon's walk, run, idle and tired walk are baked into its plain delta (gesomon.py, gesomon_rest.py); the
+        # Water row's techniques its species cannot use are aliased to ones it can.
+        self.assertEqual(records['240'], {'model': '240-Gesomon.MMD', 'aliases_applied': True, 'movement_sound': 17,
+                                          'technique_aliases': {'Aqua Jet': 'Ice Needle', 'Whirlpool': 'Water Blit',
+                                                                'Hydro Cannon': 'Giga Freeze'}})
         selected['240'] = model.OVERLAYS['gesomon-terrestrial']
         # Solarmon's whole gears and its four distinct gaits are baked into its plain delta (solarmon_gaits.py); the
         # recipe chain stays registered as the source they were authored over.
