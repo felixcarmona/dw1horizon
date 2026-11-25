@@ -1,8 +1,8 @@
 {
  "s029.sec51.m0.o0": "Je le ferai !",
- "s029.sec51.m0.o1": "Désolé, une autre fois",
+ "s029.sec51.m0.o1": "Pardon, une autre fois",
  "s029.sec51.m1.o0": "Je le ferai !",
- "s029.sec51.m1.o1": "Désolé, une autre fois",
+ "s029.sec51.m1.o1": "Pardon, une autre fois",
  "s029.sec51.u0": [
   [
    "Hé, presque toute la terre a",
@@ -41,7 +41,7 @@
  "s029.sec51.u5": [
   [
    "Hmm, tu veux transporter de la",
-   "terre ? Tu es épuisé.",
+   "terre ? Tu es à bout.",
    "Repose-toi d'abord, puis"
   ],
   [

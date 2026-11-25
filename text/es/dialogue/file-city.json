@@ -168,7 +168,7 @@
    "así que..."
   ],
   [
-   "sírvete tú mismo. ¿Que para qué sirve?",
+   "sírvete. ¿Que para qué sirve?",
    "Pues para que llueva, claro."
   ]
  ],
@@ -285,7 +285,7 @@
   ]
  ],
  "s163.sec12.u0": "¡Eh, {color 6}{player}{color 1}! Estoy patrullando la ciudad por si hay tipos raros. ¿Q-qué pasa? ¡No te estoy molestando ni na'!",
- "s163.sec81.u0": "Bueno, bueno, ¡bienvenido a mi tienda! A ti, {color 6}{player}{color 1}, te lo dejo baratito. La verdad es que no se me da muy bien vender. Pero parece que a nadie más se le da bien tampoco... Así que por eso me ha tocado vender objetos una temporada. Encantado de tenerte por aquí. Y tú, {color 6}{player}{color 1}, sigue así y trae de vuelta a muchos Digimon, jovencito.",
+ "s163.sec81.u0": "Bueno, bueno, ¡pasa a mi tienda! A ti, {color 6}{player}{color 1}, te lo dejo baratito. La verdad es que no se me da muy bien vender. Pero parece que a nadie más se le da bien tampoco... Así que por eso me ha tocado vender objetos una temporada. Encantado de tenerte por aquí. Y tú, {color 6}{player}{color 1}, sigue así y trae de vuelta a muchos Digimon, joven.",
  "s163.sec81.u1": "Ji, ji, ¿y bien? ¿Qué te parece mi tienda? No se me da muy bien vender, ¡pero ahora mismo no hay nadie más que lo haga! Date prisa y trae aquí a muchos Digimon, ¿vale?",
  "s163.sec81.u2": "Ji, ji, ¿y bien? ¿Qué te parece?",
  "s163.sec81.u3": [
@@ -456,11 +456,11 @@
  "s192.sec51.u6": "Venga, venga... antes de que la despedida se haga más dura... empecemos la ceremonia...",
  "s192.sec51.u7": "{color 10}{partner}{color 1}, mi mejor amigo... ¡¡nuestra aventura ha sido la mejor de todas!!",
  "s193.sec54.u0": "Mmm... ¿está volviendo en sí? ¡Parece que ha funcionado!",
- "s193.sec54.u1": "Un humano... ¡justo como dijo Jiji!",
+ "s193.sec54.u1": "Un ser humano... ¡como dijo Jiji!",
  "s193.sec54.u2": "Mmmmmm...",
  "s193.sec54.u3": "¡Chis! ¡Se está despertando!",
  "s193.sec54.u4": "¿Eh...? ¿Dónde... estoy?",
- "s193.sec54.u5": "¡Bienvenido a Digimon World!",
+ "s193.sec54.u5": "¡Digimon World te recibe!",
  "s193.sec54.u6": "¿Eh?",
  "s193.sec54.u7": "¡¡Aaaaah!!",
  "s193.sec54.u8": "¿Eh? ¿Qué? ¿Qué pasa?",
@@ -527,7 +527,7 @@
  "s193.sec55.u22": "Ooh...",
  "s193.sec55.u23": "¡Oooh! ¡C-claro, ya veo! ¡Por fin lo entiendo todo! ¡Ja, ja! ¡Tú déjamelo a mí!",
  "s193.sec55.u24": "¡Bieeen! ¡Hurra, hurra!",
- "s193.sec55.u25": "Ajá, ajá, gracias, muchacho. Sé que es mucho pedir, pero eres lo único que nos queda.",
+ "s193.sec55.u25": "Ajá, ajá, gracias, joven. Sé que es mucho pedir, pero eres lo único que nos queda.",
  "s193.sec55.u26": "Je, je. Bueno, ¿qué hago primero?",
  "s193.sec55.u27": "A partir de ahora, tú y tu compañero {color 10}{partner}{color 1} recorreréis juntos la Isla File.",
  "s193.sec55.u28": "Averiguad qué hay detrás de todo esto, y convenced a los Digimon para que vuelvan a la ciudad.",

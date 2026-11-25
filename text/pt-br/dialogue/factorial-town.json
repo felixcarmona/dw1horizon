@@ -18,10 +18,10 @@
   ],
   [
    "Eu sou MetalMamemon, invencível em 99",
-   "batalhas! Derrotá-lo será minha 100a vitória!"
+   "batalhas! Derrotar você será minha 100a vitória!"
   ],
   [
-   "Certamente o grande {color 6}{player}{color 1} não vai",
+   "Certamente {color 6}{player}{color 1} não vai",
    "fugir?"
   ]
  ],
@@ -156,8 +156,8 @@
    "Vou encontrá-lo... e fazer algo sobre ele."
   ],
   [
-   "Agora eu entendo. Fui chamado aqui para",
-   "vencê-lo, porque sou humano também."
+   "Agora eu entendo. Me chamaram aqui para",
+   "vencê-lo, pois sou do mundo humano."
   ]
  ],
  "s151.sec5.u15": "Nós sinceramente pedimos desculpas pelo que aconteceu. A fábrica ficará fechada por um tempo.",
@@ -204,7 +204,7 @@
  ],
  "s151.sec5.u23": "Entendo, por favor. Quanto tempo vai demorar?",
  "s151.sec5.u24": "Ainda por um tempo... vou levantar o bloqueio na entrada principal desta cidade, então, por favor, volte novamente.",
- "s151.sec5.u25": "Obrigado. Eu voltarei, então.",
+ "s151.sec5.u25": "Agradeço. Eu voltarei, então.",
  "s151.sec5.u26": "O reparo de dados está pronto?",
  "s151.sec5.u27": "Vai demorar um pouco mais. Por favor, volte novamente.",
  "s151.sec5.u28": "Eu voltarei, então.",

@@ -29,4 +29,4 @@ def reads_the_library():
 
 @reader.on_talk
 def stays():
-    say("Go on, boy. I am in good company here.")
+    say("Go on, child. I am in good company here.")

@@ -20,7 +20,7 @@ def a_different_ceremony():
     camera.arrived()
     jijimon.say(t51.u0)
     tamer.say("Jijimon... I gave my key chain away. To him.")
-    jijimon.say("Then the door has been used, my boy.", "There is no ceremony I can do for you now.")
+    jijimon.say("Then the door has been used, my child.", "There is no ceremony I can do for you now.")
     narrator.say(page("{color 7}Tokomon {color 1}", "You're... staying?"))
     tamer.say("My mom'll be worried. I know...", "But somebody needed that door more than I did.")
     jijimon.say("Mm, mm. Then let's begin a different ceremony.", "A house. Right here, in the city.")

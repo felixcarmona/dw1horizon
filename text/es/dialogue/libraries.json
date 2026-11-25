@@ -128,7 +128,7 @@
  "s199.sec51.m29.o0": "De 1000 a 700: vale",
  "s199.sec51.m29.o1": "Pensarlo",
  "s199.sec51.u0": "Dame {color 6}Carne{color 1}.",
- "s199.sec51.u1": "¡Bienvenido! {color 6}Carne{color 1}, ¿verdad? Esto...",
+ "s199.sec51.u1": "¡Hola! {color 6}Carne{color 1}, ¿verdad? Esto...",
  "s199.sec51.u2": "{color 6}Carne{color 1}, a ver... Esto...",
  "s199.sec51.u3": "Vender {color 6}Carne{color 1} a 75 Bits (su precio: 50 Bits).",
  "s199.sec51.u4": "Vender {color 6}Carne{color 1} a 70 Bits (su precio: 50 Bits).",
@@ -207,7 +207,7 @@
  "s199.sec51.u24": "¿¡Quééé!? ¡Eso es carísimo!",
  "s199.sec51.u25": "¿En serio? Pues entonces...",
  "s199.sec51.u26": "Dame un {color 6}Váter portátil{color 1}.",
- "s199.sec51.u27": "¡Bienvenido! Un {color 6}Váter portátil{color 1}, ¿verdad? Esto...",
+ "s199.sec51.u27": "¡Hola! Un {color 6}Váter portátil{color 1}, ¿verdad? Esto...",
  "s199.sec51.u28": "Un {color 6}Váter portátil{color 1}, a ver... Esto...",
  "s199.sec51.u29": "Vender un {color 6}Váter portátil{color 1} a 450 Bits (su precio: 300 Bits).",
  "s199.sec51.u30": "Vender un {color 6}Váter portátil{color 1} a 420 Bits (su precio: 300 Bits).",
@@ -285,7 +285,7 @@
  "s199.sec51.u48": "¿¡Quééé!? ¡Eso es carísimo!",
  "s199.sec51.u49": "¿En serio? Pues entonces...",
  "s199.sec51.u50": "Dame {color 6}Medicina{color 1}.",
- "s199.sec51.u51": "¡Bienvenido! {color 6}Medicina{color 1}, ¿verdad? Esto...",
+ "s199.sec51.u51": "¡Hola! {color 6}Medicina{color 1}, ¿verdad? Esto...",
  "s199.sec51.u52": "{color 6}Medicina{color 1}, a ver... Esto...",
  "s199.sec51.u53": "Vender {color 6}Medicina{color 1} a 1500 Bits (su precio: 1000 Bits).",
  "s199.sec51.u54": "Vender {color 6}Medicina{color 1} a 1400 Bits (su precio: 1000 Bits).",
@@ -426,7 +426,7 @@
  "s200.sec51.m29.o0": "De 1000 a 700: vale",
  "s200.sec51.m29.o1": "Pensarlo",
  "s200.sec51.u0": "Vengo a por {color 6}Carne{color 1}, ¿sabes?",
- "s200.sec51.u1": "¡Bienvenido! {color 6}Carne{color 1}, ¿verdad? Esto...",
+ "s200.sec51.u1": "¡Hola! {color 6}Carne{color 1}, ¿verdad? Esto...",
  "s200.sec51.u2": "{color 6}Carne{color 1}, a ver... Esto...",
  "s200.sec51.u3": "Vender {color 6}Carne{color 1} a 75 Bits (su precio: 50 Bits).",
  "s200.sec51.u4": "Vender {color 6}Carne{color 1} a 70 Bits (su precio: 50 Bits).",
@@ -503,10 +503,10 @@
  ],
  "s200.sec51.u22": "¿¡Me estás tomando el pelo!?",
  "s200.sec51.u23": "No viene ningún cliente...",
- "s200.sec51.u24": "¡Eso es un robo, colega!",
+ "s200.sec51.u24": "¡Eso es un robo!",
  "s200.sec51.u25": "¿En serio? Pues entonces...",
  "s200.sec51.u26": "Vengo a por un {color 6}Váter portátil{color 1}, ¿sabes?",
- "s200.sec51.u27": "¡Bienvenido! Un {color 6}Váter portátil{color 1}, ¿verdad? Esto...",
+ "s200.sec51.u27": "¡Hola! Un {color 6}Váter portátil{color 1}, ¿verdad? Esto...",
  "s200.sec51.u28": "Un {color 6}Váter portátil{color 1}, a ver... Esto...",
  "s200.sec51.u29": "Vender un {color 6}Váter portátil{color 1} a 450 Bits (su precio: 300 Bits).",
  "s200.sec51.u30": "Vender un {color 6}Váter portátil{color 1} a 420 Bits (su precio: 300 Bits).",
@@ -581,10 +581,10 @@
    "Esta venta: +0"
   ]
  ],
- "s200.sec51.u48": "¡Eso es un robo, colega!",
+ "s200.sec51.u48": "¡Eso es un robo!",
  "s200.sec51.u49": "¿En serio? Pues entonces...",
  "s200.sec51.u50": "Vengo a por {color 6}Medicina{color 1}, ¿sabes?",
- "s200.sec51.u51": "¡Bienvenido! {color 6}Medicina{color 1}, ¿verdad? Esto...",
+ "s200.sec51.u51": "¡Hola! {color 6}Medicina{color 1}, ¿verdad? Esto...",
  "s200.sec51.u52": "{color 6}Medicina{color 1}, a ver... Esto...",
  "s200.sec51.u53": "Vender {color 6}Medicina{color 1} a 1500 Bits (su precio: 1000 Bits).",
  "s200.sec51.u54": "Vender {color 6}Medicina{color 1} a 1400 Bits (su precio: 1000 Bits).",
@@ -659,7 +659,7 @@
    "Esta venta: +0"
   ]
  ],
- "s200.sec51.u72": "¡Eso es un robo, colega!",
+ "s200.sec51.u72": "¡Eso es un robo!",
  "s200.sec51.u73": "¿En serio? Pues entonces...",
  "s201.sec51.m0.o0": "Subir el precio",
  "s201.sec51.m0.o1": "Dejarlo en 50 Bits",
@@ -725,7 +725,7 @@
  "s201.sec51.m29.o0": "De 1000 a 700: vale",
  "s201.sec51.m29.o1": "Pensarlo",
  "s201.sec51.u0": "Querría... un poco de {color 6}Carne{color 1}...",
- "s201.sec51.u1": "¡Bienvenido! {color 6}Carne{color 1}, ¿verdad? Esto...",
+ "s201.sec51.u1": "¡Hola! {color 6}Carne{color 1}, ¿verdad? Esto...",
  "s201.sec51.u2": "{color 6}Carne{color 1}, a ver... Esto...",
  "s201.sec51.u3": "Vender {color 6}Carne{color 1} a 75 Bits (su precio: 50 Bits).",
  "s201.sec51.u4": "Vender {color 6}Carne{color 1} a 70 Bits (su precio: 50 Bits).",
@@ -805,7 +805,7 @@
  "s201.sec51.u24": "¿No es... un poco caro...?",
  "s201.sec51.u25": "¿En serio? Pues entonces...",
  "s201.sec51.u26": "Querría... un {color 6}Váter portátil{color 1}...",
- "s201.sec51.u27": "¡Bienvenido! Un {color 6}Váter portátil{color 1}, ¿verdad? Esto...",
+ "s201.sec51.u27": "¡Hola! Un {color 6}Váter portátil{color 1}, ¿verdad? Esto...",
  "s201.sec51.u28": "Un {color 6}Váter portátil{color 1}, a ver... Esto...",
  "s201.sec51.u29": "Vender un {color 6}Váter portátil{color 1} a 450 Bits (su precio: 300 Bits).",
  "s201.sec51.u30": "Vender un {color 6}Váter portátil{color 1} a 420 Bits (su precio: 300 Bits).",
@@ -883,7 +883,7 @@
  "s201.sec51.u48": "¿No es... un poco caro...?",
  "s201.sec51.u49": "¿En serio? Pues entonces...",
  "s201.sec51.u50": "Querría... un poco de {color 6}Medicina{color 1}...",
- "s201.sec51.u51": "¡Bienvenido! {color 6}Medicina{color 1}, ¿verdad? Esto...",
+ "s201.sec51.u51": "¡Hola! {color 6}Medicina{color 1}, ¿verdad? Esto...",
  "s201.sec51.u52": "{color 6}Medicina{color 1}, a ver... Esto...",
  "s201.sec51.u53": "Vender {color 6}Medicina{color 1} a 1500 Bits (su precio: 1000 Bits).",
  "s201.sec51.u54": "Vender {color 6}Medicina{color 1} a 1400 Bits (su precio: 1000 Bits).",
@@ -1024,7 +1024,7 @@
  "s202.sec51.m29.o0": "De 1000 a 700: vale",
  "s202.sec51.m29.o1": "Pensarlo",
  "s202.sec51.u0": "¡Qué ganas tengo de {color 6}Carne{color 1}!",
- "s202.sec51.u1": "¡Bienvenido! {color 6}Carne{color 1}, ¿verdad? Esto...",
+ "s202.sec51.u1": "¡Hola! {color 6}Carne{color 1}, ¿verdad? Esto...",
  "s202.sec51.u2": "{color 6}Carne{color 1}, a ver... Esto...",
  "s202.sec51.u3": "Vender {color 6}Carne{color 1} a 75 Bits (su precio: 50 Bits).",
  "s202.sec51.u4": "Vender {color 6}Carne{color 1} a 70 Bits (su precio: 50 Bits).",
@@ -1104,7 +1104,7 @@
  "s202.sec51.u24": "¿No es carísimo?",
  "s202.sec51.u25": "¿En serio? Pues entonces...",
  "s202.sec51.u26": "¡Qué ganas tengo de un {color 6}Váter portátil{color 1}!",
- "s202.sec51.u27": "¡Bienvenido! Un {color 6}Váter portátil{color 1}, ¿verdad? Esto...",
+ "s202.sec51.u27": "¡Hola! Un {color 6}Váter portátil{color 1}, ¿verdad? Esto...",
  "s202.sec51.u28": "Un {color 6}Váter portátil{color 1}, a ver... Esto...",
  "s202.sec51.u29": "Vender un {color 6}Váter portátil{color 1} a 450 Bits (su precio: 300 Bits).",
  "s202.sec51.u30": "Vender un {color 6}Váter portátil{color 1} a 420 Bits (su precio: 300 Bits).",
@@ -1182,7 +1182,7 @@
  "s202.sec51.u48": "¿No es carísimo?",
  "s202.sec51.u49": "¿En serio? Pues entonces...",
  "s202.sec51.u50": "¡Qué ganas tengo de {color 6}Medicina{color 1}!",
- "s202.sec51.u51": "¡Bienvenido! {color 6}Medicina{color 1}, ¿verdad? Esto...",
+ "s202.sec51.u51": "¡Hola! {color 6}Medicina{color 1}, ¿verdad? Esto...",
  "s202.sec51.u52": "{color 6}Medicina{color 1}, a ver... Esto...",
  "s202.sec51.u53": "Vender {color 6}Medicina{color 1} a 1500 Bits (su precio: 1000 Bits).",
  "s202.sec51.u54": "Vender {color 6}Medicina{color 1} a 1400 Bits (su precio: 1000 Bits).",
@@ -1362,7 +1362,7 @@
  "s205.sec6.u34": "¡Hecho! Tendrás resultados en tres días. ¡Me esforzaré!",
  "s205.sec6.u35": [
   [
-   "No te llegan los Bits, colega."
+   "No te llegan los Bits."
   ],
   [
    "Ni un servidor puede",
@@ -1386,17 +1386,17 @@
  "s206.sec6.m0.o1": "Paso",
  "s206.sec6.m1.o0": "¡Acepto!",
  "s206.sec6.m1.o1": "Paso",
- "s206.sec6.u0": "Oye, tío, ¿echamos una partida? Si me ganas, haré lo que me digas.",
+ "s206.sec6.u0": "Oye, ¿echamos una partida? Si me ganas, haré lo que me digas.",
  "s206.sec6.u1": "¿Mm? ¿Qué clase de partida?",
  "s206.sec6.u2": "¡La llamo Curling Digimon! Dentro te lo explico todo.",
  "s206.sec6.u3": "Ya. ¿Y si pierdo?",
  "s206.sec6.u4": "La primera vez, nada. Pero la próxima vez que me retes, me das un pez por adelantado.",
  "s206.sec6.u5": "Entendido. Entonces, si ganamos, te vienes a la ciudad. Si te parece bien, juguemos.",
  "s206.sec6.u6": "Sip. Me parece bien. Pasa, pasa.",
- "s206.sec6.u7": "Oye, tío, ¿te atreves conmigo? Retarme cuesta un pez.",
+ "s206.sec6.u7": "Oye, ¿te atreves conmigo? Retarme cuesta un pez.",
  "s206.sec6.u8": [
   [
-   "¡Eh, tío! Aquí también me he",
+   "¡Eh! Aquí también me he",
    "montado una pista."
   ],
   [
@@ -1405,13 +1405,13 @@
    "doy un premio chulísimo."
   ]
  ],
- "s206.sec6.u9": "Bueno, tío, ¿te atreves conmigo? Retarme cuesta un pez.",
+ "s206.sec6.u9": "Bueno, ¿te atreves conmigo? Retarme cuesta un pez.",
  "s206.sec6.u10": "¡Jo, qué soso eres!",
  "s206.sec6.u11": "¡Dame un pez!",
  "s206.sec6.u12": "Ah, es verdad, ahora no llevo nada...",
  "s206.sec6.u13": "¡Ups! Darle esto no servirá de nada.",
  "s206.sec6.u14": "¡Hala, qué buena pinta! Uy, primero la partida. Pasa, pasa.",
- "s206.sec6.u15": "Venga ya, tío. ¡Ve a pescar un pez al Lago del Ojo del Dragón!",
+ "s206.sec6.u15": "Venga ya. ¡Ve a pescar un pez al Lago del Ojo del Dragón!",
  "s206.sec7.m0.o0": "¡Vamos allá!",
  "s206.sec7.m0.o1": "No, gracias",
  "s206.sec7.u0": "Hola, {color 6}{player}{color 1}. Penguinmon me ha pedido que le cuide la pista. Oye, ¿por qué no me retas esta vez? Si me ganas, te llevas un premio muy especial. ¿Qué me dices?",
@@ -1430,41 +1430,41 @@
   ]
  ],
  "s206.sec7.u6": "¿Q-qué... Me rechazas...?",
- "s206.sec10.u0": "Lo siento, tío. ¡Trae otro pez y vuelve a retarme!",
- "s206.sec10.u1": "¡Hala, una puntuación perfecta! Tío... ¿tú eres profesional o qué?",
+ "s206.sec10.u0": "Lo siento. ¡Trae otro pez y vuelve a retarme!",
+ "s206.sec10.u1": "¡Hala, una puntuación perfecta! ¿Tú eres profesional o qué?",
  "s206.sec10.u2": "{color 7}¡Enhorabuena! Por tus grandes hazañas, ¡has recibido una medalla!{color 1}",
- "s206.sec10.u3": "Qué pasada, tío. Es la primera vez que pierdo.",
+ "s206.sec10.u3": "Qué pasada. Es la primera vez que pierdo.",
  "s206.sec10.u4": "Vale, te vienes a la ciudad, como prometiste.",
  "s206.sec10.u5": "Lo justo es justo. Pero ya sé lo que voy a hacer en la ciudad. ¡Ya verás!",
  "s206.sec10.u6": "¡Penguinmon se ha unido a la ciudad!",
- "s206.sec11.u0": "Lo siento, tío. ¡Trae otro pez y vuelve a retarme!",
- "s206.sec11.u1": "¡Hala, una puntuación perfecta! Tío... ¿tú eres profesional o qué?",
+ "s206.sec11.u0": "Lo siento. ¡Trae otro pez y vuelve a retarme!",
+ "s206.sec11.u1": "¡Hala, una puntuación perfecta! ¿Tú eres profesional o qué?",
  "s206.sec11.u2": "{color 7}¡Enhorabuena! Por tus grandes hazañas, ¡has recibido una medalla!{color 1}",
- "s206.sec11.u3": "¡Hala, eres un crack, tío! He vuelto a perder.",
+ "s206.sec11.u3": "¡Hala, qué crack! He vuelto a perder.",
  "s206.sec11.u4": "Lo justo es justo. Toma, tu premio.",
  "s206.sec11.u5": "¡No puedes llevar más!",
  "s206.sec11.u6": "¡Recibes {color 6}{item 110}{color 1}!",
  "s206.sec12.u0": "¡Ja, ja, ja! Si quieres ganarme, usa un poco más la cabeza. ¡Hasta la próxima!",
  "s206.sec12.u1": "¿¡Una puntuación perfecta contra mí!? ¿¡Eres un genio del curling o qué!?",
  "s206.sec12.u2": "{color 7}¡Enhorabuena! Por tus grandes hazañas, ¡has recibido una medalla!{color 1}",
- "s206.sec12.u3": "Hmpf, eres bueno, {color 6}{player}{color 1}. Aquí tienes el premio que te prometí.",
+ "s206.sec12.u3": "Hmpf, se te da bien, {color 6}{player}{color 1}. Aquí tienes el premio que te prometí.",
  "s206.sec12.u4": "¡No puedes llevar más!",
  "s206.sec12.u5": "¡Recibes {color 6}{item 110}{color 1}!",
  "s206.sec13.m0.o0": "Partidas y copas",
- "s206.sec13.u7": "¡Empate, tío! Se repite el partido.",
- "s206.sec13.u8": "¡Has pasado, tío! Ahora, la semifinal.",
- "s206.sec13.u9": "¡Hala, estás en la final, tío! El campeón te espera.",
+ "s206.sec13.u7": "¡Empate! Se repite el partido.",
+ "s206.sec13.u8": "¡Has pasado! Ahora, la semifinal.",
+ "s206.sec13.u9": "¡Hala, estás en la final! El campeón te espera.",
  "s206.sec13.u10": "{color 7}¡Has ganado la Copa Novato!{color 1}",
  "s206.sec13.u11": "{color 7}¡Has ganado la Copa Aficionado!{color 1}",
  "s206.sec13.u12": "{color 7}¡Has ganado la Copa Experto!{color 1}",
  "s206.sec13.u13": "{color 7}¡Has ganado la Copa Élite!{color 1}",
  "s206.sec13.u14": "{color 7}¡Has ganado la Copa Leyenda!{color 1}",
  "s206.sec13.u24": "{color 7}Has ganado la Copa Leyenda: ¡te llevas la medalla Leyenda del Curling!{color 1}",
- "s206.sec13.u25": "¡Menuda pareja, tío! Nadie lanza como vosotros dos.",
- "s206.sec13.u26": "¡Todos contra todos y has quedado el primero, tío!",
- "s206.sec13.u27": "¡Una leyenda se lleva el lote entero, tío! Un chip de cada clase.",
- "s206.sec13.u28": "¡No puedes llevar más, tío! Te guardo los chips que faltan. Vuelve cuando tengas sitio.",
- "s206.sec13.u29": "¡Tío! Te he guardado tus chips. Toma.",
+ "s206.sec13.u25": "¡Menuda pareja! Nadie lanza como vosotros dos.",
+ "s206.sec13.u26": "¡Todos contra todos y has quedado en primer lugar!",
+ "s206.sec13.u27": "¡Una leyenda se lleva el lote entero! Un chip de cada clase.",
+ "s206.sec13.u28": "¡No puedes llevar más! Te guardo los chips que faltan. Vuelve cuando tengas sitio.",
+ "s206.sec13.u29": "¡Eh! Te he guardado tus chips. Toma.",
  "s207.sec11.m0.o0": "Comprar",
  "s207.sec11.m0.o1": "No comprar",
  "s207.sec11.m1.o0": "Comprar",
@@ -2227,7 +2227,7 @@
   ],
   [
    "No hagas ninguna locura hasta",
-   "que estés preparado."
+   "que te veas capaz."
   ]
  ],
  "s210.sec51.u9": "El camino al Monte Infinito ha aparecido al otro lado de la cascada de la ciudad.",
@@ -2249,7 +2249,7 @@
  "s210.sec77.u3": "Jo, jo, ahora sí que va cogiendo color.",
  "s210.sec77.u4": "Se ha convertido en una ciudad estupenda, no te quepa duda.",
  "s210.sec77.u5": "Pensar que la has dejado tan espléndida... ¡Maravilloso!",
- "s210.sec77.u6": "No puedo decir nada más. ¡Es una maravilla, muchacho!",
+ "s210.sec77.u6": "No puedo decir nada más. ¡Es una maravilla!",
  "s210.sec77.u7": [
   [
    "",
@@ -2257,7 +2257,7 @@
   ]
  ],
  "s210.sec77.u8": "{color 7}¡Enhorabuena! Por tus grandes hazañas, ¡has recibido una medalla!{color 1}",
- "s211.sec8.u0": "Bienvenido, {color 6}{player}{color 1}.",
+ "s211.sec8.u0": "Hola, {color 6}{player}{color 1}.",
  "s211.sec8.u1": "Llevo los registros de Jijimon.",
  "s211.sec8.u2": "Mi tarea es anotar lo que Jijimon recuerda día a día, los rumores y lo que yo mismo sé, y contártelo todo a ti.",
  "s211.sec8.u3": "Si alguna vez no sabes qué hacer, ven a verme. Seguro que encuentras el camino.",
@@ -3074,7 +3074,7 @@
  "s213.sec81.u3": "Me alegro de que vengas. ¿Quieres inscribirte en un torneo?",
  "s213.sec81.u4": [
   [
-   "Estás inscrito en el torneo de",
+   "Tienes plaza en el torneo de",
    "mañana: «- {cup 3} -»."
   ],
   [
@@ -3084,7 +3084,7 @@
  ],
  "s213.sec81.u5": [
   [
-   "Estás inscrito en el torneo de",
+   "Tienes plaza en el torneo de",
    "hoy: «- {cup 3} -».",
    "Puedes entrar desde las 10."
   ],
@@ -3095,7 +3095,7 @@
  ],
  "s213.sec81.u6": [
   [
-   "Estás inscrito en el torneo de",
+   "Tienes plaza en el torneo de",
    "hoy: «- {cup 3} -».",
    "Entra antes de las 23:00."
   ],
@@ -3105,7 +3105,7 @@
   ]
  ],
  "s213.sec81.u7": "Muy bien, la cancelo.",
- "s213.sec81.u8": "Una vez inscrito, baja por las escaleras de la izquierda a la hora de inicio. Así se entra en un torneo. La inscripción es gratis. Solo puedes inscribirte en el torneo de hoy o en el de mañana. Pero para el de hoy, tienes que inscribirte antes de las 10. Puedes ver el calendario con cinco días de antelación, así que planéalo un poco antes. Los torneos en rojo son en los que no puedes participar, pero puedes consultarlos con el botón START. Y aunque ponga «Entrada: libre», los Digimon Infantil no pueden participar. Bueno, eso es lo que hay que saber. ¿Y bien? ¿Te inscribes?",
+ "s213.sec81.u8": "Tras inscribirte, baja por las escaleras de la izquierda a la hora de inicio. Así se entra en un torneo. La inscripción es gratis. Solo puedes inscribirte en el torneo de hoy o en el de mañana. Pero para el de hoy, tienes que inscribirte antes de las 10. Puedes ver el calendario con cinco días de antelación, así que planéalo un poco antes. Los torneos en rojo son en los que no puedes participar, pero puedes consultarlos con el botón START. Y aunque ponga «Entrada: libre», los Digimon Infantil no pueden participar. Bueno, eso es lo que hay que saber. ¿Y bien? ¿Te inscribes?",
  "s214.sec51.u0": "Qué pena. ¡Vuelve a intentarlo!",
  "s214.sec51.u1": [
   [
@@ -3606,7 +3606,7 @@
  "s216.sec51.u0": [
   [
    "Hola, {color 6}{player}{color 1}.",
-   "¿Sorprendido?"
+   "¿Sorpresa?"
   ],
   [
    "Seguro que nunca pensaste que",

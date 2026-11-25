@@ -29,7 +29,7 @@
  ],
  "s085.sec5.u0": [
   [
-   "Petit, je vais te dévorer tout",
+   "Je vais te dévorer tout",
    "cruuu !"
   ]
  ],
@@ -120,7 +120,7 @@
  "s089.sec5.u0": [
   [
    "Laisse tes objets de valeur",
-   "ici, mon pote."
+   "ici."
   ]
  ],
  "s089.sec6.u0": [
@@ -215,15 +215,15 @@
  ],
  "s091.sec5.u4": [
   [
-   "Tu es venu sans te défiler.",
+   "Tu as tenu parole.",
    "Pas mal. Aujourd'hui, c'est un",
    "contre un, comme promis !"
   ]
  ],
  "s091.sec5.u5": [
   [
-   "Tu n'es pas venu à l'heure",
-   "convenue, quel type ! Mais j'ai",
+   "Tu n'as pas respecté l'heure",
+   "convenue, ça alors ! Mais j'ai",
    "eu le temps de bien me soigner,"
   ],
   [
@@ -360,7 +360,7 @@
  ],
  "s128.sec5.u3": [
   [
-   "Hé, tu es revenu me voir !"
+   "Hé, tu reviens me voir !"
   ]
  ],
  "s128.sec5.u4": [
@@ -381,7 +381,7 @@
   ]
  ],
  "s130.sec81.m0.o0": "Je viens t'aider",
- "s130.sec81.m0.o1": "Pas encore prêt",
+ "s130.sec81.m0.o1": "Pas encore",
  "s130.sec81.m1.o0": "Très bien. Je vais t'aider.",
  "s130.sec81.m1.o1": "J'ai autre chose à faire...",
  "s130.sec81.u0": [
@@ -411,8 +411,8 @@
  ],
  "s130.sec81.u4": [
   [
-   "Je suis {color 6}{player}{color 1}, un",
-   "humain, et voici... enfin, tu",
+   "Je suis {color 6}{player}{color 1},",
+   "et voici... enfin, tu",
    "ne peux pas le voir, mais c'est"
   ],
   [
@@ -608,7 +608,7 @@
   [
    "Tu ne sais donc pas que",
    "{digimon 103} craint le",
-   "froid ? Tu as été imprudent."
+   "froid ? Quelle imprudence !"
   ],
   [
    "C'est toi qui devrais",
@@ -673,7 +673,7 @@
  ],
  "s128.sec6.u3": [
   [
-   "Hé, tu es revenu me voir !"
+   "Hé, tu reviens me voir !"
   ]
  ],
  "s128.sec6.u4": [
@@ -703,7 +703,7 @@
  ],
  "s129.sec7.u3": [
   [
-   "Hé, tu es revenu me voir !"
+   "Hé, tu reviens me voir !"
   ]
  ],
  "s129.sec7.u4": [

@@ -104,7 +104,7 @@
  "s196.sec7.u0": [
   [
    "Tu crois que tu vas sortir",
-   "d'ici vivant ?"
+   "d'ici en vie ?"
   ]
  ],
  "s196.sec8.u0": [
@@ -899,7 +899,7 @@
  ],
  "s200.sec51.u24": [
   [
-   "C'est du vol, mon vieux !"
+   "C'est du vol !"
   ]
  ],
  "s200.sec51.u25": [
@@ -1040,7 +1040,7 @@
  ],
  "s200.sec51.u48": [
   [
-   "C'est du vol, mon vieux !"
+   "C'est du vol !"
   ]
  ],
  "s200.sec51.u49": [
@@ -1181,7 +1181,7 @@
  ],
  "s200.sec51.u72": [
   [
-   "C'est du vol, mon vieux !"
+   "C'est du vol !"
   ]
  ],
  "s200.sec51.u73": [
@@ -2447,8 +2447,8 @@
  "s205.sec6.u34": "D'accord ! Tu auras le résultat dans trois jours. Je ferai de mon mieux !",
  "s205.sec6.u35": [
   [
-   "Tu n'as pas assez de Bits, mon",
-   "vieux. Même moi, je ne peux pas",
+   "Tu n'as pas assez de Bits.",
+   "Même moi, je ne peux pas",
    "déterrer un trésor sans un peu"
   ],
   [
@@ -2490,7 +2490,7 @@
  "s206.sec6.m1.o1": "Je passe",
  "s206.sec6.u0": [
   [
-   "Salut, mon pote, tu veux",
+   "Salut, tu veux",
    "m'affronter ? Si tu me bats, je",
    "ferai tout ce que tu voudras."
   ]
@@ -2535,14 +2535,14 @@
  ],
  "s206.sec6.u7": [
   [
-   "Salut, mon pote ! Tu veux me",
+   "Salut ! Tu veux me",
    "défier ? Ça te coûtera un",
    "poisson."
   ]
  ],
  "s206.sec6.u8": [
   [
-   "Salut, mon pote ! J'ai aussi",
+   "Salut ! J'ai aussi",
    "fait une patinoire ici. Comme",
    "avant : un poisson par partie."
   ],
@@ -2553,7 +2553,7 @@
  ],
  "s206.sec6.u9": [
   [
-   "Alors, mon pote, tu me défies ?",
+   "Alors, tu me défies ?",
    "Ça coûte un poisson."
   ]
  ],
@@ -2587,7 +2587,7 @@
  ],
  "s206.sec6.u15": [
   [
-   "Allez, mon pote. Va pêcher un",
+   "Allez. Va pêcher un",
    "poisson au Lac Oeil-de-dragon",
    "!"
   ]
@@ -2648,15 +2648,15 @@
  ],
  "s206.sec10.u0": [
   [
-   "Désolé, mon pote. Apporte un",
+   "Désolé. Apporte un",
    "autre poisson et défie-moi",
    "encore !"
   ]
  ],
  "s206.sec10.u1": [
   [
-   "Ouah, un score parfait ! Mon",
-   "pote... tu es un pro ou quoi ?"
+   "Ouah, un score parfait ! Dis",
+   "donc... tu es un pro ou quoi ?"
   ]
  ],
  "s206.sec10.u2": [
@@ -2667,7 +2667,7 @@
  ],
  "s206.sec10.u3": [
   [
-   "Incroyable, mon pote. C'est la",
+   "Incroyable. C'est la",
    "toute première fois que je",
    "perds."
   ]
@@ -2688,15 +2688,15 @@
  "s206.sec10.u6": "Penguinmon a rejoint la ville !",
  "s206.sec11.u0": [
   [
-   "Désolé, mon pote. Apporte un",
+   "Désolé. Apporte un",
    "autre poisson et défie-moi",
    "encore !"
   ]
  ],
  "s206.sec11.u1": [
   [
-   "Ouah, un score parfait ! Mon",
-   "pote... tu es un pro ou quoi ?"
+   "Ouah, un score parfait ! Dis",
+   "donc... tu es un pro ou quoi ?"
   ]
  ],
  "s206.sec11.u2": [
@@ -2707,7 +2707,7 @@
  ],
  "s206.sec11.u3": [
   [
-   "Ouah, t'es fort, mon pote. J'ai",
+   "Ouah, quelle force. J'ai",
    "encore perdu."
   ]
  ],
@@ -2744,7 +2744,7 @@
  ],
  "s206.sec12.u3": [
   [
-   "Hmpf, tu es fort, {color 6}{player}{color 1}",
+   "Hmpf, bravo, {color 6}{player}{color 1}",
    "! Voici le prix promis."
   ]
  ],
@@ -2755,20 +2755,20 @@
   ]
  ],
  "s206.sec13.m0.o0": "Parties et coupes",
- "s206.sec13.u7": "Égalité, mon pote ! On rejoue.",
- "s206.sec13.u8": "Tu passes, mon pote ! Place à la demi-finale.",
- "s206.sec13.u9": "Waouh, tu es en finale, mon pote ! Le champion t'attend.",
+ "s206.sec13.u7": "Égalité ! On rejoue.",
+ "s206.sec13.u8": "Tu passes ! Place à la demi-finale.",
+ "s206.sec13.u9": "Waouh, tu es en finale ! Le champion t'attend.",
  "s206.sec13.u10": "{color 7}Tu as gagné la Coupe Débutant !{color 1}",
  "s206.sec13.u11": "{color 7}Tu as gagné la Coupe Amateur !{color 1}",
  "s206.sec13.u12": "{color 7}Tu as gagné la Coupe Expert !{color 1}",
  "s206.sec13.u13": "{color 7}Tu as gagné la Coupe Élite !{color 1}",
  "s206.sec13.u14": "{color 7}Tu as gagné la Coupe Légende !{color 1}",
  "s206.sec13.u24": "{color 7}Tu as gagné la Coupe Légende : tu gagnes la médaille Légende du curling !{color 1}",
- "s206.sec13.u25": "Quelle paire, frérot ! Personne ne lance comme vous deux.",
- "s206.sec13.u26": "Chacun pour soi, et c'est toi le premier, frérot !",
- "s206.sec13.u27": "Une légende repart avec tout le lot, mon pote ! Une puce de chaque sorte.",
- "s206.sec13.u28": "Tu ne peux plus rien porter, mon pote ! Je garde le reste de tes puces. Reviens quand tu auras de la place.",
- "s206.sec13.u29": "Mon pote ! J'ai gardé tes puces. Tiens.",
+ "s206.sec13.u25": "Quelle paire ! Personne ne lance comme vous deux.",
+ "s206.sec13.u26": "Chacun pour soi, et c'est toi qui gagnes !",
+ "s206.sec13.u27": "Une légende repart avec tout le lot ! Une puce de chaque sorte.",
+ "s206.sec13.u28": "Tu ne peux plus rien porter ! Je garde le reste de tes puces. Reviens quand tu auras de la place.",
+ "s206.sec13.u29": "Hé ! J'ai gardé tes puces. Tiens.",
  "s207.sec11.m0.o0": "Acheter",
  "s207.sec11.m0.o1": "Ne pas acheter",
  "s207.sec11.m1.o0": "Acheter",
@@ -3443,12 +3443,12 @@
  ],
  "s209.sec5.u12": [
   [
-   "Inscrit à «- {cup 3} -»"
+   "Tournoi : «- {cup 3} -»"
   ]
  ],
  "s209.sec5.u13": [
   [
-   "Non inscrit."
+   "Sans tournoi"
   ]
  ],
  "s209.sec5.u14": [
@@ -3953,7 +3953,7 @@
   [
    "Hm, je compte sur toi ! Mais",
    "prends ton temps. Ne fais rien",
-   "d'imprudent avant d'être prêt."
+   "d'imprudent sans préparation."
   ]
  ],
  "s210.sec51.u9": [
@@ -4010,7 +4010,7 @@
  "s210.sec77.u6": [
   [
    "Je ne sais plus quoi dire.",
-   "C'est merveilleux, mon garçon !"
+   "C'est merveilleux, mon enfant !"
   ]
  ],
  "s210.sec77.u7": [
@@ -5022,8 +5022,8 @@
  ],
  "s213.sec54.u0": [
   [
-   "Hé, tu n'es pas inscrit au",
-   "tournoi."
+   "Hé, tu n'as pas",
+   "d'inscription au tournoi."
   ]
  ],
  "s213.sec54.u1": [
@@ -5104,9 +5104,9 @@
  ],
  "s213.sec81.u4": [
   [
-   "Tu es inscrit au tournoi de",
+   "Tu participes au tournoi de",
    "demain : «- {cup 3} -».",
-   "Tu veux annuler ton inscription"
+   "Tu veux te désinscrire"
   ],
   [
    "?"
@@ -5114,7 +5114,7 @@
  ],
  "s213.sec81.u5": [
   [
-   "Tu es inscrit au tournoi",
+   "Tu participes au tournoi",
    "d'aujourd'hui : «- {cup 3}",
    "-». Tu peux entrer dès 10 h."
   ],
@@ -5125,7 +5125,7 @@
  ],
  "s213.sec81.u6": [
   [
-   "Tu es inscrit au tournoi",
+   "Tu participes au tournoi",
    "d'aujourd'hui : «- {cup 3}",
    "-». Entre avant 23 h. Ne me"
   ],
@@ -5961,8 +5961,8 @@
  "s216.sec51.m0.o2": "Rien, merci.",
  "s216.sec51.u0": [
   [
-   "Bonjour, {color 6}{player}{color 1}. Surpris",
-   "? Tu ne pensais pas me voir",
+   "Bonjour, {color 6}{player}{color 1}. Eh oui",
+   "! Tu ne pensais pas me voir",
    "ouvrir une clinique, hein ?"
   ],
   [

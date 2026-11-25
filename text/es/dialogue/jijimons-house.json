@@ -11,7 +11,7 @@
  "s165.sec5.u1": "¿Qué pasa?",
  "s165.sec5.u2": "Acabo de sentirlo otra vez: la misma maldad que con Analogman y Machinedramon. Pero sigo sin saber de dónde viene...",
  "s165.sec5.u3": "¿¡Otra vez!? ¡Vale, déjamelo a mí!",
- "s165.sec5.u4": "Ah, gracias, muchacho. Por cierto...",
+ "s165.sec5.u4": "Ah, gracias, joven. Por cierto...",
  "s165.sec5.u5": "¡Me han dicho que has derrotado a Machinedramon!",
  "s165.sec5.u6": "Sí. Pero no lo entiendo muy bien. Era como una especie de maldición de Analogman.",
  "s165.sec5.u7": [
@@ -47,12 +47,12 @@
   ]
  ],
  "s165.sec5.u16": "¡Vale, déjamelo a mí! Lo encontraré y acabaré con él.",
- "s165.sec5.u17": "Ah, gracias, muchacho. Por cierto...",
+ "s165.sec5.u17": "Ah, gracias, joven. Por cierto...",
  "s165.sec7.u0": "Parece que Yuramon se ha enterado de rumores nuevos.",
  "s165.sec7.u1": "¡Ah, sí! Yuramon dice que sabe rumores nuevos.",
  "s165.sec7.u2": "La ciudad tiene cada vez más vida, y lo que se oye por ahí también está cambiando un poco.",
  "s165.sec7.u3": "{color 6}{player}{color 1}, tu forma de ir de aventuras es bastante rara, ¿sabes?",
- "s165.sec20.u0": "Así que has vuelto en ti... Lo siento muchísimo, muchacho.",
+ "s165.sec20.u0": "Así que has vuelto en ti... Lo siento muchísimo, joven.",
  "s165.sec85.m0.o0": "Usarla",
  "s165.sec85.m0.o1": "No usarla",
  "s165.sec85.u0": "¿Anda? ¿Qué es esta máquina?",
@@ -90,7 +90,7 @@
  "s178.sec5.u1": "¿Qué pasa?",
  "s178.sec5.u2": "Acabo de sentirlo otra vez: la misma maldad que con Analogman y Machinedramon. Pero sigo sin saber de dónde viene...",
  "s178.sec5.u3": "¿¡Otra vez!? ¡Vale, déjamelo a mí!",
- "s178.sec5.u4": "Ah, gracias, muchacho. Por cierto...",
+ "s178.sec5.u4": "Ah, gracias, joven. Por cierto...",
  "s178.sec5.u5": "¡Me han dicho que has derrotado a Machinedramon!",
  "s178.sec5.u6": "Sí. Pero no lo entiendo muy bien. Era como una especie de maldición de Analogman.",
  "s178.sec5.u7": [
@@ -126,7 +126,7 @@
   ]
  ],
  "s178.sec5.u16": "¡Vale, déjamelo a mí! Lo encontraré y acabaré con él.",
- "s178.sec5.u17": "Ah, gracias, muchacho. Por cierto...",
+ "s178.sec5.u17": "Ah, gracias, joven. Por cierto...",
  "s178.sec5.u18": "Ejem, ejem. Junto con los Digimon que vayan volviendo, voy a reconstruir Ciudad File.",
  "s178.sec5.u19": "Pienso levantar tiendas que os vengan bien a ti y a {color 10}{partner}{color 1}.",
  "s178.sec5.u20": [
@@ -281,7 +281,7 @@
    "compañero, incluso de lejos."
   ]
  ],
- "s178.sec20.u0": "Así que has vuelto en ti... Lo siento muchísimo, muchacho.",
+ "s178.sec20.u0": "Así que has vuelto en ti... Lo siento muchísimo, joven.",
  "s178.sec82.m0.o0": "Descansar un rato",
  "s178.sec82.m0.o1": "No descansar",
  "s178.sec82.u0": "Punimon no está, pero supongo que puedo descansar igualmente.",
