@@ -255,6 +255,23 @@ def technique_aliases(s, aliases):
     return species_tools.apply_slot_aliases(model, own)
 
 
+def _resize(out, t, s, model, size):
+    """(model, species file) with the manifest's size (content/models/imports/sizes.json) baked into model and record."""
+    from pathlib import Path
+    from tools.models import species_size
+    model, proof = species_size.apply(model, s['model']['skeleton'], t, size)
+    generated = Path(os.path.abspath(out) + '-models')
+    generated.mkdir(parents=True, exist_ok=True)
+    model_path = generated / f'{t}-size.MMD'
+    model_path.write_bytes(model)
+    (generated / f'{t}-size-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+    s = species_size.patch_record(s, proof)
+    s['model']['file'] = str(model_path)
+    s['model'].pop('slot_aliases', None)
+    s.pop('_path', None)
+    return model, s
+
+
 def species_file(out, t, recs=None, names=None, generate=False):
     """(file name, species file) of id t as make() writes it into OUT; its overlay (if any) made here (generate) or read
     back from OUT-models (a missing one stops)."""
@@ -277,6 +294,14 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = model_path
         s['model'].pop('slot_aliases', None)
         s.pop('_path', None)
+    from tools.models import species_size
+    size = species_size.rows().get(str(t))
+    if size and not size.get('after_cleanup'):
+        # The partner's height beside the tamer (and any per-bone proportions), after the overlay that
+        # authored its field clips and before every pass that measures the final model (dash reach, care, rig).
+        import species as species_tools
+        s['_path'] = os.path.join(ROOT, 'content/species', name)
+        _, s = _resize(out, t, s, species_tools.species_model(s)[0], size)
     # Battle reach is applied after all field size passes: their global model
     # scaling would otherwise shorten the native dash again.
     if 'Buster Dive' in (s.get('techniques') or []) and not e.get('native_animation_donor'):
@@ -413,6 +438,10 @@ def species_file(out, t, recs=None, names=None, generate=False):
         (generated / f'{t}-mesh-cleanup-report.json').write_text(json.dumps(cleanup, indent=2) + '\n')
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
+    if size and size.get('after_cleanup') and not stability.get('deferred'):
+        # a surface repair reviewed on exact vertices: the size goes onto its result
+        # (a variant whose repair is deferred keeps its reviewed size)
+        cleaned, s = _resize(out, t, s, cleaned, size)
     # Final storage pass: measure and recompress after every geometry/pose repair.
     from tools.models import partner_headroom
     final, headroom = partner_headroom.apply(cleaned, s['model']['skeleton'], t)

@@ -24,6 +24,7 @@ MODELS = [   # (file, script): the order of build-full.sh
     ('WARU-partner.MMD', f'{X}/partners/warumonzaemon/make-model.py'),  # 70
     ('VAND-partner.MMD', f'{X}/partners/myotismon/make-model.py'),      # 66
     ('TONO-partner.MMD', f'{X}/partners/shogungekomon/make-model.py'),  # 119
+    ('HOEE-partner.MMD', f'{X}/partners/whamon-model.py'),        # Whamon 24 (replaces HOEE.MMD)
     ('MUGP.MMD', f'{X}/partners/machinedramon.py'),   # Machinedramon 115 (partner-only file)
     ('JIJP.MMD', f'{X}/partners/jijimon.py'),         # Jijimon 117 (partner-only file)
     ('ANLP.MMD', f'{X}/partners/analogman.py'),       # Analogman 116 (partner-only file)
