@@ -29,14 +29,13 @@ def fixture_partner(e, species):
                       ('PARTNER_STATE',b'\15'),('PARTNER_SUB_STATE',b'\0')]:
         e.poke(name,data)
     e.run('resume')
-    for _ in range(180):
+    for _ in range(400):
         ram=e.ram()
         if e.peek('PARTNER_ENTITY','i',ram)==species and e.peek('PARTNER_STATE','b',ram)==1:
             e.poke('PAUSE_STATE',b'\0')
             assert e.in_control()
             return
-        if e.peek('MOD_EVO_SKIP','b',ram)==3:e.press('START',8)
-        elif e.peek('TAMER_STATE','b',ram)==20:e.press('CONFIRM',8)
+        if e.peek('TAMER_STATE','b',ram)==20:e.press('CONFIRM',8)
         e.wait(.3)
     raise AssertionError(f'fixture evolution to {species} did not finish')
 

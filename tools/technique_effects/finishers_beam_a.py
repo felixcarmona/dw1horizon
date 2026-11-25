@@ -553,28 +553,33 @@ def arrowhead():
 
 
 def v_nova_blast():
-    """Veedramon's head comes down and it breathes an arrow of white-blue light from its jaws: a shaft that leaves the
-    snout behind a great arrowhead, two smaller ones racing after it, all of them driving point first into the
-    target, where the light bursts."""
-    fx = Fx(delay=16, cast_sound=2)
+    """Veedramon throws its head back and a V of white-blue light fills its open jaws, swelling; when the head comes
+    down it breathes a broad ray from the snout, a great arrowhead at its point, that drives into the target, where
+    the light bursts."""
+    fx = Fx(delay=8, cast_sound=2)
     fx.palette(VBREATH)
     fx.paint(0, breathbar(5)); fx.paint(1, breathbar(15)); fx.paint(2, arrowhead()); fx.paint(3, glow(15, 1.2))
-    fx.paint(4, star(4, 2, 9, 6)); fx.paint(5, ring(13, 2.0))
+    fx.paint(4, star(4, 2, 9, 6)); fx.paint(5, ring(13, 2.0)); fx.paint(6, vblade())
     tint, edge = fx.colour(128, 128, 128), fx.colour(40, 90, 128)
-    mouth, way, head, tail, side = fx.vec(), fx.vec(), fx.vec(), fx.vec(), fx.vec()
-    charge, steps, life = 4, 5, 11
-    fx.particle('mote', 12, 5, 4, (110, 128, 128), (80, 130), grow=-12, spread=140)
-    fx.particle('swell', 1, charge + 1, 3, (90, 120, 128), 60, grow=30)
+    maw, mouth, way, head, tail, side = fx.vec(), fx.vec(), fx.vec(), fx.vec(), fx.vec(), fx.vec()
+    charge, steps, life = 14, 5, 11
+    fx.particle('mote', 14, 5, 4, (110, 128, 128), (80, 130), grow=-12, spread=150)
+    fx.particle('swell', 1, charge + 1, 3, (60, 100, 128), 70, grow=16)
+    fx.particle('vglow', 1, charge + 1, 6, (128, 128, 128), 50, grow=20)
     fx.particle('burst', 2, 9, 3, (100, 120, 128), None, grow=70, fade=True)
     fx.particle('wave', 2, 8, 5, (70, 110, 128), 150, grow=90, fade=True)
     fx.particle('spark', 14, 11, 4, (128, 128, 128), (80, 140), grow=-7, speed=80, lift=25, gravity=6, spread=60)
     fx.label('main'); fx.when(0, 'begin'); fx.when(charge, 'fire'); fx.when(charge + steps, 'smite')
-    fx.br(fx.NOW, '>=', charge, 'main_end'); fx.emit('mote', mouth, 2)
+    fx.br(fx.NOW, '>=', charge - 2, 'main_end'); fx.emit('mote', maw, 2)
     fx.label('main_end'); fx.end(charge + life + 2)
-    fx.label('begin')                 # the snout once the head has come down: half the body's radius ahead
+    fx.label('begin')
+    # the snout once the head has come down: half the body's radius ahead
     muzzle_at(fx, mouth, 8, 0); fx.vsub(mouth, fx.SRC); fx.lin(fx.T3, at(mouth, 1), 1, 0)
-    fx.set(at(mouth, 1), 0); fx.vdiv(mouth, 2); fx.set(at(mouth, 1), fx.T3); fx.vadd(mouth, fx.SRC)
-    fx.emit('swell', mouth); fx.sound(-55); fx.ret()
+    fx.set(at(mouth, 1), 0); fx.vdiv(mouth, 2)
+    # the open jaws while the head is thrown back: as far behind the body's middle, four fifths of the way up
+    fx.vcopy(maw, fx.SRC); fx.vsub(maw, mouth); fx.lin(fx.T2, at(fx.SSIZE, 1), 4, 0, 5); fx.sub_(at(maw, 1), fx.T2)
+    fx.set(at(mouth, 1), fx.T3); fx.vadd(mouth, fx.SRC)
+    fx.emit('swell', maw); fx.emit('vglow', maw); fx.sound(-55); fx.ret()
     fx.label('fire'); fx.sound(13); fx.call('arrow'); fx.ret()
     fx.label('smite')
     fx.sound(7); fx.aim(); fx.hit(); fx.lin(fx.SZ, at(fx.TSIZE, 1), 1, 300)
@@ -585,24 +590,25 @@ def v_nova_blast():
     fx.label('arrow_tick'); fx.life(life); fx.aim(); fx.ret()
     fx.label('arrow_render')
     fx.vcopy(way, fx.TCHEST); fx.vsub(way, mouth); fx.vlen(fx.F2, way)
-    ok = fx.label(); fx.br(fx.F2, '>', 0, ok); fx.set(fx.F2, 1); fx.label(ok)
-    for k, (length, half) in enumerate(((560, 270), (400, 190), (290, 135))):
-        skip, there = fx.label(), fx.label()
-        fx.lin(fx.T, FRAME, 1, 1 - 2 * k); fx.br(fx.T, '<', 1, skip)
-        fx.br(fx.T, '<=', steps, there); fx.set(fx.T, steps)
-        fx.label(there)
-        fx.vcopy(head, way); fx.vmul(head, fx.T); fx.vdiv(head, steps); fx.vadd(head, mouth)
-        fx.vcopy(tail, way); fx.vmul(tail, length); fx.vdiv(tail, fx.F2); fx.vmul(tail, -1); fx.vadd(tail, head)
-        if k == 0:                    # the shaft: from the snout to the leading arrowhead
-            fx.set(fx.T3, FRAME); fx.mod(fx.T3, 2); fx.mul(fx.T3, 30); fx.add(fx.T3, 90)
-            band(fx, mouth, head, fx.T3, edge, 0)
-            fx.lin(fx.T2, fx.T3, 1, 0, 2); band(fx, mouth, head, fx.T2, tint, 1)
-            fx.lin(fx.T2, fx.T3, 2); fx.sprite(mouth, edge, fx.T2, cell=3)
-        across(fx, side, half)       # the arrowhead lies flat: its barbs spread across the line of the shot
-        for q, (p, sign) in enumerate(((tail, -1), (head, -1), (tail, 1), (head, 1))):
-            fx.vcopy(fx.Q[q], p); (fx.vsub if sign < 0 else fx.vadd)(fx.Q[q], side)
-        fx.quad(fx.Q[0], fx.Q[1], fx.Q[2], fx.Q[3], tint, 2)
-        fx.label(skip)
+    ok, there = fx.label(), fx.label()
+    fx.br(fx.F2, '>', 0, ok); fx.set(fx.F2, 1); fx.label(ok)
+    fx.lin(fx.T, FRAME, 1, 1); fx.br(fx.T, '<=', steps, there); fx.set(fx.T, steps)
+    fx.label(there)
+    fx.vcopy(head, way); fx.vmul(head, fx.T); fx.vdiv(head, steps); fx.vadd(head, mouth)
+    # the arrowhead grows out of the snout over its first three steps, never reaching back over the head
+    grown = fx.label()
+    fx.set(fx.T2, fx.T); fx.br(fx.T2, '<=', 3, grown); fx.set(fx.T2, 3)
+    fx.label(grown); fx.mul(fx.T2, 207)
+    fx.vcopy(tail, way); fx.vmul(tail, fx.T2); fx.vdiv(tail, fx.F2); fx.vmul(tail, -1); fx.vadd(tail, head)
+    # the ray: from the snout to the arrowhead, shivering
+    fx.set(fx.T3, FRAME); fx.mod(fx.T3, 2); fx.mul(fx.T3, 40); fx.add(fx.T3, 150)
+    band(fx, mouth, head, fx.T3, edge, 0)
+    fx.lin(fx.T2, fx.T3, 1, 0, 2); band(fx, mouth, head, fx.T2, tint, 1)
+    fx.lin(fx.T2, fx.T3, 2); fx.sprite(mouth, edge, fx.T2, cell=3)
+    across(fx, side, 310)             # the arrowhead lies flat: its barbs spread across the line of the shot
+    for q, (p, sign) in enumerate(((tail, -1), (head, -1), (tail, 1), (head, 1))):
+        fx.vcopy(fx.Q[q], p); (fx.vsub if sign < 0 else fx.vadd)(fx.Q[q], side)
+    fx.quad(fx.Q[0], fx.Q[1], fx.Q[2], fx.Q[3], tint, 2)
     fx.ret()
     return fx
 

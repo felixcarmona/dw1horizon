@@ -308,21 +308,6 @@ R2 switches x1 / x2 in every battle: field (BTL), arena and tournaments (STD), V
   (`MOD_SPEED_FIGHT`): STD from the match intro to its end (`STD_runMatch`), VS in the fight loop (`VS__combatMain`). VS
   reads R2 from the first pad only.
 
-### Evolution skip
-
-- `getEvoSequenceState` (`partner.c`, the one way into the scene) sets `MOD_EVO_SKIP` to 1 for every evolution; START
-  sets it to 2. It arms (3) only once START has been released and no pause is open, so the START that closed a pause
-  does not skip at once; a pause disarms it.
-- The hint (`modEvoSkipInput`, `modSkipHintDraw`, `modSkipPlate`) is the string `main.QOL_STR_SKIP_EVOLUTION` drawn into
-  row 0xD8 of the text area and shown in the bottom right corner, outlined by drawing it eight times in black around
-  itself. The scene's own loads and a pause reach that row, so it is redrawn when the skip arms, on each state change and
-  every 16 ticks.
-- During loading (`tickEvoSequenceLoading`, two waits of 55 ticks) a skip ends the waits; the overlay is still waited
-  for. In the EVL overlay, `EVL_modSkipToEnd` jumps from any frame before state 3 to the end of state 2, keeping what
-  the evolution needs (the camera saved for state 3, the new model loaded, `EVL_applyEvolution` once,
-  `waitForSoundBufferLoading`) and dropping shards, sparks and particles and the scene's sounds. State 3 then restores
-  camera, palettes, entities, map and music as usual.
-
 ### Training x5
 
 `src/trn/trn_block.h`, included by both gym overlays (TRN `trn_reward.c`, TRN2 `trn2_hud.c`), wraps each award call:

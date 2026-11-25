@@ -140,10 +140,9 @@ def evolve(e, species):
     e.poke('PARTNER_STATE', bytes([13]))
     e.poke('PARTNER_SUB_STATE', b'\0')
     e.run('resume')
-    for _ in range(180):
+    for _ in range(400):
         if e.peek('PARTNER_ENTITY', 'i') == species and e.peek('PARTNER_STATE', 'b') == 1:
             break
-        e.press('START', 8)
         e.wait(.25)
     else:
         raise AssertionError(f'the partner did not become {species}')
