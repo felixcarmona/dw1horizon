@@ -1,13 +1,13 @@
-# Path Thru Mt. Panorama 18: Vademon, near where it was recruited in the original game; it works at the Restaurant.
+# Path Thru Mt. Panorama 20: Vademon, near where it was recruited in the original game; it works at the Restaurant.
 from dw import *
 from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_VADEMON
 
-site = screen(Screen.path_thru_mt_panorama_18)
+site = screen(Screen.path_thru_mt_panorama_20)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Vademon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-vademon = site.npc(Species.Vademon, at=(50, 600), bits=300, range=0, still=True, when=recruited(Species.Vademon))
+vademon = site.npc(Species.Vademon, at=(0, -800), bits=300, range=0, still=True, when=recruited(Species.Vademon))
 
 
 @site.on_enter(when=recruited(Species.Vademon))
@@ -35,5 +35,5 @@ def challenge_vademon():
                 give(bits=4000)
                 narrator.say(t("vademon.challenge.reward"))
                 challenge_won.set()
-                run(750, -1800)
+                run(0, -3300)
                 leave()

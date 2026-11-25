@@ -999,16 +999,16 @@
       "story": "arcs/challenges/vademon.py",
       "home": null,
       "site": {
-        "screen": 18,
+        "screen": 20,
         "at": [
-          50,
-          600
+          0,
+          -800
         ]
       },
       "exit": [
         [
-          750,
-          -1800
+          0,
+          -3300
         ]
       ],
       "item": 108,
@@ -1545,16 +1545,16 @@
       "story": "arcs/challenges/coelamon.py",
       "home": "city/centar-clinic.py",
       "site": {
-        "screen": 5,
+        "screen": 6,
         "at": [
-          1150,
-          600
+          400,
+          -1500
         ]
       },
       "exit": [
         [
-          -350,
-          2600
+          1100,
+          -3900
         ]
       ],
       "item": 94,
@@ -1573,16 +1573,16 @@
       "story": "arcs/challenges/kokatorimon.py",
       "home": "city/file-city-services.py",
       "site": {
-        "screen": 117,
+        "screen": 118,
         "at": [
-          -500,
+          50,
           1200
         ]
       },
       "exit": [
         [
-          -1200,
-          -1200
+          50,
+          3700
         ]
       ],
       "item": 85,

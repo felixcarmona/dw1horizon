@@ -65,5 +65,8 @@ whose original NPC leaves once recruited, a file in `arcs/challenges/` with a ne
 on the same spot, that leaves from `on_enter` unless the game is beaten and it is today's challenger: the shorter
 condition keeps MAPHEAD inside its buffer), `on_enter` and challenge talk, the home's `on_enter`, and the lines in `text/en.json` and every translation. The site must keep the hang rules:
 the exit on walkable ground in a straight line, `run` only for models with a run clip (slot 4).
+The challenger must take an NPC slot 0-7 (`python3 tools/dws.py slots SCREEN`): slots 8-15 of the story-state engine
+never fight, so a site whose eight slots are taken (Coela Point, Misty Trees 117, Path Thru Mt. Panorama 18) moves to a
+screen next to it.
 A resident whose home NPC shares its slot layout with other screens of the same script (the arena lobby), or is a
 clerk or a slot the script spawns, has no home file (`home: null`): it only appears at its site.
