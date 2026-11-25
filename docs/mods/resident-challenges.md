@@ -44,12 +44,17 @@ nobody of that pool goes.
 The talk sets scratch pstat `armedPstat` to 1 (`original` pool) or 2 (`new`) before the fight; the battle start clears it and gives every foe of the
 row's species, for each of HP, MP, Offense, Defense, Speed and Brain:
 
-`max(floor x (100 + sheetPercent) / 100, partner x (100 + partnerPercent) / 100)`, at most 9999
+`max(its own stat, partner x (100 + partnerPercent) / 100)`, at most 9999
 
-(`sheetPercent` is 0 by default, so the floor itself is the minimum; it may not be negative) where *floor* is the
-species' `wild` stats in `content/species/` or, for a species with none (most of the game's own residents), the row's
-`base` (its `_base` says where the numbers come from: its fight in the original game, else the sheets of the rows of
-its stage). `tools/city_residents.py` copies them into the table and refuses a row with both or neither.
+Its own stats are the ones the site NPC declares, the challenge's floor: the species' `wild` stats in
+`content/species/` or, for a species with none (most of the game's own residents), the row's `base` (its `_base` says
+where the numbers come from: its fight in the original game, else the sheets of the rows of its stage), times
+(100 + `sheetPercent`) / 100 (`sheetPercent` is 0 by default and may not be negative). The residents fought by the very
+NPC of their recruit fight (`CHALLENGE_RECRUIT_STATS` in `tools/city_residents.py`: Armadillomon, Candlemon, Datamon,
+Digmon, Knightmon, Kotemon, Mammothmon, Mushroomon, Phantomon, Pumpkinmon, Starmon, Triceramon) keep that fight's stats
+as their floor. `tools/city_residents.py` refuses a row with both or neither of `wild` and `base`, and
+`tools/test_resident_challenges.py` checks every site NPC against `challenge_site_stats`. The table itself holds only
+the rule, the save numbers and each row's species (164 bytes of the executable).
 The stats are set before the battle records its initial stats, so its rewards and stat gains follow them.
 `noItems` opens the battle bag empty (it comes back whole); `noLateStep` gives the fight none of
 `battle-formulas.json` NORMAL's late-game step (HP and attack ramp, damage floor), on any difficulty, and puts it back
@@ -62,7 +67,7 @@ after the battle whatever its outcome. HARD keeps its own factors and floor.
 | today's challenger (row + 1, 0 = nobody; + 128 once beaten) | saved pstat `challengerVar` (story `challenger`), `newChallengerVar` (`new_challenger`) |
 | fought today | flags `triedFlag` (`challenge_tried`), `newTriedFlag` (`new_challenge_tried`) |
 | the bag: one bit a row, 16 rows a register | saved wide registers from `bagWreg` (w10-w14; executable only) |
-| which rows are the new pool | the table (`MOD_CHALLENGE_NEW`, one bit a row), from each row's `pool` |
+| which rows are the new pool | the species: `MOD_CHALLENGE_NEW_FIRST` (112) and up, as each row's `pool` must say |
 
 A win adds `CHALLENGE_BEATEN` (128) to its pool's var: the site's NPC (`when=challenger == CH_X`) and its `alone=` stop
 holding together, so it is gone and the wilds are back, and its home shows it again. The vars and flags are pinned in

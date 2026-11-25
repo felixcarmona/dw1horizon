@@ -7,7 +7,7 @@ site = screen(Screen.freezeland_95)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Garurumon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-garurumon = site.npc(Species.Garurumon, at=(-200, -100), bits=300, range=0, still=True, when=challenger == CH_GARURUMON, alone=challenger == CH_GARURUMON)
+garurumon = site.npc(Species.Garurumon, at=(-200, -100), hp=4200, mp=4500, offense=580, defense=320, speed=240, brain=150, bits=300, range=0, still=True, when=challenger == CH_GARURUMON, alone=challenger == CH_GARURUMON)
 
 
 

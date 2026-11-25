@@ -7,7 +7,7 @@ site = screen(Screen.underground_lab_68)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day SkullGreymon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-skullgreymon = site.npc(Species.SkullGreymon, at=(-450, 1500), bits=300, range=0, still=True, when=challenger == CH_SKULLGREYMON, alone=challenger == CH_SKULLGREYMON)
+skullgreymon = site.npc(Species.SkullGreymon, at=(-450, 1500), hp=5800, mp=4800, offense=650, defense=340, speed=380, brain=150, bits=300, range=0, still=True, when=challenger == CH_SKULLGREYMON, alone=challenger == CH_SKULLGREYMON)
 
 
 

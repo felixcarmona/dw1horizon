@@ -7,7 +7,7 @@ site = screen(Screen.mangrove_region_15)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Betamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-betamon = site.npc(Species.Betamon, at=(350, 1700), bits=300, range=0, still=True, when=challenger == CH_BETAMON, alone=challenger == CH_BETAMON)
+betamon = site.npc(Species.Betamon, at=(350, 1700), hp=590, mp=610, offense=120, defense=90, speed=100, brain=80, bits=300, range=0, still=True, when=challenger == CH_BETAMON, alone=challenger == CH_BETAMON)
 
 
 

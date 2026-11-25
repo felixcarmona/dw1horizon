@@ -7,7 +7,7 @@ site = screen(Screen.toy_mansion_149)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day WaruMonzaemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-warumonzaemon = site.npc(Species.WaruMonzaemon, at=(0, -250), bits=300, range=0, still=True, when=challenger == CH_WARUMONZAEMON, alone=challenger == CH_WARUMONZAEMON)
+warumonzaemon = site.npc(Species.WaruMonzaemon, at=(0, -250), hp=5200, mp=2600, offense=680, defense=340, speed=380, brain=100, bits=300, range=0, still=True, when=challenger == CH_WARUMONZAEMON, alone=challenger == CH_WARUMONZAEMON)
 
 
 

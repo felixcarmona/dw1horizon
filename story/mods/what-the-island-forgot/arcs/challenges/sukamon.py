@@ -7,7 +7,7 @@ site = screen(Screen.trash_mountain_164)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Sukamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-sukamon = site.npc(Species.Sukamon, at=(400, 850), bits=300, range=0, still=True, when=challenger == CH_SUKAMON, alone=challenger == CH_SUKAMON)
+sukamon = site.npc(Species.Sukamon, at=(400, 850), hp=1000, mp=2000, offense=200, defense=100, speed=100, brain=100, bits=300, range=0, still=True, when=challenger == CH_SUKAMON, alone=challenger == CH_SUKAMON)
 
 
 

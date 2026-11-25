@@ -19,17 +19,30 @@ class ResidentChallenges(unittest.TestCase):
 
     def test_table_bytes(self):
         data = city.challenge_table(self.doc)
+        self.assertEqual(len(data), 164)                     # tools/balance.py TABLES residentChallenges
         v = struct.unpack(f'<{len(data) // 2}h', data)
-        self.assertEqual(len(v), city.CHALLENGE_HEAD + city.CHALLENGE_ROW * city.CHALLENGE_MAX)
-        self.assertEqual(v[:13], (0, 25, 1, 0, 0, 1, 239, 10, 5, 15, 784, 8, 783))
-        mask = sum((m & 0xFFFF) << (16 * k) for k, m in enumerate(v[13:18]))
-        self.assertEqual(mask, sum(1 << i for i, r in enumerate(self.rows) if r['pool'] == 'new'))
-        species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
-        for i, r in enumerate(self.rows):
-            row = v[city.CHALLENGE_HEAD + city.CHALLENGE_ROW * i:][:city.CHALLENGE_ROW]
-            w = city.challenge_sheet(r, species)
-            self.assertEqual(row, (r['species'], w['hp'], w['mp'], w['off'], w['def'], w['speed'], w['brain']))
-        self.assertEqual(set(v[city.CHALLENGE_HEAD + city.CHALLENGE_ROW * len(self.rows):]), {-1})
+        self.assertEqual(len(v), city.CHALLENGE_HEAD + city.CHALLENGE_MAX)
+        self.assertEqual(v[:city.CHALLENGE_HEAD], (25, 1, 0, 1, 239, 10, 15, 784, 8, 783))
+        self.assertEqual(v[city.CHALLENGE_HEAD:][:len(self.rows)], tuple(r['species'] for r in self.rows))
+        self.assertEqual(set(v[city.CHALLENGE_HEAD + len(self.rows):]), {-1})
+
+    def test_site_npcs_carry_the_floor(self):
+        """Every row's site NPC (the one its fight uses) declares the challenge's floor: the sheet x (100 + sheetPercent)
+        / 100, or, for the residents fought by their recruit NPC, that fight's own six stats."""
+        recruit = set(city.CHALLENGE_RECRUIT_STATS)
+        for r in self.rows:
+            src = (MOD / r['story']).read_text()
+            decl = [m.group(0) for m in re.finditer(r'^(\w+) = \w+\.npc\(Species\.\w+(?:.*\n\s+)*?.*\)$', src, re.M)
+                    if re.search(rf"== CH_{r['name'].upper()}\b", m.group(0))]
+            self.assertEqual(len(decl), 1, r['name'])
+            have = {k: int(v) for k, v in re.findall(r'\b(hp|mp|offense|defense|speed|brain)=(\d+)', decl[0])}
+            self.assertEqual(len(have), 6, r['name'])
+            want = city.challenge_site_stats(r, self.doc)
+            self.assertEqual(want is None, r['name'] in recruit, r['name'])
+            if want is not None:
+                self.assertEqual(have, want, r['name'])
+            recruit.discard(r['name'])
+        self.assertFalse(recruit, 'CHALLENGE_RECRUIT_STATS names a resident with no row')
 
     def test_pools(self):
         """The new pool is Horizon's own species (112 and up), the original pool the game's; a row in the wrong pool
@@ -55,9 +68,10 @@ class ResidentChallenges(unittest.TestCase):
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
         for r in self.rows:
             self.assertEqual('base' in r, species[r['species']].get('wild') is None, r['name'])
-        r = next(r for r in self.doc['residents'] if 'base' not in r); r['base'] = dict(species[r['species']]['wild'])
+        r = next(r for r in self.doc['residents'] if 'base' not in r and r['name'] not in city.CHALLENGE_RECRUIT_STATS)
+        r['base'] = dict(species[r['species']]['wild'])
         with self.assertRaises(ValueError):
-            city.challenge_table(self.doc)
+            city.challenge_site_stats(r, self.doc)
 
     def test_save_numbers_are_the_story_lock(self):
         lock = json.loads((MOD / 'save.lock').read_text())

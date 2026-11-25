@@ -7,7 +7,7 @@ site = screen(Screen.great_canyon_128)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Birdramon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-birdramon = site.npc(Species.Birdramon, at=(1600, -1050), bits=300, range=0, still=True, when=challenger == CH_BIRDRAMON, alone=challenger == CH_BIRDRAMON)
+birdramon = site.npc(Species.Birdramon, at=(1600, -1050), hp=3700, mp=3500, offense=490, defense=200, speed=340, brain=200, bits=300, range=0, still=True, when=challenger == CH_BIRDRAMON, alone=challenger == CH_BIRDRAMON)
 
 
 

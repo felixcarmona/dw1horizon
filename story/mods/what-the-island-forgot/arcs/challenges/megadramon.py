@@ -7,7 +7,7 @@ site = screen(Screen.factorial_town_154)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Megadramon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-megadramon = site.npc(Species.Megadramon, at=(-550, 150), bits=300, range=0, still=True, when=challenger == CH_MEGADRAMON, alone=challenger == CH_MEGADRAMON)
+megadramon = site.npc(Species.Megadramon, at=(-550, 150), hp=5600, mp=4800, offense=660, defense=530, speed=510, brain=570, bits=300, range=0, still=True, when=challenger == CH_MEGADRAMON, alone=challenger == CH_MEGADRAMON)
 
 
 

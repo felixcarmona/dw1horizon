@@ -5,7 +5,7 @@ from dw import *
 from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_HAWKMON
 
 ledge = screen(Screen.great_canyon_entrance)
-hawkmon = ledge.npc(Species.Hawkmon, at=(1200, -450), range=0, still=True, when=not recruited(Species.Hawkmon) or new_challenger == CH_HAWKMON, alone=new_challenger == CH_HAWKMON)
+hawkmon = ledge.npc(Species.Hawkmon, at=(1200, -450), hp=580, mp=660, offense=115, defense=80, speed=110, brain=90, range=0, still=True, when=not recruited(Species.Hawkmon) or new_challenger == CH_HAWKMON, alone=new_challenger == CH_HAWKMON)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Hawkmon is the challenger

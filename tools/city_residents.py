@@ -72,13 +72,12 @@ def membership_bits():
 
 
 CHALLENGES = ROOT / 'content/tables/resident-challenges.json'
-CHALLENGE_HEAD = 18            # mod_rules.h MOD_CHALLENGE_ROWS
-CHALLENGE_ROW = 7              # species, hp, mp, off, def, speed, brain
+CHALLENGE_HEAD = 10            # mod_rules.h MOD_CHALLENGE_ROWS: then one species a row
 CHALLENGE_MAX = 72             # mod_rules.h MOD_CHALLENGE_MAX
 CHALLENGE_BAG_LAST = 14        # the bag's saved wide registers end before w15 (Sukamon's backup)
 CHALLENGE_STATS = {'max-sheet-or-partner': 0}
 CHALLENGE_STAGES = {'same-or-lower': 0, 'any': 1}
-CHALLENGE_POOLS = ('original', 'new')  # MOD_CHALLENGE_NEW: one bit per row, 1 = the new pool
+CHALLENGE_POOLS = ('original', 'new')  # by species: CHALLENGE_NEW_FIRST and above is the new pool
 CHALLENGE_NEW_FIRST = 112      # Horizon's own species: the original game's are 0-111
 
 
@@ -111,36 +110,48 @@ def challenge_sheet(row, species):
 
 
 def challenge_table(doc=None):
-    """MOD_CHALLENGE (mod_rules.h): the rule, the save numbers of both pools, the new pool's row mask, then per row the
-    species and its floor stats (challenge_sheet)."""
+    """MOD_CHALLENGE (mod_rules.h): the rule, the save numbers of both pools, then each row's species (its pool is the
+    species: CHALLENGE_NEW_FIRST and above is the new one). The floor stats are not here: they are the site NPC's own
+    (challenge_site_stats), which the battle raises to the partner's when those are higher."""
     doc = doc or json.loads(CHALLENGES.read_text())
     rule, save = doc['rule'], doc['save']
-    species = {s['id']: s for p in (ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
-    v = [-1] * (CHALLENGE_HEAD + CHALLENGE_ROW * CHALLENGE_MAX)
-    v[0] = CHALLENGE_STATS[rule['stats']]
-    v[1] = rule['partnerPercent']
-    v[2] = 1 if rule['noItems'] else 0
-    v[3] = CHALLENGE_STAGES[rule['stages']]
-    v[4] = rule['sheetPercent']
-    v[5] = 1 if rule['noLateStep'] else 0
-    v[6], v[7] = save['armedPstat'], save['bagWreg']
-    v[8] = -(-CHALLENGE_MAX // 16)
-    if not 0 <= v[7] or v[7] + v[8] - 1 > CHALLENGE_BAG_LAST:
-        raise ValueError(f'{CHALLENGES.name}: the bag takes {v[8]} saved wide registers from bagWreg, within w0-w{CHALLENGE_BAG_LAST}')
+    v = [-1] * (CHALLENGE_HEAD + CHALLENGE_MAX)
+    if rule['stats'] not in CHALLENGE_STATS:
+        raise ValueError(f"{CHALLENGES.name}: stats must be one of {sorted(CHALLENGE_STATS)}")
     if not 0 <= rule['sheetPercent'] <= 1000 or not 0 <= rule['partnerPercent'] <= 1000:
         raise ValueError(f'{CHALLENGES.name}: sheetPercent and partnerPercent must be 0..1000 (the species sheet is the minimum)')
-    v[9], v[10], v[11], v[12] = save['challengerVar'], save['triedFlag'], save['newChallengerVar'], save['newTriedFlag']
-    if v[9] == v[11] or v[10] == v[12]:
+    v[0] = rule['partnerPercent']
+    v[1] = 1 if rule['noItems'] else 0
+    v[2] = CHALLENGE_STAGES[rule['stages']]
+    v[3] = 1 if rule['noLateStep'] else 0
+    v[4], v[5] = save['armedPstat'], save['bagWreg']
+    if not 0 <= v[5] or v[5] + (-(-CHALLENGE_MAX // 16)) - 1 > CHALLENGE_BAG_LAST:
+        raise ValueError(f'{CHALLENGES.name}: the bag takes {-(-CHALLENGE_MAX // 16)} saved wide registers from bagWreg, '
+                         f'within w0-w{CHALLENGE_BAG_LAST}')
+    v[6], v[7], v[8], v[9] = save['challengerVar'], save['triedFlag'], save['newChallengerVar'], save['newTriedFlag']
+    if v[6] == v[8] or v[7] == v[9]:
         raise ValueError(f'{CHALLENGES.name}: the two pools need their own challenger var and tried flag')
-    mask = [0] * 5
     for i, r in enumerate(challenge_rows(doc)):
-        w = challenge_sheet(r, species)
-        v[CHALLENGE_HEAD + CHALLENGE_ROW * i:CHALLENGE_HEAD + CHALLENGE_ROW * (i + 1)] = [
-            r['species'], w['hp'], w['mp'], w['off'], w['def'], w['speed'], w['brain']]
-        if r['pool'] == 'new':
-            mask[i >> 4] |= 1 << (i & 15)
-    v[13:18] = [m - 0x10000 if m & 0x8000 else m for m in mask]
+        v[CHALLENGE_HEAD + i] = r['species']
     return struct.pack(f'<{len(v)}h', *v)
+
+
+# The residents whose challenge is fought by the very NPC of their recruit fight, with that fight's own stats: those
+# stats are the challenge's floor too (writing the sheet there would change the recruit fight).
+CHALLENGE_RECRUIT_STATS = ('Armadillomon', 'Candlemon', 'Datamon', 'Digmon', 'Knightmon', 'Kotemon', 'Mammothmon',
+                           'Mushroomon', 'Phantomon', 'Pumpkinmon', 'Starmon', 'Triceramon')
+NPC_STATS = (('hp', 'hp'), ('mp', 'mp'), ('offense', 'off'), ('defense', 'def'), ('speed', 'speed'), ('brain', 'brain'))
+
+
+def challenge_site_stats(row, doc=None):
+    """The stats a row's site NPC must declare (the challenge's floor): its sheet x (100 + sheetPercent) / 100, at most
+    9999; None for the CHALLENGE_RECRUIT_STATS rows, whose NPC keeps its recruit fight's stats."""
+    if row['name'] in CHALLENGE_RECRUIT_STATS:
+        return None
+    doc = doc or json.loads(CHALLENGES.read_text())
+    species = {s['id']: s for p in (ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
+    w, pc = challenge_sheet(row, species), doc['rule']['sheetPercent']
+    return {k: min(9999, w[j] * (100 + pc) // 100) for k, j in NPC_STATS}
 
 
 def extra_header():

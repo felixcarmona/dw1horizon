@@ -7,7 +7,7 @@ site = screen(Screen.secret_beach_cave_142)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Whamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-whamon = site.npc(Species.Whamon, at=(-50, 1800), bits=300, range=0, still=True, when=challenger == CH_WHAMON, alone=challenger == CH_WHAMON)
+whamon = site.npc(Species.Whamon, at=(-50, 1800), hp=5600, mp=4800, offense=660, defense=530, speed=510, brain=570, bits=300, range=0, still=True, when=challenger == CH_WHAMON, alone=challenger == CH_WHAMON)
 
 
 

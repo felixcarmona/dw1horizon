@@ -7,7 +7,7 @@ site = screen(Screen.freezeland_93)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Angemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-angemon = site.npc(Species.Angemon, at=(350, -650), bits=300, range=0, still=True, when=challenger == CH_ANGEMON, alone=challenger == CH_ANGEMON)
+angemon = site.npc(Species.Angemon, at=(350, -650), hp=4000, mp=4000, offense=400, defense=400, speed=400, brain=400, bits=300, range=0, still=True, when=challenger == CH_ANGEMON, alone=challenger == CH_ANGEMON)
 
 
 

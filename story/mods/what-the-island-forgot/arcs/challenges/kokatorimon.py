@@ -7,7 +7,7 @@ site = screen(Screen.misty_trees_119)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Kokatorimon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-kokatorimon = site.npc(Species.Kokatorimon, at=(0, -1800), bits=300, range=0, still=True, when=challenger == CH_KOKATORIMON, alone=challenger == CH_KOKATORIMON)
+kokatorimon = site.npc(Species.Kokatorimon, at=(0, -1800), hp=4200, mp=4800, offense=600, defense=240, speed=360, brain=100, bits=300, range=0, still=True, when=challenger == CH_KOKATORIMON, alone=challenger == CH_KOKATORIMON)
 
 
 

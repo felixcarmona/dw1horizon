@@ -21,7 +21,7 @@ def talk():
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Leomon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home, at Birdra Transport (city/birdra-transport.py).
-leomon = savanna.npc(Species.Leomon, at=(-50, 3150), bits=300, range=0, still=True, when=challenger == CH_LEOMON, alone=challenger == CH_LEOMON)
+leomon = savanna.npc(Species.Leomon, at=(-50, 3150), hp=1500, mp=1490, offense=250, defense=205, speed=205, brain=180, bits=300, range=0, still=True, when=challenger == CH_LEOMON, alone=challenger == CH_LEOMON)
 
 
 

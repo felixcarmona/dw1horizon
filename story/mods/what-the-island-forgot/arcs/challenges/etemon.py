@@ -7,7 +7,7 @@ site = screen(Screen.native_forest_3)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Etemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-etemon = site.npc(Species.Etemon, at=(300, 1850), bits=300, range=0, still=True, when=challenger == CH_ETEMON, alone=challenger == CH_ETEMON)
+etemon = site.npc(Species.Etemon, at=(300, 1850), hp=5600, mp=5600, offense=700, defense=580, speed=530, brain=600, bits=300, range=0, still=True, when=challenger == CH_ETEMON, alone=challenger == CH_ETEMON)
 
 
 

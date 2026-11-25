@@ -7,7 +7,7 @@ town = screen(Screen.factorial_town_159)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Giromon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home, at the Restaurant (city/restaurant-215.py).
-giromon = town.npc(Species.Giromon, at=(1250, 450), bits=300, range=0, still=True, when=challenger == CH_GIROMON, alone=challenger == CH_GIROMON)
+giromon = town.npc(Species.Giromon, at=(1250, 450), hp=5700, mp=4800, offense=690, defense=450, speed=490, brain=300, bits=300, range=0, still=True, when=challenger == CH_GIROMON, alone=challenger == CH_GIROMON)
 
 
 

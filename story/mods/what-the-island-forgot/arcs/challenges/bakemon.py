@@ -7,7 +7,7 @@ site = screen(Screen.overdell_cemetery)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Bakemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-bakemon = site.npc(Species.Bakemon, at=(1350, 1350), bits=300, range=0, still=True, when=challenger == CH_BAKEMON, alone=challenger == CH_BAKEMON)
+bakemon = site.npc(Species.Bakemon, at=(1350, 1350), hp=3750, mp=3500, offense=470, defense=240, speed=290, brain=200, bits=300, range=0, still=True, when=challenger == CH_BAKEMON, alone=challenger == CH_BAKEMON)
 
 
 

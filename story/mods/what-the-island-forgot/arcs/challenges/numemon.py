@@ -7,7 +7,7 @@ site = screen(Screen.sewer_220)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Numemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-numemon = site.npc(Species.Numemon, at=(3350, -750), bits=300, range=0, still=True, when=challenger == CH_NUMEMON, alone=challenger == CH_NUMEMON)
+numemon = site.npc(Species.Numemon, at=(3350, -750), hp=3750, mp=3500, offense=470, defense=240, speed=290, brain=200, bits=300, range=0, still=True, when=challenger == CH_NUMEMON, alone=challenger == CH_NUMEMON)
 
 
 

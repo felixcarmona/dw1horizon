@@ -7,7 +7,7 @@ site = screen(Screen.mt_infinity_219)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Digitamamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-digitamamon = site.npc(Species.Digitamamon, at=(250, 1050), bits=300, range=0, still=True, when=challenger == CH_DIGITAMAMON, alone=challenger == CH_DIGITAMAMON)
+digitamamon = site.npc(Species.Digitamamon, at=(250, 1050), hp=9999, mp=9999, offense=999, defense=720, speed=500, brain=700, bits=300, range=0, still=True, when=challenger == CH_DIGITAMAMON, alone=challenger == CH_DIGITAMAMON)
 
 
 

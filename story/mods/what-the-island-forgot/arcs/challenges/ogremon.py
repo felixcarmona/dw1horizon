@@ -8,7 +8,7 @@ site = screen(Screen.drill_tunnel_2nd_floor_25)
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Ogremon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home. (`recruited` is always true on its day: it
 # tells the heap check that the screen's Ogremon-and-Agumon ambush, which needs it unrecruited, is not set up beside it.)
-ogremon = site.npc(Species.Ogremon, at=(250, -600), bits=300, range=0, still=True, when=challenger == CH_OGREMON and recruited(Species.Ogremon), alone=challenger == CH_OGREMON)
+ogremon = site.npc(Species.Ogremon, at=(250, -600), hp=3600, mp=3500, offense=450, defense=260, speed=200, brain=150, bits=300, range=0, still=True, when=challenger == CH_OGREMON and recruited(Species.Ogremon), alone=challenger == CH_OGREMON)
 
 
 

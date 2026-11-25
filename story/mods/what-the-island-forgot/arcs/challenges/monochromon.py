@@ -7,7 +7,7 @@ site = screen(Screen.great_canyon_top_area_44)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Monochromon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-monochromon = site.npc(Species.Monochromon, at=(-1350, -650), bits=300, range=0, still=True, when=challenger == CH_MONOCHROMON, alone=challenger == CH_MONOCHROMON)
+monochromon = site.npc(Species.Monochromon, at=(-1350, -650), hp=3750, mp=3500, offense=470, defense=240, speed=290, brain=200, bits=300, range=0, still=True, when=challenger == CH_MONOCHROMON, alone=challenger == CH_MONOCHROMON)
 
 
 

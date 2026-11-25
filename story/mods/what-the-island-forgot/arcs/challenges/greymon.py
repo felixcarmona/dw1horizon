@@ -7,7 +7,7 @@ site = screen(Screen.native_forest_111)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Greymon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-greymon = site.npc(Species.Greymon, at=(-150, 750), bits=300, range=0, still=True, when=challenger == CH_GREYMON, alone=challenger == CH_GREYMON)
+greymon = site.npc(Species.Greymon, at=(-150, 750), hp=4800, mp=3800, offense=630, defense=340, speed=360, brain=200, bits=300, range=0, still=True, when=challenger == CH_GREYMON, alone=challenger == CH_GREYMON)
 
 
 

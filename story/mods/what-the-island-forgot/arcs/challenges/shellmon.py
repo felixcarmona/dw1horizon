@@ -7,7 +7,7 @@ site = screen(Screen.great_canyon_127)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Shellmon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-shellmon = site.npc(Species.Shellmon, at=(2150, -1400), bits=300, range=0, still=True, when=challenger == CH_SHELLMON, alone=challenger == CH_SHELLMON)
+shellmon = site.npc(Species.Shellmon, at=(2150, -1400), hp=2500, mp=2500, offense=250, defense=250, speed=250, brain=250, bits=300, range=0, still=True, when=challenger == CH_SHELLMON, alone=challenger == CH_SHELLMON)
 
 
 

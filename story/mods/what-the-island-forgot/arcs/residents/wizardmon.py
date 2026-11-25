@@ -5,7 +5,7 @@ from dw import *
 from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_WIZARDMON
 
 room = screen(Screen.grey_lords_mansion_59)
-wizardmon = room.npc(Species.Wizardmon, at=(0, 300), range=0, still=True, when=not recruited(Species.Wizardmon) or new_challenger == CH_WIZARDMON, alone=new_challenger == CH_WIZARDMON)
+wizardmon = room.npc(Species.Wizardmon, at=(0, 300), hp=1380, mp=1460, offense=280, defense=185, speed=230, brain=170, range=0, still=True, when=not recruited(Species.Wizardmon) or new_challenger == CH_WIZARDMON, alone=new_challenger == CH_WIZARDMON)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Wizardmon is the challenger

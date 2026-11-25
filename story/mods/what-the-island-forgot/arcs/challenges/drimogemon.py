@@ -7,7 +7,7 @@ site = screen(Screen.drill_tunnel_32)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Drimogemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-drimogemon = site.npc(Species.Drimogemon, at=(-400, -1400), bits=300, range=0, still=True, when=challenger == CH_DRIMOGEMON, alone=challenger == CH_DRIMOGEMON)
+drimogemon = site.npc(Species.Drimogemon, at=(-400, -1400), hp=3750, mp=3500, offense=470, defense=240, speed=290, brain=200, bits=300, range=0, still=True, when=challenger == CH_DRIMOGEMON, alone=challenger == CH_DRIMOGEMON)
 
 
 

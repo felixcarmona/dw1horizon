@@ -4,7 +4,7 @@ from dw import *
 from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_TAPIRMON
 
 lake = screen(Screen.dragon_eye_lake_6)
-tapirmon = lake.npc(Species.Tapirmon, at=(650, -2000), range=0, still=True, when=not recruited(Species.Tapirmon) or new_challenger == CH_TAPIRMON, alone=new_challenger == CH_TAPIRMON)
+tapirmon = lake.npc(Species.Tapirmon, at=(650, -2000), hp=1100, mp=2300, offense=390, defense=190, speed=80, brain=150, range=0, still=True, when=not recruited(Species.Tapirmon) or new_challenger == CH_TAPIRMON, alone=new_challenger == CH_TAPIRMON)
 tapirmon_stirred = flag()
 
 

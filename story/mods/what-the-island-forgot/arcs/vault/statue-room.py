@@ -7,7 +7,7 @@ from dw.base.ice_sanctuary_97 import sanctuary
 from ...state import root3, vault_kept, thaw_told
 from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_SOLARMON
 
-solarmon = sanctuary.npc(Species.Solarmon, at=(800, -600), range=0, still=True, when=not recruited(Species.Solarmon) or new_challenger == CH_SOLARMON, alone=new_challenger == CH_SOLARMON)
+solarmon = sanctuary.npc(Species.Solarmon, at=(800, -600), hp=580, mp=600, offense=120, defense=90, speed=110, brain=85, range=0, still=True, when=not recruited(Species.Solarmon) or new_challenger == CH_SOLARMON, alone=new_challenger == CH_SOLARMON)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Solarmon is the challenger

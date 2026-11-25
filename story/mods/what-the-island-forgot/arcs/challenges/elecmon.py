@@ -7,7 +7,7 @@ site = screen(Screen.gear_savanna_71)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Elecmon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-elecmon = site.npc(Species.Elecmon, at=(-150, -400), bits=300, range=0, still=True, when=challenger == CH_ELECMON, alone=challenger == CH_ELECMON)
+elecmon = site.npc(Species.Elecmon, at=(-150, -400), hp=590, mp=610, offense=120, defense=90, speed=100, brain=80, bits=300, range=0, still=True, when=challenger == CH_ELECMON, alone=challenger == CH_ELECMON)
 
 
 

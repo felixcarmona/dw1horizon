@@ -7,7 +7,7 @@ site = screen(Screen.digimon_bridge_9)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Ninjamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-ninjamon = site.npc(Species.Ninjamon, at=(-900, -1100), bits=300, range=0, still=True, when=challenger == CH_NINJAMON, alone=challenger == CH_NINJAMON)
+ninjamon = site.npc(Species.Ninjamon, at=(-900, -1100), hp=3800, mp=3500, offense=620, defense=210, speed=350, brain=250, bits=300, range=0, still=True, when=challenger == CH_NINJAMON, alone=challenger == CH_NINJAMON)
 
 
 

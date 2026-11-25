@@ -11,7 +11,7 @@ kennel = new_screen(325, map="build/what-the-island-forgot-maps/screens/SEAM03.M
 chest_kennel = flag()
 keeper = kennel.npc(Species.DarkLizardmon, at=(0, -500), hp=3600, mp=3600, offense=580, defense=320, speed=120, brain=150,
                     bits=800, range=0, when=not hunter_beaten)
-caged = kennel.npc(Species.Bearmon, at=(-600, 300), range=0, still=True, when=not recruited(Species.Bearmon) or new_challenger == CH_BEARMON, alone=new_challenger == CH_BEARMON)
+caged = kennel.npc(Species.Bearmon, at=(-600, 300), hp=590, mp=600, offense=115, defense=95, speed=110, brain=80, range=0, still=True, when=not recruited(Species.Bearmon) or new_challenger == CH_BEARMON, alone=new_challenger == CH_BEARMON)
 
 @keeper.on_talk(scene=True)
 def the_named_hunter():

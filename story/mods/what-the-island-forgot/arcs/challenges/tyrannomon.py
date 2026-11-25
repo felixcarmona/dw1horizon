@@ -7,7 +7,7 @@ site = screen(Screen.ancient_glacial_region_82)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Tyrannomon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-tyrannomon = site.npc(Species.Tyrannomon, at=(-350, 2150), bits=300, range=0, still=True, when=challenger == CH_TYRANNOMON, alone=challenger == CH_TYRANNOMON)
+tyrannomon = site.npc(Species.Tyrannomon, at=(-350, 2150), hp=3750, mp=3500, offense=470, defense=240, speed=290, brain=200, bits=300, range=0, still=True, when=challenger == CH_TYRANNOMON, alone=challenger == CH_TYRANNOMON)
 
 
 

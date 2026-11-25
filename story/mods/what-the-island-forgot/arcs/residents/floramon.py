@@ -4,7 +4,7 @@ from dw import *
 from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_FLORAMON
 
 forest = screen(Screen.native_forest_4)
-floramon = forest.npc(Species.Floramon, at=(2550, 800), range=0, still=True, when=not recruited(Species.Floramon) or new_challenger == CH_FLORAMON, alone=new_challenger == CH_FLORAMON)
+floramon = forest.npc(Species.Floramon, at=(2550, 800), hp=590, mp=610, offense=120, defense=90, speed=115, brain=80, range=0, still=True, when=not recruited(Species.Floramon) or new_challenger == CH_FLORAMON, alone=new_challenger == CH_FLORAMON)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Floramon is the challenger

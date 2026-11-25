@@ -7,7 +7,7 @@ site = screen(Screen.grey_lords_mansion_55)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Myotismon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-myotismon_challenger = site.npc(Species.Myotismon, at=(300, 1950), bits=300, range=0, still=True, when=challenger == CH_MYOTISMON, alone=challenger == CH_MYOTISMON)
+myotismon_challenger = site.npc(Species.Myotismon, at=(300, 1950), hp=5600, mp=4800, offense=660, defense=530, speed=510, brain=570, bits=300, range=0, still=True, when=challenger == CH_MYOTISMON, alone=challenger == CH_MYOTISMON)
 
 
 

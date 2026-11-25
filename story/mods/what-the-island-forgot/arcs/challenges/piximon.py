@@ -7,7 +7,7 @@ site = screen(Screen.tropical_jungle_12)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Piximon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-piximon = site.npc(Species.Piximon, at=(-750, -1250), bits=300, range=0, still=True, when=challenger == CH_PIXIMON, alone=challenger == CH_PIXIMON)
+piximon = site.npc(Species.Piximon, at=(-750, -1250), hp=5200, mp=4600, offense=680, defense=460, speed=660, brain=600, bits=300, range=0, still=True, when=challenger == CH_PIXIMON, alone=challenger == CH_PIXIMON)
 
 
 

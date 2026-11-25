@@ -7,7 +7,7 @@ site = screen(Screen.native_forest_109)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Agumon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-agumon = site.npc(Species.Agumon, at=(-250, 1700), bits=300, range=0, still=True, when=challenger == CH_AGUMON, alone=challenger == CH_AGUMON)
+agumon = site.npc(Species.Agumon, at=(-250, 1700), hp=1100, mp=2300, offense=390, defense=190, speed=80, brain=150, bits=300, range=0, still=True, when=challenger == CH_AGUMON, alone=challenger == CH_AGUMON)
 
 
 

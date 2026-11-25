@@ -7,7 +7,7 @@ site = screen(Screen.kunemons_bed)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Kunemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-kunemon = site.npc(Species.Kunemon, at=(-50, -800), bits=300, range=0, still=True, when=challenger == CH_KUNEMON, alone=challenger == CH_KUNEMON)
+kunemon = site.npc(Species.Kunemon, at=(-50, -800), hp=590, mp=610, offense=120, defense=90, speed=100, brain=80, bits=300, range=0, still=True, when=challenger == CH_KUNEMON, alone=challenger == CH_KUNEMON)
 
 
 

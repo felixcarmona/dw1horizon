@@ -7,7 +7,7 @@ site = screen(Screen.freezeland_134)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Penguinmon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-penguinmon = site.npc(Species.Penguinmon, at=(1750, 1200), bits=300, range=0, still=True, when=challenger == CH_PENGUINMON, alone=challenger == CH_PENGUINMON)
+penguinmon = site.npc(Species.Penguinmon, at=(1750, 1200), hp=400, mp=400, offense=40, defense=40, speed=40, brain=40, bits=300, range=0, still=True, when=challenger == CH_PENGUINMON, alone=challenger == CH_PENGUINMON)
 
 
 

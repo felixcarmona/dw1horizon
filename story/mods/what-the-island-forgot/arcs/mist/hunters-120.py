@@ -11,7 +11,7 @@ def hidden_forest():
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Gabumon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home, at Treasure Hunt (city/treasure-hunt.py).
-gabumon = trees.npc(Species.Gabumon, at=(-1050, 1250), bits=300, range=0, still=True, when=challenger == CH_GABUMON, alone=challenger == CH_GABUMON)
+gabumon = trees.npc(Species.Gabumon, at=(-1050, 1250), hp=2000, mp=2600, offense=320, defense=220, speed=190, brain=150, bits=300, range=0, still=True, when=challenger == CH_GABUMON, alone=challenger == CH_GABUMON)
 
 
 

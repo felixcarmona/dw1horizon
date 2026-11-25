@@ -35,7 +35,7 @@ def gear_kept():
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Monzaemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home, at Jijimon's house (city/jijimons-house-206.py).
-monzaemon = house.npc(Species.Monzaemon, at=(-50, -50), bits=300, range=0, still=True, when=challenger == CH_MONZAEMON, alone=challenger == CH_MONZAEMON)
+monzaemon = house.npc(Species.Monzaemon, at=(-50, -50), hp=2890, mp=3000, offense=420, defense=330, speed=320, brain=290, bits=300, range=0, still=True, when=challenger == CH_MONZAEMON, alone=challenger == CH_MONZAEMON)
 
 
 

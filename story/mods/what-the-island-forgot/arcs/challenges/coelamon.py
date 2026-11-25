@@ -7,7 +7,7 @@ site = screen(Screen.dragon_eye_lake_6)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Coelamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-coelamon = site.npc(Species.Coelamon, at=(400, -1500), bits=300, range=0, still=True, when=challenger == CH_COELAMON, alone=challenger == CH_COELAMON)
+coelamon = site.npc(Species.Coelamon, at=(400, -1500), hp=2000, mp=2000, offense=300, defense=200, speed=100, brain=100, bits=300, range=0, still=True, when=challenger == CH_COELAMON, alone=challenger == CH_COELAMON)
 
 
 

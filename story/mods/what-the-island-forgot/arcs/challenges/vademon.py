@@ -7,7 +7,7 @@ site = screen(Screen.path_thru_mt_panorama_20)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Vademon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-vademon = site.npc(Species.Vademon, at=(0, -800), bits=300, range=0, still=True, when=challenger == CH_VADEMON, alone=challenger == CH_VADEMON)
+vademon = site.npc(Species.Vademon, at=(0, -800), hp=5600, mp=4800, offense=660, defense=530, speed=510, brain=570, bits=300, range=0, still=True, when=challenger == CH_VADEMON, alone=challenger == CH_VADEMON)
 
 
 

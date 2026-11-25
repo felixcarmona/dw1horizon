@@ -7,7 +7,7 @@ site = screen(Screen.tropical_jungle_14)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Vegiemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-vegiemon = site.npc(Species.Vegiemon, at=(-1050, -2250), bits=300, range=0, still=True, when=challenger == CH_VEGIEMON, alone=challenger == CH_VEGIEMON)
+vegiemon = site.npc(Species.Vegiemon, at=(-1050, -2250), hp=3750, mp=3500, offense=470, defense=240, speed=290, brain=200, bits=300, range=0, still=True, when=challenger == CH_VEGIEMON, alone=challenger == CH_VEGIEMON)
 
 
 

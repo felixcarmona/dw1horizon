@@ -7,7 +7,7 @@ site = screen(Screen.gear_savanna_77)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Kiwimon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-kiwimon = site.npc(Species.Kiwimon, at=(400, -750), bits=300, range=0, still=True, when=new_challenger == CH_KIWIMON, alone=new_challenger == CH_KIWIMON)
+kiwimon = site.npc(Species.Kiwimon, at=(400, -750), hp=1490, mp=1460, offense=250, defense=195, speed=205, brain=185, bits=300, range=0, still=True, when=new_challenger == CH_KIWIMON, alone=new_challenger == CH_KIWIMON)
 
 
 

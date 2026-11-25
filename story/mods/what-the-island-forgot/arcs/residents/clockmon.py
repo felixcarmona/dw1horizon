@@ -4,7 +4,7 @@ from dw import *
 from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_CLOCKMON
 
 sewer = screen(Screen.sewer_163)
-clockmon = sewer.npc(Species.Clockmon, at=(-350, -900), range=0, still=True, when=not recruited(Species.Clockmon) or new_challenger == CH_CLOCKMON, alone=new_challenger == CH_CLOCKMON)
+clockmon = sewer.npc(Species.Clockmon, at=(-350, -900), hp=1450, mp=1480, offense=250, defense=195, speed=190, brain=175, range=0, still=True, when=not recruited(Species.Clockmon) or new_challenger == CH_CLOCKMON, alone=new_challenger == CH_CLOCKMON)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Clockmon is the challenger

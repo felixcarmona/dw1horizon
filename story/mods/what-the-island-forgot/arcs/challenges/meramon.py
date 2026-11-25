@@ -7,7 +7,7 @@ site = screen(Screen.lava_cave_31)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Meramon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-meramon = site.npc(Species.Meramon, at=(-1550, -200), bits=300, range=0, still=True, when=challenger == CH_MERAMON, alone=challenger == CH_MERAMON)
+meramon = site.npc(Species.Meramon, at=(-1550, -200), hp=2600, mp=2800, offense=320, defense=160, speed=180, brain=200, bits=300, range=0, still=True, when=challenger == CH_MERAMON, alone=challenger == CH_MERAMON)
 
 
 

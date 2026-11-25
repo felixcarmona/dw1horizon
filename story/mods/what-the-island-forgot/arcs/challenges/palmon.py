@@ -7,7 +7,7 @@ site = screen(Screen.native_forest_4)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Palmon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-palmon = site.npc(Species.Palmon, at=(2650, -500), bits=300, range=0, still=True, when=challenger == CH_PALMON, alone=challenger == CH_PALMON)
+palmon = site.npc(Species.Palmon, at=(2650, -500), hp=590, mp=610, offense=120, defense=90, speed=100, brain=80, bits=300, range=0, still=True, when=challenger == CH_PALMON, alone=challenger == CH_PALMON)
 
 
 

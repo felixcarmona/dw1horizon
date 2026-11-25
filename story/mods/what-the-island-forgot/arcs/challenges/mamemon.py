@@ -7,7 +7,7 @@ site = screen(Screen.mt_panorama_plains)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Mamemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-mamemon = site.npc(Species.Mamemon, at=(2850, 1450), bits=300, range=0, still=True, when=challenger == CH_MAMEMON, alone=challenger == CH_MAMEMON)
+mamemon = site.npc(Species.Mamemon, at=(2850, 1450), hp=4800, mp=4600, offense=650, defense=480, speed=520, brain=550, bits=300, range=0, still=True, when=challenger == CH_MAMEMON, alone=challenger == CH_MAMEMON)
 
 
 

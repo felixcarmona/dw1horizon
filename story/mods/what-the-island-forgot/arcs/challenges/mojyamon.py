@@ -7,7 +7,7 @@ site = screen(Screen.freezeland_133)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Mojyamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-mojyamon = site.npc(Species.Mojyamon, at=(2000, -3400), bits=300, range=0, still=True, when=challenger == CH_MOJYAMON, alone=challenger == CH_MOJYAMON)
+mojyamon = site.npc(Species.Mojyamon, at=(2000, -3400), hp=3750, mp=3500, offense=470, defense=240, speed=290, brain=200, bits=300, range=0, still=True, when=challenger == CH_MOJYAMON, alone=challenger == CH_MOJYAMON)
 
 
 

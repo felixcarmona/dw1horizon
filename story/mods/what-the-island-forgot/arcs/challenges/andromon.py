@@ -7,7 +7,7 @@ site = screen(Screen.factorial_town_161)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Andromon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-andromon = site.npc(Species.Andromon, at=(-750, 1250), bits=300, range=0, still=True, when=challenger == CH_ANDROMON, alone=challenger == CH_ANDROMON)
+andromon = site.npc(Species.Andromon, at=(-750, 1250), hp=5600, mp=4800, offense=660, defense=530, speed=510, brain=570, bits=300, range=0, still=True, when=challenger == CH_ANDROMON, alone=challenger == CH_ANDROMON)
 
 
 

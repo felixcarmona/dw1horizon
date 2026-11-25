@@ -7,7 +7,7 @@ site = screen(Screen.factorial_town_153)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day MetalMamemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-metalmamemon = site.npc(Species.MetalMamemon, at=(-1700, -100), bits=300, range=0, still=True, when=challenger == CH_METALMAMEMON, alone=challenger == CH_METALMAMEMON)
+metalmamemon = site.npc(Species.MetalMamemon, at=(-1700, -100), hp=5600, mp=4800, offense=630, defense=580, speed=500, brain=500, bits=300, range=0, still=True, when=challenger == CH_METALMAMEMON, alone=challenger == CH_METALMAMEMON)
 
 
 

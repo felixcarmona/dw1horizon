@@ -7,7 +7,7 @@ site = screen(Screen.ancient_speedy_region_86)
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Nanimon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-nanimon = site.npc(Species.Nanimon, at=(-350, 1400), bits=300, range=0, still=True, when=challenger == CH_NANIMON, alone=challenger == CH_NANIMON)
+nanimon = site.npc(Species.Nanimon, at=(-350, 1400), hp=3750, mp=3500, offense=470, defense=240, speed=290, brain=200, bits=300, range=0, still=True, when=challenger == CH_NANIMON, alone=challenger == CH_NANIMON)
 
 
 
