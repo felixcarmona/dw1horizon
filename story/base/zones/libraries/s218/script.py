@@ -105,9 +105,13 @@ def step0():    # section 51
         match narrator.choose(a=t51.m2.o0, b=t51.m2.o1, c=t51.m2.o2):
             case "a":
                 if bits >= 500:
-                    if not partner_energy_full or partner.hungry:
-                        narrator.say(t51.u30)
-                        roll = random.roll(9)
+                    if partner_energy_full and not partner.hungry:
+                        partner.play(anim.refuse)
+                        narrator.arrived()
+                        slot0.say(t51.u37)
+                        return
+                    narrator.say(t51.u30)
+                    roll = random.roll(9)
                     if roll <= 2:
                         partner.add(offense=1)
                         partner.add(defense=1)
@@ -160,9 +164,13 @@ def step0():    # section 51
                     return
             case "b":
                 if bits >= 750:
-                    if not partner_energy_full or partner.hungry:
-                        narrator.say(t51.u39)
-                        roll = random.roll(9)
+                    if partner_energy_full and not partner.hungry:
+                        partner.play(anim.refuse)
+                        narrator.arrived()
+                        slot0.say(t51.u46)
+                        return
+                    narrator.say(t51.u39)
+                    roll = random.roll(9)
                     if roll <= 2:
                         partner.add(offense=2)
                         partner.add(defense=2)
@@ -215,9 +223,13 @@ def step0():    # section 51
                     return
             case "c":
                 if bits >= 1500:
-                    if not partner_energy_full or partner.hungry:
-                        narrator.say(t51.u48)
-                        roll = random.roll(9)
+                    if partner_energy_full and not partner.hungry:
+                        partner.play(anim.refuse)
+                        narrator.arrived()
+                        slot0.say(t51.u55)
+                        return
+                    narrator.say(t51.u48)
+                    roll = random.roll(9)
                     if roll <= 2:
                         partner.add(offense=3)
                         partner.add(defense=3)
