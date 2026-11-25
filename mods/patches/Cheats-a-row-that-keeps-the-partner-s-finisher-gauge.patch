@@ -1,0 +1,305 @@
+From a35964b1b0aa310fe99a2458d7595d6016efd96b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 25 Nov 2026 11:27:26 +0000
+Subject: [PATCH] Cheats: a row that keeps the partner's finisher gauge full,
+ off by default
+
+---
+ config/us/overlay.ld      |  4 ++--
+ include/dw/mod_options.h  |  1 +
+ src/btl/battle_hud.c      | 15 +++++++++++++++
+ src/main/main_menu.c      |  5 ++++-
+ src/main/mod_lab.c        | 25 +++++++++++++------------
+ src/main/mod_lab_menu.inc | 27 ++++++++++++++-------------
+ src/main/mod_options.c    |  1 +
+ src/std/std_hud.c         | 15 +++++++++++++++
+ text/main/mod_lab.yaml    |  6 ++++++
+ 9 files changed, 71 insertions(+), 28 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index a9f85d64..1e38dd22 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -1021,8 +1021,8 @@ SECTIONS
+             . = ALIGN(., 4);
+ 
+             /* Lab UI runs synchronously after the resident entry loads MENU.
+-             * The roster callbacks and state stay resident. */
+-            BUILD_DIR/src/main/mod_lab.c.o(.text.modLabFieldPtr .text.modLabFit .text.modLabBound
++             * The roster callbacks and state stay resident, and so does modLabFieldPtr: MENU is full to the sector. */
++            BUILD_DIR/src/main/mod_lab.c.o(.text.modLabFit .text.modLabBound
+                 .text.modLabClamp .text.modLabList .text.modLabPerform
+                 .text.modLabDrawText .text.modLabRowY .text.modLabRender
+                 .text.modLabMenuLoaded* .text.labInt .text.labHash
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index fe5c293e..81f1089d 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -21,6 +21,7 @@ extern int32_t MOD_OPT_EVO_GUIDE; /* EVOLUTION GUIDE: the evolution chart's requ
+ extern int32_t MOD_OPT_NEW_CARDS; /* NEW CARDS: OFF hides ids >= 66 without clearing saved counts. */
+ extern int32_t MOD_OPT_NEW_DIGIMON; /* NEW DIGIMON: the species the mod made raisable; 0 = the original's only */
+ extern int32_t MOD_OPT_CHEATS; /* CHEATS: lab menu, off by default */
++extern int32_t MOD_OPT_FULL_FINISHER; /* the Cheats menu's row: the partner's finisher gauge stays full, under CHEATS, off by default */
+ extern int32_t MOD_OPT_SHORTCUTS; /* the Cheats menu's row: Select + L1/R1/L2/R2 under CHEATS, off by default */
+ extern int32_t MOD_OPT_TOUCHED;	/* changed in OPTIONS since the console started: a loaded save keeps it */
+ 
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index dd9bdf3c..36b6d6e8 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -12,6 +12,7 @@
+ #include <dw/combat.h>
+ #include <dw/font.h>
+ #include <dw/input.h>
++#include <dw/mod_options.h>
+ #include <dw/mod_present.h>
+ #include <dw/mod_qol.h>
+ #include <dw/item.h>
+@@ -1297,6 +1298,20 @@ void BTL_renderFinisherGauge(int16_t idx)
+ 	int32_t hp;
+ 	int32_t i;
+ 
++	/* MOD (cheat full finisher): with CHEATS on and the Cheats menu's row on, the partner's gauge is always full
++	 * (only for a partner whose fourth move is a finisher, as BTL_addFinisherProgress asks) */
++	if (idx == 0 && MOD_OPT_CHEATS && MOD_OPT_FULL_FINISHER) {
++		Entity *modEntity = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[0]];
++		int32_t modTech = ((DigimonEntity *)modEntity)->stats.base.moves[3];
++
++		if (modTech != 0xff) {
++			modTech = entityGetTechFromAnim(modEntity, modTech);
++			if (modTech >= 0x3a && modTech < 0x71) {
++				COMBAT_DATA_PTR->fighter[0].finisherProgress = COMBAT_DATA_PTR->fighter[0].finisherGoal;
++			}
++		}
++	}
++
+ 	if (BTL_STATUS_BARS_STEP != 7) {
+ 		return;
+ 	}
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 6c163019..b1d5ca37 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -273,6 +273,7 @@ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back fro
+ #define MOD_OPT_HEADER_COUNT 0x1f
+ #define MOD_OPT_CHEATS_BIT 1 /* byte 12: CHEATS, and the Cheats menu's Select shortcuts in the bit above it */
+ #define MOD_OPT_SHORTCUTS_BIT 2
++#define MOD_OPT_FULL_FINISHER_BIT 4 /* the Cheats menu's full finisher gauge */
+ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
+ #define MOD_OPT_ROW_CARDS 3
+ #define MOD_OPT_ROW_STORY	4 /* MOD (story): EXTENDED STORY, under NEW CARDS */
+@@ -4775,7 +4776,8 @@ static void modOptionBytes(uint8_t *d)
+ 	d[9] = MOD_OPT_STORY; /* MOD (story) */
+ 	d[10] = MOD_OPT_DIFFICULTY; /* MOD (difficulty) */
+ 	d[11] = MOD_OPT_QUICK_BATTLE;
+-	d[12] = (MOD_OPT_CHEATS ? MOD_OPT_CHEATS_BIT : 0) | (MOD_OPT_SHORTCUTS ? MOD_OPT_SHORTCUTS_BIT : 0);
++	d[12] = (MOD_OPT_CHEATS ? MOD_OPT_CHEATS_BIT : 0) | (MOD_OPT_SHORTCUTS ? MOD_OPT_SHORTCUTS_BIT : 0) |
++		(MOD_OPT_FULL_FINISHER ? MOD_OPT_FULL_FINISHER_BIT : 0);
+ 	d[13] = 0; /* Reserved inverted enemy-bar flags: always ON/shown. */
+ }
+ 
+@@ -4784,6 +4786,7 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ {
+ 	/* not a row of OPTIONS: a save always decides it. Old saves and the card header: OFF */
+ 	MOD_OPT_SHORTCUTS = len >= 13 && (d[12] & MOD_OPT_SHORTCUTS_BIT) != 0;
++	MOD_OPT_FULL_FINISHER = len >= 13 && (d[12] & MOD_OPT_FULL_FINISHER_BIT) != 0;
+ 	if (MOD_OPT_TOUCHED) {
+ 		return;
+ 	}
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 8572e6c8..2b255556 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -27,6 +27,19 @@
+ #include <dw/bubble.h>
+ #include <text/main/mod_lab.h>
+ 
++/* The stage names, each after two spaces. The roster captions also run in the field with MENU absent: every
++ * translated literal has its own resident section. The Cheats lists read them too (MENU is full to the sector). */
++static const char ROSTER_FRESH[] = LAB_STR_LEVEL_FRESH;
++static const char ROSTER_IN_TRAINING[] = LAB_STR_LEVEL_IN_TRAINING;
++static const char ROSTER_ROOKIE[] = LAB_STR_LEVEL_ROOKIE;
++static const char ROSTER_CHAMPION[] = LAB_STR_LEVEL_CHAMPION;
++static const char ROSTER_ULTIMATE[] = LAB_STR_LEVEL_ULTIMATE;
++static const char ROSTER_MEGA[] = LAB_STR_LEVEL_MEGA;
++static const char *const LEVEL_TEXT[] = {
++    "", ROSTER_FRESH, ROSTER_IN_TRAINING, ROSTER_ROOKIE,
++    ROSTER_CHAMPION, ROSTER_ULTIMATE, ROSTER_MEGA,
++};
++
+ #include "mod_lab_menu.inc"
+ 
+ /*
+@@ -143,18 +156,6 @@ static void modRosterTickCaption(int32_t instanceId)
+ 
+ static void modRosterShowCaption(int32_t type)
+ {
+-    /* These captions also run in the field with MENU absent. Give every
+-     * translated literal its own resident section before moving the UI pool. */
+-    static const char ROSTER_FRESH[] = LAB_STR_LEVEL_FRESH;
+-    static const char ROSTER_IN_TRAINING[] = LAB_STR_LEVEL_IN_TRAINING;
+-    static const char ROSTER_ROOKIE[] = LAB_STR_LEVEL_ROOKIE;
+-    static const char ROSTER_CHAMPION[] = LAB_STR_LEVEL_CHAMPION;
+-    static const char ROSTER_ULTIMATE[] = LAB_STR_LEVEL_ULTIMATE;
+-    static const char ROSTER_MEGA[] = LAB_STR_LEVEL_MEGA;
+-    static const char *const LEVEL_TEXT[] = {
+-        "", ROSTER_FRESH, ROSTER_IN_TRAINING, ROSTER_ROOKIE,
+-        ROSTER_CHAMPION, ROSTER_ULTIMATE, ROSTER_MEGA,
+-    };
+ 	RECT area;
+ 	char *p;
+ 	int32_t level;
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index 2b45724e..4713e94e 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -1,8 +1,9 @@
+ /* Private laboratory implementation; included by mod_lab.c. Ten texture rows fit below UV 256; createPauseBox restores its shared last row on return. */
+ #define MOD_LAB_BOX 5
+ #define MOD_LAB_TEXT_Y 0x84
+-#define MOD_LAB_OPTIONS 15
++#define MOD_LAB_OPTIONS 16
+ #define LAB_ROW_SHORTCUTS 6
++#define LAB_ROW_FINISHER 14 /* MOD (cheat full finisher): a switch like the shortcuts row */
+ #define MOD_LAB_OPT_EVOLVE 3
+ #define PAD_SELECT 0x100
+ #define PAD_UP 0x1000
+@@ -62,7 +63,7 @@ static uint32_t labTextHash[LAB_ROWS];
+ static int16_t labTextWidth[LAB_ROWS];
+ static char *const LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
+     LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SHORTCUTS_OFF, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_OLD_AGE,
+-    LAB_STR_LEARN, LAB_STR_LEARN_ALL, LAB_STR_UNLOCK_CHART, LAB_STR_CLOSE };
++    LAB_STR_LEARN, LAB_STR_LEARN_ALL, LAB_STR_UNLOCK_CHART, LAB_STR_FINISHER_OFF, LAB_STR_CLOSE };
+ /* MOD (tamer looks): the names of the looks and of the hair colours, in the order of TAMER.DAT (tools/tamer_pack.py) */
+ char *const LAB_LOOK_TEXT[] = {
+     LAB_STR_LOOK_ORIGINAL, LAB_STR_LOOK_BALD, LAB_STR_LOOK_CLASSIC, LAB_STR_LOOK_MESSY,
+@@ -78,7 +79,6 @@ char *const LAB_HAIR_TEXT[] = {
+ char *const LOOK_PAGE_TEXT[] = { LAB_STR_HAIRSTYLE, LAB_STR_HAIR_COLOUR, LAB_STR_SIMPLE_ADJUST, LAB_STR_LOOK_TURN,
+                                  LAB_STR_LOOK_OPEN, LAB_STR_LOOK_SAVE, LAB_STR_LOOK_EXIT,
+                                  LAB_STR_KEY_CONFIRM, LAB_STR_KEY_CANCEL, LAB_STR_LOOK_FACE };
+-static char *LAB_STAGES[] = { "", "Baby I", "Baby II", "Rookie", "Champion", "Ultimate", "Mega" };
+ 
+ static char *appendStr(char *dst, const char *src)
+ {
+@@ -107,11 +107,12 @@ static char *labInt(char *p, int32_t value)
+ typedef struct {
+     char *name;
+     uint16_t offset;
+-    int16_t min, max, careMin, careMax;
++    int16_t min, max;
++    int8_t care; /* the care rule of the minimum (the maximum is the next one), -1 none */
+     uint8_t group; /* 0 PartnerPara, 1 Stats */
+-} LabField;
+-#define LAB_P(name, field, lo, hi, cmin, cmax) { name, __builtin_offsetof(PartnerPara, field), lo, hi, cmin, cmax, 0 }
+-#define LAB_S(name, field, lo, hi) { name, __builtin_offsetof(Stats, field), lo, hi, -1, -1, 1 }
++} LabField; /* 12 bytes a row: the menu overlay is full to the sector */
++#define LAB_P(name, field, lo, hi, cmin, cmax) { name, __builtin_offsetof(PartnerPara, field), lo, hi, cmin, 0 }
++#define LAB_S(name, field, lo, hi) { name, __builtin_offsetof(Stats, field), lo, hi, -1, 1 }
+ static const LabField LAB_FIELDS[] = {
+     LAB_P(LAB_STR_DISCIPLINE, discipline, 0, 100, MOD_CARE_LIM_DISC_MIN, MOD_CARE_LIM_DISC_MAX),
+     LAB_P(LAB_STR_HAPPINESS, happiness, -100, 100, MOD_CARE_LIM_HAPPY_MIN, MOD_CARE_LIM_HAPPY_MAX),
+@@ -146,8 +147,7 @@ static int16_t *modLabFieldPtr(int32_t field)
+ static int32_t modLabBound(int32_t field, int32_t maximum)
+ {
+     const LabField *f = &LAB_FIELDS[field];
+-    int32_t slot = maximum ? f->careMax : f->careMin;
+-    int32_t value = slot >= 0 ? careGet(slot) : -1;
++    int32_t value = f->care >= 0 ? careGet(f->care + (maximum != 0)) : -1;
+     if (value == -1) value = maximum ? f->max : f->min;
+     if (maximum && field == 10) value = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap;
+     if (maximum && field == 18) value = PARTNER_ENTITY.digimonEntity.stats.base.hp;
+@@ -318,8 +318,7 @@ static void modLabEntry(char *out, int32_t id, int32_t evolution)
+     if (!evolution) modLabTrimLabel(name);
+     if (evolution) {
+         level = modLabStage(id);
+-        p = appendStr(p, " - ");
+-        p = appendStr(p, level >= 1 && level <= 6 ? LAB_STAGES[level] : "?");
++        if (level >= 1 && level <= 6) p = appendStr(p, LEVEL_TEXT[level]); /* as the roster captions write it */
+     }
+     if (!evolution) {
+         p = appendStr(p, " - "); p = appendStr(p, getScreenEntry(id)->filename);
+@@ -356,7 +355,8 @@ static void modLabDrawText(void)
+         n = labTop + row;
+         if (n >= count) break;
+         p = lines[row + firstRow];
+-        if (MOD_LAB_VIEW == LAB_HOME) appendStr(p, n == LAB_ROW_SHORTCUTS && MOD_OPT_SHORTCUTS ? LAB_STR_SHORTCUTS_ON : LAB_HOME_TEXT[n]);
++        if (MOD_LAB_VIEW == LAB_HOME) appendStr(p, n == LAB_ROW_SHORTCUTS && MOD_OPT_SHORTCUTS ? LAB_STR_SHORTCUTS_ON :
++            n == LAB_ROW_FINISHER && MOD_OPT_FULL_FINISHER ? LAB_STR_FINISHER_ON : LAB_HOME_TEXT[n]);
+         else if (MOD_LAB_VIEW == LAB_VALUES) {
+             p = appendStr(p, LAB_FIELDS[n].name); p = appendStr(p, ": "); labInt(p, *modLabFieldPtr(n));
+         } else {
+@@ -582,7 +582,8 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+                 case 13:
+                     for (step = 1; step < NUM_DIGIMON; step++) setDigimonRaised(step);
+                     modLabMessage = LAB_STR_MSG_UNLOCKED; break;
+-                case 14: done = 1; break;
++                case LAB_ROW_FINISHER: MOD_OPT_FULL_FINISHER = !MOD_OPT_FULL_FINISHER; break;
++                case 15: done = 1; break;
+                 }
+             } else if (MOD_LAB_VIEW == LAB_VALUES) {
+                 labField = MOD_LAB_CURSOR; MOD_LAB_VALUE = modLabClamp(labField, *modLabFieldPtr(labField)); MOD_LAB_VIEW = LAB_NUMBER; labStep = 1;
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index a7b201e6..ae313468 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -59,6 +59,7 @@ extern uint8_t COLORCODE_LOWBITS; /* font.c: the text's colour */
+ 
+ int32_t MOD_OPT_CHEATS = 0;
+ int32_t MOD_OPT_SHORTCUTS = 0;
++int32_t MOD_OPT_FULL_FINISHER = 0;
+ int32_t MOD_OPT_BUTTONS = MOD_BUTTONS_US;
+ int32_t MOD_OPT_EVO_GUIDE = 1;
+ int32_t MOD_OPT_NEW_DIGIMON = 1;
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 67833deb..8e1908d2 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -22,6 +22,7 @@
+ #include <dw/mod_present.h>
+ #include <dw/mod_qol.h>
+ #include <dw/model.h>
++#include <dw/mod_options.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+ #include <dw/sound.h>
+@@ -1997,6 +1998,20 @@ void STD_renderFighterHPBar(int16_t id)
+ 	int32_t n;
+ 	int32_t i;
+ 
++	/* MOD (cheat full finisher): with CHEATS on and the Cheats menu's row on, the partner's gauge is always full
++	 * (only for a partner whose fourth move is a finisher, as STD_addFinisherProgress asks) */
++	if (id == 0 && MOD_OPT_CHEATS && MOD_OPT_FULL_FINISHER) {
++		Entity *modEntity = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[0]];
++		int32_t modTech = ((DigimonEntity *)modEntity)->stats.base.moves[3];
++
++		if (modTech != 0xff) {
++			modTech = entityGetTechFromAnim(modEntity, modTech);
++			if (modTech >= 0x3a && modTech < 0x71) {
++				COMBAT_DATA_PTR->fighter[0].finisherProgress = COMBAT_DATA_PTR->fighter[0].finisherGoal;
++			}
++		}
++	}
++
+ 	if (GAME_STATE != 4) {
+ 		return;
+ 	}
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index 6540b177..63c4008f 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -16,6 +16,12 @@ MOD_LAB:
+     LAB_STR_SHORTCUTS_ON:
+       ja: "SELECT shortcuts: ON"
+       en_us: "SELECT shortcuts: ON"
++    LAB_STR_FINISHER_OFF:
++      ja: "Full finisher: OFF"
++      en_us: "Full finisher: OFF"
++    LAB_STR_FINISHER_ON:
++      ja: "Full finisher: ON"
++      en_us: "Full finisher: ON"
+     LAB_STR_SHORTCUTS_HELP:
+       ja: "SELECT + L1/R1: Digimon, L2/R2: map"
+       en_us: "SELECT + L1/R1: Digimon, L2/R2: map"
+-- 
+2.55.0
+
