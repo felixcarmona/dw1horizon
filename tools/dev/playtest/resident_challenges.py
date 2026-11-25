@@ -146,9 +146,10 @@ class Run:
         if not m: return row['species']
         stub = (ROOT / f'typings/dw/base/{m.group(1)}.pyi').read_text()
         for name in (n.strip() for n in m.group(2).split(',')):
-            k = re.search(rf'^{name}: NPC +# slot \d+, (\w+)', stub, re.M)
+            k = re.search(rf'^{name}: NPC +# slot \d+(?: of screen \d+)?, (\w+)', stub, re.M)
             if k and re.match(r'[A-Za-z]+', k.group(1)).group(0) == row['name']:
                 return int(re.search(rf'^    {k.group(1)} = (\d+)', (ROOT / 'typings/dw/__init__.pyi').read_text(), re.M).group(1))
+        if re.search(rf'Species\.{row["name"]}\b', src): return row['species']      # its own NPC beside the game's
         raise AssertionError(f"{row['name']}: no NPC of it imported in {row['home']}")
 
     def go(self, screen, label):
