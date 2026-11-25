@@ -545,13 +545,13 @@ def lightning_blast():
 def v_nova_blast():
     """Blue light gathers in Veedramon's jaws and it breathes a white-blue ray; V-shaped arrowheads of light race
     down the ray one after another, each larger than the last, and strike the target as a great V that bursts."""
-    fx = Fx(delay=8, cast_sound=2)
+    fx = Fx(delay=16, cast_sound=2)
     fx.palette(VBREATH)
     fx.paint(0, breathbar(5)); fx.paint(1, breathbar(15)); fx.paint(2, vblade()); fx.paint(3, glow(15, 1.2))
     fx.paint(4, star(4, 2, 9, 6)); fx.paint(5, ring(13, 2.0))
     tint, edge = fx.colour(128, 128, 128), fx.colour(40, 90, 128)
     mouth = fx.vec()
-    charge, life, steps = 8, 13, 5
+    charge, life, steps = 4, 13, 5
     fx.particle('mote', 12, 5, 4, (110, 128, 128), (80, 130), grow=-12, spread=140)
     fx.particle('swell', 1, charge + 1, 3, (90, 120, 128), 60, grow=30)
     fx.particle('arrow', 8, 6, 2, (128, 128, 128), None, grow=30, fade=True)
@@ -567,7 +567,10 @@ def v_nova_blast():
     fx.vadd(fx.TV2, mouth)
     fx.lin(fx.SZ, fx.T, 70, 150); fx.emit('arrow', fx.TV2)
     fx.label('main_end'); fx.end(charge + life + 1)
-    fx.label('begin'); muzzle_at(fx, mouth, 8, 30); fx.emit('swell', mouth); fx.sound(-55); fx.ret()
+    fx.label('begin')                 # the snout once the head has come down: half the body's radius ahead
+    muzzle_at(fx, mouth, 8, 0); fx.vsub(mouth, fx.SRC); fx.lin(fx.T3, at(mouth, 1), 1, 0)
+    fx.set(at(mouth, 1), 0); fx.vdiv(mouth, 2); fx.set(at(mouth, 1), fx.T3); fx.vadd(mouth, fx.SRC)
+    fx.emit('swell', mouth); fx.sound(-55); fx.ret()
     fx.label('fire'); fx.sound(13); fx.call('ray'); fx.ret()
     fx.label('smite')
     fx.sound(7); fx.aim(); fx.hit(); fx.lin(fx.SZ, at(fx.TSIZE, 1), 1, 420)
