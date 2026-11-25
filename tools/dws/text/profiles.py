@@ -36,13 +36,19 @@ def packed_key(key):
     return not (key and UNPACKED_KEYS.match(key))
 
 
+def base_dws(root):
+    """{path: DWS} of story/base under `root`: its Python views lowered, names.dws and city/ (py.lower.base_dws)."""
+    from ..py.lower import base_dws as dws
+    return dws(pathlib.Path(root, 'story', 'base'))
+
+
 @lru_cache(None)
 def sized_boxes(root):
     """Explicit script window dimensions by text key, including newspaper/instruction boxes."""
     pattern = re.compile(r'set_textbox_size\([^,]+,\s*(\d+),\s*(\d+)\);\s*show_textbox\(text\("([^"]+)"\)\)')
     return {key:(min(240,int(cols)*12+8),int(rows))
-            for path in pathlib.Path(root,'story/base').rglob('*.dws')
-            for cols,rows,key in pattern.findall(path.read_text())}
+            for text in base_dws(root).values()
+            for cols,rows,key in pattern.findall(text)}
 
 
 STATEMENT = re.compile(r'\bsay\(([\w()]+)((?:,\s*text\("[^"]+"\))+)\)|\b(?:choice|set_dialog_owner)\(([\w()]+)\)|'
@@ -53,9 +59,9 @@ def named_keys(root):
     """The text keys of story/base shown in a box with a name row: `say(who, text("key"), ...)` by anyone but the narrator,
     and `show_textbox(text("key"))` after such a statement in the same event."""
     keys = set()
-    for path in (pathlib.Path(root) / 'story/base').rglob('*.dws'):
+    for text in base_dws(root).values():
         owner = None
-        for m in STATEMENT.finditer(path.read_text(encoding='utf-8')):
+        for m in STATEMENT.finditer(text):
             who = m[1] or m[3]
             if who or not m[4]:
                 owner = who
@@ -67,8 +73,8 @@ def named_keys(root):
 
 def narrator_keys(root):
     """Direct narrator say() keys wrap to four rows; show_textbox() wraps to three."""
-    return {key for path in (pathlib.Path(root) / 'story/base').rglob('*.dws')
-            for match in STATEMENT.finditer(path.read_text(encoding='utf-8'))
+    return {key for text in base_dws(root).values()
+            for match in STATEMENT.finditer(text)
             if match[1] in ('narrator', '255')
             for key in re.findall(r'text\("([^"]+)"\)', match[2])}
 

@@ -1,12 +1,13 @@
 # Base story sources
 
 `story/base` is committed, key-only source derived from the USA story: Python
-views beside their DWS form, MAPHEAD hooks and shared blocks, and names. It
+views of the scripts, MAPHEAD hooks and shared blocks, and names. It
 contains no original dialogue; text keys are resolved from the player's disc
 or the selected translation. `city/` contains our declarative city rules.
 
-`tools/dws.py story-build` compiles these sources with the selected mods, using
-Python by default (`--from-dws` selects DWS). Existing source is preserved.
+`tools/dws.py story-build` lowers the Python views to DWS and compiles them with
+the selected mods; `story-base --check` proves the original views lower to the
+disc's story. Existing source is preserved.
 
 ```sh
 python3 tools/dws.py story-base --reproduce

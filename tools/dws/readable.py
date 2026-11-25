@@ -267,7 +267,7 @@ def write(out_root, lifted, mhl, names, stats=None, check=True, root_readme=True
         src, _ = script_source(None, pieces, names, base=mdir, names_file=nm_path, entries=header_entries(mh))
         path = os.path.join(mdir, 'maphead.dws'); open(path, 'w', encoding='utf-8').write(src); paths.append(path)
         if check: proven += check_file(paths, mhl, 'maphead')
-        rd = ['# MAPHEAD (readable)', '', 'One file per section: `screenNNN.dws` (screen setup) and `global-NNNN.dws` (entry points of the C code).', '',
+        rd = ['# MAPHEAD (readable)', '', 'How each section lifts: `decompile-all --readable` writes one file per section, `screenNNN.dws` (screen setup) and `global-NNNN.dws` (entry points of the C code); `story-base` prints them as `hooks.py`.', '',
               '| section | status | lines | instructions |', '|---|---|---|---|']
         for lf in mhl: rd.append(f'| {lf.sec.label} | {lf.status}{" (" + lf.reason + ")" if lf.reason else ""} | {len(lf.body)} | {len(lf.sec.ins)} |')
         open(os.path.join(mdir, 'README.md'), 'w', encoding='utf-8').write('\n'.join(rd) + '\n')

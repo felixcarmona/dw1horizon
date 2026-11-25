@@ -1,4 +1,4 @@
-"""The story build: the readable DWS of story/base is the source of DG.SCN and MAPHEAD.SCN (docs/mods/dws.md section 3).
+"""The story build: the Python view of story/base, lowered to DWS, is the source of DG.SCN and MAPHEAD.SCN (docs/mods/dws.md section 3).
 
     python3 tools/dws.py story-build [SOURCE.dws ...] -o build/full/DG.SCN [--mods all|none|a,b] [--exe ...]
     python3 tools/dws.py story-base [--refresh]                 # only (re)generate story/base
@@ -6,12 +6,12 @@
     python3 tools/dws.py story-verify A/DG.SCN A/MAPHEAD.SCN B/DG.SCN B/MAPHEAD.SCN
 
 story/base is made from the US disc (`extracted/SCN/`) by the beautifier (`decompile-all --readable`, every event proven
-against the disc), with its text as keys into text/us/dialogue.json (made from the disc, gitignored: no dialogue is ever
+against the disc) and printed as Python (`story-base`; the DWS it is printed from is not kept), with its text as keys into text/us/dialogue.json (made from the disc, gitignored: no dialogue is ever
 committed). story/base itself is committed, keys only, like the decompilation's code;
 `story-base --reproduce` compares fresh generation with the committed files, checking both hashes and a reason for
 each reviewed Horizon edit in base/authored.json. The build then
 
-  1. compiles story/base (one program for the 222 scripts, one for MAPHEAD) and splices each event in place of the body
+  1. lowers story/base's views to DWS, compiles them (one program for the 222 scripts, one for MAPHEAD) and splices each event in place of the body
      of its section in the disassembly of the disc (the method of the verified `readable` disc),
      with the script's `shared` blocks (the code several sections reach) appended; a section an override replaces keeps
      its original body (the override is the new code);
@@ -99,9 +99,12 @@ def ensure_base(base=BASE, refresh=False, log=print, check=False):
         lifted, mhl, names = readable.lift_disc()
         stats = {}
         readable.write(tmp, lifted, mhl, names, stats, root_readme=False)
-        N.use_base(tmp)                            # the screens, NPCs and sections of the views: the story being made
+        N.use_base(tmp, maphead_dws=os.path.join(tmp, 'maphead'))   # the screens, NPCs and sections of the views: the story being made
         from .py import view as PV, stubs
-        PV.write_base(tmp, names)                  # the Python view beside each script.dws, and maphead/hooks.py (milestone 3b)
+        PV.write_base(tmp, names)                  # the Python view of each script.dws, and maphead/hooks.py (milestone 3b)
+        for f in glob.glob(os.path.join(tmp, 'zones', '*', '*', 'script.dws')) + glob.glob(os.path.join(tmp, 'maphead', '*.dws')):
+            os.remove(f)                           # (the DWS the views were printed from: the build lowers the views)
+        N.use_base(tmp)
         stubs.write_base_pyi(log=log)              # what mods import from it (typings/dw/base/sNNN.pyi)
         if check:                                  # the views lowered and proven against the disc (milestone 4a)
             from .py import lower as PL
@@ -176,45 +179,44 @@ def reproduction_differences(authored, original, approved):
     return bad
 
 
-def base_files(base=BASE):
-    scripts = sorted(glob.glob(os.path.join(base, 'zones', '*', '*', 'script.dws')))
-    mh = sorted(glob.glob(os.path.join(base, 'maphead', '*.dws')))
-    names = [os.path.join(base, 'names.dws')] if os.path.exists(os.path.join(base, 'names.dws')) else []
-    return scripts, mh, names
+def names_file(base=BASE):
+    """[story/base/names.dws] (the names the base's DWS uses), or [] before `story-base`."""
+    p = os.path.join(base, 'names.dws')
+    return [p] if os.path.exists(p) else []
 
 
-def script_file(base, sid):
-    for p in base_files(base)[0]:
-        if re.match(rf's{sid:03d}(-|$)', os.path.basename(os.path.dirname(p))): return p
-    return None
-
-
-def maphead_file(base, sec):
-    for fn in (f'screen{sec:03d}.dws', f'global-{sec:04d}.dws'):
-        p = os.path.join(base, 'maphead', fn)
-        if os.path.exists(p): return p
-    return None
-
-
-EVENT_HEAD = re.compile(r'^    (\S.*\{)    // section (\d+)\b.*$')
+EVENT_HEAD = re.compile(r'^    (?:on (\w+)(?:\((\w+)\))?|section\((\d+)\)) (?:replace |before |after )?\{')
+PY_LINE = re.compile(r'\s*// @py \d+$')
 
 
 def event_source(base, sid, sec):
-    """The standalone DWS of one event of story/base (`script N { npc ...; <event> }`, no imports: the build compiles
-    overrides with story/core and story/base/names.dws loaded). -> (text, base file) or raises DwsError."""
-    path = script_file(base, sid) if sid != 'maphead' else maphead_file(base, sec)
+    """The standalone DWS of one event of story/base, its view lowered (`script N { npc ...; <event> }`, no imports: the
+    build compiles overrides with story/core and story/base/names.dws loaded). -> (text, its view) or raises DwsError."""
+    from .py import lower as PL, naming as N
     where = f'script {sid}' if sid != 'maphead' else 'MAPHEAD'
-    if not path: raise DwsError(f'{where} has no file in {rel(base)} (run `dws story-base`)', None)
-    lines = open(path, encoding='utf-8').read().split('\n')
-    npcs = [l for l in lines if re.match(r'^    npc \w+ = \d+;', l)]
-    start = next((i for i, l in enumerate(lines) if (m := EVENT_HEAD.match(l)) and int(m.group(2)) == sec), None)
+    if os.path.abspath(base) != os.path.abspath(N.BASE): N.use_base(os.path.abspath(base))
+    path = N.script_file(sid) if sid != 'maphead' else os.path.join(base, 'maphead', 'hooks.py')
+    if not path or not os.path.exists(path): raise DwsError(f'{where} has no file in {rel(base)} (run `dws story-base`)', None)
+    texts = PL.base_texts(base)
+    key = PL.MAPHEAD_DWS if sid == 'maphead' else os.path.relpath(os.path.join(os.path.dirname(path), 'script.dws'), base).replace(os.sep, '/')
+    lines = [PY_LINE.sub('', l) for l in texts.get(key, '').split('\n')]
+    npcs = {m.group(1): int(m.group(2)) for l in lines if (m := re.match(r'^    npc (\w+) = (\d+);', l))}
+
+    def section(m):
+        ev, arg, n = m.groups()
+        if n: return int(n)
+        if ev == 'enter': return 254
+        if ev == 'talk': return npcs.get(arg)
+        if ev in ('step', 'use') and arg and arg.isdigit(): return (51 if ev == 'step' else 80) + int(arg)
+        return None
+    start = next((i for i, l in enumerate(lines) if (m := EVENT_HEAD.match(l)) and section(m) == sec), None)
     if start is None:
         raise DwsError(f'{where} section {sec} is not an event of {rel(path)} (left in the port form, or no such section)', None)
     end = next(i for i in range(start + 1, len(lines)) if lines[i] == '    }')
     head = 'maphead {' if sid == 'maphead' else f'script {sid} {{'
-    out = [f'// {where} section {sec} of story/base ({rel(path)}): made from your disc by `dws story-section`. Do not commit a copy;',
-           '// commit an override you wrote, or a .patch.', head]
-    if npcs: out += npcs + ['']
+    out = [f'// {where} section {sec} of story/base ({rel(path)}, lowered): made from your disc by `dws story-section`. Do not '
+           'commit a copy;', '// commit an override you wrote, or a .patch.', head]
+    if npcs and sid != 'maphead': out += [f'    npc {k} = {v};' for k, v in npcs.items()] + ['']
     out += lines[start:end + 1] + ['}', '']
     return '\n'.join(out), path
 
@@ -457,38 +459,20 @@ def generate_text(title, info, order, genf):
     return out + ['']
 
 
-def maphead_drift(mh_files):
-    """How the lowered hooks.py differs from story/base's MAPHEAD DWS in what the names are read from (the script each screen
-    sets, the Digimon placed), or None."""
-    from .py import naming as N
-    low = N.maphead_facts([open(f, encoding='utf-8').read() for f in mh_files]); dws = N.base_maphead()
-    first = lambda f: {s: a[0] for s, (a, _) in f.items() if a and s <= 254}
-    if first(low) != first(dws): return 'sets other scripts on some screens'
-    if sorted(x for _, d in low.values() for x in d) != sorted(x for _, d in dws.values() for x in d): return 'places other Digimon'
-    return None
-
-
-def compile_base_story(base, work, lang, text, exclude, mh_overrides, mh_gen, report, from_py=True, text_source='us', exe='original'):
+def compile_base_story(base, work, lang, text, exclude, mh_overrides, mh_gen, report, text_source='us', exe='original'):
     """story/base -> work/dis (the 222 scripts as assembly text, the container index, a header) and work/MAPHEAD.SCN, made from
     the sources alone (see docs/mods/dws.md): every script, its section table and every section come
     from story/base; the container's size is the USA DG.SCN's (BE.DG_SCN_SIZE, its FILE_OFFSET_TABLE entry; build-disc.py pads
     to it). A section a mod's override replaces keeps its base code, unreached (the mod layer points the section table at the override, as backend.apply does).
     mh_overrides: [(sec, rep, code, ents, path)] of MAPHEAD overrides (compiled in the mod layer, mh_gen: its gen_event)."""
-    scripts, mh_files, names = base_files(base)
+    from .py import lower as PL                   # the base is its Python view, lowered to DWS (in work/base-py, to read)
+    names = names_file(base)
+    pyd = os.path.join(work, 'base-py'); shutil.rmtree(pyd, ignore_errors=True)
+    PL.TARGET['exe'] = 'original' if text_source == 'us' else exe     # (the executable the base compiles for, below: which species a partner can be)
+    try: scripts, mh_files = PL.lower_base(base, pyd)
+    finally: PL.TARGET['exe'] = 'original'
     if not scripts or not mh_files: raise DwsError(f'{rel(base)} is empty: run `dws story-base`', None)
-    if from_py:                                   # the base is built from its Python view (lowered); the .dws is the intermediate
-        from .py import lower as PL
-        pyd = os.path.join(work, 'base-py'); shutil.rmtree(pyd, ignore_errors=True)
-        sexe_py = 'original' if text_source == 'us' else exe       # (the executable the base compiles for, below: which species a partner can be)
-        PL.TARGET['exe'] = sexe_py
-        try: scripts, mh_files = PL.lower_base(base, pyd)
-        finally: PL.TARGET['exe'] = 'original'
-        report.append(f'story: built from the Python view: {len(scripts)} scripts and MAPHEAD lowered from story/base/**/*.py')
-        drift = maphead_drift(mh_files)
-        if drift: report.append(f'warning: story/base/maphead/hooks.py {drift} than the DWS beside it (maphead/*.dws), which the '
-                                'names mods import from dw.base follow (naming.maphead_facts); make them agree')
-    else:
-        report.append('story: built from the DWS of story/base (--from-dws)')
+    report.append(f'story: built from the Python view: {len(scripts)} scripts and MAPHEAD lowered from story/base/**/*.py')
     dis = os.path.join(work, 'dis')
     shutil.rmtree(dis, ignore_errors=True); os.makedirs(dis)
     # the base compiles for the original executable; another text source needs the target's font (the mod executable's
@@ -605,7 +589,7 @@ def parse_mods(arg):
 
 
 def build(sources, out, exe='original', lang='en', text=(), lock=None, update_lock=False, profile='original', base=BASE,
-          mods=None, refresh=False, log=print, mods_root=MODS, from_py=True, text_source='us', strict=False):
+          mods=None, refresh=False, log=print, mods_root=MODS, text_source='us', strict=False):
     from . import recruitment
     # The font/executable target is shared by original and extended passes.
     # Only the extended story supplies this mod's sources; --mods none always
@@ -614,14 +598,13 @@ def build(sources, out, exe='original', lang='en', text=(), lock=None, update_lo
     extended = mods != [] and any(os.path.commonpath((owner, os.path.abspath(p))) == owner for p in sources)
     with recruitment.story(extended):
         return _build(sources, out, exe, lang, text, lock, update_lock, profile, base,
-                      mods, refresh, log, mods_root, from_py, text_source, strict)
+                      mods, refresh, log, mods_root, text_source, strict)
 
 
 def _build(sources, out, exe='original', lang='en', text=(), lock=None, update_lock=False, profile='original', base=BASE,
-          mods=None, refresh=False, log=print, mods_root=MODS, from_py=True, text_source='us', strict=False):
+          mods=None, refresh=False, log=print, mods_root=MODS, text_source='us', strict=False):
     """story/base (+ overrides of the mods) + `sources` -> DG.SCN at `out`. -> (prog, report, run dir, MAPHEAD path).
-    from_py: the base is its Python view (story/base/**/*.py, lowered: the default); False builds it from the generated DWS beside it
-    (byte for byte the same, `story-base --check` and test_dws prove it)."""
+    The base is its Python view (story/base/**/*.py), lowered (`story-base --check` proves it lowers to the disc's story)."""
     report = []
     require_base(base, refresh, log=log)
     from .py import naming as N
@@ -633,7 +616,7 @@ def _build(sources, out, exe='original', lang='en', text=(), lock=None, update_l
     by_file = {os.path.abspath(o.compiled): o for o in overrides}
     prelude = []
     if overrides:                               # overrides see what the base files see: story/core and story/base/names.dws
-        prelude = sorted(glob.glob(os.path.join(CORE, '*.dws'))) + base_files(base)[2]
+        prelude = sorted(glob.glob(os.path.join(CORE, '*.dws'))) + names_file(base)
     # the mod layer first (its overrides decide what the base keeps), then story/base
     files = prelude + list(sources) + [o.compiled for o in overrides]
     try:
@@ -682,7 +665,7 @@ def _build(sources, out, exe='original', lang='en', text=(), lock=None, update_l
         if o.sid == 'maphead' and not any(e[0] == o.sec for e in mh_over): raise DwsError(f'{o}: no `maphead {{ section({o.sec}) replace }}` in it', None)
     comp.mh_events = []
     font = dict(BE.FONT); stripped = set(BE.FONT['stripped']); limit = BE.MAPHEAD_LIMIT; slots = dict(BE.NPC_SLOTS)
-    dis, mh = compile_base_story(base, work, lang, text, exclude, mh_over, comp.gen_event, report, from_py=from_py, text_source=text_source, exe=exe)
+    dis, mh = compile_base_story(base, work, lang, text, exclude, mh_over, comp.gen_event, report, text_source=text_source, exe=exe)
     if text_source != 'us':
         fb = os.path.join(os.path.dirname(os.path.abspath(out)), 'text-fallback.txt')
         open(fb, 'w', encoding='utf-8').write(''.join(k + '\n' for k in compile_base_story.fallback))

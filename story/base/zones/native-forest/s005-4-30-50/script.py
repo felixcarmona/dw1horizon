@@ -1,6 +1,6 @@
 # The Python view of script 5 of DG.SCN: screen 4 Native Forest, screen 30 Lava Cave, screen 50 Grey Lord's Mansion, screen 61 Grey Lord's Mansion, screen 65 Grey Lord's Mansion, screen 84 Ancient Speedy Region, screen 126 Drill Tunnel, screen 140 Volume Villa.
 # Made from the disc by `dws story-base`; the source of the story since 2026-10-15: edit it (no file = no script). Keys only, never the
-# game's words. `story-build` reads this file (lowered); the DWS beside it is the proven intermediate; mods import `dw.base`.
+# game's words. `story-build` reads this file (lowered to DWS); mods import `dw.base`.
 from dw import *
 
 forest = screen(Screen.native_forest_4)

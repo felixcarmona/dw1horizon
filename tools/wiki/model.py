@@ -183,8 +183,17 @@ def slug(name):
 
 def bakemon_dialogue(files, lang):
     """Resolve the successful choice path and displayed partner dialogue from the snapshot."""
-    script = files['story/base/zones/overdell-cemetery/s035-35/script.dws'].decode()
-    talk = script.split('on talk(bakemon) replace {', 1)[1].split('on step(', 1)[0]
+    old = 'story/base/zones/overdell-cemetery/s035-35/script.dws'     # (releases up to v0.0.9 kept the DWS beside the view)
+    if old in files:
+        talk = files[old].decode().split('on talk(bakemon) replace {', 1)[1].split('on step(', 1)[0]
+    else:
+        script = files['story/base/zones/overdell-cemetery/s035-35/script.py'].decode()
+        talk = script.split('@bakemon.on_talk', 1)[1].split('\n@', 1)[0]
+        for alias, key in re.findall(r'^(\w+) = text\.(s\d+\.sec\d+)$', script, re.M):     # t5.u8: text("s035.sec5.u8")
+            talk = re.sub(rf'\b{alias}\.(\w+)\b', lambda m: f'text("{key}.{m[1]}")', talk)
+        talk = re.sub(r'(?<![.\w])say\((text\("[^"]+"\))\)', r'say(bakemon, \1)', talk)    # the NPC talked to is the speaker
+        talk = re.sub(r'if partner\.species in \(Species\.Bakemon, Species\.Bakemon157\):\s*(say\([^\n]*\))\s*else:',
+                      r'if (partner_type == 37 || partner_type == 157) { \1; } else', talk)
     # Track nested choice branches up to the recruit operation, rather than copying an answer sequence.
     tokens = re.compile(r'text\("(s035\.sec5\.m\d+\.o\d+)"\)\s*(?:or cancel\s*)?=>\s*\{|recruit\(species\("Bakemon"\)\)|[{}]')
     stack, paths = [], []

@@ -134,7 +134,7 @@
         155
       ],
       "condition": "factory_guards_passed or (clock.hour == 11 and clock.minute >= 55) or (clock.hour == 12 and clock.minute <= 5) or (clock.hour == 23 and clock.minute >= 55) or (clock.hour == 0 and clock.minute <= 5)",
-      "evidence": "story/base/maphead/screen155.dws"
+      "evidence": "story/base/maphead/hooks.py:2749"
     },
     {
       "name": "Underground Pond excavation",

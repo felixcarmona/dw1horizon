@@ -1,7 +1,7 @@
 # DWS: intermediate language reference
 
 > **Write new story in Python** (`docs/mods/story-language.md`: the language; `story/mods/examples/`: small authoring
-> examples). DWS is what it lowers to, the form of the generated base beside its Python view, and the escape hatch
+> examples). DWS is what it lowers to (the base's Python view too, at each build), and the escape hatch
 > (a `dws(...)` block, a `city { }` block). A mod whose story is in DWS, and `overrides/`, still build with a warning.
 
 `tools/dws.py` compiles `.dws` files, a typed language with braces, into the game's scripts
@@ -18,7 +18,7 @@ python3 tools/dws.py fmt     *.dws                                  # canonical 
 python3 tools/dws.py text-extract                                  # your disc's dialogue -> text/us/dialogue.json
 python3 tools/dws.py text-keyed 2                                  # script 2 of the disc as keyed DWS (raw assembly)
 python3 tools/dws.py decompile 2                                   # script 2 in the port form: typed statements, no asm()
-python3 tools/dws.py decompile-all [-o story/base]                 # the whole disc into the story/ layout (one file per section chunk)
+python3 tools/dws.py decompile-all [-o build/story-dws]            # the whole disc into the story/ layout (one file per section chunk)
 python3 tools/dws.py roundtrip [--layout]                          # decompile -> compile -> compare with the disc (222/222 + MAPHEAD)
 python3 tools/dws.py decompile --readable 2                        # the beautifier: if/else, loops, choice, say, names; every section proven
 python3 tools/dws.py decompile-all --readable [-o DIR] [--scripts 2,3]   # the same for the story/base layout (a sample, or all + MAPHEAD)
@@ -318,8 +318,8 @@ Those are optional passes on top, each checked by the same recompile.
 
 ## Generated base story
 
-`story/base` is committed source: readable DWS and Python views with text keys,
-never disc dialogue. `story-build` compiles it and the selected mods; it does not
+`story/base` is committed source: readable Python views with text keys, never
+disc dialogue. `story-build` lowers them to DWS and compiles them and the selected mods; it does not
 regenerate an existing base. `story-base --reproduce` compares a fresh generation
 from the player's USA disc with the committed files, allowing only reviewed edits
 whose original and authored hashes and reasons are pinned in `authored.json`.

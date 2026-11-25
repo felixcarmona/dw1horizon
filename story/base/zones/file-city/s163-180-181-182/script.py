@@ -1,6 +1,6 @@
 # The Python view of script 163 of DG.SCN: screen 180 File City, screen 181 File City, screen 182 File City, screen 183 File City, screen 184 File City, screen 185 File City, screen 186 File City, screen 187 File City, screen 188 File City, screen 189 File City, screen 190 File City, screen 191 File City, screen 192 File City, screen 193 File City, screen 194 File City, screen 195 File City, screen 196 File City, screen 197 File City, screen 198 File City, screen 199 File City, screen 200 File City, screen 201 File City, screen 202 File City, screen 203 File City.
 # Made from the disc by `dws story-base`; the source of the story since 2026-10-15: edit it (no file = no script). Keys only, never the
-# game's words. `story-build` reads this file (lowered); the DWS beside it is the proven intermediate; mods import `dw.base`.
+# game's words. `story-build` reads this file (lowered to DWS); mods import `dw.base`.
 from dw import *
 from dw.text import text
 from dw.names import *

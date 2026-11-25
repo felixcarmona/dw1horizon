@@ -28,10 +28,10 @@ and the other Japanese dialogue banks:
 names.json (the executable's menus) is laid out with spaces and is not touched.
 Without --write it prints how many rows change and --show N of them. The text audit (tools/localize/check.py) and the
 text bank (textbank.load_source) report a stray space as an error."""
-import argparse, functools, glob, json, os, pathlib, re, sys
+import argparse, functools, glob, json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
-from dws.text.profiles import header_row, packed_key      # noqa: E402
+from dws.text.profiles import base_dws, header_row, packed_key      # noqa: E402
 from dws.text.layout import kinsoku, starts_badly      # noqa: E402
 
 J = '぀-ヿ㐀-鿿'                           # kana (ー and ・ included) and kanji
@@ -47,7 +47,7 @@ def sized_keys(root=ROOT):
     box's width."""
     pattern = re.compile(r'set_textbox_size\([^,]+,\s*(\d+),\s*\d+\);\s*show_textbox\(text\("([^"]+)"\)\)')
     return {k: min(240, int(cols) * 12 + 8)                 # -> {key: the box's width in pixels}
-            for p in pathlib.Path(root, 'story/base').rglob('*.dws') for cols, k in pattern.findall(p.read_text())}
+            for text in base_dws(root).values() for cols, k in pattern.findall(text)}
 
 
 def laid_out(key):

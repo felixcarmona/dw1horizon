@@ -331,8 +331,8 @@
       "story/base/zones/freezeland/s091-95/script.py": [
         "clock.hour >= 15 and clock.hour <= 17 and garurumon_promise_days == 1"
       ],
-      "story/base/maphead/screen095.dws": [
-        "date_hour >= 15 && date_hour < 17",
+      "story/base/maphead/hooks.py": [
+        "clock.hour >= 15 and clock.hour < 17",
         "date_hour >= 17",
         "garurumon_promise_days >= 1"
       ]

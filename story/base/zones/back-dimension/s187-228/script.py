@@ -1,6 +1,6 @@
 # The Python view of script 187 of DG.SCN: screen 228 Back Dimension.
 # Made from the disc by `dws story-base`; the source of the story since 2026-10-15: edit it (no file = no script). Keys only, never the
-# game's words. `story-build` reads this file (lowered); the DWS beside it is the proven intermediate; mods import `dw.base`.
+# game's words. `story-build` reads this file (lowered to DWS); mods import `dw.base`.
 from dw import *
 from dw.text import text
 from dw.names import *

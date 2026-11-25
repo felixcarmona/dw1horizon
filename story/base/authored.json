@@ -1,980 +1,490 @@
 {
   "_about": "Reviewed differences from fresh original-disc generation. Both hashes are checked by story-base --reproduce; an unlisted change or a changed generator fails. Game text remains keys only.",
   "files": {
-    "maphead/global-1238.dws": {
-      "original_sha256": "1997ebf4483b1584244ffce38ab3d7888ca78a0ee963a09cac740e42193bd7dd",
-      "authored_sha256": "014d2aeacb2f03a409101fd4dfb51efc812307f4e84aaa4061613802c0015b5a",
-      "reason": "Optional partner naming text table entries (patch 0207); DWS synchronized with hooks.py"
-    },
     "maphead/hooks.py": {
-      "original_sha256": "4bfb261b42580f9928c7706e08108958b68d4ca058fe83a043d2a55be0b1b145",
-      "authored_sha256": "790c3977ef1f00fe1e318f3bdeefc3fa6e1277756fac4922d5a374307890fad9",
+      "original_sha256": "88d6d4c2d0833ad0f08821ce822b489ad5c446e1b7b0a4e12c04bf56f2a55e93",
+      "authored_sha256": "f0a50166b991bad6ab586aa600f9d630ecd4c003ddc73502df56c4cf424f85cf",
       "reason": "Optional partner naming prompts and canyon bandit battle music only while the encounter remains unbeaten; curling cups: a cup match brings its own rivals to the rink, and chips that do not fit in the inventory are kept and handed back"
     },
-    "zones/beetle-land/s103-107/script.dws": {
-      "original_sha256": "587838c61e1daa1ff2ef2fc61b0ba0ca175ece9e9d8ebab715c16853d15266cb",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
-      "authored_sha256": "4873f5ee191ae8325833f6b82811b77a443d4525b3d70465d55ab763251c2dda"
-    },
     "zones/beetle-land/s103-107/script.py": {
-      "original_sha256": "023418a872d90eba7b3075f83715b618541182a1cdc4269022ac531020090680",
-      "authored_sha256": "ae0f089ec81c593865a52ef0015d42378bd0ab6a291432a1e6c5322be507b0a7",
+      "original_sha256": "4b5406983586f8b5d9328e63b1c6b3b9cc41b6da32a69d1b0c73d0d9e7d5f6e4",
+      "authored_sha256": "55b07e47150928e7c7c879d9adb6f3ff98723b085af0c9cb10a076358129382d",
       "reason": "Five-session training and narrator choice ownership"
-    },
-    "zones/beetle-land/s104-108/script.dws": {
-      "original_sha256": "6ff35654911f16a8a6b02a841b7bdf1c8c5d7e27c32d349304c6cb22ad2d628e",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
-      "authored_sha256": "7d52f830b83a4040753915413b05dbcf14f5c3107667cd919d6e78651f804c82"
     },
     "zones/beetle-land/s104-108/script.py": {
-      "original_sha256": "8940a8fad26fcbd63ebfd1e5831ee75730b21e93d005a652648fed3b92a63e35",
-      "authored_sha256": "79ef7622590ef102e05b0184e7c7a0073948f39dee7b956e8abf486bb47152f7",
+      "original_sha256": "4b8cac5158e20b8b916acbd6eb413941512742883f7e957e39038eb8ddae7838",
+      "authored_sha256": "c38ea920a1c2882fc2f05e04e29bf8378482ff599713a19548036a688e6dbc1f",
       "reason": "Five-session training and narrator choice ownership"
-    },
-    "zones/file-city/s164-204/script.dws": {
-      "original_sha256": "83cc1829ef1350a5da4359dbd676b75bd58c49877fb3464029c187fdd7c0d434",
-      "reason": "Horizon meat farm big harvest chance is one in four; DWS synchronized with the authored Python source",
-      "authored_sha256": "975db3cc9bd4379f7a4e3face01d668e5fcfe7f8aea38846235e2ed69abde83f"
     },
     "zones/file-city/s164-204/script.py": {
-      "original_sha256": "8dcbaf2e559109493df187fa05c4a36b22e428088bebe6304bb507498359deaf",
-      "authored_sha256": "79c463aac2868776a91bb9e6b686d22e934f5c889ee06139c8240a38be71b949",
+      "original_sha256": "752c1de55159547980ae5670ab777238e3fa175ed4cb973751903335af7080ba",
+      "authored_sha256": "a839b2bddf99be7dd33136f66cede8f04b5a6348880b7681c23584d2596c08b4",
       "reason": "Horizon meat farm big harvest chance is one in four"
     },
-    "zones/file-city/s193-238/script.dws": {
-      "original_sha256": "bba57cdff955f576325019327bf1f08f9c55bbf0c42dc691111314bbd1af64ea",
-      "reason": "Horizon starter kit after inventory reset; DWS synchronized with the authored Python source",
-      "authored_sha256": "98be423491660501ceb93fa37ae4c464a97efd6f1423c4dca253af1b997f8f14"
-    },
     "zones/file-city/s193-238/script.py": {
-      "original_sha256": "aafde0346438d9fff2dd78e8d4dbee890c88e391f52d33efc44c203c117122b5",
-      "authored_sha256": "0728a34b854f7e5785f38b2392326f369f6d8136830f2b86a2a67a005e837825",
+      "original_sha256": "0fa1b9ec8a34ae01c6b91f1aa627b027cf5593f1240097dd3e382bca58c47598",
+      "authored_sha256": "2ec4987b81a84c57237d14eeb21275a65a15a84e551646c5be8cd8c178bf3ba2",
       "reason": "Horizon starter kit after inventory reset"
     },
-    "zones/gear-savanna/s075-78/script.dws": {
-      "original_sha256": "2ee8bf6719db7ad1eea81499d07222de3b8bcc704eebf498b498142af9eb83b0",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "64cdc5f3a7ae3c1fb4c5e644164ed3c22de283295eb098049a32ff8d3c9233fd"
-    },
     "zones/gear-savanna/s075-78/script.py": {
-      "original_sha256": "0350f9532fdd3446ae113bf53ec0423cee2a3e40d2028d6b13161972145f032d",
-      "authored_sha256": "a29db27606fd750c8466925e33c5f9d6f8958a3f532695900faa23a92ade6bc1",
+      "original_sha256": "fd2c29d871440d617b489fd99c73cd7c200de0436aac6c2af12d7b9a21f2902f",
+      "authored_sha256": "26745716f039e2a90ff51bced1b0a4387fc2b3b9d03ca822ac9aff7709aefd55",
       "reason": "Five-session training and narrator choice ownership; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
-    },
-    "zones/gear-savanna/s126-131/script.dws": {
-      "original_sha256": "ccb3defc815e55d781dc6877f932bdc4c96de77e76561c0185787772728b33f8",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "288ca77c417b50d544bef4d2ccf71fb73e5992827ba61cdd0a7817d42bdd0611"
     },
     "zones/gear-savanna/s126-131/script.py": {
-      "original_sha256": "c9e07332643bed2f8a8ddfdb1e70c5af70af8f67e875c3976a455dedde4d58a0",
-      "authored_sha256": "d5fbe1f6b38e5b7b9fc2b7be2f68ad163265240cab9cf4887e4b41c74a7628b8",
+      "original_sha256": "91183e2e77f8dee35e5017bf6f233b6815a5d6dec3b7c1563f717ca64197b46c",
+      "authored_sha256": "203c9ab9df0ce83825c74d5e10d32be8a9c8381185ae7b53fd18f12265098f24",
       "reason": "Five-session training and narrator choice ownership; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
-    "zones/green-gym/s108-112/script.dws": {
-      "original_sha256": "6d5405ac8680aa851fc7a96911a354303f091eedbbcaf234c164ce8316313e57",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
-      "authored_sha256": "f2a5e43d45bf938ae82e4f811f7dac782bd33c30356b64c365a687548db4e636"
-    },
     "zones/green-gym/s108-112/script.py": {
-      "original_sha256": "c73a1d69799ec3f3e46d8c04e37072ab320317eea68ca406b82d97cea803ca19",
-      "authored_sha256": "62fbce330f09d47ecc9e6b7ee8b1ea6e42d28f1f37a72c3ef3eafb12ec114c0d",
+      "original_sha256": "23db088a4934dc1bd504b5731a96b7e466b04ae54256b4f7fcd38c232baff0b8",
+      "authored_sha256": "ed784d53b0741584763a7c921dffd25c4140a627e967a67d511c00ea0b7af5c8",
       "reason": "Five-session training and narrator choice ownership"
-    },
-    "zones/ice-sanctuary/s095-99/script.dws": {
-      "original_sha256": "17a0b8861c4d80a222f208b7771b548fc9e270d184775c74968f208d97b99b81",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
-      "authored_sha256": "6a826b918286ef172fc132bbcf97ffd9ef406717ee3f445baded8a346db708e1"
     },
     "zones/ice-sanctuary/s095-99/script.py": {
-      "original_sha256": "353da0db602dcb0ae968cec915b7cf0b993e271152e3f8987dc84e3c140fd063",
-      "authored_sha256": "e125f5c6ce5a095168aaf7f23849b227bf32194ab10c25bcc6a10dc5b9811e6f",
+      "original_sha256": "f06459d07243f8227e16fbabe409017bb60db12402a8aca546b852e192183efd",
+      "authored_sha256": "e8a4437ca99e0e05a8f530945b734724f6ee6682d2fc9200ea75ff62ba9017d0",
       "reason": "Five-session training and narrator choice ownership"
     },
-    "zones/libraries/s207/script.dws": {
-      "original_sha256": "6e280533fb48d8ab9e115732c983877969034f3f65c902f8024bc249f4ea64cf",
-      "reason": "Horizon meat farm big harvest chance is one in four (all library farm branches); DWS synchronized with the authored Python source",
-      "authored_sha256": "c6b0d63f4ed6629ccb4a6f8ff56b52b3d4d6a5d0d85379ad66f1973ad7317509"
-    },
     "zones/libraries/s207/script.py": {
-      "original_sha256": "676092ec3def7257b2e91901d23b7582cb9a678f122c0887454dc58fcd6258db",
-      "authored_sha256": "eb8d4afae8b197a67957a9e82971541b108fffccff81f380279f9c4c11bb90cd",
+      "original_sha256": "29c2d61d3edcf77610af639702395d693058b676612621ccc8311d476afcac85",
+      "authored_sha256": "f25e8ba5e5d5d7c60aaa634ab285fd994e31d33dfea2d5b0efc7e048429be2ef",
       "reason": "Horizon meat farm big harvest chance is one in four (all library farm branches)"
     },
-    "zones/libraries/s209/script.dws": {
-      "original_sha256": "6a27f351779457ff546a842794e5cabf0597c379866ff22d29dcd3e6028bf371",
-      "reason": "Horizon bulk card purchase menu; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)",
-      "authored_sha256": "8f2348ef1b24a53f4afa124d593abea21edf15f9f71046a1e96a4354e872e73b"
-    },
     "zones/libraries/s209/script.py": {
-      "original_sha256": "4afe64213b7bff228ea0ac4875b969fc33cd86cf2bdcd9992ade449a07ad366a",
-      "authored_sha256": "a3bd2f419b8560a5b6778d1eabd344976b40a55e1a6e3f3ff3bd15e940d15779",
+      "original_sha256": "0ecfe567da1bac469d539f9832c089b80d5c93e8162660c62fa1115f1d3f9a5c",
+      "authored_sha256": "c4d17df679f506b20cf0e17c16211aade025d384d95d3e1b336c5753fa088c4e",
       "reason": "Horizon bulk card purchase menu; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
-    "zones/libraries/s219/script.dws": {
-      "original_sha256": "a66ba54da72f04a01196c435723097b04fe5f5d64ff723fd31fbba2602b691c7",
-      "authored_sha256": "5d91dd504d61a50b370f10a11726fd32a20909504df833418d7a91a6e57d7f10",
-      "reason": "Horizon card machine uses the amount box and economy rules"
-    },
     "zones/libraries/s219/script.py": {
-      "original_sha256": "d0c11e2bfa1d39b0ec3a3a18c8587d27e8707e7f236a57ff1a139cdb23eb888a",
-      "authored_sha256": "d164c6f179398ebb62330084e27a4af85c63120b63935572b245767a895c01d0",
+      "original_sha256": "07f0b53a6af04134af35a24a39e541ae228c7101157fa8b4268eae12db77023a",
+      "authored_sha256": "a40707fb4286033a4952b7fff278322ee33ec9a397f63145d8634827cd8b4750",
       "reason": "Horizon card machine uses the amount box and economy rules"
-    },
-    "zones/misty-trees/s115-119/script.dws": {
-      "original_sha256": "728acc7a8e899e71b61c03342d5deffeae6bf52e0271feb7ec082f121c33cffb",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "ab47d5de9543ea4ba1a201cbe84b1902c29e636868fe625a80651b369cacea1e"
     },
     "zones/misty-trees/s115-119/script.py": {
-      "original_sha256": "6ce8424027d0f72bd8567a213277a355183fbb9f2918c3739c4276ffdd8c5a7e",
-      "authored_sha256": "d516fb326ca4c9d235d9c28bbc85d075f4cbafa48340ad31ad2bb3f017981494",
+      "original_sha256": "7e54f7e8f58ebe5ebb879193af27e7db36d7d11ec4173d30035ce3daa0f727f5",
+      "authored_sha256": "3d55889396f2fda43a49ef801aa86fce81e7044feac4221d3f56fee94fc1d2eb",
       "reason": "Five-session training and narrator choice ownership; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
-    "zones/monochrome-shop/s049-49/script.dws": {
-      "original_sha256": "3e9d6770660fb29e4bb595634cdb633aec5931903cb8a584704d2f581fd641f2",
-      "authored_sha256": "a0eda1f0452916664e9c96894da5b98680feeed19b80b3660e798464d3f2aa65",
-      "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
-    },
     "zones/monochrome-shop/s049-49/script.py": {
-      "original_sha256": "3f196b431498c56dd4f9677e4c0d6bff1e80351fff4bf78fdb00a080c441d7ed",
-      "authored_sha256": "f79ccc258e3f205540f4d7c5c67c2f5a4545b0db291e361cd85338663cab7bb6",
+      "original_sha256": "d283bfa90fc5e436d79d6d43a77da6ccdc589cea2da6781988e5e70b28779137",
+      "authored_sha256": "08b7d9330e763fce9bd2ba6cea809341ea19c308b94e087356106a07c6f9d5c4",
       "reason": "Hidden-budget Monochromon shift with a finite item deck and one reduced-budget retry; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
-    },
-    "zones/secret-item-shop/s177-217/script.dws": {
-      "original_sha256": "f121346af89e298ddc44b22e0bb6b90965660a42aca7f9f8613a092d45225713",
-      "authored_sha256": "15a5b4b204fc8aeddd180f94140807f80de6134ef38de1416496d690b395703d",
-      "reason": "Devimon sells only Devil Chips; DWS synchronized with the authored Python source"
-    },
-    "zones/trash-mountain/s159-165/script.dws": {
-      "original_sha256": "e1e2dfa0ee0306a58af8ae9e980f177b4478c2e7c0df2e2500166d40073e5223",
-      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source; finish recruitment dialogue before the walking departure; Announce completed city recruitment with localized narration and the regional jingle",
-      "authored_sha256": "672b53179756dd3b39857e7951c3be87f66a17eab65438ec3522c5ddb081a513"
     },
     "zones/trash-mountain/s159-165/script.py": {
-      "original_sha256": "06478c10d23b9dcc2a488c8964edbbf6903b545703e5e7df94b955661a80d125",
-      "authored_sha256": "a4cc7e16cbd36ca976211f277f03cb2839b4575c19cc4078afd5206a523e342b",
+      "original_sha256": "972b57917b68fe950b64f6291edb7ee22e585f0d94f3958a7416be1e29b2e204",
+      "authored_sha256": "9524a70d8805d630742d69b040e41052b98e9b222e290fa184dcb84801b0799c",
       "reason": "Five-session training and narrator choice ownership; finish recruitment dialogue before the walking departure; Announce completed city recruitment with localized narration and the regional jingle"
     },
     "zones/ancient-glacial-region/s077-80/script.py": {
-      "original_sha256": "845799c5e66bba2b18ddf0de3eeb6c8c2a57271d854f65338c43dd4ab347b3d4",
-      "authored_sha256": "b003f7727936887c8a9d5b5895b47c4e7fff9b038900433d25f75cb599e02290",
-      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
-    },
-    "zones/ancient-glacial-region/s077-80/script.dws": {
-      "original_sha256": "ca80aa459f3f3e9acd9d2a8d033bc2a6029d5ea5239c180169ce832c4fb6d62f",
-      "authored_sha256": "9f30f151736d89446c366fe852f8dee16a424d7897947941180dbbd2801fe677",
+      "original_sha256": "0a7cc96761002c62b15d5c31b6d735f9e909b4c3bfed7da7e1b82c1f886ea322",
+      "authored_sha256": "c69846984c18dbaf41f2cb80f2d9bc1a9e297cb70c6e21799c72c30f2362eb6f",
       "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/factorial-town/s152-158/script.py": {
-      "original_sha256": "e6c8e8477bb4e633ee753b4f6fedb382a84f2592b1788b913a7aa11d645f9e9a",
-      "authored_sha256": "7bab0c9e1175d6771503ba3706a7bb04aafae6aab2ec44e4e83421d8e3eab106",
-      "reason": "Recruit the species fought in the balanced map slot"
-    },
-    "zones/factorial-town/s152-158/script.dws": {
-      "original_sha256": "0f3a696c7f495553f230befcc9a3f0b725bf80a9eba89b0ab2c1fc8e332681c2",
-      "authored_sha256": "188472cbf47dec8858759bcfba2ae5a6bd7e1e7b8a4720e1887fcdabdca9304c",
+      "original_sha256": "c229b00151f0e80689e19485568fbc435e649e6e974cd3bd8518de76f934c4ed",
+      "authored_sha256": "daef94a0ffae6163a736254f49053adc2cf0eacdb6fed9a47c74007d8144c68f",
       "reason": "Recruit the species fought in the balanced map slot"
     },
     "zones/gear-savanna/s068-71/script.py": {
-      "original_sha256": "f4ef98877708b7a5a5a6e7742e5fb8e4c0ba4b2425b83ed4659518df6954b722",
-      "authored_sha256": "6ab5a357ef72fc8b85a6b289b20567997fcd6dad72256fcbb577ed2ac94fb424",
-      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
-    },
-    "zones/gear-savanna/s068-71/script.dws": {
-      "original_sha256": "407d809138a86652adedc287bf9166f1079e9e167f7c02b556a48ace90d89eac",
-      "authored_sha256": "2d2198132fd4f18035129518e4112030cb184849757c498fa798e0d0116fe5b8",
+      "original_sha256": "61b1ee31c8829ef5616d57a7ab9abeea951c687e499951e33f46b42bbfcf992f",
+      "authored_sha256": "81a0d920f6c5acadfaecfd43dac561b881e4264598945b03a15d55864cb13adb",
       "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/gear-savanna/s074-77/script.py": {
-      "original_sha256": "3c8999ae59e7a48948fda8218bd9fece39289727fb86b71f1b0b45d408c24fc1",
-      "authored_sha256": "7da66fa526ac3538554c9bd3bafb040a599c16883cda9303ad267bc615d0ec12",
-      "reason": "Recruit the species fought in the balanced map slot"
-    },
-    "zones/gear-savanna/s074-77/script.dws": {
-      "original_sha256": "c85d13a942dc83002a2482504f7f38e79f0babd2e695b3235ec0703a32ebba1a",
-      "authored_sha256": "325d60b34fe291cefe6a6bd21060e5f1ced010d82a8874a1393e7b902cfbfaf6",
+      "original_sha256": "e46df4048a97de43201182092b4440db0aec883e5707aea9926e8d1d494a47e2",
+      "authored_sha256": "e0c1d16d5ad33e134b296d6e3704fb35241b4e0173d74f94fe2af9393c9c4afb",
       "reason": "Recruit the species fought in the balanced map slot"
     },
     "zones/great-canyon-entrance/s036-36/script.py": {
-      "original_sha256": "2f43ea5d6e12ba434ef9f44d7a5e6dd5e6c62cdf72c40bcc7e8056f3708ea7cf",
-      "authored_sha256": "9099d52359cd6ba0193adb3eeb0fbcc5ca9f3b0e4000245ba7fa54476e9cf350",
-      "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/great-canyon-entrance/s036-36/script.dws": {
-      "original_sha256": "0c1afc853c917166ad7c5aea0d3fe42b715d923bc5d7888974a2446202371d18",
-      "authored_sha256": "96cd4fb0be427521d1ec29bf9369d169debc0a2610378aa7e3e734cd24754032",
+      "original_sha256": "b1262a539703c996e20f35f8a32c071f588de25199547e0d828dd9afb61d6833",
+      "authored_sha256": "fb6615e17fe20cde03912263f2e40736b244ad4d739db82f214e79f26bfaa0a3",
       "reason": "Recruit the species fought in the balanced map slot; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/libraries/s210/script.py": {
-      "original_sha256": "cca0a20ad7afaf03631c5ca87382ea83bd9239234439f2cac96433bc51e7b0dd",
-      "authored_sha256": "465b3ece072bbafed3dc26cba9fecfe6e25a360ed3bbacdb2ff4d140e2a1c184",
+      "original_sha256": "3eff96da07fec4184cd41b6f4a3527bdd66163a6a4ed4ccdc250cf4922db4099",
+      "authored_sha256": "65521f48293055af24f53d16176f2fb36133fdcf552ceb76b9a75a7c1320cfd3",
       "reason": "Jijimon's reward at a prosperity of at least 100 no longer hands the city medal: content/tables/medals.json awards it when the original game's fifty residents all live in the city"
-    },
-    "zones/libraries/s210/script.dws": {
-      "original_sha256": "050b0ba7da1e5aece537a0f7f51cfbce85f2abc60f39db2cb50eff197672ef00",
-      "authored_sha256": "8f22145912c59cf8678cc4b5dc848b9895f2fe9c63422089d330bfce6ffbb332",
-      "reason": "Jijimon's reward at a prosperity of at least 100 no longer hands the city medal: content/tables/medals.json awards it when the original game's fifty residents all live in the city"
-    },
-    "zones/libraries/s208/script.dws": {
-      "original_sha256": "9e5003b1011c948437c95969d93d598ee400ba61afb2f280f4c1ba5ccabf40a3",
-      "authored_sha256": "2f6f3bc72d6de83420ea046686d0b1968c86cc22f4776b18aaafcca1e1a29f96",
-      "reason": "The newspaper no longer takes away a Myotismon who already joined: identical on the original story, needed after Let him rest"
     },
     "zones/libraries/s208/script.py": {
-      "original_sha256": "1094c2e93875e1f6d490160c9743a718001824ac42d1f7a39e28977cf5c7033d",
-      "authored_sha256": "f0de4e464bb9611ba4e516ea00ec5ca7334522af27a038968face53efe907221",
+      "original_sha256": "03b511436ab0725fa53282ba1375e5f8d8237902d77b778436ee34af5d0e9c58",
+      "authored_sha256": "2656086b4a14a020fc5f9103d42dde5b52e1085210d9711f5db1ffb497a90628",
       "reason": "The newspaper no longer takes away a Myotismon who already joined: identical on the original story, needed after Let him rest"
     },
     "zones/overdell-cemetery/s035-35/script.py": {
-      "original_sha256": "9db3b59719b13de1886b016d4077435f38ff71fe543d7e91f9edb078f54ade76",
-      "authored_sha256": "7debfbcb88c3ac12f842129f213124f727f30c0b837b11cd8b8d8ed032c31e83",
+      "original_sha256": "18d6bcf36d33b55ad3f80597c296b9f878ccbb5ea39476bbba28ff8717f47703",
+      "authored_sha256": "1819af017360026f79935848b1ed888e5277dc135f49b58f6aeb333ad1274e57",
       "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Bakemon partners (37 and NPC twin 157) understand the three recruitment questions and acceptance while other partners keep ghost speech; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
-    "zones/overdell-cemetery/s035-35/script.dws": {
-      "original_sha256": "72c71fb4b666f1615aab44bdb9b26fe2a96f6b709780e7fbadbbbefe5604d799",
-      "authored_sha256": "dbcbee754c5616efa7e90a2ef12bcc0fe74a715d5f55cb20aba3409d0b7f4c52",
-      "reason": "Any partner may enter the Grey Lord's Mansion once Myotismon has joined; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Bakemon partners (37 and NPC twin 157) understand the three recruitment questions and acceptance while other partners keep ghost speech; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
     "zones/freezeland/s088-92/script.py": {
-      "original_sha256": "189c4414dc0adc525d8f6b0cfab6d82013b70b21b07fec837322f0f5d56c5700",
-      "authored_sha256": "1fe0eac22d3d495b7fe60e6223fd18f578aa161d633c42a49711255c807e843a",
+      "original_sha256": "435956d94c6ecd0930cd61024031dfcba951bbb54b2bb074829ef814068a8e62",
+      "authored_sha256": "3ba1e6b31e878225d1b388502037b42ed2fca72a8e9cb250c5024bebfeb03df3",
       "reason": "Any partner may enter the Ice Sanctuary once Angemon has joined"
     },
-    "zones/freezeland/s088-92/script.dws": {
-      "original_sha256": "8490550a650fe0cd23540df425ba9405dd494eaa97665860c3706bd170338209",
-      "authored_sha256": "3acfc642cc124573699d6d25aca1615cb979ebf734520a040227367aacc48a33",
-      "reason": "Any partner may enter the Ice Sanctuary once Angemon has joined; DWS synchronized with the authored Python source"
-    },
     "zones/costume-house/s139-145/script.py": {
-      "original_sha256": "eeab332172cbafaa43c0d72b7751a82dc1f8bbad72eaeeb9b2cf38e74381d360",
-      "authored_sha256": "cb39776dfc465eb10ba4d9be339742a0f79f502a0072c87cd1e267a26e525d24",
+      "original_sha256": "b5da464c7b5cbb41dd449869b5e492815f6aafa442dd0a7bb9ca37244c46afb6",
+      "authored_sha256": "c44bbe404358894ec77dd4545c9a89a715264d024273067bdca0ffa9a9131f4f",
       "reason": "A Numemon can wear the costume at any time, after the toy story too"
     },
-    "zones/costume-house/s139-145/script.dws": {
-      "original_sha256": "10824d0e3c7d565ba9bbcb36b4dfbf815a9a48306577d0f06d8bcf9b879e6fcf",
-      "authored_sha256": "08b544cf4f96bf2ff5ecd808187450fe37e9dea5990d98a508e2fae16b65144b",
-      "reason": "A Numemon can wear the costume at any time, after the toy story too; DWS synchronized with the authored Python source"
-    },
     "zones/treasure-hunt/s169-209/script.py": {
-      "original_sha256": "b7f1ecd11e156115218a1021ba88bdf71997271d05d5407741bc2b09c903f700",
-      "authored_sha256": "78c4d5aedaa09feb472f31aee03135c0a9f1dfef2676abd154f98747e799ea0b",
+      "original_sha256": "e29ef8223c6302b57ba28d3bd79fdf64b1a3d9144fc4e5b84ded559fea072a7e",
+      "authored_sha256": "c91313d8a3e90d613d160db5c2e067aa7b212a30e7ef9f6c4b58a5c9a195a678",
       "reason": "Treasure hunts of one and three days, with their own prize tables and Gabumon's extra item"
-    },
-    "zones/treasure-hunt/s169-209/script.dws": {
-      "original_sha256": "56401f4b6930375e7632ab91d8a122e5bd6f85bc7c8233c6f6f0feb0c7b78ad4",
-      "authored_sha256": "2df9e5934b58258d129bfad7e104fcb66d4397339505c921b59af862eb6edfb9",
-      "reason": "Treasure hunts of one and three days, with their own prize tables and Gabumon's extra item; DWS synchronized with the authored Python source"
     },
     "zones/libraries/s205/script.py": {
-      "original_sha256": "4209485f70974900f5d49863e4aed3085b768b50d4ac1979ac278afb8b5ce497",
-      "authored_sha256": "971f86c5770253921fcf684fab8f9b20fb0342f82ead596cb5d3c619639a4304",
+      "original_sha256": "3525be44cb3387ce1f173d83a75df22ab47720e7b3ac22fb7a19e00ed623c696",
+      "authored_sha256": "56770b4e1c04210446b9bef08211035825192b3ff645a8600651ea0ea466c595",
       "reason": "Treasure hunts of one and three days, with their own prize tables and Gabumon's extra item"
     },
-    "zones/libraries/s205/script.dws": {
-      "original_sha256": "36962463a42e0f8104533a0acb174bf47550e0f20674abf7443844076125751d",
-      "authored_sha256": "b03d6cbf6fd22906bb2c8d829c4358721c56feebed6514ea2f78e33bdfece404",
-      "reason": "Treasure hunts of one and three days, with their own prize tables and Gabumon's extra item; DWS synchronized with the authored Python source"
-    },
     "zones/libraries/s212/script.py": {
-      "original_sha256": "4f0f94827732b0baa8771f2f03b6a8973181be5ff80b0c4e366cb4250f4b5f67",
-      "authored_sha256": "83d9bcca31c3252aae8c54beebc88818b0a2eb091d570f152ab1c805c055c508",
+      "original_sha256": "157f9981486d5958fd0bbda3cc7e2f33627059042419edc3998013616b7c498f",
+      "authored_sha256": "4793532d12075b4165ad186383fdb074ecfe4f86e882ede2e131c2995a95c85b",
       "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution"
     },
-    "zones/libraries/s212/script.dws": {
-      "original_sha256": "b27061b40a24f6f8fc8b63cd805b57c19bb47b44549a1a71215da03b222c9ec8",
-      "authored_sha256": "99ea6092be4dd594d2a76212f6a85a26093660a3f01a9c1b3ad9c35d656346b0",
-      "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution; DWS synchronized with the authored Python source"
-    },
     "zones/libraries/s217/script.py": {
-      "original_sha256": "b8be36bdb1e2ca54b4b6ecc079dcfd38e3698f03ded7a038a395fadc24ac1378",
-      "authored_sha256": "d088b232c523698dfc5ef06d96166d866d1a952b393d14b5bc6dc969cc0cfcd4",
+      "original_sha256": "f2a4e7a70d95c4d9e6f998fa47540c2411b8662ae91319b85a5b99f9654a958b",
+      "authored_sha256": "afbabf732dda07099f77c9cf2c5bbdc20f4357ebf91227ca4f83cfc72ed3dd78",
       "reason": "Restaurant meals worth their price"
     },
-    "zones/libraries/s217/script.dws": {
-      "original_sha256": "04d27498ad511a7f33d7065683fbe8beb0b3038c1618a06ddfd9bd6d41a4c23d",
-      "authored_sha256": "994b9798b3159fbd860df28016356a4709a3fe30df0e7bbf223e96a877f94477",
-      "reason": "Restaurant meals worth their price; DWS synchronized with the authored Python source"
-    },
     "zones/libraries/s218/script.py": {
-      "original_sha256": "08dd0c7d1d24f0c24cfa72d2b51001105aab0e632746e323009f210a30300ec0",
-      "authored_sha256": "62bfc0502d2ad53daa8544781ca54b05721c0d5279db07a25016c5acfc6cfcb8",
+      "original_sha256": "38782e7aa80bcdc28446c44e12fde50b6c1640958753e9eb5e172918263c21b5",
+      "authored_sha256": "6e6c1384f24eeeb26106f004fe5c6e0bad429e90bac5195bca52254003e896a2",
       "reason": "Restaurant meals worth their price; Digitamamon's best roll at 40 percent"
     },
-    "zones/libraries/s218/script.dws": {
-      "original_sha256": "0498dd17f4c08525eeb24e046e595a8fe873e26ea80f79a6dbcaec0b181c4baa",
-      "authored_sha256": "1a294f913373c77c953f6517c3d2b9fcc7d165f169d5d534450df814a9e87ade",
-      "reason": "Restaurant meals worth their price; Digitamamon's best roll at 40 percent; DWS synchronized with the authored Python source"
-    },
     "zones/underground-pond/s029-28/script.py": {
-      "original_sha256": "d012f770c7de474e1754bf81d227042e738c65a86d439761b2ef41a3a5cafb2b",
-      "authored_sha256": "478f047f3a3b760ac110fa539ab7c5832e265596ee3ad8505c5ccdce0c9d02d3",
-      "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/underground-pond/s029-28/script.dws": {
-      "original_sha256": "51689c322ff6158dabcb303b4e53de7e002fcbae337c25f53f952a3190e034b3",
-      "authored_sha256": "e2767c55edf8b5bfc00a5b08b22b896bd76182da931df358b0b3ef9c61dd7b3b",
+      "original_sha256": "6f832087ab15f9e7ed8201d024506d1017a6efbf63d3c312112e0ebe5b4b3113",
+      "authored_sha256": "c7fe81dae1a6f8f959d3446aac0cee5956a7525e3aabfb4a9170ef3f76becf5d",
       "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/file-city/s162-168-169-170/script.py": {
-      "original_sha256": "0bbadd3ab80f0b29fc9a8511a0d172eccaded4624ad79d88ede165e290429769",
-      "authored_sha256": "8f14b9f34d2520bd33f5fb1e735e65a0d3a5cacd156b6895498d11882011ed1b",
+      "original_sha256": "a5c33d1276540eb13538e449a95e693419f0b012b8c03ec422132fdbb122ac2c",
+      "authored_sha256": "357b1705d238502328dab0aacfa01ec547de72b8e86655190e49ec6ff74b20c2",
       "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; entering the city hands back album cards 0 and 65 when their scene has played and the card is missing"
     },
-    "zones/file-city/s162-168-169-170/script.dws": {
-      "original_sha256": "6442e3f406a5cce704b6d4e16592344780cf13fb233d8a07432f836d34dfaad6",
-      "authored_sha256": "a9c5bfa29817b9c89f1d3a153329bc4b4839fe4c2e231d4e1817d50a344532b7",
-      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source; entering the city hands back album cards 0 and 65 when their scene has played and the card is missing"
-    },
     "zones/kunemons-bed/s002-1/script.py": {
-      "original_sha256": "67a389b8c6144cc83430c94fbc44748970d717e41be0cbb0033c182418c55a4b",
-      "authored_sha256": "8356dc7312eeedc0658eb8c77ae094d4b1b9c2d608e6a2e1172be23a756ae36d",
+      "original_sha256": "397d1a6845502f7c2ff73860700a7685e29548a62e786f7e0c9fbeadba3bc2b4",
+      "authored_sha256": "4fae13e76730dbcaeed47d0768843c5b9774221d03b3f702ced8417d4003405a",
       "reason": "Kunemon's item menu offers only food (pick_item(food=True), patch 0331); Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
-    "zones/kunemons-bed/s002-1/script.dws": {
-      "original_sha256": "10335941cab7c9041d037b0e3d70296b083b72805cd2ac1cdc6e34e1dc654a63",
-      "authored_sha256": "3b55005032d006a26f8d6c476ef6ce5364e0cadcf97d34466ee828410a500172",
-      "reason": "Kunemon's item menu offers only food (patch 0331); DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
-    },
     "zones/grey-lords-mansion/s051-52/script.py": {
-      "original_sha256": "a512b9eb5131e44c5d9f6814bbec741256024f8017cd4c4f4160a7d5c7315f67",
-      "authored_sha256": "77d28432c7a94eadfc5ffef7a3fb4962ed1fd35e8da3331659a94dddb20bdf9d",
+      "original_sha256": "96e8fddd41e11362b170e852b4d631f03060098971471d755219fca61f757af2",
+      "authored_sha256": "549f83f1dee8073aee614fe423b171188444e1e17c7c88253bf4489ffc54ca5f",
       "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); an older save still holding it loses it on the hall's arrival tile; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
-    "zones/grey-lords-mansion/s051-52/script.dws": {
-      "original_sha256": "1cba7ae91f50e0f583e1f716a75225c2ea04b95aaa59964457b17c868bcd00ae",
-      "authored_sha256": "a455ece42dcc55e845858db62ae756aae9f5099fedcb14f70791da36513b14a8",
-      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); an older save still holding it loses it on the hall's arrival tile; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
-    },
     "zones/grey-lords-mansion/s052-53/script.py": {
-      "original_sha256": "094bd7271a8fcdc1e36d90be6a81f8107b2e024a1f0e74ea9cba17fe6e779d7f",
-      "authored_sha256": "9a77f42f81bfb29020e965ddf7b1ef61878ad3c863479350ad93e16e01518abd",
+      "original_sha256": "24dd2f5c4daa1dacd3b244e9a65148039d0035e4f628ec09c1fd3884dcc58faf",
+      "authored_sha256": "2b2cc4e22541dd9973326cf7c299a2e3f62cdd71240d0fc7f59214882064689a",
       "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up)"
-    },
-    "zones/grey-lords-mansion/s052-53/script.dws": {
-      "original_sha256": "fde35d0859c32c16201472c9d57f133970c9182595cec47f92dfd64632d73b70",
-      "authored_sha256": "ed89cf0150ecfe8e99267f3cfffbc8869171bb41f2b2c4c0dff8a9a1542c2117",
-      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); DWS synchronized with the authored Python source"
     },
     "zones/grey-lords-mansion/s054-55/script.py": {
-      "original_sha256": "5f1982066ed1cb2617dbf725829dd9cc32461a96427d405989f1a9a0cfe6596f",
-      "authored_sha256": "bab6cb037b26492b2eaf7bb035316777891af7301eacd7b8efdc48706ab849ac",
+      "original_sha256": "632a4cad4e22b4f8854f435e37bc2e4927f1f03b5781a807bbb7cdf9d13e6159",
+      "authored_sha256": "b25dc1f9f07522f4f8b77f31b9e4a2361317961918a0a150eff79ddaf254567a",
       "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up)"
-    },
-    "zones/grey-lords-mansion/s054-55/script.dws": {
-      "original_sha256": "59895f0f6d18b7b1289a95c2da0249c90e3c34a3541396e6ea943625b6d7eb56",
-      "authored_sha256": "cd69603900174ead2c1efe204d8157a2b78ebb9cdac512137c02a990d984302d",
-      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); DWS synchronized with the authored Python source"
     },
     "zones/grey-lords-mansion/s056-57/script.py": {
-      "original_sha256": "f832c4e4eb15678603e3cd7af8ddd79609a302d2a022a0b36ff13a47b1e0d02b",
-      "authored_sha256": "5b5ec91527435e41cd3e8f6a53e087b6a269d8e9d4d1f6cc6fb108f75ffb17cc",
+      "original_sha256": "b1489750abac5808f909481742c94ca35ac6d234a0d868e556f46d94169765e1",
+      "authored_sha256": "b73da130350f9ea7d3e8ac798831e20b5e569a79b5491b372ebf2d0a41921f60",
       "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up)"
-    },
-    "zones/grey-lords-mansion/s056-57/script.dws": {
-      "original_sha256": "97f957349acf8308cd829ff6370acbf29dcceb3d2552fe51fb36570bec6ca727",
-      "authored_sha256": "9dd3cb8b9f94c337d8c073f358e4c7573517a5b97c43235e9da694a2b3e66c5c",
-      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); DWS synchronized with the authored Python source"
     },
     "zones/grey-lords-mansion/s061-63/script.py": {
-      "original_sha256": "6d4b654ff25a840053865fea20ab870590f9932b38b272de9e3bb12f5bfd26c8",
-      "authored_sha256": "a02827c821e500a78906723f0b08e76f93a650e14f35a39d566859f09448bb9c",
+      "original_sha256": "1816e4c0f689f1d13bb0f5870013d063adfd1563bcbc7c57f2e6c270731e278b",
+      "authored_sha256": "c5b1076797eb5d65949033ed7209e03d01be5523ade3114b5e3646a974e72ecd",
       "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up)"
     },
-    "zones/grey-lords-mansion/s061-63/script.dws": {
-      "original_sha256": "cf7a4756cc00f5670de09f87d05f61a040e0c478f54ea8e2fd755d986376c7fd",
-      "authored_sha256": "fedb1f2179247142e2a0d6b7604472f660d19ade6993b743e564afac40340fdf",
-      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); DWS synchronized with the authored Python source"
-    },
     "zones/ancient-speedy-region/s082-86/script.py": {
-      "original_sha256": "c9b734406e2f7018f668d073962fac3ee05c359d9cbfe27216d1737a5a95a1d4",
-      "authored_sha256": "5cb4faf4b12233ca618d0a7ceac430d3b0da14e797be956780d328d1ff0e5c25",
+      "original_sha256": "7d93bab64672797728a47cc652d75cb174e5891295c4b76643bbb6b1617c0fdc",
+      "authored_sha256": "e2ee49acc01f5c6540c9052a5252ae9f8bc164be1f7006dfd3f38f60f80aeb73",
       "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Announce completed city recruitment with localized narration and the regional jingle"
     },
-    "zones/ancient-speedy-region/s082-86/script.dws": {
-      "original_sha256": "61b22d964af09d2c5f6c07d27bf154a41c9c2a0d5bc534af1542478132cb88b4",
-      "authored_sha256": "a9a17011df88f8c65f1fec854c55a45019765db1f5227adea4f0b13c784a7fff",
-      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; DWS synchronized with the authored Python source; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; Announce completed city recruitment with localized narration and the regional jingle"
-    },
     "zones/ancient-glacial-region/s078-81/script.py": {
-      "original_sha256": "c4a24365f2e84358edb1b7b1880e4643d119287d06586d5296e0dc3c501ace01",
-      "authored_sha256": "7646c05d5b5ce28689172a7f71a1b2977fc20b54023d6ec694f756447fa6f67f",
-      "reason": "Horizon vending machine on screen 81; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
-    },
-    "zones/ancient-glacial-region/s078-81/script.dws": {
-      "original_sha256": "a90ad42f9207f87bcd8b17515b331ef9475c3b1836c9766b55c922d5a804bff2",
-      "authored_sha256": "4e35982128fae4cb6e0c455aba71f984801f68b17f9e8dc318fa768db107a666",
+      "original_sha256": "c3871d1df946ed46a7db308acbe02304d328770848f3a6ba23fa6f45127a0ba1",
+      "authored_sha256": "02385a8e20f23cbe90e91a87080fc06cc36b063e0761c22a1da2163bae039796",
       "reason": "Horizon vending machine on screen 81; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/toy-mansion/s144-150/script.py": {
-      "original_sha256": "e2b156c42d9300edb6b3847da6c78387d6fa2a859380dd25524e4a8d39cf6b95",
-      "authored_sha256": "02eef2174f285ffdb5031899a12b571d0045837663176999206627efa8e2251f",
-      "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/toy-mansion/s144-150/script.dws": {
-      "original_sha256": "568687c2bfe39a7cb3c84bcb70ce520e905d26ceaab582faa9bcfc535482a051",
-      "authored_sha256": "682dd6452bb1ad240192b806f39f4cd9f915b189a53fb45e0b3a7bd3dfe7efcf",
+      "original_sha256": "08ac2804a5eb998964691670425664c13d72d0a1c48133207afe86908a7b8dcb",
+      "authored_sha256": "5e6dcdc842f14093b8d64c6d198f5eada59764dbfb7547c6c05a6248cd78105b",
       "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/dragon-eye-lake/s009-8/script.py": {
-      "original_sha256": "3431895936fbfba1892e92e74d9702303fd4d80dd4a48717b2f3471c4c11f4f5",
-      "authored_sha256": "502d59c959f117fd3a1c1aa58ce13a88172778681acfd26b9fdd9ec2fa42f3e9",
-      "reason": "Horizon vending machine on screen 8; synchronized Python and DWS"
-    },
-    "zones/dragon-eye-lake/s009-8/script.dws": {
-      "original_sha256": "df4a48c7d8e1dd8e6445ff8105f265a2cefe4709bbd15fd35e739a7f8f2f3329",
-      "authored_sha256": "7ce6e376a8aa8dae89350a3001037248db663869242742908dfcfc96cb4fa4b2",
+      "original_sha256": "f66c9707dbacda153fdd56797212a1a8ec3d37c3720f2811c47a4d924305af6b",
+      "authored_sha256": "7e4e32ad6d77aad94eae52f7d4f94a65c750628b33808409acaef8d2a1a8ad92",
       "reason": "Horizon vending machine on screen 8; synchronized Python and DWS"
     },
     "zones/gear-savanna/s071-74/script.py": {
-      "original_sha256": "cd2234ba8d58f096cf540935f574f79a894c154739df91915661d94da00050df",
-      "authored_sha256": "dd76f9b2e7fb82e53d7e96448a7b74ef58d09029b5508b98661a44579ea5a8d6",
-      "reason": "Horizon vending machine on screen 74; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
-    },
-    "zones/gear-savanna/s071-74/script.dws": {
-      "original_sha256": "087fad68a86bdf852767c1beb54a33e2a8ed499b84a657397c1f6f85b846db52",
-      "authored_sha256": "7da38c17df093ada34bb224cebe0a6c3261f45aaa1b8a73c2231a0903973092e",
+      "original_sha256": "7a5cc89f78f0153b7756da7698f6aaa3e3d7299b54253dc2ca9015e15c7163c7",
+      "authored_sha256": "f576116391570d904c3d6740b322abb722d499f7ceed5408e797c9e45f47b78e",
       "reason": "Horizon vending machine on screen 74; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
     },
     "zones/tropical-jungle/s012-11/script.py": {
-      "original_sha256": "585635567b345d0d2dd1822a53e5119657b5bb0dd32b1d74a84c1f0e97778d19",
-      "authored_sha256": "45c34f670de1e21a07cf56abd8086610edfae14155efb5a19a5978509ca44ba2",
+      "original_sha256": "19c2dd2a0d422d9aaac545041a402e2537ece473cd0d0b62becad87dce88e430",
+      "authored_sha256": "61a7cdfe745a55b7d698eb05e0b45aad1f2b002f858068b3217b0c24bf56034f",
       "reason": "Horizon vending machine on screen 11; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
-    },
-    "zones/tropical-jungle/s012-11/script.dws": {
-      "original_sha256": "3b2904c49763fbb8216662e1797828eac972dde870f5330ba769410386c01768",
-      "authored_sha256": "8fb4c33ce7581d864a32a440a9565a44ff8be8ed3bec79b71a59558ce3442cc4",
-      "reason": "Horizon vending machine on screen 11; synchronized Python and DWS; Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds"
-    },
-    "zones/amida-forest/s018-17/script.dws": {
-      "original_sha256": "9d2cf19426e0a286cb773fb353b26fb4c49a383e53db27670c8cb06e7d74c240",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "bef6fef60320165dac06c8bfaf46fb3b1cae4842f6e7cf71ea3546317cde3548"
     },
     "zones/amida-forest/s018-17/script.py": {
-      "original_sha256": "e0b7b58ac38f2021b412727c05776e675fde649b4720bfc583695dc6299aa4b7",
+      "original_sha256": "b9b60e5ff9caf56e89f9bdde1d9d25eb2557325f0f1ba8ae028f49aa00485428",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "793d04066dfdfdb653967ceeee245965ef7c9918adcc7663e008c5269fbf8a04"
-    },
-    "zones/ancient-dino-region/s076-79/script.dws": {
-      "original_sha256": "b48c05733eb947fb28b98e0434dd0003449100fc6c63ca431672a1580c09400e",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "6c91913ebb29a27d98807063195c916c9f34671e2b345d12a2d17ede0a520e00"
+      "authored_sha256": "44cf69515c161d19357a1dbe82992ee4232df43e65acb02c6069b4eda123e0d4"
     },
     "zones/ancient-dino-region/s076-79/script.py": {
-      "original_sha256": "2aa98c33aaaa658a3bbef0a0263f7dbfd3b7ab8511765370b0c4f6d88698a6f4",
+      "original_sha256": "6ec1c88f83ff1c9102d9e80f937fb9a70f0705c4951df0addd9f7daddbd6e0ec",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "6267fa3496f6433b57c83d83905ee93debe90a90c34b9e020fd436b0d52dfc74"
-    },
-    "zones/ancient-glacial-region/s079-82/script.dws": {
-      "original_sha256": "46418f2296dc1fe2ee8252b3dd87f66a2aa11b0ea00e659423a16da9a618ad89",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; start each Tyrannomon recruitment movement once and wait for arrival; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "39795c9b18c6d7e14925a1d24301ac421c53322ba41ef03ff37f39af74866100"
+      "authored_sha256": "1ed34bf91db1ba1d602e8f5880a66ec0bdabfe198ec4c6d47fc7919231582c40"
     },
     "zones/ancient-glacial-region/s079-82/script.py": {
-      "original_sha256": "edd99d93944c65fbf0bc9821159f23377d51acf37b6795dfe5f73f67372d631b",
+      "original_sha256": "167d9c473ea19ec9791500225234dcd0e8ff33110a9790f8c3a0a0caaf81012a",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; start each Tyrannomon recruitment movement once and wait for arrival; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "175b285bb6eca5d3b86c8c1f6db780552da39c04394d69f174f4279b28646a32"
-    },
-    "zones/digimon-bridge/s010-9/script.dws": {
-      "original_sha256": "56d2505aa8d499ebb9f6fa68121f50be2047ff87f70f39e07028f3795be50f13",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "5dc0d5e0e984081d855c20d81a03dfb9528814be69700dddb24fd38e53223954"
+      "authored_sha256": "9236a5282a676e0e6726fa9a6cd5c1eaafc6ae7aba1fc59818238cab8f5d6edf"
     },
     "zones/digimon-bridge/s010-9/script.py": {
-      "original_sha256": "290a48395bb9272b67d612a81d08d4c375f90388c4360ac4a0ad037fb2757e21",
+      "original_sha256": "b8518d889fcbce70899ed6f9489ea31eceb278c7131dc51a73711bcd185b07e3",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "e14a6d5a7e0a4cd1bd7ddc4931e1cae7a19963b73abea018ee6af62920a424e6"
-    },
-    "zones/digimon-bridge/s011-10/script.dws": {
-      "original_sha256": "efc91f0db7abe7f99b3d1802862127c0fbb02ad6892e7031834cf23bb5e30744",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "4256f0fb62639a3555aeb4423bdc9bf76df85491756d8af76badf4d8ca2d1eee"
+      "authored_sha256": "7700c817b89316af024d9901848134239dceffc41f304e3ab3029634e460a5a0"
     },
     "zones/digimon-bridge/s011-10/script.py": {
-      "original_sha256": "a619c5abe7ded07f6521f70a1c2d9333d0792939cef6ab1014e276ed59679247",
+      "original_sha256": "7870c8fad6c24a5eb4964f28fdf4aa6ce452e26c36ed7a3f69f3d9a0f42a4dfc",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "60acc7dded1cf2288776b4658f3740675f54eec111bcef441937c0982c71cac3"
-    },
-    "zones/dragon-eye-lake/s007-6/script.dws": {
-      "original_sha256": "2b6c541af695868aeef658548cb420b26ca36439173ea83dfe923590dcc28133",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "0a9fa5af29add90f21b9fa37ee6bd925b5aaffe5a3e20b5eaca378b803bf740d"
+      "authored_sha256": "a4b2299559ba4c85cc5cd254dfcd3631af421a00cbf4d5f166ee6ae8825f9ec3"
     },
     "zones/dragon-eye-lake/s007-6/script.py": {
-      "original_sha256": "ed41dd43387f9dd9fa2e4c9c77b338438e52a91a9f57ec19c4fb2f9f9956a2ed",
+      "original_sha256": "5f8ef11b9fbdfd14f6d0fe6e1f8718f35df17e5895fde1e5454fe24394b8d310",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "be9798b49a84adfcbcf88253c68788d9408a9c7a456b40917cea89a28bda1616"
-    },
-    "zones/drill-tunnel-entrance/s008-7/script.dws": {
-      "original_sha256": "5f507e5f81da8a18e4ec903d55d4df00e0ba9eeb398be3501648324d4be39533",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "80685420329687c33cdc5ae2536a4b10404de0994a25f3ac1037a97accedf9fd"
+      "authored_sha256": "3102bd3aa9016694a35151f5b6813b24d2c1bf00c3c076ab60ba961ba667df64"
     },
     "zones/drill-tunnel-entrance/s008-7/script.py": {
-      "original_sha256": "50b5df9747c5533e79eb5ae6e033860de19e8447609b811f4caa2fc95ce2dd38",
+      "original_sha256": "be25179c44845d6f6c5c434a058bcbca6c9186d3b9fe775eb60f5014ad45e1fe",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "bb3bde3267009ad39f27938753f6f43ef8c14de06727de428737cefbbe1951ae"
-    },
-    "zones/foot-of-mt-panorama/s023-22/script.dws": {
-      "original_sha256": "31e7dd8b80b0bc9f793f2585c898f6bf70c0443ec848e5cf019c3dab02fec933",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "24b1fd8cf53ab518d0b70231c25d6c213f0fbfa34d3b8e454e91c17718b47c8b"
+      "authored_sha256": "5e0763f0d33480d7c0d751cebfab4ab0080df2365dbf1ba04ce3ee222d5d2e61"
     },
     "zones/foot-of-mt-panorama/s023-22/script.py": {
-      "original_sha256": "3fc996a17b03def4c1448b010c3a4feaf02f6f489da537709b1bfa3c1821033d",
+      "original_sha256": "7bad0d1a14004abe5f44e3636d902ede67690aa063cc88a90761cc952d3964ab",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "ee9b6681c520ead8ecccbaf466037a28c06da3f20c99c961d22dfe0fd3953ab8"
-    },
-    "zones/foot-of-mt-panorama/s024-23/script.dws": {
-      "original_sha256": "a4f5c57677837b21b4814bd9466e7db3e5e8dcfab63720ea66e51907d9a081d4",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "5e2386be926da5bb35d96003754b80d19916eebb5777c6bfaa8e32f80a5ffa47"
+      "authored_sha256": "9e137cfb285bf0da8640ace6cd6bb23b0ab685d532ce82dfd22c86935dc97559"
     },
     "zones/foot-of-mt-panorama/s024-23/script.py": {
-      "original_sha256": "b87e635f35eb39b6df6e8aa5680e15237606aba816332836de30bd4033a27916",
+      "original_sha256": "aa5f3908a05c50b66fa2441998d7bbfaa653da32b3d564ae0ca17b1514b5cb05",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "1c3bdf5f6ab72a188958330f237835230e68c501dadcd87a4af7193ca7c3bdd0"
-    },
-    "zones/fortress-entrance/s040-40/script.dws": {
-      "original_sha256": "b67ab42398222112b1b279c788b41e8ec9bd6f18d68811243a10d8d48194b36a",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "d75f4de6d3ddfe8574712feb471a04516b63eaad1ff8ab9685b17ac77f0e06e3"
+      "authored_sha256": "5bd6db1c7aa796480171a7738d16a611ab819281d8d34410e1b35ab891058e41"
     },
     "zones/fortress-entrance/s040-40/script.py": {
-      "original_sha256": "d8bcb5ea5aaa2108a4d2921105f313d927fe0cfc26067cd9578251ede7aca617",
+      "original_sha256": "9eb0cc789baebf6b0f518e7bc6af3dc39f48aec8bd871b030c40f10f07a86d49",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "c415ba9c17943201b9a6690baed52369af0c79a74fe83294160f8d9c3843dd8c"
-    },
-    "zones/freezeland/s085-89/script.dws": {
-      "original_sha256": "366c56fa54cdca80750c4ea42ffe069a0a2e10edfbc95aed7260ab5a1a2b36cf",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "f2993d1030f4daa499206c1e5a611cb8f46477922deb1267100fe699b5090753"
+      "authored_sha256": "bf1ae2294a19e01da16dc3999e13f008290fd0d975c16ffeebb10a378f1378fd"
     },
     "zones/freezeland/s085-89/script.py": {
-      "original_sha256": "f353da8522be6ed04ff5f68e44d90802a5ddd50439257b6c53b90c1e66733e7b",
+      "original_sha256": "08ee8fbc862b7ed67acdc6cc75071947e9c7633a5427740d1c31fad0f39a2a14",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "55a9c36d96d663b494352fb6a1a460c853bd2c9b597d199017ffbdbc83a09c97"
-    },
-    "zones/freezeland/s086-90/script.dws": {
-      "original_sha256": "61c11c9d40193271c8982189f964c9e25a281eab327ba8117d1f250b392feb03",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "d49ac5fc32b7f029b78ce6106263d39e3e95d4ee5dc81b5c44e0861b9ba2fc04"
+      "authored_sha256": "05c4c797b6ad7a39b8fbde152eca5d488b8414c10b8bbdc369c0ae2ea25cae15"
     },
     "zones/freezeland/s086-90/script.py": {
-      "original_sha256": "61a27b81d80187ffc4d237981e26a5df4772c6da74e5d65762e43038cafeaf2b",
+      "original_sha256": "828b78d5043b47e69d59b7a71f0eebb617acbc1fb41a3bf6d3524b344c2716be",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "d0c7b687ae67550c0d9df85dec13cf73a293d99ea739d065c69af78f2f261628"
-    },
-    "zones/freezeland/s087-91/script.dws": {
-      "original_sha256": "197f979553ddf3bb2a465cb2d520cbb25e9fbf7b6eedf25a8161d2bed14516e5",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "2751ea8172ba8960fea3b007309730e4f96e0a19fd36ec6a318781d07f90de55"
+      "authored_sha256": "e0d94ff1c7a5f6a5b26203bfe890f379e1262015ea47a41624cd1933e7e24d22"
     },
     "zones/freezeland/s087-91/script.py": {
-      "original_sha256": "8786f1c58487e0c9c17cc6ae44ee0ed8835ca82f0af49368283f898b05e30c86",
+      "original_sha256": "11e31d32aa4d43d271ba58223e47bb57ab4484c4536e513ab160f3efc4fc7685",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "133b56b89b7aacd0919d954bdb2beb9b2c2c9b42aaa6b43220462c5da9faba1f"
-    },
-    "zones/freezeland/s089-93/script.dws": {
-      "original_sha256": "8795e8553d9fde96ff5db7d7b719764ab7db1241d42c18f9fd057c34698ce5ad",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "f7619feaff5e4df3486c775bed0d1e4f6ef8147ab04d2d5c5c208a9533daf58b"
+      "authored_sha256": "1df722d7daf6b98a77452b507eb307c4d3a95876a28419cd56d155d95ff4baa4"
     },
     "zones/freezeland/s089-93/script.py": {
-      "original_sha256": "6acdfd93e5e8804f7c97e5970d8e3627050653bfb5fc7508602aa08b07a707fd",
+      "original_sha256": "4164d44154ff5265de050983c266a29426fefc304d375d460d4aab3583ea0f0d",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "b90bf1c189137d4faf92aa4b43a0691faa13fa3359ee85bffe7ba5c982457160"
-    },
-    "zones/freezeland/s090-94/script.dws": {
-      "original_sha256": "27a94e2335590b6bd45127556991988f90d65dd11e5539c2eeb490d9b93fd88b",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "f259a28a792dcad7cac3c98bf244bdc499a8480ab4c171905759b20dd762c096"
+      "authored_sha256": "bb6aea85e12f63498be53cd887f783e4912265b24ad19cf4f9bb24a3fd8c2f24"
     },
     "zones/freezeland/s090-94/script.py": {
-      "original_sha256": "8e4ebf1422815113fa7c1132d9cde1235fdb3f7bdd5dfcb7654b3431af6c9c7e",
+      "original_sha256": "935bab2593f23299e92a2cb38c6012f51a4416c8bd784add0756bf9344f68588",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "7810318db9971e05fd3c9661ca7cfa1e6d9e3a3ae07387392570465ce374e0b0"
-    },
-    "zones/freezeland/s091-95/script.dws": {
-      "original_sha256": "0786b9896bdb35be8b2664e85c6f9a1b71e4fa6657d884a0d5924001c30edad4",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "b944359a27be49e5eb363c3590b58427f79e9cb125d9cbf200fd77bbf4ca6d83"
+      "authored_sha256": "e6094902be3a6057e0bf5cecddc39e6940f9806464fb26810ec82259f4ad21b0"
     },
     "zones/freezeland/s091-95/script.py": {
-      "original_sha256": "a1e50c2340ae0a2511b5bd9cba53eb2036e03a644b0f1013c6ba7c45ba29d3f2",
+      "original_sha256": "b439252e8a372ea0c6083a5a37bcb85d6bdd0a82d71de4031bfa9d14bb8e75a8",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "d5b2c1c640c7f40bc1fd85cc7711a4f2ee3ad395d6b65935fd88babf7af965be"
-    },
-    "zones/freezeland/s092-96/script.dws": {
-      "original_sha256": "051525390555ad259d0e05833dd3a7726c58a148956752e5336e7420a4be3196",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "381afa21cc6940292192178af62b676ce397899bf1cf286268b8ee318b5f0fae"
+      "authored_sha256": "dc0b0ccf57ca36053bd1e9c7da115807f658dfe781541186d2f6c05c22e3f23b"
     },
     "zones/freezeland/s092-96/script.py": {
-      "original_sha256": "668328368e170cf84df4814cfabfc03dcfb7043ed30a283085e705771eb8d9e5",
+      "original_sha256": "64869205ddfb17b5340eb5919b4e56a17956f6cf4144f3a19f069b57dd476f99",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "3d7f9ad68b3da7d48c6c2ccf8ab9947289398c03a7467305b56cdce3e03e4308"
-    },
-    "zones/freezeland/s127-132/script.dws": {
-      "original_sha256": "07691149e824e140d043ada43c11c49f2fd2784d00f7328578a52231b3bfefd7",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "ae9a20f4f4cca141023d76b972cc07db15e7a3b9d96994488aea93191e6fc6ab"
+      "authored_sha256": "b7508a70e84f6ca69920756f7b825e3c061cfb9fbcafeb72514e5ecb481c22e2"
     },
     "zones/freezeland/s127-132/script.py": {
-      "original_sha256": "c4ae7ac18191e38bdc333d394ef0758901d16cb0a2e255d6dc17e95c75330eb8",
+      "original_sha256": "1fdd09aac9f70b7a8076f4526a553418c49a5d4dee36d8c99d876e8d67ab09ed",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "5cf5727ecfb63ed57e8930e4f120a95751187ce17f961ea271f667743fde03c1"
-    },
-    "zones/freezeland/s128-133/script.dws": {
-      "original_sha256": "5a313e0bf479c0437be0f88d8051c7f6099d0e4bb32f8709878d0a08046510b1",
-      "authored_sha256": "99d8152054cfdc86838c8866c51715aa469d7bc60fed78d33ba54cfa563bac39",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; group 3 alone handles recruitment after all nine exchanges"
+      "authored_sha256": "2f6d9b56f840538035238db6dbced1882b43373b1ff2997271cac701d687a58d"
     },
     "zones/freezeland/s128-133/script.py": {
-      "original_sha256": "7efe00e265cf2710b3772bba102537ad110d2fe01043613409c4ea039450a396",
-      "authored_sha256": "905e4626be8f3ee872da2d646184fe8e806f732ed47b045374dcb2907e3baf08",
+      "original_sha256": "e4beb8eea0ac1abcae9cd5e6141184fb77a4093a4028eb7bc4c8f8a02eab06e0",
+      "authored_sha256": "8df0e25fa0ffa03fbd0df25b88e49b93a9516240a48d397280d979bf33a4b31a",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; group 3 alone handles recruitment after all nine exchanges"
     },
-    "zones/gear-savanna/s066-69/script.dws": {
-      "original_sha256": "452d24716fa01815540ad35144e8eb3891857ccf430cf006c9fd13972aac5211",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "95b233347f97504cabe5b64fa99727540ae2d6dcf11760056390ffcb88875a3e"
-    },
     "zones/gear-savanna/s066-69/script.py": {
-      "original_sha256": "a53bd023d6276e9bfae216782bcb7aeb7642c0d24408b4a913f25f50c67ac954",
+      "original_sha256": "c670e7d1540d9371189e098195a037a2042eef7dbe507a9c5577f4528a59b81c",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "6f73efd3433915c2403b97434c2b58050ffc2f2e67df1773c6fd7c644cfe786a"
-    },
-    "zones/gear-savanna/s067-70/script.dws": {
-      "original_sha256": "9359d42713aa27e661f0d1edc72629fc3b28a76c27116fc47011c161959b05cc",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "e83938ea0b65dfb84466adb0b3b568b0ec9d37f791dcbc94c16c48c923e2119b"
+      "authored_sha256": "081678f2eb96a0adc876789f18dc1ae7be6e92bd5c28aa47ee827fceeba27ccd"
     },
     "zones/gear-savanna/s067-70/script.py": {
-      "original_sha256": "e01bce24b6e6825ddcccc55e46f69569c40b3b16e22b38d7cf85aed52b34d635",
+      "original_sha256": "a9d66a0b09c5ef8a9b4049f9db6d8dc89885ad9e8cd8f1dd86d1760dab3d0501",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "21640fb8d75b23f006ee585551ee94b3f404888c8f1f3c06d7a41bd2efa395f9"
-    },
-    "zones/gear-savanna/s069-72/script.dws": {
-      "original_sha256": "817a8929710cc44957dc57c7df495adec148fbf530ccf06a1402706160fff470",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "8905d8e36c405dc3dd63533dda46de29ed68829e33156a03aba504e5c325d05e"
+      "authored_sha256": "ea2bd989fa4f63e858f68d48ca9ed9b328dbf913474044c83936d88507cfa12a"
     },
     "zones/gear-savanna/s069-72/script.py": {
-      "original_sha256": "42f75539f3fc92455c18e48e8af0402d0b69ffc49c9b558cf7c1b324faf3f5ec",
+      "original_sha256": "0dd106d61448b9bfcb0aaaffee3abc5c7a01880aa9290210aa682e805a499df9",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "02e70d57f01118bef989dd6846e3914d47169c38da71ee4a8be86e0cbaf23e31"
-    },
-    "zones/gear-savanna/s072-75/script.dws": {
-      "original_sha256": "92fa49668c0cc171e7464a8f4f3a74afaaaf5685b873996282b20d1891a8dbc7",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "636d01b4a5f37b48214f218358f34578c0750727e420454b7644100ece62797a"
+      "authored_sha256": "bb760dba13c01ba69ef05b2e0d810f7402f9c7c50273a9449bc7615e3230c472"
     },
     "zones/gear-savanna/s072-75/script.py": {
-      "original_sha256": "c5b4806d8f9951a9d698e700dabacf1733ff3cc10e296ae7adc53570e698fac2",
+      "original_sha256": "20d6ae1fea52b1e028f1abf2f4bf9bb7c5dd52d62d0d479b8bf8539b59095db9",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "dfc162b06e42f6d1d56269f57dc0c38cd82b147bd89b6d9c8fa15f25f3940636"
-    },
-    "zones/gear-savanna/s073-76/script.dws": {
-      "original_sha256": "7dcbf9adc1c2648f5a014973f20e2d2f88c84665c61202ddf596743812e93256",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "750ec7b5545272b4bb7805ce8e7c1a9bd6d6a847a6c0d0d112fb6557bd9e158b"
+      "authored_sha256": "a84e0c4bc04c580748c494dc5e8603cd6bf16181a5a5bd66c04ee015d40a302f"
     },
     "zones/gear-savanna/s073-76/script.py": {
-      "original_sha256": "25c946cb882aaea3be35c86d875d36eca8d4816bef5c7d5faadca114c4a9494d",
+      "original_sha256": "8e8340b2b2685ea4e3e366469b453c9b8caf7c605c885f41cbae769325aa1199",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "b32ee981c6f37b26321adef757bcce4dacf6c2679c5b745ac663c9c0ce9c8051"
-    },
-    "zones/geko-swamp/s133-138/script.dws": {
-      "original_sha256": "58205c7b265a02cb0fbdac80652139d7074d1b1626c21c6a102a747ecd698517",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "5a7b0bae4a8d6e93f1d130319d0cc1867dd0fe9162ded31c90bae3fdcff2822c"
+      "authored_sha256": "c76b36aa52f5b5bbf9be77b429aa9525b7e96675d5e186d7fcbc71c560269aa6"
     },
     "zones/geko-swamp/s133-138/script.py": {
-      "original_sha256": "031301a73939295668e09fcb7242f3c3a3d9cf8cfd314f31e677377b215d2f2f",
+      "original_sha256": "5d1c5bcdfb51054d3688adb55cc740a02f292d1488eb2db8926e2050eca8a2e7",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "c86ed56a036965abc6cb71eba7117d88dd405254edad54622719031b16aeb47b"
-    },
-    "zones/geko-swamp/s134-139/script.dws": {
-      "original_sha256": "ae5f9b330cb29ea73a60808a59722666d101314a45a5fb388adfe2ca3e93435c",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "a35f095745068ef81bd9cefb937cab758d2c6d34edc955eae5861d31ee4bb472"
+      "authored_sha256": "3ca189e0d32ea461da0c01dc3f555066224cc4f60cf8769f94109e8674b1ab48"
     },
     "zones/geko-swamp/s134-139/script.py": {
-      "original_sha256": "9d6787ca9d331800f5514e4c1e176488837303e239450d92a3bd18b311f14049",
+      "original_sha256": "e4d2b7444a2713c528e1e0efd05b836898aa53be555b118e5af9298c97cac8cc",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "e546c945dc20fa95a359b0ee2e07f3291a99640bfe8bbf530b74ab52db05b5e9"
-    },
-    "zones/great-canyon-bot-area/s041-41/script.dws": {
-      "original_sha256": "dac82c2e71886d73fa360af27ac1d589392ffb06bc3821e1250395dd95bd69db",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "96f087a6941cef09b08ca926944e1380b362421a27461c9d74538fe700084df1"
+      "authored_sha256": "2edff832c19382d45ccdb6efda76d40451db8309cf3737d06b9abbf74b3c5c4c"
     },
     "zones/great-canyon-bot-area/s041-41/script.py": {
-      "original_sha256": "cd09aba3d738ff3568c4c7c65a7338e5dde6b3899f095968413665f2a596ae05",
+      "original_sha256": "f5e88b80ca0fcefb8612bb813186ae70e19b94f8744efc6645ddbbe344dd112a",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "502aa7354ca986281c6333c78818c133754660f38caffabda54c45ae077632c2"
-    },
-    "zones/great-canyon-top-area/s037-37/script.dws": {
-      "original_sha256": "6217822103d8070bf034842f63d4b772fc8ebbe5103137f0f23b0459c6d5c63f",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "0452f9863466ac48635d4a6c34d3c05579991e7e58b4915eb19197b69a2e1d18"
+      "authored_sha256": "f2ac00fbdb1f1d9da09b994897d2e40f8702bac6ed00d0a43322ec8180fa8f69"
     },
     "zones/great-canyon-top-area/s037-37/script.py": {
-      "original_sha256": "34eed9de2f2bf94e46782991c1835dbb73d6da1b2347332c452b64b7ed55af4a",
+      "original_sha256": "65b220293207d8acc310ae4f69aa638d32fe841db3b94b60fccd3f1649ba931d",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "94643ef3270df09279b10c9da070b036d7787c541e9f58b42a3f0eb6af2bcf2b"
-    },
-    "zones/great-canyon-top-area/s038-38/script.dws": {
-      "original_sha256": "bc7a1be2ef3f2eb96adf935721651887566f16b8b3d262d2ec9a49d2d391479b",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "33b74c02e18fb85fc8fa48e63c4ed3e34c3f6e3cc65cdf07882d51c5b7c932f2"
+      "authored_sha256": "1423331db855058c4cc38403b1927ca9eed5490867a1c0aa039d760eb3709006"
     },
     "zones/great-canyon-top-area/s038-38/script.py": {
-      "original_sha256": "d40c71a3e7a242ea7952ece1359e340cc1bd34360642d50114dc6d86ef44993d",
+      "original_sha256": "89ba3e7d5dde6ff232f8b4bf9c3a9164dc5ff85828775f81ccbe3c21e399c599",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "08502db4793b214e20187a064bd4af044e60f7ef5cb64c3932bfb5050a36f7fe"
-    },
-    "zones/great-canyon-top-area/s043-43/script.dws": {
-      "original_sha256": "11899eb78e1010289bed1c0b8cd8509045c2030f77a86cb209a38704798e734e",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "493ee95da450bcb3e6a2638ffe2c85cd11ecacb69fa2a226d4e58f66aa757653"
+      "authored_sha256": "65d24da5efa91c509fab80dc57b5bc0430126696f56f3a6b70299481728755e5"
     },
     "zones/great-canyon-top-area/s043-43/script.py": {
-      "original_sha256": "06aa4d7e0ac4d0a7884f877cef5712e1f6b9381b96d04b51570cff78fd957481",
+      "original_sha256": "9310cb43c6cba271150c2a8f90a3f6e239d0112c0c403eca3a0cf5c934541620",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "295cb9f2f94e7641ec19182b14cf2a47a2d3535134446a8347b4bd1186ecbec3"
-    },
-    "zones/great-canyon-top-area/s044-44/script.dws": {
-      "original_sha256": "fdd9e7fa4a024126718723c2ef3c99b878312f5e49d70769dcfaf1994cbb9407",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "a145de6002d45273b1f7d07423b4e955e7a1580eb19e7de94f74e0a739104c97"
+      "authored_sha256": "580ade52fbf0d4fec8024a9fdb2485221c9c7f3ae38c8a12c60513a13eb63a0c"
     },
     "zones/great-canyon-top-area/s044-44/script.py": {
-      "original_sha256": "b068eff092ab52493b33fd0c7f7d79c8994368ae00b7c48ad91f141a2148b176",
+      "original_sha256": "a843d8a37667b7f408c076b480ebb50033297914ff7239d7566149f60aff5128",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "d6c79307f1aa15471f172a1671ea3747fdd62b1c8f3a13c062e52d72ed1ac7f4"
-    },
-    "zones/great-canyon/s123-128/script.dws": {
-      "original_sha256": "c242a91d968db5e423de2f86ed76a48a149f7592a5682599a8c4152ec70a43aa",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "5d00646367f9011c991175b18394b0b16a6c20058d1a1f4699f086795b6df345"
+      "authored_sha256": "3f5fe1067922f0c18aff088edd98dba2d7f27b0159243a1e8bde70456e6b8657"
     },
     "zones/great-canyon/s123-128/script.py": {
-      "original_sha256": "2c233921f721699af82780e0008b40bcc21490cbd5422cfd51daaad48c1eea41",
+      "original_sha256": "05b5916db864dec62808efb44fb31b86a8955fde4c41d82cd1bcf31213c73d4d",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "e5a9034f4fc900af0634b2a6d79d9aaafdfeadb7f1255a36574add120dadaa46"
-    },
-    "zones/mangrove-region/s016-15/script.dws": {
-      "original_sha256": "9af33f5fe8154859f956f36b6b7bf8b49929d95115c8710b62cb4f0e6865b870",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "2482ed0997b69be51b5a59bf9e5754544e544831fe6b5b66cfe0e5d9b8b944cc"
+      "authored_sha256": "abdbbfd79c0bc3d9eab5feeb4d0e5b8488b03f506a570eee258b04c2ab3af94e"
     },
     "zones/mangrove-region/s016-15/script.py": {
-      "original_sha256": "753a95093ba534f8939204522421a4f60249ac05dd2ee29608de2ed55f4d656d",
+      "original_sha256": "a701e3638629f3b510e29e1c33938676124d582ff994a276a040a14ac0527085",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "ff7f13a921b6a106cb0fd7a07fe21dcb488ab51535fc04c0ae7f8778960cc127"
-    },
-    "zones/misty-trees/s111-115/script.dws": {
-      "original_sha256": "ea7e98c5b749b1b237e0eb8d96d326027366078c6b005bbc9ebc9fc329e76784",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "410014a1ebd98c2f7f6fe95a1a76ddc6371e0ba7a536065f5011b83b1adda82f"
+      "authored_sha256": "2e934d1b0c2cf5a0bb33017f52320cafa005854deba72fa0d8e13728b072cef7"
     },
     "zones/misty-trees/s111-115/script.py": {
-      "original_sha256": "eb2860380592a91e217a88d8940fd19c27da919d6fd491ef608a14705f202b14",
+      "original_sha256": "bf419a24000601ec7bfab9ce944f8c2aaafedb7db83b2623528666e46c24a4cf",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "4efb54adf33465a9aa3c99ae3012ea3ce28a15e39d2c0aacf295951085042d40"
-    },
-    "zones/misty-trees/s112-116/script.dws": {
-      "original_sha256": "20bedb06849c6741f9d39371fd75c6e454329e7502b87f396b2c6414350b81c5",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "69446f86d15ec4ba2bd49c9e2d24a963a68fd22d51cbb2e0d9e76a95d367c3d7"
+      "authored_sha256": "47f068fad7d07dd8b3b46dbe5d392e0f57642ece7589791e7913bf5bc4f780d3"
     },
     "zones/misty-trees/s112-116/script.py": {
-      "original_sha256": "7299ed95c004de7bc74a72b9843676db65561858fcabd16ffadd5042ade14132",
+      "original_sha256": "077abe00ffbb2fbd017a58cef29c4976a55267f75a21be5d5b6a7613f67104b3",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "8887519b68dca3970208cee80eb4e0cc0a1fab15a7502a222280d06b0731e8b0"
-    },
-    "zones/misty-trees/s113-117/script.dws": {
-      "original_sha256": "e1a3b84308616b883ac4812e06be35dadeb665e8c3b745dc43c8bf1535544427",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "6f21952e55bf9bdcb832cddd9d76b7d932f01725dc91670bfda1ad9469a06568"
+      "authored_sha256": "8262143a95dfce6aab85cf95f81ef7c95f2880056e7c8d0d9948e1ed5193821b"
     },
     "zones/misty-trees/s113-117/script.py": {
-      "original_sha256": "174b05efa0c4470b3f81d98011d850073c81630384f479f15bdecae32111d0a4",
+      "original_sha256": "095b79c96c8db81add66a1afda17fe42160fdeb9b44a94f33e6f9a6c0ca14fa1",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "76e94a3ddd1ec26af6d530a526d294ae4d71aee69a109684398bb8da37a4eb4e"
-    },
-    "zones/misty-trees/s114-118/script.dws": {
-      "original_sha256": "7e14b5df5c0fd0f74f168a4c61e02c582cc87b6f2100833121a14f39396863f3",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "6370e4db9438a87b58682e40a92d2c96cb6dfe42fd79bf78a4f085a158a58bca"
+      "authored_sha256": "bc091d7dab757742006b7851e1da20087a4e9729aafe73789ebf2d1b81d1e770"
     },
     "zones/misty-trees/s114-118/script.py": {
-      "original_sha256": "144cfb2ea122a3463f4c00d1f4e9a9ecfb92f08404031c4ff90923d8156dab91",
+      "original_sha256": "8e503f9a2a69b6202ab5375fff27b60bbc3b48e5e7f5ac3a1936c1a72c29ffac",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "86f3cb2d1b01c64f3a12a1378fde740cc8bf507392dc67ebb439fe12521def19"
-    },
-    "zones/misty-trees/s116-120/script.dws": {
-      "original_sha256": "546ffb5fd817421acf885073ed26a6ebcbd7c1071716248bb0052804786cde01",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "4877b333f9382fd642add74fddbbcd2f864848c301d5b11982ecbd5a8c708d1f"
+      "authored_sha256": "52fd896a8ea91161adeb7b70a3512a74fbeb9a829fc2d6d8dbda0e612af51c4e"
     },
     "zones/misty-trees/s116-120/script.py": {
-      "original_sha256": "3c76f14ec2fc79d53ad456baec5526b8bbd87e2cdc94ffff51b24ef30b9c1666",
+      "original_sha256": "fbd43c5c42408e7a758ff8abc44f65d7547658f519cc4d20a332dbf7a3c3db9e",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "b9b47c1ad3b15d524c945c19fbf1e5954b9cfa70315d15ba40e0ff07990038f6"
-    },
-    "zones/misty-trees/s117-121/script.dws": {
-      "original_sha256": "6b6a6074c40ff70f0661d6dd57233a38268084991ad404d39a01b73322cb5f44",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "25e585eed9942b23beff00d102f3a278883b3418ad901683e1c50e936c989d21"
+      "authored_sha256": "76f287d0cbe31bc2290d299d0d87d1ec557047bf77a853cd0f6a1ee283262102"
     },
     "zones/misty-trees/s117-121/script.py": {
-      "original_sha256": "38376247c49610992942b8b471d4ed343816e1592c3e768a641394cdbbc5528f",
+      "original_sha256": "4a5a98175eeac89394cb831fcc0c10346060cf3126755614406704adb696bf15",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "ae56e02fb4283a0dd81125d4d1651446acf90906d9b21c353a66ca716d336577"
-    },
-    "zones/mt-panorama-plains/s020-19/script.dws": {
-      "original_sha256": "195d55d61d42fa89edd722e9d3f142fd8394b7fc647a2046dc237ffe8cb9751d",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "4f4fb5e9c897941d7c192629bec64fe9e7e2f4d0a9a8dfd57cd81aa2bed03336"
+      "authored_sha256": "38933a6f1a7e0d74704dfe83515f7ec67e28635126cf03b7ee89fe25e266747d"
     },
     "zones/mt-panorama-plains/s020-19/script.py": {
-      "original_sha256": "72ffeb7d52daad3bcc0887403fef70fa6e32af32b3d747e97b8c4a638bab6be6",
+      "original_sha256": "a142ec03bb1c79d388c07bc8e859a4677fc0209498f55ea08cb8202ae084e083",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "1b83e7e29e4b1c763e1c794246678df50a45fc5177c95d12dd3b7a2d837ffe6a"
-    },
-    "zones/mt-panorama-spore-area/s022-21/script.dws": {
-      "original_sha256": "9d65e8b909d3d0d148ce1407d12b9bf0362f1270f6e43711314529affb727562",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "0d9f81073b2daa1abf920a043cf4a322ba8c666028da7d1adae6133e8da901bf"
+      "authored_sha256": "7e0a1aac4bf659755760df774cdfe68e263f47d4bdc5ef1050557721715f7227"
     },
     "zones/mt-panorama-spore-area/s022-21/script.py": {
-      "original_sha256": "f332599f2d4ca4c1b929330b994749ba5e489774bfd9d304c2f427d2a35fd5c9",
+      "original_sha256": "1b265e95bec45cbb490c2746ea48a89dc975bde80a4ca13b6c4467cf9db105cc",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "520b75545d6a80f2e256b9a6fe9e7b9ccacc94d877a8edc0fa499949917411ff"
-    },
-    "zones/mt-panorama-spore-area/s189-233/script.dws": {
-      "original_sha256": "ab31068d972ad8e4d0cdda51277c97360987d4a157dad4b3b13b42ad006211f7",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "485155232a53112924b40b88a4f969f630aeae55898509c121419f6954b81eda"
+      "authored_sha256": "d9ba1d6d3222db28892f4ab616d16cf069a3979ace95b7c8d79dabf6ae6f1074"
     },
     "zones/mt-panorama-spore-area/s189-233/script.py": {
-      "original_sha256": "d3284f7f3f92aa73ffde1b9751574988f8f0b58b7e42b3fb0493567f316fbda5",
+      "original_sha256": "010e6de53b54f1aea4bbdad8527520535c90ca45b313f82082f019153b2c49ad",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "2ad657d224da8c020dee3ca2a0a07a30f04687dfea2674874d804b33d3fe0ba8"
-    },
-    "zones/mt-panorama-spore-area/s190-234/script.dws": {
-      "original_sha256": "7a70cf4eb09586b99615b1a52b57ea951e35387fc392e50ebefd072a8eb6ce1a",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "eae4dde8a6cbd36f26fb26efecb7b147c6362bdd5596d61293873fbc51430743"
+      "authored_sha256": "53750e46b073d571d8f2e5e749c8cdd0005656bb7d227d1c75477b766ab8f648"
     },
     "zones/mt-panorama-spore-area/s190-234/script.py": {
-      "original_sha256": "b66d7e4e9ec3cba146f15ff12a460ba42e84296a0293250cc9c6da52d2c228bf",
+      "original_sha256": "5bbf3cdc6f323fe9528cff7dfcb1523f9f5bc72bce52f07564ea985a7f9f6dc6",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "1baf7bcb8bbbbec1fba44ec417f503db55f5cfb0c8b249d8ad6e96c12ed1bcd1"
-    },
-    "zones/native-forest/s003-2/script.dws": {
-      "original_sha256": "6ad60d06274fd6de3758660d373658f2431cb429037f7e1f6e53c82d5275f32a",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "72777970ceca02b54dd455c9d08dbddfe27f09bf832dad9867508c955beb89ab"
+      "authored_sha256": "d50b355c5caf66399c128d9d842b770ec92d8212c67bbd2998b19454fe68bb41"
     },
     "zones/native-forest/s003-2/script.py": {
-      "original_sha256": "9d91766ae8919c969c914aefc82925e42ecd937fc1473cf0166be7285403e1ea",
+      "original_sha256": "fd05144d12cbd110e316a0abcf4cfea26ecb36b0fc0ce3a0c15688e88c9ec714",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "306f04c263c3beb0dcf2e173f56299534d736ef09ebb814ca78f327cedb72f3c"
-    },
-    "zones/native-forest/s004-3/script.dws": {
-      "original_sha256": "9d7a720b8de30cdc49d54530dc33ef405c1405196714a6f2a909c3bb7c9fd40c",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "c9c9f742922ca92f3cc800afad850a84be04193bb3f0bcf138514a6947cdfd2b"
+      "authored_sha256": "af7fba31c07072aa516483910c9f95c08079fef5a732e5732c6651e39d8718df"
     },
     "zones/native-forest/s004-3/script.py": {
-      "original_sha256": "4598c7a9497f131928b19f4b35ec6a75d316d16acbebb3af0f093462c8eeaadb",
+      "original_sha256": "41f39b0a4fe6d5da905c7daefdf10c86a944ce75ad4b25b913f9b14a6893322e",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "d08386b01d22180c37371432472b484f515d68b0f5e718dc732de6c83d02f4ee"
-    },
-    "zones/native-forest/s105-109/script.dws": {
-      "original_sha256": "5f3ff1ba4a98e700f54f70777cbade7afddc88c4307a04c047c519c6393e410f",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "61cbccb33329a5ced7c0b61f8d5e793adc5fa86655a24d42afed6a32eb7c59dd"
+      "authored_sha256": "f5a0fa542b9d0b905cb8307caeaf5504d7f9803c842f84b1b27c901df6809740"
     },
     "zones/native-forest/s105-109/script.py": {
-      "original_sha256": "4f68bfe4bde8c66a02face88d3ea83c30d1a460580067f2930ec890a250e3078",
+      "original_sha256": "3aab1d8db27bc78cc85788f6f4286b4622f98c019595d544b7545a29fcaab8a7",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives",
-      "authored_sha256": "28f0c6a87377298692d896e506d21b46aa8e3868e9a1d304c7f7529c4b6644ed"
-    },
-    "zones/native-forest/s106-110/script.dws": {
-      "original_sha256": "b3574ea30dbe3ff1816cd2032a90b4e1b120ccec64bb7639b0b641ab9dba1c63",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "c958e2bbdabf12cd80058626328d49d8d51453daeca87bb669d8da6096c69289"
+      "authored_sha256": "7b7358b4653d948c01436e3be78f577f5108319a99d718246df455080f42bd9e"
     },
     "zones/native-forest/s106-110/script.py": {
-      "original_sha256": "a7d2696dba948837664f2e7e44a431d0657e6d7c173347820d7c0701f80ad349",
+      "original_sha256": "7c281047c6060adf40574e3ebe44e9c64977598cebed0bb002312b7ee3e98e05",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "f0c70abfca35625de54e11f28283bc9aff5f6f7d53ffc3515a2df9b54ab4f868"
-    },
-    "zones/native-forest/s107-111/script.dws": {
-      "original_sha256": "c574a2e1c5149ec0c41e5b491761930c533807636e29a7d398b29873d9b66f8d",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "6be2a92f5111d59373e27a09eee4220cca36ba43d0e39ac6473f72ce0ef609d7"
+      "authored_sha256": "ad3bb3112c2d3f9f50660e3e476ffd8d4cad679049346d82a27556a72ecb370b"
     },
     "zones/native-forest/s107-111/script.py": {
-      "original_sha256": "9e3a9cbb83e9eb3396f1799edc6a53ea05f3b2a81fccca9c358f37b053c4ef32",
+      "original_sha256": "7ec8b06e0d0d927a17bd9049663d239703fa474d9da4200970254d1995b0353d",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "aac0afeab61aba7de1979485a0d2119b13edc9a8496a0890d91e1b858d657fbd"
-    },
-    "zones/path-thru-mt-panorama/s019-18/script.dws": {
-      "original_sha256": "7c283d734084373a29f4ed38ecf94425342c48418fdb280f0ab2fa2a51386645",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "0c075a755ccc06e1d0c5d5827d3f4e919e38e752bab38ce212e9afb2d3479dfd"
+      "authored_sha256": "aa6fd666d9c5bfcd14e6fc7ca2d844f369b0a319a0177afceed6c18354beff94"
     },
     "zones/path-thru-mt-panorama/s019-18/script.py": {
-      "original_sha256": "a0b7acf582a5fc4af80b33388e700900093110945c3c5af140f2b3accc593da6",
+      "original_sha256": "526b8d43f08387135f44751fdc29e358769225916b22010705770270bb3b6dda",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "192a8647b42e211d9c6ad9e0252ce1883a796861b1167bcfb8b05fdbba65e6ed"
-    },
-    "zones/path-thru-mt-panorama/s021-20/script.dws": {
-      "original_sha256": "be3c0176e94adf7a82fbfa2ab6373c2244c10c8e7a892191f6ce345c3663a140",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "a1141fda09beacdeb83b0ae5994e4b3c230eefde4ed3ea1387751cd945deab97"
+      "authored_sha256": "4ca37a7c194d3a815024e30117b4fede1eaec1753ec55061a67c53975e74ab57"
     },
     "zones/path-thru-mt-panorama/s021-20/script.py": {
-      "original_sha256": "f9d7398395f60b19fe021eb70e5590c3ebce3866e6c9a63f095930043d4936d4",
+      "original_sha256": "06c53f7c33970b518fcbbcc4091b20bbb296f319b738e0839ce47b35a3ab7843",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "165ca20d3bf58b0ca7edcef48be442cbc7fb092a0f60837994ebe9a6725184a5"
-    },
-    "zones/tropical-jungle/s013-12/script.dws": {
-      "original_sha256": "b8e989015c1bca2e3e4408b12e3421d99c8156ff4813c7edb1d339592bd14231",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "0eabb1a59104d36f0306a98a3e6bf8599c5a200abbf55f769b7289fd9a2160fd"
+      "authored_sha256": "4436b3ac7749a9afa6be702817074ddf9932f9c57e5ae35a45c1eb9d3910f3f0"
     },
     "zones/tropical-jungle/s013-12/script.py": {
-      "original_sha256": "f2e847b00d3e9927d3c8bfe6883ffad51d3b33ed19248a184688a69de0eb4b45",
+      "original_sha256": "2e1e1c05b403f472d8608ea366267adccc5383834542dd86047f13ad9ffe545e",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "b8b112ed70e16b1c395ee6dfaf5acc2d4db1f426e0d854719704367620ce12af"
-    },
-    "zones/tropical-jungle/s014-13/script.dws": {
-      "original_sha256": "75c52baaf370716fd028890ef33f7efbf03edf4233b103b66446ce99319f6ed4",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "aba74a180b261057471ccbb08800fe3ddaa06b5ae343eecfbaf7881a1b656a70"
+      "authored_sha256": "a90ee95787709bfc4106d216ac8d693f693a80eca8db4dbd97bc1c580e059fe9"
     },
     "zones/tropical-jungle/s014-13/script.py": {
-      "original_sha256": "19fc967b3bfeffec6ef4f0fcb6c1311980e4897b5a53a7c5589f05c60f1a2ffa",
+      "original_sha256": "b44254af36c52b2bf7baa9fe21e98983e2e505b412f54417d480e121b8b03a01",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "afc92d78d424178a10108148f45e1a9bb8d2c7f77167a23a5c4a579cd6b311dd"
-    },
-    "zones/tropical-jungle/s015-14/script.dws": {
-      "original_sha256": "9b2a181a380933486ad0fee6a622e82be577aae5f64e373564a8c5cbbb4c7351",
-      "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "83f82236005fcb95e2131ea107957de0dcd3cd10a7e3885c69c318a99544dc6f"
+      "authored_sha256": "e7e6abe489cf0e57f137c1c530038c571537fb51c585d0a2e7c9c7b43867c8ca"
     },
     "zones/tropical-jungle/s015-14/script.py": {
-      "original_sha256": "919d3d395047f8b472adcffcb88724bdd93d1252cbaa37332005ea26c795726a",
+      "original_sha256": "2ae7d0a63186bb7b0b5cb122817f61ae99f678b97e4a92360d9258da882c7137",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
-      "authored_sha256": "01e3fba23507ca10294dd3ec0229ed33f3267ef166c9269f415c826e14f9b0ce"
+      "authored_sha256": "1c8e5b22f317e56167c8ad44969f2a7dcfef7e02eabefab0bb534e15c1d9651e"
     },
     "zones/underground-pond/s029-28/README.md": {
       "original_sha256": "afe4ceb7f1fb659a7b7a1ad0cebf3242066198d0f6cbc62df8877f050a3f82b2",
@@ -982,83 +492,38 @@
       "reason": "Keep the final dirt pickup visible until excavation completes at ten units; preserve the separate tunnel opening at eight and completed saves"
     },
     "zones/freezeland/s129-134/script.py": {
-      "original_sha256": "02b381e914a2e56f818995af08faf0b8a06ec839922e510693e3fefe1adde2f1",
-      "authored_sha256": "ab0106507ab28318db6f4d2cb67dad8a8eeb09edbf904b25ceba73938d27ea32",
+      "original_sha256": "b0dfc1d6d1aa57f8ab76af8b70d5bf8206d83b973269f38c591d9f53113834a7",
+      "authored_sha256": "9bb7ce4d99abf0da2e650e76d89f4dd37203259c0f87b3991b1208870c6004ab",
       "reason": "Group 3 alone handles Mojyamon recruitment after all nine exchanges"
-    },
-    "zones/freezeland/s129-134/script.dws": {
-      "original_sha256": "946a73c24d560b20d3bce3071fafe206783cac84092548cf6158a3f3c61e9216",
-      "authored_sha256": "8bda450397a4917978a82a4bb0aeaf248b4e8fc83e6b896fdb2b11360888fc25",
-      "reason": "Group 3 alone handles Mojyamon recruitment after all nine exchanges"
-    },
-    "maphead/screen043.dws": {
-      "original_sha256": "a34801f42a486762e7a14e804b00a6101ac6b7386e1c548e2859205ff270bd12",
-      "authored_sha256": "f0151802d29fb01cf899efb097966fa141d8a836e913d8b4b61a8e3a20a35156",
-      "reason": "Keep canyon bandit battle music active only until the encounter is won"
-    },
-    "maphead/screen128.dws": {
-      "original_sha256": "e53c638823527d472a75e28fb3c9dd6e7eff648266d8c87ff84f3ea626e1c5a8",
-      "authored_sha256": "3d88f745c5f5d1b68a16367dae3d741c0835fb38818e0df198de5d9d041e185c",
-      "reason": "Keep canyon bandit battle music active only until the encounter is won"
     },
     "zones/drill-tunnel-2nd-floor/s026-25/script.py": {
-      "original_sha256": "5396f424118f79b0f832596f60bc9226339b6635759a64e1a71b8c9f9ea4d13e",
-      "authored_sha256": "efa7ea4684861e875658eb83bf794d2ffe8f04e2bf51c4c848caa3a7a0021a12",
+      "original_sha256": "ab0f3f94237721d9a37ba7f15caa3d6091f606b84ba31a78e2eb84dc09721110",
+      "authored_sha256": "b2dec4f2d6b34ea84b8378230c8c1ad0f2a4fbb03cdfc7fb4775e2b26be2882d",
       "reason": "Move the defeated Drill Tunnel combatants clear of battle drops before their defeated poses; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/libraries/s199/script.py": {
-      "original_sha256": "be277e11741d98808228fbb5c7b78c87945bd11dfb16242b366074297cdee333",
-      "authored_sha256": "3b4d354e95d2e29d0a9ef694f47481c8c92147641c8cb965ac79e57ee4757c64",
+      "original_sha256": "8560e66244afe20f856a1050102d268c8b95896ea83afc8826e759ac3f35842b",
+      "authored_sha256": "d959e0daaebe9124afad0d3ff3637cbc3b69b32b180e3d2d414281d36207f1dc",
       "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
     },
     "zones/libraries/s200/script.py": {
-      "original_sha256": "1a7824917d53cf1183e6938c7f983be84acf9d4d68d65c8e43658978f61faadc",
-      "authored_sha256": "689ced6569b93312d2179b5737354705ba437c921e124693472f6b3acfa6fe3e",
+      "original_sha256": "43238f1d029fb4851686180bc8904bffbdcafecb2700d3ddc9b2af1357178857",
+      "authored_sha256": "d2fc3fd1e965728b3a5c5373053e225b0e88e3446137fdd652708a1def5820ba",
       "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
     },
     "zones/libraries/s201/script.py": {
-      "original_sha256": "7b4e2ec14167d92d84b8f60612578b11af920824b79a22eb7c740c10f7ab6d98",
-      "authored_sha256": "6ede952ce174f4964fde0684a9008c5cd039df4db8af37dc393f19a8327e6690",
+      "original_sha256": "2f1f21a1c98abc8587f997a9cb33a69af10eff85e8ec39196ab97718042fb351",
+      "authored_sha256": "84a8a67ff5cee416dea24838a90bfea477795c047eba5f72e047f714d16039e3",
       "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
     },
     "zones/libraries/s202/script.py": {
-      "original_sha256": "27adf203c9eba5504622dfd88506094fa9152cb55fb05ca968f1a89873431bc2",
-      "authored_sha256": "8de6d7eba9a0ff8c767377ff570ad5a08e40eefd964291a2db94f0d7bd0f0435",
+      "original_sha256": "d855860b892a27d4805195798b1398bc0e465326ea56c419689b346816314d05",
+      "authored_sha256": "8b3ccabfec316a6fbc371fafb334fe5da6991e826f1a854f40b5ccee040f0612",
       "reason": "Hidden-budget Monochromon customer: one arrival budget and face draw, finite shift deck, one reduced-budget retry and item-specific profit"
     },
-    "zones/drill-tunnel-2nd-floor/s026-25/script.dws": {
-      "original_sha256": "0473375c38bf36101039b1e85c13910a224d29a64b5ac5f3582f7d5bff536269",
-      "authored_sha256": "89d7401a64be637f05510a07fad1bacb18dac1a7e2aa19296290effcebbb32e6",
-      "reason": "Move defeated combatants clear of battle drops before their defeated poses; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
-    },
-    "zones/libraries/s199/script.dws": {
-      "original_sha256": "fa5db5d9ff87320a5ded288e00a9a45259ed8204f408a691fe6e063a895d5328",
-      "authored_sha256": "e6786a4baf3aea8ae0e714050a4c3d1de444071b7f67eab6936550f4c3603de0",
-      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
-    },
-    "zones/libraries/s200/script.dws": {
-      "original_sha256": "55c3a020b719ce1a0838dc70d9080c3f2e0425edc0a6f897cd02709e097f5074",
-      "authored_sha256": "cbf1f9e04ef28c607f035d7a2493e1d1e2aaacc73af96fd472440ec2bec3711f",
-      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
-    },
-    "zones/libraries/s201/script.dws": {
-      "original_sha256": "76d9adb141f74e6f79c5108c70b0ce4f0a5819999bfa4e2902623ecd95ac7143",
-      "authored_sha256": "0075a1ae11b5d52670b7321e387eef35db7f2f607848ff247cfe622915c252fc",
-      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
-    },
-    "zones/libraries/s202/script.dws": {
-      "original_sha256": "8b97bec84ac8ff8d3a93543e5c17f0cc7c9cb63f1eb4cf644d842159b6688780",
-      "authored_sha256": "af2d9276c1670ed9bd2ff209111e37a5a3a0b6b3dad7774e54a3e4931fd6b763",
-      "reason": "Hidden-budget Monochromon customer with one arrival draw and one reduced-budget retry; DWS synchronized with the authored Python source"
-    },
     "zones/back-dimension/s186-227/script.py": {
-      "original_sha256": "7e15daa79f770d3667d75631f7cebf720251d71071ce4f1006e868f4ad30d5bf",
-      "authored_sha256": "dc246907f5c7b5a538182316d04918374398bec683f32108f03ea2437db4cd3c",
-      "reason": "The second BlueMeramon in Back Dimension starts the missing battle in both story modes, matching the other three encounters."
-    },
-    "zones/back-dimension/s186-227/script.dws": {
-      "original_sha256": "747c6d134d0c4d0e80489abfc549bc19e6fda661265c9945ef34e8859bf70251",
-      "authored_sha256": "3a5a23c7f92234ada63c15310fd15a456f669a7075dc8c56b383651e384a7906",
+      "original_sha256": "d47871d0caa30c7615ddeeb173445a1bb600c827caab699829bff84e061ee8fd",
+      "authored_sha256": "e0e47df84217d9fd970396ecc2cc65d8372cf825a5968c8a6f804f1ec0f427ef",
       "reason": "The second BlueMeramon in Back Dimension starts the missing battle in both story modes, matching the other three encounters."
     },
     "zones/back-dimension/s186-227/README.md": {
@@ -1067,273 +532,138 @@
       "reason": "Document the added battle in section 8."
     },
     "zones/great-canyon/s122-127/script.py": {
-      "original_sha256": "846a6ce9166dc63d34c3842319766abc5686603ce0ec14827a6d54a948e2f93c",
-      "authored_sha256": "bd2d1db7e51d9b73963d053b7fa2a156c7f11835b911846582f1e6fa327af76f",
-      "reason": "Announce Shellmon recruitment before the departure walk in both story modes"
-    },
-    "zones/great-canyon/s122-127/script.dws": {
-      "original_sha256": "6b829b48ac79a11f9584398ef7c869c3bcf587c246779941e04a5c3b8134eafb",
-      "authored_sha256": "51aa43d3e7e2c38ab936e4aa02e79cd2dce1fe8f17371ac4cedd5306fc4c21b4",
+      "original_sha256": "a9f4ca5cd671f017c17d5d85e355486d3d2d3dcfebec7093753d31601e03a362",
+      "authored_sha256": "b28890306b96058af41aebef319cf31b32d4c301890ba4c77b7be33be14b0a82",
       "reason": "Announce Shellmon recruitment before the departure walk in both story modes"
     },
     "zones/libraries/s198/script.py": {
-      "original_sha256": "f011f9bc6e748ab0586598a642405bd942748fb7989e9782261f28010a7939bc",
-      "authored_sha256": "a94ab108e35921e29cdc95d6bdd21ef747998738fe1920019e913f0606ee6045",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
-    },
-    "zones/libraries/s198/script.dws": {
-      "original_sha256": "33770be2e0f9f50bf15e4520b18432f5893a36b830809ad56a93c51754bc316c",
-      "authored_sha256": "a2ac943a8b16006b936048e47b3e93d227f27ac80a4a458cfeb76032e861be35",
+      "original_sha256": "30e64188d38e3026aebf14d5a966fb228b3a36b08bd53eef4d5f1d21f3ca06ea",
+      "authored_sha256": "0451be07df084740e5fdaecf7c06ed79df02cb5c659cdd5dee2e45cfd8d8f473",
       "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
     },
     "zones/leomon-ancestors-cave/s109-113/script.py": {
-      "original_sha256": "885c3e7957371154a6def05d66445e4944bff33fe4a4a9d787e7104574915655",
-      "authored_sha256": "0f74b0d6bca3cc3eb17f1b46eb242c60792654a2a58dde113f9a57dc2e64fb3d",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/leomon-ancestors-cave/s109-113/script.dws": {
-      "original_sha256": "203ef09338fb9577d20b5d9c66dbdff9deecbe982fe8890ed88732542efb5306",
-      "authored_sha256": "e433ea45d409762d4de6432fb790a742fa137f857db9552651dd3687afedfb6a",
+      "original_sha256": "5e8d55156b0bacb8ccfefb0565ca3912ee9cbbec5caa928f9ecb777bfcd598b5",
+      "authored_sha256": "a541efa450cdf44bc608b0a295dee6559e443e4ee007c24fe73582fba788c478",
       "reason": "; Announce completed city recruitment with localized narration and the regional jingle; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/sewer/s180-220-229-230/script.py": {
-      "original_sha256": "d16b82355fa92378724e46078c1921e9a00056aacd99eb5750b78520e5e30121",
-      "authored_sha256": "d25de4a859c821f1c4801dc1b6caa0c1b25f880f892defe7cbcc54f10ffac073",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
-    },
-    "zones/sewer/s180-220-229-230/script.dws": {
-      "original_sha256": "aa71b13b44b5ba702d7774327fcc9573bd20838d562c738fb144779305148ddb",
-      "authored_sha256": "6d2f74ec11ab4d10c01703d9e35bbb7e92d44eace9efc8fdb5fb04c0b15d3c62",
+      "original_sha256": "34f6d67d66251d8548459e3473698b75b8f93cd11f3ce662b87d8d2ed3a7caf0",
+      "authored_sha256": "858312c697f17ccae0897e40b3526dff21d58847d0fa2e26a78dd608511188c7",
       "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
     },
     "zones/ogre-fortress/s048-48/script.py": {
-      "original_sha256": "b315342df19ba2eb794bbd4d6adbfb0a91a5b16e882742f9b088598643cfaa15",
-      "authored_sha256": "47720fde9c5f061022ba9126b1dc968ac0d61cdac51e7f51eac775c2e85b40b6",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
-    },
-    "zones/ogre-fortress/s048-48/script.dws": {
-      "original_sha256": "eb058aa4bf02289629741b4b6686b39081bc79282c7ff3e22191991de127f5d8",
-      "authored_sha256": "3184ea4450ea02888dd3384498dd9fc276f1950f3880e8061385f2f3f60f4877",
+      "original_sha256": "1fe17fea0f7a0fa1ae0b959e551ffa4bb80d3f0029eae2557b60d755458a0e67",
+      "authored_sha256": "b3f1308c7361c922d3c36742f9e3596e8f0358299c7909986f7965af8b4496ed",
       "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
     },
     "zones/toy-mansion/s145-151/script.py": {
-      "original_sha256": "133a074b6960fc0749556b9e0d408ae3c3ff749224479b98904ffd92d822a9bc",
-      "authored_sha256": "92894c4ad0958f9a5787dd78d0f230e691a5c8ea936f42799f3e10eccc89b34e",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/toy-mansion/s145-151/script.dws": {
-      "original_sha256": "ec7b3232c8b980665b36b8a6d6251c06e698aea7f55462cdeb47ed6784762f25",
-      "authored_sha256": "9e9447af7058e4b6f51c1709489bfbed02b68b07fe1f31dcb236c36bd9fecc07",
+      "original_sha256": "5104018b8055508a081ef6d86add794adafbb94de65cf688e16196947d84b365",
+      "authored_sha256": "0b886bcaa7422659eaefab7f03b63491e5b4252d67aa4aa4cd6ebaf9c34d9601",
       "reason": "; Announce completed city recruitment with localized narration and the regional jingle; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/underground-lab/s064-67/script.py": {
-      "original_sha256": "d1c55cfda521a57e1991e1c57c824828d9d6c1aa30866228d30ae8ad857f7b4d",
-      "authored_sha256": "f02eb7d7652250e115249c6a472ff15605a9fe0792fcc44b7ca4164832b0f5b1",
+      "original_sha256": "b0e44262e5941fe42de5c11650d726038824945445b2affdb8e7db613ce017ec",
+      "authored_sha256": "4998224977cef22b1b6ce34f5ece07e1dd250e799cffb0e5e22d0d7636a5be7c",
       "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
-    },
-    "zones/underground-lab/s064-67/script.dws": {
-      "original_sha256": "5a630f874505a8ddae41162e10c82b818724a6b019129b087930f4e8e3bf73b4",
-      "authored_sha256": "062411f6019a6245b913dbc949f4972c7b80fb682e1ac029ab18c23111af8010",
-      "reason": "; Announce completed city recruitment with localized narration and the regional jingle"
-    },
-    "zones/arena-lobby/s168-208-223/script.dws": {
-      "original_sha256": "e40df84d29ee23a1f0c242b6888fc47fd773b3a0ca0ce2fd018ead8a60477a9c",
-      "authored_sha256": "3d676c225ecc9f270e3d49cadc3fd89e5338c5727a7bc91926c1f123b912a675",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
     "zones/arena-lobby/s168-208-223/script.py": {
-      "original_sha256": "c571c7457ed7187eff0ebd4c3d6c94b4ee8bc0f442023e1717e34a01bdb52eac",
-      "authored_sha256": "d9ebef5dfae75d619268316161207d55c7df123ec338d3b88ec5cb258b4e3be2",
+      "original_sha256": "bd0f511d114133180c903e3702eaac3b00bfd15ba0c98516fe1ee529d9e7a466",
+      "authored_sha256": "cd0cff3cc624904b709d3d21c5cadc65a215f35a0cd00af5c3153a30eafe8dd4",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
-    },
-    "zones/digimon-curling/s191-235/script.dws": {
-      "original_sha256": "04e218925840d4a5aee677975e2318b2c4472ce7be6ddb3b8d935dfb9e5db671",
-      "authored_sha256": "aed5b5a3739d5ba7ed1f1e033cf32651deaadf5d5d6d237ccef6b4a1814f661a",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source; curling cups: a cup match brings its own rivals to the rink, and chips that do not fit in the inventory are kept and handed back"
     },
     "zones/digimon-curling/s191-235/script.py": {
-      "original_sha256": "e54a31109294d565a79b6f6e476457ac3f096e2d2ab84509998012b81386ee45",
-      "authored_sha256": "8f390630cbf254e70b9e52c98cd739895e993565f5c527482e062c495635739b",
+      "original_sha256": "7ff6f9a66977caaa9d8bdd21e7f778cf4f2ea1237dac8f00c7ea2749d6787512",
+      "authored_sha256": "cf1fec6fac117cf6448c060be74e565561b38c7cf5de8aa61904f8bc9f457e3b",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; curling cups: a cup match brings its own rivals to the rink, and chips that do not fit in the inventory are kept and handed back"
     },
-    "zones/drill-tunnel-2nd-floor/s030-29/script.dws": {
-      "original_sha256": "c343cfe0338ed2c817de5a6522241990870fce34901b234bf92610b5706f5240",
-      "authored_sha256": "8ed2ce1fb8a8ec8e59c407d9702ba9cbad597dfa4b3df5c82977921a1b1b6967",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
-    },
     "zones/drill-tunnel-2nd-floor/s030-29/script.py": {
-      "original_sha256": "a681f0f7f5ff1a37ad564012effadffff41388f0abd359def7608541cc9fdccd",
-      "authored_sha256": "02704794524f0fe5b5c6b659d5f5cdfebd52b66c612274e15f3c995a0a7e0696",
+      "original_sha256": "818a6aecc95bc27ad86b8f83546015d9fb7c9903d5a209496e557f93e544b312",
+      "authored_sha256": "a406d20f4697ccd78a4e9499d8313f4729bd4fb018e62ac1830af3c8ee9aaf72",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/drill-tunnel/s025-24/script.dws": {
-      "original_sha256": "3678d74612bd8c18bf9568261121ac9826f2e17db5ab4a9aa3fb956c30637a81",
-      "authored_sha256": "4e4a61d4dba0d26b22344673c4b7c747466e9b02b537d9c1ad2537dbc81af495",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/drill-tunnel/s025-24/script.py": {
-      "original_sha256": "e2e65fb7748ea013a4c16b94476705bdb3fe1f3c1cfea76707aa7bfa3036e3a2",
-      "authored_sha256": "660dba04f9c1edf1d0aeb0be4191a602cd849760f1a276ea3e566f5bba99f07f",
+      "original_sha256": "c74c4e69419f0c139a343e8343e628bd3c1bd3437b667a8d6c6d24560ce28e9a",
+      "authored_sha256": "e27d914916954d1475938c8dcce42d603b5fd7585ed41685789b2564d9cce83c",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/factorial-town/s147-153/script.dws": {
-      "original_sha256": "f63d7ab5557c4118f7120aa43fb969612857fbfcfb3f6d1e6320f0ef128f16bf",
-      "authored_sha256": "2adf30b223a00132983f6eb77d7ae71ab8892c0cf79a3e3e10586f860da9497c",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/factorial-town/s147-153/script.py": {
-      "original_sha256": "de01019f0d71fbb590dd1caa6d987d54f04eaadfa0a72165b8d30af95c6e63e2",
-      "authored_sha256": "461cd663225cfe8c06dbef08585ba3ba332db9d6536ef38344121eaa2456c5df",
+      "original_sha256": "532c4e3c6343deadbd30fc697884409da736badaee663bf50aa7fb044f1c4cbb",
+      "authored_sha256": "60721767fb4cc1ba9f4eec4135bbd0b07867c7d7b6b5ec8dcf1498ec9e309a4f",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/factorial-town/s154-160/script.dws": {
-      "original_sha256": "e6215651e5dc7e4046ec26bf5273ba99ea4d49108f6de8fd0fe1600ed02bc840",
-      "authored_sha256": "836237f7c0e27d558e13684f6ec87378174258aa09af6d7bc7aeaa18d2954f6a",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/factorial-town/s154-160/script.py": {
-      "original_sha256": "4f56013abdd22b5fa6e1a3a075f304eb801662e47db296b9d5de07bf0e7271ef",
-      "authored_sha256": "20bd3fcc0efb1820bb5e50747961cd4b049424fc4c72a4a3d11fb0db36281f66",
+      "original_sha256": "281c79712d63b5f1e0fe4ab339b483de4cf8505924405eb93649e182dc6e9d23",
+      "authored_sha256": "9dc42440968ee39bafb2ae9ac1c435574752642d7ff0fb5fd68502fc4e696697",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/freezeland/s130-135/script.dws": {
-      "original_sha256": "5ce77b8adaf657505c8c47c6556d23a70cada6718f7f1516103a1c3caec73a34",
-      "authored_sha256": "84c53e32e85b5f7ccca4e50f722e3ae733b9b18c1aa030162a23d1b1b0bb6e74",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/freezeland/s130-135/script.py": {
-      "original_sha256": "d7b4b28cfb91a2be34564357ab43f755baa5fcb34a9f1343efd93edda6fbc6cc",
-      "authored_sha256": "9c98aa9341ef8e074d5d0f7c20a6c37c244644c17f5a9aaa303d2d7d7de783f5",
+      "original_sha256": "d37d28002483bf1df358578331f7b7897eabb9748c5177c07b375caa946632d5",
+      "authored_sha256": "6946c4fc4d4422a8cfcb806e5d9af8176719fef2012fbec27cbfb77639fe68d0",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/freezeland/s132-137/script.dws": {
-      "original_sha256": "110e72185e4e443e52c88c6091c44ab6b2f896b05267a1a672c13b64f57d8b62",
-      "authored_sha256": "f072fa5ddb0923a67c16bfe73fd371fbb62c175497229d35efe0e6b400772622",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/freezeland/s132-137/script.py": {
-      "original_sha256": "986660a6975040c66a58f0bb4956d159a19542b54cb3c1e0e3c17edc407798aa",
-      "authored_sha256": "9043fc88bd45272892e3859b129ac72a8b8c2c20a3e0bbe25bd66f0bf45360ac",
+      "original_sha256": "d5fd566760fa2f3dfd155660d86c20f1d83a80f53f7850ef4454ecca1f200953",
+      "authored_sha256": "d47b1e59eb8c6210a867e866e8cffb3e9f155d1c6697cf5f9a0fa7347c3f789c",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/great-canyon/s124-129/script.dws": {
-      "original_sha256": "d52a668959e9b76a4fc430f79c3abbaf42afe1fd9d0bc03c831a6a82f7be9057",
-      "authored_sha256": "4d53a76884543c34734c201acc919aed29915d80fb5334ef9aa3622dd4a1647f",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/great-canyon/s124-129/script.py": {
-      "original_sha256": "a37a204eca5626e7461ed10a7bb2dd43dbc9a0bbecc9fac089e8e30e1a8f2aed",
-      "authored_sha256": "56f0fc4629721b067e00367365d50ec62c90a3a187c567663f62bf587ed5a568",
+      "original_sha256": "b607f93bc2aac579950c85e09694021c114babd281177d223fa9b92d9cef1870",
+      "authored_sha256": "ca8dc2afaec88d8f4ada9356c78aada03d9e98edf307191876a0aa41b1a4759e",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/grey-lords-mansion/s062-64/script.dws": {
-      "original_sha256": "13a0eeb4728c827ceb2152221c4d4d1f235596a1e56777dc957100b3b314f2ee",
-      "authored_sha256": "ce1c8e22f1fbc3f9a3cfdc0f466527cc21bf6e086e078b1ea8e8ef49b506484e",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/grey-lords-mansion/s062-64/script.py": {
-      "original_sha256": "8508baf58b67f0af40541152088d51a594f2bdb1dbb1929991d6ae71b365c4f1",
-      "authored_sha256": "5004f86d300d91ac80c5321129f7c5b866be2271fc3cc76f079fe475f23fc63b",
+      "original_sha256": "f7eb5e57d33f188dd7b661a3ceefa5b334acaee70c7ec9178aa69d64222b087f",
+      "authored_sha256": "303d8796f62606ff415b70132f2a66d5ed197c2d375145022785b6b9edd842ba",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/lava-cave/s031-31/script.dws": {
-      "original_sha256": "00caed9ec2b274ab1e59a29f4351f1ad92c4e7cce903fb6b75bd244e3c06cba4",
-      "authored_sha256": "2fe5d49e3a9de29421b50a89ca450bf59f9d504ddfea4495156cc8bdf068a083",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/lava-cave/s031-31/script.py": {
-      "original_sha256": "a7db43c32bad1ded726671cc629102ffc2a468ea278f968293b3d2336a807b89",
-      "authored_sha256": "61e8bd2e8457032f038699eed797ee541248b358e394369ba9ba0988a5ad1ce8",
+      "original_sha256": "15e1dac3638bb2110f918769c6e24bfef2b6685e15698c7378dc655ed92cf91c",
+      "authored_sha256": "37d234d779ba7864e493d064c45fa63f2b54b8551705f0d5064856d1ed415b84",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/libraries/s213/script.dws": {
-      "original_sha256": "e89ee938109e81add7bdbf214c6addbbf1ce911aec5a663b4069287ecf02a502",
-      "authored_sha256": "b4fe7a675467bd7f67f7b4b7e53303fba70062dad7527e4095fd812046462d18",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
     "zones/libraries/s213/script.py": {
-      "original_sha256": "1de7be9296f46c9c63231cc9410ff2e7c85e15366265eee47483f1a4bfe292b9",
-      "authored_sha256": "1c0ad26a5320aa48e42ddad095629f681713c5bab2473b0d86d7ffdb75b5415c",
+      "original_sha256": "41a3837ee7ebf1b3b3f56cf4b1c85bb3093dcb87ce54b6b4867c321371e9a0ca",
+      "authored_sha256": "2e83cae8d982c415e7bf127b205dda5484344acf1f950b49cd0dab139a5e252e",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; the raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
-    "zones/mt-infinity/s184-225/script.dws": {
-      "original_sha256": "fc0591047e6da560706fa90337a60c5469433532258458e5920f397d6b0de1c3",
-      "authored_sha256": "c6f472caad138076a3f5fa022ab5918cd9c8fba2dcf143827944623e446b5a73",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
-    },
     "zones/mt-infinity/s184-225/script.py": {
-      "original_sha256": "10bbff0d5bc92512fd86e9d879b06f68b60241b988f66c84e67b0cbf5ee6cd4c",
-      "authored_sha256": "9099867be5a61a0c742403b96a9e3109959cecdbdeb424daa7e6e887c2196a9a",
+      "original_sha256": "a8d2c2074930a09a6c545336c6bbaa3115b4cbe37cf9b72952153802e909f7dc",
+      "authored_sha256": "64ce9c3873b5e0b9bb689db603b9f842991fe5334d658f12347844040ec8c898",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
-    },
-    "zones/secret-beach-cave/s136-142/script.dws": {
-      "original_sha256": "f17964e7b7edbed47855f47d3bda579dfdf56488f3f26aa20b4e713ea4c1825e",
-      "authored_sha256": "6d95ac2a8ecb232b37abd205815525f2f0ed4415500468df870779d954ee6195",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
     },
     "zones/secret-beach-cave/s136-142/script.py": {
-      "original_sha256": "bddad903e30b8fdbdd7ac93f5d688a11831f9e1b975ed8302117172cc424cf29",
-      "authored_sha256": "fdfde83ca2bc01eaef18fb3d702a007697bc67b96bd69538dbb1d282a5f88656",
+      "original_sha256": "8c3d1fc422e0a28a272ee0e93f4b5a51d1ed5d27076fac546daba15215b81be7",
+      "authored_sha256": "386d8b12b9ee5950abe391921e8b97d25a8bb01a9053e3a39f0303e326081fda",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
-    "zones/secret-beach-cave/s137-143/script.dws": {
-      "original_sha256": "2ad1e4522697755156a0dd70b56f29cbb9b613dded4553e0af1c6fa7568f927b",
-      "authored_sha256": "4385f8241933dcee0564bbee42d27de9f5ef70db3e4bacb7c345331841ed12ab",
-      "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; DWS synchronized with the authored Python source"
-    },
     "zones/secret-beach-cave/s137-143/script.py": {
-      "original_sha256": "3fd25f09087e468db96980fa1ee46136cf79b28e61ef11e923cc1c76c371fef3",
-      "authored_sha256": "d33b93f8ab555347c86b2da1348311c1ced1be168606c6c143b87805db652d7d",
+      "original_sha256": "9da2657a9e0581276cef6657ac10f138a3c2569cb9d9d699b7579c0836d6f4e9",
+      "authored_sha256": "c2d337308e397983213c97e151b2d083ac3c0cf44e420b2d84c15c1ef5761dbd",
       "reason": "Awaited tamer walks and runs go to the centre of their tile so the tamer always arrives"
     },
     "zones/beetle-land/s102-106/script.py": {
-      "original_sha256": "2662c702ae7d0e2ef643469a0e9e5f314448e4f073858d1ce37fffa91e59176c",
-      "authored_sha256": "b34bdd61b03b4fd7ede08ddbd6a19be42732503a2381abc5bb38739f516920c2",
+      "original_sha256": "e4630ad8c5dd0cfb92384ee07640a653e4e22d83d89fb6aa28cbd02a14a0bbe1",
+      "authored_sha256": "4d6c1280b5ed312780d1bb29d63bba2696857df44f5fba3fe988928fa024d723",
       "reason": "The raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
     },
-    "zones/beetle-land/s102-106/script.dws": {
-      "original_sha256": "ab4a7cb6b3cb114a13fb53142b5dac4b322f8c91b05b89a213bb04d62e34a6c7",
-      "authored_sha256": "28f5d716e20630b1725200de7c674785d4ecef796f7fe652760a968e119c4be6",
-      "reason": "The raisable executable originals (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) join the grade cups' eligible and over-level lists, and Machinedramon the Metalic Cup's; the Version cups take only their twelve V-Pet Digimon and the specialty cups every species of that first specialty (rule marker 253 in the eligible lists), and thirteen cups join the table (23 to 35: level, attribute and Field cups); the Dragon's Roar and Jungle Troopers cups join the table (36, 37); DWS synchronized with the authored Python source; the Dark, Holy and Aqua specialty cups join the table (38 to 40; the last list ends with two end marks so the code after it stays at an even offset); the Blade and Gaia specialty cups join the table (41 and 42)"
-    },
-    "zones/libraries/s214/script.dws": {
-      "original_sha256": "64a9b7868501fd67262b4d2995a36694d6c80d2dc170c1084604d785acfa64b4",
-      "authored_sha256": "0c7043f6da433fe1001084916586c08f74e6b7f33645a582cb8a8090ba095b24",
-      "reason": "the prizes of the thirteen cups after the original's (23 to 35); DWS synchronized with the authored Python source"
-    },
     "zones/libraries/s214/script.py": {
-      "original_sha256": "cb70f0074dc853bd1a86f32370c58ce70e4734f434484a9da992f8f738a866f8",
-      "authored_sha256": "1a73399baf3824e244849bedb0fbd1894040ab9e6d3264b292b49c7a09eb7487",
+      "original_sha256": "a90748439f04999d38bfa369b860a3d374958335a179721a68fad07fd05b892a",
+      "authored_sha256": "652e0c35bb9092a67693f5a556e2ff8b6312bc8e39332933193abe03b908b35e",
       "reason": "the prizes of the thirteen cups after the original's (23 to 35)"
     },
-    "zones/libraries/s220/script.dws": {
-      "original_sha256": "33bb3da812ebac22ae7b737643f9cc244cab159eaf7f4a64c51d790db4021932",
-      "authored_sha256": "1ddbdde978a7351e9eba450625c0f0c9b918f8941eddc1c24f93f35e17ee8857",
-      "reason": "the prizes of the thirteen cups after the original's (23 to 35); the prizes of the Dragon's Roar and Jungle Troopers cups (36, 37); the prizes of the Dark, Holy and Aqua cups (38 to 40); the prizes of the Blade and Gaia cups (41 and 42); DWS synchronized with the authored Python source"
-    },
     "zones/libraries/s220/script.py": {
-      "original_sha256": "d5c41422263af2177fe94da52c2278296f3f88cb310341375eb1a50bbd3f7ab1",
-      "authored_sha256": "84c88b56d7c47d9c1ba18135b6dcd74cf87fbbe6835a2d58e77db1b9bbaf99b1",
+      "original_sha256": "24ef34c39d0609461b432993915753b31af7e1518d734fae26fdf8ea597a72e5",
+      "authored_sha256": "52944d2dfa95125e297000db1520b3f84ea30ab6f465b0ddeb49c57295d2210f",
       "reason": "the prizes of the thirteen cups after the original's (23 to 35); the prizes of the Dragon's Roar and Jungle Troopers cups (36, 37); the prizes of the Dark, Holy and Aqua cups (38 to 40); the prizes of the Blade and Gaia cups (41 and 42)"
-    },
-    "maphead/screen136.dws": {
-      "original_sha256": "1c20787cb17cbaf26db6f13fd2923530af211ff117f6dc568719a50d459296cf",
-      "authored_sha256": "461611660db54f5c2f64f1f996c56c210d7581d7696600b96995e838010b8a4c",
-      "reason": "Curling cups: a cup match brings its own rivals to the rink, and chips that do not fit in the inventory are kept and handed back; DWS synchronized with hooks.py"
     },
     "names.dws": {
       "original_sha256": "283b9357628e26e5eae55091c1697dca7d2792083382de71bed295c0f003761f",
       "authored_sha256": "cc6711c943f91b327a3324c3467d4e435b7862ac5ec8d04306d70a39804ff351",
       "reason": "Names of the curling cup variables (the match format and the chips kept for the player)"
     },
-    "zones/libraries/s206/script.dws": {
-      "original_sha256": "1166cc71919c9bc8df383ee10962a4fcc9c55ecf61df7702590cd06864dd07fa",
-      "authored_sha256": "45802397160ddae0cced0b0a4d80343fa8f1cccd4d398371c64bc22085d23e37",
-      "reason": "Curling cups: a cup match brings its own rivals to the rink, and chips that do not fit in the inventory are kept and handed back; DWS synchronized with the authored Python source"
-    },
     "zones/libraries/s206/script.py": {
-      "original_sha256": "002692ab5c43b287a5f171c65f1691d9901790b627f3d67f2e8c5d45744bc127",
-      "authored_sha256": "27271bbe3760f891b34e856531b87541a3a14b3af697344a89ef391e91b92ddb",
+      "original_sha256": "b18476adbf1d1e5ceb728eb9c591591790f3374d6fe4a9cee268515a756d1b7c",
+      "authored_sha256": "4219a49c4318543e4391c27067403f3f63fe17456483aa001aa908fdd1ce608e",
       "reason": "Curling cups: a cup match brings its own rivals to the rink, and chips that do not fit in the inventory are kept and handed back"
     }
   }
