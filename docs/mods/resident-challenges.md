@@ -30,7 +30,7 @@ row's species, for each of HP, MP, Offense, Defense, Speed and Brain:
 
 `max(sheet x (100 + sheetPercent) / 100, partner x (100 + partnerPercent) / 100)`, at most 9999
 
-where *sheet* is the species' `wild` stats in `content/species/` (copied into the table by `tools/city_residents.py`).
+(`sheetPercent` is 0 by default, so the sheet itself is the floor; it may not be negative) where *sheet* is the species' `wild` stats in `content/species/` (copied into the table by `tools/city_residents.py`).
 The stats are set before the battle records its initial stats, so its rewards and stat gains follow them.
 `noItems` opens the battle bag empty (it comes back whole); `noLateStep` gives the fight none of
 `battle-formulas.json` NORMAL's late-game step (HP and attack ramp, damage floor), on any difficulty, and puts it back

@@ -104,6 +104,8 @@ def challenge_table(doc=None):
     v[3] = CHALLENGE_STAGES[rule['stages']]
     v[4], v[5], v[6], v[7] = save['challengerVar'], save['wonFlag'], save['triedFlag'], save['armedPstat']
     v[8], v[9] = save['bagVars']
+    if not 0 <= rule['sheetPercent'] <= 1000 or not 0 <= rule['partnerPercent'] <= 1000:
+        raise ValueError(f'{CHALLENGES.name}: sheetPercent and partnerPercent must be 0..1000 (the species sheet is the minimum)')
     v[10] = rule['sheetPercent']
     v[11] = 1 if rule['noLateStep'] else 0
     for i, r in enumerate(challenge_rows(doc)):

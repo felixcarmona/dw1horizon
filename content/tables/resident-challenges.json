@@ -3,7 +3,8 @@
   "rule": {
     "stats": "max-sheet-or-partner",
     "_stats": "each stat of the challenger = max(species sheet stat x (100 + sheetPercent) / 100, partner stat x (100 + partnerPercent) / 100), at most 9999",
-    "sheetPercent": 10,
+    "sheetPercent": 0,
+    "_sheetPercent": "the species sheet is the hard minimum: 0 or more, never negative (the loader refuses a negative value)",
     "partnerPercent": 25,
     "noItems": true,
     "noLateStep": true,
