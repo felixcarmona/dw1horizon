@@ -6,7 +6,7 @@ upper arm, recoloured to the helmet's purple, and the bracelet with the blue gem
 on the white forearm, fitted round it with the gem facing out.
 
 The final model uses Angemon (20), `ANGE.MMD`, its 26-bone hierarchy and native
-animation programs for every field and care clip. Uniform 1.1825 translation
+animation programs for every field and care clip (wings and skirt calmed). Uniform 1.1825 translation
 scaling preserves the Ultimate size. Angles, scales, timing, loops and sound
 events remain native. Angemon's blink texture copies are omitted because their
 rectangles belong to its own texture. Technique order, voice banks 18/11, level,
@@ -25,6 +25,11 @@ height 608 and radius 187 remain unchanged.
   joints: the Angemon bones they ride are moved there, in every program's pose
   (no translation keys ride those bones). The cloth rides Angemon's own cloth
   bone 25, so it swings with the clips.
+- In the field and care clips (and the battle walks that reuse two of them) the
+  wings keep half of Angemon's swing about the field idle and the skirt ring a
+  third (`calm`), as Card Battle moves them; the skirt no longer cuts through
+  the chest. Keys are rounded on their running total, so closed loops stay
+  closed.
 - The grafts' faces are packed into free texels and palettes of the Card Battle
   texture (the shield at half resolution).
 
@@ -39,7 +44,7 @@ pass `tools/models/battle_qa_native.py` are listed: 0x21, 0x28, 0x29, 0x2B,
 0x37, 0x3B and 0x3C (29 ticks, `ticks`). 0x2A (crossings), 0x2C (the source
 sinks under the floor), 0x34 (retime) and every slot the source lacks (0x2E-0x33)
 stay Angemon's. The row's `drop_npc_slots` and the exact compaction keep the
-resident clips at 95,808 of 100,352 bytes.
+resident clips at 95,800 of 100,352 bytes.
 
 The final provider pass `mesh_stability` reorders the vertex pool, so the QA
 reads the model before it (the animation is the same):
@@ -69,6 +74,7 @@ The helper writes the model, texture and compact skeleton as `OUT.rig.json`; the
 species record must use that skeleton, and `bound-battle.json` must pin the
 model (`source_sha256`, `edit.py repin` moves it), before `put`.
 
-The focused proof checks native programs, the pivot joints, hierarchy, every
+The focused proof checks native programs, the calmed swing (played over several
+loops), the pivot joints, hierarchy, every
 Card Battle vertex on its bone plus the grafts, identity, provenance and
 resident storage.

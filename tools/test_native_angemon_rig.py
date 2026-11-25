@@ -12,6 +12,7 @@ import unittest
 
 import mmd
 import motionstorage
+from tools.models import rig_angemon
 
 
 class NativeAngemonRig(unittest.TestCase):
@@ -27,6 +28,10 @@ class NativeAngemonRig(unittest.TestCase):
         cls.native = mmd.MMD.load(cls.spec['source']['mmd'], 20)
         # the bones the wings and the back cloth ride turn about the Card Battle joints
         cls.pivots = {cls.spec['map'][str(b)] for b in cls.spec['pivots']}
+        # field and care programs keep a share of the wings' and the skirt's swing
+        cls.calm = {int(b): f for b, f in cls.spec['calm'].items()}
+        cls.rest = cls.native.anims.anims[cls.native.anims.table[0]].pose
+        cls.field = {cls.native.anims.table[s] for s in range(0x21)} - {None}
 
     def donor(self, slot):
         if 46 <= slot < 46 + len(self.spec['technique_slots']):
@@ -40,10 +45,12 @@ class NativeAngemonRig(unittest.TestCase):
             if index is None:
                 continue
             expected = copy.deepcopy(self.native.anims.anims[self.native.anims.table[self.donor(slot)]])
+            if self.donor(slot) < 0x21 or self.native.anims.table[self.donor(slot)] in self.field:
+                rig_angemon.calmed(expected, self.rest, self.calm)
             actual = self.model.anims.anims[index]
             self.assertEqual(actual.frame_count, expected.frame_count, slot)
             self.assertEqual(actual.has_scale, expected.has_scale, slot)
-            # Every rotation and scale is native. Translations are a uniform size conversion, but for the pivot bones'
+            # Every rotation and scale is native (calmed, in field and care). Translations are a uniform size conversion, but for the pivot bones'
             # joints, the same in every program; there is no authored motion or new key time.
             for bone, (before, after) in enumerate(zip(expected.pose, actual.pose), 1):
                 self.assertEqual(after[:-3], before[:-3], slot)
@@ -62,6 +69,20 @@ class NativeAngemonRig(unittest.TestCase):
                                 group['vals'][channel] = round(value * scale)
             self.assertEqual(actual.instrs, expected.instrs, slot)
         self.assertEqual(set(joints), self.pivots)
+
+    def test_calm_swing_plays_as_a_share_of_the_native_one(self):
+        wrap = rig_angemon.wrap
+        for slot in [s for s in range(0x21) if self.model.anims.table[s] is not None] + [0x23, 0x24]:
+            mine = mmd.AnimPlayer(self.model.anims.anims[self.model.anims.table[slot]], 26, slot)
+            theirs = mmd.AnimPlayer(self.native.anims.anims[self.native.anims.table[slot]], 26, slot)
+            for _ in range(600):         # several loops: rounding never drifts
+                if not (mine.tick() and theirs.tick()):
+                    break
+                for b, f in self.calm.items():
+                    for j in range(3, 6):
+                        r, v = self.rest[b - 1][j - 9], theirs.pose[b][j] - self.rest[b - 1][j - 9]
+                        error = min(abs(wrap(mine.pose[b][j] - r - f * (wrap(v) + 4096 * k))) for k in (-1, 0, 1))
+                        self.assertLessEqual(error, 2, (slot, b, j))
 
     def test_native_hierarchy_and_card_battle_pieces(self):
         rig = self.own['model']['skeleton']

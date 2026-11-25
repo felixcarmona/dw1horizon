@@ -1,10 +1,10 @@
 {
   "206": {
     "name": "MagnaAngemon",
-    "source_sha256": "4abe9fce2647974defe87d39fc609625beeccbd8a4e379c4ec6cc9b210922840",
+    "source_sha256": "dc29b64d2ab2bf84385e4062eba1c64bbf6ea86963f4456e19c6b008ec02b000",
     "binding": {
       "spec": "content/imports/specs/MagnaAngemon.json",
-      "sha256": "966b7f26d59105a2534d22120e19ec8e2fa527cdebec1b367ef98ed02813851c"
+      "sha256": "2d8c5b62cf5f87aaf442dc3398a1487372ddd49def51d430e19e5279966bd544"
     },
     "battle_source": {
       "path": "build/sizes-out/models/MagnaAngemon.MMD",

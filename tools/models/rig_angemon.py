@@ -329,6 +329,12 @@ def bind(mesh, texture, graft_mesh, graft_texture, donor, spec):
                             grp['vals'][k] = round(grp['vals'][k] * scale)
         a.instrs = [i for i in a.instrs if i['op'] != 'tex']
         a.tail = b''
+    # Field and care clips (slots below 0x21, and the battle walks that reuse two of them): the big Card Battle wings
+    # and the skirt ring keep only a share (`calm`) of Angemon's swing about its field idle, as Card Battle moves them.
+    calm = {int(b): f for b, f in spec.get('calm', {}).items()}
+    rest = result.anims.anims[n.anims.table[0]].pose
+    for index in sorted({n.anims.table[s] for s in range(0x21)} - {None}):
+        calmed(result.anims.anims[index], rest, calm)
     slots = list(result.anims.table)
     result.anims.table += [None] * max(0, 61 - len(slots))
     for dest, src in enumerate(spec['technique_slots'], 46):
@@ -336,6 +342,31 @@ def bind(mesh, texture, graft_mesh, graft_texture, donor, spec):
     for dest, src in spec['extra_slots'].items():
         result.anims.table[int(dest)] = slots[src]
     return result.build(), tim.to_bytes(), rig
+
+
+def wrap(v):
+    return (v + 2048) % 4096 - 2048
+
+
+def calmed(a, rest, calm):
+    """Scale the rotation swing of the `calm` bones about the rest pose. Keys change velocities, so each one is
+    rounded on the running total: a native loop that closes still closes."""
+    for b, f in calm.items():
+        p, r = a.pose[b - 1][-6:-3], rest[b - 1][-6:-3]      # a pose without scale starts at rx
+        a.pose[b - 1][-6:-3] = [u + round(f * wrap(v - u)) for v, u in zip(p, r)]
+    total = {}
+    for ins in a.instrs:
+        if ins['op'] == 'key':
+            for grp in ins['bones']:
+                f = calm.get(grp['bone'])
+                if f is None:
+                    continue
+                for k in ('rx', 'ry', 'rz'):
+                    if k in grp['vals']:
+                        before, after = total.get((grp['bone'], k), (0, 0))
+                        before += grp['vals'][k]
+                        grp['vals'][k] = round(f * before) - after
+                        total[grp['bone'], k] = (before, round(f * before))
 
 
 def retarget_rotation(m):

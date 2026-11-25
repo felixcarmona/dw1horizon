@@ -744,8 +744,8 @@
           }
         ],
         "delta": "content/modeldelta/deltas/206-MagnaAngemon.MMD.mdelta",
-        "delta_sha256": "395a24c1af34d1b407477c27cde7c67b0d676253991590c287b7447962557411",
-        "sha256": "4abe9fce2647974defe87d39fc609625beeccbd8a4e379c4ec6cc9b210922840",
+        "delta_sha256": "71454bbdc8f7837bee82404d9e934d07a288427bea14be5be6afa4b1aef8634d",
+        "sha256": "dc29b64d2ab2bf84385e4062eba1c64bbf6ea86963f4456e19c6b008ec02b000",
         "size": 99022
       },
       "tim": {
