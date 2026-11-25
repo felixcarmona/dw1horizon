@@ -166,8 +166,9 @@ class WikiTests(unittest.TestCase):
             self.assertEqual([r['answer_key'] for r in new['rows']],['s035.sec5.m0.o0','s035.sec5.m1.o0','s035.sec5.m2.o1'])
             self.assertEqual(new['rows'][0]['question_key'],'s035.sec5.u8')
             self.assertNotEqual(old['rows'][0]['question'],new['rows'][0]['question'])
-        files=dict(main['files']);script='story/base/zones/overdell-cemetery/s035-35/script.dws'
-        files[script]=files[script].replace(b's035.sec5.u8',b's035.sec5.tmp').replace(b's035.sec5.u9',b's035.sec5.u8').replace(b's035.sec5.tmp',b's035.sec5.u9')
+        files=dict(main['files']);script='story/base/zones/overdell-cemetery/s035-35/script.py'
+        files.pop(script[:-2]+'dws',None)
+        files[script]=files[script].replace(b'"s035.sec5.u9"',b'"s035.sec5.u8"').replace(b't5.u8',b't5.u9')
         self.assertEqual(model.bakemon_dialogue(files,'en')['rows'][0]['question_key'],'s035.sec5.u9')
         files=dict(main['files']);files['text/es/dialogue/overdell-cemetery.json']=b'{}'
         with self.assertRaises(ValueError):model.bakemon_dialogue(files,'es')

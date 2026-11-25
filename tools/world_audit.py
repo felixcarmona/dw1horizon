@@ -20,6 +20,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 from dws.py import naming  # noqa: E402
+from dws.py.lower import maphead_dws  # noqa: E402
 from dws.minitoml import load_toml  # noqa: E402
 
 MOD = Path('story/mods/what-the-island-forgot')
@@ -121,8 +122,10 @@ class World:
         self.policy = read('tools/data/world-gates.json')
         self.names = {}
         self.script_screens = {}
-        for p in sorted((ROOT / 'story/base/maphead').glob('screen*.dws')):
-            for script, screen in re.findall(r'set_script\((\d+),\s*(\d+)\)', p.read_text()):
+        mh = maphead_dws(str(ROOT / 'story/base'))                          # maphead/hooks.py lowered
+        for sec in re.finditer(r'^    section\((\d+)\).*?^    \}$', mh, re.S | re.M):
+            if int(sec.group(1)) > 254: continue
+            for script, screen in re.findall(r'set_script\((\d+),\s*(\d+)\)', sec.group(0)):
                 self.script_screens.setdefault(int(script), set()).add(int(screen))
         self.physical = []
         for line_number, line in enumerate((ROOT / 'docs/reference/world.md').read_text().splitlines(), 1):
@@ -142,11 +145,11 @@ class World:
         self.sections = {}
         self.unresolved = []
         self.conditions = []
-        for p in sorted((ROOT / 'story/base/maphead').glob('*.dws')):
-            for line, text in enumerate(p.read_text().splitlines(), 1):
-                if re.search(r'\b(if|unless)\s*\(', text):
-                    self.conditions.append({'evidence': f'{p.relative_to(ROOT)}:{line}',
-                                            'condition': text.strip(), 'syntax': 'DWS / MAPHEAD'})
+        for text in mh.splitlines():
+            if re.search(r'\b(if|unless)\s*\(', text):
+                line = re.search(r'// @py (\d+)$', text)
+                self.conditions.append({'evidence': f'story/base/maphead/hooks.py:{line and line.group(1)}',
+                                        'condition': re.sub(r'\s*// @py \d+$', '', text).strip(), 'syntax': 'DWS / MAPHEAD'})
 
     def screen_id(self, n):
         if isinstance(n, ast.Constant) and isinstance(n.value, int): return n.value

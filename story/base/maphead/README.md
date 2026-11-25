@@ -1,6 +1,6 @@
 # MAPHEAD (readable)
 
-One file per section: `screenNNN.dws` (screen setup) and `global-NNNN.dws` (entry points of the C code).
+How each section lifts: `decompile-all --readable` writes one file per section, `screenNNN.dws` (screen setup) and `global-NNNN.dws` (entry points of the C code); `story-base` prints them as `hooks.py`.
 
 | section | status | lines | instructions |
 |---|---|---|---|

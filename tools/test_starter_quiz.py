@@ -150,7 +150,9 @@ class QuizTest(unittest.TestCase):
         self.assertEqual(techs[gotsumon[0]]['name'], 'Sonic Jab')
 
     def test_text_table_keeps_legacy_entries(self):
-        legacy = (Q.ROOT / 'story/base/maphead/global-1238.dws').read_text()
+        from dws.py.lower import maphead_dws
+        hooks = maphead_dws(str(Q.ROOT / 'story/base'))                     # maphead/hooks.py lowered
+        legacy = re.search(r'^    section\(1238\).*?^    \}$', hooks, re.S | re.M).group(0)
         expanded = (Q.ROOT / 'story/new-game-quiz.dws').read_text()
         pattern = r'show_textbox\(text\("([^"]+)"\)\)'
         old = re.findall(pattern, legacy)
@@ -170,10 +172,11 @@ class QuizTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             base = Path(tmp) / 'base'
             (base / 'maphead').mkdir(parents=True)
-            zone = base / 'zones' / 'test' / 's001'
+            zone = base / 'zones' / 'native-forest' / 's001-0'
             zone.mkdir(parents=True)
-            (zone / 'script.dws').write_text('script 1 { on enter { } }')
-            shutil.copy(Q.ROOT / 'story/base/maphead/global-1238.dws', base / 'maphead')
+            shutil.copy(Q.ROOT / 'story/base/zones/native-forest/s001-0/script.py', zone)
+            shutil.copy(Q.ROOT / 'story/base/maphead/hooks.py', base / 'maphead')
+            shutil.copy(Q.ROOT / 'story/base/names.dws', base)
             for exe, capacity, expected in [('original', 25000, 35), ('mods', 32768, 61)]:
                 with self.subTest(exe=exe), patch.object(backend, 'MAPHEAD_MAX_GIVEN', capacity), \
                      patch.object(backend, 'FONT_NAME_GIVEN', 'b'), \
@@ -182,7 +185,7 @@ class QuizTest(unittest.TestCase):
                     work.mkdir()
                     _, archive = basebuild.compile_base_story(
                         str(base), str(work), 'en', [], {}, [], None, [],
-                        from_py=False, text_source='us' if exe == 'original' else 'ours', exe=exe)
+                        text_source='us' if exe == 'original' else 'ours', exe=exe)
                     data = Path(archive).read_bytes()
                     _, sections, *_ = bytecode.sweep(data)
                     start = dict(sections)[1238]

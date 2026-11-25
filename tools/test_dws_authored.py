@@ -1,35 +1,18 @@
 #!/usr/bin/env python3
-"""Authored DWS and Python views must implement the same behavior."""
+"""Authored edits of the base story keep the behaviour they were made for."""
 import ast
-import os
 import json
 from pathlib import Path
-import tempfile
 import unittest
 from types import SimpleNamespace
 from unittest.mock import Mock
 
-from dws import basebuild as BB, build as B
-from dws.py import lower as PL
-from dws import bytecode as bytecode
+from dws import build as B
+from dws.py import naming as N
 
 
 @unittest.skipUnless(Path(B.ROOT, 'extracted/SCN/DG.SCN').exists(), 'needs extracted/ (your own disc)')
-class AuthoredShops(unittest.TestCase):
-    def test_both_views_have_the_same_sections_and_stock(self):
-        self.check_views(177)
-
-    def test_monochromon_views_have_the_same_reward_and_halfway_branches(self):
-        self.check_views(49)
-
-    def test_vending_views_have_the_same_transactions(self):
-        for script in (9, 12, 71, 78):
-            with self.subTest(script=script):
-                self.check_views(script)
-
-    def test_pond_views_have_the_same_quest_and_pile_conditions(self):
-        self.check_views(29)
-
+class UsText(unittest.TestCase):
     def test_us_text_keeps_disc_values_and_loads_new_vending_keys(self):
         from dws.textbank import TextBank
         from dws.textx import BANK
@@ -41,32 +24,12 @@ class AuthoredShops(unittest.TestCase):
                     self.assertEqual(value, bank.data[key], key)
         self.assertEqual('Choose an item.', bank.data['s009.sec81.vend_prompt'])
 
-    def check_views(self, script):
-        with tempfile.TemporaryDirectory(prefix='authored-shop-') as folder:
-            previous = PL.LOWERED
-            PL.LOWERED = os.path.join(folder, 'lowered')
-            try:
-                entries = []
-                for suffix in ('dws', 'py'):
-                    source = Path(BB.script_file(BB.BASE, script)).with_suffix('.' + suffix)
-                    program = B.compile_sources([str(source)])
-                    out = os.path.join(folder, suffix, 'DG.SCN')
-                    B.assemble(program, out)
-                    blob = Path(out).read_bytes()
-                    offsets = bytecode.container_entries(blob)
-                    entries.append(blob[offsets[script]:offsets[script + 1]])
-                equal, bad = BB.compare_entries(*entries, f'shop {script}')
-                self.assertGreater(equal, 0)
-                self.assertEqual(bad, [])
-            finally:
-                PL.LOWERED = previous
-
 
 class PondPile(unittest.TestCase):
     """Run the actual entry handler with engine calls recorded; no disc needed."""
 
     def enter(self, work, stage=1, days=0):
-        source = Path(BB.script_file(BB.BASE, 29)).with_suffix('.py')
+        source = Path(N.script_file(29))
         tree = ast.parse(source.read_text())
         enter = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'enter')
         enter.decorator_list = []

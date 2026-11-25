@@ -354,7 +354,7 @@ class Module:
         """`from dw.base.native_forest_2 import forest, palmon`: a screen or an NPC of the base story, by the screen's module
         (named like its Screen member). A handler on them is guarded (`when=`), or the NPC is owned with `take_over`."""
         name = mod[len('dw.base.'):]
-        inv = {m: i for i, m in N.screen_members().items()}
+        inv = N.screen_ids()
         _, by = N.disc_screens()
         script_of = {scr: sid for sid, ss in by.items() for scr in ss}
         m = re.fullmatch(r's(\d+)', name)
@@ -462,7 +462,7 @@ class Module:
 
     def screen_id(self, a):
         if isinstance(a, ast.Attribute) and isinstance(a.value, ast.Name) and a.value.id == 'Screen':
-            inv = {m: i for i, m in N.screen_members().items()}
+            inv = N.screen_ids()
             if a.attr not in inv: raise self.err(a, f'no screen "{a.attr}"')
             return inv[a.attr]
         return self.int_const(a)
@@ -2491,21 +2491,86 @@ def lower_file(path, src=None, base=None, claims=None):
     return m, s, h
 
 
-def lower_base(base, out, log=None):
-    """Every view of `base` (script.py, maphead/hooks.py) lowered into `out` with the same layout (script.dws, maphead/hooks.dws).
-    -> (script files, MAPHEAD files)"""
+MAPHEAD_DWS = 'maphead/hooks.dws'      # (MAPHEAD's lowered text among base_texts)
+_BASE_TEXTS = {}                       # base folder -> (stamp of its views, {path: lowered DWS})
+
+
+def _views(base):
     import glob
-    scripts = []; mhs = []
-    for p in sorted(glob.glob(os.path.join(base, 'zones', '*', '*', 'script.py'))):
-        rel = os.path.relpath(os.path.dirname(p), base)
+    return sorted(glob.glob(os.path.join(base, 'zones', '*', '*', 'script.py'))) + [os.path.join(base, 'maphead', 'hooks.py')]
+
+
+def _stamp(base):
+    """What the lowering of `base` is made from: its views and the names they import, by size and time."""
+    out = []
+    for p in _views(base) + [os.path.join(base, 'names.dws')]:
+        try: st = os.stat(p); out.append((p, st.st_size, st.st_mtime_ns))
+        except OSError: out.append((p, None, None))
+    return tuple(out)
+
+
+def _lower_views(base):
+    """{path relative to `base`: DWS text} of every view of `base` lowered: zones/<zone>/sNNN-.../script.dws and
+    maphead/hooks.dws (MAPHEAD_DWS)."""
+    out = {}
+    for p in _views(base)[:-1]:
         _, s, h = lower_file(p, base=base)
-        d = os.path.join(out, rel); os.makedirs(d, exist_ok=True)
-        if s: open(os.path.join(d, 'script.dws'), 'w', encoding='utf-8').write(s); scripts.append(os.path.join(d, 'script.dws'))
         if h: raise PyError(f'{p}: MAPHEAD sections belong in maphead/hooks.py', None)
-    hp = os.path.join(base, 'maphead', 'hooks.py')
-    _, s, h = lower_file(hp, base=base)
-    os.makedirs(os.path.join(out, 'maphead'), exist_ok=True)
-    if h: open(os.path.join(out, 'maphead', 'hooks.dws'), 'w', encoding='utf-8').write(h); mhs.append(os.path.join(out, 'maphead', 'hooks.dws'))
+        if s: out[os.path.relpath(os.path.join(os.path.dirname(p), 'script.dws'), base).replace(os.sep, '/')] = s
+    if os.path.exists(_views(base)[-1]):
+        _, s, h = lower_file(_views(base)[-1], base=base)
+        if h: out[MAPHEAD_DWS] = h
+    return out
+
+
+def base_texts(base=None):
+    """{path relative to story/base: DWS text} of the base story lowered from its Python views, its only source (no DWS of
+    it is committed): what the readers of its code (text keys, placements, audits) read. Lowered once per process; a story
+    build's own lowering (lower_base) is reused."""
+    base = os.path.abspath(base or N.BASE)
+    stamp = _stamp(base); have = _BASE_TEXTS.get(base)
+    if not have or have[0] != stamp:
+        have = _BASE_TEXTS[base] = (stamp, _lower_views(base))
+    return have[1]
+
+
+def maphead_dws(base=None):
+    """MAPHEAD's DWS: maphead/hooks.py lowered (base_texts' when the views are lowered already, else the one the screen
+    names were read from)."""
+    base = os.path.abspath(base or N.BASE)
+    have = _BASE_TEXTS.get(base)
+    if have and have[0] == _stamp(base): return have[1].get(MAPHEAD_DWS, '')
+    if base == os.path.abspath(N.BASE) and not N.MAPHEAD_DWS:
+        N.base_maphead()
+        if 'maphead-text' in N._CACHE: return N._CACHE['maphead-text']
+    return base_texts(base).get(MAPHEAD_DWS, '')
+
+
+PY_MARK = re.compile(r'[ \t]*// @py \d+$', re.M)
+
+
+def base_dws(base=None):
+    """{path relative to `base`: DWS text} of everything story/base says in DWS: its views lowered (base_texts, without the
+    `// @py N` marks) and the DWS files it keeps (names.dws, city/). What the readers of its code scan."""
+    import glob
+    base = os.path.abspath(base or N.BASE)
+    out = {k: PY_MARK.sub('', v) for k, v in base_texts(base).items()}
+    for p in sorted(glob.glob(os.path.join(base, '**', '*.dws'), recursive=True)):
+        out[os.path.relpath(p, base).replace(os.sep, '/')] = open(p, encoding='utf-8').read()
+    return out
+
+
+def lower_base(base, out, log=None):
+    """Every view of `base` (script.py, maphead/hooks.py) lowered into `out` with the same layout (script.dws, maphead/hooks.dws),
+    for the target being built (TARGET); base_texts reuses it. -> (script files, MAPHEAD files)"""
+    base = os.path.abspath(base)
+    texts = _lower_views(base)
+    _BASE_TEXTS[base] = (_stamp(base), texts)
+    scripts = []; mhs = []
+    for rel, s in sorted(texts.items()):
+        p = os.path.join(out, rel); os.makedirs(os.path.dirname(p), exist_ok=True)
+        open(p, 'w', encoding='utf-8').write(s)
+        (mhs if rel == MAPHEAD_DWS else scripts).append(p)
     return scripts, mhs
 
 
