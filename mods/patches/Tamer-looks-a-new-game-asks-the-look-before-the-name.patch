@@ -1,0 +1,72 @@
+From cdfc0c5dc29cff53110c57adcb3c0e9b9247150f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 25 Nov 2026 15:46:09 +0000
+Subject: [PATCH] Tamer looks: a new game asks the look before the name
+
+After boy or girl Jijimon asks what the tamer looks like and the Look page opens; the name comes after it, so the
+player can choose it to suit the look. The name's confirmation goes straight on to the partner's name again.
+---
+ src/main/game_menu.c   | 13 +++++--------
+ src/shop/script_menu.c |  2 +-
+ 2 files changed, 6 insertions(+), 9 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 049f023..f0b3528 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -6919,7 +6919,7 @@ static void lookPageNewGameClose(void)
+ }
+ 
+ /* A new game's questions about the tamer, among Jijimon's (newGameStateMachine sends its states from 0x30 here): boy
+- * or girl after his seven questions, and the Look page after the name. MAPHEAD 1238 lines 0x3a to 0x3c. */
++ * or girl after his seven questions, then the Look page, then the name. MAPHEAD 1238 lines 0x3a to 0x3c. */
+ int32_t lookPageQuiz(void)
+ {
+ 	switch (SCRIPT_STATE_2) {
+@@ -6931,18 +6931,15 @@ int32_t lookPageQuiz(void)
+ 		break;
+ 	case 0x32: /* a boy: the original tamer */
+ 		memset(MOD_TAMER_STATE, 0, TAMER_STATE_SIZE);
+-		SCRIPT_STATE_2 = 0x12;
++		SCRIPT_STATE_2 = 0x34;
+ 		break;
+ 	case 0x33: /* a girl: as she starts, to change on the page */
+ 		memcpy(MOD_TAMER_STATE, (uint8_t *)lookPageGirl, TAMER_STATE_SIZE);
+-		SCRIPT_STATE_2 = 0x12;
++		SCRIPT_STATE_2 = 0x34;
+ 		break;
+-	case 0x34: /* the name is right */
++	case 0x34: /* what the tamer looks like, before the name: the name can follow the look */
+ 		showNewGameDialogue(0x3c, 0x36);
+ 		break;
+-	case 0x35: /* it is not: the keyboard again */
+-		SCRIPT_STATE_2 = 0x13;
+-		break;
+ 	case 0x36:
+ 		closeBox(0);
+ 		fadeToBlack(0x14);
+@@ -6971,7 +6968,7 @@ int32_t lookPageQuiz(void)
+ 		if (lookPageState.ask == 0 || FADE_OUT_CURRENT >= 0x14) {
+ 			lookPageNewGameClose();
+ 			setupNewGameDialogueBox();
+-			SCRIPT_STATE_2 = 0x18;
++			SCRIPT_STATE_2 = 0x12; /* the name */
+ 		}
+ 		break;
+ 	}
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 1a82f71..cc5e6c2 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1374,7 +1374,7 @@ int32_t newGameStateMachine(void)
+ 		}
+ 		break;
+ 	case 0x17:
+-		showNewGameSelection(0x1c, 0x34); /* MOD (tamer looks): was 0x18; the Look page first */
++		showNewGameSelection(0x1c, 0x18);
+ 		break;
+ 	case 0x18:
+ 		showNewGameDialogue(0x21, 0x20); /* MOD (optional name): was 0x1d -> 0x1a; first, does the player name it? */
+-- 
+2.55.0
+
