@@ -542,44 +542,71 @@ def lightning_blast():
 
 
 # ----------------------------------------------------------------- Veedramon
+def arrowhead():
+    """An arrowhead of light pointing right: two keen edges meeting at the point, the glow between them and the
+    streak of the shaft running into it."""
+    x, y = grid()
+    edges = np.maximum(segment(5, 3, 29, 16, 3.4), segment(5, 29, 29, 16, 3.4))
+    inside = clip(1 - np.abs(y - 16) / np.maximum((29 - x) * 0.52, 0.01)) * (x > 5) * (x < 29)
+    shaft = segment(0, 16, 26, 16, 1.6)
+    return clip(edges + 0.8 * inside + 0.7 * shaft)
+
+
 def v_nova_blast():
-    """Blue light gathers in Veedramon's jaws and it breathes a white-blue ray; V-shaped arrowheads of light race
-    down the ray one after another, each larger than the last, and strike the target as a great V that bursts."""
+    """Veedramon's head comes down and it breathes an arrow of white-blue light from its jaws: a shaft that leaves the
+    snout behind a great arrowhead, two smaller ones racing after it, all of them driving point first into the
+    target, where the light bursts."""
     fx = Fx(delay=16, cast_sound=2)
     fx.palette(VBREATH)
-    fx.paint(0, breathbar(5)); fx.paint(1, breathbar(15)); fx.paint(2, vblade()); fx.paint(3, glow(15, 1.2))
+    fx.paint(0, breathbar(5)); fx.paint(1, breathbar(15)); fx.paint(2, arrowhead()); fx.paint(3, glow(15, 1.2))
     fx.paint(4, star(4, 2, 9, 6)); fx.paint(5, ring(13, 2.0))
     tint, edge = fx.colour(128, 128, 128), fx.colour(40, 90, 128)
-    mouth = fx.vec()
-    charge, life, steps = 4, 13, 5
+    mouth, way, head, tail, side = fx.vec(), fx.vec(), fx.vec(), fx.vec(), fx.vec()
+    charge, steps, life = 4, 5, 11
     fx.particle('mote', 12, 5, 4, (110, 128, 128), (80, 130), grow=-12, spread=140)
     fx.particle('swell', 1, charge + 1, 3, (90, 120, 128), 60, grow=30)
-    fx.particle('arrow', 8, 6, 2, (128, 128, 128), None, grow=30, fade=True)
-    fx.particle('mark', 2, 11, 2, (128, 128, 128), None, grow=55, fade=True)
     fx.particle('burst', 2, 9, 3, (100, 120, 128), None, grow=70, fade=True)
     fx.particle('wave', 2, 8, 5, (70, 110, 128), 150, grow=90, fade=True)
     fx.particle('spark', 14, 11, 4, (128, 128, 128), (80, 140), grow=-7, speed=80, lift=25, gravity=6, spread=60)
-    fx.label('main'); fx.when(0, 'begin'); fx.when(charge, 'fire'); fx.when(charge + 3, 'smite')
-    fx.br(fx.NOW, '>=', charge, 'main_ray'); fx.emit('mote', mouth, 2); fx.jmp('main_end')
-    fx.label('main_ray'); fx.br(fx.NOW, '>', charge + life - 3, 'main_end')
-    fx.lin(fx.T, fx.NOW, 1, -charge); fx.mod(fx.T, steps); fx.add(fx.T, 1)
-    fx.vcopy(fx.TV2, fx.TCHEST); fx.vsub(fx.TV2, mouth); fx.vmul(fx.TV2, fx.T); fx.vdiv(fx.TV2, steps)
-    fx.vadd(fx.TV2, mouth)
-    fx.lin(fx.SZ, fx.T, 70, 150); fx.emit('arrow', fx.TV2)
-    fx.label('main_end'); fx.end(charge + life + 1)
+    fx.label('main'); fx.when(0, 'begin'); fx.when(charge, 'fire'); fx.when(charge + steps, 'smite')
+    fx.br(fx.NOW, '>=', charge, 'main_end'); fx.emit('mote', mouth, 2)
+    fx.label('main_end'); fx.end(charge + life + 2)
     fx.label('begin')                 # the snout once the head has come down: half the body's radius ahead
     muzzle_at(fx, mouth, 8, 0); fx.vsub(mouth, fx.SRC); fx.lin(fx.T3, at(mouth, 1), 1, 0)
     fx.set(at(mouth, 1), 0); fx.vdiv(mouth, 2); fx.set(at(mouth, 1), fx.T3); fx.vadd(mouth, fx.SRC)
     fx.emit('swell', mouth); fx.sound(-55); fx.ret()
-    fx.label('fire'); fx.sound(13); fx.call('ray'); fx.ret()
+    fx.label('fire'); fx.sound(13); fx.call('arrow'); fx.ret()
     fx.label('smite')
-    fx.sound(7); fx.aim(); fx.hit(); fx.lin(fx.SZ, at(fx.TSIZE, 1), 1, 420)
-    fx.emit('mark', fx.TCHEST); fx.emit('burst'); fx.emit('wave'); fx.emit('spark', times=14); fx.ret()
-    ray(fx, 'ray', mouth, life, 230, 0, edge, tint, jitter=40, alt=1, tip=3)
+    fx.sound(7); fx.aim(); fx.hit(); fx.lin(fx.SZ, at(fx.TSIZE, 1), 1, 300)
+    fx.emit('burst', fx.TCHEST); fx.emit('wave'); fx.emit('spark', times=14); fx.ret()
+
+    pool = fx.pool('arrow', 1)
+    fx.begin('arrow', pool, 'arrow_render', inherit=False); fx.vcopy(POS, mouth); fx.ret()
+    fx.label('arrow_tick'); fx.life(life); fx.aim(); fx.ret()
+    fx.label('arrow_render')
+    fx.vcopy(way, fx.TCHEST); fx.vsub(way, mouth); fx.vlen(fx.F2, way)
+    ok = fx.label(); fx.br(fx.F2, '>', 0, ok); fx.set(fx.F2, 1); fx.label(ok)
+    for k, (length, half) in enumerate(((560, 270), (400, 190), (290, 135))):
+        skip, there = fx.label(), fx.label()
+        fx.lin(fx.T, FRAME, 1, 1 - 2 * k); fx.br(fx.T, '<', 1, skip)
+        fx.br(fx.T, '<=', steps, there); fx.set(fx.T, steps)
+        fx.label(there)
+        fx.vcopy(head, way); fx.vmul(head, fx.T); fx.vdiv(head, steps); fx.vadd(head, mouth)
+        fx.vcopy(tail, way); fx.vmul(tail, length); fx.vdiv(tail, fx.F2); fx.vmul(tail, -1); fx.vadd(tail, head)
+        if k == 0:                    # the shaft: from the snout to the leading arrowhead
+            fx.set(fx.T3, FRAME); fx.mod(fx.T3, 2); fx.mul(fx.T3, 30); fx.add(fx.T3, 90)
+            band(fx, mouth, head, fx.T3, edge, 0)
+            fx.lin(fx.T2, fx.T3, 1, 0, 2); band(fx, mouth, head, fx.T2, tint, 1)
+            fx.lin(fx.T2, fx.T3, 2); fx.sprite(mouth, edge, fx.T2, cell=3)
+        across(fx, side, half)       # the arrowhead lies flat: its barbs spread across the line of the shot
+        for q, (p, sign) in enumerate(((tail, -1), (head, -1), (tail, 1), (head, 1))):
+            fx.vcopy(fx.Q[q], p); (fx.vsub if sign < 0 else fx.vadd)(fx.Q[q], side)
+        fx.quad(fx.Q[0], fx.Q[1], fx.Q[2], fx.Q[3], tint, 2)
+        fx.label(skip)
+    fx.ret()
     return fx
 
 
-# ----------------------------------------------------------------- MegaKabuterimon
 def horn_buster():
     """Arcs leap to the tip of MegaKabuterimon's horn and feed a ball of lightning that swells there; it is flung in
     a straight line, dragging arcs, and bursts on whoever it meets, leaving current crawling over them. A target
