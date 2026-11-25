@@ -1040,8 +1040,10 @@ class Program(Ext):
             if t.fn.kind == 'member' and t.fn.obj.kind == 'id' and t.fn.obj.name == 'partner' and t.fn.name == 'is':
                 a = self.bind(t, [('species', 'species', REQ)], env, 'partner.is')
                 dig = a['species']
-                if dig > 255 or getattr(self, 'exe', 'original') in ('species', 'story-state'):     # (a partner past 255 would
-                    # read as its low byte in a pstat there: the wide register for every test of the species)
+                if dig > 255 or (dig == 255 and self.max_opcode_level >= 1) or getattr(self, 'exe', 'original') in ('species', 'story-state'):    # (a partner past 255 would
+                    # read as its low byte in a pstat there: the wide register for every test of the species; the pstat
+                    # holds 255 for any such partner, so on a target with the wide register a test of species 255 itself is read wide
+                    # as well; the original executable keeps the pstat test, byte for byte)
                     self.need_wide(t); addpre(f'    STORE_DIGIMON_TYPE_W w{BE.W_TYPE}')
                     return f'w{BE.W_TYPE} {"!=" if neg else "=="} {dig}'
                 addpre(f'    STORE_DIGIMON_TYPE p{BE.P_TYPE}')

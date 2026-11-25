@@ -25,6 +25,9 @@ def step20():    # section 71
     hide_hud()
     raw.call_digimon_routine(DigimonRoutine.dying_b)
     narrator.arrived()
+    if engine.rite_keepsake == 1:
+        engine.rite_keepsake.set(0)
+        partner.set(happiness=80, discipline=80)
     engine.music_mode.set(0)
     music(28)
     slot0.say(t71.u1)
@@ -35,6 +38,53 @@ def step20():    # section 71
             return L2()
         case _:
             return
+
+@lib.on_step(23)
+def step23():    # section 74: the rite of return, from the save machine of Jijimon's houses
+    engine.rite_keepsake.set(0)
+    slot0.face(tamer)
+    tamer.face(slot0)
+    wait(250)
+    if partner.level < Level.champion:
+        slot0.say(text.rite.decline)
+        tamer.turn(0)
+        return
+    slot0.say(text.rite.explain)
+    match slot0.choose(a=text.rite.yes, b=text.rite.no):
+        case "a":
+            pass
+        case "b":
+            tamer.turn(0)
+            return
+        case _:
+            tamer.turn(0)
+            return
+    if partner.happiness >= 20:
+        narrator.say(text.rite.happy)
+    else:
+        narrator.say(text.rite.unhappy)
+    slot0.say(text.rite.sure)
+    match slot0.choose(a=text.rite.sure_yes, b=text.rite.no):
+        case "a":
+            pass
+        case "b":
+            tamer.turn(0)
+            return
+        case _:
+            tamer.turn(0)
+            return
+    if partner.level >= Level.mega:
+        slot0.say(text.rite.farewell_mega)
+    elif partner.level >= Level.ultimate:
+        slot0.say(text.rite.farewell_ultimate)
+    else:
+        slot0.say(text.rite.farewell_champion)
+    if engine.prosperity >= 50:
+        slot0.say(text.rite.city)
+    if partner.happiness >= 20:
+        engine.rite_keepsake.set(1)
+    raw.set_stat(13, 65535)
+    tamer.turn(0)
 
 @lib.on_step(21)
 def step21():    # section 72
@@ -156,4 +206,4 @@ def L5():    # shared code (the disc's label L5)
     narrator.say(t73.u3)
 
 # the section table, in the order of the original header
-sections(254, 71, 72, 73)
+sections(254, 71, 72, 73, 74)

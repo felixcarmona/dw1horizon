@@ -538,7 +538,7 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                             # (801239F4) is unused. Other literal C strings must
                             # at least fit the global text area; narrower crops
                             # are checked below and in the emulator matrix.
-                            if key not in VERBATIM and key not in ('main.MAIN_D_801239F4', 'main.QOL_STR_SKIP_EVOLUTION') and not FORMAT.search(value) and (list_width(value, font) if key in ('main.MOD_NOTICE_STR_HEAD1', 'main.MOD_NOTICE_STR_HEAD2') and language != 'zh-hans' else ui_width(value, font, language)) > 244:
+                            if key not in VERBATIM and key != 'main.MAIN_D_801239F4' and not FORMAT.search(value) and (list_width(value, font) if key in ('main.MOD_NOTICE_STR_HEAD1', 'main.MOD_NOTICE_STR_HEAD2') and language != 'zh-hans' else ui_width(value, font, language)) > 244:
                                 issue(language, font, path, key, 'literal UI text exceeds the 244-px drawing area')
                             if key == 'btl.BTL_STR_MP_CONSUMPTION_BONUS':
                                 for why in battle_mp_problems(data, font, language):

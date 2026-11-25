@@ -39,13 +39,11 @@ def fixture(e, state, species):
                            ('PARTNER_STATE', b'\15'), ('PARTNER_SUB_STATE', b'\0')):
             e.poke(name, data)
         e.run('resume')
-        for _ in range(120):
+        for _ in range(400):
             ram = e.ram()
             if e.peek('PARTNER_ENTITY', 'i', ram) == species and e.peek('PARTNER_STATE', 'b', ram) == 1:
                 break
-            if e.peek('MOD_EVO_SKIP', 'b') == 3:
-                e.press('START', 8)
-            elif e.peek('TAMER_STATE', 'b') == 20:
+            if e.peek('TAMER_STATE', 'b') == 20:
                 e.press('CONFIRM', 8)
             e.poke('PAUSE_STATE', b'\0')
             e.wait(.25)
