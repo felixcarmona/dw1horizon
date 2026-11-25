@@ -74,6 +74,28 @@ story agree.
 flags start empty, so nobody goes out until the new run's ending, and the new pool stays closed until every new
 resident is recruited again.
 
+## Yuramon's rumours
+
+Many challengers' absence shows on a walk through the city: their home is empty. The rows marked `"hint": true` are
+the ones it does not show: residents out at that hour or by chance anyway (the Restaurant, the item shop, the secret
+shop, the lower city, the top map), under a story condition (Coelamon, Myotismon), or with no city home after the ending
+(Seadramon, SkullGreymon, MetalMamemon, Etemon, Penguinmon, WaruMonzaemon, Kotemon). After the ending, Yuramon on
+File City's top map (`arcs/rumours/yuramon.py`) tells the day:
+
+- a hinted challenger out today and not beaten: its riddle, `<name>.rumour.who` (who, by trade, habit or character,
+  never the name) and `<name>.rumour.where` (where, as a picture of the site's landscape, never its name). One for each
+  pool's challenger when both are hinted.
+- otherwise, someone out or beaten today: `rumour.unheard` ("take a walk around the city").
+- nobody out (both vars 0): `rumour.quiet`.
+
+Before the ending the talk is the game's own. On the days Andromon stands in Yuramon's place there is no rumour. A new
+hinted row needs its two lines in every language and its branch in `yuramon.py` (`tools/test_resident_challenges.py`
+checks that the talk's riddles are exactly the hinted rows).
+
+The riddles live inside script 162 (File City's top map), which shares the engine's 16 KB script buffer with the rest of
+that screen's talk (about 12 KB): with all 34 riddles every language is at 15.5-16 KB. Keep each line under about 40
+characters (about 20 in Japanese and Chinese); a longer one fails the build with "script 162 ... is N bytes".
+
 ## Adding a resident
 
 The roster is every visible city resident (`content/tables/city-residents.json`), the game's own and ours, each at the
