@@ -13,7 +13,7 @@
     "summary": "BIOS, archivos del juego, ajustes por juego y partidas.",
     "paragraphs": [
       "Configura tu propia BIOS de PlayStation en DuckStation. Añade la carpeta de Horizon, manteniendo el .cue junto a su .bin. Abre el .cue; si falta el .bin o cambia de nombre, la hoja de pistas no lo encontrará.",
-      "Usa los ajustes por juego de Horizon. Activa la RAM ampliada a 8 MB para el chino simplificado; los demás idiomas funcionan con 2 MB. AUTO adapta las imágenes a cada escena y busca 60, 30 o 20 fps. Aumentar la velocidad de la CPU emulada puede ayudar a mantener tasas altas, pero AUTO ya no necesita overclock para intentarlas.",
+      "Usa los ajustes por juego de Horizon. Activa la RAM ampliada a 8 MB para el chino simplificado; los demás idiomas funcionan con 2 MB. AUTO adapta las imágenes a cada escena y busca 60, 30 o 20 fps. Aumentar la velocidad de la CPU emulada puede ayudar a mantener tasas altas, pero AUTO no la necesita para intentarlas.",
       "Asigna una tarjeta con {save_blocks} bloques libres. Una tarjeta por juego evita compartir espacio. Si cambias el nombre del disco o actualizas Horizon, comprueba la tarjeta asignada y carga una partida del juego tras arrancar de nuevo."
     ]
   },
@@ -72,11 +72,50 @@
       "Cambia la velocidad de CPU emulada, no el avance rápido. El título muestra los ajustes detectados para comprobar la configuración. El dispositivo debe poder mantener la emulación elegida. Reinicia tras cambiar la RAM."
     ]
   },
+  "options": {
+    "title": "El menú OPCIONES",
+    "summary": "Cada fila de las opciones del título y qué cambia.",
+    "headings": [
+      "Dónde está",
+      "Contenido del juego",
+      "Combate y campo",
+      "Pantalla e idioma"
+    ],
+    "paragraphs": [
+      "OPCIONES es la quinta fila del menú del título, bajo MODO COMBATE. Los valores se escriben en cada partida y lo que ajustes en el título prevalece sobre lo que guarde la partida, así que puedes cambiar cualquier fila y luego pulsar Continuar. Las barras de cuidados, el reloj digital y las barras de vida de los enemigos están siempre activos y no tienen fila.",
+      "DIGIMON NUEVOS (SÍ) añade las especies importadas y el nivel Mega; con NO quedan solo las especies originales, los cuatro huevos originales y los nueve iniciales originales, y un compañero de especie nueva se muestra como un original parecido hasta que lo vuelvas a activar. CARTAS NUEVAS (SÍ) añade 240 cartas al álbum; con NO se ocultan en todas partes y se conservan sus recuentos. HIST. EXTRA (SÍ) añade las áreas y los habitantes nuevos; activarla en una partida empezada te lleva a ti y a tu compañero a la casa de Jijimon y conserva tu progreso. GUÍA EVOLUTIVA (SÍ) muestra las líneas del gráfico de evolución y la ventana de requisitos.",
+      "DIFICULTAD es FÁCIL, NORMAL o DIFÍCIL. INICIO RÁPIDO (SÍ) empieza los combates de campo al instante, sin la larga entrada. ALERTA PELIGRO (SÍ) marca a los Digimon salvajes mucho más fuertes que tu compañero. MANDO JAPONÉS intercambia confirmar y cancelar entre Círculo y Cruz; empieza en SÍ en un disco japonés. TRUCOS (NO) añade un menú de pruebas a la pantalla de pausa.",
+      "FOTOGRAMAS es AUTO, 60 o 20. LETRA es NUEVA, CLÁSICA u ORIGINAL; el chino no tiene ORIGINAL. IDIOMA cambia todos los textos a la vez. CARTELES elige entre los carteles tal como se dibujaron en el original y sus versiones TRADUCIDOS."
+    ]
+  },
+  "controls": {
+    "title": "Controles y atajos",
+    "summary": "Correr, cuidados rápidos, velocidad de combate y los botones de cada menú.",
+    "headings": [
+      "En el campo",
+      "En combate",
+      "En los menús"
+    ],
+    "paragraphs": [
+      "Mantén R1 para correr: tú y tu compañero os movéis un 40% más rápido. Mantén R2 para caminar despacio. Cruz habla y confirma, Triángulo abre el menú y cancela; con MANDO JAPONÉS, Círculo confirma y Cruz cancela. Cuando aparece un distintivo rosa de Cuadrado sobre el compañero, Cuadrado abre los cuidados rápidos: la comida, la cura, el retrete, el sueño o la regañina que toca en ese momento, con la necesidad urgente primero y la comida favorita marcada.",
+      "R2 cambia el combate entre velocidad normal y doble, en el campo, la arena y el VS. La velocidad vuelve a la normal mientras está abierto el menú de objetos y no se guarda. Cuando el medidor de remate está lleno, Cuadrado lanza el remate; entonces pulsa L1 y R1 rápidamente para cargarlo, y una buena carga aumenta su daño hasta el doble. La lista de objetos de un combate muestra solo los objetos que se pueden usar ahí.",
+      "En el gráfico de evolución, Cuadrado sobre un objetivo abre la tabla de lo que pide junto a lo que tiene tu compañero, y L1 y R1 cambian de pestaña. Al elegir un huevo, Cuadrado escoge uno al azar. El botón de confirmar se salta el recuento de mejoras tras un entrenamiento o un combate. En los editores de Trucos, izquierda y derecha cambian el valor, y arriba y abajo el tamaño del paso."
+    ]
+  },
+  "faq": {
+    "title": "Preguntas frecuentes y problemas",
+    "summary": "Actualizaciones, partidas perdidas, parcheo lento e informes útiles.",
+    "paragraphs": [
+      "Si no aparece Continuar, comprueba la tarjeta asignada, sus bloques libres y el nombre del disco en las tarjetas por juego. Horizon necesita {save_blocks} bloques libres para una partida nueva. Haz una copia antes de actualizar, arranca el disco nuevo y carga la partida del juego.",
+      "Parchear en el móvil puede tardar. Ante errores de cuota, usa una ventana normal, libera espacio y repite; también puedes usar el parcheador de escritorio. Las comprobaciones son intencionadas: los discos adicionales aportan especies y una copia modificada o incompatible no coincidirá.",
+      "Si el texto se ve mal, anota versión del juego, disco base, idioma, compilación del emulador y ajustes gráficos. En versiones Android afectadas, prueba a desactivar Enable Texture Cache. Incluye el desencadenante exacto y una captura: el síntoma por sí solo no identifica la causa."
+    ]
+  },
   "first-day": {
     "title": "El primer día con tu compañero",
     "summary": "Una rutina sencilla para una nueva vida en Isla File.",
     "paragraphs": [
-      "Elige a tu compañero con las preguntas de Jijimon. Familiarízate con los indicadores de cuidados, el inventario y los servicios cercanos antes de alejarte. Lleva objetos de curación y deja espacio para lo que encuentres.",
+      "Elige a tu compañero con las preguntas de Jijimon. Una partida nueva empieza con 20 unidades de Carne y 1000 bits. Familiarízate con los indicadores de cuidados, el inventario y los servicios cercanos antes de alejarte. Lleva objetos de curación y deja espacio para lo que encuentres.",
       "Dale de comer cuando tenga hambre, busca un retrete cuando lo necesite y deja que duerma cuando le toque. Consulta su comida favorita y su horario de sueño en la ficha de la especie. No pases el día entrenando sin atender sus necesidades.",
       "Prueba una sesión corta y revisa los cambios en estadísticas y cansancio. Explora, vuelve a la ciudad y guarda en la tarjeta. La evolución también depende de los cuidados y el peso: decide el objetivo antes de entrenar todas las estadísticas sin criterio."
     ]
@@ -85,9 +124,25 @@
     "title": "Errores de cuidado y disciplina",
     "summary": "Entiende los avisos antes de perseguir una estadística.",
     "paragraphs": [
-      "El hambre, el retrete, el sueño y el cansancio son sistemas distintos. Ignorar el hambre o dejar que el compañero haga sus necesidades en el suelo puede sumar errores; la enfermedad y el agotamiento tienen sus propias consecuencias. Atiende los indicadores y consulta los cuidados con frecuencia.",
-      "Disciplina y felicidad son valores diferentes. Elogiar y regañar no los modifican igual, así que no resuelven cualquier problema indistintamente. También importan las preferencias de comida y el horario de sueño. En un hábitat que no le gusta al compañero, su cara de ánimo vuelve a alternar entre triste y feliz, como en el original.",
-      "Las evoluciones pueden pedir un máximo o un mínimo de errores. Buscar muchos errores es una decisión para una evolución concreta, no una recomendación general. Los recuentos de la evolución normal corresponden a la forma actual; lee juntos los cuatro grupos."
+      "El hambre, el retrete, el sueño y el cansancio son sistemas distintos. Ignorar el hambre, dejar que el compañero haga sus necesidades en el suelo o mantenerlo despierto pasada su hora de dormir suma errores; la enfermedad y el agotamiento tienen sus propias consecuencias. Las cinco barras de cuidados y las burbujas sobre el compañero te dicen qué toca; la página de Estado muestra el número de errores.",
+      "Disciplina y felicidad son valores diferentes. Elogiar y regañar no los modifican igual, así que no resuelven cualquier problema indistintamente. También importan las preferencias de comida y el horario de sueño. En un hábitat que no le gusta al compañero, parpadea el icono de felicidad de las barras de cuidados.",
+      "Las evoluciones pueden pedir un máximo o un mínimo de errores. Buscar muchos errores es una decisión para una evolución concreta, no una recomendación general. El recuento vuelve a empezar en cada evolución y al renacer, así que siempre corresponde a la forma actual; lee juntos los cuatro grupos."
+    ]
+  },
+  "screen-indicators": {
+    "title": "Barras, burbujas y avisos",
+    "summary": "Qué significan las barras de cuidados, las burbujas sobre tu compañero y los avisos.",
+    "headings": [
+      "Barras de cuidados y reloj",
+      "Burbujas y distintivos",
+      "Página de Estado",
+      "Alerta de peligro"
+    ],
+    "paragraphs": [
+      "Cinco barras aparecen abajo a la derecha, junto al reloj y durante el entrenamiento: felicidad, disciplina, hambre, retrete y energía. Una barra llena significa que todo va bien; una vacía, que esa necesidad está pendiente. El icono de felicidad parpadea en un hábitat que no le gusta al compañero. El reloj también muestra la hora en cifras bajo la esfera.",
+      "Una burbuja sobre el compañero indica qué necesita: hambre, retrete, sueño, cansancio, enfermedad, lesión, pocos PS o pocos PM, ambos por debajo del 30%. Aparece una burbuja de Reñir cuando una regañina está justificada, tras rechazar comida o justo antes de un accidente. El distintivo rosa de Cuadrado significa que los cuidados rápidos tienen algo que ofrecer. Una burbuja de carne sobre el granjero significa que hay una cosecha esperando.",
+      "La página de Estado muestra la felicidad y la disciplina de 0 a 100, el cansancio y la barra de virus con sus números, los errores de cuidado de la forma actual y los combates ganados. El menú de pausa muestra los PS y PM del compañero. En los combates salvajes cada enemigo tiene una barra de vida con sus PS; los rivales de la arena y de la historia no.",
+      "Con ALERTA PELIGRO activada, un pequeño diablillo lila flota sobre un Digimon salvaje claramente más fuerte que tu compañero: su PS × (Ataque + Defensa) es al menos 2,5 veces el de tu compañero. Solo aparece en los Digimon que inician un combate al tocarlos, nunca en los personajes que solo hablan, y únicamente mientras puedes moverte. Es un aviso, no una sentencia."
     ]
   },
   "training": {
@@ -96,16 +151,47 @@
     "paragraphs": [
       "Cada gimnasio entrena una estadística. Los aumentos base de abajo son valores base; el resultado también depende del compañero, las mejoras, los objetos y el entrenamiento. La inteligencia tiene umbrales de aprendizaje propios, separados de las tiradas tras combatir.",
       "Entrenar hace pasar el tiempo y consume comida, cansancio y vida. Comprueba el hambre, el retrete y el sueño antes de empezar. Seguir estando cansado puede penalizarte; una mejora mayor no es tiempo gratis.",
-      "El modo x5 aplica varias recompensas normales con comprobaciones de cuidados entre ellas. Usa x1 si quieres parar cerca de un objetivo de peso o de evolución. Descansa y atiende las necesidades antes de otro bloque."
+      "Cada menú del gimnasio ofrece también Entrenamiento normal x5, que encadena cinco sesiones normales con comprobaciones de cuidados entre ellas. Entrena sesiones sueltas si quieres parar cerca de un objetivo de peso o de evolución. Descansa y atiende las necesidades antes de otro bloque."
     ]
   },
   "gym-x5": {
-    "title": "Cómo funciona el gimnasio x5",
-    "summary": "Varias sesiones, con costes normales y paradas anticipadas.",
+    "title": "Entrenamiento x5 y Bonus Try",
+    "summary": "Cinco sesiones seguidas, con costes normales y paradas anticipadas.",
     "paragraphs": [
-      "Durante una sesión, R2 cambia el bloque entre x1 y x5. Se reproduce la animación inicial y después se aplica cada recompensa en orden. No es un multiplicador por cinco sin costes de tiempo ni cuidados.",
-      "El bloque puede parar si una sesión deja al compañero con hambre, ganas de ir al retrete, sueño, cansancio o malestar; también comprueba la evolución, la vida restante y los mensajes del gimnasio. El resultado indica lo completado. No supongas que siempre fueron cinco sesiones.",
-      "Bonus Try es independiente de los bloques. Cada rodillo se para donde pulsas, sin nada oculto que lo empuje fuera del premio: si fallas recibes la mitad, tres símbolos iguales dan el doble, tres del atributo que entrenas dan x4 y tres cacas doradas dan x5. Alimenta, descansa o atiende el motivo de parada antes de repetir. Si solo quieres una recompensa, selecciona x1 antes de confirmar la sesión en vez de confiar en una parada de emergencia."
+      "Cada menú del gimnasio tiene cuatro filas: entrenamiento normal, Entrenamiento normal x5, Bonus Try y salir. El Entrenamiento normal x5 reproduce el entrenamiento una vez y después otorga cinco sesiones normales una tras otra. Cada sesión cuesta su hora, su comida, su cansancio y su vida de siempre: no es un multiplicador por cinco gratis.",
+      "Mantén pulsado el botón de cancelar medio segundo entre dos sesiones para terminar el bloque ahí. El bloque también se detiene solo cuando el compañero tiene hambre, necesita ir al retrete, tiene sueño o cansancio, se lesiona o enferma, cuando toca evolucionar, cuando se acaba su vida o cuando el gimnasio tiene algo que decir, como una técnica aprendida. El cuadro de resultados cuenta las sesiones que se hicieron de verdad. El botón de confirmar se salta el recuento de las mejoras.",
+      "Bonus Try apuesta una sesión a la tragaperras. Cada rodillo se para donde pulsas, sin nada oculto que lo empuje fuera del premio: si fallas recibes la mitad, tres símbolos iguales dan el doble, tres del atributo que entrenas dan x4 y el premio gordo da x5. Cuesta el mismo tiempo y los mismos cuidados que una sesión normal."
+    ]
+  },
+  "rebirth": {
+    "title": "Vida, vidas y Renacer",
+    "summary": "Cuánto vive un compañero, qué conserva y cómo empezar de nuevo a propósito.",
+    "headings": [
+      "Vida y vidas",
+      "Renacer",
+      "Huevos",
+      "Evolucionar al perder una vida"
+    ],
+    "spoiler_paragraphs": [
+      3
+    ],
+    "paragraphs": [
+      "Un compañero nace con 408 horas de vida. La felicidad baja la acorta, y llegar a Perfecto suma 96 horas y Mega 120; algunas comidas suman más. El aviso rojo de la ventana de evolución te dice cuándo la vida se acabará antes de una evolución. Además, un compañero tiene tres vidas en combate: una derrota cuesta una y te devuelve a la casa de Jijimon.",
+      "La máquina de guardado de la casa de Jijimon tiene una entrada Renacer para un compañero de nivel Campeón o superior. Pregunta dos veces, no cuesta nada y deja marchar al compañero como lo haría una muerte natural, para que elijas el siguiente huevo. El nuevo compañero conserva las técnicas aprendidas, tus objetos, tus bits y su nombre, y hereda una parte de las estadísticas que crece con tu nivel de Tamer. Si la felicidad era 20 o más, empieza con felicidad y disciplina en 80; si no, en 50.",
+      "Tras una muerte natural o un Renacer eliges el huevo; Cuadrado escoge uno al azar. Hay cuatro huevos con DIGIMON NUEVOS desactivado y ocho con él activado: los nuevos eclosionan como Pabumon, Pichimon, YukimiBotamon y Nyokimon. Un compañero que muere en combate o por enfermedad sin vidas restantes recibe un huevo al azar.",
+      "Cuando un compañero pierde una vida y aún le queda alguna, puede evolucionar en la casa de Jijimon. Agumon, Betamon, Gabumon, Elecmon, Patamon, Kunemon, Biyomon y Palmon se convierten en Bakemon el 30% de las veces; MetalGreymon y Megadramon se convierten en SkullGreymon y Kokatorimon en Phoenixmon, con un 30%; Angemon con disciplina inferior a 50 se convierte en Devimon con un 50%. Si ya cumple las estadísticas de la nueva forma, un 30% cada una: Greymon en SkullGreymon, Meramon en SkullMeramon, Mammothmon en SkullMammothmon y Garudamon en Phoenixmon. Las especies nuevas necesitan DIGIMON NUEVOS activado."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Mecánicas ocultas de los compañeros",
+    "summary": "Preferencias, casillas de especialidad y evoluciones fuera del árbol.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Cada compañero tiene sus preferencias de comida y sueño. Las especialidades determinan qué técnicas aprende en combate. Una casilla vacía sigue contando al elegir la probabilidad, aunque el resumen no la muestre.",
+      "La guía de evolución del juego y el árbol de la wiki explican los objetivos. Las transformaciones especiales y los objetos tienen condiciones propias; una fila normal de estadísticas no describe todas las formas de obtener una especie. Perder una vida también puede cambiar al compañero al instante: el artículo sobre la vida y Renacer enumera esas evoluciones y sus probabilidades."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "evolution-requirements": {
@@ -114,7 +200,7 @@
     "paragraphs": [
       "La evolución normal puntúa cuatro grupos: errores, peso, estadísticas y bonificación. Un objetivo necesita {pass_points} puntos. Todos los umbrales de estadísticas forman un solo grupo; cumplir dos estadísticas no da dos puntos. Para objetivos Rookie se usa la estadística más alta.",
       "El peso admite una banda alrededor del valor objetivo. Los errores pueden tener un mínimo o un máximo. Cualquiera de las condiciones de bonificación da ese punto; no son todas requisitos obligatorios independientes. El máximo de errores es inclusivo. Fallar ese grupo hace perder su punto; no impide evolucionar si los demás grupos alcanzan la puntuación necesaria. Por tanto, aumentar los errores por sí solo no descarta de forma fiable un objetivo.",
-      "Pulsa un objetivo del árbol para leer sus requisitos. La fila «Tiempo (h)» de la ventana muestra la comprobación del tiempo, y un aviso rojo señala si la vida restante es insuficiente. El tiempo en la forma actual, los desencadenantes especiales, NEW DIGIMON y otros candidatos afectan al resultado. Los umbrales de PV y PM usan las unidades del jugador; la felicidad usa la escala 0–100 del estado."
+      "Pulsa un objetivo del árbol para leer sus requisitos. La fila «Tiempo (h)» de la ventana muestra la comprobación del tiempo, y un aviso rojo señala si la vida restante es insuficiente. El tiempo en la forma actual, los desencadenantes especiales, DIGIMON NUEVOS y otros candidatos afectan al resultado. Los umbrales de PV y PM usan las unidades del jugador; la felicidad usa la escala 0–100 del estado."
     ]
   },
   "evolution-timing": {
@@ -122,8 +208,47 @@
     "summary": "Los requisitos son solo una parte de la elección.",
     "paragraphs": [
       "Las horas de abajo cuentan desde la forma actual, no desde la edad total. Cumplir una fila pronto no provoca una evolución normal inmediata. Las rutas temporizadas de Ultimate también comprueban los requisitos; las especiales y por objeto tienen sus propios desencadenantes.",
-      "Al pasar de Rookie a Champion y de Champion a Ultimate, alcanzar la puntuación requerida admite un destino; cuatro puntos no superan a tres. El juego elige con la misma probabilidad entre los destinos aptos en el momento de evolucionar. Se revisan en el orden de las rutas: tras admitir uno nunca criado, se omiten los ya criados que aparecen después; los admitidos antes siguen en el sorteo. Siguen aplicándose la disponibilidad del modelo y NEW DIGIMON. Recargar la misma partida de tarjeta y variar el momento puede dar otro resultado, pero no lo garantiza. De In-Training a Rookie se conserva la mayor puntuación y, en empate, el primero de la lista. Las evoluciones especiales y por objeto mantienen sus reglas.",
+      "Al pasar de Rookie a Champion y de Champion a Ultimate, alcanzar la puntuación requerida admite un destino; cuatro puntos no superan a tres. El juego elige con la misma probabilidad entre los destinos aptos en el momento de evolucionar. Se revisan en el orden de las rutas: tras admitir uno nunca criado, se omiten los ya criados que aparecen después; los admitidos antes siguen en el sorteo. Siguen aplicándose la disponibilidad del modelo y DIGIMON NUEVOS. Recargar la misma partida de tarjeta y variar el momento puede dar otro resultado, pero no lo garantiza. De In-Training a Rookie se conserva la mayor puntuación y, en empate, el primero de la lista. Las evoluciones especiales y por objeto mantienen sus reglas.",
       "La fila «Tiempo (h)» de la ventana compara las horas pasadas en la forma actual con las que exige el objetivo. El veredicto solo dice «lista» cuando se cumplen la puntuación de requisitos, la comprobación de que el modelo cabe y el tiempo; «En N h» indica que solo falta tiempo. El aviso rojo «La vida no llega: quedan N h» indica que la vida restante es menor que la espera pendiente; N es la vida restante. Las rutas que no dependen del tiempo muestran «Ruta especial». Los Megas importados también exigen pasar {mega_hours} horas de juego como Perfecto. Si antes se agota la vida restante, el compañero muere de vejez. {chain_melon} (Chain Melon) añade {chain_melon_hours} horas de vida; {digiseabass}, {digiseabass_hours}. Amplían la vida restante, no el tiempo ya pasado en la forma actual."
+    ]
+  },
+  "new-digimon": {
+    "title": "Digimon nuevos y el nivel Mega",
+    "summary": "Qué añade DIGIMON NUEVOS a la crianza y cómo se construye el árbol más grande.",
+    "spoiler_paragraphs": [
+      2
+    ],
+    "paragraphs": [
+      "Con DIGIMON NUEVOS activado hay 291 Digimon que criar: los originales, 175 traídos de otros juegos de Digimon para PlayStation y ocho Digimon In-Training dibujados para Horizon. Un quinto nivel, Mega, se sitúa sobre Perfecto con 54 especies. Cada especie tiene aquí su propia página con sus requisitos, técnicas, comida favorita y horas de sueño.",
+      "El árbol es regular: cada In-Training tiene seis Novatos, cada Novato al menos cuatro Campeones, cada Campeón al menos dos Perfectos y cada Perfecto dos Megas. La evolución natural nunca se salta un nivel. Un Mega pide {mega_hours} horas como Perfecto además de sus requisitos. Con la opción desactivada solo existen las especies y rutas originales; un compañero de especie nueva se muestra como un original parecido y vuelve cuando activas la opción de nuevo.",
+      "Dos habitantes pueden remodelar un Digimon en otro del mismo nivel por 2000 bits: Guardromon en Ciudad Factorial y, de vez en cuando, Andromon en Ciudad File. Una vez de cada diez el resultado es una forma especial, cinco de cada diez la habitual, y en el resto falla. Trabajan con Mamemon, Numemon, Geremon, MegaSeadramon, WaruSeadramon y MetalGreymon (Virus); Andromon solo con Mamemon."
+    ]
+  },
+  "new-game-quiz": {
+    "title": "Cuestionario inicial: puntos y compañeros",
+    "summary": "Las siete preguntas aportan a tres grupos de puntuación.",
+    "paragraphs": [
+      "La tabla muestra los puntos de cada posición de respuesta del cuestionario de Jijimon. Las posiciones siguen el orden del juego. Las puntuaciones eligen elemento, atributo y temperamento; esa combinación determina el compañero de la cuadrícula.",
+      "Gana la mayor puntuación de cada grupo. En empate se favorece la respuesta más reciente que lo apoye; si esa respuesta apoya a ambos, gana el primero del grupo. El orden es Combate, Fuego, Hielo, Naturaleza, Aire; Vacuna, Datos, Virus; Audaz, Tranquilo, Astuto.",
+      "Jijimon mantiene en secreto quién será tu compañero: lo descubrirás a tu lado al despertar. Ponerle nombre es opcional y los mensajes no revelan la especie. Las columnas muestran NUEVOS DIGIMON activado y desactivado. Las respuestas, los puntos y la tabla de compañeros iniciales están en el spoiler de abajo."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
+    ]
+  },
+  "battles": {
+    "title": "Combates: velocidad, remates y tipos",
+    "summary": "Qué ocurre en una pelea y cómo se enfrentan los doce tipos.",
+    "headings": [
+      "Lo básico",
+      "Remates",
+      "Tipos"
+    ],
+    "paragraphs": [
+      "Con INICIO RÁPIDO, un combate de campo empieza en cuanto tocas al enemigo. R2 duplica la velocidad de cualquier combate. En los combates salvajes cada enemigo muestra una barra de vida con sus PS. Tras una victoria, cada estadística tiene una probabilidad de crecer a partir de la del enemigo más fuerte, y la lista de objetos de un combate muestra solo lo que se puede usar en él.",
+      "El medidor de remate se llena mientras el compañero pelea, más deprisa con más Velocidad. Cuando está lleno, Cuadrado lanza el remate, y pulsar L1 y R1 rápidamente lo carga para hacer hasta el doble de daño. 179 especies tienen un remate propio, más fuerte en cada nivel; algunos golpean a todos los enemigos a la vez y unos pocos se pueden esquivar. Un remate no gasta PM.",
+      "El daño de una técnica depende de su fila y del tipo del Digimon al que golpea. En la tabla de abajo, la fila es la técnica atacante y la columna el defensor; una casilla vacía es daño normal. Suciedad recibe el doble de casi todo, y Oscuridad y Luz son fuertes entre sí."
     ]
   },
   "learning-techniques": {
@@ -140,18 +265,41 @@
     "title": "Oscuridad, Luz y Agua",
     "summary": "Tres filas más de técnicas, la curación y sus copas.",
     "paragraphs": [
-      "Tres filas se suman a las siete del original: Oscuridad, Luz y Agua, con ocho técnicas cada una. Un compañero las aprende como las demás: la técnica tiene que estar en la lista de su especie y la fila entre sus especialidades. La pantalla de técnicas se desplaza por las filas. Una partida de una versión anterior se carga tal cual. En esa primera carga el compañero aprende la primera técnica de cada fila nueva que esté en la lista de su especie: Garra Sombría, Chispa Sagrada o Disparo Burbuja. El resto las aprende como cualquier otra técnica.",
+      "Oscuridad, Luz y Agua son tres de las cinco filas que Horizon suma a las siete del original, con ocho técnicas cada una. Un compañero las aprende como las demás: la técnica tiene que estar en la lista de su especie y la fila entre sus especialidades. La pantalla de técnicas se desplaza por las doce filas. Una partida hecha antes de que existieran estas filas se carga tal cual, y el compañero aprende la primera técnica de cada fila nueva que esté en la lista de su especie: Garra Sombría, Chispa Sagrada o Disparo Burbuja.",
       "Bendición devuelve el 10% de los PV totales, y la cantidad sube en verde sobre el Digimon. Un compañero se cura tres veces por combate y un enemigo dos; nadie se cura con los PV al máximo. Por su cuenta, un compañero solo se cura por debajo del 60% de sus PV; con tu orden se cura con cualquier cantidad por debajo del máximo. Escudo Sagrado sube la Defensa, Danza de Lluvia sube la Velocidad y Susurro Maligno quita una quinta parte de la Defensa del objetivo, una vez por luchador y combate. La mayoría de los ataques de las tres filas golpean por posición, como la mayoría de los disparos del original. Un disparo se apunta al salir, y un golpe o un área cae en un punto: al objetivo que se ha apartado de ahí no le da. Pesadilla, Susurro Maligno, Niebla Venenosa, Estallido de Luz, Remolino y Furia Oceánica siguen a su objetivo, y solo su precisión puede hacerlos fallar.",
-      "Oscuridad y Luz se hacen el doble de daño entre sí y la mitad a su propia fila. Agua hace el doble de daño a Fuego y Suciedad y la mitad a Naturaleza, Hielo y Agua; Aire hace el doble de daño a Agua. Tres copas de la arena admiten solo a las especies cuya primera especialidad es su fila: la Copa Oscuridad, la Copa Luz y la Copa Agua, dos veces cada una en los 30 días del calendario. El ganador se lleva 5000 bits y un Boniato forzudo, una Fruta sabia o un Hielo poder."
+      "Oscuridad y Luz se hacen el doble de daño entre sí y la mitad a su propia fila. Agua hace el doble de daño a Fuego, Suciedad y Tierra, una vez y media a Máquina y la mitad a Naturaleza, Hielo y Agua; Aire hace el doble de daño a Agua. La tabla completa está en el artículo de combates. Tres copas de la arena admiten solo a las especies cuya primera especialidad es su fila, dos veces cada una en los 30 días del calendario: la Copa Oscuridad da 5000 bits y un Boniato forzudo, la Copa Luz 5000 bits y una Fruta sabia, y la Copa Agua 5000 bits y un Hielo poder."
     ]
   },
   "weapon-earth": {
     "title": "Arma y Tierra",
     "summary": "Dos filas más de técnicas y sus copas.",
     "paragraphs": [
-      "Dos filas más se suman a la pantalla de técnicas: Arma y Tierra, con ocho técnicas cada una; ya son doce filas. La cuarta fila del original, que la pantalla llamaba Tierra, pasa a llamarse Naturaleza, el nombre que esta wiki le dio siempre; sus técnicas son las mismas. Una partida de una versión anterior se carga tal cual. En esa primera carga el compañero aprende la primera técnica de cada fila nueva que esté en la lista de su especie: Tajo Veloz o Lanzarrocas. El resto las aprende como cualquier otra técnica.",
+      "Arma y Tierra completan las doce filas de la pantalla de técnicas, con ocho técnicas cada una. La cuarta fila del original se llama Naturaleza, en el juego y en esta wiki; sus técnicas son las originales. Una partida hecha antes de que existieran estas filas se carga tal cual, y el compañero aprende la primera técnica de cada fila nueva que esté en la lista de su especie: Tajo Veloz o Lanzarrocas. El resto las aprende como cualquier otra técnica.",
       "Arma es la fila de las hojas. Tajo Veloz, Arma Arrojadiza, Corte Cruzado, Filo Giratorio, Tajo Gigante y Filo Final hacen daño; Rompecorazas quita una cuarta parte de la Defensa del objetivo, una vez por luchador y combate, y Pose de Guerra sube el Ataque una quinta parte. Tierra es la fila de la roca. Lanzarrocas, Ráfaga de Arena, Golpe de Roca, Fisura, Estalagmita, Avalancha y Seísmo Gaia hacen daño, Ráfaga de Arena puede confundir y Piel de Piedra sube la Defensa. La mayoría de los ataques de las dos filas golpean por posición, como la mayoría de los disparos del original: al objetivo que se ha apartado de donde cae el golpe no le da. Filo Final, Ráfaga de Arena, Estalagmita y Seísmo Gaia siguen a su objetivo, y solo su precisión puede hacerlos fallar.",
-      "Arma hace una vez y media el daño a Naturaleza y la mitad a Máquina y Tierra. Tierra hace el doble de daño a Máquina, una vez y media a Fuego y la mitad a Aire, Naturaleza y Tierra. Máquina hace una vez y media el daño a Arma y Naturaleza la mitad; Agua hace el doble de daño a Tierra, Naturaleza y Hielo una vez y media, y Fuego y Arma la mitad. Dos copas de la arena admiten solo a las especies cuya primera especialidad es su fila: la Copa Espada y la Copa Gaia, dos veces cada una en los 30 días del calendario. El ganador se lleva 5000 bits y un Chip Ataque o un Chip Defensa."
+      "Arma hace el doble de daño a Suciedad, una vez y media a Naturaleza y la mitad a Máquina y Tierra. Tierra hace el doble de daño a Máquina y Suciedad, una vez y media a Fuego y la mitad a Aire, Naturaleza y Tierra. A cambio, Máquina hace una vez y media el daño a Arma, y Agua hace el doble de daño a Tierra. La tabla completa está en el artículo de combates. Dos copas de la arena admiten solo a las especies cuya primera especialidad es su fila, dos veces cada una en los 30 días del calendario: la Copa Espada da 5000 bits y un Chip Ataque, y la Copa Gaia 5000 bits y un Chip Defensa."
+    ]
+  },
+  "difficulty": {
+    "title": "FÁCIL, NORMAL y DIFÍCIL",
+    "summary": "Qué cambia cada ajuste de DIFICULTAD en combate.",
+    "paragraphs": [
+      "DIFICULTAD es una fila de las OPCIONES del título. NORMAL mantiene las cifras originales de combate, con un paso al final del juego: los enemigos cuyos PS originales superan 3500 ganan PS en línea recta, hasta un 150% con 6500, y cada golpe hace un pequeño daño mínimo para que una Defensa altísima no lo anule. FÁCIL duplica el daño del compañero y divide entre dos el daño y el veneno que recibe, redondeando hacia arriba, y no tiene ese paso.",
+      "DIFÍCIL parte de NORMAL y escala a cada enemigo con los valores de abajo: más PS, Ataque, Defensa, Velocidad e inteligencia, remates más fuertes y algo menos de daño directo del compañero.",
+      "Ningún ajuste reescribe las estadísticas guardadas del compañero, su crecimiento ni las recompensas de un combate, y el daño porcentual de los guiones sigue sus reglas. Los ajustes afectan a combates de campo y torneos, nunca al VS de dos jugadores. El valor se guarda en la partida y puedes cambiarlo en el título cuando quieras."
+    ]
+  },
+  "arena-cups": {
+    "title": "Copas de la arena y el calendario",
+    "summary": "Quién puede entrar en cada copa, las reglas de un combate y los premios.",
+    "headings": [
+      "Reglas",
+      "Copas originales",
+      "Copas nuevas"
+    ],
+    "paragraphs": [
+      "La arena sigue un calendario de 30 días. Una copa son tres rondas entre ocho participantes. Un combate dura 99 en el cronómetro; si nadie cae, gana el luchador que ha recibido menos daño y un empate cuenta como derrota. Entre combates el compañero recupera el 20% de sus PS y PM. En la arena no se gana ni se aprende nada; el premio llega después de la final.",
+      "Las copas de Categoría D, C, B y A ocupan la mayoría de los días, y la Categoría S, los días 7, 14, 21 y 28, es para los ganadores de la Categoría A. Las copas Versión 1 a 4 admiten solo a los doce Digimon de esa mascota virtual y la Versión O tiene su propia lista. Las copas de especialidad (Fuego, Lucha, Trueno y Viento, Hielo, Naturaleza, Metálica y Sucia) van por la primera especialidad, y las especies nuevas pueden entrar en ellas. Dino, Alas, Animal y Humana van por el cuerpo, y la Copa Escarabajo es el día 22.",
+      "Horizon añade copas, dos veces cada una en los 30 días y cada una en una arena propia. Por nivel: Novato (3000 bits y un Chip Velocidad), Campeón (5000 y un Chip DV A), Perfecto (7000 y un Chip DV D; hacen falta diez habitantes) y Mega (10000 y un Chip DV E; diez habitantes y la Categoría A ganada). Por atributo: Vacuna (Chip HP), Datos (Chip Intelecto) y Virus (Chip Ataque). Por campo: Nature Spirits (Superverdura), Deep Savers (Digilubina), Nightmare Soldiers (Trucha negra), Wind Guardians (Hoja veloz), Metal Empire (Chip Defensa), Virus Busters (Chip MP), Dragon's Roar (Fruta poder) y Jungle Troopers (Fruta sabia). Por fila: Oscuridad, Luz, Agua, Espada y Gaia. Todas pagan 5000 bits con su objeto."
     ]
   },
   "file-city": {
@@ -160,53 +308,87 @@
     "paragraphs": [
       "El directorio de reclutamiento reúne habitantes, lugares, servicios y aportaciones a la prosperidad dentro de spoilers plegados.",
       "Los pasos permanecen ocultos hasta abrir el aviso de spoilers. Las horas usan el reloj del juego. Comprueba los requisitos además del lugar: puede hacer falta un hito de ciudad, otro recluta o un suceso.",
-      "La tabla de intercambios de Mojyamon está en el spoiler cerrado de abajo: las ocho primeras filas permiten un objeto por día de juego; la novena, una sola vez por partida guardada. Si en tu juego aparece una lista distinta o antigua, has cargado un estado del emulador de una versión anterior. Arranca el disco nuevo desde cero y carga la partida de la tarjeta de memoria. Haz antes una copia de la tarjeta. Mushroomon ya se puede encontrar y reclutar: aparece en la Zona de Esporas del Monte Panorama a la que lleva la ruta normal. Los tres Soulmon de la pantalla de Haunted/Phantomon vuelven durante el día (00:00–19:59) y tras reclutar a Phantomon."
+      "La tabla de intercambios de Mojyamon está en el spoiler cerrado de abajo: las ocho primeras filas permiten un objeto por día de juego; la novena, una sola vez por partida guardada. Si la lista de tu juego es distinta, has cargado un estado del emulador de otra versión. Arranca el disco desde cero y carga la partida de la tarjeta de memoria. Haz antes una copia de la tarjeta."
     ],
     "spoiler_paragraphs": [
       2
     ]
   },
-  "hidden-mechanics": {
-    "title": "Mecánicas ocultas de los compañeros",
-    "summary": "Mecánicas ocultas de los compañeros.",
+  "shops": {
+    "title": "Tiendas, máquinas y hallazgos diarios",
+    "summary": "De dónde salen los bits y los objetos, y los pequeños servicios de la isla.",
     "paragraphs": [
-      "{bakemon_mechanic}",
-      "Cada compañero tiene sus preferencias de comida y sueño. Las especialidades determinan qué técnicas aprende en combate. Una casilla vacía sigue contando al elegir la probabilidad, aunque el resumen no la muestre.",
-      "La guía de evolución del juego y el árbol de la wiki explican los objetivos. Las transformaciones especiales y los objetos tienen condiciones propias; una fila normal de estadísticas no describe todas las formas de obtener una especie. Spoiler: cuando un compañero pierde una vida y aún le queda alguna, hay un 30% de probabilidad de una evolución especial en casa de Jijimon: Greymon a SkullGreymon, Meramon a SkullMeramon, Mammothmon a SkullMammothmon y Garudamon a Phoenixmon, pero solo si ya tiene las estadísticas que pide la nueva forma."
-    ],
+      "Una partida nueva empieza con 20 unidades de Carne y 1000 bits, y la Carne cuesta 30 bits. Las tiendas preguntan cuántas quieres con un cuadro de cantidad, y el Item Bank muestra el icono de cada objeto. Los bits ganados en combate son una vez y media la cantidad original.",
+      "El trabajo de Monochromon en la tienda es un turno de veinte clientes que termina mostrando tus beneficios. Cuando vive en la ciudad, Tuskmon se queda con la tienda y ofrece una oferta del día que puedes regatear dos veces; un regateo fallido cierra la oferta hasta mañana. Cada máquina expendedora tiene su propio surtido: setas en el Lago del Ojo del Dragón, carnes en la Zona Glacial Prehistórica, objetos de recuperación en la Sabana Gear y un sorteo de 1000 bits en la Selva Tropical. Las tiendas de cartas también venden cartas.",
+      "Los puntos del suelo que esconden un objeto lo dan una vez por día de juego. Los intercambios de Mojyamon también son diarios; el artículo de Ciudad File tiene la tabla. Sukamon limpia todas las cacas de la isla por 1000 bits. La Mansión de Grey Lord y el Santuario de Hielo se abren a cualquier compañero cuando su Digimon vive en la ciudad."
+    ]
+  },
+  "extended-story": {
+    "title": "La historia extendida",
+    "summary": "Qué añade HIST. EXTRA, sin spoilers fuera del pliegue.",
     "spoiler_paragraphs": [
       2
-    ]
-  },
-  "new-game-quiz": {
-    "title": "Cuestionario inicial: puntos y compañeros",
-    "summary": "Las siete preguntas aportan a tres grupos de puntuación.",
-    "paragraphs": [
-      "La tabla muestra los puntos de cada posición de respuesta del cuestionario de Jijimon. Las posiciones siguen el orden del juego. Las puntuaciones eligen elemento, atributo y temperamento; esa combinación determina el compañero de la cuadrícula.",
-      "Gana la mayor puntuación de cada grupo. En empate se favorece la respuesta más reciente que lo apoye; si esa respuesta apoya a ambos, gana el primero del grupo. El orden es Combate, Fuego, Hielo, Naturaleza, Aire; Vacuna, Datos, Virus; Audaz, Tranquilo, Astuto.",
-      "Jijimon mantiene en secreto quién será tu compañero: lo descubrirás a tu lado al despertar. Ponerle nombre es opcional y los mensajes no revelan la especie. Las columnas muestran NUEVOS DIGIMON activado y desactivado. Las respuestas, los puntos y la tabla de compañeros iniciales están en el spoiler de abajo."
     ],
+    "paragraphs": [
+      "HIST. EXTRA, activada por defecto, añade una segunda historia que transcurre junto a la original: 69 pantallas nuevas a las que se llega desde las áreas que ya conoces, y 22 habitantes nuevos, con lo que la ciudad pasa de 50 a 72. La historia original, sus reclutas y su final no se tocan.",
+      "Las áreas nuevas se abren a medida que avanza la historia. Ninguna decisión que tomes cierra nunca un recluta, un servicio o una ruta, así que responde como quieras. Activar la opción en una partida empezada te lleva a ti y a tu compañero a la casa de Jijimon y conserva todo lo que tenías; con ella desactivada, las áreas y los habitantes nuevos simplemente no están, y las medallas que los necesitan quedan ocultas.",
+      "La primera área nueva, las Colinas de Hierro, se alcanza desde la Sabana Gear cuando el camino al norte está abierto. Tras el final, un combate opcional contra BlackWarGreymon espera en la Dimensión Oculta; la primera victoria da un Chip Ataque y un Chip Defensa."
+    ]
+  },
+  "curling": {
+    "title": "Curling",
+    "summary": "Partidas rápidas, modos por equipos y las cinco copas de la pista de Tierra Helada.",
+    "headings": [
+      "Lo básico",
+      "Piedras",
+      "Copas"
+    ],
+    "paragraphs": [
+      "La pista está en Tierra Helada. Cuando Penguinmon vive en la ciudad, abre el menú de la pista. Una partida rápida cuesta un pez de cualquier tipo y tus rivales son habitantes de la ciudad. Además de Individuales hay Dobles y partidas todos contra todos de tres o cuatro equipos.",
+      "Las piedras se reparten su velocidad a lo largo de la línea entre sus centros. Un golpe de frente detiene la piedra lanzada y manda la otra hacia delante; un golpe de lado desvía las dos; un roce apenas mueve el objetivo.",
+      "Cinco copas individuales se juegan de una vez, tres rondas cada una: Novato, Aficionado, Experto, Élite y Leyenda. Cada una necesita haber ganado la anterior y que los siete rivales vivan en la ciudad. La entrada es un pez: Digiboquerón, Digipargo, Digitrucha, Digisiluro y Digilubina. El premio es siempre un objeto, nunca bits. La primera Copa Leyenda da además la medalla Leyenda del curling y un chip de cada tipo; Penguinmon guarda los chips que no puedas llevar."
+    ]
+  },
+  "cards": {
+    "title": "Cartas y el álbum",
+    "summary": "305 cartas, dónde conseguirlas y para qué sirven las repetidas.",
     "spoiler_paragraphs": [
-      0,
-      1
+      2
+    ],
+    "paragraphs": [
+      "El álbum contiene las cartas originales con su arte original y, con CARTAS NUEVAS activado, 240 nuevas, del 66 al 305. Se desplaza y cuenta las que tienes sobre 305, o sobre 65 con la opción desactivada, que oculta las nuevas en todas partes y conserva sus recuentos. Puedes tener hasta nueve copias de una carta.",
+      "Las tiendas de cartas venden un sobre de tres cartas por 500 bits, y la máquina de cartas de la tienda de objetos da una carta por 100. Un mostrador diario ofrece seis cartas al día, con precio según la rareza de 50 a 5000 bits, y compra las tuyas a mitad de precio. ShogunGekomon cambia cartas repetidas por puntos de mérito, de 1 a 100 por carta según la rareza, y el mérito por objetos con un cuadro de cantidad: una Supercura cuesta 60, un Superregen. 250 y un chip de estadística 800. Los intercambios de cartas de los personajes originales siguen ahí.",
+      "Dos cartas son especiales. La carta 0 se da en tu primera visita a la tienda de cartas de la Sabana Gear, y la carta 65 llega con el final."
     ]
   },
-  "difficulty": {
-    "title": "EASY, NORMAL y HARD",
-    "summary": "EASY, NORMAL y HARD.",
+  "medals": {
+    "title": "Medallas",
+    "summary": "Las 21 medallas, qué opciones ocultan algunas y dónde verlas.",
+    "spoiler_paragraphs": [
+      2
+    ],
     "paragraphs": [
-      "NORMAL usa las reglas habituales. EASY duplica el daño del compañero y divide entre dos el recibido, redondeando hacia arriba antes de los límites normales. También reduce a la mitad el veneno del compañero. Afecta a combates de campo y torneos individuales, no al VS de dos jugadores.",
-      "La dificultad no reescribe las estadísticas guardadas. El daño porcentual de los guiones sigue sus reglas. Elige la dificultad en las opciones del título y comprueba los ajustes disponibles.",
-      "Elige entre las dificultades de las opciones del título. Los ajustes de combate se muestran abajo y no cambian el crecimiento permanente del compañero. ALERTA PELIGRO, en las opciones del título y activada por defecto, pone un pequeño diablillo lila sobre un Digimon salvaje claramente más fuerte que tu compañero: su fuerza de combate, PS × (Ataque + Defensa), es al menos 2,5 veces la de tu compañero. Solo aparece en los Digimon que inician un combate al tocarlos, nunca en los personajes que solo hablan, y únicamente mientras puedes moverte. Úsala para evitar combates que perderías por mucho; es un aviso, no una garantía."
+      "La página de Medallas está en la pestaña Jugador del menú de pausa. Lista primero las medallas originales; una esquina dorada marca las seis que añade Horizon. Las medallas son un registro: ninguna da un objeto, aunque criar a todos los Digimon originales también sube tu nivel de Tamer, como siempre.",
+      "Una medalla que necesita algo desactivado en OPCIONES queda oculta y no se puede conseguir mientras tanto: Maestro Horizon con DIGIMON NUEVOS desactivado, Ciudad Horizon con HIST. EXTRA desactivada y Colección completa con CARTAS NUEVAS desactivado. Las medallas ya conseguidas se conservan.",
+      "Medallas originales: las copas de categoría, de versión, de tipo y especiales de la arena, 100 victorias, Técnicas clásicas (las 57 técnicas originales), Maestro clásico (todos los Digimon originales criados), Cima clásica (PS y PM 9999, las demás estadísticas 999), Curling perfecto, 100 peces, Game Clear, Ciudad clásica (50 habitantes), Colección clásica (las cartas originales), Bits al máximo (999999 bits) y Décimo aniversario. Medallas de Horizon: Leyenda del curling (la Copa Leyenda), Maestro Horizon (todos los Digimon criados), Rompelímites (PS y PM 15000, las demás estadísticas 1500), Ciudad Horizon (todos los habitantes), Colección completa (todas las cartas) y Maestro de técnicas (las técnicas originales y 40 de las nuevas)."
     ]
   },
-  "faq": {
-    "title": "Preguntas frecuentes y problemas",
-    "summary": "Actualizaciones, partidas perdidas, parcheo lento e informes útiles.",
+  "tamer-looks": {
+    "title": "El aspecto de tu Tamer",
+    "summary": "Chico o chica, piel, pelo, ropa y mochila, que se pueden cambiar gratis en cualquier momento.",
     "paragraphs": [
-      "Si no aparece Continuar, comprueba la tarjeta asignada, sus bloques libres y el nombre del disco en las tarjetas por juego. Horizon necesita {save_blocks} bloques libres para una partida nueva. Haz una copia antes de actualizar, arranca el disco nuevo y carga la partida del juego.",
-      "Parchear en el móvil puede tardar. Ante errores de cuota, usa una ventana normal, libera espacio y repite; también puedes usar el parcheador de escritorio. Las comprobaciones son intencionadas: los discos adicionales aportan especies y una copia modificada o incompatible no coincidirá. El creador web en teléfonos Android ya no falla con un error de permisos al copiar el disco.",
-      "Si el texto se ve mal, anota versión del juego, disco base, idioma, compilación del emulador y ajustes gráficos. En versiones Android afectadas, prueba a desactivar Enable Texture Cache. Incluye el desencadenante exacto y una captura: el síntoma por sí solo no identifica la causa. La cara de WarGrowlmon ya no tiene agujeros."
+      "En una partida nueva, Jijimon te pregunta si eres chico o chica tras sus siete preguntas, y se abre la página de Aspecto. Más adelante está en la pestaña Jugador del menú de pausa, junto a tu nombre. Cambiar el aspecto es gratis, se puede hacer en cualquier momento y se guarda en la partida.",
+      "Izquierda y derecha cambian la fila resaltada, L1 y R1 giran al Tamer, confirmar guarda y cancelar descarta. Las filas son Tamer (chico o chica, que determina la cara, las manos y la ropa disponible), Piel (seis tonos), peinado y color de pelo, Camiseta, Pantalón, Zapatos y Mochila, cada una con su color.",
+      "Cada fila mantiene el original como primera opción: el gorro, la camiseta, el pantalón, los zapatos y la mochila del Tamer original. Hay once peinados además del gorro y la cabeza calva, veinte colores de pelo, quince camisetas, ocho pantalones, con unos cortos y una falda, nueve pares de zapatos y cinco mochilas, o ninguna. La ropa viene en dieciséis colores."
+    ]
+  },
+  "cheats": {
+    "title": "El menú Trucos",
+    "summary": "Un menú de pruebas para probar cosas: qué hace cada fila.",
+    "paragraphs": [
+      "Pon TRUCOS en SÍ en las OPCIONES del título. En el campo, pausa con START y pulsa SELECT; el cuadro de pausa te lo recuerda con «SELECT: trucos». El menú está pensado para pruebas y para quien quiera curiosear; cambia tu partida como cualquier otra forma de jugar, así que guarda una copia de la tarjeta de memoria.",
+      "Las filas: Añadir 10000 bits, Saciar todas las necesidades, Editar Digimon, Evolucionar Digimon, Viajar a otro mapa, Curar Digimon, Atajos con SELECT, Guardar partida, Cargar partida, Volver al menú principal, Morir de viejo, Aprender técnica, Aprender todas las técnicas y Desbloquear gráfico de evolución. Morir de viejo pregunta antes y es una muerte natural, así que eliges el huevo. Con los atajos con SELECT activados, mantener SELECT y pulsar L1 o R1 cambia de compañero, y L2 o R2 salta entre mapas.",
+      "En el editor, izquierda y derecha cambian un valor según el paso y arriba y abajo cambian el paso; L1 y R1 suman o restan 10, L2 y R2 100. La vida no puede bajar de una hora. Las listas largas dan la vuelta, y izquierda y derecha saltan diez filas."
     ]
   }
 }

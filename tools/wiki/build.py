@@ -24,6 +24,26 @@ SITE_LIMIT = 900 * 1024 * 1024
 INDEX_LIMIT = 400 * 1024
 
 
+# Guide order and grouping on the guides index, the home and the PDF. Released snapshots hold a subset.
+SECTIONS=(
+    ('setup',('getting-started','duckstation-desktop','duckstation-android','epsxe','retroarch','iphone-web','memory-cards','ram-and-frame-rate','options','controls','faq')),
+    ('partner',('first-day','care','screen-indicators','training','gym-x5','rebirth','hidden-mechanics')),
+    ('evolution',('evolution-requirements','evolution-timing','new-digimon','new-game-quiz')),
+    ('battle',('battles','learning-techniques','darkness-light-water','weapon-earth','difficulty','arena-cups')),
+    ('world',('file-city','shops','extended-story','curling','cards','medals')),
+    ('extras',('tamer-looks','cheats')),
+)
+
+
+def ordered(articles):
+    """The catalog in section order; an article outside every section needs a place first."""
+    order=[ident for _,idents in SECTIONS for ident in idents]
+    missing=set(articles)-set(order)
+    if missing:
+        raise ValueError('Article without a guide section: '+', '.join(sorted(missing)))
+    return {ident:articles[ident] for ident in order if ident in articles}
+
+
 def compact(data):
     return json.dumps(data, ensure_ascii=False, separators=(',', ':'))
 
@@ -67,7 +87,7 @@ def add_pdf_links(home, pages, record):
 
 class Pages:
     def __init__(self, out, data, lang, articles):
-        self.out, self.data, self.lang, self.articles = out, data, lang, articles
+        self.out, self.data, self.lang, self.articles = out, data, lang, ordered(articles)
         self.base = f'/wiki/{lang}/'
         self.asset_version = hashlib.sha256(b''.join(p.read_bytes() for p in [ROOT/'web/style.css', CONTENT/'style.css', CONTENT/'wiki.js'])).hexdigest()[:12]
         self.strings = json.loads((ROOT / f'web/i18n/{lang}.json').read_text())
@@ -374,6 +394,15 @@ class Pages:
             labels={'hp':'hp','offense':'offense','defense':'defense','speed':'speed','brain':'brains','brains':'brains'}
             rows=''.join(f'<tr><th>{self.t("wiki."+k)}</th><td>{escape(str(v))}</td></tr>' for k,v in facts['hard'].items() if not isinstance(v,(dict,list)))
             return '<aside class="note">'+self.t('wiki.hardPresent')+'</aside><div class="table-wrap"><table>'+rows+'</table></div>'
+        if ident=='battles':
+            chart=facts.get('type_chart')
+            if not chart:return ''
+            # Rows attack, columns defend; the neutral x1 is left blank so the exceptions stand out.
+            types=('fire','battle','air','nature','ice','mech','filth','dark','light','water','weapon','earth')
+            mark={20:'×2',15:'×1.5',10:'',5:'×0.5',2:'×0.2'}
+            head=''.join(f'<th>{self.t("data."+k)}</th>' for k in types)
+            rows=''.join(f'<tr><th>{self.t("data."+k)}</th>'+''.join(f'<td>{mark[v]}</td>' for v in row)+'</tr>' for k,row in zip(types,chart))
+            return f'<div class="table-wrap"><table><thead><tr><th></th>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
         if ident=='new-game-quiz':
             quiz=facts['new-game']['newGame']['quiz']; starters=facts['new-game']['newGame']['starters']
             axes={'battle':'data.battle','fire':'data.fire','ice':'data.ice','nature':'data.nature','air':'data.air','vaccine':'digimon.attr.vaccine','data':'digimon.attr.data','virus':'digimon.attr.virus'}
@@ -412,10 +441,12 @@ class Pages:
                 for plural,one in singular.get(self.lang,{}).items():
                     paras=[p.replace(plural,one) for p in paras]
             heading_keys=['wiki.before','wiki.settings','wiki.memoryCards','wiki.troubleshooting'] if ident=='duckstation-android' else ['wiki.basics','wiki.how','wiki.remember','wiki.boostedTechnique'] if ident=='learning-techniques' else ['wiki.basics','wiki.how','wiki.remember']
-            toc=''.join(f'<a href="#step-{i}">{self.t(heading_keys[i])}</a>' for i in range(len(paras)))
-            body=f'<div class="page-title"><span class="eyebrow">{self.t("wiki.guideType")}</span><h1>{escape(article["title"])}</h1><p>{escape(article["summary"])}</p></div><div class="article-layout"><nav class="toc" aria-label="{self.t("wiki.contents")}"><b>{self.t("wiki.contents")}</b>{toc}<a href="#related">{self.t("wiki.related")}</a></nav><article class="surface article-body">'+''.join(f'<section id="step-{i}"><h2>{self.t(heading_keys[i])}</h2>'+(self.spoiler('<p>'+escape(p)+'</p>') if i in article.get('spoiler_paragraphs',[]) else '<p>'+escape(p)+'</p>')+'</section>' for i,p in enumerate(paras))+(self.spoiler(self.fact_block(ident)) if ident=='new-game-quiz' else self.fact_block(ident))+(self.bakemon() if ident=='hidden-mechanics' else '')+f'<h2 id="related">{self.t("wiki.related")}</h2><a class="text-link" href="{self.base}guides/">{self.t("wiki.articles")} →</a></article></div>'
+            # An article may name its own sections; the three shared headings are the default.
+            headings=[escape(h) for h in article['headings']] if 'headings' in article else [self.t(heading_keys[i]) for i in range(len(paras))]
+            toc=''.join(f'<a href="#step-{i}">{headings[i]}</a>' for i in range(len(paras)))
+            body=f'<div class="page-title"><span class="eyebrow">{self.t("wiki.guideType")}</span><h1>{escape(article["title"])}</h1><p>{escape(article["summary"])}</p></div><div class="article-layout"><nav class="toc" aria-label="{self.t("wiki.contents")}"><b>{self.t("wiki.contents")}</b>{toc}<a href="#related">{self.t("wiki.related")}</a></nav><article class="surface article-body">'+''.join(f'<section id="step-{i}"><h2>{headings[i]}</h2>'+(self.spoiler('<p>'+escape(p)+'</p>') if i in article.get('spoiler_paragraphs',[]) else '<p>'+escape(p)+'</p>')+'</section>' for i,p in enumerate(paras))+(self.spoiler(self.fact_block(ident)) if ident=='new-game-quiz' else self.fact_block(ident))+(self.bakemon() if ident=='hidden-mechanics' else '')+f'<h2 id="related">{self.t("wiki.related")}</h2><a class="text-link" href="{self.base}guides/">{self.t("wiki.articles")} →</a></article></div>'
             self.page(f'guides/{ident}/',article['title'],body,'article',dict(type='article',text=' '.join(p for i,p in enumerate(paras) if i not in article.get('spoiler_paragraphs',[])),summary=article['summary'],aliases=ident.replace('-',' ')))
-        self.page('guides/',plain(self.t('wiki.articles')),f'<div class="page-title"><h1>{self.t("wiki.articles")}</h1></div><div class="cards">'+''.join(self.article_card(k,a) for k,a in self.articles.items())+'</div>','articles')
+        self.page('guides/',plain(self.t('wiki.articles')),f'<div class="page-title"><h1>{self.t("wiki.articles")}</h1></div>'+''.join(f'<div class="section-heading"><h2 id="{name}">{self.t("wiki.section."+name)}</h2></div><div class="cards">'+''.join(self.article_card(k,self.articles[k]) for k in idents if k in self.articles)+'</div>' for name,idents in SECTIONS if any(k in self.articles for k in idents)),'articles')
 
     def directories(self):
         cards=self.species_cards(self.data['species'])
@@ -433,8 +464,9 @@ class Pages:
             self.index.append(dict(type='recruit',title=name,url=self.base+f'recruits/#recruit-{row["id"]}',text=' · '.join(self.places[i] for i in row['screens'])+' · '+plain(self.t('data.recruit.service.'+row['service'])),aliases=row['name']+' Horizon',spoiler=True))
         self.records={}
         links=''.join(f'<a href="{self.base}{path}/"><b>{self.t(key)} ↗</b><span>{count}</span></a>' for path,key,count in [('digimon','data.recruit.digimon',len(self.data['species'])),('techniques','data.techniques',len(self.data['techniques'])),('evolutions','data.evolutions',''),('recruits','data.recruits',len(self.data['recruits']))])
-        featured=''.join(self.article_card(k,self.articles[k]) for k in ('duckstation-android','care','evolution-requirements'))
-        body=f'<div class="intro"><span class="eyebrow">{self.t("wiki.nav")}</span><h1>{self.t("wiki.title")}</h1><p>{self.t("wiki.lead")}</p>{self.search_form()}<!--pdf-button--></div><div class="section-heading"><h2>{self.t("wiki.start")}</h2></div><div class="cards">{featured}</div><div class="section-heading"><h2>{self.t("wiki.lookup")}</h2></div><div class="data-links">{links}<!--pdf-tile--></div><div class="section-heading"><h2>{self.t("wiki.articles")}</h2><a href="{self.base}guides/">{self.t("wiki.all")} →</a></div><div class="cards">'+''.join(self.article_card(k,self.articles[k]) for k in ('memory-cards','new-game-quiz','difficulty'))+'</div><div class="section-heading"><h2>'+self.t('data.recruit.digimon')+'</h2></div><div class="species-grid">'+''.join(self.card(self.by_id[i]) for i in (3,17,45))+'</div>'
+        featured=''.join(self.article_card(k,self.articles[k]) for k in ('getting-started','first-day','evolution-requirements'))
+        sections=''.join(f'<a class="card" href="{self.base}guides/#{name}"><h2>{self.t("wiki.section."+name)} ↗</h2><p>'+' · '.join(escape(self.articles[k]['title']) for k in idents if k in self.articles)+'</p></a>' for name,idents in SECTIONS if any(k in self.articles for k in idents))
+        body=f'<div class="intro"><span class="eyebrow">{self.t("wiki.nav")}</span><h1>{self.t("wiki.title")}</h1><p>{self.t("wiki.lead")}</p>{self.search_form()}<!--pdf-button--></div><div class="section-heading"><h2>{self.t("wiki.start")}</h2></div><div class="cards">{featured}</div><div class="section-heading"><h2>{self.t("wiki.lookup")}</h2></div><div class="data-links">{links}<!--pdf-tile--></div><div class="section-heading"><h2>{self.t("wiki.articles")}</h2><a href="{self.base}guides/">{self.t("wiki.all")} →</a></div><div class="cards">'+sections+'</div><div class="section-heading"><h2>'+self.t('data.recruit.digimon')+'</h2></div><div class="species-grid">'+''.join(self.card(self.by_id[i]) for i in (3,17,45))+'</div>'
         self.page('',plain(self.t('wiki.nav')),body,'home')
         types=[('all','wiki.all'),('article','wiki.articles'),('digimon','data.recruit.digimon'),('technique','data.techniques'),('recruit','data.recruits'),('evolution','data.evolutions')]
         filters=''.join(f'<button type="button" data-filter="{kind}" aria-pressed="{str(kind=="all").lower()}">{self.t(label)}</button>' for kind,label in types)
@@ -486,7 +518,7 @@ def build(out, tag, presentation_ref=None):
     for pages in instances:
         add_pdf_links(dest/pages.lang/'index.html', pages, manifest['pdfs'][pages.lang])
     sizes=budget(out)
-    print(f'Wiki {tag}: {len(data["species"])} species, 20 articles × 9 languages; {sizes["wiki_bytes"]:,} bytes')
+    print(f'Wiki {tag}: {len(data["species"])} species, {len(instances[0].articles)} articles × {len(instances)} languages; {sizes["wiki_bytes"]:,} bytes')
     return manifest
 
 

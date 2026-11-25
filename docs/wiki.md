@@ -84,7 +84,7 @@ technique-link pages when no existing partner page can serve as their destinatio
 
 ## Articles and source review
 
-`web/wiki/articles/<language>.json` stores twenty articles per language as titles, summaries and paragraphs. This is structured, repository-authored content: it needs no Markdown parser, remote CMS or runtime translation service. The English draft and eight translations follow the existing AI-assisted website/changelog authoring approach. Spanish uses Spain Spanish. `review.json` pins the English and all localized source hashes; changing an article invalidates the build until translations are reviewed and those hashes are updated together. UI copy lives in `web/i18n/*.json`, with the existing key/variable parity check.
+`web/wiki/articles/<language>.json` stores the articles of each language (36 in the working copy) as titles, summaries and paragraphs. `SECTIONS` in `tools/wiki/build.py` places every article in one of six sections (setup, partner, evolution, battle, world, extras) for the index and the home page; an article outside every section fails the build. Paragraphs take the three shared headings unless the record has its own `headings` list, one per paragraph, present in every language. This is structured, repository-authored content: it needs no Markdown parser, remote CMS or runtime translation service. The English draft and eight translations follow the existing AI-assisted website/changelog authoring approach. Spanish uses Spain Spanish. `review.json` pins the English and all localized source hashes; changing an article invalidates the build until translations are reviewed and those hashes are updated together. UI copy lives in `web/i18n/*.json`, with the existing key/variable parity check.
 
 Bindings `{save_blocks}`, `{pass_points}` and the capability-derived `{bakemon_mechanic}` resolve from the selected release. `{mega_hours}`, `{chain_melon_hours}` and `{digiseabass_hours}` read the tagged evolution timing and item effects; `{chain_melon}` and `{digiseabass}` use its localized runtime item names. The folded Mojyamon table reads the tagged shop arrays (player input is `mojyamonGives`, reward is `mojyamonTakes`). Source assertions guard the popup verdict, Mega wait and exchange caps. Training gains, difficulty factors, evolution timing, quiz points, actual localized opening questions/answers and both starter grids are generated from its data. Memory-card space resolves the primary file-creation expression and numeric constants in the active patch series. The original two-block primary creation is distinguished from its old one-block fallback; a later primary one-block patch changes the article fact. Unknown expressions fail for review instead of guessing. The runtime and data used by v0.0.7 were checked; a synthetic later one-block patch and current-main HARD data are regression cases.
 
@@ -98,13 +98,22 @@ Bindings `{save_blocks}`, `{pass_points}` and the capability-derived `{bakemon_m
 | Memory cards and updates | Active save patches, including primary card creation and `SAVE_V1_BYTES`/`SAVE_V2_BYTES`; tagged players' guide: save states retain old executable/disc offsets, memory cards are the update path. |
 | RAM / frame rate | `docs/building.md`, `docs/mods/options.md`, tagged players' guide and title scheduler patch: Chinese 8 MB, other eight languages 2 MB, 250% CPU recommendation, 20/60 fps selection and 20 Hz logic. The builder checks the selected release's frame-rate guidance. |
 | First day / care | `content/tables/care-rules.json`, species partner fields, `docs/reference/partner.md`: individual food/sleep, distinct needs, care mistakes and current-form evolution counters. Advice is a routine, not a claim of a guaranteed evolution. |
-| Training / gym x5 | `training.json`, `training-gains.json`, `brain-training.json`; training-block patches: R2 x1/x5, sequential ordinary awards, care/lifetime costs, stop checks and separate Bonus Try. Only base slot-zero awards are labeled base gains. |
+| Training / gym x5 | `training.json`, `training-gains.json`, `brain-training.json`; training-block patches and `docs/reference/engine-patches.md`: the Normal training x5 menu row, sequential ordinary awards, care/lifetime costs, held-cancel and automatic stops, and Bonus Try payouts (`docs/reference/minigames.md`). Only base slot-zero awards are labeled base gains. |
 | Evolution requirements / timing | `evolution-tree.json`, `evolution-rules.json`, species rows and `docs/reference/partner.md`: four groups, required score, alternatives, stat normalization, weight bands, competing-target order and time in form. The time table distinguishes the timed Mega route from the original Ultimate-to-Machinedramon route. |
 | Learning techniques | `docs/reference/partner.md`, `docs/reference/combat.md`, technique and species data; battle learning/runtime checks described by the existing guide: execution need not hit, first matching slot, one award among successful candidates, no Brains effect on that roll, separate training learning and base MP. The fourth paragraph and the species tables' Boosted label, power and MP follow `docs/mods/boosted-techniques.md` and each species' `boosted_technique`; a release without that field shows no label. |
 | File City | `city-residents.json`, `story/base/city/city.dws`, map placements, story scripts and checked `tools/guide/recruits.json` annotations: roster, prosperity, places, requirements and HP. Shellmon accepts the reviewed pre/post refactor operations without changing its quest meaning. Other script drift fails review. |
 | Hidden mechanics | Bakemon partner guards in the cemetery scripts and `tools/test_bakemon_translation.py`; the mechanic stays outside spoilers. Questions and successful choices are extracted from that tag’s script and localized text, inside a closed spoiler. A snapshot without the readable partner branch exports its actual ghost-language text, never text borrowed from main. Food/sleep and slot-order notes use species data. |
 | Opening quiz | `new-game.json`, `text/<language>.json` named `name.quiz.*` keys, `story/new-game-quiz.dws`, `tools/starter_quiz.py`, and the starter-quiz runtime patches: seven questions, answer positions, sparse weights, tie order, 45 cells and NEW DIGIMON variants. The generated quiz tables and solution paragraphs are folded spoilers; named cemetery dialogue keys are resolved separately. |
 | Difficulty | Tagged `docs/mods/options.md`, EASY runtime patch and `battle-formulas.json`: EASY's damage/poison effects, limits and VS exclusion. v0.0.7 has no HARD; later HARD factors come from that release's table. |
+| Darkness, Light and Water / Weapon and Earth | `docs/mods/technique-rows.md`, `content/tables/type-factors.json`, tournament data: row contents, healing limits, position hits, type factors and the fixed prize of each row cup. |
+| OPTIONS / controls / indicators | `docs/mods/options.md`, `text/ours/names.json` option labels, `docs/reference/world.md` (run and walk), `docs/reference/engine-patches.md` and the decision log: row order and defaults, always-on care bars, clock and enemy bars, quick care, battle speed, finisher input, bubbles and DANGER ALERT threshold. |
+| Lifetime and Rebirth | `docs/reference/partner.md` (death and rebirth), `content/tables/care-rules.json`, the rebirth script (`rite.*` text): lifetime, lives, the save-machine entry, what is kept, eggs and the folded life-loss evolutions. |
+| New Digimon | `content/tables/evolution-tree.json`, `evolution-rules.json`, species data and `docs/mods/`: counts, tree shape, Mega hours and the folded remodel service. |
+| Battles | `docs/reference/combat.md`, `content/tables/battle-rules.json`, `type-factors.json`: quick start, speed toggle, finisher gauge and charge, win gains. The type chart is generated from the snapshot's table. |
+| Arena cups | Tournament tables and names (`main.STR_TOURNAMENT_NAME_*`), `docs/reference/minigames.md`: calendar, match rules, entry rules and prizes. |
+| Shops / cards / medals | Shop and vending tables, `docs/decisions.md`, card and medal tables with their in-game names: prices, daily limits, merit trades, album counts, medal conditions and which options hide them. The 10th Anniversary condition is not stated. |
+| Extended story / curling | `story/mods/what-the-island-forgot/`, `content/tables/city-residents.json`, curling scripts and tables: screen and resident counts, no-lockout rule, rink modes, cups, entry fish and prizes. Story content beyond the first area and the post-ending fight (folded) is left out. |
+| Tamer look / Cheats | `main.LAB_STR_*` names and the look and cheats patches: rows, counts, buttons and limits. |
 | FAQ | Players' guide and existing website storage/error messages; texture-cache investigation documented in `docs/investigations/item-bank-text.md` and the text-clear patches. The Android workaround is conditional, not a diagnosis of every text problem. Reports should include version/platform/renderer and exact trigger. |
 
 ### v0.0.7 snapshot review
@@ -154,6 +163,15 @@ The v0.0.8 snapshot freezes all twenty articles in all nine languages. The
 working catalogs now describe workload-based AUTO (60/30/20) and the title's
 AUTO/60/20 selector, matching the active frame-rate patches. CPU overclock is
 optional; Chinese retains its 8 MB requirement. The v0.0.7 snapshot is unchanged.
+
+### Working copy after v0.0.9
+
+The working catalogs were reviewed against `main` after v0.0.9: release-note
+wording was removed (the wiki describes the game as it is), the gym article
+follows the Normal training x5 menu row instead of R2, and fourteen articles
+were added for options, controls, indicators, Rebirth, the new Digimon, battles
+and the type chart, arena cups, shops, the extended story, curling, cards,
+medals, the tamer's look and Cheats. The released snapshots are unchanged.
 
 The current-source model resolves one block for new saves, HARD difficulty,
 technique learning sources and the evolution popup's time/lifetime rules.
@@ -212,7 +230,7 @@ need no network or font installation.
 
 `tools/wiki/pdf.py` reuses the release model, reviewed article renderer, learning
 source renderer and recruitment renderer. Its temporary print HTML groups the
-20 articles, species by level, techniques and City services on single-column A5
+articles, species by level, techniques and City services on single-column A5
 pages, using static print instances of the shared Plus Jakarta Sans font. Techniques link to their complete
 learning sources. Finishers and innate attacks share a compact table and one
 learning note. Each species lists techniques in separate rows with power/MP/chance

@@ -13,7 +13,7 @@
     "summary": "BIOS, Spieldateien, Spieleinstellungen und Spielstände.",
     "paragraphs": [
       "Richte dein eigenes PlayStation-BIOS ein und füge den Horizon-Ordner hinzu. Die .cue muss bei ihrer .bin bleiben; fehlt diese oder wurde sie umbenannt, wird die Spur nicht gefunden.",
-      "Verwende die spielbezogenen Einstellungen für Horizon. Aktiviere für vereinfachtes Chinesisch 8 MB erweiterten RAM; die anderen Sprachen funktionieren mit 2 MB. AUTO passt die Darstellung an die Szene an und strebt 60, 30 oder 20 fps an. Eine höhere emulierte CPU-Geschwindigkeit kann höhere Bildraten stabilisieren, ist aber keine Voraussetzung mehr dafür, dass AUTO sie versucht.",
+      "Verwende die spielbezogenen Einstellungen für Horizon. Aktiviere für vereinfachtes Chinesisch 8 MB erweiterten RAM; die anderen Sprachen funktionieren mit 2 MB. AUTO passt die Darstellung an die Szene an und strebt 60, 30 oder 20 fps an. Eine höhere emulierte CPU-Geschwindigkeit kann höhere Bildraten stabilisieren; AUTO braucht sie nicht, um sie zu versuchen.",
       "Weise eine Karte mit {save_blocks} freien Blöcken zu. Karten pro Spiel vermeiden geteilten Platz. Prüfe nach Umbenennen oder Update die Kartenzuweisung und lade nach einem frischen Start im Spiel."
     ]
   },
@@ -72,11 +72,50 @@
       "Ändere die emulierte CPU statt Schnellvorlauf. Prüfe erkannte Einstellungen am Titel. Das Gerät muss die gewählte Emulationsgeschwindigkeit halten können. Starte nach RAM-Änderungen neu."
     ]
   },
+  "options": {
+    "title": "Das Menü OPTIONEN",
+    "summary": "Jede Zeile der Titeloptionen und was sie verändert.",
+    "headings": [
+      "Wo es ist",
+      "Spielinhalt",
+      "Kampf und Feld",
+      "Bildschirm und Sprache"
+    ],
+    "paragraphs": [
+      "OPTIONEN ist die fünfte Zeile des Titelmenüs, unter dem Kampfmodus. Die Werte stehen in jedem Spielstand, und was du am Titel einstellst, gilt vor dem im Spielstand Gespeicherten: Du kannst jede Zeile ändern und dann Fortsetzen wählen. Die Pflegebalken, die Digitaluhr und die Lebensbalken der Gegner sind immer an und haben keine Zeile.",
+      "NEUE DIGIMON (AN) fügt die importierten Arten und die Mega-Stufe hinzu; AUS lässt nur die Originalarten, die vier Original-Eier und die neun Original-Starter übrig, und ein Partner einer neuen Art wird als ähnliche Originalart gezeigt, bis du die Option wieder einschaltest. NEUE KARTEN (AN) fügt dem Album 240 Karten hinzu; AUS blendet sie überall aus und behält ihre Zähler. EXTRA-STORY (AN) fügt die neuen Gebiete und Bewohner hinzu; schaltest du sie in einem laufenden Spielstand ein, versetzt sie dich und deinen Partner in Jijimons Haus und behält deinen Fortschritt. DIGIT.-HILFE (AN) zeigt die Linien der Entwicklungstabelle und das Fenster mit den Voraussetzungen.",
+      "SCHWIERIGKEIT ist LEICHT, NORMAL oder SCHWER. SCHNELLSTART (AN) beginnt Feldkämpfe sofort, ohne den langen Auftritt. GEFAHR-ALARM (AN) markiert wilde Digimon, die viel stärker sind als dein Partner. JAPAN-TASTEN tauscht Bestätigen und Abbrechen auf Kreis und Kreuz; auf einer japanischen Disc steht die Zeile zu Beginn auf AN. CHEATS (AUS) fügt dem Pausenbildschirm ein Testmenü hinzu.",
+      "BILDRATE ist AUTO, 60 oder 20. SCHRIFT ist NEU, KLASSISCH oder ORIGINAL; Chinesisch hat kein ORIGINAL. SPRACHE ändert alle Texte auf einmal. SCHILDER wählt zwischen den Schildern wie im Original gezeichnet und ihren ÜBERSETZT-Fassungen."
+    ]
+  },
+  "controls": {
+    "title": "Steuerung und Kürzel",
+    "summary": "Rennen, Schnellpflege, Kampftempo und die Tasten jedes Menüs.",
+    "headings": [
+      "Auf dem Feld",
+      "Im Kampf",
+      "In Menüs"
+    ],
+    "paragraphs": [
+      "Halte R1 zum Rennen: Du und dein Partner bewegt euch 40 % schneller. Halte R2 zum langsamen Gehen. X spricht und bestätigt, Dreieck öffnet das Menü und bricht ab; mit JAPAN-TASTEN bestätigt Kreis und Kreuz bricht ab. Erscheint ein rosa Quadrat-Abzeichen über dem Partner, öffnet Quadrat die Schnellpflege: das Futter, die Heilung, die Toilette, den Schlaf oder das Schimpfen, das gerade passt, mit dem dringenden Bedarf zuerst und dem Lieblingsessen markiert.",
+      "R2 schaltet den Kampf zwischen normalem und doppeltem Tempo um, auf dem Feld, in der Arena und im VS. Das Tempo kehrt zu normal zurück, solange das Itemmenü offen ist, und wird nicht gespeichert. Ist die Finisher-Anzeige voll, löst Quadrat den Finisher aus; drücke dann schnell L1 und R1, um ihn aufzuladen, und eine gute Aufladung erhöht seinen Schaden bis zum Doppelten. Die Itemliste eines Kampfes zeigt nur die Items, die dort benutzt werden können.",
+      "In der Entwicklungstabelle öffnet Quadrat auf einem Ziel die Tabelle dessen, was es braucht, neben dem, was dein Partner hat, und L1 und R1 wechseln den Reiter. Bei der Eierwahl wählt Quadrat zufällig eines aus. Die Bestätigen-Taste überspringt die Abrechnung der Zuwächse nach Training oder Kampf. In den Cheats-Editoren ändern links und rechts den Wert, oben und unten die Schrittgröße."
+    ]
+  },
+  "faq": {
+    "title": "Häufige Fragen und Fehlerhilfe",
+    "summary": "Updates, Spielstände, langsames Patchen und gute Berichte.",
+    "paragraphs": [
+      "Fehlt Fortsetzen, prüfe Karte, freie Blöcke und Discname bei Karten pro Spiel. Horizon braucht {save_blocks} freie Blöcke für neue Spielstände. Sichere vor Updates und lade nach frischem Discstart im Spiel.",
+      "Patchen am Telefon kann dauern. Bei Speicherquoten nutze ein normales Fenster, schaffe Platz und versuche erneut; alternativ nutze den Desktop-Patcher. Zusatzdiscs liefern Arten; veränderte oder nicht unterstützte Ausgaben bestehen die Prüfung nicht.",
+      "Notiere bei Textfehlern Version, Basisdisc, Sprache, Emulator-Build und Grafik. Versuche bei betroffenen Android-Builds Enable Texture Cache auszuschalten. Nenne Auslöser und füge ein Bild bei; das Symptom allein erklärt die Ursache nicht."
+    ]
+  },
   "first-day": {
     "title": "Der erste Tag deines Partners",
     "summary": "Ein kleiner Tagesplan für File Island.",
     "paragraphs": [
-      "Wähle den Partner mit Jijimons Fragen. Lerne Pflegeanzeigen, Inventar und nahe Dienste kennen, bevor du weiterziehst. Nimm Heilmittel mit und lass Platz für Funde.",
+      "Wähle den Partner mit Jijimons Fragen. Ein neues Spiel beginnt mit 20 Fleisch und 1000 Bits. Lerne Pflegeanzeigen, Inventar und nahe Dienste kennen, bevor du weiterziehst. Nimm Heilmittel mit und lass Platz für Funde.",
       "Füttere bei Hunger, erreiche Toiletten rechtzeitig und lass ihn schlafen. Lieblingsessen und Schlafzeiten stehen auf der Artseite. Trainiere nicht den ganzen Tag ohne Pflegekontrolle.",
       "Teste eine kurze Einheit und prüfe Werte und Müdigkeit. Erkunde, kehre zurück und speichere auf Karte. Entwicklung hängt auch von Gewicht und Pflege ab; wähle ein Ziel vor wahllosem Training."
     ]
@@ -85,9 +124,25 @@
     "title": "Pflegefehler und Disziplin",
     "summary": "Warnungen verstehen, bevor du Werte planst.",
     "paragraphs": [
-      "Hunger, Toilette, Schlaf und Müdigkeit sind getrennte Systeme. Ignorierter Hunger oder Kot auf dem Boden kann Fehler verursachen; Krankheit und Erschöpfung haben eigene Folgen. Prüfe Anzeigen und Pflegebereich regelmäßig.",
-      "Disziplin und Zufriedenheit sind verschieden. Loben und Schimpfen wirken unterschiedlich und lösen nicht jedes Problem. Essensvorlieben und Schlafzeiten zählen ebenfalls. In einem Lebensraum, den der Partner nicht mag, wechselt sein Stimmungsgesicht wieder zwischen traurig und glücklich, wie im Original.",
-      "Entwicklungen können Mindest- oder Höchstzahlen von Fehlern verlangen. Viele Fehler sind eine gezielte Entscheidung, keine allgemeine Pflegeempfehlung. Gewöhnliche Zähler gelten für die aktuelle Form; lies alle vier Gruppen zusammen."
+      "Hunger, Toilette, Schlaf und Müdigkeit sind getrennte Systeme. Ignorierter Hunger, Kot auf dem Boden oder ein Partner, der über seine Schlafenszeit hinaus wach gehalten wird, bringt Fehler; Krankheit und Erschöpfung haben eigene Folgen. Die fünf Pflegebalken und die Blasen über dem Partner zeigen, was fällig ist; die Statusseite zeigt die Fehlerzahl.",
+      "Disziplin und Zufriedenheit sind verschieden. Loben und Schimpfen wirken unterschiedlich und lösen nicht jedes Problem. Essensvorlieben und Schlafzeiten zählen ebenfalls. In einem Lebensraum, den der Partner nicht mag, flackert das Zufriedenheitssymbol der Pflegebalken.",
+      "Entwicklungen können Mindest- oder Höchstzahlen von Fehlern verlangen. Viele Fehler sind eine gezielte Entscheidung, keine allgemeine Pflegeempfehlung. Die Zahl beginnt bei jeder Entwicklung und bei der Wiedergeburt von vorn und gilt daher immer für die aktuelle Form; lies alle vier Gruppen zusammen."
+    ]
+  },
+  "screen-indicators": {
+    "title": "Balken, Blasen und Warnungen",
+    "summary": "Was die Pflegebalken, die Blasen über deinem Partner und die Warnungen bedeuten.",
+    "headings": [
+      "Pflegebalken und Uhr",
+      "Blasen und Abzeichen",
+      "Statusseite",
+      "Gefahrenalarm"
+    ],
+    "paragraphs": [
+      "Fünf Balken sitzen unten rechts bei der Uhr und beim Training: Zufriedenheit, Disziplin, Hunger, Toilette und Energie. Ein voller Balken bedeutet, dass alles gut ist; ein leerer, dass dieser Bedarf fällig ist. Das Zufriedenheitssymbol flackert in einem Lebensraum, den der Partner nicht mag. Die Uhr zeigt unter dem Zifferblatt auch die Stunde in Ziffern.",
+      "Eine Blase über dem Partner nennt, was er braucht: hungrig, Toilette, schläfrig, müde, krank, verletzt, wenig KP oder wenig MP, beide unter 30 %. Eine Schimpfen-Blase erscheint, wenn Schimpfen verdient ist, nach verweigertem Futter oder kurz vor einem Missgeschick. Das rosa Quadrat-Abzeichen bedeutet, dass die Schnellpflege etwas anzubieten hat. Eine Fleisch-Blase über dem Bauern bedeutet, dass eine Ernte wartet.",
+      "Die Statusseite zeigt Zufriedenheit und Disziplin von 0 bis 100, Müdigkeit und den Virusbalken mit ihren Zahlen, die Pflegefehler der aktuellen Form und die gewonnenen Kämpfe. Das Pausenmenü zeigt KP und MP des Partners. In wilden Kämpfen hat jeder Gegner einen Lebensbalken mit seinen KP; Arena- und Story-Gegner nicht.",
+      "Bei aktivem GEFAHR-ALARM schwebt ein kleiner lila Teufel über einem wilden Digimon, das deutlich stärker ist als dein Partner: Seine KP × (Angriff + Verteidigung) betragen mindestens das 2,5-Fache der deines Partners. Er erscheint nur bei Digimon, die bei Berührung einen Kampf beginnen, nie bei Figuren, die nur reden, und nur solange du dich frei bewegen kannst. Er ist eine Warnung, kein Urteil."
     ]
   },
   "training": {
@@ -96,16 +151,47 @@
     "paragraphs": [
       "Jedes Gerät trainiert einen Wert. Die Basiswerte unten sind die Grundwerte; Partner, Verbesserungen, Gegenstände und Trainingsergebnis können sie verändern. Intelligenztraining hat eigene Lernschwellen, getrennt vom Kampf.",
       "Training verbraucht Zeit, Nahrung, Müdigkeit und Lebensdauer. Prüfe Hunger, Toilette und Schlaf vorher. Müde weiterzumachen kann Strafen auslösen; größere Zuwächse sind keine kostenlose Zeit.",
-      "x5 vergibt mehrere normale Belohnungen mit Prüfungen dazwischen. Nutze x1 nahe Gewichts- oder Entwicklungszielen. Ruhe dich aus und erfülle Bedürfnisse vor einem neuen Block."
+      "Jedes Studiomenü bietet auch Normales Training x5, das fünf gewöhnliche Einheiten mit Prüfungen dazwischen ausführt. Trainiere einzelne Einheiten, wenn du nahe einem Gewichts- oder Entwicklungsziel anhalten musst. Ruhe dich aus und erfülle Bedürfnisse vor einem neuen Block."
     ]
   },
   "gym-x5": {
-    "title": "So funktioniert x5-Training",
-    "summary": "Mehrere Einheiten mit normalen Kosten und frühen Stopps.",
+    "title": "Training x5 und Bonustraining",
+    "summary": "Fünf Einheiten hintereinander, mit normalen Kosten und frühen Stopps.",
     "paragraphs": [
-      "R2 wechselt während einer Einheit zwischen x1 und x5. Nach der ersten Animation vergibt der Block die Belohnungen nacheinander. Er ist kein kostenloser Fünffachmultiplikator.",
-      "Er kann nach Hunger, Toilettenbedarf, Schläfrigkeit, Müdigkeit oder Unwohlsein stoppen. Auch Entwicklung, Lebensdauer und Studiomeldungen werden geprüft. Das Ergebnis zeigt die tatsächlich abgeschlossenen Einheiten; es sind nicht immer fünf.",
-      "Bonus Try ist unabhängig vom Block. Jede Walze hält dort, wo du drückst, ohne verstecktes Weiterrutschen: Ein Fehlversuch gibt die Hälfte, drei gleiche Symbole das Doppelte, drei Symbole des trainierten Werts x4 und drei goldene Haufen x5. Kümmere dich vor dem nächsten Versuch um den Stopgrund. Wähle für eine Belohnung rechtzeitig x1, statt auf einen Notstopp zu setzen."
+      "Jedes Studiomenü hat vier Zeilen: Normales Training, Normales Training x5, Bonustraining und Verlassen. Normales Training x5 spielt das Training einmal ab und vergibt dann fünf gewöhnliche Einheiten nacheinander. Jede Einheit kostet ihre übliche Stunde, Nahrung, Müdigkeit und Lebensdauer; es ist kein kostenloser Fünffachmultiplikator.",
+      "Halte zwischen zwei Einheiten etwa eine halbe Sekunde die Abbrechen-Taste gedrückt, um den Block dort zu beenden. Der Block stoppt auch von selbst, wenn der Partner hungrig wird, auf die Toilette muss, schläfrig oder müde wird, verletzt oder krank ist, wenn eine Entwicklung ansteht, wenn sein Leben endet oder wenn das Studio etwas zu sagen hat, etwa bei einer gelernten Technik. Das Ergebnisfenster zählt die Einheiten, die wirklich liefen. Die Bestätigen-Taste überspringt die Abrechnung der Zuwächse.",
+      "Das Bonustraining setzt eine Einheit auf den Spielautomaten. Jede Walze hält dort, wo du drückst, ohne verstecktes Weiterrutschen: Ein Fehlversuch gibt die Hälfte, drei gleiche Symbole das Doppelte, drei Symbole des trainierten Werts x4 und der Jackpot x5. Es kostet dieselbe Zeit und Pflege wie eine normale Einheit."
+    ]
+  },
+  "rebirth": {
+    "title": "Lebensdauer, Leben und Wiedergeburt",
+    "summary": "Wie lange ein Partner lebt, was er behält und wie man bewusst neu beginnt.",
+    "headings": [
+      "Lebensdauer und Leben",
+      "Wiedergeburt",
+      "Eier",
+      "Entwicklung bei Verlust eines Lebens"
+    ],
+    "spoiler_paragraphs": [
+      3
+    ],
+    "paragraphs": [
+      "Ein Partner wird mit 408 Lebensstunden geboren. Geringe Zufriedenheit verkürzt sie, das Erreichen von Ultra gibt 96 Stunden dazu und Mega 120; manche Speisen geben mehr. Die rote Warnung im Entwicklungsfenster zeigt, wann das Leben vor einer Entwicklung endet. Ein Partner hat außerdem drei Leben im Kampf: Eine Niederlage kostet eines und schickt dich zurück in Jijimons Haus.",
+      "Die Speichermaschine in Jijimons Haus hat für einen Partner ab Champion einen Eintrag Wiedergeburt. Sie fragt zweimal nach, kostet nichts und lässt den Partner gehen wie bei einem natürlichen Tod, sodass du das nächste Ei wählst. Der neue Partner behält die gelernten Techniken, deine Items, Bits und seinen Namen und erbt einen Anteil der Werte, der mit deinem Tamer-Level wächst. Betrug die Zufriedenheit 20 oder mehr, beginnt er mit Zufriedenheit und Disziplin bei 80, sonst bei 50.",
+      "Nach einem natürlichen Tod oder einer Wiedergeburt wählst du das Ei; Quadrat wählt zufällig eines. Es gibt vier Eier mit NEUE DIGIMON aus und acht mit NEUE DIGIMON an: Die neuen schlüpfen als Pabumon, Pichimon, YukimiBotamon und Nyokimon. Ein Partner, der im Kampf oder an Krankheit ohne verbleibende Leben stirbt, bekommt ein zufälliges Ei.",
+      "Verliert ein Partner ein Leben und hat noch eines übrig, kann er sich in Jijimons Haus entwickeln. Agumon, Betamon, Gabumon, Elecmon, Patamon, Kunemon, Biyomon und Palmon werden zu 30 % zu Bakemon; MetalGreymon und Megadramon werden zu SkullGreymon und Kokatorimon wird zu Phoenixmon, zu 30 %; Angemon mit Disziplin unter 50 wird zu 50 % zu Devimon. Sind die Werte der neuen Form bereits erfüllt, gilt je 30 %: Greymon zu SkullGreymon, Meramon zu SkullMeramon, Mammothmon zu SkullMammothmon und Garudamon zu Phoenixmon. Die neuen Arten brauchen NEUE DIGIMON an."
+    ]
+  },
+  "hidden-mechanics": {
+    "title": "Verborgene Partnermechaniken",
+    "summary": "Vorlieben, Spezialitätsplätze und Entwicklungen außerhalb der Tabelle.",
+    "paragraphs": [
+      "{bakemon_mechanic}",
+      "Partner haben eigene Essensvorlieben und Schlafzeiten. Spezialitäten bestimmen lernbare Kampftechniken. Leere Plätze zählen beim Lernwurf weiterhin, auch wenn die Zusammenfassung sie auslässt.",
+      "Spielguide und Baum erläutern Ziele. Sonderverwandlungen und Gegenstände haben eigene Bedingungen; eine normale Wertezeile beschreibt nicht jeden Weg zu einer Art. Der Verlust eines Lebens kann den Partner auch auf der Stelle verändern: Der Artikel über Lebensdauer und Wiedergeburt nennt diese Entwicklungen und ihre Wahrscheinlichkeiten."
+    ],
+    "spoiler_paragraphs": [
+      2
     ]
   },
   "evolution-requirements": {
@@ -114,7 +200,7 @@
     "paragraphs": [
       "Gewöhnliche Entwicklung bewertet Pflegefehler, Gewicht, Werte und Bonus. Nötig sind {pass_points} Punkte. Alle Wertgrenzen bilden eine Gruppe; zwei Werte geben keine zwei Punkte. Bei Rookie-Zielen gilt der höchste Wert.",
       "Gewicht hat einen Bereich; Fehler können ein Minimum oder Maximum haben. Eine einzige Bonusalternative reicht für den Bonuspunkt, nicht alle sind Pflicht. Die maximale Zahl an Pflegefehlern gilt einschließlich des Grenzwerts. Wird diese Gruppe verfehlt, geht ihr Punkt verloren; die Entwicklung bleibt möglich, wenn die anderen Gruppen die nötige Punktzahl erreichen. Mehr Pflegefehler allein schließen ein Ziel daher nicht zuverlässig aus.",
-      "Tippe das Ziel im Baum an. Die Zeile „Zeit (h)“ im Fenster zeigt die Zeitprüfung; eine rote Warnung weist auf unzureichende verbleibende Lebenszeit hin. Zeit in der Form, Sonderauslöser, NEW DIGIMON und weitere Kandidaten beeinflussen das Ergebnis. HP/MP stehen in Spielerwerten; Zufriedenheit nutzt die Statusskala 0–100."
+      "Tippe das Ziel im Baum an. Die Zeile „Zeit (h)“ im Fenster zeigt die Zeitprüfung; eine rote Warnung weist auf unzureichende verbleibende Lebenszeit hin. Zeit in der Form, Sonderauslöser, NEUE DIGIMON und weitere Kandidaten beeinflussen das Ergebnis. HP/MP stehen in Spielerwerten; Zufriedenheit nutzt die Statusskala 0–100."
     ]
   },
   "evolution-timing": {
@@ -122,8 +208,47 @@
     "summary": "Voraussetzungen sind nur ein Teil der Auswahl.",
     "paragraphs": [
       "Die Stunden unten gelten in der aktuellen Form, nicht seit Geburt. Frühe Wertgrenzen lösen keine sofortige Entwicklung aus. Zeitrouten für Ultimate prüfen ebenfalls Voraussetzungen; Sonder- und Gegenstandsrouten haben eigene Auslöser.",
-      "Bei Rookie zu Champion und Champion zu Ultimate lässt die nötige Punktzahl ein Ziel zu; vier Punkte schlagen drei nicht. Im Moment der Entwicklung wählt das Spiel mit gleichen Chancen unter den geeigneten Zielen. Die Routen werden der Reihe nach geprüft: Sobald ein noch nie aufgezogenes Ziel zugelassen ist, werden spätere bereits aufgezogene Ziele übersprungen; zuvor zugelassene Ziele bleiben in der Auslosung. Modellverfügbarkeit und NEW DIGIMON gelten weiterhin. Derselbe Speicherkartenspielstand kann nach erneutem Laden mit anderem Timing ein anderes Ergebnis liefern, muss es aber nicht. Bei In-Training zu Rookie gewinnt weiterhin die höchste Punktzahl, bei Gleichstand das erste Ziel. Spezial- und Item-Entwicklungen behalten ihre Regeln.",
+      "Bei Rookie zu Champion und Champion zu Ultimate lässt die nötige Punktzahl ein Ziel zu; vier Punkte schlagen drei nicht. Im Moment der Entwicklung wählt das Spiel mit gleichen Chancen unter den geeigneten Zielen. Die Routen werden der Reihe nach geprüft: Sobald ein noch nie aufgezogenes Ziel zugelassen ist, werden spätere bereits aufgezogene Ziele übersprungen; zuvor zugelassene Ziele bleiben in der Auslosung. Modellverfügbarkeit und NEUE DIGIMON gelten weiterhin. Derselbe Speicherkartenspielstand kann nach erneutem Laden mit anderem Timing ein anderes Ergebnis liefern, muss es aber nicht. Bei In-Training zu Rookie gewinnt weiterhin die höchste Punktzahl, bei Gleichstand das erste Ziel. Spezial- und Item-Entwicklungen behalten ihre Regeln.",
       "Die Zeile „Zeit (h)“ im Fenster vergleicht die Stunden in der aktuellen Form mit den vom Ziel benötigten Stunden. Das Urteil lautet nur „bereit“, wenn die Anforderungspunktzahl erreicht ist, das Modell in den Speicher passt und die Zeit erfüllt ist; „In N h“ bedeutet, dass nur noch Zeit fehlt. Die rote Warnung „Leben zu kurz (N h übrig)“ zeigt, dass die verbleibende Lebenszeit kürzer als die noch nötige Wartezeit ist; N ist die verbleibende Lebenszeit. Wege ohne Zeitbedingung zeigen „Sonderweg“. Importierte Megas erfordern außerdem {mega_hours} Spielstunden als Ultra. Ist die verbleibende Lebenszeit vorher aufgebraucht, stirbt der Partner an Altersschwäche. {chain_melon} (Chain Melon) verlängert das Leben um {chain_melon_hours} Stunden, {digiseabass} um {digiseabass_hours}. Sie erhöhen die verbleibende Lebenszeit, nicht die bereits in der aktuellen Form verbrachte Zeit."
+    ]
+  },
+  "new-digimon": {
+    "title": "Neue Digimon und die Mega-Stufe",
+    "summary": "Was NEUE DIGIMON zur Aufzucht hinzufügt und wie der größere Baum aufgebaut ist.",
+    "spoiler_paragraphs": [
+      2
+    ],
+    "paragraphs": [
+      "Mit NEUE DIGIMON an gibt es 291 Digimon aufzuziehen: die Originale, 175 aus anderen Digimon-Spielen für PlayStation und acht In-Training-Digimon, die für Horizon gezeichnet wurden. Eine fünfte Stufe, Mega, sitzt mit 54 Arten über Ultra. Jede Art hat hier ihre eigene Seite mit Voraussetzungen, Techniken, Lieblingsessen und Schlafzeiten.",
+      "Der Baum ist regelmäßig: Jedes In-Training-Digimon hat sechs Rookies, jeder Rookie mindestens vier Champions, jeder Champion mindestens zwei Ultras und jeder Ultra zwei Megas. Natürliche Entwicklung überspringt nie eine Stufe. Ein Mega verlangt neben seinen Voraussetzungen {mega_hours} Stunden als Ultra. Mit der Option aus gibt es nur die Originalarten und -wege; ein Partner einer neuen Art wird als ähnliche Originalart gezeigt und kehrt zurück, wenn du die Option wieder einschaltest.",
+      "Zwei Bewohner können für 2000 Bits ein Digimon in ein anderes derselben Stufe umbauen: Guardromon in der Fabrikstadt und gelegentlich Andromon in File City. Einmal von zehn ist das Ergebnis eine Sonderform, fünfmal von zehn die übliche, sonst scheitert es. Sie bearbeiten Mamemon, Numemon, Geremon, MegaSeadramon, WaruSeadramon und MetalGreymon (Virus); Andromon nur Mamemon."
+    ]
+  },
+  "new-game-quiz": {
+    "title": "Startquiz: Punkte und Partner",
+    "summary": "Alle sieben Antworten zählen in drei Gruppen.",
+    "paragraphs": [
+      "Die Tabelle zeigt Punkte je Antwortposition in Jijimons Quiz, in Spielreihenfolge. Punkte wählen Element, Attribut und Temperament; die Kombination bestimmt den Startpartner.",
+      "Der höchste Gruppenwert gewinnt. Gleichstände bevorzugen die zuletzt unterstützende Antwort; unterstützt dieselbe Antwort beide, gewinnt der frühere Gruppeneintrag. Reihenfolge: Kampf, Feuer, Eis, Natur, Luft; Impfstoff, Daten, Virus; Mutig, Ruhig, Listig.",
+      "Jijimon verrät deinen Partner noch nicht: Du siehst ihn erst beim Aufwachen neben dir. Einen Namen zu vergeben ist optional; die Dialoge verraten die Art nicht. Die Spalten gelten für NEUE DIGIMON ein und aus. Antworten, Punkte und Startpartner stehen im Spoiler unten."
+    ],
+    "spoiler_paragraphs": [
+      0,
+      1
+    ]
+  },
+  "battles": {
+    "title": "Kämpfe: Tempo, Finisher und Typen",
+    "summary": "Was in einem Kampf geschieht und wie die zwölf Typen zueinander stehen.",
+    "headings": [
+      "Grundlagen",
+      "Finisher",
+      "Typen"
+    ],
+    "paragraphs": [
+      "Mit SCHNELLSTART beginnt ein Feldkampf, sobald du den Gegner berührst. R2 verdoppelt das Tempo jedes Kampfes. In wilden Kämpfen zeigt jeder Gegner einen Lebensbalken mit seinen KP. Nach einem Sieg kann jeder Wert anhand des stärksten Gegners wachsen, und die Itemliste eines Kampfes zeigt nur, was dort benutzt werden kann.",
+      "Die Finisher-Anzeige füllt sich, während der Partner kämpft, schneller mit mehr Tempo. Ist sie voll, löst Quadrat den Finisher aus, und schnelles Drücken von L1 und R1 lädt ihn für bis zu doppelten Schaden auf. 179 Arten haben einen eigenen Finisher, auf jeder Stufe stärker; manche treffen alle Gegner auf einmal und einige lassen sich ausweichen. Ein Finisher kostet keine MP.",
+      "Der Schaden einer Technik hängt von ihrer Reihe und vom Typ des getroffenen Digimon ab. In der Tabelle unten ist die Reihe die angreifende Technik und die Spalte der Verteidiger; eine leere Zelle ist normaler Schaden. Schmutz erhält von fast allem doppelten Schaden, und Finsternis und Licht sind stark gegeneinander."
     ]
   },
   "learning-techniques": {
@@ -140,18 +265,41 @@
     "title": "Finsternis, Licht und Wasser",
     "summary": "Drei weitere Technikreihen, Heilung und ihre Pokale.",
     "paragraphs": [
-      "Drei Reihen kommen zu den sieben des Originals hinzu: Finsternis, Licht und Wasser, je acht Techniken. Ein Partner lernt sie wie alle anderen: Die Technik muss auf der Liste seiner Art stehen und die Reihe unter seinen Spezialitäten sein. Der Technikbildschirm scrollt durch die Reihen. Ein Spielstand einer früheren Version wird unverändert geladen. Bei diesem ersten Laden lernt der Partner die erste Technik jeder neuen Reihe, die auf der Liste seiner Art steht: Schattenklaue, Heiliger Funke oder Blasenschuss. Die übrigen lernt er wie jede andere Technik.",
+      "Finsternis, Licht und Wasser sind drei der fünf Reihen, die Horizon zu den sieben des Originals hinzufügt, mit je acht Techniken. Ein Partner lernt sie wie alle anderen: Die Technik muss auf der Liste seiner Art stehen und die Reihe unter seinen Spezialitäten sein. Der Technikbildschirm scrollt durch die zwölf Reihen. Ein Spielstand aus der Zeit vor diesen Reihen wird unverändert geladen, und der Partner lernt die erste Technik jeder neuen Reihe, die auf der Liste seiner Art steht: Schattenklaue, Heiliger Funke oder Blasenschuss. Die übrigen lernt er wie jede andere Technik.",
       "Segen gibt 10 % der vollen KP zurück, und der Betrag steigt in Grün über dem Digimon auf. Ein Partner heilt sich dreimal pro Kampf und ein Gegner zweimal; mit vollen KP heilt sich niemand. Von sich aus heilt sich ein Partner nur unter 60 % seiner KP; auf deinen Befehl heilt er sich, sobald ihm KP fehlen. Heiliger Schild erhöht die Abwehr, Regentanz erhöht das Tempo, und Böses Flüstern nimmt dem Ziel ein Fünftel seiner Abwehr, einmal pro Kämpfer und Kampf. Die meisten Angriffe der drei Reihen treffen nach Position, wie die meisten Schüsse des Originals. Ein Schuss wird beim Abfeuern gezielt, und ein Schlag oder eine Fläche trifft eine Stelle: Ein Ziel, das von dort weggegangen ist, wird nicht getroffen. Albtraum, Böses Flüstern, Giftnebel, Lichtexplosion, Strudel und Ozeanzorn folgen ihrem Ziel, und nur ihre Genauigkeit kann sie verfehlen lassen.",
-      "Finsternis und Licht fügen einander doppelten Schaden zu und der eigenen Reihe den halben. Wasser fügt Feuer und Schmutz doppelten Schaden zu und Natur, Eis und Wasser den halben; Luft fügt Wasser doppelten Schaden zu. Drei Pokale der Arena lassen nur die Arten zu, deren erste Spezialität ihre Reihe ist: der Finsternis-Pokal, der Licht-Pokal und der Wasser-Pokal, jeder zweimal in den 30 Tagen des Kalenders. Der Sieger erhält 5000 Bits und eine Muskelknolle, eine Weisheitsfrucht oder ein Krafteis."
+      "Finsternis und Licht fügen einander doppelten Schaden zu und der eigenen Reihe den halben. Wasser fügt Feuer, Schmutz und Erde doppelten Schaden zu, Maschine anderthalbfachen und Natur, Eis und Wasser den halben; Luft fügt Wasser doppelten Schaden zu. Die ganze Tabelle steht im Artikel über Kämpfe. Drei Pokale der Arena lassen nur die Arten zu, deren erste Spezialität ihre Reihe ist, jeder zweimal in den 30 Tagen des Kalenders: Der Finsternis-Pokal zahlt 5000 Bits und eine Muskelknolle, der Licht-Pokal 5000 Bits und eine Weisheitsfrucht und der Wasser-Pokal 5000 Bits und ein Krafteis."
     ]
   },
   "weapon-earth": {
     "title": "Waffe und Erde",
     "summary": "Zwei weitere Technikreihen und ihre Pokale.",
     "paragraphs": [
-      "Zwei weitere Reihen kommen zum Technikbildschirm: Waffe und Erde mit je acht Techniken, also zwölf Reihen. Die vierte Reihe des Originals, die der Bildschirm Erde nannte, heißt jetzt Natur, so wie dieses Wiki sie immer genannt hat; ihre Techniken sind dieselben. Ein Spielstand einer früheren Version lädt unverändert. Bei diesem ersten Laden lernt der Partner die erste Technik jeder neuen Reihe, die auf der Liste seiner Art steht: Schnellhieb oder Steinwurf. Die übrigen lernt er wie jede andere Technik.",
+      "Waffe und Erde vervollständigen die zwölf Reihen des Technikbildschirms, mit je acht Techniken. Die vierte Reihe des Originals heißt Natur, im Spiel und in diesem Wiki; ihre Techniken sind die des Originals. Ein Spielstand aus der Zeit vor diesen Reihen wird unverändert geladen, und der Partner lernt die erste Technik jeder neuen Reihe, die auf der Liste seiner Art steht: Schnellhieb oder Steinwurf. Die übrigen lernt er wie jede andere Technik.",
       "Waffe ist die Reihe der Klingen. Schnellhieb, Klingenwurf, Kreuzschnitt, Wirbelklinge, Riesenspalter und Letzte Klinge richten Schaden an; Rüstungsbruch nimmt dem Ziel ein Viertel seiner Abwehr, einmal pro Kämpfer und Kampf, und Kampfhaltung erhöht den Angriff um ein Fünftel. Erde ist die Reihe des Gesteins. Steinwurf, Sandstoß, Felsschlag, Erdspalte, Stalagmit, Erdrutsch und Gaiabeben richten Schaden an, Sandstoß kann verwirren, und Steinhaut erhöht die Abwehr. Die meisten Angriffe der zwei Reihen treffen nach Position, wie die meisten Schüsse des Originals: Ein Ziel, das von der Stelle weggegangen ist, an der der Schlag landet, wird nicht getroffen. Letzte Klinge, Sandstoß, Stalagmit und Gaiabeben folgen ihrem Ziel, und nur ihre Genauigkeit kann sie verfehlen lassen.",
-      "Waffe richtet anderthalbfachen Schaden an Natur an und halben an Maschine und Erde. Erde richtet doppelten Schaden an Maschine an, anderthalbfachen an Feuer und halben an Luft, Natur und Erde. Maschine richtet anderthalbfachen Schaden an Waffe an und Natur halben; Wasser richtet doppelten Schaden an Erde an, Natur und Eis anderthalbfachen, Feuer und Waffe halben. Zwei Pokale der Arena lassen nur die Arten zu, deren erste Spezialität ihre Reihe ist: der Klingen-Pokal und der Gaia-Pokal, jeder zweimal in den 30 Tagen des Kalenders. Der Sieger erhält 5000 Bits und einen Gegenstand: Angriffs-Chip oder Abwehr-Chip."
+      "Waffe richtet doppelten Schaden an Schmutz an, anderthalbfachen an Natur und halben an Maschine und Erde. Erde richtet doppelten Schaden an Maschine und Schmutz an, anderthalbfachen an Feuer und halben an Luft, Natur und Erde. Dafür richtet Maschine anderthalbfachen Schaden an Waffe an, und Wasser richtet doppelten Schaden an Erde an. Die ganze Tabelle steht im Artikel über Kämpfe. Zwei Pokale der Arena lassen nur die Arten zu, deren erste Spezialität ihre Reihe ist, jeder zweimal in den 30 Tagen des Kalenders: Der Klingen-Pokal zahlt 5000 Bits und einen Angriffs-Chip, der Gaia-Pokal 5000 Bits und einen Abwehr-Chip."
+    ]
+  },
+  "difficulty": {
+    "title": "LEICHT, NORMAL und SCHWER",
+    "summary": "Was jede SCHWIERIGKEIT im Kampf verändert.",
+    "paragraphs": [
+      "SCHWIERIGKEIT ist eine Zeile der Titel-OPTIONEN. NORMAL behält die Kampfwerte des Originals, mit einer Stufe für das späte Spiel: Gegner, deren ursprüngliche KP über 3500 liegen, erhalten linear mehr KP, bis zu 150 % bei 6500, und jeder Treffer richtet einen kleinen Mindestschaden an, damit eine sehr hohe Verteidigung ihn nicht aufheben kann. LEICHT verdoppelt den Schaden des Partners und halbiert den erhaltenen Schaden und das Gift, aufgerundet, und hat keine Stufe für das späte Spiel.",
+      "SCHWER geht von NORMAL aus und skaliert dann jeden Gegner mit den Werten unten: mehr KP, Angriff, Verteidigung, Tempo und Intelligenz, stärkere Finisher und etwas weniger direkter Schaden durch den Partner.",
+      "Keine Einstellung schreibt die gespeicherten Werte des Partners, sein Wachstum oder die Belohnungen eines Kampfes um; Skript-Prozentschaden folgt eigenen Regeln. Die Einstellungen gelten für Feldkämpfe und Turniere, nie für Zwei-Spieler-VS. Der Wert steht im Spielstand und lässt sich am Titel jederzeit ändern."
+    ]
+  },
+  "arena-cups": {
+    "title": "Arena-Pokale und der Kalender",
+    "summary": "Wer an welchem Pokal teilnehmen darf, die Regeln eines Kampfes und die Preise.",
+    "headings": [
+      "Regeln",
+      "Original-Pokale",
+      "Neue Pokale"
+    ],
+    "paragraphs": [
+      "Die Arena folgt einem Kalender von 30 Tagen. Ein Pokal besteht aus drei Runden zwischen acht Teilnehmern. Ein Kampf dauert 99 auf der Uhr; fällt niemand, gewinnt der Kämpfer, der weniger Schaden erlitten hat, und ein Unentschieden zählt als Niederlage. Zwischen den Kämpfen erholt der Partner 20 % seiner KP und MP. In der Arena wird nichts verdient oder gelernt; der Preis kommt nach dem Finale.",
+      "Die Pokale der Klassen D, C, B und A füllen die meisten Tage, und Klasse S an den Tagen 7, 14, 21 und 28 ist für Gewinner der Klasse A. Version 1 bis 4 nehmen nur die zwölf Digimon dieses virtuellen Haustiers auf, und Version O hat eine eigene Liste. Die Spezialitätspokale (Feuer, Kampf, Donner-und-Wind, Eis, Natur, Metall und Dreck) richten sich nach der ersten Spezialität, und die neuen Arten können teilnehmen. Dino, Flügel, Tier und Mensch richten sich nach dem Körper, und der Käfer-Pokal ist am Tag 22.",
+      "Horizon fügt Pokale hinzu, jeden zweimal in den 30 Tagen und jeden in einer eigenen Arena. Nach Stufe: Rookie (3000 Bits und ein Tempo-Chip), Champion (5000 und ein DV-Chip A), Ultra (7000 und ein DV-Chip D; zehn Bewohner nötig) und Mega (10000 und ein DV-Chip E; zehn Bewohner und Klasse A gewonnen). Nach Attribut: Serum (HP-Chip), Datei (Klugheits-Chip) und Virus (Angriffs-Chip). Nach Gebiet: Nature Spirits (Supergemüse), Deep Savers (Digibarsch), Nightmare Soldiers (Schwarzforelle), Wind Guardians (Tempoblatt), Metal Empire (Abwehr-Chip), Virus Busters (MP-Chip), Dragon’s Roar (Kraftfrucht) und Jungle Troopers (Weisheitsfrucht). Nach Reihe: Finsternis, Licht, Wasser, Klinge und Gaia. Alle zahlen 5000 Bits mit ihrem Item."
     ]
   },
   "file-city": {
@@ -160,53 +308,87 @@
     "paragraphs": [
       "Das Rekrutierungsverzeichnis zeigt Bewohner, Orte, Dienste und Wohlstandsbeiträge in geschlossenen Spoilern.",
       "Schritte bleiben bis zum Öffnen des Spoilerbereichs verborgen. Zeiten folgen der Spieluhr. Prüfe Ort und Voraussetzungen wie Stadtfortschritt, andere Rekruten oder Ereignisse.",
-      "Mojyamons Tauschtabelle steht im geschlossenen Spoiler unten: Die ersten acht Zeilen erlauben einen Gegenstand pro Spieltag, die neunte nur einmal pro Spielstand. Zeigt dein Spiel eine andere oder alte Liste, hast du einen Emulatorzustand aus einer älteren Version geladen. Starte die neue Disc frisch und lade stattdessen den Spielstand von der Speicherkarte. Sichere vorher die Karte. Mushroomon kann jetzt gefunden und rekrutiert werden: Es erscheint im Sporengebiet des Bergs Panorama, das über den normalen Weg erreichbar ist. Die drei Soulmon im Bildschirm von Haunted/Phantomon sind tagsüber (00:00–19:59) und nach der Rekrutierung von Phantomon wieder da."
+      "Mojyamons Tauschtabelle steht im geschlossenen Spoiler unten: Die ersten acht Zeilen erlauben einen Gegenstand pro Spieltag, die neunte nur einmal pro Spielstand. Zeigt dein Spiel eine andere Liste, hast du einen Emulatorzustand aus einer anderen Version geladen. Starte die Disc frisch und lade stattdessen den Spielstand von der Speicherkarte. Sichere vorher die Karte."
     ],
     "spoiler_paragraphs": [
       2
     ]
   },
-  "hidden-mechanics": {
-    "title": "Verborgene Partnermechaniken",
-    "summary": "Verborgene Partnermechaniken.",
+  "shops": {
+    "title": "Läden, Automaten und tägliche Funde",
+    "summary": "Woher Bits und Items kommen und die kleinen Dienste rund um die Insel.",
     "paragraphs": [
-      "{bakemon_mechanic}",
-      "Partner haben eigene Essensvorlieben und Schlafzeiten. Spezialitäten bestimmen lernbare Kampftechniken. Leere Plätze zählen beim Lernwurf weiterhin, auch wenn die Zusammenfassung sie auslässt.",
-      "Spielguide und Baum erläutern Ziele. Sonderverwandlungen und Gegenstände haben eigene Bedingungen; eine normale Wertezeile beschreibt nicht jeden Weg zu einer Art. Spoiler: Verliert ein Partner ein Leben und hat noch eines übrig, kommt es in Jijimons Haus mit 30 % Wahrscheinlichkeit zu einer Sonderentwicklung: Greymon zu SkullGreymon, Meramon zu SkullMeramon, Mammothmon zu SkullMammothmon und Garudamon zu Phoenixmon, aber nur, wenn er die Werte der neuen Form bereits hat."
-    ],
+      "Ein neues Spiel beginnt mit 20 Fleisch und 1000 Bits, und Fleisch kostet 30 Bits. Läden fragen mit einem Mengenfeld, wie viele du willst, und die Itembank zeigt das Symbol jedes Items. Im Kampf gewonnene Bits sind anderthalbmal so viele wie im Original.",
+      "Monochromons Ladenjob ist eine Schicht von zwanzig Kunden, die mit der Anzeige deines Gewinns endet. Sobald er in der Stadt lebt, führt Tuskmon den Laden und bietet ein Tagesangebot, das du zweimal herunterhandeln kannst; ein gescheitertes Handeln schließt das Angebot bis morgen. Jeder Automat hat sein eigenes Sortiment: Pilze am Drachenaugensee, Fleisch in der Uralten Eisregion, Heilitems in der Zahnradsavanne und eine Verlosung für 1000 Bits im Tropischen Dschungel. Kartenläden verkaufen auch Karten.",
+      "Die Stellen am Boden, die ein Item verbergen, geben es einmal pro Spieltag. Auch Mojyamons Tausch gilt täglich; der Artikel über File City hat die Tabelle. Sukamon räumt für 1000 Bits jeden Haufen der Insel weg. Das Herrenhaus des Grauen Lords und das Eisheiligtum stehen jedem Partner offen, sobald ihr Digimon in der Stadt lebt."
+    ]
+  },
+  "extended-story": {
+    "title": "Die erweiterte Story",
+    "summary": "Was EXTRA-STORY hinzufügt, ohne Spoiler außerhalb der Falte.",
     "spoiler_paragraphs": [
       2
-    ]
-  },
-  "new-game-quiz": {
-    "title": "Startquiz: Punkte und Partner",
-    "summary": "Alle sieben Antworten zählen in drei Gruppen.",
-    "paragraphs": [
-      "Die Tabelle zeigt Punkte je Antwortposition in Jijimons Quiz, in Spielreihenfolge. Punkte wählen Element, Attribut und Temperament; die Kombination bestimmt den Startpartner.",
-      "Der höchste Gruppenwert gewinnt. Gleichstände bevorzugen die zuletzt unterstützende Antwort; unterstützt dieselbe Antwort beide, gewinnt der frühere Gruppeneintrag. Reihenfolge: Kampf, Feuer, Eis, Natur, Luft; Impfstoff, Daten, Virus; Mutig, Ruhig, Listig.",
-      "Jijimon verrät deinen Partner noch nicht: Du siehst ihn erst beim Aufwachen neben dir. Einen Namen zu vergeben ist optional; die Dialoge verraten die Art nicht. Die Spalten gelten für NEUE DIGIMON ein und aus. Antworten, Punkte und Startpartner stehen im Spoiler unten."
     ],
+    "paragraphs": [
+      "EXTRA-STORY, standardmäßig an, fügt eine zweite Geschichte neben der ursprünglichen hinzu: 69 neue Bildschirme, erreichbar von den Gebieten, die du schon kennst, und 22 neue Bewohner, womit es 72 für die Stadt gibt statt 50. Die ursprüngliche Geschichte, ihre Rekruten und ihr Ende bleiben unberührt.",
+      "Neue Gebiete öffnen sich mit dem Fortschritt der Geschichte. Keine Entscheidung, die du triffst, schließt je einen Rekruten, einen Dienst oder einen Weg, also antworte, wie du willst. Schaltest du die Option in einem laufenden Spielstand ein, versetzt sie dich und deinen Partner in Jijimons Haus und behält alles, was du hattest; mit der Option aus sind die neuen Gebiete und Bewohner schlicht nicht da, und die Medaillen, die sie brauchen, sind ausgeblendet.",
+      "Das erste neue Gebiet, die Eisenhügel, erreicht man von der Zahnradsavanne, sobald der Weg nach Norden offen ist. Nach dem Ende wartet in der Anderen Dimension ein optionaler Kampf gegen BlackWarGreymon; der erste Sieg gibt einen Angriffs-Chip und einen Abwehr-Chip."
+    ]
+  },
+  "curling": {
+    "title": "Curling",
+    "summary": "Schnelle Spiele, Teammodi und die fünf Pokale der Bahn in Frostland.",
+    "headings": [
+      "Grundlagen",
+      "Steine",
+      "Pokale"
+    ],
+    "paragraphs": [
+      "Die Bahn liegt in Frostland. Sobald Penguinmon in der Stadt lebt, öffnet er das Bahnmenü. Ein schnelles Spiel kostet einen Fisch beliebiger Art, und deine Gegner sind Bewohner der Stadt. Neben Einzel gibt es Doppel und Spiele jeder gegen jeden mit drei oder vier Teams.",
+      "Steine tauschen ihre Geschwindigkeit entlang der Linie zwischen ihren Mittelpunkten. Ein frontaler Treffer stoppt den geworfenen Stein und schickt den anderen weiter; ein seitlicher Treffer lenkt beide ab; ein Streifschuss bewegt das Ziel kaum.",
+      "Fünf Einzelpokale werden am Stück gespielt, je drei Runden: Neulings-, Amateur-, Experten-, Elite- und Legenden-Cup. Jeder verlangt, dass der vorige gewonnen ist und alle sieben seiner Gegner in der Stadt leben. Der Einsatz ist ein Fisch: Digi-Anschovis, Digibrasse, Digiforelle, Digiwels und Digibarsch. Der Preis ist immer ein Item, nie Bits. Der erste Legenden-Cup gibt außerdem die Medaille Curling-Legende und einen Chip jeder Art; Penguinmon verwahrt die Chips, die du nicht tragen kannst."
+    ]
+  },
+  "cards": {
+    "title": "Karten und das Album",
+    "summary": "305 Karten, wo man sie bekommt und wofür die überzähligen sind.",
     "spoiler_paragraphs": [
-      0,
-      1
+      2
+    ],
+    "paragraphs": [
+      "Das Album enthält die Originalkarten mit ihrer Originalgrafik und, mit NEUE KARTEN an, 240 neue, Nummern 66 bis 305. Es scrollt und zählt, was du hast, von 305 oder mit der Option aus von 65; sie blendet die neuen Karten überall aus und behält ihre Zähler. Du kannst bis zu neun Exemplare einer Karte halten.",
+      "Kartenläden verkaufen ein Päckchen mit drei Karten für 500 Bits, und der Kartenautomat im Itemladen gibt eine Karte für 100. Ein Tagesschalter bietet sechs Karten am Tag an, je nach Seltenheit zwischen 50 und 5000 Bits, und kauft deine für die Hälfte. ShogunGekomon tauscht überzählige Karten gegen Verdienstpunkte, je nach Seltenheit 1 bis 100 pro Karte, und Verdienst gegen Items mit einem Mengenfeld: Eine Superheilung kostet 60, ein Super-Regen. 250 und ein Wertechip 800. Die Kartentauschs der Originalfiguren bleiben.",
+      "Zwei Karten sind besonders. Karte 0 gibt es beim ersten Besuch im Kartenladen der Zahnradsavanne, und Karte 65 kommt mit dem Ende."
     ]
   },
-  "difficulty": {
-    "title": "EASY, NORMAL und HARD",
-    "summary": "EASY, NORMAL und HARD.",
+  "medals": {
+    "title": "Medaillen",
+    "summary": "Die 21 Medaillen, welche Optionen einige ausblenden und wo man sie sieht.",
+    "spoiler_paragraphs": [
+      2
+    ],
     "paragraphs": [
-      "NORMAL nutzt gewöhnliche Kampfregeln. EASY verdoppelt Partner-Schaden und halbiert erhaltenen Schaden, aufgerundet vor normalen Grenzen. Auch Partners Gift wird halbiert. Das gilt für Einzelspielerfeldkämpfe und Turniere, nicht Zwei-Spieler-VS.",
-      "Schwierigkeit schreibt gespeicherte Werte nicht um. Skript-Prozentschaden folgt eigenen Regeln. Wähle am Titel und prüfe die verfügbaren Optionen.",
-      "Wähle eine Schwierigkeit in den Titeloptionen. Die Kampfanpassungen stehen unten und verändern das dauerhafte Wachstum des Partners nicht. GEFAHR-ALARM, in den Optionen des Titels und standardmäßig aktiv, setzt einen kleinen lila Teufel über ein wildes Digimon, das deutlich stärker ist als dein Partner: Seine Kampfstärke, KP × (Angriff + Verteidigung), beträgt mindestens das 2,5-Fache der deines Partners. Er erscheint nur bei Digimon, die bei Berührung einen Kampf beginnen, nie bei Figuren, die nur reden, und nur solange du dich frei bewegen kannst. Nutze ihn, um Kämpfen aus dem Weg zu gehen, die du klar verlieren würdest; er ist eine Warnung, keine Garantie."
+      "Die Medaillenseite liegt im Reiter Spieler des Pausenmenüs. Sie listet zuerst die Originalmedaillen; eine goldene Ecke markiert die sechs, die Horizon hinzufügt. Medaillen sind eine Aufzeichnung: Keine gibt ein Item, doch das Aufziehen aller Original-Digimon erhöht auch dein Tamer-Level, wie es immer war.",
+      "Eine Medaille, die etwas in den OPTIONEN Ausgeschaltetes braucht, ist ausgeblendet und kann währenddessen nicht verdient werden: Horizon-Meister mit NEUE DIGIMON aus, Horizon-Stadt mit EXTRA-STORY aus und Volle Sammlung mit NEUE KARTEN aus. Bereits verdiente Medaillen bleiben.",
+      "Originalmedaillen: die Klassen-, Versions-, Typ- und Spezialpokale der Arena, 100 Siege, Klassik-Techniken (die 57 Originaltechniken), Klassik-Meister (jedes Original-Digimon aufgezogen), Klassik-Gipfel (KP und MP 9999, die anderen Werte 999), Perfektes Curling, 100 Fische, Spiel beendet, Klassik-Stadt (50 Bewohner), Klassik-Sammlung (die Originalkarten), Maximale Bits (999999 Bits) und 10. Jubiläum. Horizon-Medaillen: Curling-Legende (der Legenden-Cup), Horizon-Meister (jedes Digimon aufgezogen), Grenzbrecher (KP und MP 15000, die anderen Werte 1500), Horizon-Stadt (jeder Bewohner), Volle Sammlung (jede Karte) und Technikmeister (die Originaltechniken und 40 der neuen)."
     ]
   },
-  "faq": {
-    "title": "Häufige Fragen und Fehlerhilfe",
-    "summary": "Updates, Spielstände, langsames Patchen und gute Berichte.",
+  "tamer-looks": {
+    "title": "Das Aussehen deines Tamers",
+    "summary": "Junge oder Mädchen, Haut, Haare, Kleidung und Rucksack, jederzeit kostenlos änderbar.",
     "paragraphs": [
-      "Fehlt Fortsetzen, prüfe Karte, freie Blöcke und Discname bei Karten pro Spiel. Horizon braucht {save_blocks} freie Blöcke für neue Spielstände. Sichere vor Updates und lade nach frischem Discstart im Spiel.",
-      "Patchen am Telefon kann dauern. Bei Speicherquoten nutze ein normales Fenster, schaffe Platz und versuche erneut; alternativ nutze den Desktop-Patcher. Zusatzdiscs liefern Arten; veränderte oder nicht unterstützte Ausgaben bestehen die Prüfung nicht. Der Web-Builder auf Android-Handys scheitert beim Kopieren der Disc nicht mehr an einem Dateiberechtigungsfehler.",
-      "Notiere bei Textfehlern Version, Basisdisc, Sprache, Emulator-Build und Grafik. Versuche bei betroffenen Android-Builds Enable Texture Cache auszuschalten. Nenne Auslöser und füge ein Bild bei; das Symptom allein erklärt die Ursache nicht. WarGrowlmons Gesicht hat keine Löcher mehr."
+      "In einem neuen Spiel fragt Jijimon nach seinen sieben Fragen, ob du ein Junge oder ein Mädchen bist, und die Seite Look öffnet sich. Später liegt sie im Reiter Spieler des Pausenmenüs, neben deinem Namen. Das Aussehen zu ändern ist kostenlos, geht jederzeit und wird im Spielstand gespeichert.",
+      "Links und rechts wechseln die markierte Zeile, L1 und R1 drehen den Tamer, Bestätigen speichert und Abbrechen verwirft. Die Zeilen sind Tamer (Junge oder Mädchen, was Gesicht, Hände und die angebotene Kleidung bestimmt), Haut (sechs Töne), Frisur und Haarfarbe, Oberteil, Hose, Schuhe und Rucksack, jeweils mit ihrer Farbe.",
+      "Jede Zeile hat das Original als erste Wahl: die Kappe, das Oberteil, die Hose, die Schuhe und den Rucksack des Original-Tamers. Es gibt elf Frisuren neben der Kappe und einer Glatze, zwanzig Haarfarben, fünfzehn Oberteile, acht Hosen darunter Shorts und einen Rock, neun Paar Schuhe und fünf Rucksäcke oder keinen. Kleidung gibt es in sechzehn Farben."
+    ]
+  },
+  "cheats": {
+    "title": "Das Cheats-Menü",
+    "summary": "Ein Testmenü zum Ausprobieren: was jede Zeile tut.",
+    "paragraphs": [
+      "Stelle CHEATS in den Titel-OPTIONEN auf AN. Pausiere auf dem Feld mit START und drücke SELECT; das Pausenfenster erinnert mit „SELECT: Cheats“ daran. Das Menü ist zum Testen gedacht und für Spieler, die sich umsehen wollen; es verändert deinen Spielstand wie jedes andere Spiel, also bewahre eine Kopie der Speicherkarte auf.",
+      "Die Zeilen: 10000 Bits hinzufügen, Bedürfnisse erfüllen, Digimon bearbeiten, Digimon digitieren, Zur Karte teleportieren, Digimon heilen, SELECT-Kürzel, Spiel speichern, Spiel laden, Zum Hauptmenü, An Altersschwäche sterben, Technik lernen, Alle Techniken lernen und Evolutionstabelle freischalten. An Altersschwäche sterben fragt zuerst nach und ist ein natürlicher Tod, sodass du das Ei wählst. Mit SELECT-Kürzel an ändert SELECT gehalten plus L1 oder R1 den Partner, und L2 oder R2 springt zwischen Karten.",
+      "Im Editor ändern links und rechts einen Wert um den Schritt und oben und unten den Schritt; L1 und R1 addieren oder nehmen 10, L2 und R2 100. Die Lebensdauer kann nicht unter eine Stunde fallen. Lange Listen laufen im Kreis, und links und rechts springen zehn Zeilen."
     ]
   }
 }

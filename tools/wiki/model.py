@@ -152,6 +152,9 @@ def load(ref):
                  score=rules['evolutionFormula']['score'], **tables)
     hard = tables['battle-formulas']['battleFormulas'].get('hard')
     facts['hard'] = hard
+    # Older snapshots have no type table or a smaller one; the chart is drawn only for the twelve rows of today.
+    chart = json.loads(files['content/tables/type-factors.json'])['typeFactors'] if 'content/tables/type-factors.json' in files else []
+    facts['type_chart'] = chart if len(chart) == 12 and all(len(row) == 12 for row in chart) else []
     facts.update(article_facts(files))
     # Bind shared article claims to release source, not just a version string.
     patches = dict(patch_sources(files))
@@ -162,7 +165,11 @@ def load(ref):
     players = files['docs/release/README-players.md'].decode()
     if '250%' not in players or '20 Hz' not in players:
         raise ValueError('Review frame-rate guidance against selected release')
-    return dict(tag=ref, commit=commit, species=rows, techniques=techniques, recruits=roster,
+    # A table slot the game never names is not a technique: no page, card or count for it.
+    names = json.loads(files['text/ours/names.json'])
+    used = {m['id'] for row in rows for m in row['moves']}
+    listed = [t for t in techniques if f'main.MOVE_NAMES.{t["id"]}' in names or t['id'] in used or not re.fullmatch(r'Technique \d+', t['name'])]
+    return dict(tag=ref, commit=commit, species=rows, techniques=listed, recruits=roster,
                 enemies={s['id']:s for s in all_species},
                 learning_sources=learning.sources(files,all_species,techniques,rows),
                 brain_learning=learning.brains(files,techniques,rows),
