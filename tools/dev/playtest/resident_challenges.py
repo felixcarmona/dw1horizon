@@ -151,18 +151,20 @@ class Run:
         got = dict(hp=hp, mp=mp, off=off, def_=de, speed=spd, brain=brn)
         got['def'] = got.pop('def_')
         want = self.expected(species, partner)
+        # noItems: the battle bag is filtered when its menu first opens (addInventoryUI -> modBagFilterForBattle), so
+        # the test reads the rule's switch for this battle rather than opening the menu
         info = dict(stats=got, expected=want, fromHp=e.peek(f'MOD_BATTLE+{2 * FROM_HP}', 'h', ram),
-                    bagHeld=e.peek('MOD_BAG_HELD', 'b', ram) if e.has('MOD_BAG_HELD') else None, bag=self.items(ram))
+                    noBag=e.peek('MOD_CHALLENGE_NO_BAG', 'B', ram))
         self.shot(label + '-battle')
-        if outcome == 'won':
-            e.run('poke', hex(pd + 0x4c), struct.pack('<h', 1).hex())
-        else:
-            e.poke('PARTNER_ENTITY+0x4c', struct.pack('<h', 1))
+        # knock out the loser (0 HP: at 1 the next forced write would undo every hit) and let the battle end
+        hp = (lambda: e.run('poke', hex(pd + 0x4c), '0000')) if outcome == 'won' else \
+             (lambda: e.poke('PARTNER_ENTITY+0x4c', b'\0\0'))
+        hp()
         deadline = time.monotonic() + 300
         while time.monotonic() < deadline and e.peek('GAME_STATE', 'H') == 1:
-            if outcome == 'won': e.run('poke', hex(pd + 0x4c), struct.pack('<h', 1).hex())
-            else: e.poke('PARTNER_ENTITY+0x4c', struct.pack('<h', 1))
-            e.press('CONFIRM', 6); e.wait(1)
+            e.wait(2)
+            if e.peek('GAME_STATE', 'H') == 1: hp()
+        self.shot(label + '-end')
         info['ended'] = e.peek('GAME_STATE', 'H') != 1
         return info
 
@@ -228,9 +230,10 @@ def main():
         assert r.talk_into_battle(slot, 'lost'), 'the talk did not start a battle'
         b = r.battle(pd, partner, row['species'], 'lost', 'lost'); result['lostBattle'] = b
         assert b['stats'] == b['expected'], b
-        assert b['fromHp'] == 0 and b['bag'] == {} and b['ended'], b
+        assert b['fromHp'] == 0 and b['noBag'] == 1 and b['ended'], b
         e.wait(5); e.in_control(60); after = r.state(); result['afterLoss'] = after
-        assert after['fromHp'] == result['fromHpNormal'] and after['items'] == before['items'], (before, after)
+        # the usual defeat (the bag may lose items); what the challenge took is back: the late step and the bag switch
+        assert after['fromHp'] == result['fromHpNormal'] and e.peek('MOD_CHALLENGE_NO_BAG', 'B') == 0, after
         assert after['tried'] == 1 and after['won'] == 0 and after['row'] == day1['row'], after
         r.go(row['site']['screen'], 'site-after-loss')
         result['stillThereAfterLoss'] = r.npc_slot(row['species'])[0] is not None
@@ -240,7 +243,7 @@ def main():
         e.run('load', str(out / 'site.state')); e.wait(3)
         assert r.talk_into_battle(slot, 'won'), 'the talk did not start a battle'
         b = r.battle(pd, partner, row['species'], 'won', 'won'); result['wonBattle'] = b
-        assert b['stats'] == b['expected'] and b['fromHp'] == 0 and b['bag'] == {} and b['ended'], b
+        assert b['stats'] == b['expected'] and b['fromHp'] == 0 and b['noBag'] == 1 and b['ended'], b
         for _ in range(40):
             if e.in_control(1) and r.flag(doc['save']['wonFlag']): break
             e.press('CONFIRM', 6); e.wait(1)
