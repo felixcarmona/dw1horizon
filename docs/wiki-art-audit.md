@@ -24,7 +24,6 @@ The v0.0.7 preview extracts 30 files from `horizon-media.tar.gz` into `media/cli
 | guide | `media/clips/guide.jpg` | Retired section; archive assets retained |
 | battle | `media/clips/battle.jpg`, `media/clips/battle.mp4` | Existing main-page feature |
 | language | `media/clips/language-en.jpg`, `media/clips/language-es.jpg` | Existing main-page feature |
-| waiting | `media/clips/waiting.jpg`, `media/clips/waiting.mp4` | Retired section; archive assets retained |
 | care | `media/clips/care.jpg` | Existing main-page feature |
 | options | `media/clips/options-en.jpg`, `media/clips/options-es.jpg` | Existing main-page feature |
 | bars | `media/clips/bars-en.jpg`, `media/clips/bars-es.jpg` | Existing main-page feature |

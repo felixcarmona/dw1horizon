@@ -604,47 +604,6 @@
    }
   },
   {
-   "id": "waiting",
-   "hidden": true,
-   "media": [],
-   "en": {
-    "title": "Less waiting",
-    "body": "R2 doubles the speed of any battle, and the gym trains five sessions in one go. None of it changes what your partner gains."
-   },
-   "es": {
-    "title": "Menos esperas",
-    "body": "R2 dobla la velocidad de cualquier combate y el gimnasio entrena cinco sesiones seguidas. Nada de esto cambia lo que gana tu compañero."
-   },
-   "pt-br": {
-    "title": "Menos espera",
-    "body": "R2 dobra a velocidade de qualquer batalha, e a academia treina cinco sessões de uma vez. Nada disso muda o que seu parceiro ganha."
-   },
-   "fr": {
-    "title": "Moins d'attente",
-    "body": "R2 double la vitesse de n'importe quel combat, et la salle d'entraînement enchaîne cinq séances d'un coup. Rien de tout cela ne change ce que gagne ton partenaire."
-   },
-   "de": {
-    "title": "Weniger Warten",
-    "body": "R2 verdoppelt das Tempo jedes Kampfes, und im Fitnessstudio trainierst du fünf Einheiten auf einmal. Nichts davon ändert, was dein Partner dazugewinnt."
-   },
-   "it": {
-    "title": "Meno attese",
-    "body": "R2 raddoppia la velocità di qualsiasi battaglia, e in palestra fai cinque allenamenti in una volta. Niente di tutto ciò cambia quello che guadagna il tuo partner."
-   },
-   "ja": {
-    "title": "待ち時間を短縮",
-    "body": "R2でどのバトルも2倍速、ジムでは5回分のトレーニングをまとめて実行できます。パートナーが得るものは一切変わりません。"
-   },
-   "ca": {
-    "title": "Menys esperes",
-    "body": "R2 duplica la velocitat de qualsevol combat i el gimnàs entrena cinc sessions d'una tirada. Res d'això canvia el que guanya el teu company."
-   },
-   "zh-hans": {
-    "title": "少些等待",
-    "body": "R2可让任何战斗加速一倍，健身房可一次连做五次训练。搭档获得的收益保持不变。"
-   }
-  },
-  {
    "id": "care",
    "media": [
     {
