@@ -25,12 +25,20 @@ class ResidentChallenges(unittest.TestCase):
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
         for i, r in enumerate(self.rows):
             row = v[city.CHALLENGE_HEAD + city.CHALLENGE_ROW * i:][:city.CHALLENGE_ROW]
-            w = species[r['species']]['wild']
+            w = city.challenge_sheet(r, species)
             self.assertEqual(row, (r['species'], w['hp'], w['mp'], w['off'], w['def'], w['speed'], w['brain']))
         self.assertEqual(set(v[city.CHALLENGE_HEAD + city.CHALLENGE_ROW * len(self.rows):]), {-1})
 
     def test_negative_sheet_percent_refused(self):
         self.doc['rule']['sheetPercent'] = -10
+        with self.assertRaises(ValueError):
+            city.challenge_table(self.doc)
+
+    def test_floor_is_wild_or_base(self):
+        species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
+        for r in self.rows:
+            self.assertEqual('base' in r, species[r['species']].get('wild') is None, r['name'])
+        r = next(r for r in self.doc['residents'] if 'base' not in r); r['base'] = dict(species[r['species']]['wild'])
         with self.assertRaises(ValueError):
             city.challenge_table(self.doc)
 

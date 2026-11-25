@@ -6,6 +6,7 @@ from dw import *
 from dw.names import *
 from dw.base.robot_house import house, tinmon0
 from ...state import gear_for_andromon, m3_archive
+from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_MONZAEMON
 
 gear_offered = flag()
 
@@ -30,3 +31,37 @@ def whose_gear():
 @tinmon0.on_talk(when=gear_for_andromon and has(Item.Gear) and not m3_archive)
 def gear_kept():
     say("Hagurumon would like to come home... But if it's for everyone, bring it back after.")
+
+
+# Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Monzaemon is the challenger
+# and has not been beaten yet it waits here, stronger; any other day it is home, at Jijimon's house (city/jijimons-house-206.py).
+monzaemon = house.npc(Species.Monzaemon, at=(-50, -50), bits=300, range=0, still=True, when=recruited(Species.Monzaemon) and trigger(50))
+
+
+@house.on_enter(when=recruited(Species.Monzaemon) and engine.game_beaten)
+def challenge_away_monzaemon():
+    if challenger != CH_MONZAEMON or challenge_won:
+        monzaemon.leave()
+
+
+@monzaemon.on_talk
+def challenge_monzaemon():
+    if challenger != CH_MONZAEMON or challenge_won:
+        say(t("challenge.home"))
+        leave()
+    else:
+        if challenge_tried:
+            say(t("monzaemon.challenge.retry"))
+        else:
+            say(t("monzaemon.challenge.intro1"), t("monzaemon.challenge.intro2"))
+        if ask(yes=t("challenge.yes"), no=t("challenge.no")):
+            challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(1)
+            if fight(monzaemon, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
+                say(t("monzaemon.challenge.won"))
+                give(Item.RedRuby)
+                give(bits=4000)
+                narrator.say(t("monzaemon.challenge.reward"))
+                challenge_won.set()
+                run(350, -2350)
+                leave()

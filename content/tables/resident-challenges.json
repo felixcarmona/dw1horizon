@@ -1,8 +1,8 @@
 {
-  "_about": "Resident challenges (postgame; docs/mods/resident-challenges.md). Once the game is beaten, at every midnight one recruited resident of these rows leaves its home and waits at its recruit site, stronger; won once, it goes home with its reward and nobody else goes out that day; lost, it waits all day. tools/balance.py writes `rule`, `save` and each row's species and sheet stats into MOD_CHALLENGE (tools/city_residents.py challenge_table); the story (story/mods/what-the-island-forgot) has the rest of each row: `story` checks its constant (state.py CH_<NAME> = row number), site, exit path, item and bits.",
+  "_about": "Resident challenges (postgame; docs/mods/resident-challenges.md). Once the game is beaten, at every midnight one recruited resident of these rows leaves its home and waits at its recruit site, stronger; won once, it goes home with its reward and nobody else goes out that day; lost, it waits all day. tools/balance.py writes `rule`, `save` and each row's species and sheet stats into MOD_CHALLENGE (tools/city_residents.py challenge_table); the story (story/mods/what-the-island-forgot) has the rest of each row: `story` checks its constant (state.py CH_<NAME> = row number), site, exit path, item and bits. Rows are numbered in the save (the challenger var and the bag): once released, a row is never moved or removed, only appended.",
   "rule": {
     "stats": "max-sheet-or-partner",
-    "_stats": "each stat of the challenger = max(species sheet stat x (100 + sheetPercent) / 100, partner stat x (100 + partnerPercent) / 100), at most 9999",
+    "_stats": "each stat of the challenger = max(floor stat x (100 + sheetPercent) / 100, partner stat x (100 + partnerPercent) / 100), at most 9999; the floor is the species' `wild` sheet, or the row's `base` when its species has none",
     "sheetPercent": 0,
     "_sheetPercent": "the species sheet is the hard minimum: 0 or more, never negative (the loader refuses a negative value)",
     "partnerPercent": 25,
@@ -80,61 +80,41 @@
       }
     },
     {
-      "species": 263,
-      "name": "Mushroomon",
-      "story": "arcs/residents/mushroomon.py",
-      "home": "city/centar-clinic.py",
+      "species": 17,
+      "name": "Gabumon",
+      "story": "arcs/mist/hunters-120.py",
+      "home": "city/treasure-hunt.py",
       "site": {
-        "screen": 234,
+        "screen": 120,
         "at": [
-          -450,
-          -900
+          -1050,
+          1250
         ]
       },
       "exit": [
         [
-          -250,
-          -2050
+          1450,
+          1250
         ]
       ],
-      "item": 46,
+      "item": 77,
       "bits": 1500,
+      "base": {
+        "hp": 2000,
+        "mp": 2600,
+        "off": 320,
+        "def": 220,
+        "speed": 190,
+        "brain": 150
+      },
+      "_base": "its fight in the Misty Trees in the original game (content/maps/MIST06.json, slot 0)",
       "text": {
-        "intro1": "mushroomon.challenge.intro1",
-        "intro2": "mushroomon.challenge.intro2",
-        "retry": "mushroomon.challenge.retry",
-        "won": "mushroomon.challenge.won",
-        "reward": "mushroomon.challenge.reward"
+        "intro1": "gabumon.challenge.intro1",
+        "intro2": "gabumon.challenge.intro2",
+        "retry": "gabumon.challenge.retry",
+        "won": "gabumon.challenge.won",
+        "reward": "gabumon.challenge.reward"
       }
-    },
-    {
-      "species": 351,
-      "name": "Kotemon",
-      "story": "arcs/residents/kotemon.py",
-      "home": null,
-      "site": {
-        "screen": 45,
-        "at": [
-          1000,
-          850
-        ]
-      },
-      "exit": [
-        [
-          850,
-          2250
-        ]
-      ],
-      "item": 60,
-      "bits": 1500,
-      "text": {
-        "intro1": "kotemon.challenge.intro1",
-        "intro2": "kotemon.challenge.intro2",
-        "retry": "kotemon.challenge.retry",
-        "won": "kotemon.challenge.won",
-        "reward": "kotemon.challenge.reward"
-      },
-      "_home": "none after the ending: the Arena lobby's 223 has no heap for its model, so it is in no city spot then"
     },
     {
       "species": 193,
@@ -193,6 +173,43 @@
       }
     },
     {
+      "species": 48,
+      "name": "Leomon",
+      "story": "arcs/residents/kiwimon.py",
+      "home": "city/birdra-transport.py",
+      "site": {
+        "screen": 78,
+        "at": [
+          -50,
+          3150
+        ]
+      },
+      "exit": [
+        [
+          -1650,
+          1250
+        ]
+      ],
+      "item": 80,
+      "bits": 2500,
+      "base": {
+        "hp": 1500,
+        "mp": 1490,
+        "off": 250,
+        "def": 205,
+        "speed": 205,
+        "brain": 180
+      },
+      "_base": "no wild sheet and no fight of its own in the original game: the Champion rows' sheets (Digmon, Starmon), averaged",
+      "text": {
+        "intro1": "leomon.challenge.intro1",
+        "intro2": "leomon.challenge.intro2",
+        "retry": "leomon.challenge.retry",
+        "won": "leomon.challenge.won",
+        "reward": "leomon.challenge.reward"
+      }
+    },
+    {
       "species": 257,
       "name": "Triceramon",
       "story": "arcs/residents/triceramon.py",
@@ -221,66 +238,6 @@
       }
     },
     {
-      "species": 267,
-      "name": "Mammothmon",
-      "story": "arcs/residents/mammothmon.py",
-      "home": "district/cold-store.py",
-      "site": {
-        "screen": 94,
-        "at": [
-          0,
-          450
-        ]
-      },
-      "exit": [
-        [
-          150,
-          -850
-        ]
-      ],
-      "item": 96,
-      "bits": 4000,
-      "text": {
-        "intro1": "mammothmon.challenge.intro1",
-        "intro2": "mammothmon.challenge.intro2",
-        "retry": "mammothmon.challenge.retry",
-        "won": "mammothmon.challenge.won",
-        "reward": "mammothmon.challenge.reward"
-      }
-    },
-    {
-      "species": 321,
-      "name": "Knightmon",
-      "story": "arcs/residents/knightmon.py",
-      "home": "district/guard-house.py",
-      "site": {
-        "screen": 222,
-        "at": [
-          -900,
-          100
-        ]
-      },
-      "exit": [
-        [
-          -450,
-          50
-        ],
-        [
-          -450,
-          -1950
-        ]
-      ],
-      "item": 104,
-      "bits": 4000,
-      "text": {
-        "intro1": "knightmon.challenge.intro1",
-        "intro2": "knightmon.challenge.intro2",
-        "retry": "knightmon.challenge.retry",
-        "won": "knightmon.challenge.won",
-        "reward": "knightmon.challenge.reward"
-      }
-    },
-    {
       "species": 294,
       "name": "Datamon",
       "story": "arcs/factory/remodelling.py",
@@ -306,6 +263,80 @@
         "retry": "datamon.challenge.retry",
         "won": "datamon.challenge.won",
         "reward": "datamon.challenge.reward"
+      }
+    },
+    {
+      "species": 41,
+      "name": "Giromon",
+      "story": "arcs/residents/giromon.py",
+      "home": "city/restaurant-215.py",
+      "site": {
+        "screen": 159,
+        "at": [
+          1250,
+          450
+        ]
+      },
+      "exit": [
+        [
+          3650,
+          -250
+        ]
+      ],
+      "item": 103,
+      "bits": 4000,
+      "base": {
+        "hp": 5700,
+        "mp": 4800,
+        "off": 690,
+        "def": 450,
+        "speed": 490,
+        "brain": 300
+      },
+      "_base": "its fight in Factorial Town in the original game (content/maps/FACT08A.json, slot 0)",
+      "text": {
+        "intro1": "giromon.challenge.intro1",
+        "intro2": "giromon.challenge.intro2",
+        "retry": "giromon.challenge.retry",
+        "won": "giromon.challenge.won",
+        "reward": "giromon.challenge.reward"
+      }
+    },
+    {
+      "species": 14,
+      "name": "Monzaemon",
+      "story": "arcs/gear/robot-house.py",
+      "home": "city/jijimons-house-206.py",
+      "site": {
+        "screen": 146,
+        "at": [
+          -50,
+          -50
+        ]
+      },
+      "exit": [
+        [
+          350,
+          -2350
+        ]
+      ],
+      "item": 111,
+      "bits": 4000,
+      "base": {
+        "hp": 2890,
+        "mp": 3000,
+        "off": 420,
+        "def": 330,
+        "speed": 320,
+        "brain": 290
+      },
+      "_base": "no wild sheet and no fight of its own in the original game: the Ultimate rows' sheets (Triceramon, Datamon), averaged",
+      "text": {
+        "intro1": "monzaemon.challenge.intro1",
+        "intro2": "monzaemon.challenge.intro2",
+        "retry": "monzaemon.challenge.retry",
+        "won": "monzaemon.challenge.won",
+        "reward": "monzaemon.challenge.reward"
       }
     }
   ]

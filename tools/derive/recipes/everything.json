@@ -104,6 +104,7 @@
    "story/mods/what-the-island-forgot/arcs/residents/clockmon.py",
    "story/mods/what-the-island-forgot/arcs/residents/digmon.py",
    "story/mods/what-the-island-forgot/arcs/residents/floramon.py",
+   "story/mods/what-the-island-forgot/arcs/residents/giromon.py",
    "story/mods/what-the-island-forgot/arcs/residents/hawkmon.py",
    "story/mods/what-the-island-forgot/arcs/residents/kiwimon.py",
    "story/mods/what-the-island-forgot/arcs/residents/knightmon.py",
@@ -149,11 +150,13 @@
    "story/mods/what-the-island-forgot/city/birdra-transport.py",
    "story/mods/what-the-island-forgot/city/centar-clinic.py",
    "story/mods/what-the-island-forgot/city/jijimons-house-205.py",
+   "story/mods/what-the-island-forgot/city/jijimons-house-206.py",
    "story/mods/what-the-island-forgot/city/jijimons-house.py",
    "story/mods/what-the-island-forgot/city/restaurant-214.py",
    "story/mods/what-the-island-forgot/city/restaurant-215.py",
    "story/mods/what-the-island-forgot/city/file-city-services.py",
-   "story/mods/what-the-island-forgot/city/secret-item-shop.py"
+   "story/mods/what-the-island-forgot/city/secret-item-shop.py",
+   "story/mods/what-the-island-forgot/city/treasure-hunt.py"
   ],
   "sources_note": "EXTRA_STORY in the order it is compiled (compile order changes bytes): the single source (build.sh reads it through `python3 -m tools.derive recipe-env everything`); a new story file of the mod goes here",
   "dev_sources": [

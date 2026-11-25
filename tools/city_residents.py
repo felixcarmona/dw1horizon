@@ -92,8 +92,21 @@ def challenge_rows(doc=None):
     return rows
 
 
+def challenge_sheet(row, species):
+    """A row's floor stats: its species' `wild` sheet, or the row's own `base` for a species with none (the game's own
+    residents: most have no wild sheet). Exactly one of the two."""
+    w, base = species[row['species']].get('wild'), row.get('base')
+    if (w is None) == (base is None):
+        raise ValueError(f"resident-challenges.json: {row['name']}: give `base` only when its species has no `wild` stats")
+    w = w or base
+    if any(type(w.get(k)) is not int or not 1 <= w[k] <= 9999 for k in ('hp', 'mp', 'off', 'def', 'speed', 'brain')):
+        raise ValueError(f"resident-challenges.json: {row['name']}: hp, mp, off, def, speed and brain 1..9999")
+    return w
+
+
 def challenge_table(doc=None):
-    """MOD_CHALLENGE (mod_rules.h): the rule, the save numbers, then per row the species and its sheet's wild stats."""
+    """MOD_CHALLENGE (mod_rules.h): the rule, the save numbers, then per row the species and its floor stats
+    (challenge_sheet)."""
     doc = doc or json.loads(CHALLENGES.read_text())
     rule, save = doc['rule'], doc['save']
     species = {s['id']: s for p in (ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
@@ -109,7 +122,7 @@ def challenge_table(doc=None):
     v[10] = rule['sheetPercent']
     v[11] = 1 if rule['noLateStep'] else 0
     for i, r in enumerate(challenge_rows(doc)):
-        w = species[r['species']]['wild']
+        w = challenge_sheet(r, species)
         v[CHALLENGE_HEAD + CHALLENGE_ROW * i:CHALLENGE_HEAD + CHALLENGE_ROW * (i + 1)] = [
             r['species'], w['hp'], w['mp'], w['off'], w['def'], w['speed'], w['brain']]
     return struct.pack(f'<{len(v)}h', *v)

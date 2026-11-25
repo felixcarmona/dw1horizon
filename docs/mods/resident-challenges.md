@@ -28,9 +28,12 @@ Never the resident of the day before, even across a new cycle: if yesterday's is
 The talk sets scratch pstat `armedPstat` to 1 before the fight; the battle start clears it and gives every foe of the
 row's species, for each of HP, MP, Offense, Defense, Speed and Brain:
 
-`max(sheet x (100 + sheetPercent) / 100, partner x (100 + partnerPercent) / 100)`, at most 9999
+`max(floor x (100 + sheetPercent) / 100, partner x (100 + partnerPercent) / 100)`, at most 9999
 
-(`sheetPercent` is 0 by default, so the sheet itself is the floor; it may not be negative) where *sheet* is the species' `wild` stats in `content/species/` (copied into the table by `tools/city_residents.py`).
+(`sheetPercent` is 0 by default, so the floor itself is the minimum; it may not be negative) where *floor* is the
+species' `wild` stats in `content/species/` or, for a species with none (most of the game's own residents), the row's
+`base` (its `_base` says where the numbers come from: its fight in the original game, else the sheets of the rows of
+its stage). `tools/city_residents.py` copies them into the table and refuses a row with both or neither.
 The stats are set before the battle records its initial stats, so its rewards and stat gains follow them.
 `noItems` opens the battle bag empty (it comes back whole); `noLateStep` gives the fight none of
 `battle-formulas.json` NORMAL's late-game step (HP and attack ramp, damage floor), on any difficulty, and puts it back
@@ -49,8 +52,14 @@ story agree.
 
 ## Adding a resident
 
+The roster is every visible city resident (`content/tables/city-residents.json`), the game's own and ours, each at the
+spot where it was recruited; the rows come in batches. Rows are numbered in the save (the challenger var and the bag
+bits), so a released row is never moved or removed: new ones are appended. The bag holds 16 rows (two saved 8-bit
+counters); rows 17 and up need more saved bits than the free vars and flags hold.
+
 A row (16 at most) names the species, its story file, home file, site (screen and `at`), the exit path it runs after a
-win, the item, the bits and its five named lines. The story side is the row's constant `CH_<NAME>` in
-`state.py` (its 1-based row), the site file's presence (`not recruited(...) or trigger(50)`), `on_enter` and challenge
-talk, the home's `on_enter`, and the lines in `text/en.json` and every translation. The site must keep the hang rules:
+win, the item, the bits, its `base` when its species has no `wild` sheet, and its five named lines. The story side is the row's constant `CH_<NAME>` in
+`state.py` (its 1-based row), the site file's presence (`not recruited(...) or trigger(50)` for a Digimon of ours; for one of the game's own,
+whose original NPC leaves once recruited, a new NPC of the species with `recruited(...) and trigger(50)` on the same
+spot), `on_enter` and challenge talk, the home's `on_enter`, and the lines in `text/en.json` and every translation. The site must keep the hang rules:
 the exit on walkable ground in a straight line, `run` only for models with a run clip (slot 4).
