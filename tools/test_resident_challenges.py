@@ -21,13 +21,30 @@ class ResidentChallenges(unittest.TestCase):
         data = city.challenge_table(self.doc)
         v = struct.unpack(f'<{len(data) // 2}h', data)
         self.assertEqual(len(v), city.CHALLENGE_HEAD + city.CHALLENGE_ROW * city.CHALLENGE_MAX)
-        self.assertEqual(v[:city.CHALLENGE_HEAD], (0, 25, 1, 0, 15, 783, 784, 239, 10, 5, 0, 1))
+        self.assertEqual(v[:13], (0, 25, 1, 0, 0, 1, 239, 10, 5, 15, 784, 8, 783))
+        mask = sum((m & 0xFFFF) << (16 * k) for k, m in enumerate(v[13:18]))
+        self.assertEqual(mask, sum(1 << i for i, r in enumerate(self.rows) if r['pool'] == 'new'))
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
         for i, r in enumerate(self.rows):
             row = v[city.CHALLENGE_HEAD + city.CHALLENGE_ROW * i:][:city.CHALLENGE_ROW]
             w = city.challenge_sheet(r, species)
             self.assertEqual(row, (r['species'], w['hp'], w['mp'], w['off'], w['def'], w['speed'], w['brain']))
         self.assertEqual(set(v[city.CHALLENGE_HEAD + city.CHALLENGE_ROW * len(self.rows):]), {-1})
+
+    def test_pools(self):
+        """The new pool is Horizon's own species (112 and up), the original pool the game's; a row in the wrong pool
+        is refused."""
+        self.assertEqual({r['pool'] for r in self.rows}, {'original', 'new'})
+        for r in self.rows:
+            self.assertEqual(r['pool'] == 'new', r['species'] >= 112, r['name'])
+        r = next(r for r in self.doc['residents'] if r['pool'] == 'new'); r['pool'] = 'original'
+        with self.assertRaises(ValueError):
+            city.challenge_table(self.doc)
+
+    def test_pools_need_their_own_save_numbers(self):
+        self.doc['save']['newTriedFlag'] = self.doc['save']['triedFlag']
+        with self.assertRaises(ValueError):
+            city.challenge_table(self.doc)
 
     def test_negative_sheet_percent_refused(self):
         self.doc['rule']['sheetPercent'] = -10
@@ -47,8 +64,10 @@ class ResidentChallenges(unittest.TestCase):
         save = self.doc['save']
         self.assertEqual(lock['vars']['challenger'], save['challengerVar'])
         self.assertNotIn('challenge_bag', ' '.join(lock['vars']))   # the bag is in saved wide registers, not story vars
-        self.assertEqual(lock['flags']['challenge_won'], save['wonFlag'])
+        self.assertEqual(lock['vars']['new_challenger'], save['newChallengerVar'])
         self.assertEqual(lock['flags']['challenge_tried'], save['triedFlag'])
+        self.assertEqual(lock['flags']['new_challenge_tried'], save['newTriedFlag'])
+        self.assertIn('CHALLENGE_BEATEN = 128\n', (MOD / 'state.py').read_text())   # mod_rules.h MOD_CHALLENGE_BEATEN
         self.assertIn(f"CHALLENGE_ARMED = {save['armedPstat']}\n", (MOD / 'state.py').read_text())
 
     def test_story_serves_every_row(self):
@@ -56,8 +75,12 @@ class ResidentChallenges(unittest.TestCase):
         items = naming.enum_members('item')
         for i, r in enumerate(self.rows, 1):
             const = 'CH_' + r['name'].upper()
+            var = 'new_challenger' if r['pool'] == 'new' else 'challenger'
             self.assertIn(f'{const} = {i}\n', state, r['name'])
             src = (MOD / r['story']).read_text()
+            self.assertIn(f'alone={var} == {const}', src, r['name'])
+            self.assertIn(f'{var}.add(CHALLENGE_BEATEN)', src, r['name'])
+            self.assertIn(f"pstat(CHALLENGE_ARMED).set({2 if r['pool'] == 'new' else 1})", src, r['name'])
             self.assertIn(f"at=({r['site']['at'][0]}, {r['site']['at'][1]})", src, r['name'])
             self.assertIn(f"give(Item.{items[r['item']]})", src, r['name'])
             self.assertIn(f"give(bits={r['bits']})", src, r['name'])
@@ -67,7 +90,7 @@ class ResidentChallenges(unittest.TestCase):
             for name in r['text'].values():
                 self.assertIn(f't("{name}")', src, r['name'])
             if r['home']:
-                self.assertIn(f'challenger == {const} and not challenge_won', (MOD / r['home']).read_text(), r['name'])
+                self.assertRegex((MOD / r['home']).read_text(), rf'\b{var} == {const}\b', r['name'])
 
     def test_lines_in_every_language(self):
         names = {'challenge.home', 'challenge.yes', 'challenge.no'} | {n for r in self.rows for n in r['text'].values()}
