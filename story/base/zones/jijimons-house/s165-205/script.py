@@ -16,7 +16,8 @@ t85 = text.s165.sec85
 
 @house.on_enter
 def enter():    # section 254
-    pass
+    if engine.death_map_entry == 0:    # a normal entry, not the load behind a death: no old keepsake may reach a later death
+        engine.rite_keepsake.set(0)
 
 @house.on_step(3)
 def step3():    # section 54

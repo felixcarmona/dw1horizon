@@ -10,6 +10,9 @@ script 178 {
     npc botamon = 7;
     sections 254, 54, 5, 6, 7, 20, 71, 72, 73, 85, 82, 83, 84, 86, 51;
     on enter replace {    // enter
+        if (engine.death_map_entry == 0) {
+            engine.rite_keepsake = 0;
+        }
         if (is_recruited(species(31)) || is_recruited(species(45)) || is_recruited(species(33)) || is_recruited(species(47))) {
             set_obj_visibility(7, 1);
         }

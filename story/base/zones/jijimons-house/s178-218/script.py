@@ -18,6 +18,8 @@ t85 = text.s178.sec85
 
 @house.on_enter
 def enter():    # section 254
+    if engine.death_map_entry == 0:    # a normal entry, not the load behind a death: no old keepsake may reach a later death
+        engine.rite_keepsake.set(0)
     if recruited(Species.Patamon) or recruited(Species.Biyomon) or recruited(Species.Unimon) or recruited(Species.Monochromon):
         objects[7].show()
     if recruited(Species.Agumon):

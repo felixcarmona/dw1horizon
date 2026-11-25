@@ -10,6 +10,9 @@ script 165 {
     npc tokomon = 7;
     sections 254, 54, 5, 6, 20, 71, 72, 73, 85, 7, 51;
     on enter replace {    // enter
+        if (engine.death_map_entry == 0) {
+            engine.rite_keepsake = 0;
+        }
     }
     on step(3) replace {    // step3
         jump_to_file(193, 55);
