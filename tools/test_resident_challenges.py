@@ -99,11 +99,14 @@ class ResidentChallenges(unittest.TestCase):
             self.assertEqual(sorted(names - set(bank)), [], lang)
 
     def test_yuramon_riddles_are_the_hint_rows(self):
-        """Yuramon's after-ending talk has a riddle (who, where) for every row marked `hint` and for no other, tested on its
-        own pool's var, in every language."""
-        src = (MOD / 'arcs/rumours/yuramon.py').read_text()
+        """Yuramon's after-ending talk jumps to the library with a riddle (who, where) for every row marked `hint` and for no
+        other, tested on its own pool's var, in every language."""
+        talk = (MOD / 'arcs/rumours/yuramon.py').read_text()
+        self.assertIn('jump_to_script(210, 1)', talk[talk.index('def the_day_rumours'):])
+        src = (MOD / 'arcs/rumours/yuramon-riddles.py').read_text()
+        self.assertIn('@lib.section(1,', src)
         talk = src[src.index('def the_day_rumours'):]
-        told = re.findall(r'(new_challenger|challenger) == CH_(\w+):\n\s+say\(t\("(\w+)\.rumour\.who"\), t\("\3\.rumour\.where"\)\)', talk)
+        told = re.findall(r'(new_challenger|challenger) == CH_(\w+):\n\s+yuramon\.say\(t\("(\w+)\.rumour\.who"\), t\("\3\.rumour\.where"\)\)', talk)
         want = {('new_challenger' if r['pool'] == 'new' else 'challenger', r['name'].upper(), r['name'].lower())
                 for r in self.rows if r.get('hint')}
         self.assertEqual(sorted(set(told)), sorted(want))

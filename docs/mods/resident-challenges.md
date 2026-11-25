@@ -89,12 +89,13 @@ File City's top map (`arcs/rumours/yuramon.py`) tells the day:
 - nobody out (both vars 0): `rumour.quiet`.
 
 Before the ending the talk is the game's own. On the days Andromon stands in Yuramon's place there is no rumour. A new
-hinted row needs its two lines in every language and its branch in `yuramon.py` (`tools/test_resident_challenges.py`
-checks that the talk's riddles are exactly the hinted rows).
+hinted row needs its two lines in every language and its branch in `yuramon-riddles.py` (`tools/test_resident_challenges.py`
+checks that the riddles are exactly the hinted rows).
 
-The riddles live inside script 162 (File City's top map), which shares the engine's 16 KB script buffer with the rest of
-that screen's talk (about 12 KB): with all 34 riddles every language is at 15.5-16 KB. Keep each line under about 40
-characters (about 20 in Japanese and Chinese); a longer one fails the build with "script 162 ... is N bytes".
+The riddles do not fit in script 162 (File City's top map) with the rest of that screen's talk: the script buffer holds
+16 KB. Yuramon's talk jumps to section 1 of the library script 210 (Jijimon's news, `yuramon-riddles.py`), read from the
+disc only when the talk jumps, so they cost no memory while the city runs. With all 34 riddles as full sentences, 210 is
+at 6.5-10.8 KB depending on the language and 162 at 9.8-12.6 KB.
 
 ## Adding a resident
 
