@@ -53,7 +53,7 @@ hook({a('EVL_applyEvolution')},function() EVOP.applied=EVOP.applied+1 end)
 
 
 def finish_evolution(e, target):
-    for _ in range(100):
+    for _ in range(400):
         ram = e.ram()
         if e.peek('PARTNER_ENTITY', 'i', ram) == target and e.peek('PARTNER_STATE', 'b', ram) == 1:
             e.poke('PAUSE_STATE', b'\0')
@@ -64,9 +64,7 @@ def finish_evolution(e, target):
                 e.wait(.2)
             assert e.in_control() and not e.peek('IS_IN_MENU', 'b'), 'evolution did not restore field control'
             return
-        if e.peek('MOD_EVO_SKIP', 'b') == 3:
-            e.press('START', 8)
-        elif e.peek('TAMER_STATE', 'b') == 20:
+        if e.peek('TAMER_STATE', 'b') == 20:
             e.press('CONFIRM', 8)
         e.poke('PAUSE_STATE', b'\0')
         e.wait(.25)
