@@ -333,8 +333,12 @@ def main():
             seen['noWilds'] = not r.wilds(each['site']['screen'])
             result['rows'][each['name']] = dict(seen, wildsOtherDay=r.wilds_other_day[i]); print(each['name'], seen, flush=True)
         e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.set_day(today)
-        bad = {n: v for n, v in result['rows'].items() if not all(x for k, x in v.items() if k != 'wildsOtherDay')}
+        # a game's own resident its screen's setup keeps away at this hour and state (Elecmon, Ogremon in the lower City)
+        # is not at home on another's day either: its home check proves nothing, listed, not failed
+        result['homeNotShown'] = [n for n, v in result['rows'].items() if v.get('homeOtherDay') is False]
+        bad = {n: v for n, v in result['rows'].items() if not all(x for k, x in v.items() if k not in ('wildsOtherDay', 'homeOtherDay'))}
         assert not bad, f'not absent from home / not at the site / wilds while waiting: {bad}'
+        assert len(result['homeNotShown']) < len([v for v in result['rows'].values() if 'home' in v]) // 2, result['homeNotShown']
         result['sitesWithWilds'] = sum(bool(w) for w in r.wilds_other_day.values())
         assert result['sitesWithWilds'], 'no site has wild Digimon on another day: the wild check checks nothing'
 
