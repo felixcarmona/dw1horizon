@@ -542,35 +542,52 @@ def lightning_blast():
 
 
 # ----------------------------------------------------------------- Veedramon
-def arrowhead():
-    """An arrowhead of light pointing right, two cells long: two soft edges meeting at the point and a glow between
-    them that gathers towards it and thins away to nothing at the back."""
+def arrowhead(soft=1.0, peak=0.85):
+    """An arrowhead of light pointing right, two cells long: two edges that start as threads at the barbs and
+    thicken to the point, with a faint glow gathered just behind it. `soft` widens the edges into a halo."""
     x, y = grid(64, 32)
-    edges = 0.85 * np.maximum(segment(6, 5, 60, 16, 3.6, 64, 32), segment(6, 27, 60, 16, 3.6, 64, 32))
-    inside = clip(1 - np.abs(y - 16) / np.maximum((60 - x) * 0.222, 0.01)) * (x > 6) * (x < 60)
-    return clip(edges * clip((x - 2) / 16) + inside * clip((x - 6) / 54) ** 1.2)
+
+    def barb(y0):
+        dx, dy = 51.0, 16.0 - y0
+        t = np.clip(((x - 6) * dx + (y - y0) * dy) / (dx * dx + dy * dy), 0, 1)
+        d = np.hypot(x - (6 + t * dx), y - (y0 + t * dy))
+        return np.exp(-(d / ((1.2 + 2.2 * t) * soft)) ** 2) * clip(t * 4)
+
+    edges = np.maximum(barb(5), barb(27))
+    inside = clip(1 - np.abs(y - 16) / np.maximum((57 - x) * 0.2, 0.01)) * (x < 57) * 0.35 * clip((x - 30) / 27) ** 2
+    return clip(peak * edges + inside * (soft == 1.0))
+
+
+def breathray(seed):
+    """The band of the breath, rising out of nothing at its near end."""
+    x, _ = grid()
+    return breathbar(seed) * clip(x / 7)
 
 
 def v_nova_blast():
     """Veedramon throws its head back and an arrowhead of white-blue light swells in its open jaws, already lying
-    along the line of the shot; when the head comes down that same arrowhead is breathed out, growing all the way to
-    the target on the point of a ray, and there the light bursts and the ray thins away."""
+    along the line of the shot; when the head comes down that same arrowhead is breathed out, fast at first and
+    growing all the way to the target on the point of a ray that widens behind it; there it opens out and melts
+    into the burst as the ray dims away."""
     fx = Fx(delay=8, cast_sound=2)
     fx.palette(VBREATH)
-    fx.paint(0, breathbar(5)); fx.paint(1, arrowhead(), cells=2); fx.paint(3, glow(15, 1.2))
-    fx.paint(4, star(4, 2, 9, 6)); fx.paint(5, ring(13, 2.0))
-    tint, edge = fx.colour(128, 128, 128), fx.colour(40, 90, 128)
+    fx.paint(0, breathray(5)); fx.paint(1, arrowhead(), cells=2); fx.paint(3, glow(15, 1.2))
+    fx.paint(4, arrowhead(2.4, 0.6), cells=2); fx.paint(6, ring(11, 4.5) ** 1.5)
+    white, blue = fx.colour(112, 120, 128), fx.colour(40, 90, 128)
+    tint, edge = fx.vec(), fx.vec()
     maw, mouth, way, head, tail, side = fx.vec(), fx.vec(), fx.vec(), fx.vec(), fx.vec(), fx.vec()
-    fade, size = fx.var(), fx.var()
-    charge, drop, steps, linger, ebb, held = 14, 3, 8, 6, 4, 60
-    life, full = charge + steps + linger, 100 * ebb
-    fx.particle('mote', 14, 5, 4, (110, 128, 128), (80, 130), grow=-12, spread=150)
+    fade, size, near, far = fx.var(), fx.var(), fx.var(), fx.var()
+    charge, drop, steps, linger, ebb, held, grown = 14, 3, 8, 4, 5, 60, 110
+    life = charge + steps + linger
+    fx.particle('mote', 14, 6, 3, (90, 115, 128), (50, 90), grow=-8, spread=220, fade=True)
     fx.particle('swell', 1, charge + 1, 3, (60, 100, 128), 70, grow=12)
+    fx.particle('flash', 1, 4, 3, (128, 128, 128), 420, grow=-70, fade=True)
     fx.particle('burst', 2, 9, 3, (100, 120, 128), None, grow=70, fade=True)
-    fx.particle('wave', 2, 8, 5, (70, 110, 128), 150, grow=90, fade=True)
-    fx.particle('spark', 14, 11, 4, (128, 128, 128), (80, 140), grow=-7, speed=80, lift=25, gravity=6, spread=60)
+    fx.particle('wave', 2, 8, 6, (70, 110, 128), 150, grow=90, fade=True)
+    fx.particle('spark', 10, 11, 3, (128, 128, 128), (50, 80), grow=-4, speed=110, lift=25, gravity=6, spread=60,
+                fade=True)
     fx.label('main'); fx.when(0, 'begin'); fx.when(charge, 'fire'); fx.when(charge + steps, 'smite')
-    fx.br(fx.NOW, '>=', charge - 2, 'main_end'); fx.emit('mote', maw, 2)
+    fx.br(fx.NOW, '>=', charge - 2, 'main_end'); fx.emit('mote', maw)
     fx.label('main_end'); fx.end(life + 2)
     fx.label('begin')
     # the snout once the head has come down: half the body's radius ahead
@@ -580,10 +597,10 @@ def v_nova_blast():
     fx.vcopy(maw, fx.SRC); fx.vsub(maw, mouth); fx.lin(fx.T2, at(fx.SSIZE, 1), 4, 0, 5); fx.sub_(at(maw, 1), fx.T2)
     fx.set(at(mouth, 1), fx.T3); fx.vadd(mouth, fx.SRC)
     fx.emit('swell', maw); fx.call('arrow'); fx.sound(-55); fx.ret()
-    fx.label('fire'); fx.sound(13); fx.ret()
+    fx.label('fire'); fx.sound(13); fx.emit('flash', mouth); fx.ret()
     fx.label('smite')
     fx.sound(7); fx.aim(); fx.hit(); fx.lin(fx.SZ, at(fx.TSIZE, 1), 1, 300)
-    fx.emit('burst', fx.TCHEST); fx.emit('wave'); fx.emit('spark', times=14); fx.ret()
+    fx.emit('burst', fx.TCHEST); fx.emit('wave'); fx.emit('spark', times=10); fx.ret()
 
     pool = fx.pool('arrow', 1)
     fx.begin('arrow', pool, 'arrow_render', inherit=False); fx.vcopy(POS, maw); fx.ret()
@@ -591,40 +608,49 @@ def v_nova_blast():
     fx.label('arrow_render')
     across(fx, side, 200)             # the arrowhead lies flat: its barbs spread across the line of the shot
     fx.vcopy(way, fx.TCHEST); fx.vsub(way, mouth); fx.vlen(fx.F2, way)
-    ok, there, whole, some, fly, draw, still = (fx.label() for _ in range(7))
+    ok, there, whole, some, fly, draw, still, early = (fx.label() for _ in range(8))
     fx.br(fx.F2, '>', 0, ok); fx.set(fx.F2, 1); fx.label(ok)
-    # everything thins away over the last ticks
+    # everything dims away over the last ticks, keeping its shape
     fx.lin(fade, FRAME, -1, life); fx.br(fade, '<=', ebb, whole); fx.set(fade, ebb)
     fx.label(whole); fx.br(fade, '>=', 1, some); fx.set(fade, 1)
     fx.label(some)
+    for lit, base in ((tint, white), (edge, blue)):
+        fx.vcopy(lit, base); fx.vmul(lit, fade); fx.vdiv(lit, ebb)
     fx.br(FRAME, '>=', charge, fly)
-    # held in the jaws: it swells there, and follows the head down over the last ticks
-    fx.lin(size, FRAME, held - 8, 8, charge)
+    # held in the jaws: it swells there, quickly and then settling, and follows the head down over the last ticks
+    fx.lin(fx.T, FRAME, -1, charge); fx.mul(fx.T, fx.T); fx.lin(size, fx.T, 8 - held, held, charge * charge)
     fx.vcopy(head, maw); fx.lin(fx.T, FRAME, 1, drop - charge); fx.br(fx.T, '<=', 0, still)
     fx.vcopy(tail, mouth); fx.vsub(tail, maw); fx.vmul(tail, fx.T); fx.vdiv(tail, drop); fx.vadd(head, tail)
     fx.label(still); fx.jmp(draw)
     fx.label(fly)
-    # breathed out: it flies to the target, growing all the way, on the point of a ray from the snout
-    fx.lin(fx.T, FRAME, 1, 1 - charge); fx.br(fx.T, '<=', steps, there); fx.set(fx.T, steps)
+    # breathed out: it leaps from the snout and slows into the target, growing all the way, and there it goes on
+    # opening as it dims
+    fx.lin(fx.T, FRAME, 1, 1 - charge); fx.lin(size, fx.T, 12, grown - 12 * steps)
+    fx.br(fx.T, '>', steps, there)
+    fx.lin(size, fx.T, grown - held, held, steps)
     fx.label(there)
-    fx.lin(size, fx.T, 100 - held, 0, steps); fx.add(size, held)
-    fx.vcopy(head, way); fx.vmul(head, fx.T); fx.vdiv(head, steps); fx.vadd(head, mouth)
-    fx.set(fx.T3, FRAME); fx.mod(fx.T3, 2); fx.mul(fx.T3, 12); fx.add(fx.T3, 150); fx.mul(fx.T3, fade)
-    fx.div(fx.T3, ebb)
-    band(fx, mouth, head, fx.T3, edge, 0)
-    fx.lin(fx.T2, fx.T3, 1, 0, 2); band(fx, mouth, head, fx.T2, tint, 0)
-    fx.lin(fx.T2, fx.T3, 2); fx.sprite(mouth, edge, fx.T2, cell=3)
+    fx.br(fx.T, '<=', steps, early); fx.set(fx.T, steps)
+    fx.label(early)
+    fx.lin(fx.T, fx.T, -1, steps); fx.mul(fx.T, fx.T); fx.lin(fx.T, fx.T, -1, steps * steps)
+    fx.vcopy(head, way); fx.vmul(head, fx.T); fx.vdiv(head, steps * steps); fx.vadd(head, mouth)
+    # the ray: narrow at the snout, wide behind the arrowhead, its width breathing slowly
+    fx.lin(fx.T2, FRAME, 700); fx.sin(far, fx.T2, 10); fx.add(far, 150); fx.lin(near, far, 3, 0, 5)
+    for colour, num, den in ((edge, 1, 1), (tint, 2, 5)):
+        for q, (p, half, sign) in enumerate(((mouth, near, -1), (head, far, -1), (mouth, near, 1), (head, far, 1))):
+            fx.vcopy(fx.Q[q], p); fx.lin(fx.T2, half, num, 0, den)
+            (fx.sub_ if sign < 0 else fx.add)(at(fx.Q[q], 1), fx.T2)
+        fx.quad(fx.Q[0], fx.Q[1], fx.Q[2], fx.Q[3], colour, 0)
+    fx.sprite(mouth, edge, 260, cell=3)
     fx.label(draw)
-    fx.mul(size, fade)
     # the point leads its anchor a little, so in the jaws the arrowhead sits around the mouth, not behind it
     fx.vcopy(tail, way); fx.vmul(tail, 110); fx.vdiv(tail, fx.F2); fx.vadd(head, tail)
-    fx.vcopy(tail, way); fx.vmul(tail, 440); fx.vdiv(tail, fx.F2); fx.vmul(tail, size); fx.vdiv(tail, full)
+    fx.vcopy(tail, way); fx.vmul(tail, 440); fx.vdiv(tail, fx.F2); fx.vmul(tail, size); fx.vdiv(tail, 100)
     fx.vmul(tail, -1); fx.vadd(tail, head)
-    fx.vmul(side, size); fx.vdiv(side, full)
-    for colour in (edge, tint):       # twice over: the blue under the white softens its edges
+    fx.vmul(side, size); fx.vdiv(side, 100)
+    for colour, cell in ((edge, 4), (tint, 1)):       # a wide blue halo under the keen white edges
         for q, (p, sign) in enumerate(((tail, -1), (head, -1), (tail, 1), (head, 1))):
             fx.vcopy(fx.Q[q], p); (fx.vsub if sign < 0 else fx.vadd)(fx.Q[q], side)
-        fx.quad(fx.Q[0], fx.Q[1], fx.Q[2], fx.Q[3], colour, 1, w=64)
+        fx.quad(fx.Q[0], fx.Q[1], fx.Q[2], fx.Q[3], colour, cell, w=64)
     fx.ret()
     return fx
 
