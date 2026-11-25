@@ -109,7 +109,7 @@ def main():
         if a.video:
             start(e, a.target, True)
             scene_tick(e, 0)
-            rec = subprocess.Popen([sys.executable, str(ROOT / 'tools/dev/emulator.py'), 'record', a.video, '13'], env=e.env)
+            rec = subprocess.Popen([sys.executable, str(ROOT / 'tools/dev/emulator.py'), 'record', a.video, '20'], env=e.env)
             scene_tick(e, 70, falls=2)
             pad(e, name, True); scene_tick(e, 79, falls=2); pad(e, name, False)
             scene_tick(e, 135, falls=2)
