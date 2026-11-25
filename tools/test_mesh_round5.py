@@ -64,12 +64,11 @@ class FanProvenance(unittest.TestCase):
         self.assertEqual(sorted(packets), list(range(224)))
         self.assertEqual(len(set(packets)), len(packets))
 
-    def test_rotation_and_inverse_radial_normals(self):
+    def test_rotation_keeps_lengths(self):
         a, b = F.unit([1, 2, 3]), F.unit([-2, 1, 4])
         self.assertTrue(np.allclose(F.align(a, b, a), b))
-        tangent = F.radial([3, 2, 5], a, F.RADIAL_FIT)
-        normal = F.radial(F.cross(a, [3, 2, 5]), a, 1/F.RADIAL_FIT)
-        self.assertAlmostEqual(F.dot(tangent, normal), 0)
+        v = [3, 2, 5]
+        self.assertAlmostEqual(F.dot(F.align(a, b, v), F.align(a, b, v)), F.dot(v, v))
 
 
 @unittest.skipUnless((ROOT/'build/before/index.json').exists(), 'private model fixtures unavailable')

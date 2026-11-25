@@ -15,108 +15,11 @@ import mmd
 POSES = Path(__file__).resolve().parents[2] / 'content/models/authoring/omnimon-clearance.json'
 
 
-def cut_blade(model, start=150):
-    """Trim the concealed tang, preserving the tip and texture coordinates.
-
-    Moving only the low ring leaves the blade's existing planes unchanged.
-    Interpolate UVs at the cut rather than squeezing the entire inscription
-    onto the remaining visible blade. No packet or corner is discarded.
-    """
-    oi = 6
-    obj = model.tmd.objects[oi]
-    old = list(model.tmd.obj_verts(oi))
-    for pi, prim in enumerate(obj.prims):
-        d = prim.decode()
-        if d['uv']:
-            uv = list(d['uv'])
-            for k, vi in enumerate(d['verts']):
-                v = old[vi]
-                if v[1] >= start:
-                    continue
-                matches = [j for j, vj in enumerate(d['verts'])
-                           if old[vj][0] == v[0] and old[vj][2] == v[2] and old[vj][1] > start]
-                if len(matches) != 1:
-                    raise ValueError('Omnimon blade cut requires a matching longitudinal edge')
-                j = matches[0]
-                t = (start-v[1])/(old[d['verts'][j]][1]-v[1])
-                uv[k] = tuple(round(a+(b-a)*t) for a, b in zip(d['uv'][k], d['uv'][j]))
-            d['uv'] = uv
-            obj.prims[pi] = mmd.Prim.encode(d)
-    for i, v in enumerate(old):
-        model.tmd.verts[obj.vert_start+i] = (v[0], max(start, v[1]), v[2], v[3])
-
-
-def _cross(a, b):
-    return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]
-
-
 def _unit(v):
     length = math.sqrt(sum(x*x for x in v))
     if length < 1e-9:
         raise ValueError('Omnimon surface fit collapsed a triangle or normal')
     return [x/length for x in v]
-
-
-def _normal(vertices, ids):
-    a, b, c = (vertices[i] for i in ids)
-    return _unit(_cross([b[i]-a[i] for i in range(3)], [c[i]-a[i] for i in range(3)]))
-
-
-def fit_surface(model, oi, mapper):
-    """Move a surface and transport its smooth normals with its GPU triangles.
-
-    Each original normal is rotated with the incident triangles, then their
-    contributions are averaged. Hard seams and opposite cloth faces keep
-    their separate normal indices. The normal pool and packet sizes stay fixed.
-    """
-    obj = model.tmd.objects[oi]
-    old = list(model.tmd.obj_verts(oi))
-    new = [tuple(mapper(*v[:3]))+(v[3],) for v in old]
-    normals = model.tmd.obj_norms(oi)[:obj.nnorm]
-    total = [[0., 0., 0.] for _ in normals]
-    for prim in obj.prims:
-        d = prim.decode()
-        for corners in ((0, 1, 2), (1, 3, 2)) if len(d['verts']) == 4 else ((0, 1, 2),):
-            ids = [d['verts'][i] for i in corners]
-            a, b = _normal(old, ids), _normal(new, ids)
-            axis = _cross(a, b)
-            cosine = sum(x*y for x, y in zip(a, b))
-            if cosine < -.999999:
-                raise ValueError('Omnimon surface fit reversed a triangle')
-            for k in corners:
-                ni = d['norms'][k if len(d['norms']) > 1 else 0]
-                n = _unit(normals[ni][:3])
-                first = _cross(axis, n)
-                second = _cross(axis, first)
-                for j in range(3):
-                    total[ni][j] += n[j]+first[j]+second[j]/(1+cosine)
-    model.tmd.verts[obj.vert_start:obj.vert_start+obj.nvert] = new
-    for i, v in enumerate(total):
-        q = _unit(v) if any(v) else _unit(normals[i][:3])
-        model.tmd.norms[obj.norm_start+i] = tuple(round(x*4096) for x in q)+(normals[i][3],)
-
-
-def fit_cape(model):
-    """Seat both panels on a straight fold instead of overlapping folded rings.
-
-    A one-unit seam allowance separates the articulated rigid panels. The
-    neckline stays at its socket; the upper panel narrows around the arms,
-    while the lower panel retains its length and flared, folded hem.
-    """
-    def upper(x, y, z):
-        if y > 100:
-            y, z = 109, 50
-        if y < 1:
-            z = max(z, 5)
-        return round(x*.75), y, z
-
-    def lower(x, y, z):
-        if y < 0:
-            return round(x*129/90*.75), 1, 0
-        return round(x*.9), y, z
-
-    fit_surface(model, 22, upper)
-    fit_surface(model, 23, lower)
 
 
 def merge_near_normals(model, degrees=4):
@@ -170,9 +73,11 @@ def apply(model, bones):
     # only referenced entries before transporting or comparing these normals.
     from tools.models import mesh_stability
     mesh_stability.compact_pools(model)
-    cut_blade(model)
-    fit_cape(model)
-    C.translate_bone(model, 24, 2, 30)
+    # The blade keeps its full tang inside the guard: cutting it opened a
+    # visible gap between guard and blade. The cape keeps the source's full panels: an earlier fit narrowed them
+    # to a quarter less width and refolded them, which read as a lost cape.
+    # Its clearance comes from the clips instead: the reduced flap arcs below
+    # and, per program, a slightly higher cape-base pitch in POSES.
     # Scale only the excessive flap arcs. The original per-frame easing is
     # retained; subsequent constant offsets seat the reduced arcs behind the
     # shoulders. These three clips formerly folded the cloth into the body.
@@ -197,11 +102,11 @@ def apply(model, bones):
             raise ValueError('Omnimon clearance requires six or nine rotation offsets')
     if done != {i for i in model.anims.table if i is not None}:
         raise ValueError('Omnimon clearance table does not cover every occupied program')
-    report.update(blade_start=150, cape_straight_fold=True, cape_tip_socket_z=30,
+    report.update(blade_source_tang=True, cape_source_panels=True,
                   clearance_programs=sorted(done))
-    # The newly straight fold is articulated, not a bent quad controlled by
-    # the culling result of its first half. Split both cloth windings along
-    # their existing GPU diagonals, retaining all triangle corner attributes.
+    # The fold is articulated, not a bent quad controlled by the culling
+    # result of its first half. Split both cloth windings along their
+    # existing GPU diagonals, retaining all triangle corner attributes.
     splits = 0
     for oi in (22, 23):
         obj = model.tmd.objects[oi]
