@@ -18,6 +18,13 @@
  "rite.farewell_ultimate": "Few reach that far. The island will remember this one.",
  "rite.farewell_mega": "Ho ho... In eighty years I have seen that form only a handful of times. Rest now, great one.",
  "rite.city": "The whole city knows already. Someone left flowers at the door, and the square has gone quiet.",
+ "ngplus.menu": "New Game+",
+ "ngplus.explain": "Ho ho... You saved the island, my boy, so the machine will do one thing more. It can take you back to the day you arrived. The island forgets: the city, your Digimon, your bag and your bits start again. You keep what you know: the chart, your medals and cups, your cards, your techniques and your tamer level.",
+ "ngplus.yes": "Start again",
+ "ngplus.no": "Not yet",
+ "ngplus.sure": "What you saved on the card stays until you save again. But these days will be gone, my boy. Are you sure?",
+ "ngplus.sure_yes": "I am sure",
+ "ngplus.go": "Then close your eyes. We will meet again... for the first time.",
  "qol.mansion_key_used_up": "Every door in the mansion is open now. You no longer need the {color 6}Mansion Key{color 1}.",
  "name.ask_partner": [
   "{color 7}Jijimon {color 1}",

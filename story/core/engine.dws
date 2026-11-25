@@ -6,6 +6,7 @@ pub group engine {
     pub alias var shop_lo = 244;           // SHOP_VARIABLE, low byte
     pub alias var death_map_entry = 124;   // 1 while Jijimon's house was loaded by the partner's death or lost life (C, not saved)
     pub alias var rite_keepsake = 125;     // 1 from the rite of return to the rebirth after it: the baby keeps the happy farewell (unsaved)
+    pub alias var new_game_plus = 126;     // 1 makes routine save_machine start a New Game Plus instead of opening the menu (unsaved)
     pub alias var music_mode = 245;
     pub alias var object = 247;            // CALL_ROUTINE argument: map object / script entity
     pub alias var animation = 248;         // CALL_ROUTINE argument: animation / exit / mood
@@ -26,4 +27,5 @@ pub group engine {
     pub alias flag no_cancel = 49;         // a selection cannot be cancelled
     pub alias flag card_machine = 42;      // routine card_shop sells the item shop's machine cards (patch 0237)
     pub alias flag game_beaten = 50;
+    pub alias flag new_game_plus_unlocked = 642;   // set by a New Game Plus: the save machine keeps the option in the new run
 }

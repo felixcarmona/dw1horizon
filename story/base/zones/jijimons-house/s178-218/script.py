@@ -164,6 +164,21 @@ def use5():    # section 85
         wait(250)
         return
     narrator.say(t85.u2)
+    if engine.game_beaten or engine.new_game_plus_unlocked:
+        match narrator.choose(a=t85.m0.o0, d=text.rite.menu, e=text.ngplus.menu, b=t85.m0.o1):
+            case "a":
+                hide_hud()
+                call(Routine.save_machine)
+                return
+            case "d":
+                jump_to_script(212, 74)
+            case "e":
+                jump_to_script(212, 75)
+            case "b":
+                return
+            case _:
+                return
+        return
     match narrator.choose(a=t85.m0.o0, d=text.rite.menu, b=t85.m0.o1):
         case "a":
             hide_hud()

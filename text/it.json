@@ -18,6 +18,13 @@
  "rite.farewell_ultimate": "Pochi arrivano così lontano. L'isola ricorderà questo.",
  "rite.farewell_mega": "Ho ho... In ottant'anni ho visto quella forma solo poche volte. Riposa ora, grande.",
  "rite.city": "Tutta la città lo sa già. Qualcuno ha lasciato dei fiori alla porta, e la piazza è rimasta in silenzio.",
+ "ngplus.menu": "Nuova partita+",
+ "ngplus.explain": "Ho ho... Hai salvato l'isola, ragazzo mio, quindi la macchina può fare una cosa in più. Può riportarti al giorno in cui sei arrivato. L'isola dimentica: la città, il tuo Digimon, la borsa e i bit ricominciano. Tu conservi ciò che sai: la tabella, le medaglie e le coppe, le carte, le tecniche e il tuo livello di tamer.",
+ "ngplus.yes": "Ricomincia",
+ "ngplus.no": "Non ancora",
+ "ngplus.sure": "Ciò che hai salvato sulla scheda resta finché non salvi di nuovo. Ma questi giorni andranno perduti, ragazzo mio. Sei sicuro?",
+ "ngplus.sure_yes": "Sono sicuro",
+ "ngplus.go": "Allora chiudi gli occhi. Ci rivedremo... per la prima volta.",
  "qol.mansion_key_used_up": "Ora tutte le porte della villa sono aperte. La {color 6}Chiave villa{color 1} non ti serve più.",
  "name.ask_partner": [
   "{color 7}Jijimon {color 1}",
