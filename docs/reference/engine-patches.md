@@ -180,7 +180,7 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
 - **Chart overview** (0170, 0178, 0213, 0219): every partner species of the build, one tab per level (L1/R1), pages of
   boxes in the level's colour, scrolling. `tools/species.py` writes the list into DIGI.DAT's chart block
   (`SpeciesHeader.chartSector`: tab counts and ids, then both 16x16 idle frames and the CLUT per species, 7 to a sector); a
-  page is read when shown (`chartLoadPage`) into battle-effect VRAM, each row of first frames with its second frames
+  page is read when shown (`chartLoadPage`, its icon sectors in one disc read through `TEXTURE_BUFFER`) into battle-effect VRAM, each row of first frames with its second frames
   below it in one texture page. Every box alternates its two frames (0320), the original sheet's pairs too. A
   scroll or a return from the detail view reloads the shown rows. The tabs fit any font.
 - **City** (0277): the fifth Player tab shares the chart's 14 by 7 grid,

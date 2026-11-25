@@ -1,0 +1,115 @@
+From b38d060646ab6ab50b95fdbd9632a8c470821d6c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 25 Nov 2026 13:49:10 +0000
+Subject: [PATCH] Evolution chart: read a page's icons in one disc read
+
+---
+ include/dw/species.h   |  2 ++
+ src/main/game_menu.c   | 25 +++++++++++++++++++------
+ src/main/mod_species.c | 16 ++++++++++++++++
+ 3 files changed, 37 insertions(+), 6 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 2e67449..e227d32 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -310,6 +310,8 @@ void loadSpeciesPortrait(int32_t type, int32_t x, int32_t y, int32_t rows, int32
+  * the next read of DIGI.DAT reuses; NULL when the file has no chart block */
+ /* City sector pointer at header byte 0x38; zero in archives without City. */
+ uint8_t *readSpeciesChart(int32_t k, int32_t city);
++/* the icon sectors k..k+count-1 of the chart (city 0) or City block in one read into `buffer`; 0 when there is no block */
++int32_t readSpeciesChartSectors(int32_t k, int32_t count, void *buffer, int32_t city);
+ 
+ /* partner species of DIGI.DAT: how many, the n-th id, the first Mega (0: none) */
+ int32_t getSpeciesPartnerCount(void);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 049f023..6d2491d 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -4905,6 +4905,8 @@ void recalculateProsperity(void);
+ #define CHART_COLS		14
+ #define CHART_ROWS		7
+ #define CHART_PAGE_SIZE		(CHART_COLS * CHART_ROWS)
++_Static_assert((CHART_PAGE_SIZE / SPECIES_CHART_ICONS_PER_SECTOR + 1) * 0x800 <= TEXTURE_BUFFER_SIZE,
++		"a chart page's icon sectors must fit the texture buffer (chartLoadPage)");
+ #define CHART_GRID_X		27	/* the first box's border, screen pixels */
+ #define CHART_GRID_Y		57
+ #define CHART_BAND_W		279	/* the tab's band, from x 20 */
+@@ -5033,6 +5035,7 @@ static void chartLoadPage(int32_t row)
+ 	int32_t id;
+ 	int32_t clut;
+ 	uint8_t *icon;
++	int32_t lo;
+ 
+ 	CHART_PAGE_COUNT = 0;
+ 	CHART_RAISED = 0;
+@@ -5076,7 +5079,21 @@ static void chartLoadPage(int32_t row)
+ 	for (k = 0; k < CHART_PAGE_COUNT; k++) {
+ 		CHART_PAGE_IDS[k] = ids[first + k];
+ 	}
++	/* the icon sectors the page (or row) needs follow each other on the disc: one read for all of them into the texture
++	 * buffer, as the card viewer does, instead of one read a sector (each read pays a seek). A full page spans at most
++	 * CHART_PAGE_SIZE / 7 + 1 = 15 sectors, the buffer's 0x7800 bytes */
++	lo = -1;
+ 	last = -1;
++	for (k = 0; k < CHART_PAGE_COUNT; k++) {
++		if (CHART_CELL_ID(CHART_PAGE_IDS[k]) <= NUM_EVO_CHART_DIGIMON || (row >= 0 && k / CHART_COLS != row)) continue;
++		sector = 1 + (first + k) / SPECIES_CHART_ICONS_PER_SECTOR;
++		if (lo < 0) lo = sector;
++		last = sector;
++	}
++	if (lo >= 0) {
++		DrawSync(0); /* the previous uploads may still read the buffer */
++		if (!readSpeciesChartSectors(lo, last - lo + 1, TEXTURE_BUFFER, CITY_VIEW)) lo = -1;
++	}
+ 	for (k = 0; k < CHART_PAGE_COUNT; k++) {
+ 		id = CHART_CELL_ID(CHART_PAGE_IDS[k]);
+ 		if (row >= 0 && k / CHART_COLS != row) continue;
+@@ -5091,15 +5108,11 @@ static void chartLoadPage(int32_t row)
+ 			}
+ 			continue;
+ 		}
++		if (lo < 0) continue;
+ 		g = first + k;
+ 		sector = 1 + g / SPECIES_CHART_ICONS_PER_SECTOR;
+-		if (sector != last) {
+-			DrawSync(0); /* the uploads read the sector buffer */
+-			s = readSpeciesChart(sector, CITY_VIEW);
+-			last = sector;
+-		}
+ 		slot = chartSlot(k);
+-		icon = s + (g % SPECIES_CHART_ICONS_PER_SECTOR) * SPECIES_CHART_ICON_SIZE;
++		icon = TEXTURE_BUFFER + (sector - lo) * 0x800 + (g % SPECIES_CHART_ICONS_PER_SECTOR) * SPECIES_CHART_ICON_SIZE;
+ 		setRECT(&rect, CHART_CLUT_X + (slot % 4) * 16, CHART_CLUT_Y + slot / 4, 16, 1);
+ 		if (CITY_VIEW && !isDigimonRecruited(id)) {
+ 			cityGreyClut((uint16_t *)icon, slot);
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index df7d330..d7ced04 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -941,6 +941,22 @@ uint8_t *readSpeciesChart(int32_t k, int32_t city)
+ 	return (uint8_t *)SPECIES_SECTOR;
+ }
+ 
++/* MOD (chart page in one read): every CD read pays a seek, about 60 ms, whatever its length */
++int32_t readSpeciesChartSectors(int32_t k, int32_t count, void *buffer, int32_t city)
++{
++	uint32_t sector;
++
++	sector = city ? SPECIES_CITY_SECTOR : SPECIES_CHART_SECTOR;
++	if (SPECIES_INDEX_SECTOR == 0 || sector == 0) {
++		return 0;
++	}
++	while (isFileReadQueueBusy()) {
++		tickFileReadQueue(0);
++	}
++	readFileSectors(SPECIES_FILE_NAME, buffer, sector + k, count);
++	return 1;
++}
++
+ /*
+  * MOD (cold animations): see COLD_ANIM_FLAG in species.h. Returns where the animation's first word is, or NULL when it cannot
+  * be played (not the partner, a model not in DIGI.DAT, a bad entry): the caller then starts nothing, as for a missing slot.
+-- 
+2.55.0
+
