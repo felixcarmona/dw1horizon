@@ -31,23 +31,26 @@ def bind(mesh,texture,donor,donor_texture,spec):
     mapping={int(k):v for k,v in spec['map'].items()}
     children={int(k):v for k,v in spec['segments'].items()}
     # Texture the native staff with its original small atlas strip.
-    tim=mmd.Tim4(texture);nt=mmd.Tim4(donor_texture)
-    used=set();mask=np.zeros((128,256),bool)
-    for ob in s.tmd.objects:
-     for prim in ob.prims:
-      d=prim.decode()
-      if d.get('uv'):
-       used.add((d['cba']>>6)-488);uv=np.array(d['uv']);lo=uv.min(0);hi=uv.max(0);mask[lo[1]:hi[1]+1,lo[0]:hi[0]+1]=True
-    pal=next(i for i in range(15)if i not in used);tim.pal[pal]=list(nt.pal[9])
-    spot=None
-    for y in range(121):
-     for x in range(217):
-      if not mask[y:y+8,x:x+40].any():spot=(x,y);break
-     if spot:break
-    if not spot:raise ValueError('No staff texture space')
-    x,y=spot
-    for j in range(8):
-     for i in range(40):tim.idx[(y+j)*256+x+i]=nt.idx[(72+j)*256+136+i]
+    staffed=spec.get('staff',True)  # false: no native staff (MagnaAngemon's sword stays hidden in its gauntlet)
+    tim=mmd.Tim4(texture)
+    if staffed:
+     nt=mmd.Tim4(donor_texture)
+     used=set();mask=np.zeros((128,256),bool)
+     for ob in s.tmd.objects:
+      for prim in ob.prims:
+       d=prim.decode()
+       if d.get('uv'):
+        used.add((d['cba']>>6)-488);uv=np.array(d['uv']);lo=uv.min(0);hi=uv.max(0);mask[lo[1]:hi[1]+1,lo[0]:hi[0]+1]=True
+     pal=next(i for i in range(15)if i not in used);tim.pal[pal]=list(nt.pal[9])
+     spot=None
+     for y in range(121):
+      for x in range(217):
+       if not mask[y:y+8,x:x+40].any():spot=(x,y);break
+      if spot:break
+     if not spot:raise ValueError('No staff texture space')
+     x,y=spot
+     for j in range(8):
+      for i in range(40):tim.idx[(y+j)*256+x+i]=nt.idx[(72+j)*256+136+i]
 
     items={i:[]for i in range(26)}
     def cloud(m,b,w,rig):
@@ -86,6 +89,12 @@ def bind(mesh,texture,donor,donor_texture,spec):
       points=(points-center)@mat.T+origin
       pivot=(np.array([0.,-490.,-38.])-center)@mat.T+origin
       tilt=np.array(mmd.rot_matrix(spec['head']['tilt'],0,0));points=(points-pivot)@tilt.T+pivot+np.array([offset[0],offset[1],0.]);mat=tilt@mat
+      hair=spec['head'].get('hair')
+      if hair and sb==hair['source']:
+       # Lengthen the hair down the back: the back of the head's hair below `below` is stretched downwards,
+       # away from the back and a little wider.
+       d=points[:,1]-hair['below'];sel=(d>0)&(points[:,2]>hair['behind']);d=np.where(sel,d,0.)
+       points[:,1]+=d*(hair['stretch']-1);points[:,2]+=d*(hair['stretch']-1)*hair['back'];points[:,0]*=1+d*hair['widen']
      elif sb in spec['wings']['sources']:
       anchor=np.array(spec['wings']['anchor'],dtype=float)
       mat=np.diag(spec['wings']['scale']);points=(points-anchor)@mat.T+nw[tb,:3,3]
@@ -106,12 +115,13 @@ def bind(mesh,texture,donor,donor_texture,spec):
        prims.append(mmd.Prim.encode(d))
       items[left].append((s,obj,left_local,left_norms,prims))
     # Keep just the donor's staff faces; their vertices can be shared with the hand.
-    obj=nk[9][0];staff=[]
-    for p in n.tmd.objects[obj].prims:
-     d=p.decode()
-     if d.get('cba')==31808:
-      d['uv']=[(u-136+x,v-72+y)for u,v in d['uv']];d['cba']=(488+pal)<<6;staff.append(mmd.Prim.encode(d))
-    items[9].append((n,obj,np.array(n.tmd.obj_verts(obj))[:,:3]*scale,np.array(n.tmd.obj_norms(obj)[:n.tmd.objects[obj].nnorm])[:,:3],staff))
+    if staffed:
+     obj=nk[9][0];staff=[]
+     for p in n.tmd.objects[obj].prims:
+      d=p.decode()
+      if d.get('cba')==31808:
+       d['uv']=[(u-136+x,v-72+y)for u,v in d['uv']];d['cba']=(488+pal)<<6;staff.append(mmd.Prim.encode(d))
+     items[9].append((n,obj,np.array(n.tmd.obj_verts(obj))[:,:3]*scale,np.array(n.tmd.obj_norms(obj)[:n.tmd.objects[obj].nnorm])[:,:3],staff))
     tmd=mmd.TMD();rig=[]
     for b,(old_obj,parent)in enumerate(nk):
      if not items[b]:rig.append([-1,parent]);continue

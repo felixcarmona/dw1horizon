@@ -9,7 +9,7 @@
   },
   "mesh": {
     "file": "build/native-mesh/MagnaAngemon.MMD",
-    "sha256": "387fdb3bd16a0d3fde957007d9e82c22ca89efb1de112ea96512d97bd0877209",
+    "sha256": "b94e654eff01038e8ba5a9268a4ae5ba84c82ae0a33015c76e01ca881c25ac50",
     "texture_sha256": "253fcd657e203829ba3018baedebdd7d44eea9a503dd566f0f4a2a31cdd72cb3",
     "spec": "content/imports/specs/MagnaAngemon-dw3-mesh.json",
     "skeleton": [
@@ -165,6 +165,8 @@
     "20": 10,
     "21": 10,
     "22": 10,
+    "23": 10,
+    "24": 10,
     "25": 7,
     "26": 8,
     "27": 8,
@@ -184,12 +186,15 @@
     "29": 30,
     "30": 31
   },
+  "staff": false,
   "wings": {
     "sources": [
       19,
       20,
       21,
-      22
+      22,
+      23,
+      24
     ],
     "right_donor": 10,
     "left_donor": 12,
@@ -221,6 +226,14 @@
       12
     ],
     "tilt": -125,
+    "hair": {
+      "source": 10,
+      "below": -445,
+      "behind": 30,
+      "stretch": 2.6,
+      "back": 0.45,
+      "widen": 0.006
+    },
     "offset": [
       0,
       -5,
