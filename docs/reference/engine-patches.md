@@ -79,7 +79,7 @@ Removes the engine limits on music, voices and sound memory while the original f
 1. The chunks of `FAALL`/`VBALL`/`VLALL`/`ESALL` are found through an index sector at the head of each file (magic
    `SIDX`, `{u16 sector, u16 sectors}` per chunk) instead of fixed strides and `MAP_SOUND_PARA`. Files without the index
    get the original layout, rebuilt from the file sizes.
-2. Music fonts 34..254 (`playMusic` takes the index's count); `SEQ_BUFFER_SIZE` 0x7400 (was 0x5800, then 0x8000 and 0x7800), the SEQ copy
+2. Music fonts 34..254 (`playMusic` takes the index's count); `SEQ_BUFFER_SIZE` 0x7288 (was 0x5800, then 0x8000, 0x7800 and 0x7400), the SEQ copy
    checked.
 3. SPU RAM allocated per load (`spuPlaceBank`): bank 8 top-aligned under the reverb area, the others at their original
    slot when free, else the lowest free space; the map region or an oversized font is evicted when a load needs room; the
@@ -501,7 +501,7 @@ The list expansion costs 16 bytes of aligned heap (`main_BSS_END` 0x801cee08 →
 
 The resident music-sequence buffer is reduced from 0x8000 to 0x7800 to preserve 2 MB model-loading headroom: the largest of the 35 built music fonts uses 0x7284 bytes, leaving 0x57c bytes of capacity above that peak. The sound authoring limit matches the resident buffer. The final nine-language layout has `main_BSS_END` 0x801ce610 and 186592 bytes of heap; all 320 model-aware screen setups fit, with a minimum margin of 1872 bytes on screen 207.
 
-Later content took that margin, so the buffer is now 0x7400 (380 bytes above the same peak; a font that does not fit fails the authoring check). The nine-language build then has 184608 bytes of heap and 800 bytes of margin on screen 207.
+Later content took that margin, so the buffer is now 0x7400 (380 bytes above the same peak; a font that does not fit fails the authoring check). The nine-language build then has 184608 bytes of heap and 800 bytes of margin on screen 207. The partner rewind later cut it to 0x7288 (4 bytes above the peak): 184112 bytes of heap, 304 on screen 207.
 
 Language padding also keeps the executable's layout equal in every language: two macro texts that are the same in one language but not in another get padded sizes that differ (`apart` in `text-bank-pad.json`), so the compiler cannot merge them in one language's executable only.
 

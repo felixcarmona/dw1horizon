@@ -41,6 +41,7 @@ def talk():
         say("Ah... ah... AH-CHOO!")
         tamer.say("Cough, cough! What is all this dust?")
         say("Spores. Nobody stays on their feet for long around me.")
-        if fight(mushroomon) == "won":
+        if fight(mushroomon, escape=False) == "won":
             say("You're not sick. Interesting. I could learn medicine from you.")
-            send_to_city(line="Mushroomon joined the city!", species=Species.Mushroomon)
+            run(750, -850)
+            send_to_city(line="Mushroomon joined the city!", species=Species.Mushroomon, camera=False)

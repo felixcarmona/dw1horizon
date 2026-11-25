@@ -40,6 +40,7 @@ def talk():
     else:
         say("Too hot to die, too small to burn.")
         say("Give me a good fight. It's the only thing that still lights me.")
-        if fight(candlemon) == "won":
+        if fight(candlemon, escape=False) == "won":
             say("That lit me up! Have you got a forge?")
-            send_to_city(line="Candlemon joined the city!", species=Species.Candlemon)
+            run(2650, -1850)
+            send_to_city(line="Candlemon joined the city!", species=Species.Candlemon, camera=False)

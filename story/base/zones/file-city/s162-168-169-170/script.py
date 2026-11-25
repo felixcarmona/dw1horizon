@@ -94,6 +94,7 @@ def enter():    # section 254
             narrator.say(t254.u3)
         raw.give_card(65)
         narrator.say(t254.u4)
+        narrator.say(text.ngplus.hint)   # the save machine's New Game+ and its rewind: no one would look there otherwise
     if recruited(Species.Drimogemon):
         objects[0].hide()
         objects[1].hide()

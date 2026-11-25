@@ -26,7 +26,9 @@ WHOLE = (
     (0, 1, 2, 3, 8, 9, 10, 11, 26, 27, 34, 35, 55, 56, 63, 65, 72, 76, 77, 80, 82),
     (4, 5, 6, 7, 12, 13, 14, 15, 30, 31, 36, 37, 59, 60, 64, 66, 74, 78, 79, 81, 83),
 )
-RADIAL_FIT = .45
+# Each tail keeps the source's full width (an earlier fit thinned every tail to
+# 45 %, which read as separate spikes); the fan opens a little wider instead.
+SPREAD = 1.2
 
 
 def dot(a, b):
@@ -73,11 +75,6 @@ def packed(v):
     return tuple(round(x) for x in v)+(0,)
 
 
-def radial(value, axis, gain):
-    along = mul(axis, dot(value, axis))
-    return add(along, mul(sub(value, along), gain))
-
-
 def apply(model):
     obj = model.tmd.objects[9]
     if [len(model.tmd.objects[i].prims) for i in (9, 10, 11)] != [84, 60, 80]:
@@ -103,9 +100,6 @@ def apply(model):
         shift = len(verts)-component*17
         for k, v in enumerate(source):
             q = align(direction, axis, sub(v, start))
-            t = dot(q, axis)
-            if 8 <= k < 16:
-                q = mul(sub(q, mul(axis, t)), .65)
             verts.append(packed(add(q, add(root, mul(axis, length)))))
         nmap = {}
         source_norms = model.tmd.obj_norms(oi)
@@ -126,21 +120,7 @@ def apply(model):
         root = mean([v for v in points if v[0] < 5])
         rays.append((root, unit(sub(mean([v for v in points if v[0] > 50]), root))))
         groups.append(list(group))
-    for group, (root, axis) in zip(groups, rays):
-        ids = {v for pi in group for v in prims[pi].decode()['verts']}
-        for vi in ids:
-            verts[vi] = packed(add(root, radial(sub(verts[vi][:3], root), axis, RADIAL_FIT)))
-        # Inverse transpose for this tail's radial fit; no shared normal can
-        # accidentally receive another tail's differently oriented fit.
-        nmap = {}
-        for pi in group:
-            d = prims[pi].decode()
-            for k, ni in enumerate(d['norms']):
-                if ni not in nmap:
-                    nmap[ni] = len(norms)
-                    norms.append(packed(mul(unit(radial(norms[ni][:3], axis, 1/RADIAL_FIT)), 4096)))
-                d['norms'][k] = nmap[ni]
-            prims[pi] = mmd.Prim.encode(d)
+    spread(prims, verts, norms, groups, rays, original)
     pools = [list(model.tmd.obj_verts(i)) for i in range(len(model.tmd.objects))]
     normals = [list(model.tmd.obj_norms(i))[:o.nnorm] for i, o in enumerate(model.tmd.objects)]
     pools[9], normals[9], obj.prims = verts, norms, prims
@@ -151,8 +131,43 @@ def apply(model):
         ob.vert_start, ob.nvert = len(model.tmd.verts), len(pools[oi])
         ob.norm_start, ob.nnorm = len(model.tmd.norms), len(normals[oi])
         model.tmd.verts.extend(pools[oi]); model.tmd.norms.extend(normals[oi])
-    return dict(radial_fit=RADIAL_FIT, tail_groups=groups, binding_bone=15,
+    return dict(spread=SPREAD, tail_groups=groups, binding_bone=15,
                 original_packets=224, final_packets=len(prims))
+
+
+def spread(prims, verts, norms, groups, rays, original):
+    """Open the fan: turn each whole tail away from the fan's mean ray.
+
+    Every tail keeps its full length and width; only its direction changes,
+    by SPREAD times its angle to the mean ray. The shared root apex (x < 5)
+    stays where it is. Normals receive the same rotation.
+    """
+    center = unit(mean([axis for _, axis in rays]))
+    output, done = [], set()
+    for group, (root, axis) in zip(groups, rays):
+        off = sub(axis, mul(center, dot(axis, center)))
+        angle = math.atan2(math.sqrt(dot(off, off)), dot(axis, center))
+        if dot(off, off) < 1e-12:
+            output.append((root, axis))
+            continue
+        target = add(mul(center, math.cos(angle*SPREAD)), mul(unit(off), math.sin(angle*SPREAD)))
+        ids = {v for pi in group for v in prims[pi].decode()['verts']}
+        for vi in ids:
+            if vi in done or (vi < len(original) and original[vi][0] < 5):
+                continue
+            done.add(vi)
+            verts[vi] = packed(add(root, align(axis, target, sub(verts[vi][:3], root))))
+        nmap = {}
+        for pi in group:
+            d = prims[pi].decode()
+            for k, ni in enumerate(d['norms']):
+                if ni not in nmap:
+                    nmap[ni] = len(norms)
+                    norms.append(packed(align(axis, target, norms[ni][:3])))
+                d['norms'][k] = nmap[ni]
+            prims[pi] = mmd.Prim.encode(d)
+        output.append((root, target))
+    return output
 
 
 def packet_groups():

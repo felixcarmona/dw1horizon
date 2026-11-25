@@ -1,4 +1,4 @@
-"""Native Angemon motion and World 2003 MagnaAngemon binding integration proof.
+"""Native Angemon motion and Card Battle MagnaAngemon binding integration proof.
 
 Set DW_NATIVE_ANGEL_MODEL to the candidate MMD or edit.py get output. The native
 reference comes from the player's extraction; no game assets are test fixtures.
@@ -12,85 +12,123 @@ import unittest
 
 import mmd
 import motionstorage
+from tools.models import rig_angemon
 
 
 class NativeAngemonRig(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        candidate=os.environ.get('DW_NATIVE_ANGEL_MODEL')
+        candidate = os.environ.get('DW_NATIVE_ANGEL_MODEL')
         if not candidate:
-            raise unittest.SkipTest('set DW_NATIVE_ANGEL_MODEL to the final provider model')
-        cls.spec=json.loads(Path('content/imports/specs/MagnaAngemon.json').read_text())
-        cls.own=json.loads(Path('content/species/206-magnaangemon.json').read_text())
-        cls.data=Path(candidate).read_bytes()
-        cls.model=mmd.MMD.parse(cls.data,26)
-        cls.native=mmd.MMD.load(cls.spec['source']['mmd'],20)
+            raise unittest.SkipTest('set DW_NATIVE_ANGEL_MODEL to the bound model (rig_angemon output or edit.py get)')
+        cls.spec = json.loads(Path('content/imports/specs/MagnaAngemon.json').read_text())
+        cls.own = json.loads(Path('content/species/206-magnaangemon.json').read_text())
+        cls.data = Path(candidate).read_bytes()
+        cls.model = mmd.MMD.parse(cls.data, 26)
+        cls.native = mmd.MMD.load(cls.spec['source']['mmd'], 20)
+        # the bones the wings and the back cloth ride turn about the Card Battle joints
+        cls.pivots = {cls.spec['map'][str(b)] for b in cls.spec['pivots']}
+        # field and care programs keep a share of the wings' and the skirt's swing
+        cls.calm = {int(b): f for b, f in cls.spec['calm'].items()}
+        cls.rest = cls.native.anims.anims[cls.native.anims.table[0]].pose
+        cls.field = {cls.native.anims.table[s] for s in range(0x21)} - {None}
+
+    def donor(self, slot):
+        if 46 <= slot < 46 + len(self.spec['technique_slots']):
+            return self.spec['technique_slots'][slot - 46]
+        return self.spec['extra_slots'].get(str(slot), slot)
 
     def test_every_program_uses_native_angles_timing_and_events(self):
-        scale=self.spec['scale']
-        for slot,index in enumerate(self.model.anims.table):
+        scale = self.spec['scale']
+        joints = {}
+        for slot, index in enumerate(self.model.anims.table):
             if index is None:
                 continue
-            if 46<=slot<46+len(self.spec['technique_slots']):
-                donor=self.spec['technique_slots'][slot-46]
-            else:
-                donor=self.spec['extra_slots'].get(str(slot),slot)
-            expected=copy.deepcopy(self.native.anims.anims[self.native.anims.table[donor]])
-            actual=self.model.anims.anims[index]
-            self.assertEqual(actual.frame_count,expected.frame_count,slot)
-            self.assertEqual(actual.has_scale,expected.has_scale,slot)
-            # Every rotation and scale is native. Only a uniform size conversion
-            # touches translations; there is no authored motion or new key time.
-            for before,after in zip(expected.pose,actual.pose):
-                self.assertEqual(after[:-3],before[:-3],slot)
-                self.assertEqual(after[-3:],[round(v*scale) for v in before[-3:]],slot)
-            expected.instrs=[i for i in expected.instrs if i['op']!='tex']
+            expected = copy.deepcopy(self.native.anims.anims[self.native.anims.table[self.donor(slot)]])
+            if self.donor(slot) < 0x21 or self.native.anims.table[self.donor(slot)] in self.field:
+                rig_angemon.calmed(expected, self.rest, self.calm)
+            actual = self.model.anims.anims[index]
+            self.assertEqual(actual.frame_count, expected.frame_count, slot)
+            self.assertEqual(actual.has_scale, expected.has_scale, slot)
+            # Every rotation and scale is native (calmed, in field and care). Translations are a uniform size conversion, but for the pivot bones'
+            # joints, the same in every program; there is no authored motion or new key time.
+            for bone, (before, after) in enumerate(zip(expected.pose, actual.pose), 1):
+                self.assertEqual(after[:-3], before[:-3], slot)
+                if bone in self.pivots:
+                    self.assertEqual(joints.setdefault(bone, after[-3:]), after[-3:], (slot, bone))
+                else:
+                    self.assertEqual(after[-3:], [round(v * scale) for v in before[-3:]], slot)
+            expected.instrs = [i for i in expected.instrs if i['op'] != 'tex']
             for ins in expected.instrs:
-                if ins['op']=='key':
+                if ins['op'] == 'key':
                     for group in ins['bones']:
-                        for channel,value in list(group['vals'].items()):
-                            if channel in ('tx','ty','tz'):
-                                group['vals'][channel]=round(value*scale)
-            self.assertEqual(actual.instrs,expected.instrs,slot)
+                        if group['bone'] in self.pivots:     # their joints are never keyed
+                            self.assertFalse({'tx', 'ty', 'tz'} & set(group['vals']), slot)
+                        for channel, value in list(group['vals'].items()):
+                            if channel in ('tx', 'ty', 'tz'):
+                                group['vals'][channel] = round(value * scale)
+            self.assertEqual(actual.instrs, expected.instrs, slot)
+        self.assertEqual(set(joints), self.pivots)
 
-    def test_native_hierarchy_and_complete_rigid_wings(self):
-        rig=self.own['model']['skeleton']
-        self.assertEqual(len(rig),26)
-        self.assertEqual([p for _,p in rig],[p for _,p in mmd.exe().skeleton[20]])
-        for bone in (10,12):
-            obj=rig[bone][0]
-            # Each complete wing has both broad feather fans, sharing a
-            # single native hinge. Its panels cannot acquire separate motion.
-            self.assertEqual(self.model.tmd.objects[obj].nvert,28)
-            self.assertEqual(len(self.model.tmd.objects[obj].prims),28)
-        self.assertEqual(len(self.model.tmd.objects),17)
+    def test_calm_swing_plays_as_a_share_of_the_native_one(self):
+        wrap = rig_angemon.wrap
+        for slot in [s for s in range(0x21) if self.model.anims.table[s] is not None] + [0x23, 0x24]:
+            mine = mmd.AnimPlayer(self.model.anims.anims[self.model.anims.table[slot]], 26, slot)
+            theirs = mmd.AnimPlayer(self.native.anims.anims[self.native.anims.table[slot]], 26, slot)
+            for _ in range(600):         # several loops: rounding never drifts
+                if not (mine.tick() and theirs.tick()):
+                    break
+                for b, f in self.calm.items():
+                    for j in range(3, 6):
+                        r, v = self.rest[b - 1][j - 9], theirs.pose[b][j] - self.rest[b - 1][j - 9]
+                        error = min(abs(wrap(mine.pose[b][j] - r - f * (wrap(v) + 4096 * k))) for k in (-1, 0, 1))
+                        self.assertLessEqual(error, 2, (slot, b, j))
 
-    def test_native_staff_texture_and_hand_binding(self):
-        texture=Path(os.environ['DW_NATIVE_ANGEL_MODEL']).with_suffix('.TIM')
-        if not texture.is_file():
-            self.skipTest('candidate TIM required for staff atlas proof')
-        own=mmd.Tim4(texture.read_bytes())
-        native=mmd.load_tim('extracted/CHDAT/ALLTIM.TIM',20)
-        self.assertEqual(own.pal[14],native.pal[9])
-        for y in range(8):
-            self.assertEqual(own.idx[y*256:y*256+40],native.idx[(72+y)*256+136:(72+y)*256+176])
-        obj=self.own['model']['skeleton'][9][0]
-        staff=[p.decode()for p in self.model.tmd.objects[obj].prims if (p.decode().get('cba',0)>>6)-488==14]
-        self.assertEqual(len(staff),8)
-        self.assertEqual(self.spec['map']['28'],9)
+    def test_native_hierarchy_and_card_battle_pieces(self):
+        rig = self.own['model']['skeleton']
+        self.assertEqual(len(rig), 26)
+        self.assertEqual([p for _, p in rig], [p for _, p in mmd.exe().skeleton[20]])
+        source = self.spec['mesh']['skeleton']
+        carried = {}
+        for sb, tb in self.spec['map'].items():
+            carried.setdefault(tb, []).append(int(sb))
+        grafted = {g['bone'] for g in self.spec['grafts']['pieces']}
+        source_model = None
+        sizes = Path(self.spec['mesh']['file'])
+        if sizes.is_file():
+            source_model = mmd.MMD.parse(sizes.read_bytes(), len(source))
+        drawn = 0
+        for bone, (obj, _) in enumerate(rig):
+            if obj < 0:
+                self.assertNotIn(bone, carried)
+                continue
+            drawn += 1
+            self.assertIn(bone, carried)
+            if source_model is not None:
+                n = sum(source_model.tmd.objects[source[sb][0]].nvert for sb in carried[bone])
+                have = self.model.tmd.objects[obj].nvert
+                # every Card Battle vertex, plus the World 2003 shield and bracelet on the arms
+                (self.assertGreater if bone in grafted else self.assertEqual)(have, n, bone)
+        self.assertEqual(len(self.model.tmd.objects), drawn)
+        # the back cloth rides Angemon's own cloth bone, so it swings with the clips
+        self.assertEqual(self.spec['map']['11'], 25)
 
-    def test_identity_storage_and_two_disc_sources(self):
-        self.assertEqual(self.own['level'],'ultimate')
-        self.assertEqual((self.own['voice'],self.own['partner']['voice']),(18,11))
-        self.assertEqual((self.own['model']['height'],self.own['model']['radius']),(608,187))
-        self.assertEqual(len(self.own['techniques']),14)
-        self.assertEqual(self.spec['dw3'],'M211HANG')
-        self.assertEqual(self.spec['map']['9'],18)
-        storage=motionstorage.audit(self.data,26)
-        self.assertTrue(storage['fits'],storage)
-        records=json.loads(Path('content/modeldelta/models.json').read_text())['models']
-        row=next(r for r in records if r['id']==206)
-        self.assertEqual(hashlib.sha256(self.data).hexdigest(),row['mmd']['sha256'])
-        self.assertEqual(row['mmd']['sources'][1]['path'],self.spec['source']['mmd'])
-        registry=json.loads(Path('content/models/imports/models.json').read_text())
-        self.assertEqual(registry['206']['native_animation_donor'],20)
+    def test_identity_storage_and_three_disc_sources(self):
+        self.assertEqual(self.own['level'], 'ultimate')
+        self.assertEqual((self.own['voice'], self.own['partner']['voice']), (18, 11))
+        self.assertEqual((self.own['model']['height'], self.own['model']['radius']), (608, 187))
+        storage = motionstorage.audit(self.data, 26)
+        self.assertTrue(storage['fits'], storage)
+        records = json.loads(Path('content/modeldelta/models.json').read_text())['models']
+        row = next(r for r in records if r['id'] == 206)
+        self.assertEqual(hashlib.sha256(self.data).hexdigest(), row['mmd']['sha256'])
+        self.assertEqual([s['path'] for s in row['mmd']['sources']],
+                         [self.spec['mesh']['file'], self.spec['source']['mmd'], self.spec['grafts']['mesh']['file']])
+        self.assertEqual([s['path'] for s in row['tim']['sources']],
+                         [self.spec['mesh']['texture'], self.spec['grafts']['mesh']['file'][:-4] + '.TIM'])
+        registry = json.loads(Path('content/models/imports/models.json').read_text())
+        self.assertEqual(registry['206']['native_animation_donor'], 20)
+
+
+if __name__ == '__main__':
+    unittest.main()

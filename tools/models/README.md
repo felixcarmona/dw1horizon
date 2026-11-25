@@ -922,12 +922,16 @@ The record's effects use Elecmon's (`effects_like` 18) and the condition bubble 
 
 MetalTyrannomon (260) wears native Tyrannomon's (8, `CHDAT/MMD0/TYRA.MMD`) 27-bone skeleton and programs: the
 cyborg's 23 rigid pieces map onto it by role (head, torso, jaw plate, three tail bones, two three-bone legs, and each
-arm's upper arm and forearm), at scale 1 with no stretch. The legs, tail, head and torso are moved by an `offset` onto
-where Tyrannomon's piece sits. The arms are not: the source has no hand, so the forearm block and its three claws are
+arm's upper arm and forearm), at scale 1 with no stretch. The legs sit on Tyrannomon's leg joints by `offset`. The
+torso, head, jaw plate, side pipe and tail keep the source's own spacing: each is moved by one shared shift (the
+torso's, centred; the head group's and the tail's only re-centred in x), so the head stands above and ahead of the
+chest instead of sinking onto Tyrannomon's lower neck joint, the torso clears the knees and the tail rises behind. The arms are not: the source has no hand, so the forearm block and its three claws are
 one rigid group on Tyrannomon's forearm bone (the claws on the donor's hand and claw bones turned at a wrist the heavy
 forearm does not have, which read as broken wrists). Each arm is fitted by joint: `spread` moves Tyrannomon's shoulder
-and elbow to where the cyborg's are (the right arm mirrors the left) in every program, the pieces stay on those joints,
-and the forearm group is turned (`swing`) so its claws hang along Tyrannomon's forearm instead of out sideways. The hand
+and elbow to where the cyborg's are, at the front of the chest as in the source (the left arm mirrors the right),
+in every program, the pieces stay on those joints. The right forearm group is turned (`swing`) so its claws reach
+forward and down beside the legs, clear of the floor, instead of out sideways; the left upper arm and forearm group are
+turned to the mirror of the right's (the source stands asymmetrically). The hand
 and claw bones stay empty, as does the pelvis; the side pipe with the yellow muzzle has no counterpart and rides the head. The run (slot 4) is the one clip whose arms are not the donor's: the donor's thin arms swing close to the body, which on
 this heavy body reads as arms glued to the torso, so `arm_pump` (`native_arms.py`) re-poses the shoulder and the forearm
 (claws rigid with it) on every tick: held out, pumped front to back against the leg on their side, the elbow closing as the

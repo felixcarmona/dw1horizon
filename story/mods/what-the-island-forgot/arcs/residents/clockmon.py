@@ -45,6 +45,7 @@ def talk():
             match choose(a="Twelve hours", b="None at all"):
                 case "b":
                     say("None. Then I have been standing still. A city needs a real clock.")
-                    send_to_city(line="Clockmon joined the city!", species=Species.Clockmon)
+                    walk_away(-1650, -450, looks=3)
+                    send_to_city(line="Clockmon joined the city!", species=Species.Clockmon, camera=False)
                 case _:
                     say("Wrong. Tick. Tock. Think about it. There is plenty of time.")

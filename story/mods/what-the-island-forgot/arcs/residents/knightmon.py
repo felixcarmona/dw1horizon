@@ -40,6 +40,7 @@ def talk():
     else:
         say("Halt. Nobody passes.")
         tamer.say("Passes what? There's nothing behind you.")
-        if fight(knightmon) == "won":
+        if fight(knightmon, escape=False) == "won":
             say("My post is gone, but my oath is not. Name a wall and I will guard it.")
-            send_to_city(line="Knightmon joined the city!", species=Species.Knightmon)
+            run(-250, 150)
+            send_to_city(line="Knightmon joined the city!", species=Species.Knightmon, camera=False)

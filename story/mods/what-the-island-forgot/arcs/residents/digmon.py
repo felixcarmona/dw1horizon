@@ -41,6 +41,7 @@ def talk():
     else:
         say("Every tunnel on this island is mine, and nobody ever comes back to thank me.")
         say("Prove your partner is worth a building.")
-        if fight(digmon) == "won":
+        if fight(digmon, escape=False) == "won":
             say("I could build a whole district for someone like that.")
-            send_to_city(line="Digmon joined the city!", species=Species.Digmon)
+            run(-1950, 1850)
+            send_to_city(line="Digmon joined the city!", species=Species.Digmon, camera=False)

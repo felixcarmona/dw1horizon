@@ -44,6 +44,7 @@ def talk():
         challenge_pumpkinmon()
     else:
         say("Trick or treat! No? Then a game.")
-        if fight(pumpkinmon) == "won":
+        if fight(pumpkinmon, escape=False) == "won":
             say("You don't scare easily. Good. I need customers like that.")
-            send_to_city(line="Pumpkinmon joined the city!", species=Species.Pumpkinmon)
+            run(-1050, 1450)
+            send_to_city(line="Pumpkinmon joined the city!", species=Species.Pumpkinmon, camera=False)

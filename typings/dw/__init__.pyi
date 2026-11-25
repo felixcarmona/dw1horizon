@@ -1743,6 +1743,8 @@ class DigimonRoutine(IntEnum):
     forced_evolution = 10
     clear_poop = 11
     earned_evolution = 12
+    rewind_check = 13
+    rewind = 14
 
 class anim:
     """Animation slots the engine gives a meaning to (story/core/scene.dws); other slots are numbers: `play(29)`."""
@@ -1775,6 +1777,7 @@ class _engine:
     death_map_entry: Var    # var 124: 1 while Jijimon's house was loaded by the partner's death or lost life (C, not saved)
     rite_keepsake: Var    # var 125: 1 from the rite of return to the rebirth after it: the baby keeps the happy farewell (unsaved)
     new_game_plus: Var    # var 126: 1 makes routine save_machine start a New Game Plus instead of opening the menu (unsaved)
+    rewind_left: Var    # var 253: after digimon routine rewind_check: rewinds this egg has left (C, up to 255)
     music_mode: Var    # var 245
     object: Var    # var 247: CALL_ROUTINE argument: map object / script entity
     animation: Var    # var 248: CALL_ROUTINE argument: animation / exit / mood
@@ -1797,6 +1800,7 @@ class _engine:
     new_game_plus_unlocked: Flag    # flag 642: set by a New Game Plus: the save machine keeps the option in the new run
     medal_new_beginning: Flag    # flag 643: medal 21, New Beginning: set by every New Game Plus
     medal_second_journey: Flag    # flag 644: medal 22, Second Journey: the island saved in a New Game Plus run
+    machine_new_explained: Flag    # flag 648: Jijimon told what the save machine gained with the island saved (kept by New Game Plus)
 engine: _engine
 glances: Var    # var 101
 

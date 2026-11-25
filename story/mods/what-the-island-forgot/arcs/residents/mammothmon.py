@@ -39,6 +39,7 @@ def talk():
         challenge_mammothmon()
     else:
         say("I have stood here since before the ice.")
-        if fight(mammothmon) == "won":
+        if fight(mammothmon, escape=False) == "won":
             say("Warm hands. I had forgotten.")
-            send_to_city(line="Mammothmon joined the city!", species=Species.Mammothmon)
+            run(-1350, 350)
+            send_to_city(line="Mammothmon joined the city!", species=Species.Mammothmon, camera=False)

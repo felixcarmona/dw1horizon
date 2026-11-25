@@ -53,6 +53,8 @@ class MetalTyrannomonNative(unittest.TestCase):
                 continue
             if slot in self.recipe['battle_originals']['slots']:  # the source game's own clip, see test_battle_originals
                 continue
+            if slot in self.recipe['authored_finishes']:  # the faint and recovery (tools.test_metaltyrannomon_finishes)
+                continue
             with self.subTest(slot=slot):
                 self.assertEqual(self.program(self.model, slot), self.program(self.native, slot))
 
@@ -114,7 +116,7 @@ class MetalTyrannomonNative(unittest.TestCase):
         self.assertTrue(storage['fits'])
         self.assertLessEqual(storage['resident_bytes'], storage['resident_limit'])
         self.assertEqual(storage['resident_limit'], 100352)
-        self.assertEqual(storage['resident_bytes'], 85102)
+        self.assertEqual(storage['resident_bytes'], 85112)
 
     def test_every_piece_is_bound_once_and_the_feet_stand_on_the_floor(self):
         objects = sorted(o for o, _ in self.rig if o >= 0)

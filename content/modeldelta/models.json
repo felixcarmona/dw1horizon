@@ -728,23 +728,33 @@
       "mmd": {
         "sources": [
           {
-            "path": "build/native-mesh/MagnaAngemon.MMD",
-            "sha256": "b94e654eff01038e8ba5a9268a4ae5ba84c82ae0a33015c76e01ca881c25ac50",
-            "size": 35260
+            "path": "build/sizes-out/models/MagnaAngemon.MMD",
+            "sha256": "b5fb25768fc0188fb69021ce90f4857913645517e0442ba8f119d8c879756f02",
+            "size": 96252
           },
           {
             "path": "extracted/CHDAT/MMD0/ANGE.MMD",
             "sha256": "4bbdf9a2763dab219bc599f0d9cfa44d93263fc5e00930d405ad055f68c22ed9",
             "size": 91328
+          },
+          {
+            "path": "build/native-mesh/MagnaAngemon.MMD",
+            "sha256": "b94e654eff01038e8ba5a9268a4ae5ba84c82ae0a33015c76e01ca881c25ac50",
+            "size": 35260
           }
         ],
         "delta": "content/modeldelta/deltas/206-MagnaAngemon.MMD.mdelta",
-        "delta_sha256": "fc4c176b1411511ad4c4c0da292e278f659bc5e1ff6a11b37777a5fb7fce6b3e",
-        "sha256": "c48c6ea81b7df5c914e29f5e5f8e6f87b0bcfc7e033fb55274363ba74480053e",
-        "size": 102710
+        "delta_sha256": "71454bbdc8f7837bee82404d9e934d07a288427bea14be5be6afa4b1aef8634d",
+        "sha256": "dc29b64d2ab2bf84385e4062eba1c64bbf6ea86963f4456e19c6b008ec02b000",
+        "size": 99022
       },
       "tim": {
         "sources": [
+          {
+            "path": "build/batch3/MagnaAngemon.TIM",
+            "sha256": "90e8892d2da9c0d8823e22190d3d898dd85536d4c6aa954c132c9e5170373379",
+            "size": 18432
+          },
           {
             "path": "build/native-mesh/MagnaAngemon.TIM",
             "sha256": "253fcd657e203829ba3018baedebdd7d44eea9a503dd566f0f4a2a31cdd72cb3",
@@ -752,8 +762,8 @@
           }
         ],
         "delta": "content/modeldelta/deltas/206-MagnaAngemon.TIM.mdelta",
-        "delta_sha256": "f59a9dea340d210c5e59b356dc8ac43a2000a33af24575f39ee594a878030684",
-        "sha256": "bec72a01dcb7b1f09644daa6ad3e24fde8d67f23ab49a5b8f11da5fc7b380000",
+        "delta_sha256": "84e6d61ba270a6d9e42ac5c4da0a194fdde8a27919a9362d09dea5af55a114fd",
+        "sha256": "87803715184c15784c3aa9954df987e62200571fbc3f0ad5ad8af2cc980c1fdf",
         "size": 18432
       }
     },

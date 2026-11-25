@@ -41,6 +41,7 @@ def talk():
         say("It goes there.")
         tamer.say("Why there?")
         say("It goes there.")
-        if fight(triceramon) == "won":
+        if fight(triceramon, escape=False) == "won":
             say("You have good shoulders. There is more rock in the city?")
-            send_to_city(line="Triceramon joined the city!", species=Species.Triceramon)
+            run(-950, -1450)
+            send_to_city(line="Triceramon joined the city!", species=Species.Triceramon, camera=False)

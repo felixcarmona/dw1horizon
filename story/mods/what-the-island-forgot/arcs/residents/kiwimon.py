@@ -14,7 +14,8 @@ def talk():
         if ask(yes="Give it a {item Item.Meat}", no=t("kiwimon.refuse")):
             take(Item.Meat)
             say("Finally, someone who understands food.")
-            send_to_city(line="Kiwimon joined the city!", species=Species.Kiwimon)
+            walk_away(-1550, 2650, looks=3)
+            send_to_city(line="Kiwimon joined the city!", species=Species.Kiwimon, camera=False)
     else:
         say("No? Then come back with a {item Item.Meat}. I'll be here. I told you, I'm not moving.")
 

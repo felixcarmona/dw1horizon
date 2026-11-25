@@ -163,7 +163,52 @@ def use5():    # section 85
         tamer.turn(0)
         wait(250)
         return
+    if (engine.game_beaten or engine.new_game_plus_unlocked) and not engine.machine_new_explained:   # what saving the island added
+        engine.machine_new_explained.set()
+        jijimon.face(tamer)
+        tamer.face(jijimon)
+        wait(250)
+        jijimon.say(text.ngplus.intro_1)
+        jijimon.say(text.ngplus.intro_2)
+        tamer.turn(0)
+        wait(250)
     narrator.say(t85.u2)
+    if engine.game_beaten and engine.new_game_plus_unlocked:   # a New Game Plus run that saved the island again
+        match narrator.choose(a=t85.m0.o0, p=text.rewind.partner, e=text.ngplus.menu, b=t85.m0.o1):
+            case "a":
+                hide_hud()
+                call(Routine.save_machine)
+                return
+            case "p":
+                match narrator.choose(d=text.rite.menu, r=text.rewind.menu, b=t85.m0.o1):   # the box shows 4 rows
+                    case "d":
+                        jump_to_script(212, 74)
+                    case "r":
+                        jump_to_script(212, 76)
+                    case _:
+                        return
+            case "e":
+                jump_to_script(212, 75)
+            case "b":
+                return
+            case _:
+                return
+        return
+    if engine.new_game_plus_unlocked:   # a New Game Plus run: the partner can be rewound
+        match narrator.choose(a=t85.m0.o0, d=text.rite.menu, r=text.rewind.menu, b=t85.m0.o1):
+            case "a":
+                hide_hud()
+                call(Routine.save_machine)
+                return
+            case "d":
+                jump_to_script(212, 74)
+            case "r":
+                jump_to_script(212, 76)
+            case "b":
+                return
+            case _:
+                return
+        return
     if engine.game_beaten:   # every run must save the island before it can restart
         match narrator.choose(a=t85.m0.o0, d=text.rite.menu, e=text.ngplus.menu, b=t85.m0.o1):
             case "a":
