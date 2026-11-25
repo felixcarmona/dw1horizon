@@ -22,6 +22,7 @@ against, leave this list.
 
 | Idea | Kind | Notes |
 |---|---|---|
+| Digitamamon's restaurant turns a full partner away, as the other cooks do | ⚖️ | Player report (2026-11-25). The original game's script serves his meals whatever the partner's hunger, so they can be bought until the bits run out; with the stronger meals of the balance pass that is an unlimited stat source. |
 | Evolve early on purpose (paid, through an NPC, or from the menu) once the requirements are met | 🎭 ⚖️ | Would satisfy both sides of the Rookie wait debate. |
 | Delay or block an evolution (an item, an NPC, or marking a route in the evolution chart) | 🎭 | Same mechanism as evolving early. |
 | Randomizer | 🆕 | A patcher option; large: what to randomize, and keeping the game completable. |
