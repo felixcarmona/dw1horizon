@@ -5,7 +5,7 @@ import math
 
 import numpy as np
 
-from tools.technique_effects.finishers import BLOOD, FIRE, GOLD, VIOLET, ahead, arc, band, bar, bead, column, \
+from tools.technique_effects.finishers import BLOOD, GOLD, VIOLET, ahead, arc, band, bar, bead, column, \
     fireball, flicker, gather, petal, puff, shard, tongue
 from tools.technique_effects.kit import FRAME, FREE, POS, Fx, at, clip, crescent, fbm, glow, grid, iv, polar, ring, \
     segment, star
@@ -25,6 +25,7 @@ ASH = ['#000000', '#404040', '#a0a0a0', '#ffffff']
 SKY = ['#000000', '#104080', '#40a0f0', '#c0f0ff', '#ffffff']
 ROSEFIRE = ['#000000', '#600828', '#e03060', '#ff9060', '#ffe8a0', '#ffffff']
 HOWL = ['#000000', '#806020', '#f0c060', '#fff0b0', '#ffffff']
+VBREATH = ['#000000', '#0a2a80', '#2878f0', '#90d8ff', '#f0ffff', '#ffffff']
 EYE = ['#203000', '#607808', '#b8d010', '#f0ff60', '#ffffff']
 
 
@@ -95,11 +96,11 @@ def zig(seed):
     return clip(np.maximum(lum, 0.7 * fork))
 
 
-def flamebar(seed):
-    """A band of fire with a ragged edge."""
+def breathbar(seed):
+    """A band of light, bright along its middle, its edge barely stirring."""
     x, y = grid()
-    edge = 8 + 7 * fbm(seed)
-    return clip(1 - np.abs(y - 16) / edge) ** 0.8 * (0.5 + 0.8 * fbm(seed + 3))
+    edge = 9 + 3 * fbm(seed)
+    return clip(1 - np.abs(y - 16) / edge) ** 1.5 * (0.75 + 0.35 * fbm(seed + 3))
 
 
 def vee(width=2.6):
@@ -542,38 +543,36 @@ def lightning_blast():
 
 # ----------------------------------------------------------------- Veedramon
 def v_nova_blast():
-    """The V on Veedramon's chest flares gold and a roaring band of flame pours from it, tongues licking up all along
-    it; on the target the fire splits into a great V and bursts."""
+    """Blue light gathers in Veedramon's jaws and it breathes a white-blue ray; V-shaped arrowheads of light race
+    down the ray one after another, each larger than the last, and strike the target as a great V that bursts."""
     fx = Fx(delay=8, cast_sound=2)
-    fx.palette(FIRE); fx.palette(GOLD)
-    fx.paint(0, flamebar(5)); fx.paint(1, flamebar(15)); fx.paint(2, vee()); fx.paint(3, tongue())
-    fx.paint(4, glow(15, 1.2)); fx.paint(5, star(4, 2, 9, 6)); fx.paint(6, fireball(3))
-    tint, edge = fx.colour(128, 128, 128), fx.colour(128, 60, 20)
-    chest = fx.vec()
-    charge, life = 8, 13
-    fx.particle('lick', 14, 8, 3, (128, 100, 50), (160, 250), grow=-14, flat=((-10, 10), (-50, -25), (-10, 10)),
-                spread=90)
-    fx.particle('mark', 2, 11, 2, (128, 128, 128), None, grow=55, fade=True, clut=1)
-    fx.particle('burst', 2, 9, 6, (128, 128, 128), None, grow=70, fade=True)
-    fx.particle('ember', 16, 12, 5, (128, 100, 50), (60, 110), speed=60, lift=40, gravity=6, spread=100, fade=True)
+    fx.palette(VBREATH)
+    fx.paint(0, breathbar(5)); fx.paint(1, breathbar(15)); fx.paint(2, vblade()); fx.paint(3, glow(15, 1.2))
+    fx.paint(4, star(4, 2, 9, 6)); fx.paint(5, ring(13, 2.0))
+    tint, edge = fx.colour(128, 128, 128), fx.colour(40, 90, 128)
+    mouth = fx.vec()
+    charge, life, steps = 8, 13, 5
+    fx.particle('mote', 12, 5, 4, (110, 128, 128), (80, 130), grow=-12, spread=140)
+    fx.particle('swell', 1, charge + 1, 3, (90, 120, 128), 60, grow=30)
+    fx.particle('arrow', 8, 6, 2, (128, 128, 128), None, grow=30, fade=True)
+    fx.particle('mark', 2, 11, 2, (128, 128, 128), None, grow=55, fade=True)
+    fx.particle('burst', 2, 9, 3, (100, 120, 128), None, grow=70, fade=True)
+    fx.particle('wave', 2, 8, 5, (70, 110, 128), 150, grow=90, fade=True)
+    fx.particle('spark', 14, 11, 4, (128, 128, 128), (80, 140), grow=-7, speed=80, lift=25, gravity=6, spread=60)
     fx.label('main'); fx.when(0, 'begin'); fx.when(charge, 'fire'); fx.when(charge + 3, 'smite')
-    fx.br(fx.NOW, '<', charge, 'main_end'); fx.br(fx.NOW, '>', charge + life - 3, 'main_end')
-    along(fx, fx.TV2, chest); fx.emit('lick', fx.TV2, 2)
+    fx.br(fx.NOW, '>=', charge, 'main_ray'); fx.emit('mote', mouth, 2); fx.jmp('main_end')
+    fx.label('main_ray'); fx.br(fx.NOW, '>', charge + life - 3, 'main_end')
+    fx.lin(fx.T, fx.NOW, 1, -charge); fx.mod(fx.T, steps); fx.add(fx.T, 1)
+    fx.vcopy(fx.TV2, fx.TCHEST); fx.vsub(fx.TV2, mouth); fx.vmul(fx.TV2, fx.T); fx.vdiv(fx.TV2, steps)
+    fx.vadd(fx.TV2, mouth)
+    fx.lin(fx.SZ, fx.T, 70, 150); fx.emit('arrow', fx.TV2)
     fx.label('main_end'); fx.end(charge + life + 1)
-    fx.label('begin'); muzzle_at(fx, chest, 6, 30); fx.vcopy(fx.AT, chest); fx.call('crest'); fx.sound(-55); fx.ret()
+    fx.label('begin'); muzzle_at(fx, mouth, 8, 30); fx.emit('swell', mouth); fx.sound(-55); fx.ret()
     fx.label('fire'); fx.sound(13); fx.call('ray'); fx.ret()
     fx.label('smite')
     fx.sound(7); fx.aim(); fx.hit(); fx.lin(fx.SZ, at(fx.TSIZE, 1), 1, 420)
-    fx.emit('burst', fx.TCHEST); fx.emit('mark'); fx.emit('ember', times=14); fx.ret()
-    crest = fx.pool('crest', 1)
-    fx.begin('crest', crest, 'crest_render', inherit=False); fx.vcopy(POS, fx.AT); fx.ret()
-    fx.label('crest_tick'); fx.life(charge + 3); fx.ret()
-    fx.label('crest_render')
-    fx.lin(fx.T3, FRAME, 40, 60); fx.br(FRAME, '<', charge, 'crest_draw'); fx.lin(fx.T3, FRAME, -90, 90 * (charge + 4))
-    fx.label('crest_draw')
-    fx.lin(fx.T2, fx.T3, 3, 0, 2); fx.sprite(POS, edge, fx.T2, cell=4)
-    fx.sprite(POS, tint, fx.T3, cell=2, clut=1); fx.ret()
-    ray(fx, 'ray', chest, life, 170, 0, edge, tint, jitter=50, alt=1, tip=4)
+    fx.emit('mark', fx.TCHEST); fx.emit('burst'); fx.emit('wave'); fx.emit('spark', times=14); fx.ret()
+    ray(fx, 'ray', mouth, life, 230, 0, edge, tint, jitter=40, alt=1, tip=3)
     return fx
 
 
