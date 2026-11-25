@@ -1,0 +1,309 @@
+{
+  "_about": "Resident challenges (postgame; docs/mods/resident-challenges.md). Once the game is beaten, at every midnight one recruited resident of these rows leaves its home and waits at its recruit site, stronger; won once, it goes home with its reward and nobody else goes out that day; lost, it waits all day. tools/balance.py writes `rule`, `save` and each row's species and sheet stats into MOD_CHALLENGE (tools/city_residents.py challenge_table); the story (story/mods/what-the-island-forgot) has the rest of each row: `story` checks its constant (state.py CH_<NAME> = row number), site, exit path, item and bits.",
+  "rule": {
+    "stats": "max-sheet-or-partner",
+    "_stats": "each stat of the challenger = max(species sheet stat x (100 + sheetPercent) / 100, partner stat x (100 + partnerPercent) / 100), at most 9999",
+    "sheetPercent": 0,
+    "partnerPercent": 25,
+    "noItems": true,
+    "stages": "same-or-lower",
+    "_stages": "same-or-lower: only residents whose stage is the partner's or lower go out, the partner's own stage first, then the next one down, each one once per cycle (a shuffle bag); any: every stage, once per cycle. Never the one of the day before."
+  },
+  "save": {
+    "challengerVar": 15,
+    "bagVars": [
+      20,
+      8
+    ],
+    "wonFlag": 783,
+    "triedFlag": 784,
+    "armedPstat": 239
+  },
+  "residents": [
+    {
+      "species": 185,
+      "name": "Armadillomon",
+      "story": "arcs/residents/armadillomon.py",
+      "home": "district/the-courtyard.py",
+      "site": {
+        "screen": 85,
+        "at": [
+          -600,
+          800
+        ]
+      },
+      "exit": [
+        [
+          -150,
+          -950
+        ]
+      ],
+      "item": 50,
+      "bits": 1500,
+      "text": {
+        "intro1": "armadillomon.challenge.intro1",
+        "intro2": "armadillomon.challenge.intro2",
+        "retry": "armadillomon.challenge.retry",
+        "won": "armadillomon.challenge.won",
+        "reward": "armadillomon.challenge.reward"
+      }
+    },
+    {
+      "species": 235,
+      "name": "Candlemon",
+      "story": "arcs/residents/candlemon.py",
+      "home": "district/forge-workshop.py",
+      "site": {
+        "screen": 125,
+        "at": [
+          2500,
+          -650
+        ]
+      },
+      "exit": [
+        [
+          2950,
+          550
+        ]
+      ],
+      "item": 72,
+      "bits": 1500,
+      "text": {
+        "intro1": "candlemon.challenge.intro1",
+        "intro2": "candlemon.challenge.intro2",
+        "retry": "candlemon.challenge.retry",
+        "won": "candlemon.challenge.won",
+        "reward": "candlemon.challenge.reward"
+      }
+    },
+    {
+      "species": 263,
+      "name": "Mushroomon",
+      "story": "arcs/residents/mushroomon.py",
+      "home": "city/centar-clinic.py",
+      "site": {
+        "screen": 234,
+        "at": [
+          -450,
+          -900
+        ]
+      },
+      "exit": [
+        [
+          -250,
+          -2050
+        ]
+      ],
+      "item": 46,
+      "bits": 1500,
+      "text": {
+        "intro1": "mushroomon.challenge.intro1",
+        "intro2": "mushroomon.challenge.intro2",
+        "retry": "mushroomon.challenge.retry",
+        "won": "mushroomon.challenge.won",
+        "reward": "mushroomon.challenge.reward"
+      }
+    },
+    {
+      "species": 351,
+      "name": "Kotemon",
+      "story": "arcs/residents/kotemon.py",
+      "home": null,
+      "site": {
+        "screen": 45,
+        "at": [
+          1000,
+          850
+        ]
+      },
+      "exit": [
+        [
+          850,
+          2250
+        ]
+      ],
+      "item": 60,
+      "bits": 1500,
+      "text": {
+        "intro1": "kotemon.challenge.intro1",
+        "intro2": "kotemon.challenge.intro2",
+        "retry": "kotemon.challenge.retry",
+        "won": "kotemon.challenge.won",
+        "reward": "kotemon.challenge.reward"
+      },
+      "_home": "none after the ending: the Arena lobby's 223 has no heap for its model, so it is in no city spot then"
+    },
+    {
+      "species": 193,
+      "name": "Digmon",
+      "story": "arcs/residents/digmon.py",
+      "home": "district/stone-yard.py",
+      "site": {
+        "screen": 24,
+        "at": [
+          -2250,
+          1100
+        ]
+      },
+      "exit": [
+        [
+          -1950,
+          150
+        ]
+      ],
+      "item": 76,
+      "bits": 2500,
+      "text": {
+        "intro1": "digmon.challenge.intro1",
+        "intro2": "digmon.challenge.intro2",
+        "retry": "digmon.challenge.retry",
+        "won": "digmon.challenge.won",
+        "reward": "digmon.challenge.reward"
+      }
+    },
+    {
+      "species": 243,
+      "name": "Starmon",
+      "story": "arcs/residents/starmon.py",
+      "home": "district/container-house.py",
+      "site": {
+        "screen": 233,
+        "at": [
+          1000,
+          -1000
+        ]
+      },
+      "exit": [
+        [
+          1850,
+          150
+        ]
+      ],
+      "item": 92,
+      "bits": 2500,
+      "text": {
+        "intro1": "starmon.challenge.intro1",
+        "intro2": "starmon.challenge.intro2",
+        "retry": "starmon.challenge.retry",
+        "won": "starmon.challenge.won",
+        "reward": "starmon.challenge.reward"
+      }
+    },
+    {
+      "species": 257,
+      "name": "Triceramon",
+      "story": "arcs/residents/triceramon.py",
+      "home": "district/forge-workshop.py",
+      "site": {
+        "screen": 87,
+        "at": [
+          400,
+          -1200
+        ]
+      },
+      "exit": [
+        [
+          1050,
+          -1150
+        ]
+      ],
+      "item": 87,
+      "bits": 4000,
+      "text": {
+        "intro1": "triceramon.challenge.intro1",
+        "intro2": "triceramon.challenge.intro2",
+        "retry": "triceramon.challenge.retry",
+        "won": "triceramon.challenge.won",
+        "reward": "triceramon.challenge.reward"
+      }
+    },
+    {
+      "species": 267,
+      "name": "Mammothmon",
+      "story": "arcs/residents/mammothmon.py",
+      "home": "district/cold-store.py",
+      "site": {
+        "screen": 94,
+        "at": [
+          0,
+          450
+        ]
+      },
+      "exit": [
+        [
+          150,
+          -850
+        ]
+      ],
+      "item": 96,
+      "bits": 4000,
+      "text": {
+        "intro1": "mammothmon.challenge.intro1",
+        "intro2": "mammothmon.challenge.intro2",
+        "retry": "mammothmon.challenge.retry",
+        "won": "mammothmon.challenge.won",
+        "reward": "mammothmon.challenge.reward"
+      }
+    },
+    {
+      "species": 321,
+      "name": "Knightmon",
+      "story": "arcs/residents/knightmon.py",
+      "home": "district/guard-house.py",
+      "site": {
+        "screen": 222,
+        "at": [
+          -900,
+          100
+        ]
+      },
+      "exit": [
+        [
+          -450,
+          50
+        ],
+        [
+          -450,
+          -1950
+        ]
+      ],
+      "item": 104,
+      "bits": 4000,
+      "text": {
+        "intro1": "knightmon.challenge.intro1",
+        "intro2": "knightmon.challenge.intro2",
+        "retry": "knightmon.challenge.retry",
+        "won": "knightmon.challenge.won",
+        "reward": "knightmon.challenge.reward"
+      }
+    },
+    {
+      "species": 294,
+      "name": "Datamon",
+      "story": "arcs/factory/remodelling.py",
+      "home": "district/scrap-office.py",
+      "site": {
+        "screen": 162,
+        "at": [
+          100,
+          -1450
+        ]
+      },
+      "exit": [
+        [
+          3150,
+          -850
+        ]
+      ],
+      "item": 101,
+      "bits": 4000,
+      "text": {
+        "intro1": "datamon.challenge.intro1",
+        "intro2": "datamon.challenge.intro2",
+        "retry": "datamon.challenge.retry",
+        "won": "datamon.challenge.won",
+        "reward": "datamon.challenge.reward"
+      }
+    }
+  ]
+}

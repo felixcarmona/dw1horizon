@@ -71,6 +71,47 @@ def membership_bits():
     return bytes(data)
 
 
+CHALLENGES = ROOT / 'content/tables/resident-challenges.json'
+CHALLENGE_HEAD = 11            # mod_rules.h MOD_CHALLENGE_ROWS
+CHALLENGE_ROW = 7              # species, hp, mp, off, def, speed, brain
+CHALLENGE_MAX = 16             # two saved bag pstats: one bit a row
+CHALLENGE_STATS = {'max-sheet-or-partner': 0}
+CHALLENGE_STAGES = {'same-or-lower': 0, 'any': 1}
+
+
+def challenge_rows(doc=None):
+    """The rows of content/tables/resident-challenges.json, checked."""
+    doc = doc or json.loads(CHALLENGES.read_text())
+    rows = doc['residents']
+    if len(rows) > CHALLENGE_MAX:
+        raise ValueError(f'resident-challenges.json: {len(rows)} residents, at most {CHALLENGE_MAX}')
+    roster = {r['id'] for r in residents()}
+    for r in rows:
+        if r['species'] not in roster:
+            raise ValueError(f"resident-challenges.json: {r['name']} ({r['species']}) is not a city resident")
+    return rows
+
+
+def challenge_table(doc=None):
+    """MOD_CHALLENGE (mod_rules.h): the rule, the save numbers, then per row the species and its sheet's wild stats."""
+    doc = doc or json.loads(CHALLENGES.read_text())
+    rule, save = doc['rule'], doc['save']
+    species = {s['id']: s for p in (ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
+    v = [-1] * (CHALLENGE_HEAD + CHALLENGE_ROW * CHALLENGE_MAX)
+    v[0] = CHALLENGE_STATS[rule['stats']]
+    v[1] = rule['partnerPercent']
+    v[2] = 1 if rule['noItems'] else 0
+    v[3] = CHALLENGE_STAGES[rule['stages']]
+    v[4], v[5], v[6], v[7] = save['challengerVar'], save['wonFlag'], save['triedFlag'], save['armedPstat']
+    v[8], v[9] = save['bagVars']
+    v[10] = rule['sheetPercent']
+    for i, r in enumerate(challenge_rows(doc)):
+        w = species[r['species']]['wild']
+        v[CHALLENGE_HEAD + CHALLENGE_ROW * i:CHALLENGE_HEAD + CHALLENGE_ROW * (i + 1)] = [
+            r['species'], w['hp'], w['mp'], w['off'], w['def'], w['speed'], w['brain']]
+    return struct.pack(f'<{len(v)}h', *v)
+
+
 def extra_header():
     """Exact-sized compiled list; no extra resident storage for the current roster."""
     ids = sorted(r['id'] for r in residents() if r['id'] >= 112)
