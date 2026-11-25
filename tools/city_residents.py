@@ -72,13 +72,15 @@ def membership_bits():
 
 
 CHALLENGES = ROOT / 'content/tables/resident-challenges.json'
-CHALLENGE_HEAD = 10            # mod_rules.h MOD_CHALLENGE_ROWS: then one species a row
+CHALLENGE_HEAD = 10            # mod_rules.h MOD_CHALLENGE_ROWS: then one row each, species | level << 12
 CHALLENGE_MAX = 72             # mod_rules.h MOD_CHALLENGE_MAX
 CHALLENGE_BAG_LAST = 14        # the bag's saved wide registers end before w15 (Sukamon's backup)
 CHALLENGE_STATS = {'max-sheet-or-partner': 0}
 CHALLENGE_STAGES = {'same-or-lower': 0, 'any': 1}
 CHALLENGE_POOLS = ('original', 'new')  # by species: CHALLENGE_NEW_FIRST and above is the new pool
 CHALLENGE_NEW_FIRST = 112      # Horizon's own species: the original game's are 0-111
+CHALLENGE_SPECIES = 0xfff      # mod_rules.h MOD_CHALLENGE_SPECIES: a row's species, its level above (MOD_CHALLENGE_LEVEL)
+CHALLENGE_LEVEL_SHIFT = 12
 
 
 def challenge_rows(doc=None):
@@ -131,8 +133,12 @@ def challenge_table(doc=None):
     v[6], v[7], v[8], v[9] = save['challengerVar'], save['triedFlag'], save['newChallengerVar'], save['newTriedFlag']
     if v[6] == v[8] or v[7] == v[9]:
         raise ValueError(f'{CHALLENGES.name}: the two pools need their own challenger var and tried flag')
+    levels = {d['id']: d['level'] for p in (ROOT / 'content/species').glob('*.json') for d in [json.loads(p.read_text())]}
     for i, r in enumerate(challenge_rows(doc)):
-        v[CHALLENGE_HEAD + i] = r['species']
+        if not 0 < r['species'] <= CHALLENGE_SPECIES:
+            raise ValueError(f"{CHALLENGES.name}: {r['name']}: a row's species must be 1..{CHALLENGE_SPECIES}")
+        level = 0 if v[2] else LEVELS[levels[r['species']]]  # stage rule 1 (any level): every row is level 0
+        v[CHALLENGE_HEAD + i] = level << CHALLENGE_LEVEL_SHIFT | r['species']
     return struct.pack(f'<{len(v)}h', *v)
 
 

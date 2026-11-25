@@ -54,7 +54,7 @@ NPC of their recruit fight (`CHALLENGE_RECRUIT_STATS` in `tools/city_residents.p
 Digmon, Knightmon, Kotemon, Mammothmon, Mushroomon, Phantomon, Pumpkinmon, Starmon, Triceramon) keep that fight's stats
 as their floor. `tools/city_residents.py` refuses a row with both or neither of `wild` and `base`, and
 `tools/test_resident_challenges.py` checks every site NPC against `challenge_site_stats`. The table itself holds only
-the rule, the save numbers and each row's species (164 bytes of the executable).
+the rule, the save numbers and each row's species with its level in the high bits, so the daily pick reads no species sheet (164 bytes of the executable).
 The stats are set before the battle records its initial stats, so its rewards and stat gains follow them.
 `noItems` opens the battle bag empty (it comes back whole); `noLateStep` gives the fight none of
 `battle-formulas.json` NORMAL's late-game step (HP and attack ramp, damage floor), on any difficulty, and puts it back

@@ -23,7 +23,11 @@ class ResidentChallenges(unittest.TestCase):
         v = struct.unpack(f'<{len(data) // 2}h', data)
         self.assertEqual(len(v), city.CHALLENGE_HEAD + city.CHALLENGE_MAX)
         self.assertEqual(v[:city.CHALLENGE_HEAD], (25, 1, 0, 1, 239, 10, 15, 784, 8, 783))
-        self.assertEqual(v[city.CHALLENGE_HEAD:][:len(self.rows)], tuple(r['species'] for r in self.rows))
+        rows = v[city.CHALLENGE_HEAD:][:len(self.rows)]
+        self.assertEqual(tuple(x & city.CHALLENGE_SPECIES for x in rows), tuple(r['species'] for r in self.rows))
+        species = {d['id']: d for p in (city.ROOT / 'content/species').glob('*.json') for d in [json.loads(p.read_text())]}
+        self.assertEqual(tuple(x >> city.CHALLENGE_LEVEL_SHIFT for x in rows),     # the level the daily pick compares
+                         tuple(city.LEVELS[species[r['species']]['level']] for r in self.rows))
         self.assertEqual(set(v[city.CHALLENGE_HEAD + len(self.rows):]), {-1})
 
     def test_site_npcs_carry_the_floor(self):

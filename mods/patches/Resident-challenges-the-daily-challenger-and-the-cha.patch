@@ -1,4 +1,4 @@
-From fc9382d7302a051d316664e2c031175b1670719c Mon Sep 17 00:00:00 2001
+From ad4fb25015434fdc9ea0368c5cf793a8717c1282 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Wed, 25 Nov 2026 14:57:59 +0000
 Subject: [PATCH] Resident challenges: the daily challengers and the challenge
@@ -15,17 +15,17 @@ row's species, for each stat, the larger of the partner's and the row's (the spe
 MOD_CHALLENGE, written by tools/balance.py from content/tables/resident-challenges.json; with the table empty nothing
 changes.
 ---
- include/dw/mod_rules.h   | 31 +++++++++++++++++
- src/btl/battle_main.c    | 49 +++++++++++++++++++++++++++
- src/main/mod_feed.c      | 10 ++++--
- src/main/script_common.c | 72 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 159 insertions(+), 3 deletions(-)
+ include/dw/mod_rules.h   | 33 ++++++++++++++++++++++++
+ src/btl/battle_main.c    | 49 +++++++++++++++++++++++++++++++++++
+ src/main/mod_feed.c      | 10 +++++---
+ src/main/script_common.c | 55 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 144 insertions(+), 3 deletions(-)
 
 diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
-index a662d023..edba728a 100644
+index a662d023..7eb989c4 100644
 --- a/include/dw/mod_rules.h
 +++ b/include/dw/mod_rules.h
-@@ -66,6 +66,37 @@ int32_t econPercent(int32_t slot);
+@@ -66,6 +66,39 @@ int32_t econPercent(int32_t slot);
  #define MOD_DAILY_CLEAR_MASK	6 /* ... with this mask */
  extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
  
@@ -51,7 +51,9 @@ index a662d023..edba728a 100644
 +#define MOD_CHALLENGE_BAG	5 /* the first saved wide register (w0-w14) of the bag: rows sent out this cycle, one bit each */
 +#define MOD_CHALLENGE_VAR	6 /* saved pstat: the original pool's challenger today, row + 1; then its tried flag (fought today); */
 +#define MOD_CHALLENGE_TRIED	7 /* then the same two of the new pool (MOD_CHALLENGE_VAR + 2 * pool) */
-+#define MOD_CHALLENGE_ROWS	10 /* the first row: its species */
++#define MOD_CHALLENGE_ROWS	10 /* the first row: its species, its level above MOD_CHALLENGE_LEVEL */
++#define MOD_CHALLENGE_LEVEL	12 /* a row's level (0 with stage rule 1, any level) is its value >> 12 */
++#define MOD_CHALLENGE_SPECIES	0xfff /* ... and its species the low 12 bits */
 +#define MOD_CHALLENGE_MAX	72
 +#define MOD_CHALLENGE_NEW_FIRST	112 /* Horizon's own species: the new pool */
 +#define MOD_CHALLENGE_BEATEN	0x80 /* added to the challenger var by the story when it is beaten: it goes home, the wilds come back */
@@ -64,7 +66,7 @@ index a662d023..edba728a 100644
   * from content/tables/new-game.json */
  #define MOD_NEWGAME_SIZE	78
 diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
-index 4da2e914..b8a4971c 100644
+index 4da2e914..d818ec98 100644
 --- a/src/btl/battle_main.c
 +++ b/src/btl/battle_main.c
 @@ -1850,6 +1850,51 @@ void modBattleLoadFinish(void); /* MOD (quick battle start), btl.c */
@@ -90,7 +92,7 @@ index 4da2e914..b8a4971c 100644
 +	if (MOD_CHALLENGE[MOD_CHALLENGE_VAR + 2 * (k - 1)] < 0) return 0x10000;
 +	k = readPStat(MOD_CHALLENGE[MOD_CHALLENGE_VAR + 2 * (k - 1)]);
 +	if (k < 1 || k > MOD_CHALLENGE_MAX) return 0x10000;
-+	type = MOD_CHALLENGE[MOD_CHALLENGE_ROWS + k - 1];
++	type = MOD_CHALLENGE[MOD_CHALLENGE_ROWS + k - 1] & MOD_CHALLENGE_SPECIES;
 +	MOD_CHALLENGE_NO_BAG = MOD_CHALLENGE[MOD_CHALLENGE_NO_ITEMS] > 0;
 +	late = 0x10000;
 +	if (MOD_CHALLENGE[MOD_CHALLENGE_NO_LATE] > 0) {
@@ -199,7 +201,7 @@ index 940a5cc7..23ad79d9 100644
  				n++;
  			}
 diff --git a/src/main/script_common.c b/src/main/script_common.c
-index 735b36f8..10370d01 100644
+index 735b36f8..556c5f2c 100644
 --- a/src/main/script_common.c
 +++ b/src/main/script_common.c
 @@ -23,6 +23,7 @@
@@ -210,36 +212,23 @@ index 735b36f8..10370d01 100644
  #include <dw/sound.h>
  #include <dw/species.h>
  #include <dw/ui.h>
-@@ -1427,6 +1428,76 @@ uint8_t getRecycleId(uint8_t value)
+@@ -1427,6 +1428,59 @@ uint8_t getRecycleId(uint8_t value)
  
  int16_t MOD_DAILY[MOD_DAILY_SIZE] = { -1, -1, -1, -1, -1, -1, -1 };
  
 +/* MOD (resident challenges): mod_rules.h */
 +int16_t MOD_CHALLENGE[MOD_CHALLENGE_SIZE] = { [0 ... MOD_CHALLENGE_SIZE - 1] = -1 };
 +
-+/* a row the pool can send out today: recruited, not yesterday's (prev is its row + 1), not yet sent out this cycle
-+ * (the bag), of a level the stage rule allows; its level (0 for any level), else -1 */
-+static int32_t modChallengeCan(int32_t i, int32_t pool, int32_t prev, int32_t top)
-+{
-+	int32_t type, level;
-+
-+	type = MOD_CHALLENGE[MOD_CHALLENGE_ROWS + i];
-+	if (type <= 0 || (type >= MOD_CHALLENGE_NEW_FIRST) != pool || i + 1 == prev ||
-+	    (SCRIPT_STATE_PTR->wregs[MOD_CHALLENGE[MOD_CHALLENGE_BAG] + (i >> 4)] >> (i & 15) & 1) || !isDigimonRecruited(type)) {
-+		return -1;
-+	}
-+	level = MOD_CHALLENGE[MOD_CHALLENGE_STAGES] ? 0 : DIGI_PARA(type).level;
-+	return level <= top ? level : -1;
-+}
-+
-+/* one challenger a day from each open pool, picked on their own: of the highest level that has one */
++/* one challenger a day from each open pool, picked on their own: a recruited row, not yesterday's (prev is its row + 1),
++ * not yet sent out this cycle (the bag), of the highest level the stage rule allows (a row's level is in its high bits:
++ * MOD_CHALLENGE_LEVEL, 0 = any), each such row as likely as the others; when none can go the pool's bits are emptied
++ * and the rows are scanned once more */
 +void modChallengeDaily(void)
 +{
-+	int32_t pool, pass, i, n, level, best, top, prev, var, type;
-+	uint16_t *bag;
++	int32_t pool, again, i, n, best, top, prev, var, type, level, pick;
++	uint16_t *w, bit;
 +
 +	if (MOD_CHALLENGE[MOD_CHALLENGE_BAG] < 0) return;
-+	bag = &SCRIPT_STATE_PTR->wregs[MOD_CHALLENGE[MOD_CHALLENGE_BAG]];
 +	top = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
 +	for (pool = 0; pool < 2; pool++) {
 +		var = MOD_CHALLENGE[MOD_CHALLENGE_VAR + 2 * pool];
@@ -248,46 +237,42 @@ index 735b36f8..10370d01 100644
 +		writePStat(var, 0);
 +		unsetTrigger(MOD_CHALLENGE[MOD_CHALLENGE_TRIED + 2 * pool]);
 +		if (!isTriggerSet(TRIGGER_BEATEN_GAME_ONCE)) continue;
-+		/* the new pool opens once every one of its rows is recruited */
-+		for (i = 0; i < MOD_CHALLENGE_MAX; i++) {
-+			type = MOD_CHALLENGE[MOD_CHALLENGE_ROWS + i];
-+			if (pool && type >= MOD_CHALLENGE_NEW_FIRST && !isDigimonRecruited(type)) break;
-+		}
-+		if (i < MOD_CHALLENGE_MAX) continue;
-+		for (pass = 0; pass < 2; pass++) {
-+			best = -1;
-+			n = 0;
++		n = 0;
++		for (again = 0; again < 2 && !n; again++) {
++			best = 0;
 +			for (i = 0; i < MOD_CHALLENGE_MAX; i++) {
-+				level = modChallengeCan(i, pool, prev, top);
-+				if (level > best) {
++				type = MOD_CHALLENGE[MOD_CHALLENGE_ROWS + i];
++				if (type <= 0) continue;
++				level = type >> MOD_CHALLENGE_LEVEL;
++				type &= MOD_CHALLENGE_SPECIES;
++				if ((type >= MOD_CHALLENGE_NEW_FIRST) != pool) continue;
++				if (!isDigimonRecruited(type)) {
++					if (!pool) continue;
++					n = 0; /* the new pool opens once every one of its rows is recruited */
++					again = 2;
++					break;
++				}
++				w = &SCRIPT_STATE_PTR->wregs[MOD_CHALLENGE[MOD_CHALLENGE_BAG] + (i >> 4)];
++				bit = 1 << (i & 15);
++				if (again) *w &= ~bit;
++				if (i + 1 == prev || (*w & bit) || level > top) continue;
++				if (++level > best) {
 +					best = level;
 +					n = 0;
 +				}
-+				n += level >= 0 && level == best;
-+			}
-+			if (n) break;
-+			/* every one of the pool that can go has gone: a new cycle for it (yesterday's still stays home) */
-+			for (i = 0; i < MOD_CHALLENGE_MAX; i++) {
-+				type = MOD_CHALLENGE[MOD_CHALLENGE_ROWS + i];
-+				if (type > 0 && (type >= MOD_CHALLENGE_NEW_FIRST) == pool) bag[i >> 4] &= ~(1 << (i & 15));
++				if (level == best && randomLimit(++n) == 0) pick = i;
 +			}
 +		}
 +		if (!n) continue;
-+		n = randomLimit(n);   /* best >= 0 here */
-+		for (i = 0; i < MOD_CHALLENGE_MAX; i++) {
-+			if (modChallengeCan(i, pool, prev, top) == best && n-- == 0) {
-+				bag[i >> 4] |= 1 << (i & 15);
-+				writePStat(var, i + 1);
-+				break;
-+			}
-+		}
++		SCRIPT_STATE_PTR->wregs[MOD_CHALLENGE[MOD_CHALLENGE_BAG] + (pick >> 4)] |= 1 << (pick & 15);
++		writePStat(var, pick + 1);
 +	}
 +}
 +
  void dailyPStatTrigger(void)
  {
  	ScriptState *st;
-@@ -1482,6 +1553,7 @@ void dailyPStatTrigger(void)
+@@ -1482,6 +1536,7 @@ void dailyPStatTrigger(void)
  			writePStat(MOD_DAILY[MOD_DAILY_CLEAR_PSTAT], v);
  		}
  	}
