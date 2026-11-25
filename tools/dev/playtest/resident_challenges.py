@@ -36,6 +36,7 @@ class Run:
         self.e, self.doc, self.out = e, doc, out
         self.save = doc['save']; self.rows = doc['residents']; self.rule = doc['rule']
         self.log = {}
+        self.fixture = None; self.fixture_row = 0
 
     def pstat(self, n):
         return int(re.search(r'= (\d+)', self.e.gs('pstat', str(n))).group(1))
@@ -64,11 +65,14 @@ class Run:
         return {t: a for t, a in zip(types, amounts) if t >= 0 and a}
 
     def npc_slot(self, species, ram=None):
-        ram = ram or self.e.ram(); base = self.e.A('NPC_ENTITIES') - 0x80000000
+        """(slot, entity address) of a present NPC of `species`. The NPC_ENTITIES records (0x68 bytes, type first) keep
+        the last screen's types; presence is ENTITY_TABLE[2 + slot] pointing at the record (tools/dev/playtest/
+        devimon_departure.py): leave() clears it."""
+        ram = ram or self.e.ram(); base = self.e.A('NPC_ENTITIES')
         for slot in range(8):
-            pd = struct.unpack_from('<I', ram, base + slot * 0x68 + 4)[0]
-            if 0x80000000 < pd < 0x80200000 and struct.unpack_from('<i', ram, pd - 0x80000000)[0] == species:
-                return slot, pd
+            rec = base + slot * 0x68
+            if struct.unpack_from('<i', ram, rec - 0x80000000)[0] != species: continue
+            if self.e.peek(f'ENTITY_TABLE+{4 * (2 + slot)}', 'I', ram) == rec: return slot, rec
         return None, None
 
     def midnight(self, label):
@@ -93,10 +97,31 @@ class Run:
         base = re.search(r'from dw\.base\.(\w+) import', src).group(1)     # a screen of the game: its stub says which
         return int(re.search(r'screen (\d+)', (ROOT / f'typings/dw/base/{base}.pyi').read_text()).group(1))
 
+    def home_species(self, row):
+        """The type the resident has at home: its own, or for an NPC of the game's screen the stub's (Gabumon139...)."""
+        src = (MOD / row['home']).read_text()
+        m = re.search(r'from dw\.base\.(\w+) import ([\w, ]+)', src)
+        if not m: return row['species']
+        stub = (ROOT / f'typings/dw/base/{m.group(1)}.pyi').read_text()
+        for name in (n.strip() for n in m.group(2).split(',')):
+            k = re.search(rf'^{name}: NPC +# slot \d+, (\w+)', stub, re.M)
+            if k and re.match(r'[A-Za-z]+', k.group(1)).group(0) == row['name']:
+                return int(re.search(rf'^    {k.group(1)} = (\d+)', (ROOT / 'typings/dw/__init__.pyi').read_text(), re.M).group(1))
+        raise AssertionError(f"{row['name']}: no NPC of it imported in {row['home']}")
+
     def go(self, screen, label):
-        assert self.e.warp(screen), f'{label}: warp to {screen} failed'
-        self.e.wait(3); assert self.e.in_control(), f'{label}: no control on {screen}'
-        self.shot(label)
+        """Warp to `screen` with control. An arrival can start a wild battle (Ancient Speedy Region): then back to the
+        fixture (self.fixture, with the challenger var as it was) and in by the next entry."""
+        e = self.e
+        for entry in range(3):
+            if e.warp(screen, entry):
+                e.wait(3)
+                if e.in_control(8) and e.peek('GAME_STATE', 'H') != 1: self.shot(label); return
+            assert self.fixture, f'{label}: no control on {screen}'
+            row = self.fixture_row
+            e.run('load', str(self.fixture)); e.wait(3); e.in_control()
+            e.gs('pstat', str(self.save['challengerVar']), str(row)); print(f'{label}: battle on arrival, entry {entry + 1}')
+        raise AssertionError(f'{label}: no control on {screen}')
 
     def expected(self, species, partner):
         from tools import city_residents
@@ -107,8 +132,10 @@ class Run:
 
     def talk_into_battle(self, slot, label):
         e = self.e
-        e.gs('approach', str(slot))
-        e.wait(1)
+        from tools.dev.playtest.birdramon_recruitment import call_section
+        e.gs('approach', str(slot))          # beside it, facing it; the talk itself is entered as the game does (5 + slot)
+        e.poke('TALKED_TO_ENTITY', bytes([5 + slot])); call_section(e, e.peek('CURRENT_SCRIPT_ID', 'H'), 5 + slot)
+        e.wait(1.5); self.shot(label + '-talk')
         for _ in range(60):
             if e.peek('GAME_STATE', 'H') == 1: return True
             e.press('CONFIRM', 6); e.wait(1.5)
@@ -165,15 +192,20 @@ def main():
         day1 = r.midnight('day1')
         # every row: the day it is the challenger, absent from its home and waiting at its site
         result['rows'] = {}
+        r.fixture = out / 'day1.state'; e.run('save', str(r.fixture))
         for i, each in enumerate(doc['residents'], 1):
-            e.gs('pstat', str(doc['save']['challengerVar']), str(i))
             seen = {}
-            home = r.home_screen(each)
-            if home is not None:
-                r.go(home, f'row{i}-home'); seen['home'] = r.npc_slot(each['species'])[0] is None
+            home, at_home = r.home_screen(each), r.home_species(each)
+            r.fixture_row = i % len(doc['residents']) + 1
+            e.gs('pstat', str(doc['save']['challengerVar']), str(r.fixture_row))                     # another's day
+            r.go(home, f'row{i}-home-other-day'); seen['homeOtherDay'] = r.npc_slot(at_home)[0] is not None
+            r.go(each['site']['screen'], f'row{i}-site-other-day'); seen['siteOtherDay'] = r.npc_slot(each['species'])[0] is None
+            r.fixture_row = i
+            e.gs('pstat', str(doc['save']['challengerVar']), str(i))                                  # its day
+            r.go(home, f'row{i}-home'); seen['home'] = r.npc_slot(at_home)[0] is None
             r.go(each['site']['screen'], f'row{i}-site'); seen['site'] = r.npc_slot(each['species'])[0] is not None
             result['rows'][each['name']] = seen; print(each['name'], seen, flush=True)
-        e.gs('pstat', str(doc['save']['challengerVar']), str(day1['row']))
+        e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.fixture_row = day1['row']
         bad = {n: v for n, v in result['rows'].items() if not all(v.values())}
         assert not bad, f'not absent from home / not at the site: {bad}'
         assert 1 <= day1['row'] <= len(doc['residents']), day1
@@ -182,7 +214,7 @@ def main():
 
         home = r.home_screen(row)
         if home is not None:
-            r.go(home, 'home'); slot, _ = r.npc_slot(row['species'])
+            r.go(home, 'home'); slot, _ = r.npc_slot(r.home_species(row))
             result['atHome'] = slot is not None
             assert slot is None, f"{row['name']} still at home on {home}"
         r.go(row['site']['screen'], 'site')
