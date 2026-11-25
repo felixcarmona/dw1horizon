@@ -9,6 +9,7 @@ from pathlib import Path as _DevPath
 import sys as _dev_sys
 _dev_sys.path.insert(0, str(next(p for p in _DevPath(__file__).resolve().parents if (p / "tools").is_dir())))
 import atexit, contextlib, glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, unittest
+from unittest import mock
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 from dws import build as B, textx
@@ -1501,7 +1502,10 @@ class StoryBuild(unittest.TestCase):
         out = os.path.join(self.dir, name, 'DG.SCN')
         kw = {'mods_root': mods_root} if mods_root else {}
         if base is not None: kw['base'] = base
-        prog, report, run, mh = self.BB.build(list(sources), out, mods=mods, log=lambda m: None, **kw)
+        else: kw.update(exe='mods', text_source='ours')   # the authored story is built as the game builds it: species past 255, paged text
+        from dws import backend as BE
+        with mock.patch.object(BE, 'PACK_ASCII', base is None or BE.PACK_ASCII):   # packed letters, or its scripts do not fit
+            prog, report, run, mh = self.BB.build(list(sources), out, mods=mods, log=lambda m: None, **kw)
         return out, mh, report
 
     def mod(self, root, name, files, toml=''):
@@ -1690,19 +1694,27 @@ class PythonView(unittest.TestCase):
 
     def test_views_lower_to_the_proven_story(self):
         """Prove original views against the disc; both original and authored Python builds match their DWS byte for byte."""
-        from dws import readable, basebuild as BB
+        from dws import readable, basebuild as BB, backend as BE
         from dws.py import lower as PL
         lifted, mhl, _ = readable.lift_disc(only={2, 18, 77, 102, 178, 216})
         # Authored changes are pinned separately; only original views must match the disc.
         proven, bad = PL.check_base(original_story(), lifted, [], log=lambda m: None)
         self.assertEqual(bad, []); self.assertGreater(proven, 60)
         d = tempfile.mkdtemp(prefix='frompy-', dir=TMP)
+        lower_base = PL.lower_base
+        def lower_as_committed(*a, **k):
+            # The committed DWS is the view lowered for the original executable (level tests name no species past 255);
+            # the authored story still compiles for the mod executable, which its own species past 255 need.
+            with mock.patch.dict(PL.TARGET, exe='original'): return lower_base(*a, **k)
         for label, base in (('original', original_story()), ('authored', self.base)):
             out = {}
             for k, fp in (('dws', False), ('py', True)):
                 o = os.path.join(d, label, k, 'DG.SCN')
-                with walk_targets.off() if label == 'original' else contextlib.nullcontext():   # the disc's own walks
-                    _, _, _, mh = BB.build([], o, base=base, mods=[], log=lambda m: None, from_py=fp)
+                with (walk_targets.off() if label == 'original' else              # the disc's own walks
+                      mock.patch.object(BE, 'PACK_ASCII', True)), \
+                     mock.patch.object(PL, 'lower_base', lower_as_committed):      # authored: packed letters, as the game builds it
+                    _, _, _, mh = BB.build([], o, base=base, mods=[], log=lambda m: None, from_py=fp,
+                                           **({} if label == 'original' else {'exe': 'mods', 'text_source': 'ours'}))   # authored: as the game builds it
                 out[k] = (open(o, 'rb').read(), open(mh, 'rb').read())
             self.assertEqual(out['dws'], out['py'], label)
 
