@@ -47,7 +47,7 @@
  ],
  "s176.sec81.u0": [
   [
-   "Benvenuto! Ehi, {color 6}{player}{color 1}!",
+   "Salve! Ehi, {color 6}{player}{color 1}!",
    "Guarda, il mio negozio! Venderò",
    "oggetti a più non posso! Le"
   ],
@@ -59,7 +59,7 @@
  ],
  "s176.sec81.u1": [
   [
-   "Benvenuto, pio! Ho deciso di",
+   "Salve, pio! Ho deciso di",
    "comprare e vendere oggetti,",
    "pio. Piacere, pio! Le scorte"
   ],
@@ -71,7 +71,7 @@
  ],
  "s176.sec81.u2": [
   [
-   "Benvenuto. Mi sono permesso di",
+   "Salve. Mi sono permesso di",
    "aprire un negozio di oggetti.",
    "Spero di averti come cliente."
   ],
@@ -108,13 +108,13 @@
  ],
  "s176.sec81.u5": [
   [
-   "Benvenuto, pio! Da oggi aiuto",
+   "Salve, pio! Da oggi aiuto",
    "in negozio, pio. Piacere, pio!"
   ]
  ],
  "s176.sec81.u6": [
   [
-   "Benvenuto, {color 6}{player}{color 1}. Mi",
+   "Salve, {color 6}{player}{color 1}. Mi",
    "sono permesso di offrire il mio",
    "aiuto a questo negozio. Spero"
   ],

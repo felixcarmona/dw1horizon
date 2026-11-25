@@ -23,7 +23,7 @@
   "texture": {"file": "build/meshfix2-out/Pukumon.TIM", "entry": 0},
   "voice": 43,
   "battle_music": "normal-battle",
-  "boosted_technique": "Megaton Punch",
+  "boosted_technique": "Tidal Wave",
   "condition_bubble": [0, -91, 9, 1],
   "effect_origins": [[10, 270, 0, 0, 7, -33, 24, 280], [2, 0, 0, 0, 1, 0, -31, 10], [1, 0, 0, 0, 1, 0, -30, 1],
                      [6, 45, 0, 0, 11, 9, 35, 19]],

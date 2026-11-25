@@ -24,7 +24,7 @@
   "texture": {"file": "build/batch2/Digmon.TIM", "entry": 0},
   "voice": 12,
   "battle_music": "normal-battle",
-  "boosted_technique": "Tremar",
+  "boosted_technique": "Boulder Crash",
   "condition_bubble": [0, -46, -73, 12],
   "effect_origins": [[4, 260, 30, 0, 12, 0, 84, -219], [9, 0, 75, 50, 19, -5, -66, 13],
                      [9, 192, 32, 0, 19, 139, -37, -26], [1, 0, 0, 0, 10, 0, 0, 0],

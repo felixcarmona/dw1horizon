@@ -1,7 +1,7 @@
 {
  "m1230.u0": [
   [
-   "Bem-vindo! Como posso ajudar?"
+   "Olá! Como posso ajudar?"
   ],
   [
    "Ainda estamos nos preparando."
@@ -94,7 +94,7 @@
  "m1230.u14": "{color 10}{partner}{color 1} ainda é pequeno, não é? Vou tirar {shopvar} Bits para você!",
  "m1230.u15": [
   [
-   "Ah, bem-vindo."
+   "Ah, olá."
   ]
  ],
  "m1230.u16": "Volte de novo.",
@@ -106,7 +106,7 @@
  "m1230.u22": "{color 10}{partner}{color 1} tem que crescer grande, e logo. Tudo bem, vou tirar {shopvar} Bits.",
  "m1230.u23": [
   [
-   "Bem-vindo, piu! O que vai",
+   "Olá, piu! O que vai",
    "querer, piu?"
   ]
  ],
@@ -147,7 +147,7 @@
    "Bits, piu."
   ]
  ],
- "m1230.u31": "Ah, bem-vindo! O que vai ser?",
+ "m1230.u31": "Ah, olá! O que vai ser?",
  "m1230.u32": "Obrigado. Volte de novo.",
  "m1230.u33": "Da próxima vez, espero.",
  "m1230.u34": "Então, qual será?",

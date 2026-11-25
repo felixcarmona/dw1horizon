@@ -12,6 +12,7 @@
                  "Shining Arrow", "Sacred Shield", "Blessing", "Flash Burst"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
+  "own_effect": {"technique": "Dark Claw", "chunk": 375},
   "model": {
     "file": "build/sizes-out/models/R-Gatomon.MMD",
     "radius": 151,
@@ -24,7 +25,7 @@
   "texture": {"file": "build/batch5/R-Gatomon.TIM", "entry": 0},
   "voice": 27,
   "battle_music": "normal-battle",
-  "boosted_technique": "Dynamite Kick (44)",
+  "boosted_technique": "Shining Arrow",
   "condition_bubble": [0, -60, -5, 1],
   "effect_origins": [[3, 110, -140, 0, 1, 0, -2, -114]],
   "wild": {"hp": 1750, "mp": 1480, "off": 225, "def": 225, "speed": 180, "brain": 175, "bits": 600},

@@ -8,7 +8,7 @@ lookout = tower.npc(Species.Saberdramon, at=(-450, 450), range=0, autotalk=True,
 
 @lookout.on_talk(scene=True)
 def the_report():
-    say("...Yes. The human has come to the Seam. Small. With a Digimon.", "He walks where the ground does not match.")
+    say("...Yes. The human has come to the Seam. Small. With a Digimon.", "Walks where the ground does not match.")
     wait(1000)
     say("...As you say. I will keep watching.")
     tamer.say("Who's it talking to? There's nobody here...")

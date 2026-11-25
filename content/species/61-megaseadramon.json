@@ -23,7 +23,7 @@
   },
   "voice": 55,
   "battle_music": "normal-battle",
-  "boosted_technique": "Ice Statue",
+  "boosted_technique": "Hydro Cannon",
   "partner": {
     "voice": 5,
     "hunger_hours": [0, 5, 9, 14, 19],

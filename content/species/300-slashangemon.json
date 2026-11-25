@@ -25,7 +25,7 @@
   "texture": {"file": "build/batch10/GuardiAngemon.TIM", "entry": 0},
   "voice": 18,
   "battle_music": "normal-battle",
-  "boosted_technique": "Spinning Shot",
+  "boosted_technique": "Judgment Ray",
   "condition_bubble": [0, -205, 44, 18],
   "effect_origins": [[7, 0, 0, 0, 4, -1, 94, 44], [10, 0, 0, 0, 7, 1, 86, 45], [18, 0, 0, 0, 23, 0, 0, 0]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},

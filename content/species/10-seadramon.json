@@ -23,7 +23,7 @@
   },
   "voice": 10,
   "battle_music": "normal-battle",
-  "boosted_technique": "Giga Freeze",
+  "boosted_technique": "Whirlpool",
   "partner": {
     "voice": 5,
     "hunger_hours": [0, 4, 8, 12, 16, 20],

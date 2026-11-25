@@ -36,7 +36,9 @@ jobs:
           mkdir -p build/pages-input
           gh release download v0.0.7 --dir build/pages-input \
             --pattern horizon-package.tar.gz --pattern horizon-engine.tar.gz \
-            --pattern horizon-checksums.json --pattern horizon-media.tar.gz --pattern horizon-maps.tar.gz
+            --pattern horizon-checksums.json --pattern horizon-maps.tar.gz
+          # the page's clips are the ones the site serves now: the newest release holds them
+          gh release download --dir build/pages-input --pattern horizon-media.tar.gz
           git checkout --detach refs/tags/v0.0.7
           python3 tools/release_pages.py build v0.0.7 --inputs build/pages-input --out build/pages-site
           git checkout --detach "$GITHUB_SHA"

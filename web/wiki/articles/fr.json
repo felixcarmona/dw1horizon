@@ -105,7 +105,7 @@
     "paragraphs": [
       "Pendant une séance, R2 alterne x1 et x5. Le bloc joue l’animation initiale puis applique chaque récompense dans l’ordre. Ce n’est pas un multiplicateur gratuit par cinq.",
       "Il peut s’arrêter après une séance provoquant faim, besoin de toilettes, sommeil, fatigue ou malaise. Il vérifie aussi évolution, durée de vie et messages du gymnase. Le résultat montre les séances terminées : pas forcément cinq.",
-      "Bonus Try est indépendant des blocs. Résolvez le besoin signalé avant de recommencer. Pour une seule récompense, sélectionnez x1 avant de confirmer plutôt que de compter sur un arrêt d’urgence."
+      "Bonus Try est indépendant des blocs. Chaque rouleau s’arrête là où vous appuyez, sans rien de caché pour le pousser hors du gain : un échec donne la moitié, trois symboles identiques doublent, trois symboles de la statistique entraînée donnent x4 et trois crottes dorées donnent x5. Résolvez le besoin signalé avant de recommencer. Pour une seule récompense, sélectionnez x1 avant de confirmer plutôt que de compter sur un arrêt d’urgence."
     ]
   },
   "evolution-requirements": {

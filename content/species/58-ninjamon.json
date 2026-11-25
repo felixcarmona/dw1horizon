@@ -20,7 +20,7 @@
   },
   "voice": 52,
   "battle_music": "normal-battle",
-  "boosted_technique": "Fire Tower",
+  "boosted_technique": "Cross Cutter",
   "partner": {
     "voice": 0,
     "hunger_hours": [3, 8, 13, 18, 23],

@@ -25,7 +25,7 @@
   "texture": {"from": 66},
   "voice": 56,
   "battle_music": "normal-battle",
-  "boosted_technique": "Thunder Justice",
+  "boosted_technique": "Death Grip",
   "partner": {
     "voice": 3,
     "hunger_hours": [4, 9, 14, 18, 23],

@@ -9,7 +9,13 @@
                  "Stone Skin", "Boulder Crash", "Fissure"],
   "drop": {"item": "med.recovery", "percent": 10},
   "effects_like": 23,
-  "model": {"name": "TUTI", "bones": 19, "radius": 160, "height": 380},
+  "model": {
+    "name": "TUTI",
+    "bones": 19,
+    "radius": 160,
+    "height": 380,
+    "slot_aliases": [[51, 48], [52, 48], [53, 47], [54, 49], [55, 49]]
+  },
   "voice": 65,
   "battle_music": "normal-battle-2",
   "wild": {"hp": 1300, "mp": 2200, "off": 340, "def": 150, "speed": 90, "brain": 100, "bits": 200},

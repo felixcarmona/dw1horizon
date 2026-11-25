@@ -24,7 +24,7 @@
   "texture": {"file": "build/batch16/Kotemon.TIM", "entry": 0},
   "voice": 15,
   "battle_music": "normal-battle",
-  "boosted_technique": "Spit Fire",
+  "boosted_technique": "Quick Slash",
   "condition_bubble": [0, -123, -14, 17],
   "effect_origins": [[3, 110, -140, 0, 17, 0, -30, -188]],
   "wild": {"hp": 690, "mp": 560, "off": 115, "def": 105, "speed": 100, "brain": 80, "bits": 200},

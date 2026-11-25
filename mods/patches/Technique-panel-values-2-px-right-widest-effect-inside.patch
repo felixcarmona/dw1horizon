@@ -1,0 +1,57 @@
+From e98715b749215e191210631b1a277dc171e745e8 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 17:43:48 +0000
+Subject: [PATCH] Technique panel: Spanish and Portuguese numbers 2 px right of
+ the original, the effect row at the original x
+
+---
+ src/main/game_menu.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 3ab3317c..eeeaac04 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -1161,7 +1161,8 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[NUM_ELEMENTS] = {
+  * EFECTO */
+ /* MOD (language): the x of the move panel's four arrows and of its values. Spanish POTENCIA and ALCANCE, Portuguese
+  * ALCANCE, are wider than the original labels and ended under the arrow: there the arrow starts where the widest label
+- * ends and the values 4 px further right (data, not code: the nine languages must lay out the same code) */
++ * ends and the numbers 2 px further right; the effect row keeps the original x, so the widest effect (aturd.)
++ * ends inside the panel (data, not code: the nine languages must lay out the same code) */
+ int16_t MOVES_SELECTED_ARROW_X =
+ #if MOD_LANG_BUILD == MOD_LANG_ES || MOD_LANG_BUILD == MOD_LANG_PT_BR
+ 	-0x6c;
+@@ -1170,7 +1171,7 @@ int16_t MOVES_SELECTED_ARROW_X =
+ #endif
+ int16_t MOVES_SELECTED_VALUE_X =
+ #if MOD_LANG_BUILD == MOD_LANG_ES || MOD_LANG_BUILD == MOD_LANG_PT_BR
+-	-0x60;
++	-0x62;
+ #else
+ 	-0x64;
+ #endif
+@@ -4410,16 +4411,16 @@ void renderDigimonMovesSelected(int16_t panel)
+ #if !VERSION_IS(US)
+ 		status = move->status;
+ 		if (status == 1) {
+-			renderString(0, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x4f, 0xc, 0xc, 0x84, 0x6c, 3, 1);
++			renderString(0, (panel * 0xc2) - 0x64, 0x4f, 0xc, 0xc, 0x84, 0x6c, 3, 1);
+ 		} else if (status == 4) {
+-			renderString(0, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x4f, 0x24, 0xc, 0xc0, 0x6c, 3, 1);
++			renderString(0, (panel * 0xc2) - 0x64, 0x4f, 0x24, 0xc, 0xc0, 0x6c, 3, 1);
+ 		} else if (status != 0) {
+-			renderString(0, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x4f, 0x18, 0xc, (status - 2) * 0x18 + 0x90, 0x6c, 3, 1);
++			renderString(0, (panel * 0xc2) - 0x64, 0x4f, 0x18, 0xc, (status - 2) * 0x18 + 0x90, 0x6c, 3, 1);
+ 		}
+ #else
+ 		/* MOD (language): MOVE_STATUS_CROPS */
+ 		if (move->status >= 1 && move->status <= 4) {
+-			renderString(0, (panel * 0xc2) + MOVES_SELECTED_VALUE_X, 0x4f, MOVE_STATUS_CROPS[move->status - 1].w, 0xc,
++			renderString(0, (panel * 0xc2) - 0x64, 0x4f, MOVE_STATUS_CROPS[move->status - 1].w, 0xc,
+ 			             MOVE_STATUS_CROPS[move->status - 1].u, 0x6c, 3, 1);
+ 		}
+ #endif
+-- 
+2.55.0
+

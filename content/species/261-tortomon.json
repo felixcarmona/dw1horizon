@@ -25,7 +25,7 @@
   "texture": {"file": "build/batch7/Tortomon.TIM", "entry": 0},
   "voice": 4,
   "battle_music": "normal-battle",
-  "boosted_technique": "Tremar",
+  "boosted_technique": "Fissure",
   "condition_bubble": [26, -205, -204, 1],
   "effect_origins": [[5, 30, 0, -55, 17, 0, 12, -79], [5, 45, 0, -45, 17, 0, 34, -73],
                      [7, 40, 0, 0, 1, 9, -171, -74]],

@@ -941,7 +941,7 @@
  ],
  "s200.sec51.u24": [
   [
-   "Das ist Wucher, Kumpel!"
+   "Das ist Wucher!"
   ]
  ],
  "s200.sec51.u25": [
@@ -1091,7 +1091,7 @@
  ],
  "s200.sec51.u48": [
   [
-   "Das ist Wucher, Kumpel!"
+   "Das ist Wucher!"
   ]
  ],
  "s200.sec51.u49": [
@@ -1240,7 +1240,7 @@
  ],
  "s200.sec51.u72": [
   [
-   "Das ist Wucher, Kumpel!"
+   "Das ist Wucher!"
   ]
  ],
  "s200.sec51.u73": [
@@ -2556,7 +2556,7 @@
  "s205.sec6.u34": "Alles klar! In drei Tagen hast du das Ergebnis. Ich gebe mein Bestes!",
  "s205.sec6.u35": [
   [
-   "Nicht genug Bits, Kumpel.",
+   "Nicht genug Bits.",
    "Selbst ich kann ohne",
    "Startkapital keinen Schatz"
   ],
@@ -2599,7 +2599,7 @@
  "s206.sec6.m1.o1": "Ich passe",
  "s206.sec6.u0": [
   [
-   "Hey, Kumpel, Lust auf ein",
+   "Hey, Lust auf ein",
    "Match? Wenn du gewinnst, tue",
    "ich alles, was du sagst."
   ]
@@ -2642,14 +2642,14 @@
  ],
  "s206.sec6.u7": [
   [
-   "Hey, Kumpel! Willst du mich",
+   "Hey! Willst du mich",
    "herausfordern? Kostet einen",
    "Fisch."
   ]
  ],
  "s206.sec6.u8": [
   [
-   "Hey, Kumpel! Hier habe ich",
+   "Hey! Hier habe ich",
    "auch eine Eisbahn gebaut. Wie",
    "vorher: ein Fisch pro Spiel."
   ],
@@ -2660,7 +2660,7 @@
  ],
  "s206.sec6.u9": [
   [
-   "Na, Kumpel, forderst du mich",
+   "Na, forderst du mich",
    "heraus? Kostet einen Fisch."
   ]
  ],
@@ -2694,7 +2694,7 @@
  ],
  "s206.sec6.u15": [
   [
-   "Komm schon, Kumpel. Fang dir",
+   "Komm schon. Fang dir",
    "einen Fisch am",
    "Drachenaugensee!"
   ]
@@ -2754,7 +2754,7 @@
  ],
  "s206.sec10.u0": [
   [
-   "Tut mir leid, Kumpel. Bring",
+   "Tut mir leid. Bring",
    "noch einen Fisch und versuch's",
    "noch mal!"
   ]
@@ -2762,7 +2762,7 @@
  "s206.sec10.u1": [
   [
    "Wow, ein perfektes Ergebnis!",
-   "Kumpel... bist du etwa Profi?"
+   "Bist du etwa Profi?"
   ]
  ],
  "s206.sec10.u2": [
@@ -2773,7 +2773,7 @@
  ],
  "s206.sec10.u3": [
   [
-   "Unglaublich, Kumpel. Ich habe",
+   "Unglaublich. Ich habe",
    "zum ersten Mal verloren."
   ]
  ],
@@ -2796,7 +2796,7 @@
  "s206.sec10.u6": "Penguinmon ist in die Stadt gezogen!",
  "s206.sec11.u0": [
   [
-   "Tut mir leid, Kumpel. Bring",
+   "Tut mir leid. Bring",
    "noch einen Fisch und versuch's",
    "noch mal!"
   ]
@@ -2804,7 +2804,7 @@
  "s206.sec11.u1": [
   [
    "Wow, ein perfektes Ergebnis!",
-   "Kumpel... bist du etwa Profi?"
+   "Bist du etwa Profi?"
   ]
  ],
  "s206.sec11.u2": [
@@ -2815,7 +2815,7 @@
  ],
  "s206.sec11.u3": [
   [
-   "Wow, du bist spitze, Kumpel.",
+   "Wow, du bist spitze.",
    "Schon wieder verloren."
   ]
  ],
@@ -2865,9 +2865,9 @@
   ]
  ],
  "s206.sec13.m0.o0": "Spiele und Cups",
- "s206.sec13.u7": "Unentschieden, Kumpel! Wir spielen noch mal.",
- "s206.sec13.u8": "Du bist weiter, Kumpel! Jetzt kommt das Halbfinale.",
- "s206.sec13.u9": "Wow, du stehst im Finale, Kumpel! Der Champion wartet.",
+ "s206.sec13.u7": "Unentschieden! Wir spielen noch mal.",
+ "s206.sec13.u8": "Du bist weiter! Jetzt kommt das Halbfinale.",
+ "s206.sec13.u9": "Wow, du stehst im Finale! Der Champion wartet.",
  "s206.sec13.u10": "{color 7}Du hast den Neulings-Cup gewonnen!{color 1}",
  "s206.sec13.u11": "{color 7}Du hast den Amateur-Cup gewonnen!{color 1}",
  "s206.sec13.u12": "{color 7}Du hast den Experten-Cup gewonnen!{color 1}",
@@ -2876,9 +2876,9 @@
  "s206.sec13.u24": "{color 7}Du hast den Legenden-Cup gewonnen: Du erhältst die Medaille Curling-Legende!{color 1}",
  "s206.sec13.u25": "Was für ein Paar, Bro! Keiner wirft wie ihr zwei.",
  "s206.sec13.u26": "Jeder gegen jeden, und du bist ganz oben, Bro!",
- "s206.sec13.u27": "Eine Legende kriegt das ganze Set, Kumpel! Ein Chip von jeder Sorte.",
- "s206.sec13.u28": "Du kannst nicht mehr tragen, Kumpel! Ich hebe dir die restlichen Chips auf. Komm wieder, wenn du Platz hast.",
- "s206.sec13.u29": "Kumpel! Ich habe deine Chips aufgehoben. Hier, bitte.",
+ "s206.sec13.u27": "Eine Legende kriegt das ganze Set! Ein Chip von jeder Sorte.",
+ "s206.sec13.u28": "Du kannst nicht mehr tragen! Ich hebe dir die restlichen Chips auf. Komm wieder, wenn du Platz hast.",
+ "s206.sec13.u29": "Ich habe deine Chips aufgehoben. Hier, bitte.",
  "s207.sec11.m0.o0": "Kaufen",
  "s207.sec11.m0.o1": "Nicht kaufen",
  "s207.sec11.m1.o0": "Kaufen",
@@ -4127,7 +4127,7 @@
  "s210.sec77.u6": [
   [
    "Mir fehlen die Worte.",
-   "Großartig, mein Junge!"
+   "Großartig, mein Kind!"
   ]
  ],
  "s210.sec77.u7": [

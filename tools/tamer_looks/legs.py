@@ -2,7 +2,7 @@
 
 The four leg objects leave every model (shirts.strip) and a pair of trousers brings them, read behind the model like a
 shirt. Trousers 0 are the original ones. The others draw their cloth on the legs' own part of the texture and colour it
-through the legs' palette row; the seat, which is part of the torso and so of every shirt (its first SEAT polygons),
+through the legs' palette row; the seat, which is part of the torso and so of every shirt (its last PELVIS polygons),
 is then drawn with one plain texel of that cloth (SEAT_AT): the game rewrites those polygons when it loads.
 
 The shins of slim trousers (SLIM: a narrow or bare shin) start with SHAFT_CORNERS corners and normals that are a
@@ -34,6 +34,7 @@ FOLDS_AT = (88, 88, 35, 24)                # the tamer's own trousers on his tex
 DARK2, LIGHT2 = 11, 12                     # the second colour and its shade
 BARE = (160, 88, 24)                       # bare skin, drawn at the end of the cloth: u, v, height (shirts.skin_strips)
 SKIN_TONES = (13, 14, 15)                  # its tones: lit, plain, shaded
+SHIN_FROM = .4                             # where down the drawing a shin's cloth begins
 
 
 def patch(p, a=0.0, b=1.0, half=None):
@@ -53,18 +54,21 @@ def leg(mesh, rings, ns, phase, outer, x0):
 
     def radial(c):
         return (0, c[1], c[2] - 1)
-    length, reach = (66, 1) if x0 else (52, .86)
+    # a thigh runs down the drawing from its top, and a shin from where the tones are the thigh's last ones to its last
+    # rows: the drawing's first rows are its darkest (the waist), and a shin that began there was a darker block under
+    # the knee, the whole of a capri's
+    length, first, reach = (66, SHIN_FROM, 1 - SHIN_FROM) if x0 else (52, 0, .86)
     for i in range(len(rings) - 1):
         kind = rings[i + 1][3]
-        # each of the two bones runs down the whole drawing: its folds keep their shape (a shin's end is its last rows)
-        a = max(0, min(1, rings[i][0] / length)) * reach
-        b = max(0, min(1, rings[i + 1][0] / length)) * reach
+        a = first + max(0, min(1, rings[i][0] / length)) * reach
+        b = first + max(0, min(1, rings[i + 1][0] / length)) * reach
         for j in range(ns):
             vs = (ids[i][j], ids[i][(j + 1) % ns], ids[i + 1][j], ids[i + 1][(j + 1) % ns])
             if kind == 's':
                 mesh.face(vs, BARE_SKIN, ROW, radial)
             elif kind == 'h':
-                mesh.face(vs, patch(CUFF, .4, .6), ROW, (1, 0, 0))
+                # the cloth itself: in the second colour its far rim came and went under the near one as a light line
+                mesh.face(vs, patch(CLOTH, .1, .3), ROW, (1, 0, 0))
             elif kind == 't' and j == outer:
                 mesh.face(vs, patch(STRIPE, a, b), ROW, radial)
             elif kind == 'p' and j == outer:
@@ -209,7 +213,7 @@ def seat(parts):
     verts, norms, prims = parts[shirts.TORSO]
     out = []
     for i, p in enumerate(prims):
-        if i < len(shirts.PELVIS):
+        if i >= len(prims) - len(shirts.PELVIS):
             d = p.decode()
             shirts.set_row(d, ROW)
             d['uv'] = [SEAT_AT] * len(d['uv'])

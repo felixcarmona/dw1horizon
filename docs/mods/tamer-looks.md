@@ -95,7 +95,9 @@ a model of `TAMER.DAT` like the rest.
   the tamer, and `loadColdAnimation` serves the tamer's cold entries.
 - The hair colour is a palette row. `lookHairPalette` writes it into the look's texture before it is uploaded: each
   channel of tone `i` is `colour * level[i] / 128`, so one model and one texture serve every colour. Hair polygons
-  come first in the head, which keeps the fringe in front of the forehead.
+  come first in the head, which keeps the fringe in front of the forehead. The undersides of the locks come last,
+  after the skin: they reach into the head, so at three-quarter angles they sort level with the cheek, and drawn
+  first they painted a dark patch beside the fringe.
 - `modTamerRelook` (`model.c`) loads the look again and links the tamer's bones to the new model, for a change while
   he is on screen.
 - The Look page (`lookPage*` in `game_menu.c`), the loader (`lookTamerLoad`) and the relink (`lookTamerRelook`) are
@@ -108,7 +110,7 @@ a model of `TAMER.DAT` like the rest.
   fringe, between a lock and the cheek), so there `lookPageHairInside` sorts the hair a second time with two corners
   swapped: the far faces are drawn and no gap shows what is behind the head. With no depth buffer those faces, sorted
   among the model's own, painted the inside of a lock over the head or the other lock at back and side angles; they
-  go to the far half of the portrait's ordering table (buckets 256-511), behind every face of the model and still in
+  go to the last quarter of the portrait's ordering table (buckets 384-511), behind every face of the model and still in
   front of the panel.
 - A shirt is five objects of the model. Every model in `TAMER.DAT` comes without them; `lookTamerLoad` reads the
   chosen shirt's geometry right behind the model and points the five entries of the object table at it before the
@@ -126,8 +128,20 @@ a model of `TAMER.DAT` like the rest.
   original sleeves' and trousers' pixels, as tones of the new palette row) under a shading of the body's form, and
   bare skin is drawn in three tones of his face, chosen per polygon by where it looks while he stands.
 - The seat is part of the torso, so of the shirt, and its palette row is shared with the original hoodie: under other
-  trousers `lookTamerLoad` rewrites the shirt's first sixteen polygons (every shirt starts with the seat) to the
-  legs' palette row and to one texel of plain cloth, which the trousers' head sector names.
+  trousers `lookTamerLoad` rewrites the torso's last sixteen polygons (every shirt ends with the seat) to the
+  legs' palette row and to one texel of plain cloth, which the trousers' head sector names. Last, because with no
+  depth buffer the polygons that share a bucket of the ordering table are drawn last to first: the seat lies inside
+  the shirt, a few units behind its hem, and first in the torso it was drawn over the hem as flat patches of the
+  trousers' colour. Its two corners at the back of the hips sit well inside the shirt (`PELVIS_MOVED`): closer to
+  it, those polygons averaged a bucket nearer than the shirt's back at three-quarter angles.
+- The portrait sorts the tamer's own look in 4-unit depth buckets (`LOOK_SORT_SHIFT` 0; every other portrait keeps
+  shift 3, 32 units). The close-up is full of parts that touch (collar and hair, sleeve and trunk, thigh and shin, hem
+  and skirt): in 32-unit buckets whole parts shared one, the order they were sent in decided which covered the other,
+  and it changed with every step of the turn. A model of the portrait (the ordering table against a depth buffer, 64
+  steps of the turn) counted twelve times fewer wrongly covered pixels with 4 units, and no depth offset for a part
+  improved on it. The tamer stands in buckets 270-315 of the table's 512; the hair's far faces go to its last quarter.
+- The ring that closes a skirt's or shorts' rim to the bare thigh is drawn in the cloth itself: in the second colour
+  its far rim showed under the near one as a light line at some angles and not at others.
 - A boot's leg cannot be part of the foot, which turns at the ankle. It is eleven corners and ten polygons stored in
   the shoes' head sector, and it rides on the shin: slim trousers (a flag in their head sector) keep eleven unused
   corners at the start of each shin and room for ten polygons right before the shin's own, and the loader copies the
@@ -164,7 +178,7 @@ a model of `TAMER.DAT` like the rest.
 Add its row to `STYLES` in `tools/tamer_looks/shirts.py` (at the end: the number is saved), raise `TAMER_SHIRT_COUNT`
 in `include/dw/species.h`, give it a name (`lookPageClothes` in `game_menu.c`, `LAB_STR_SHIRT_*`), and run
 `tools/tamer_pack.py build` to see that every look still fits with it. The shirt may draw only in its rectangles of the
-texture (`RECTS`): the trousers and the shoes use the rest. Its torso must start with the seat's polygons.
+texture (`RECTS`): the trousers and the shoes use the rest. Its torso must end with the seat's polygons.
 
 Trousers, shoes and backpacks are added the same way: a row in `STYLES` of `legs.py`, `shoes.py` or `backpacks.py`,
 `TAMER_TROUSERS_COUNT`, `TAMER_SHOES_COUNT` or `TAMER_PACK_COUNT`, a name in `lookPageClothes` (`LAB_STR_TROUSERS_*`,

@@ -10,7 +10,13 @@
                  "Nightmare", "Death Grip"],
   "drop": {"item": "Quick Chip", "percent": 100},
   "effects_like": 6,
-  "model": {"name": "EDEV", "bones": 28, "radius": 160, "height": 400},
+  "model": {
+    "name": "EDEV",
+    "bones": 28,
+    "radius": 160,
+    "height": 400,
+    "slot_aliases": [[54, 53], [55, 51], [56, 51], [57, 51], [58, 46]]
+  },
   "voice": 6,
   "battle_music": "normal-battle",
   "wild": {"hp": 500, "mp": 500, "off": 10, "def": 100, "speed": 100, "brain": 100, "bits": 100},

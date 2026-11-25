@@ -1,0 +1,67 @@
+From f3d4677622596dee2f91d9b0466aebd839fc020e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 17:52:07 +0000
+Subject: [PATCH] Tamer looks: the thighs sort a little deeper on the Look
+ page, under the shirt's hem
+
+---
+ src/main/game_menu.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 47e816b2..465c6c6f 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2677,6 +2677,9 @@ void free3(void *ptr);
+ #define LOOK_SCROLL_X	(LOOK_VALUE_X + LOOK_VALUE_W + 7)	/* the scroll bar: right of the value boxes, as tall as the rows shown */
+ #define LOOK_SCROLL_H	((LOOK_SHOWN - 1) * 0x14 + 14)
+ #define LOOK_HEAD_OBJECT	1
++#define LOOK_THIGH_LEFT		8
++#define LOOK_THIGH_RIGHT	11
++#define LOOK_THIGH_DEPTH	16	/* half a bucket of the portrait's table (shift 3) */
+ #define LOOK_HAIR_MODE		0x34u	/* textured gouraud triangle: seven words */
+ #define LOOK_HAIR_WORDS		7
+ #define LOOK_HAIR_ROW		1	/* the hair's palette row (tools/tamer_looks/wig.py) */
+@@ -3002,6 +3005,26 @@ void lookPageHairInside(GsDOBJ2 *obj, GsOT *ot)
+ 	}
+ }
+ 
++/* The thighs' tops lie inside the shirt and come out under its hem, and a skirt or wide shorts flare out from there:
++ * their polygons' average depth can then be a bucket nearer than the hem that covers them, and the trousers showed
++ * through the shirt's lower edge. On the Look page they sort a little deeper: the matrix that takes them to the screen
++ * is scaled about the eye, which keeps every corner where it was on the screen and only adds depth. */
++static void lookPageThighDepth(MATRIX *m)
++{
++	int32_t z = m->t[2];
++	int32_t i, j;
++
++	if (z <= 0) {
++		return;
++	}
++	for (i = 0; i < 3; i++) {
++		for (j = 0; j < 3; j++) {
++			m->m[i][j] = (int16_t)(m->m[i][j] * (z + LOOK_THIGH_DEPTH) / z);
++		}
++		m->t[i] = m->t[i] * (z + LOOK_THIGH_DEPTH) / z;
++	}
++}
++
+ int32_t lookPageOpen(void)
+ {
+ 	RECT rect;
+@@ -7030,6 +7053,12 @@ int8_t entityId;
+ 			GsGetLw(pos->obj.coord2, &m);
+ 			GsSetLightMatrix(&m);
+ 			GsGetLs(pos->obj.coord2, &m);
++			/* MOD (tamer looks): the thighs a little deeper, under the shirt's hem */
++			if (entityId == 0 && MOD_TAMER_LOOK > 1 &&
++			    ((void *)pos->obj.tmd == (void *)&TAMER_MODEL.modelPtr->obj[LOOK_THIGH_LEFT] ||
++			     (void *)pos->obj.tmd == (void *)&TAMER_MODEL.modelPtr->obj[LOOK_THIGH_RIGHT])) {
++				lookPageThighDepth(&m);
++			}
+ 			GsSetLsMatrix(&m);
+ 			/* MOD (status portrait): shift 3, not 5. With 5 the 512-entry OT
+ 			 * buckets are 128 depth units deep, and a portrait camera farther
+-- 
+2.55.0
+

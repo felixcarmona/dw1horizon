@@ -410,6 +410,7 @@ Requirement tests: `tools/test_evo_tree.py --practical`, `tools/economy_audit.py
 | File City gym base gain | 8 (HP, MP 80) | 10 (100) | less grind; the secondary gains stay |
 | Tiredness of a gym session | HP 10, Off and Def 9, Spd 8, MP 7, Brain 6 | 8 in every gym | no stat is harder to train for its tiredness: about 9 sessions before 70, the same average |
 | The training type's favoured stat | x1.1 | x1.2 | the type matters; x0.9 stays |
+| Bonus Try (gym slot machine) | half the rounds unwinnable (the third reel slips past a triple), the jackpot blocked in another 40 %; jackpot x10 | the reel stops where the player pressed, always; jackpot x5 (miss x0.5, triple x2, trained stat x4 unchanged) | timing decides. Simulated mean of a session against normal training, for a timing error of 100 / 50 / 0 ms: 0.98 / 1.63 / 2.55 before, about 1.15 / 2.3 / 4-5 now; pressing at random stays near 0.6, so normal training remains the safe choice |
 | Leomon's and the Ice Sanctuary's gyms | 8 and 12, with a secondary stat | 15 (HP 150), no secondary stat | a reason to walk there; Beetle Land stays at 12, Trash Mountain and Cherrymon already gave this |
 | A won battle | the disc's formula | also at least 1 % of the strongest enemy's stat, 1.2 % and 1.6 % against two and three (patch 0322) | a stronger partner still gains; about one gym session of points a fight, so the gym stays the way to train |
 | Favoured / hated map, an hour | happiness +1 / -1, tiredness -2 / +1 | +3 / -3, -3 / +2 | the favoured place matters, with no bar filled in a day |

@@ -369,6 +369,10 @@ no triple 5; triple 7 **100**; triple of the trained stat 40; other triple 20 �
 ×0.5 / ×10 / ×4 / ×2. The result is returned through `TRN_SLOT_MACHINE.result` and
 `MAIN_D_801353A0[0]` (`trn_hud.c:327-350`).
 
+Horizon changes two things here: the two slips of the third reel are removed (`assist 0` no longer sabotages and
+`assist 1` allows 7-7-7), so the reel stops on the symbol under the press, and the triple 7 pays 50 (×5) from
+`content/tables/training-gains.json`. The aligning helps of `assist 1` and `assist 2` are unchanged.
+
 ### VS mode (VS)
 
 **Registration.** At the in-game save machine (script command `0x30` → `openSaveMachine`,

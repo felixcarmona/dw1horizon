@@ -11,6 +11,7 @@
                  "Electric Cloud", "Spnning Needle", "Shadow Claw", "Dark Bolt", "Evil Whisper"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
+  "own_effect": {"technique": "Spnning Needle", "chunk": 163},
   "model": {
     "file": "build/batch5/DemiDevimon.MMD",
     "radius": 169,
@@ -24,7 +25,7 @@
   "texture": {"file": "build/batch5/DemiDevimon.TIM", "entry": 0},
   "voice": 27,
   "battle_music": "normal-battle",
-  "boosted_technique": "Dynamite Kick (44)",
+  "boosted_technique": "Shadow Claw",
   "condition_bubble": [0, -79, 7, 1],
   "effect_origins": [[3, 110, -140, 0, 1, 0, -36, -165]],
   "wild": {"hp": 680, "mp": 570, "off": 110, "def": 105, "speed": 100, "brain": 80, "bits": 200},

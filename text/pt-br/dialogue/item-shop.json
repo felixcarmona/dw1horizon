@@ -22,7 +22,7 @@
  ],
  "s176.sec81.u0": [
   [
-   "Bem-vindo, {color 6}{player}{color 1}! Veja, minha",
+   "Olá, {color 6}{player}{color 1}! Veja, minha",
    "própria loja! Vou vender itens sem parar! O",
    "estoque... Ah, resolvo isso depois. Traga"
   ],
@@ -30,11 +30,11 @@
    "alguns Digimon para ajudar, seria ótimo!"
   ]
  ],
- "s176.sec81.u1": "Bem-vindo, peep! Decidi comprar e vender itens, Peep. Prazer em conhecê-lo, Peep! Ainda não há muito estoque... mas se algum Digimon veio para ajudar, talvez eu possa fazer isso, Peep.",
+ "s176.sec81.u1": "Olá, peep! Decidi comprar e vender itens, Peep. Prazer em te conhecer, Peep! Ainda não há muito estoque... mas se algum Digimon veio para ajudar, talvez eu possa fazer isso, Peep.",
  "s176.sec81.u2": [
   [
-   "Bem-vindo. Tomei a liberdade de abrir uma loja",
-   "de itens. Espero poder servi-lo bem. A",
+   "Olá. Tomei a liberdade de abrir uma loja",
+   "de itens. Espero te servir bem. A",
    "variedade ainda é pequena, mas pretendo"
   ],
   [
@@ -60,8 +60,8 @@
   ]
  ],
  "s176.sec81.u4": "Ei, {color 6}{player}{color 1}! Comecei a ajudar nesta loja. Compre muito, está bem?",
- "s176.sec81.u5": "Bem-vindo, peep! A partir de hoje eu vou ajudar na loja, Peep. Prazer em conhecê-lo, Peep!",
- "s176.sec81.u6": "Bem-vindo, {color 6}{player}{color 1}. Se me permite ser tão ousado, decidi ajudar nesta loja. Estou ansioso pelo seu negócio.",
+ "s176.sec81.u5": "Olá, peep! A partir de hoje eu vou ajudar na loja, Peep. Prazer em te conhecer, Peep!",
+ "s176.sec81.u6": "Olá, {color 6}{player}{color 1}. Se me permite ser tão ousado, decidi ajudar nesta loja. Estou ansioso pelo seu negócio.",
  "s176.sec81.u7": "Ah, {color 6}{player}{color 1}. Aqui é onde meus talentos são melhor usados, afinal. Darei tudo de mim a partir de agora.",
  "s176.sec82.m0.o0": "Comprar",
  "s176.sec82.m0.o1": "Não comprar",

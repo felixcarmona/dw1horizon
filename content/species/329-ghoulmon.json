@@ -27,7 +27,7 @@
   "texture": {"file": "build/batch13/Ghoulmon.TIM", "entry": 0},
   "voice": 5,
   "battle_music": "normal-battle",
-  "boosted_technique": "Delete Program",
+  "boosted_technique": "Black Gate",
   "condition_bubble": [0, -276, -184, 1],
   "effect_origins": [[5, 100, 30, 0, 1, 0, -50, -251], [5, 120, -50, 0, 1, 0, -114, -328],
                      [5, 120, -100, 0, 1, 0, -164, -363], [5, 65, -30, 0, 1, 0, -134, -259],

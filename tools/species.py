@@ -481,6 +481,7 @@ def techniques_from_json(v, where):
     return ids + [0xFF] * (16 - len(ids))
 
 
+NEW_ROW_FIRST = 122              # the first technique of the five new rows (docs/mods/technique-rows.md)
 COUNTER_TECH = 45                # Counter: reactive, never chosen like the others
 
 
@@ -491,7 +492,7 @@ def boosted_technique(s, where=None):
     if name is None: return None
     w = f'{where or s.get("_path", s.get("name"))}.boosted_technique'
     tech = id_of('techs', name, w)
-    if tech >= FINISHER_FIRST or tech == COUNTER_TECH: raise SystemExit(f'{w}: {name} is not a regular attacking technique')
+    if FINISHER_FIRST <= tech < NEW_ROW_FIRST or tech == COUNTER_TECH: raise SystemExit(f'{w}: {name} is not a regular attacking technique')
     for block in (s, s.get('off', {})):
         if 'techniques' in block and tech not in techniques_from_json(block['techniques'], w):
             raise SystemExit(f'{w}: {name} is not one of its techniques' + (' with NEW DIGIMON off' if block is not s else ''))
@@ -2645,6 +2646,16 @@ def lint(species, check_files=False):
         if s.get('reincarnation_stats'):
             if level != 1: E('reincarnation_stats', s['reincarnation_stats'], 'only a Fresh species hatches from the reincarnation egg')
             if any(not 1 <= v <= 9999 for v in rows['reincarnation']): E('reincarnation_stats', s['reincarnation_stats'], 'each 1..9999')
+        # every listed technique has a clip: technique i plays animation slot 0x2E + i, and startAnimation reads the
+        # table entry without a bound (anim.c), so a slot past the table plays animation data as an offset. A model with
+        # no attack clip at all (a field-only character that never fights) is left alone.
+        if check_files and any(x is not None for x in s.get('techniques') or []):
+            tab = model_anim_table(s, len(s['model']['skeleton']) if 'skeleton' in s['model'] else para['boneCount'])
+            if tab is not None and any(c is not None for c in tab[0x2E:]):
+                for i, x in enumerate(s['techniques']):
+                    if x is not None and (0x2E + i >= len(tab) or tab[0x2E + i] is None):
+                        E(f'techniques[{i}]', x, f'the model has no animation in slot {0x2E + i} (model.slot_aliases '
+                          f'gives it the clip of another attack)')
         # the partner block
         if partner and not placeholder:
             r = rows['raise']; P = lambda k: f'partner.{k}'

@@ -1,14 +1,20 @@
-# Signature attacks: how each one plays
+# Signature attacks: where each one comes from
 
-Some imported Digimon play the signature attack of the game they come from in place of the shared finisher
-picture. This page says, for each of them, what the attack does in a battle here and where it differs from the
-original game. How the effects are converted is in [the signature effects notes](../mods/signature-effects.md);
-the DW2 effect format is in [the DW2 effect notes](dw2-effects.md), and the DW2003 one in
-[the DW2003 effect notes](dw3-effects.md).
+Every imported Digimon has a finisher of its own, named and designed after the signature attack of the game it
+comes from. None of them plays the source game's effect: all 179 play an effect written for this game
+([the finishers written here](#finishers-written-here)). This page keeps the record of the source attacks: what each
+did in its game, and how the port of it played when the ports were still the effects in the battle. How those
+ports were made is in [the signature effects notes](../mods/signature-effects.md); the DW2 effect format is in
+[the DW2 effect notes](dw2-effects.md), and the DW2003 one in [the DW2003 effect notes](dw3-effects.md).
 
-The damage, the element, the cost and when the Digimon chooses the attack are the finisher's (the technique the
-attack stands in for), unless the species' finisher data says otherwise. Times are battle ticks (20 a second) from
-the moment the attack starts.
+The damage, the element, the cost and when the Digimon chooses the attack are the finisher's, as in
+[the unique finishers](../mods/unique-finishers.md). Times are battle ticks (20 a second) from the moment the
+attack starts.
+
+## The source attacks and their ports (history)
+
+The table describes the converted and composed ports that were played before the finishers were written here. No
+species plays them now. The "Target here" column is what the port did, not what the game does today.
 
 | Species | Attack (source game) | Stands in for | Kind | Hits | Launch / hit | Travel | Target here | Target in the source |
 |---|---|---|---|---|---|---|---|---|
@@ -62,11 +68,8 @@ the moment the attack starts.
 | 310 Assaultmon | Justice Strike (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0093) | 1 | plays its whole length (56 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | one enemy, 3 hits |
 | 312 Creepymon | Darkness Chaos (DW2003) | Nightmare Syndromer | 3D effect at the caster (MEFT0351) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Nightmare Syndromer | all enemies |
 | 313 Bulbmon | Mad Pump (DW2003) | Dark Shot | 3D effect at the caster (MEFT0346) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
-| 316 Sakuyamon | KongouKaimandara (DW2003) | Mega Flame | 3D effect at the caster (MEFT0087), 5 parts left out to fit | 1 | plays its whole length (148 frames at 30 fps), hits when it ends | none | one enemy, as for Mega Flame | all enemies |
 | 317 Fujinmon | Sylph Storm (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0370) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | all enemies |
-| 318 Gallantmon | Final Purification (DW2003) | Spiral Sword | 3D effect at the caster (MEFT0095) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Spiral Sword | one enemy |
 | 323 Lynxmon | Blazing Mane (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0332) | 1 | plays its whole length (36 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
-| 326 WarGrowlmon | Atomic Blaster (DW2003) | Dark Shot | 3D effect at the caster (MEFT0096) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
 | 329 Ghoulmon | Darkness Chaos (DW2003) | Dark Shot | 3D effect at the caster (MEFT0349) | 1 | plays its whole length (38 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
 | 333 Raijinmon | Electro Ball (DW2003) | Genoside Attack | 3D effect at the caster (MEFT0363) | 1 | plays its whole length (41 frames at 30 fps), hits when it ends | none | one enemy, as for Genoside Attack | all enemies |
 | 334 Mummymon | Dark Fear (DW2003) | Dark Shot | 3D effect at the caster (MEFT0335) | 1 | plays its whole length (31 frames at 30 fps), hits when it ends | none | one enemy, as for Dark Shot | one enemy |
@@ -77,7 +80,6 @@ the moment the attack starts.
 | 407 Armageddemon | Ultimate Flare (DW2003) | Crimson Flare | 3D effect at the caster (MEFT0333) | 1 | plays its whole length (61 frames at 30 fps), hits when it ends | none | one enemy, as for Crimson Flare | one enemy |
 | 408 Suijinmon | Mugen Cannon (DW2003) | Infinity Cannon | 3D effect at the caster (MEFT0364) | 1 | plays its whole length (51 frames at 30 fps), hits when it ends | none | one enemy, as for Infinity Cannon | one enemy, 4 hits |
 | 430 Zanbamon | Cross Slash (DW2003) | Death Claw | 3D effect at the caster (MEFT0039) | 1 | plays its whole length (30 frames at 30 fps), hits when it ends | none | one enemy, as for Death Claw | one enemy |
-| 433 Guilmon | Pyrosphere (DW2003) | Pepper Breath | 3D effect at the caster (MEFT0102) | 1 | plays its whole length (45 frames at 30 fps), hits when it ends | none | one enemy, as for Pepper Breath | one enemy |
 | 304 Divermon | Striking Fish (DW2003) | Bone Boomerang | sprites at the caster as flat quads (E000COM1 #2) | 1 | plays its whole length (6 frames at 30 fps), hits when it ends | none | one enemy, as for Bone Boomerang | one enemy |
 | 305 Ebidramon | Pincer Crusher (DW2003) | Scissor Claw | sprites at the caster as flat quads (E000COM1 #2, E000COM3 #9) | 1 | plays its whole length (33 frames at 30 fps), hits when it ends | none | one enemy, as for Scissor Claw | one enemy |
 | 308 Dinohyumon | Lizard Dance (DW2003) | Scissor Claw | sprites at the caster as flat quads (E000COM1 #2, E386DINO #2021, E386DINO #2022, E386DINO #2023) | 1 | plays its whole length (77 frames at 30 fps), hits when it ends | none | one enemy, as for Scissor Claw | one enemy, 4 hits |
@@ -96,13 +98,12 @@ the moment the attack starts.
 | 311 Arukenimon | Spirit Needle (composed) | Bit Bomb | Bit Bomb's play with its projectile drawn as a thin violet-white needle and its burst as sharp violet sparkles | as Bit Bomb | as Bit Bomb | as Bit Bomb | as Bit Bomb | - |
 | 336 Raidenmon | Raiden Strike (composed) | Fireball | Fireball's play with its fireballs drawn as crackling amber-gold lightning | as Fireball | as Fireball | as Fireball | as Fireball | - |
 | 432 Bastemon | Cat Laser (composed) | Death Claw | Death Claw's play in green, its ring squeezed into a long thin laser beam | as Death Claw | as Death Claw | as Death Claw | as Death Claw | - |
-| 403 Beelzemon | Corona Blaster (composed) | Dark Shot | Dark Shot's play in hot magenta | as Dark Shot | as Dark Shot | as Dark Shot | as Dark Shot | - |
 | 331 Vemmon | Vemmon Crash (composed) | Scissor Claw | Scissor Claw's play as a heavy orange shock ring, 1.6 times larger | as Scissor Claw | as Scissor Claw | as Scissor Claw | as Scissor Claw | - |
 | 314 SkullSatamon | Nail Bone (composed) | Nightmare Syndromer | Nightmare Syndromer's play, its flying shapes drawn as fireballs in flame orange, 1.2 times larger | as Nightmare Syndromer | as Nightmare Syndromer | as Nightmare Syndromer | as Nightmare Syndromer | - |
 | 307 BlackKingNumemon | Royal Muck (composed) | Death Claw | Death Claw's play as a crown of muck lumps in brown-gold, its ring 1.5 times larger | as Death Claw | as Death Claw | as Death Claw | as Death Claw | - |
 | 327 Gargoylemon | Gargoyle Rush (composed) | Pummel Whack | Pummel Whack's play as an orange fist, its ring 1.3 times larger | as Pummel Whack | as Pummel Whack | as Pummel Whack | as Pummel Whack | - |
 
-## Where the port differs from the source
+## Where the port differed from the source (history)
 
 - **Voice.** In DW2 the caster shouts the attack's name; that line is a streamed voice the battles here cannot
   play. DW2 has no other sound of its own for its attacks (only a shared hit sound), so the attack keeps the
@@ -126,7 +127,7 @@ the moment the attack starts.
   than once while the target stands in them; the signature attacks that stand in for them hit once.
 - **Close-range finishers.** MarineDevimon (Death Claw) and Gazimon (Poison Ivy) walk up to their target first,
   as for those finishers, so their projectiles fly only a short way.
-- **Hagurumon** plays Darkness Gear in battle (species 122); its field twin 465 has no techniques.
+- **Hagurumon** (species 122) is the battle species; its field twin 465 has no techniques.
 
 - **DW2003 attacks** play their 3D effects as on the disc, at the caster, for their whole length, and hit when
   they end: nothing flies to the target on its own. They leave out the attack's flat sprites (sparks, flashes,
@@ -134,15 +135,17 @@ the moment the attack starts.
   beams or bursts that reach the target in DW2003 too.
 - **DW2003 enemy attacks.** Several of the imports are DW2003 enemies with no signature of their own: their
   attack is the enemy's move 1. Vilemon and Mummymon share Dark Fear, and Creepymon and Ghoulmon Darkness
-  Chaos, and each plays it: the source effect wins over a composed look of its own. Species whose DW2003
-  attack is an unnamed slot-5 move play that move's effect.
+  Chaos, and each port played it: the source effect won over a composed look of its own. Species whose DW2003
+  attack is an unnamed slot-5 move played that move's effect.
 
-## Kept on the DW1 finisher
+## Finishers written here
 
-These Digimon have a DW2 signature attack that converts, but they keep the shared finisher picture for now:
+Every imported finisher, the 179 of them, is written for this game, pictures and behaviour. Each one hits as its
+design says: one enemy, every enemy, or where the target stood (34 of them, which a target that walks away
+dodges). The list, with what each plays and what it hits, is in
+[the signature effects notes](../mods/signature-effects.md#authored-finishers); the designs are in
+[the unique finishers](../mods/unique-finishers.md). The source attacks above remain where the names, the kinds and
+the looks come from.
 
-- **Baihumon** (Kongou), **Tinmon** (Recovery Power): DW2 support techniques (a buff on the caster, a heal on an
-  ally). Their finishers here deal damage to an enemy, and a support picture that plays on the caster would not
-  show the hit.
-- **Mushroomon** (Fungus Cruncher): a support technique too, and its effect is 616 bytes larger than an effect
-  slot even at the coarsest detail.
+The support techniques Kongou (Baihumon), Recovery Power (Tinmon) and Fungus Cruncher (Mushroomon) are damage
+finishers here, not buffs or heals, so they play a picture that shows the hit on an enemy.

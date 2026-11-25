@@ -608,7 +608,7 @@
  ],
  "s163.sec81.u0": [
   [
-   "Bé, benvingut a la meva botiga! A tu,",
+   "Bé, et dono la benvinguda a la meva botiga! A tu,",
    "{color 6}{player}{color 1}, t'ho deixo baratet. La veritat",
    "és que no se'm dóna gaire bé vendre."
   ],
@@ -955,8 +955,8 @@
  ],
  "s193.sec54.u1": [
   [
-   "Un humà... just com va dir",
-   "Jiji!"
+   "Un ésser humà... just",
+   "com va dir Jiji!"
   ]
  ],
  "s193.sec54.u2": [
@@ -976,7 +976,7 @@
  ],
  "s193.sec54.u5": [
   [
-   "Benvingut a Digimon World!"
+   "Això és Digimon World!"
   ]
  ],
  "s193.sec54.u6": [
@@ -1283,7 +1283,7 @@
  ],
  "s193.sec55.u25": [
   [
-   "Ajá, ajá, gràcies, noi. Sé que",
+   "Ajá, ajá, gràcies. Sé que",
    "és molt demanar, però ets",
    "l'única cosa que ens queda."
   ]

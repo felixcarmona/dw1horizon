@@ -111,7 +111,7 @@
  ],
  "s063.sec5.u21": [
   [
-   "ぼくは{color 6}{player}{color 1}、外の世界から来た人間",
+   "{color 6}{player}{color 1}、外の世界から来た人間",
    "だよ。こっちはパートナーの{color 10}{partner}{color 1}。",
    "島を救うために旅をしてるんだ。"
   ]

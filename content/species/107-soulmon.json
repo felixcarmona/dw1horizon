@@ -8,7 +8,7 @@
   "specialties": ["dark", "air", "ice"],
   "fields": ["nightmare-soldiers"],
   "techniques": ["Static Elect", "Megalo Spark", "Electric Cloud", "Thunder Justice", "Giga Freeze", "Wind Cutter",
-                 "Confused Storm", "Aqua Magic", "Tear Drop", "Winter Blast", "Dark Claw",
+                 "Confused Storm", "Venom Mist", "Black Gate", "Abyss Requiem", "Dark Claw",
                  "Shadow Claw", "Dark Bolt", "Evil Whisper", "Nightmare", "Death Grip"],
   "drop": {"item": "Medium MP", "percent": 10},
   "effects_like": 107,
@@ -25,7 +25,7 @@
   "texture": {"from": 107},
   "voice": 33,
   "battle_music": "normal-battle-2",
-  "boosted_technique": "Wind Cutter",
+  "boosted_technique": "Venom Mist",
   "wild": {"hp": 800, "mp": 1800, "off": 290, "def": 150, "speed": 200, "brain": 250, "bits": 300},
   "partner": {
     "voice": 0,

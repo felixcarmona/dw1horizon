@@ -27,7 +27,7 @@
   "texture": {"file": "build/batch11/Ebidramon.TIM", "entry": 0},
   "voice": 43,
   "battle_music": "normal-battle",
-  "boosted_technique": "Water Blit",
+  "boosted_technique": "Aqua Jet",
   "condition_bubble": [-22, -64, 41, 6],
   "effect_origins": [[4, 0, 50, -80, 13, 0, 4, -96], [14, 0, 0, 170, 3, 0, 167, -45], [1, 0, 0, 0, 29, 0, 0, 0]],
   "wild": {"hp": 1430, "mp": 1500, "off": 285, "def": 175, "speed": 235, "brain": 170, "bits": 600},

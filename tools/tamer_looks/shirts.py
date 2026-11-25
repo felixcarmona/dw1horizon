@@ -27,8 +27,9 @@ TORSO = 0
 OBJECTS = (0, 2, 3, 5, 6)                  # the torso, the upper arms (2, 5) and the forearms (3, 6)
 UPPER, FORE = (2, 5), (3, 6)
 PELVIS = (1, 4, 5, 6, 7, 8, 20, 21, 22, 23, 24, 35, 36, 37, 39, 46)   # the torso's polygons that are trousers
-# The trousers' top corners reached the hoodie's hem: under a shirt they sit closer to the body.
-PELVIS_MOVED = {10: (-31, 12, -26), 34: (-31, 12, 26), 24: (-29, -25, -28), 35: (-29, -25, 28), 23: (-30, -30, 0)}
+# The trousers' top corners reached the hoodie's hem: under a shirt they sit closer to the body. The two at the back of
+# the hips sit well inside it: nearer the shirt, the seat's polygons there averaged a bucket nearer than its back.
+PELVIS_MOVED = {10: (-33, 0, -20), 34: (-33, 0, 20), 24: (-29, -25, -28), 35: (-29, -25, 28), 23: (-30, -30, 0)}
 QUAD, TRI = 3, 38                          # a quad and a triangle of the torso, the patterns of every new polygon
 ROW, SKIN_ROW = 2, 6                       # palette rows: the cloth's and the skin's
 NC, NS = 8, 6                              # corners around the trunk and around an arm
@@ -352,11 +353,12 @@ def compact(verts, norms, prims):
 
 
 def original(model):
-    """Shirt 0: the hoodie and the backpack. The seat's polygons come first in the torso, as in every shirt: trousers
-    recolour them there (legs.py)."""
+    """Shirt 0: the hoodie and the backpack. The seat's polygons come last in the torso, as in every shirt: trousers
+    recolour them there (legs.py), and with no depth buffer the polygons of a bucket of the ordering table are drawn last
+    to first, so a seat that shares one with the shirt's hem is drawn under it."""
     parts = {oi: part(model, oi) for oi in OBJECTS}
     verts, norms, prims = parts[TORSO]
-    parts[TORSO] = (verts, norms, [prims[i] for i in PELVIS] + [p for i, p in enumerate(prims) if i not in PELVIS])
+    parts[TORSO] = (verts, norms, [p for i, p in enumerate(prims) if i not in PELVIS] + [prims[i] for i in PELVIS])
     return parts
 
 
@@ -405,7 +407,7 @@ def garment(model, body, arms, hood):
         me.face((left, top, ids[-1][4]), [hu(28, 2), hu(40, 0), hu(40, 2)], ROW, (1, .3, 0))
         me.face((top, right, ids[-1][4]), [hu(40, 0), hu(28, 2), hu(40, 2)], ROW, (1, .3, 0))
     pts, nrm, new = me.close()
-    parts = {TORSO: roomy((verts + pts, norms + nrm, pelvis + new))}
+    parts = {TORSO: roomy((verts + pts, norms + nrm, new + pelvis))}           # the seat last, under the hem
     upper, fore = ARMS[arms]
     sun, skin = suns(model), BARE + (ROW,)
     for oi in UPPER:
@@ -470,8 +472,8 @@ def bare(model):
         me.face((top[s], top[s + 1], tip), [(ua, va), (ub, va), (um, va)], ROW, (.3, 1, 0))
     me.face((low[0], low[1], low[2]), [(u0, vc), (um, vc), (u1, vc)], ROW, (-1, 0, 0))
     pts, nrm, new = me.close()
-    kept = [prims[i] for i in PELVIS] + [p for i, p in enumerate(prims) if i not in PELVIS and i not in PACK]
-    parts[TORSO] = roomy((verts + pts, norms + nrm, kept + new))
+    kept = [p for i, p in enumerate(prims) if i not in PELVIS and i not in PACK]
+    parts[TORSO] = roomy((verts + pts, norms + nrm, kept + new + [prims[i] for i in PELVIS]))
     return parts
 
 

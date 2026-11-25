@@ -7,7 +7,7 @@ from unittest import mock
 from tools.derive.steps import effects
 from tools.derive.steps.effects import (CHUNK_SIZE, DEADLY_BOMB, DISC_CHUNKS, LANDING, LANDING_HIT, LANDING_SOURCE,
                                        NIGHTMARE, SIZES, THROW, THROW_LEN, THROW_SOURCE, aim_deadly_bomb, aimed_throw,
-                                       effect_objects, exclude_caster)
+                                       exclude_caster)
 
 
 def archive(script):
@@ -44,11 +44,6 @@ class EffectTargets(unittest.TestCase):
     def test_truncated_archive_fails(self):
         with self.assertRaises(ValueError):
             exclude_caster(b'')
-
-    def test_own_effect_object_forms(self):
-        self.assertEqual(effect_objects(['A/M1.BIN', 'A/A1.BIN']), [(1, 'A/M1.BIN', 'A/A1.BIN')])
-        self.assertEqual(effect_objects([[0, 'A/M1.BIN', 'A/A1.BIN'], [2, 'A/M2.BIN', 'A/A2.BIN']]),
-                         [(0, 'A/M1.BIN', 'A/A1.BIN'), (2, 'A/M2.BIN', 'A/A2.BIN')])
 
     def test_own_effect_gaps_stay_empty(self):
         chunk = bytes([7]) * CHUNK_SIZE

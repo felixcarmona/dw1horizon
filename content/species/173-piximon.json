@@ -8,7 +8,13 @@
   "techniques": ["Danger Sting", "Bug", "Confused Storm", "Bit Bomb", "Heaven's Ring", "Judgment Ray"],
   "drop": {"item": "MP Chip", "percent": 100},
   "effects_like": 55,
-  "model": {"name": "EPIC", "bones": 26, "radius": 110, "height": 330},
+  "model": {
+    "name": "EPIC",
+    "bones": 26,
+    "radius": 110,
+    "height": 330,
+    "slot_aliases": [[50, 48], [51, 47]]
+  },
   "voice": 49,
   "battle_music": "normal-battle",
   "wild": {"hp": 5200, "mp": 4600, "off": 680, "def": 460, "speed": 660, "brain": 600, "bits": 3600},

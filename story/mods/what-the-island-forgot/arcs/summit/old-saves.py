@@ -22,7 +22,7 @@ def the_curse_comes_back():
 
 @city_168.on_enter(when=airdramon_killed)
 def he_was_breathing():
-    narrator.say(page("{color 7}Jijimon {color 1}", "That Airdramon was still breathing, my boy.", "He has been mending in my house."))
+    narrator.say(page("{color 7}Jijimon {color 1}", "That Airdramon was still breathing, my child.", "He has been mending in my house."))
     airdramon_killed.clear()
     trigger(355).set()
     if engine.game_beaten:

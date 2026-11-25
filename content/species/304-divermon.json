@@ -26,7 +26,7 @@
   "texture": {"file": "build/batch11/Hangyomon.TIM", "entry": 0},
   "voice": 46,
   "battle_music": "normal-battle",
-  "boosted_technique": "Ice Needle",
+  "boosted_technique": "Sea Crush",
   "condition_bubble": [0, -199, -31, 1],
   "effect_origins": [[2, 0, -140, 0, 1, 0, 0, -215], [8, 0, 0, 0, 7, 0, 0, 0], [1, 0, 0, 0, 8, 0, 0, 0],
                      [2, 130, -215, 0, 1, 0, -199, -330], [8, 89, 0, 12, 7, -3, 131, -42]],

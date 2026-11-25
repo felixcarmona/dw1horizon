@@ -9,7 +9,13 @@
                  "Sand Blast", "Stone Skin", "Boulder Crash", "Fissure"],
   "drop": {"item": "Giant Meat", "percent": 10},
   "effects_like": 52,
-  "model": {"name": "JMOJ", "bones": 18, "radius": 170, "height": 300},
+  "model": {
+    "name": "JMOJ",
+    "bones": 18,
+    "radius": 170,
+    "height": 300,
+    "slot_aliases": [[51, 48], [52, 46], [53, 50], [54, 48], [55, 49]]
+  },
   "voice": 63,
   "battle_music": "normal-battle-2",
   "wild": {"hp": 900, "mp": 800, "off": 280, "def": 60, "speed": 30, "brain": 50, "bits": 300},

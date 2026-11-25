@@ -25,7 +25,7 @@
   "texture": {"file": "build/batch4/Ikkakumon.TIM", "entry": 0},
   "voice": 31,
   "battle_music": "normal-battle",
-  "boosted_technique": "Winter Blast",
+  "boosted_technique": "Whirlpool",
   "condition_bubble": [-5, -86, -97, 3],
   "effect_origins": [[4, 55, -50, 0, 3, -6, 97, -70], [1, 0, 0, 0, 1, 0, 47, -90], [4, 65, 130, 0, 3, -5, -86, -97]],
   "wild": {"hp": 1680, "mp": 1400, "off": 235, "def": 225, "speed": 175, "brain": 180, "bits": 600},
