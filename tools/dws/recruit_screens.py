@@ -1,4 +1,5 @@
-"""Keep ordinary wild encounters away from waiting extended-story recruits.
+"""Keep ordinary wild encounters away from waiting extended-story recruits, and from an NPC placed with `alone=` while
+its condition holds (a resident challenger: the meeting is one against one).
 
 Only base talk handlers using recruitable() are ordinary wild encounters. Direct
 fight() scenes, services and NPCs referenced by story events keep their setup.
@@ -49,6 +50,10 @@ def ordinary_slots(screen):
         if not isinstance(node, ast.Assign) or not isinstance(node.value, ast.Call):
             continue
         call = node.value
+        if (isinstance(call.func, ast.Name) and call.func.id == 'entity' and len(call.args) == 1
+                and isinstance(call.args[0], ast.Constant) and isinstance(call.args[0].value, int) and call.args[0].value >= 5):
+            npcs[node.targets[0].id] = (call.args[0].value - 5, None)     # `entity(6)`: slot 1, its species is the .MAP's
+            continue
         if not isinstance(call.func, ast.Attribute) or call.func.attr != 'npc':
             continue
         slot = next((k.value.value for k in call.keywords if k.arg == 'slot' and isinstance(k.value, ast.Constant)), None)
@@ -75,7 +80,7 @@ def ordinary_slots(screen):
             continue
         joins = {members.get(k.value.attr) for c in wild for k in c.keywords
                  if k.arg == 'joins' and isinstance(k.value, ast.Attribute)} or {species}
-        if joins & recruitment.roster():
+        if None in joins or joins & recruitment.roster():               # (an entity with no `joins`: species unknown)
             continue
         if any(not c.args or not isinstance(c.args[0], ast.Name) or c.args[0].id != target for c in wild):
             continue
@@ -93,11 +98,18 @@ def absent(condition):
     return ('not', condition)
 
 
+def alone_npcs(comp):
+    """`alone slot K when C;` rules: {screen: [(slot, C)]}, C the condition under which the wilds stay away."""
+    return {screen: list(data['alone']) for screen, data in ((comp.city or {}).get('presence') or {}).items() if data.get('alone')}
+
+
 def guard_wilds(comp, text, report):
-    if not recruitment.ACTIVE.get():
-        return text
     from .backend import CLOCK_PSTAT, P_SETUP_DATE, presence_if
-    for screen, recruits in sorted(waiting_recruits(comp).items()):
+    guards = alone_npcs(comp)
+    if recruitment.ACTIVE.get():
+        for screen, recruits in waiting_recruits(comp).items():
+            guards.setdefault(screen, []).extend(recruits)
+    for screen, recruits in sorted(guards.items()):
         slots = ordinary_slots(screen)
         if not slots:
             report.append(f'recruit screen {screen}: no ordinary wild handlers; story encounters retained')
@@ -114,17 +126,23 @@ def guard_wilds(comp, text, report):
         date = (f'    STORE_DATE p{P_SETUP_DATE}\n'
                 if any(p in condition.split() for condition in conditions for p in CLOCK_PSTAT.values()) else '')
         count = 0
-        def wrap(match):
+        def wild(line):
+            m = re.fullmatch(r'\s*(LOAD_DIGIMON|SET_DIGIMON)\s+(\d+)(?:,\s*(\d+),[^\n]*)?[^\S\n]*(?:;[^\n]*)?', line)
+            if not m: return False
+            op, species, slot = m.group(1), int(m.group(2)), m.group(3)
+            return op == 'LOAD_DIGIMON' and species in load_species or op == 'SET_DIGIMON' and int(slot) in slots
+        def wrap(match):                    # one guard for each run of wild lines next to each other (MAPHEAD has little room)
             nonlocal count
-            op, species, slot = match.group(1), int(match.group(2)), match.group(3)
-            if (op == 'LOAD_DIGIMON' and species not in load_species or
-                    op == 'SET_DIGIMON' and int(slot) not in slots):
-                return match.group()
             label = f'recruit_screen_{screen}_{count}'
             count += 1
             guards = ''.join(f'    IF {condition}, else {label}\n' for condition in conditions)
-            return f'{date}{guards}{match.group()}\n{label}:'
-        body = re.sub(r'^\s*(LOAD_DIGIMON|SET_DIGIMON)\s+(\d+)(?:,\s*(\d+),[^\n]*)?[^\S\n]*(?:;[^\n]*)?$', wrap, body, flags=re.M)
+            return f'{date}{guards}{match.group().rstrip(chr(10))}\n{label}:\n'
+        lines = body.splitlines(keepends=True); out = []; run = []
+        for line in lines + ['']:
+            if line and wild(line.rstrip('\n')): run.append(line); continue
+            if run: out.append(wrap(re.match(r'(?s).*', ''.join(run)))); run = []
+            out.append(line)
+        body = ''.join(out)
         text = text[:section.start()] + body + text[section.end():]
         report.append(f'recruit screen {screen}: wild slots {sorted(slots)}, require waiting recruits absent (slots {sorted(slot for slot, _ in recruits)})')
     return text

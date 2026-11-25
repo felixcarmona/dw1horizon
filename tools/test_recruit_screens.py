@@ -35,10 +35,29 @@ class RecruitScreens(unittest.TestCase):
             self.assertEqual(guard_wilds(comp, original, []), original)
         with recruitment.story(True), patch.object(recruitment, 'roster', return_value={200}):
             result = guard_wilds(comp, original, [])
-        self.assertEqual(result.count(f'IF trigger {flag}, else'), 2)
+        self.assertEqual(result.count(f'IF trigger {flag}, else'), 1)        # one guard for the wild's load and placement
+        self.assertRegex(result, rf'IF trigger {flag}, else (\w+)\n    LOAD_DIGIMON 74 [^\n]*\n    SET_DIGIMON 74, 0, 1 ; wild\n\1:')
         self.assertIn('IF trigger 9, else old_end', result)
         self.assertIn('    LOAD_DIGIMON 150\n    SET_DIGIMON 150, 1, 0', result)
         self.assertTrue(result.endswith('sec25:\n    END_SECTION\n'))
+
+    def test_alone_hides_wilds_while_its_condition_holds(self):
+        """`alone slot K when C;` (a resident challenger): the screen's ordinary wilds are placed only while C is false,
+        with or without the extended story's recruits."""
+        cond = ('cmp', 'p15', '==', 3)
+        comp = SimpleNamespace(placements=[(24, 2, 17)], city={'presence': {24: {'npcs': [(2, 17, 0, cond)], 'alone': [(2, cond)]}}})
+        original = ('sec24:\n    IF p15 == 3, else c\n    LOAD_DIGIMON 17\n    SET_DIGIMON 17, 2, 0\nc:\n'
+                    '    LOAD_DIGIMON 74\n    SET_DIGIMON 74, 0, 1\n    END_SECTION\n')
+        for story in (False, True):
+            with recruitment.story(story):
+                result = guard_wilds(comp, original, [])
+            self.assertRegex(result, r'IF p15 != 3, else (\w+)\n    LOAD_DIGIMON 74\n    SET_DIGIMON 74, 0, 1\n\1:')
+            self.assertIn('    LOAD_DIGIMON 17\n    SET_DIGIMON 17, 2, 0\n', result)
+
+    def test_entity_wilds_are_ordinary(self):
+        """Great Canyon 128 calls two of its three Goblimon by entity number (`slot1 = entity(6)`): all three are wilds."""
+        ordinary_slots.cache_clear()
+        self.assertEqual(ordinary_slots(128), {0, 1, 2})
 
     def test_timed_recruit_only_hides_wilds_while_present(self):
         from tools.dws import backend, presence

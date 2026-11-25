@@ -624,10 +624,13 @@ def _eval_cond(cond, hour_var, hour, known=None):
         atom = part[4:] if neg else part
         if m and hour is not None and hour_var is not None and int(m.group(1)) == hour_var:
             x = eval(f'{hour} {m.group(2)} {m.group(3)}')
-        elif m and known and f'p{m.group(1)}' in known:      # a pstat this path set (SET/ADD_TO_PSTAT)
+        elif m and known and f'p{m.group(1)}' in known:      # a pstat this path set (SET/ADD_TO_PSTAT) or found equal
             x = eval(f'{known["p" + m.group(1)]} {m.group(2)} {m.group(3)}')
         elif known and atom in known:
             x = known[atom] != neg
+        elif m and known and m.group(2) in ('==', '!=') and \
+                f'p{m.group(1)} {"!=" if m.group(2) == "==" else "=="} {m.group(3)}' in known:
+            x = not known[f'p{m.group(1)} {"!=" if m.group(2) == "==" else "=="} {m.group(3)}']   # a == and its != are one test
         else:
             x = None
         if o is None: val = x
@@ -644,6 +647,8 @@ def _assume(cond, known, value):
         for _, part in at:
             if part.startswith('not '): k[part[4:]] = False
             else: k[part] = True
+            m = re.fullmatch(r'(p\d+)\s*==\s*(-?\d+)', part)
+            if m: k[m.group(1)] = int(m.group(2))            # a saved var equal to a number: every later test of it is known
     elif not value and len(at) == 1:
         part = at[0][1]
         if part.startswith('not '): k[part[4:]] = True
