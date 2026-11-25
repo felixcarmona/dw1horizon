@@ -195,58 +195,57 @@
      "src": "media/clips/finishers-tour.mp4",
      "poster": "media/clips/finishers-tour.jpg",
      "alt": {
-      "en": "Coming in the next version: every imported Digimon's finisher, remade from scratch",
-      "es": "En la próxima versión: los remates de todos los Digimon importados, rehechos desde cero",
-      "pt-br": "Na próxima versão: os golpes finais de todos os Digimon importados, refeitos do zero",
-      "fr": "Dans la prochaine version : les finishers de tous les Digimon importés, refaits de zéro",
-      "de": "In der nächsten Version: die Finisher aller importierten Digimon, von Grund auf neu gemacht",
-      "it": "Nella prossima versione: i finisher di tutti i Digimon importati, rifatti da zero",
-      "ja": "次のバージョンで登場：取り込まれた全デジモンのフィニッシャーを一から作り直しました",
-      "ca": "A la pròxima versió: els remats de tots els Digimon importats, refets des de zero",
-      "zh-hans": "下个版本推出：所有导入数码宝贝的终结技，全部从零重制"
+      "en": "Every imported Digimon's finisher, remade from scratch",
+      "es": "Los remates de todos los Digimon importados, rehechos desde cero",
+      "pt-br": "Os golpes finais de todos os Digimon importados, refeitos do zero",
+      "fr": "Les finishers de tous les Digimon importés, refaits de zéro",
+      "de": "Die Finisher aller importierten Digimon, von Grund auf neu gemacht",
+      "it": "I finisher di tutti i Digimon importati, rifatti da zero",
+      "ja": "取り込まれた全デジモンのフィニッシャーを一から作り直しました",
+      "ca": "Els remats de tots els Digimon importats, refets des de zero",
+      "zh-hans": "所有导入数码宝贝的终结技，全部从零重制"
      }
     }
    ],
    "en": {
     "title": "Signature finishers",
-    "body": "Imported Digimon have finishers with their own names and effects. Their power fits the evolution stage: gentler for Rookies, stronger for Megas. In the next version every one of those effects is made from scratch for this game."
+    "body": "Imported Digimon have finishers with their own names and effects. Their power fits the evolution stage: gentler for Rookies, stronger for Megas. Every one of those effects is made from scratch for this game."
    },
    "es": {
     "title": "Remates propios",
-    "body": "Los Digimon importados tienen remates con nombre y efectos propios. Su potencia encaja con la etapa de evolución: más suave en Rookie, más fuerte en Mega. En la próxima versión todos esos efectos están hechos desde cero para este juego."
+    "body": "Los Digimon importados tienen remates con nombre y efectos propios. Su potencia encaja con la etapa de evolución: más suave en Rookie, más fuerte en Mega. Todos esos efectos están hechos desde cero para este juego."
    },
    "pt-br": {
     "title": "Golpes finais próprios",
-    "body": "Os Digimon importados têm golpes finais com nome e efeitos próprios. A potência combina com o estágio de evolução: mais leve nos Rookies, mais forte nos Megas. Na próxima versão todos esses efeitos são feitos do zero para este jogo."
+    "body": "Os Digimon importados têm golpes finais com nome e efeitos próprios. A potência combina com o estágio de evolução: mais leve nos Rookies, mais forte nos Megas. Todos esses efeitos são feitos do zero para este jogo."
    },
    "fr": {
     "title": "Des finishers à eux",
-    "body": "Les Digimon importés ont des finishers avec leur propre nom et leurs propres effets. Leur puissance suit le stade d'évolution : plus douce chez les Rookies, plus forte chez les Mégas. Dans la prochaine version, tous ces effets sont créés de zéro pour ce jeu."
+    "body": "Les Digimon importés ont des finishers avec leur propre nom et leurs propres effets. Leur puissance suit le stade d'évolution : plus douce chez les Rookies, plus forte chez les Mégas. Tous ces effets sont créés de zéro pour ce jeu."
    },
    "de": {
     "title": "Eigene Finisher",
-    "body": "Importierte Digimon haben Finisher mit eigenem Namen und eigenen Effekten. Ihre Stärke passt zur Digitationsstufe: milder bei Rookies, stärker bei Megas. In der nächsten Version sind all diese Effekte von Grund auf für dieses Spiel gemacht."
+    "body": "Importierte Digimon haben Finisher mit eigenem Namen und eigenen Effekten. Ihre Stärke passt zur Digitationsstufe: milder bei Rookies, stärker bei Megas. All diese Effekte sind von Grund auf für dieses Spiel gemacht."
    },
    "it": {
     "title": "Finisher esclusivi",
-    "body": "I Digimon importati hanno finisher con nome ed effetti propri. La potenza segue lo stadio di evoluzione: più leggera per i Rookie, più forte per i Mega. Nella prossima versione tutti questi effetti sono creati da zero per questo gioco."
+    "body": "I Digimon importati hanno finisher con nome ed effetti propri. La potenza segue lo stadio di evoluzione: più leggera per i Rookie, più forte per i Mega. Tutti questi effetti sono creati da zero per questo gioco."
    },
    "ja": {
     "title": "固有のフィニッシャー",
-    "body": "取り込まれたデジモンは、固有の名前と効果を持つフィニッシャーを使います。威力は進化段階に合わせてあり、成長期は控えめ、完全体以上は強力です。次のバージョンでは、その効果すべてをこのゲームのために一から作り直しています。"
+    "body": "取り込まれたデジモンは、固有の名前と効果を持つフィニッシャーを使います。威力は進化段階に合わせてあり、成長期は控えめ、完全体以上は強力です。その効果はすべて、このゲームのために一から作り直しています。"
    },
    "ca": {
     "title": "Rematades pròpies",
-    "body": "Els Digimon importats tenen rematades amb nom i efectes propis. La potència s'ajusta a l'etapa d'evolució: més suau en Rookie, més forta en Mega. A la pròxima versió tots aquests efectes estan fets des de zero per a aquest joc."
+    "body": "Els Digimon importats tenen rematades amb nom i efectes propis. La potència s'ajusta a l'etapa d'evolució: més suau en Rookie, més forta en Mega. Tots aquests efectes estan fets des de zero per a aquest joc."
    },
    "zh-hans": {
     "title": "专属必杀技",
-    "body": "导入的数码宝贝拥有各自名称和效果的必杀技。威力与进化阶段相称：幼年期较温和，完全体以上更强。下个版本中，这些效果全部为本游戏从零制作。"
+    "body": "导入的数码宝贝拥有各自名称和效果的必杀技。威力与进化阶段相称：幼年期较温和，完全体以上更强。这些效果全部为本游戏从零制作。"
    }
   },
   {
    "id": "techniques",
-   "hidden": true,
    "media": [
     {
      "type": "video",
