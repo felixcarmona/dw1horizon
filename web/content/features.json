@@ -605,6 +605,7 @@
   },
   {
    "id": "waiting",
+   "hidden": true,
    "media": [],
    "en": {
     "title": "Less waiting",
