@@ -266,10 +266,15 @@ class Run:
         # the next visit: the site's wilds are back (as on another resident's day), it is not there
         self.fixture = out / f'{tag}-won.state'; e.run('save', str(self.fixture))       # a battle on arrival comes back here
         self.fixture_day = {var: which + BEATEN, ovar: other}
-        self.go(row['site']['screen'], tag + '-site-after-win')
-        result['wildsAfterWin'] = self.wilds(row['site']['screen'])
+        try:
+            self.go(row['site']['screen'], tag + '-site-after-win')
+            result['wildsAfterWin'] = self.wilds(row['site']['screen'])
+            assert self.npc_slot(row['species'])[0] is None, f"{row['name']} back at its site after the win"
+        except AssertionError as x:                     # a wild battle at every arrival, as on another's day
+            if 'no control' not in str(x): raise
+            result['wildsAfterWin'] = ['battle on arrival']
+            e.run('load', str(self.fixture)); e.wait(3); e.in_control(); self.set_day(self.fixture_day)
         assert result['wildsAfterWin'] == self.wilds_other_day.get(which, []), (result['wildsAfterWin'], self.wilds_other_day.get(which))
-        assert self.npc_slot(row['species'])[0] is None, f"{row['name']} back at its site after the win"
         # the other pool's challenger still waits at its own site
         orow = self.rows[other - 1]
         self.go(orow['site']['screen'], tag + '-other-site')
@@ -324,8 +329,13 @@ def main():
             r.set_day({ORIG: 0, NEW: 0, v: another})                                                   # another's day
             if home is not None:
                 r.go(home, f'row{i}-home-other-day'); seen['homeOtherDay'] = r.npc_slot(at_home)[0] is not None
-            r.go(each['site']['screen'], f'row{i}-site-other-day'); seen['siteOtherDay'] = r.npc_slot(each['species'])[0] is None
-            r.wilds_other_day[i] = r.wilds(each['site']['screen'])
+            try:
+                r.go(each['site']['screen'], f'row{i}-site-other-day'); seen['siteOtherDay'] = r.npc_slot(each['species'])[0] is None
+                r.wilds_other_day[i] = r.wilds(each['site']['screen'])
+            except AssertionError as x:                 # a wild battle at every arrival (Biyomon's 73): wilds, for sure
+                if 'no control' not in str(x): raise
+                seen['siteOtherDay'] = None; r.wilds_other_day[i] = ['battle on arrival']
+                e.run('load', str(r.fixture)); e.wait(3); e.in_control()
             r.set_day({ORIG: 0, NEW: 0, v: i})                                                         # its day
             if home is not None:
                 r.go(home, f'row{i}-home'); seen['home'] = r.npc_slot(at_home)[0] is None
@@ -336,7 +346,7 @@ def main():
         # a game's own resident its screen's setup keeps away at this hour and state (Elecmon, Ogremon in the lower City)
         # is not at home on another's day either: its home check proves nothing, listed, not failed
         result['homeNotShown'] = [n for n, v in result['rows'].items() if v.get('homeOtherDay') is False]
-        bad = {n: v for n, v in result['rows'].items() if not all(x for k, x in v.items() if k not in ('wildsOtherDay', 'homeOtherDay'))}
+        bad = {n: v for n, v in result['rows'].items() if any(x is False for k, x in v.items() if k not in ('wildsOtherDay', 'homeOtherDay'))}
         assert not bad, f'not absent from home / not at the site / wilds while waiting: {bad}'
         assert len(result['homeNotShown']) < len([v for v in result['rows'].values() if 'home' in v]) // 2, result['homeNotShown']
         result['sitesWithWilds'] = sum(bool(w) for w in r.wilds_other_day.values())
