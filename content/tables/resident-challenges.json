@@ -1427,6 +1427,534 @@
         "won": "etemon.challenge.won",
         "reward": "etemon.challenge.reward"
       }
+    },
+    {
+      "species": 45,
+      "name": "Biyomon",
+      "story": "arcs/challenges/biyomon.py",
+      "home": null,
+      "site": {
+        "screen": 73,
+        "at": [
+          -1050,
+          2750
+        ]
+      },
+      "exit": [
+        [
+          -1750,
+          350
+        ]
+      ],
+      "item": 52,
+      "bits": 1500,
+      "base": {
+        "hp": 590,
+        "mp": 610,
+        "off": 120,
+        "def": 90,
+        "speed": 100,
+        "brain": 80
+      },
+      "_base": "no real fight in the original game (its slot is a placeholder): the median of the rookie rows' real fights (rookie: the rookie residents' wild sheets)",
+      "text": {
+        "intro1": "biyomon.challenge.intro1",
+        "intro2": "biyomon.challenge.intro2",
+        "retry": "biyomon.challenge.retry",
+        "won": "biyomon.challenge.won",
+        "reward": "biyomon.challenge.reward"
+      }
+    },
+    {
+      "species": 46,
+      "name": "Palmon",
+      "story": "arcs/challenges/palmon.py",
+      "home": null,
+      "site": {
+        "screen": 2,
+        "at": [
+          1750,
+          2450
+        ]
+      },
+      "exit": [
+        [
+          250,
+          450
+        ]
+      ],
+      "item": 47,
+      "bits": 1500,
+      "base": {
+        "hp": 590,
+        "mp": 610,
+        "off": 120,
+        "def": 90,
+        "speed": 100,
+        "brain": 80
+      },
+      "_base": "no real fight in the original game (its slot is a placeholder): the median of the rookie rows' real fights (rookie: the rookie residents' wild sheets)",
+      "text": {
+        "intro1": "palmon.challenge.intro1",
+        "intro2": "palmon.challenge.intro2",
+        "retry": "palmon.challenge.retry",
+        "won": "palmon.challenge.won",
+        "reward": "palmon.challenge.reward"
+      }
+    },
+    {
+      "species": 47,
+      "name": "Monochromon",
+      "story": "arcs/challenges/monochromon.py",
+      "home": null,
+      "site": {
+        "screen": 44,
+        "at": [
+          -1350,
+          -650
+        ]
+      },
+      "exit": [
+        [
+          -400,
+          -2650
+        ]
+      ],
+      "item": 75,
+      "bits": 2500,
+      "base": {
+        "hp": 3750,
+        "mp": 3500,
+        "off": 470,
+        "def": 240,
+        "speed": 290,
+        "brain": 200
+      },
+      "_base": "no real fight in the original game (its slot is a placeholder): the median of the champion rows' real fights",
+      "text": {
+        "intro1": "monochromon.challenge.intro1",
+        "intro2": "monochromon.challenge.intro2",
+        "retry": "monochromon.challenge.retry",
+        "won": "monochromon.challenge.won",
+        "reward": "monochromon.challenge.reward"
+      }
+    },
+    {
+      "species": 49,
+      "name": "Coelamon",
+      "story": "arcs/challenges/coelamon.py",
+      "home": "city/centar-clinic.py",
+      "site": {
+        "screen": 5,
+        "at": [
+          1150,
+          600
+        ]
+      },
+      "exit": [
+        [
+          -350,
+          2600
+        ]
+      ],
+      "item": 94,
+      "bits": 2500,
+      "text": {
+        "intro1": "coelamon.challenge.intro1",
+        "intro2": "coelamon.challenge.intro2",
+        "retry": "coelamon.challenge.retry",
+        "won": "coelamon.challenge.won",
+        "reward": "coelamon.challenge.reward"
+      }
+    },
+    {
+      "species": 50,
+      "name": "Kokatorimon",
+      "story": "arcs/challenges/kokatorimon.py",
+      "home": "city/file-city-services.py",
+      "site": {
+        "screen": 117,
+        "at": [
+          -500,
+          1200
+        ]
+      },
+      "exit": [
+        [
+          -1200,
+          -1200
+        ]
+      ],
+      "item": 85,
+      "bits": 2500,
+      "base": {
+        "hp": 4200,
+        "mp": 4800,
+        "off": 600,
+        "def": 240,
+        "speed": 360,
+        "brain": 100
+      },
+      "_base": "its fight in the original game (content/maps/MIST03.json, slot 0)",
+      "text": {
+        "intro1": "kokatorimon.challenge.intro1",
+        "intro2": "kokatorimon.challenge.intro2",
+        "retry": "kokatorimon.challenge.retry",
+        "won": "kokatorimon.challenge.won",
+        "reward": "kokatorimon.challenge.reward"
+      }
+    },
+    {
+      "species": 51,
+      "name": "Kuwagamon",
+      "story": "arcs/challenges/kuwagamon.py",
+      "home": "city/green-gym.py",
+      "site": {
+        "screen": 108,
+        "at": [
+          50,
+          1800
+        ]
+      },
+      "exit": [
+        [
+          -1450,
+          -200
+        ]
+      ],
+      "item": 88,
+      "bits": 2500,
+      "base": {
+        "hp": 3750,
+        "mp": 3500,
+        "off": 470,
+        "def": 240,
+        "speed": 290,
+        "brain": 200
+      },
+      "_base": "no real fight in the original game (its slot is a placeholder): the median of the champion rows' real fights",
+      "text": {
+        "intro1": "kuwagamon.challenge.intro1",
+        "intro2": "kuwagamon.challenge.intro2",
+        "retry": "kuwagamon.challenge.retry",
+        "won": "kuwagamon.challenge.won",
+        "reward": "kuwagamon.challenge.reward"
+      }
+    },
+    {
+      "species": 52,
+      "name": "Mojyamon",
+      "story": "arcs/challenges/mojyamon.py",
+      "home": null,
+      "site": {
+        "screen": 133,
+        "at": [
+          2000,
+          -3400
+        ]
+      },
+      "exit": [
+        [
+          2000,
+          -900
+        ]
+      ],
+      "item": 97,
+      "bits": 2500,
+      "base": {
+        "hp": 3750,
+        "mp": 3500,
+        "off": 470,
+        "def": 240,
+        "speed": 290,
+        "brain": 200
+      },
+      "_base": "no real fight in the original game (its slot is a placeholder): the median of the champion rows' real fights",
+      "text": {
+        "intro1": "mojyamon.challenge.intro1",
+        "intro2": "mojyamon.challenge.intro2",
+        "retry": "mojyamon.challenge.retry",
+        "won": "mojyamon.challenge.won",
+        "reward": "mojyamon.challenge.reward"
+      }
+    },
+    {
+      "species": 53,
+      "name": "Nanimon",
+      "story": "arcs/challenges/nanimon.py",
+      "home": "city/item-keeper.py",
+      "site": {
+        "screen": 86,
+        "at": [
+          -350,
+          1400
+        ]
+      },
+      "exit": [
+        [
+          100,
+          -1050
+        ]
+      ],
+      "item": 98,
+      "bits": 2500,
+      "base": {
+        "hp": 3750,
+        "mp": 3500,
+        "off": 470,
+        "def": 240,
+        "speed": 290,
+        "brain": 200
+      },
+      "_base": "no real fight in the original game (its slot is a placeholder): the median of the champion rows' real fights",
+      "text": {
+        "intro1": "nanimon.challenge.intro1",
+        "intro2": "nanimon.challenge.intro2",
+        "retry": "nanimon.challenge.retry",
+        "won": "nanimon.challenge.won",
+        "reward": "nanimon.challenge.reward"
+      }
+    },
+    {
+      "species": 54,
+      "name": "Megadramon",
+      "story": "arcs/challenges/megadramon.py",
+      "home": "city/lower-city.py",
+      "site": {
+        "screen": 154,
+        "at": [
+          -550,
+          150
+        ]
+      },
+      "exit": [
+        [
+          1450,
+          -1350
+        ]
+      ],
+      "item": 102,
+      "bits": 4000,
+      "base": {
+        "hp": 5600,
+        "mp": 4800,
+        "off": 660,
+        "def": 530,
+        "speed": 510,
+        "brain": 570
+      },
+      "_base": "no real fight in the original game (no slot): the median of the ultimate rows' real fights",
+      "text": {
+        "intro1": "megadramon.challenge.intro1",
+        "intro2": "megadramon.challenge.intro2",
+        "retry": "megadramon.challenge.retry",
+        "won": "megadramon.challenge.won",
+        "reward": "megadramon.challenge.reward"
+      }
+    },
+    {
+      "species": 55,
+      "name": "Piximon",
+      "story": "arcs/challenges/piximon.py",
+      "home": "city/item-shop.py",
+      "site": {
+        "screen": 12,
+        "at": [
+          -750,
+          -1250
+        ]
+      },
+      "exit": [
+        [
+          1650,
+          -1950
+        ]
+      ],
+      "item": 106,
+      "bits": 4000,
+      "base": {
+        "hp": 5200,
+        "mp": 4600,
+        "off": 680,
+        "def": 460,
+        "speed": 660,
+        "brain": 600
+      },
+      "_base": "its fight in the original game (content/maps/TROP01.json, slot 0)",
+      "text": {
+        "intro1": "piximon.challenge.intro1",
+        "intro2": "piximon.challenge.intro2",
+        "retry": "piximon.challenge.retry",
+        "won": "piximon.challenge.won",
+        "reward": "piximon.challenge.reward"
+      }
+    },
+    {
+      "species": 56,
+      "name": "Digitamamon",
+      "story": "arcs/challenges/digitamamon.py",
+      "home": null,
+      "site": {
+        "screen": 219,
+        "at": [
+          250,
+          1050
+        ]
+      },
+      "exit": [
+        [
+          -2150,
+          1750
+        ]
+      ],
+      "item": 110,
+      "bits": 4000,
+      "base": {
+        "hp": 9999,
+        "mp": 9999,
+        "off": 999,
+        "def": 720,
+        "speed": 500,
+        "brain": 700
+      },
+      "_base": "its fight in the original game (content/maps/MGEN99.json, slot 3)",
+      "text": {
+        "intro1": "digitamamon.challenge.intro1",
+        "intro2": "digitamamon.challenge.intro2",
+        "retry": "digitamamon.challenge.retry",
+        "won": "digitamamon.challenge.won",
+        "reward": "digitamamon.challenge.reward"
+      }
+    },
+    {
+      "species": 57,
+      "name": "Penguinmon",
+      "story": "arcs/challenges/penguinmon.py",
+      "home": null,
+      "site": {
+        "screen": 134,
+        "at": [
+          1750,
+          1200
+        ]
+      },
+      "exit": [
+        [
+          -700,
+          950
+        ]
+      ],
+      "item": 65,
+      "bits": 1500,
+      "text": {
+        "intro1": "penguinmon.challenge.intro1",
+        "intro2": "penguinmon.challenge.intro2",
+        "retry": "penguinmon.challenge.retry",
+        "won": "penguinmon.challenge.won",
+        "reward": "penguinmon.challenge.reward"
+      }
+    },
+    {
+      "species": 58,
+      "name": "Ninjamon",
+      "story": "arcs/challenges/ninjamon.py",
+      "home": "city/secret-item-shop.py",
+      "site": {
+        "screen": 9,
+        "at": [
+          -900,
+          -1100
+        ]
+      },
+      "exit": [
+        [
+          -900,
+          1400
+        ]
+      ],
+      "item": 90,
+      "bits": 2500,
+      "base": {
+        "hp": 3800,
+        "mp": 3500,
+        "off": 620,
+        "def": 210,
+        "speed": 350,
+        "brain": 250
+      },
+      "_base": "its fight in the original game (content/maps/MAYO08A.json, slot 1)",
+      "text": {
+        "intro1": "ninjamon.challenge.intro1",
+        "intro2": "ninjamon.challenge.intro2",
+        "retry": "ninjamon.challenge.retry",
+        "won": "ninjamon.challenge.won",
+        "reward": "ninjamon.challenge.reward"
+      }
+    },
+    {
+      "species": 66,
+      "name": "Myotismon",
+      "story": "arcs/challenges/myotismon.py",
+      "home": null,
+      "site": {
+        "screen": 55,
+        "at": [
+          300,
+          1950
+        ]
+      },
+      "exit": [
+        [
+          -1250,
+          950
+        ]
+      ],
+      "item": 78,
+      "bits": 4000,
+      "base": {
+        "hp": 5600,
+        "mp": 4800,
+        "off": 660,
+        "def": 530,
+        "speed": 510,
+        "brain": 570
+      },
+      "_base": "no real fight in the original game (its slot is a placeholder): the median of the ultimate rows' real fights",
+      "text": {
+        "intro1": "myotismon.challenge.intro1",
+        "intro2": "myotismon.challenge.intro2",
+        "retry": "myotismon.challenge.retry",
+        "won": "myotismon.challenge.won",
+        "reward": "myotismon.challenge.reward"
+      }
+    },
+    {
+      "species": 70,
+      "name": "WaruMonzaemon",
+      "story": "arcs/challenges/warumonzaemon.py",
+      "home": null,
+      "site": {
+        "screen": 149,
+        "at": [
+          0,
+          -250
+        ]
+      },
+      "exit": [
+        [
+          1450,
+          800
+        ]
+      ],
+      "item": 107,
+      "bits": 4000,
+      "text": {
+        "intro1": "warumonzaemon.challenge.intro1",
+        "intro2": "warumonzaemon.challenge.intro2",
+        "retry": "warumonzaemon.challenge.retry",
+        "won": "warumonzaemon.challenge.won",
+        "reward": "warumonzaemon.challenge.reward"
+      }
     }
   ]
 }

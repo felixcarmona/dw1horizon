@@ -3,7 +3,8 @@
 from dw import *
 from dw.names import *
 from dw.text import text
-from dw.base.file_city_168 import andromon, sukamon
+from dw.base.file_city_168 import andromon, sukamon, city_168, kokatorimon
+from ..state import challenger, challenge_won, CH_KOKATORIMON
 
 t5 = text.s156.sec5
 
@@ -54,3 +55,11 @@ def remodel():
             say(t5.u10)
         case _:
             return
+
+
+# Resident challenges (content/tables/resident-challenges.json): the day Kokatorimon is out waiting at its old
+# spot, it is not here.
+@city_168.on_enter(when=engine.game_beaten)
+def challenger_out_kokatorimon():
+    if challenger == CH_KOKATORIMON and not challenge_won:
+        kokatorimon.leave()
