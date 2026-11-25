@@ -113,3 +113,25 @@ HUNTER_PRESENT_PSTAT = 120  # unsaved night-model witness, reset on either hunte
 
 # After the ending (arcs/postgame/blackwargreymon.py): the first win in the Back Dimension pays once; the fight itself stays.
 rift_duel_won = flag()
+
+# Resident challenges (postgame, content/tables/resident-challenges.json): at midnight the executable writes today's
+# challenger (its row + 1, 0 = nobody) and empties the two flags; the two bag counters are the executable's own (one bit
+# per row already sent out this cycle) and are declared here only so that nothing else takes their numbers. The site and
+# the home of each row compare `challenger` with the row's constant. ARMED: a scratch pstat the talk sets to 1 just before
+# the fight, so that the executable gives that one battle the challenge's stats (the battle clears it).
+challenger = counter()
+challenge_won = flag()
+challenge_tried = flag()
+challenge_bag = counter()
+challenge_bag2 = counter()
+CHALLENGE_ARMED = 239
+CH_ARMADILLOMON = 1
+CH_CANDLEMON = 2
+CH_MUSHROOMON = 3
+CH_KOTEMON = 4
+CH_DIGMON = 5
+CH_STARMON = 6
+CH_TRICERAMON = 7
+CH_MAMMOTHMON = 8
+CH_KNIGHTMON = 9
+CH_DATAMON = 10

@@ -1,10 +1,18 @@
 # 361, the Scrap Office: Datamon, from Factorial Town, buys and sells what the island throws away (the game's buy/sell menu).
 # Pumpkinmon, from the Toy Mansion's nights, sells the hot vegetables nobody else stocks: the Item Shop 216 has no heap for it.
 from dw import *
+from ..state import challenger, challenge_won, CH_DATAMON
 
 scrap_office = new_screen(361, map="build/what-the-island-forgot-maps/screens/BARR05.MAP")
 datamon = scrap_office.npc(Species.Datamon, at=(0, -250), range=0, when=recruited(Species.Datamon))
 pumpkinmon = scrap_office.npc(Species.Pumpkinmon, at=(450, -650), range=0, when=recruited(Species.Pumpkinmon))
+
+
+# Resident challenges (content/tables/resident-challenges.json): the day it is out waiting at its old spot, it is not here.
+@scrap_office.on_enter
+def challenger_out():
+    if challenger == CH_DATAMON and not challenge_won:
+        datamon.leave()
 
 
 @datamon.on_talk
