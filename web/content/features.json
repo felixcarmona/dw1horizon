@@ -605,59 +605,42 @@
   },
   {
    "id": "waiting",
-   "media": [
-    {
-     "type": "video",
-     "src": "media/clips/waiting.mp4",
-     "poster": "media/clips/waiting.jpg",
-     "alt": {
-      "en": "An evolution skipped with START, and a battle at double speed",
-      "es": "Una evolución saltada con START y un combate a doble velocidad",
-      "pt-br": "Uma evolução pulada com START e uma batalha em velocidade dupla",
-      "fr": "Une évolution passée avec START, et un combat en vitesse double",
-      "de": "Eine mit START übersprungene Digitation und ein Kampf in doppelter Geschwindigkeit",
-      "it": "Un'evoluzione saltata con START, e una battaglia a velocità doppia",
-      "ja": "STARTでスキップされる進化と、2倍速のバトル",
-      "ca": "Una evolució saltada amb START i un combat a doble velocitat",
-      "zh-hans": "按START跳过进化，以及双倍速度的战斗"
-     }
-    }
-   ],
+   "media": [],
    "en": {
     "title": "Less waiting",
-    "body": "START skips an evolution you have seen before, R2 doubles the speed of any battle, and the gym trains five sessions in one go. None of it changes what your partner gains."
+    "body": "R2 doubles the speed of any battle, and the gym trains five sessions in one go. None of it changes what your partner gains."
    },
    "es": {
     "title": "Menos esperas",
-    "body": "START se salta una evolución que ya has visto, R2 dobla la velocidad de cualquier combate y el gimnasio entrena cinco sesiones seguidas. Nada de esto cambia lo que gana tu compañero."
+    "body": "R2 dobla la velocidad de cualquier combate y el gimnasio entrena cinco sesiones seguidas. Nada de esto cambia lo que gana tu compañero."
    },
    "pt-br": {
     "title": "Menos espera",
-    "body": "START pula uma evolução que você já viu, R2 dobra a velocidade de qualquer batalha, e a academia treina cinco sessões de uma vez. Nada disso muda o que seu parceiro ganha."
+    "body": "R2 dobra a velocidade de qualquer batalha, e a academia treina cinco sessões de uma vez. Nada disso muda o que seu parceiro ganha."
    },
    "fr": {
     "title": "Moins d'attente",
-    "body": "START passe une évolution déjà vue, R2 double la vitesse de n'importe quel combat, et la salle d'entraînement enchaîne cinq séances d'un coup. Rien de tout cela ne change ce que gagne ton partenaire."
+    "body": "R2 double la vitesse de n'importe quel combat, et la salle d'entraînement enchaîne cinq séances d'un coup. Rien de tout cela ne change ce que gagne ton partenaire."
    },
    "de": {
     "title": "Weniger Warten",
-    "body": "START überspringt eine Digitation, die du schon gesehen hast, R2 verdoppelt das Tempo jedes Kampfes, und im Fitnessstudio trainierst du fünf Einheiten auf einmal. Nichts davon ändert, was dein Partner dazugewinnt."
+    "body": "R2 verdoppelt das Tempo jedes Kampfes, und im Fitnessstudio trainierst du fünf Einheiten auf einmal. Nichts davon ändert, was dein Partner dazugewinnt."
    },
    "it": {
     "title": "Meno attese",
-    "body": "START salta un'evoluzione che hai già visto, R2 raddoppia la velocità di qualsiasi battaglia, e in palestra fai cinque allenamenti in una volta. Niente di tutto ciò cambia quello che guadagna il tuo partner."
+    "body": "R2 raddoppia la velocità di qualsiasi battaglia, e in palestra fai cinque allenamenti in una volta. Niente di tutto ciò cambia quello che guadagna il tuo partner."
    },
    "ja": {
     "title": "待ち時間を短縮",
-    "body": "一度見た進化はSTARTでスキップ、R2でどのバトルも2倍速、ジムでは5回分のトレーニングをまとめて実行できます。パートナーが得るものは一切変わりません。"
+    "body": "R2でどのバトルも2倍速、ジムでは5回分のトレーニングをまとめて実行できます。パートナーが得るものは一切変わりません。"
    },
    "ca": {
     "title": "Menys esperes",
-    "body": "START salta una evolució que ja has vist, R2 duplica la velocitat de qualsevol combat i el gimnàs entrena cinc sessions d'una tirada. Res d'això canvia el que guanya el teu company."
+    "body": "R2 duplica la velocitat de qualsevol combat i el gimnàs entrena cinc sessions d'una tirada. Res d'això canvia el que guanya el teu company."
    },
    "zh-hans": {
     "title": "少些等待",
-    "body": "按START可跳过已经看过的进化，R2可让任何战斗加速一倍，健身房可一次连做五次训练。搭档获得的收益保持不变。"
+    "body": "R2可让任何战斗加速一倍，健身房可一次连做五次训练。搭档获得的收益保持不变。"
    }
   },
   {

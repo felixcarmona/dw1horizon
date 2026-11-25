@@ -10,8 +10,8 @@ and it is delivered as a patch that you apply to your own disc. Original disc im
 
 - **What the Island Forgot**: a new story woven into the original one, with new places beyond the familiar screens.
   The Digimon you recruit move into File City. EXTENDED STORY in OPTIONS switches back to the 1999 story.
-- **Less waiting**: double-speed battles on R2, START skips an evolution's animation, five training sessions in one
-  go at the gym, field battles that start the moment they are triggered. None of it changes what your partner gains.
+- **Less waiting**: double-speed battles on R2, five training sessions in one go at the gym, field battles that start
+  the moment they are triggered. None of it changes what your partner gains.
 - **Automatic 20/60 frames per second**: evenly spaced 20 on original PlayStation hardware and emulators at normal
   CPU speed; 60 with sufficient CPU overclock (250%). The game adapts if the overclock changes during play.
   Logic and input stay at 20 Hz. Smoothing at 60 fps displays the picture up to 50 ms later.

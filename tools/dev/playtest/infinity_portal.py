@@ -359,11 +359,11 @@ def prepare_fixture(e, species, quick, technique, offense, all_join):
     evolve_fixture(e, species)
     # The type changes before the EVL scene releases its overlay and objects.
     # Wait for partner field control before starting another map or overlay.
-    for _ in range(180):
+    for _ in range(400):
         if e.peek('PARTNER_STATE','B') != 13 and e.peek('TAMER_STATE','B') == 0 and not e.peek('IS_IN_MENU','i'):
             break
         if e.peek('IS_IN_MENU','i'):e.press('CANCEL',8)
-        elif e.peek('PARTNER_STATE','B') == 13:e.press('START',8)
+        elif e.peek('PARTNER_STATE','B') == 13:pass  # the evolution scene plays whole
         else:e.press('CONFIRM',8)
         e.wait(.3)
     else:raise AssertionError('fixture evolution did not release field control')
