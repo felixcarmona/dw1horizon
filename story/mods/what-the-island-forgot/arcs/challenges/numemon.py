@@ -1,24 +1,19 @@
 # Sewer 220: Numemon, recruited here in the original game; it keeps the secret item shop.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_NUMEMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_NUMEMON
 
 site = screen(Screen.sewer_220)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Numemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-numemon = site.npc(Species.Numemon, at=(3350, -750), bits=300, range=0, still=True, when=recruited(Species.Numemon))
+numemon = site.npc(Species.Numemon, at=(3350, -750), bits=300, range=0, still=True, when=challenger == CH_NUMEMON, alone=challenger == CH_NUMEMON)
 
-
-@site.on_enter(when=recruited(Species.Numemon))
-def challenge_away_numemon():
-    if not engine.game_beaten or challenger != CH_NUMEMON or challenge_won:
-        numemon.leave()
 
 
 @numemon.on_talk
 def challenge_numemon():
-    if challenger != CH_NUMEMON or challenge_won:
+    if challenger != CH_NUMEMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_numemon():
                 give(Item.Happymushrm)
                 give(bits=2500)
                 narrator.say(t("numemon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(1100, -1700)
                 leave()

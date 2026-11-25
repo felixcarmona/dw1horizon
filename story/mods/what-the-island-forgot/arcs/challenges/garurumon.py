@@ -1,24 +1,19 @@
 # Freezeland 95: Garurumon, recruited here in the original game; it works at the Restaurant.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_GARURUMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_GARURUMON
 
 site = screen(Screen.freezeland_95)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Garurumon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-garurumon = site.npc(Species.Garurumon, at=(-200, -100), bits=300, range=0, still=True, when=recruited(Species.Garurumon))
+garurumon = site.npc(Species.Garurumon, at=(-200, -100), bits=300, range=0, still=True, when=challenger == CH_GARURUMON, alone=challenger == CH_GARURUMON)
 
-
-@site.on_enter(when=recruited(Species.Garurumon))
-def challenge_away_garurumon():
-    if not engine.game_beaten or challenger != CH_GARURUMON or challenge_won:
-        garurumon.leave()
 
 
 @garurumon.on_talk
 def challenge_garurumon():
-    if challenger != CH_GARURUMON or challenge_won:
+    if challenger != CH_GARURUMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_garurumon():
                 give(Item.MoonMirror)
                 give(bits=2500)
                 narrator.say(t("garurumon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(1300, 1900)
                 leave()

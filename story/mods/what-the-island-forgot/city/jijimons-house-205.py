@@ -2,7 +2,7 @@
 # the city has grown.
 from dw import *
 from dw.base.jijimons_house_205 import house, jijimon, angemon
-from ..state import memories, memory_news, root2, root3, challenger, challenge_won, CH_ANGEMON
+from ..state import challenger, memories, memory_news, root2, root3, CH_ANGEMON
 
 # Later, of their own will: SkullGreymon after "Let him rest" (R2) and Angemon after "Open it and stay" (R3) come back to the
 # city and Jijimon tells it. Those choices set memory_news, told at the first homecoming below, so this is the next one. A
@@ -40,5 +40,5 @@ def what_the_city_remembers():
 # spot, it is not here.
 @house.on_enter(when=engine.game_beaten)
 def challenger_out_angemon():
-    if challenger == CH_ANGEMON and not challenge_won:
+    if challenger == CH_ANGEMON:
         angemon.leave()

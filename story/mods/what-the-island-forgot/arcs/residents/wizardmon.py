@@ -2,38 +2,33 @@
 # pages have gone blank. It joins once the city has grown (prosperity 20: recruits only add to it, so it is no dead end).
 # Its home is the Power Station (district/power-station.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_WIZARDMON
+from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_WIZARDMON
 
 room = screen(Screen.grey_lords_mansion_59)
-wizardmon = room.npc(Species.Wizardmon, at=(0, 300), range=0, still=True, when=not recruited(Species.Wizardmon) or trigger(50))
+wizardmon = room.npc(Species.Wizardmon, at=(0, 300), range=0, still=True, when=not recruited(Species.Wizardmon) or new_challenger == CH_WIZARDMON, alone=new_challenger == CH_WIZARDMON)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Wizardmon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home (district/power-station.py).
-@room.on_enter(when=recruited(Species.Wizardmon) and engine.game_beaten)
-def challenge_away_wizardmon():
-    if challenger != CH_WIZARDMON or challenge_won:
-        wizardmon.leave()
-
 
 def challenge_wizardmon():
-    if challenger != CH_WIZARDMON or challenge_won:
+    if new_challenger != CH_WIZARDMON:
         say(t("challenge.home"))
         leave()
     else:
-        if challenge_tried:
+        if new_challenge_tried:
             say(t("wizardmon.challenge.retry"))
         else:
             say(t("wizardmon.challenge.intro1"), t("wizardmon.challenge.intro2"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
-            challenge_tried.set()
-            pstat(CHALLENGE_ARMED).set(1)
+            new_challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(2)
             if fight(wizardmon, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
                 say(t("wizardmon.challenge.won"))
                 give(Item.BrainChip)
                 give(bits=2500)
                 narrator.say(t("wizardmon.challenge.reward"))
-                challenge_won.set()
+                new_challenger.add(CHALLENGE_BEATEN)
                 run(-950, -1400)
                 leave()
 

@@ -1,7 +1,7 @@
 # 357, the Stone Yard: the Works' first outdoor screen (design/district-proposals.md, concept 3), a file of its own
 # because its stairs run a script.
 from dw import *
-from ..state import challenger, challenge_won, CH_DIGMON
+from ..state import new_challenger, CH_DIGMON
 
 stone_yard = new_screen(357, map="build/what-the-island-forgot-maps/screens/BARR01.MAP")
 # the resident: Digmon in the yard (the Drill Tunnel), standing here once beaten where it lived
@@ -11,7 +11,7 @@ digmon = stone_yard.npc(Species.Digmon, at=(-1200, -2000), range=0, when=recruit
 # Resident challenges (content/tables/resident-challenges.json): the day it is out waiting at its old spot, it is not here.
 @stone_yard.on_enter
 def challenger_out():
-    if challenger == CH_DIGMON and not challenge_won:
+    if new_challenger == CH_DIGMON:
         digmon.leave()
 
 

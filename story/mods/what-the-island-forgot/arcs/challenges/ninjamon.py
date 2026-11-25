@@ -1,24 +1,19 @@
 # Digimon Bridge 9: Ninjamon, recruited here in the original game; it lives in the city (city/secret-item-shop.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_NINJAMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_NINJAMON
 
 site = screen(Screen.digimon_bridge_9)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Ninjamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-ninjamon = site.npc(Species.Ninjamon, at=(-900, -1100), bits=300, range=0, still=True, when=recruited(Species.Ninjamon))
+ninjamon = site.npc(Species.Ninjamon, at=(-900, -1100), bits=300, range=0, still=True, when=challenger == CH_NINJAMON, alone=challenger == CH_NINJAMON)
 
-
-@site.on_enter(when=recruited(Species.Ninjamon))
-def challenge_away_ninjamon():
-    if not engine.game_beaten or challenger != CH_NINJAMON or challenge_won:
-        ninjamon.leave()
 
 
 @ninjamon.on_talk
 def challenge_ninjamon():
-    if challenger != CH_NINJAMON or challenge_won:
+    if challenger != CH_NINJAMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_ninjamon():
                 give(Item.KogaLaws)
                 give(bits=2500)
                 narrator.say(t("ninjamon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(-900, 1400)
                 leave()

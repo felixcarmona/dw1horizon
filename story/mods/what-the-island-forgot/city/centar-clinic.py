@@ -2,7 +2,7 @@
 # at (1078, 786)).
 from dw import *
 from dw.base.centar_clinic import clinic, coelamon
-from ..state import challenger, challenge_won, CH_COELAMON, CH_MUSHROOMON
+from ..state import challenger, new_challenger, CH_COELAMON, CH_MUSHROOMON
 
 mushroomon = clinic.npc(Species.Mushroomon, at=(50, 1150), behaves_like=coelamon, when=recruited(Species.Mushroomon))
 
@@ -17,7 +17,7 @@ def talk():
 # spot, it is not here.
 @clinic.on_enter(when=engine.game_beaten)
 def challenger_out_coelamon_mushroomon():
-    if challenger == CH_COELAMON and not challenge_won:
+    if challenger == CH_COELAMON:
         coelamon.leave()
-    if challenger == CH_MUSHROOMON and not challenge_won:
+    if new_challenger == CH_MUSHROOMON:
         mushroomon.leave()

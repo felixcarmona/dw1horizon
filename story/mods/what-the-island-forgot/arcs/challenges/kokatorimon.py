@@ -1,24 +1,19 @@
-# Misty Trees 118: Kokatorimon, near where it was recruited in the original game; it lives in the city (city/file-city-services.py).
+# Misty Trees 119: Kokatorimon, near where it was recruited in the original game; it lives in the city (city/file-city-services.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_KOKATORIMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_KOKATORIMON
 
-site = screen(Screen.misty_trees_118)
+site = screen(Screen.misty_trees_119)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Kokatorimon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-kokatorimon = site.npc(Species.Kokatorimon, at=(50, 1200), bits=300, range=0, still=True, when=recruited(Species.Kokatorimon))
+kokatorimon = site.npc(Species.Kokatorimon, at=(0, -1800), bits=300, range=0, still=True, when=challenger == CH_KOKATORIMON, alone=challenger == CH_KOKATORIMON)
 
-
-@site.on_enter(when=recruited(Species.Kokatorimon))
-def challenge_away_kokatorimon():
-    if not engine.game_beaten or challenger != CH_KOKATORIMON or challenge_won:
-        kokatorimon.leave()
 
 
 @kokatorimon.on_talk
 def challenge_kokatorimon():
-    if challenger != CH_KOKATORIMON or challenge_won:
+    if challenger != CH_KOKATORIMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_kokatorimon():
                 give(Item.Rooster)
                 give(bits=2500)
                 narrator.say(t("kokatorimon.challenge.reward"))
-                challenge_won.set()
-                run(50, 3700)
+                challenger.add(CHALLENGE_BEATEN)
+                run(0, -3500)
                 leave()

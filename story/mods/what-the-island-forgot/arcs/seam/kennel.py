@@ -5,13 +5,13 @@
 from dw import *
 from dw.text import text
 from ...state import hunter_beaten
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_BEARMON
+from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_BEARMON
 
 kennel = new_screen(325, map="build/what-the-island-forgot-maps/screens/SEAM03.MAP")
 chest_kennel = flag()
 keeper = kennel.npc(Species.DarkLizardmon, at=(0, -500), hp=3600, mp=3600, offense=580, defense=320, speed=120, brain=150,
                     bits=800, range=0, when=not hunter_beaten)
-caged = kennel.npc(Species.Bearmon, at=(-600, 300), range=0, still=True, when=not recruited(Species.Bearmon) or trigger(50))
+caged = kennel.npc(Species.Bearmon, at=(-600, 300), range=0, still=True, when=not recruited(Species.Bearmon) or new_challenger == CH_BEARMON, alone=new_challenger == CH_BEARMON)
 
 @keeper.on_talk(scene=True)
 def the_named_hunter():
@@ -40,23 +40,23 @@ def remembers_itself():
 # Resident challenges (content/tables/resident-challenges.json): the talk of a recruited Bearmon, on its challenge day
 # (it leaves without a walk: walk_away hung on this screen).
 def challenge_bearmon():
-    if challenger != CH_BEARMON or challenge_won:
+    if new_challenger != CH_BEARMON:
         say(t("challenge.home"))
         leave()
     else:
-        if challenge_tried:
+        if new_challenge_tried:
             say(t("bearmon.challenge.retry"))
         else:
             say(t("bearmon.challenge.intro1"), t("bearmon.challenge.intro2"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
-            challenge_tried.set()
-            pstat(CHALLENGE_ARMED).set(1)
+            new_challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(2)
             if fight(caged, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
                 say(t("bearmon.challenge.won"))
                 give(Item.RedBerry)
                 give(bits=1500)
                 narrator.say(t("bearmon.challenge.reward"))
-                challenge_won.set()
+                new_challenger.add(CHALLENGE_BEATEN)
                 leave()
 
 
@@ -72,5 +72,5 @@ def enter():
     spawn_chest(Item.OffChip, at=(600, 300), opened=chest_kennel)
     # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Bearmon is the
     # challenger and has not been beaten yet it waits in its old cage, stronger; any other day it is home.
-    if recruited(Species.Bearmon) and (challenger != CH_BEARMON or challenge_won):
+    if recruited(Species.Bearmon) and new_challenger != CH_BEARMON:
         caged.leave()

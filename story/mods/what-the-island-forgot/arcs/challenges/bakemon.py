@@ -1,24 +1,19 @@
 # Overdell Cemetery 35: Bakemon, near where it was recruited in the original game; it lives in the city (city/lower-city.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_BAKEMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_BAKEMON
 
 site = screen(Screen.overdell_cemetery)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Bakemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-bakemon = site.npc(Species.Bakemon, at=(1350, 1350), bits=300, range=0, still=True, when=recruited(Species.Bakemon))
+bakemon = site.npc(Species.Bakemon, at=(1350, 1350), bits=300, range=0, still=True, when=challenger == CH_BAKEMON, alone=challenger == CH_BAKEMON)
 
-
-@site.on_enter(when=recruited(Species.Bakemon))
-def challenge_away_bakemon():
-    if not engine.game_beaten or challenger != CH_BAKEMON or challenge_won:
-        bakemon.leave()
 
 
 @bakemon.on_talk
 def challenge_bakemon():
-    if challenger != CH_BAKEMON or challenge_won:
+    if challenger != CH_BAKEMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_bakemon():
                 give(Item.TornTatter)
                 give(bits=2500)
                 narrator.say(t("bakemon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(1350, 3850)
                 leave()

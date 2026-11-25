@@ -5,11 +5,11 @@ from dw import *
 from dw.base.factorial_town_162 import guardromon0
 from dw.text import text
 from ...state import factory_kept_shut
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_DATAMON
+from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_DATAMON
 
 machine_room = screen(Screen.factorial_town_162)
 datamon = machine_room.npc(Species.Datamon, at=(100, -1450), hp=4000, mp=4200, offense=700, defense=370, speed=320, brain=350, bits=1300,
-                           range=0, still=True, when=not recruited(Species.Datamon) or trigger(50))
+                           range=0, still=True, when=not recruited(Species.Datamon) or new_challenger == CH_DATAMON, alone=new_challenger == CH_DATAMON)
 
 @guardromon0.on_talk(when=factory_kept_shut)
 def no_power():
@@ -18,30 +18,25 @@ def no_power():
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Datamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-@machine_room.on_enter(when=recruited(Species.Datamon) and engine.game_beaten)
-def challenge_away():
-    if challenger != CH_DATAMON or challenge_won:
-        datamon.leave()
-
 
 def challenge():
-    if challenger != CH_DATAMON or challenge_won:
+    if new_challenger != CH_DATAMON:
         say(t("challenge.home"))
         leave()
     else:
-        if challenge_tried:
+        if new_challenge_tried:
             say(t("datamon.challenge.retry"))
         else:
             say(t("datamon.challenge.intro1"), t("datamon.challenge.intro2"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
-            challenge_tried.set()
-            pstat(CHALLENGE_ARMED).set(1)
+            new_challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(2)
             if fight(datamon, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
                 say(t("datamon.challenge.won"))
                 give(Item.CyberPart)
                 give(bits=4000)
                 narrator.say(t("datamon.challenge.reward"))
-                challenge_won.set()
+                new_challenger.add(CHALLENGE_BEATEN)
                 run(3150, -850)
                 leave()
 

@@ -1,24 +1,19 @@
 # Great Canyon 128: Birdramon, near where it was recruited in the original game; it runs the transport.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_BIRDRAMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_BIRDRAMON
 
 site = screen(Screen.great_canyon_128)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Birdramon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-birdramon = site.npc(Species.Birdramon, at=(1600, -1050), bits=300, range=0, still=True, when=recruited(Species.Birdramon))
+birdramon = site.npc(Species.Birdramon, at=(1600, -1050), bits=300, range=0, still=True, when=challenger == CH_BIRDRAMON, alone=challenger == CH_BIRDRAMON)
 
-
-@site.on_enter(when=recruited(Species.Birdramon))
-def challenge_away_birdramon():
-    if not engine.game_beaten or challenger != CH_BIRDRAMON or challenge_won:
-        birdramon.leave()
 
 
 @birdramon.on_talk
 def challenge_birdramon():
-    if challenger != CH_BIRDRAMON or challenge_won:
+    if challenger != CH_BIRDRAMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_birdramon():
                 give(Item.Flamingwing)
                 give(bits=2500)
                 narrator.say(t("birdramon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(1600, 1450)
                 leave()

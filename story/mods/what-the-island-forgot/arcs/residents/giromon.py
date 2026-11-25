@@ -1,24 +1,19 @@
 # Factorial Town 159: Giromon, recruited here in the original game, lives at the Restaurant (city/restaurant-215.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_GIROMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_GIROMON
 
 town = screen(Screen.factorial_town_159)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Giromon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home, at the Restaurant (city/restaurant-215.py).
-giromon = town.npc(Species.Giromon, at=(1250, 450), bits=300, range=0, still=True, when=recruited(Species.Giromon) and trigger(50))
+giromon = town.npc(Species.Giromon, at=(1250, 450), bits=300, range=0, still=True, when=challenger == CH_GIROMON, alone=challenger == CH_GIROMON)
 
-
-@town.on_enter(when=recruited(Species.Giromon) and engine.game_beaten)
-def challenge_away_giromon():
-    if challenger != CH_GIROMON or challenge_won:
-        giromon.leave()
 
 
 @giromon.on_talk
 def challenge_giromon():
-    if challenger != CH_GIROMON or challenge_won:
+    if challenger != CH_GIROMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_giromon():
                 give(Item.SilverBall)
                 give(bits=4000)
                 narrator.say(t("giromon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(3650, -250)
                 leave()

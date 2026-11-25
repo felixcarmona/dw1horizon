@@ -1,6 +1,6 @@
 # 363, the Cold Store: Mammothmon, who stood in Freezeland since before the ice, keeps the room cold and sells cold food.
 from dw import *
-from ..state import challenger, challenge_won, CH_MAMMOTHMON
+from ..state import new_challenger, CH_MAMMOTHMON
 
 cold_store = new_screen(363, map="build/what-the-island-forgot-maps/screens/BARR07.MAP")
 mammothmon = cold_store.npc(Species.Mammothmon, at=(0, 100), range=0, when=recruited(Species.Mammothmon))
@@ -16,5 +16,5 @@ def talk():
 # spot, it is not here.
 @cold_store.on_enter
 def challenger_out_mammothmon():
-    if challenger == CH_MAMMOTHMON and not challenge_won:
+    if new_challenger == CH_MAMMOTHMON:
         mammothmon.leave()

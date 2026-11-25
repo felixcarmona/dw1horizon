@@ -114,15 +114,20 @@ HUNTER_PRESENT_PSTAT = 120  # unsaved night-model witness, reset on either hunte
 # After the ending (arcs/postgame/blackwargreymon.py): the first win in the Back Dimension pays once; the fight itself stays.
 rift_duel_won = flag()
 
-# Resident challenges (postgame, content/tables/resident-challenges.json): at midnight the executable writes today's
-# challenger (its row + 1, 0 = nobody) and empties the two flags; the bag (one bit per row already sent out this cycle) is
-# the executable's own, in the saved wide registers w10-w14 that no script uses. The site and
-# the home of each row compare `challenger` with the row's constant. ARMED: a scratch pstat the talk sets to 1 just before
-# the fight, so that the executable gives that one battle the challenge's stats (the battle clears it). The rows are
-# numbered in the saved var and the bag: once released, rows are only ever appended.
+# Resident challenges (postgame, content/tables/resident-challenges.json): two pools, each with its own challenger var
+# (its row + 1, 0 = nobody) and tried flag: `challenger` for the original game's residents, `new_challenger` for Horizon's
+# new ones (closed until every one of them is recruited). At midnight the executable writes each open pool's challenger
+# and clears its tried flag; the bag (one bit per row already sent out this cycle) is the executable's own, in the saved
+# wide registers w10-w14 that no script uses. A beaten challenger's var gets CHALLENGE_BEATEN added: it goes home and
+# the site's wild Digimon come back (the site is `alone` while its var equals the row's constant). ARMED: a scratch pstat
+# the talk sets to 1 (original pool) or 2 (new pool) just before the fight, so that the executable gives that one battle
+# the challenge's stats (the battle clears it). The rows are numbered in the saved vars and the bag: once released, rows
+# are only ever appended.
 challenger = counter()
-challenge_won = flag()
 challenge_tried = flag()
+new_challenger = counter()
+new_challenge_tried = flag()
+CHALLENGE_BEATEN = 128
 CHALLENGE_ARMED = 239
 CH_ARMADILLOMON = 1
 CH_CANDLEMON = 2

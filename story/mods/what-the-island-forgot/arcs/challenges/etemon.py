@@ -1,24 +1,19 @@
 # Native Forest 3: Etemon, recruited here in the original game; it lives in the city.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_ETEMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_ETEMON
 
 site = screen(Screen.native_forest_3)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Etemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-etemon = site.npc(Species.Etemon, at=(300, 1850), bits=300, range=0, still=True, when=recruited(Species.Etemon))
+etemon = site.npc(Species.Etemon, at=(300, 1850), bits=300, range=0, still=True, when=challenger == CH_ETEMON, alone=challenger == CH_ETEMON)
 
-
-@site.on_enter(when=recruited(Species.Etemon))
-def challenge_away_etemon():
-    if not engine.game_beaten or challenger != CH_ETEMON or challenge_won:
-        etemon.leave()
 
 
 @etemon.on_talk
 def challenge_etemon():
-    if challenger != CH_ETEMON or challenge_won:
+    if challenger != CH_ETEMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_etemon():
                 give(Item.GoldBanana)
                 give(bits=4000)
                 narrator.say(t("etemon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(-750, -400)
                 leave()

@@ -4,7 +4,7 @@ from dw import *
 from dw.names import *
 from dw.text import text
 from dw.base.file_city_168 import andromon, sukamon, city_168, kokatorimon
-from ..state import challenger, challenge_won, CH_KOKATORIMON
+from ..state import challenger, CH_KOKATORIMON
 
 t5 = text.s156.sec5
 
@@ -61,5 +61,5 @@ def remodel():
 # spot, it is not here.
 @city_168.on_enter(when=engine.game_beaten)
 def challenger_out_kokatorimon():
-    if challenger == CH_KOKATORIMON and not challenge_won:
+    if challenger == CH_KOKATORIMON:
         kokatorimon.leave()

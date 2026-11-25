@@ -2,7 +2,7 @@
 # sells a dream or two with them. Floramon, from the Native Forest, keeps the seed it guarded here: the Item Bank 211 has no
 # heap for its model.
 from dw import *
-from ..state import challenger, challenge_won, CH_FLORAMON, CH_TAPIRMON
+from ..state import new_challenger, CH_FLORAMON, CH_TAPIRMON
 
 market_shed = new_screen(364, map="build/what-the-island-forgot-maps/screens/BARR08.MAP")
 tapirmon = market_shed.npc(Species.Tapirmon, at=(0, 100), range=0, when=recruited(Species.Tapirmon))
@@ -24,7 +24,7 @@ def talk():
 # spot, it is not here.
 @market_shed.on_enter
 def challenger_out_floramon_tapirmon():
-    if challenger == CH_FLORAMON and not challenge_won:
+    if new_challenger == CH_FLORAMON:
         floramon.leave()
-    if challenger == CH_TAPIRMON and not challenge_won:
+    if new_challenger == CH_TAPIRMON:
         tapirmon.leave()

@@ -1,24 +1,19 @@
 # Tropical Jungle 14: Vegiemon, recruited here in the original game; it lives in the city.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_VEGIEMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_VEGIEMON
 
 site = screen(Screen.tropical_jungle_14)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Vegiemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-vegiemon = site.npc(Species.Vegiemon, at=(-1050, -2250), bits=300, range=0, still=True, when=recruited(Species.Vegiemon))
+vegiemon = site.npc(Species.Vegiemon, at=(-1050, -2250), bits=300, range=0, still=True, when=challenger == CH_VEGIEMON, alone=challenger == CH_VEGIEMON)
 
-
-@site.on_enter(when=recruited(Species.Vegiemon))
-def challenge_away_vegiemon():
-    if not engine.game_beaten or challenger != CH_VEGIEMON or challenge_won:
-        vegiemon.leave()
 
 
 @vegiemon.on_talk
 def challenge_vegiemon():
-    if challenger != CH_VEGIEMON or challenge_won:
+    if challenger != CH_VEGIEMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_vegiemon():
                 give(Item.Fertilizer)
                 give(bits=2500)
                 narrator.say(t("vegiemon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(1450, -2250)
                 leave()

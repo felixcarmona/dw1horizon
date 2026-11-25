@@ -1,24 +1,19 @@
 # Beetle Land 108: Kuwagamon, recruited here in the original game; it lives in the city (city/green-gym.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_KUWAGAMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_KUWAGAMON
 
 site = screen(Screen.beetle_land_108)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Kuwagamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-kuwagamon = site.npc(Species.Kuwagamon, at=(50, 1800), bits=300, range=0, still=True, when=recruited(Species.Kuwagamon))
+kuwagamon = site.npc(Species.Kuwagamon, at=(50, 1800), bits=300, range=0, still=True, when=challenger == CH_KUWAGAMON, alone=challenger == CH_KUWAGAMON)
 
-
-@site.on_enter(when=recruited(Species.Kuwagamon))
-def challenge_away_kuwagamon():
-    if not engine.game_beaten or challenger != CH_KUWAGAMON or challenge_won:
-        kuwagamon.leave()
 
 
 @kuwagamon.on_talk
 def challenge_kuwagamon():
-    if challenger != CH_KUWAGAMON or challenge_won:
+    if challenger != CH_KUWAGAMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_kuwagamon():
                 give(Item.ScissorJaw)
                 give(bits=2500)
                 narrator.say(t("kuwagamon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(-1450, -200)
                 leave()

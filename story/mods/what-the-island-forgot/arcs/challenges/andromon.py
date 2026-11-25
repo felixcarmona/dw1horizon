@@ -1,24 +1,19 @@
 # Factorial Town 161: Andromon, near where it was recruited in the original game; it runs the remodel service.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_ANDROMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_ANDROMON
 
 site = screen(Screen.factorial_town_161)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Andromon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-andromon = site.npc(Species.Andromon, at=(-750, 1250), bits=300, range=0, still=True, when=recruited(Species.Andromon))
+andromon = site.npc(Species.Andromon, at=(-750, 1250), bits=300, range=0, still=True, when=challenger == CH_ANDROMON, alone=challenger == CH_ANDROMON)
 
-
-@site.on_enter(when=recruited(Species.Andromon))
-def challenge_away_andromon():
-    if not engine.game_beaten or challenger != CH_ANDROMON or challenge_won:
-        andromon.leave()
 
 
 @andromon.on_talk
 def challenge_andromon():
-    if challenger != CH_ANDROMON or challenge_won:
+    if challenger != CH_ANDROMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_andromon():
                 give(Item.DefChip)
                 give(bits=4000)
                 narrator.say(t("andromon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(750, -750)
                 leave()

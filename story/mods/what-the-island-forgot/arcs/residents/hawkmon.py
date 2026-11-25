@@ -2,38 +2,33 @@
 # top area keeps a walkable path):
 # Hawkmon watches everything and joins if asked. No fight. Its home is Birdra Transport (city/birdra-transport.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_HAWKMON
+from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_HAWKMON
 
 ledge = screen(Screen.great_canyon_entrance)
-hawkmon = ledge.npc(Species.Hawkmon, at=(1200, -450), range=0, still=True, when=not recruited(Species.Hawkmon) or trigger(50))
+hawkmon = ledge.npc(Species.Hawkmon, at=(1200, -450), range=0, still=True, when=not recruited(Species.Hawkmon) or new_challenger == CH_HAWKMON, alone=new_challenger == CH_HAWKMON)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Hawkmon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home (city/birdra-transport.py).
-@ledge.on_enter(when=recruited(Species.Hawkmon) and engine.game_beaten)
-def challenge_away_hawkmon():
-    if challenger != CH_HAWKMON or challenge_won:
-        hawkmon.leave()
-
 
 def challenge_hawkmon():
-    if challenger != CH_HAWKMON or challenge_won:
+    if new_challenger != CH_HAWKMON:
         say(t("challenge.home"))
         leave()
     else:
-        if challenge_tried:
+        if new_challenge_tried:
             say(t("hawkmon.challenge.retry"))
         else:
             say(t("hawkmon.challenge.intro1"), t("hawkmon.challenge.intro2"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
-            challenge_tried.set()
-            pstat(CHALLENGE_ARMED).set(1)
+            new_challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(2)
             if fight(hawkmon, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
                 say(t("hawkmon.challenge.won"))
                 give(Item.HawkRadish)
                 give(bits=1500)
                 narrator.say(t("hawkmon.challenge.reward"))
-                challenge_won.set()
+                new_challenger.add(CHALLENGE_BEATEN)
                 run(-1200, -1150)
                 leave()
 

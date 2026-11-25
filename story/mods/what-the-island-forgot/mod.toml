@@ -11,4 +11,4 @@ sources = ["early-game.py", "arcs/works/wild-screens.dws", "arcs/residents/beetl
 [save]
 namespace = "wtif"
 flags = "717-786"                           # the original engine's free flags (717-799); save.lock keeps the numbers
-vars = "9-15"                               # saved counters: the original engine's free ones are 7-15 (7 is the curling cups'); save.lock pins each
+vars = "8-15"                               # saved counters: the original engine's free ones are 7-15 (7 is the curling cups'); save.lock pins each

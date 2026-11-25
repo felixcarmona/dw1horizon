@@ -1,24 +1,19 @@
 # Native Forest 111: Greymon, near where it was recruited in the original game; it keeps the arena desk.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_GREYMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_GREYMON
 
 site = screen(Screen.native_forest_111)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Greymon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-greymon = site.npc(Species.Greymon, at=(-150, 750), bits=300, range=0, still=True, when=recruited(Species.Greymon))
+greymon = site.npc(Species.Greymon, at=(-150, 750), bits=300, range=0, still=True, when=challenger == CH_GREYMON, alone=challenger == CH_GREYMON)
 
-
-@site.on_enter(when=recruited(Species.Greymon))
-def challenge_away_greymon():
-    if not engine.game_beaten or challenger != CH_GREYMON or challenge_won:
-        greymon.leave()
 
 
 @greymon.on_talk
 def challenge_greymon():
-    if challenger != CH_GREYMON or challenge_won:
+    if challenger != CH_GREYMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_greymon():
                 give(Item.MetalPart)
                 give(bits=2500)
                 narrator.say(t("greymon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(-1650, -1250)
                 leave()

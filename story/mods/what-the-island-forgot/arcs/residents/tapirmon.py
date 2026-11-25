@@ -1,10 +1,10 @@
 # Dragon Eye Lake 6: Tapirmon sleeps and talks about the dreams it has eaten; the second talk wakes it. No fight. Its home
 # is the Market Shed (district/market-shed.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_TAPIRMON
+from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_TAPIRMON
 
 lake = screen(Screen.dragon_eye_lake_6)
-tapirmon = lake.npc(Species.Tapirmon, at=(650, -2000), range=0, still=True, when=not recruited(Species.Tapirmon) or trigger(50))
+tapirmon = lake.npc(Species.Tapirmon, at=(650, -2000), range=0, still=True, when=not recruited(Species.Tapirmon) or new_challenger == CH_TAPIRMON, alone=new_challenger == CH_TAPIRMON)
 tapirmon_stirred = flag()
 
 
@@ -16,30 +16,25 @@ def asleep():
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Tapirmon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home (district/market-shed.py).
-@lake.on_enter(when=recruited(Species.Tapirmon) and engine.game_beaten)
-def challenge_away_tapirmon():
-    if challenger != CH_TAPIRMON or challenge_won:
-        tapirmon.leave()
-
 
 def challenge_tapirmon():
-    if challenger != CH_TAPIRMON or challenge_won:
+    if new_challenger != CH_TAPIRMON:
         say(t("challenge.home"))
         leave()
     else:
-        if challenge_tried:
+        if new_challenge_tried:
             say(t("tapirmon.challenge.retry"))
         else:
             say(t("tapirmon.challenge.intro1"), t("tapirmon.challenge.intro2"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
-            challenge_tried.set()
-            pstat(CHALLENGE_ARMED).set(1)
+            new_challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(2)
             if fight(tapirmon, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
                 say(t("tapirmon.challenge.won"))
                 give(Item.RestPillow)
                 give(bits=1500)
                 narrator.say(t("tapirmon.challenge.reward"))
-                challenge_won.set()
+                new_challenger.add(CHALLENGE_BEATEN)
                 run(1350, -4400)
                 leave()
 

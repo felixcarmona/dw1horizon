@@ -1,24 +1,19 @@
 # Mangrove Region 15: Betamon, recruited here in the original game; it keeps a shop in the lower city.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_BETAMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_BETAMON
 
 site = screen(Screen.mangrove_region_15)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Betamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-betamon = site.npc(Species.Betamon, at=(350, 1700), bits=300, range=0, still=True, when=recruited(Species.Betamon))
+betamon = site.npc(Species.Betamon, at=(350, 1700), bits=300, range=0, still=True, when=challenger == CH_BETAMON, alone=challenger == CH_BETAMON)
 
-
-@site.on_enter(when=recruited(Species.Betamon))
-def challenge_away_betamon():
-    if not engine.game_beaten or challenger != CH_BETAMON or challenge_won:
-        betamon.leave()
 
 
 @betamon.on_talk
 def challenge_betamon():
-    if challenger != CH_BETAMON or challenge_won:
+    if challenger != CH_BETAMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_betamon():
                 give(Item.Waterbottle)
                 give(bits=1500)
                 narrator.say(t("betamon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(-2150, 1700)
                 leave()

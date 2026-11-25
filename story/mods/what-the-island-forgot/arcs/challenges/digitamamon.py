@@ -1,24 +1,19 @@
 # Mt. Infinity 219: Digitamamon, near where it was recruited in the original game; it works at the Restaurant.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_DIGITAMAMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_DIGITAMAMON
 
 site = screen(Screen.mt_infinity_219)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Digitamamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-digitamamon = site.npc(Species.Digitamamon, at=(250, 1050), bits=300, range=0, still=True, when=recruited(Species.Digitamamon))
+digitamamon = site.npc(Species.Digitamamon, at=(250, 1050), bits=300, range=0, still=True, when=challenger == CH_DIGITAMAMON, alone=challenger == CH_DIGITAMAMON)
 
-
-@site.on_enter(when=recruited(Species.Digitamamon))
-def challenge_away_digitamamon():
-    if not engine.game_beaten or challenger != CH_DIGITAMAMON or challenge_won:
-        digitamamon.leave()
 
 
 @digitamamon.on_talk
 def challenge_digitamamon():
-    if challenger != CH_DIGITAMAMON or challenge_won:
+    if challenger != CH_DIGITAMAMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_digitamamon():
                 give(Item.MystyEgg)
                 give(bits=4000)
                 narrator.say(t("digitamamon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(-2150, 1750)
                 leave()

@@ -1,24 +1,19 @@
 # Kunemon's Bed 1: Kunemon, recruited here in the original game; it lives in the city (city/lower-city.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_KUNEMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_KUNEMON
 
 site = screen(Screen.kunemons_bed)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Kunemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-kunemon = site.npc(Species.Kunemon, at=(-50, -800), bits=300, range=0, still=True, when=recruited(Species.Kunemon))
+kunemon = site.npc(Species.Kunemon, at=(-50, -800), bits=300, range=0, still=True, when=challenger == CH_KUNEMON, alone=challenger == CH_KUNEMON)
 
-
-@site.on_enter(when=recruited(Species.Kunemon))
-def challenge_away_kunemon():
-    if not engine.game_beaten or challenger != CH_KUNEMON or challenge_won:
-        kunemon.leave()
 
 
 @kunemon.on_talk
 def challenge_kunemon():
-    if challenger != CH_KUNEMON or challenge_won:
+    if challenger != CH_KUNEMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_kunemon():
                 give(Item.CalmBerry)
                 give(bits=1500)
                 narrator.say(t("kunemon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(1450, 1200)
                 leave()

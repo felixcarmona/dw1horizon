@@ -3,7 +3,7 @@
 from dw import *
 from dw.names import *
 from dw.base.birdra_transport import transport, leomon, birdramon
-from ..state import memories, m8_birdramon, memory_news, challenger, challenge_won, CH_LEOMON, CH_HAWKMON
+from ..state import challenger, new_challenger, memories, m8_birdramon, memory_news, CH_LEOMON, CH_HAWKMON
 
 hawkmon = transport.npc(Species.Hawkmon, at=(250, -350), behaves_like=leomon, when=recruited(Species.Hawkmon))
 
@@ -29,7 +29,7 @@ def the_other_one():
 # it is not here.
 @transport.on_enter(when=engine.game_beaten)
 def challenger_out_leomon():
-    if challenger == CH_LEOMON and not challenge_won:
+    if challenger == CH_LEOMON:
         leomon.leave()
 
 
@@ -37,5 +37,5 @@ def challenger_out_leomon():
 # spot, it is not here.
 @transport.on_enter(when=engine.game_beaten)
 def challenger_out_hawkmon():
-    if challenger == CH_HAWKMON and not challenge_won:
+    if new_challenger == CH_HAWKMON:
         hawkmon.leave()

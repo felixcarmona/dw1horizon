@@ -2,7 +2,7 @@
 from dw import *
 from dw.base.misty_trees_120 import trees, darklizardmon
 from ...state import fog_kept
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_GABUMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_GABUMON
 
 @trees.on_enter(when=fog_kept)
 def hidden_forest():
@@ -11,18 +11,13 @@ def hidden_forest():
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Gabumon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home, at Treasure Hunt (city/treasure-hunt.py).
-gabumon = trees.npc(Species.Gabumon, at=(-1050, 1250), bits=300, range=0, still=True, when=recruited(Species.Gabumon) and trigger(50))
+gabumon = trees.npc(Species.Gabumon, at=(-1050, 1250), bits=300, range=0, still=True, when=challenger == CH_GABUMON, alone=challenger == CH_GABUMON)
 
-
-@trees.on_enter(when=recruited(Species.Gabumon) and engine.game_beaten)
-def challenge_away_gabumon():
-    if challenger != CH_GABUMON or challenge_won:
-        gabumon.leave()
 
 
 @gabumon.on_talk
 def challenge_gabumon():
-    if challenger != CH_GABUMON or challenge_won:
+    if challenger != CH_GABUMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -38,6 +33,6 @@ def challenge_gabumon():
                 give(Item.WhiteFang)
                 give(bits=1500)
                 narrator.say(t("gabumon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(1450, 1250)
                 leave()

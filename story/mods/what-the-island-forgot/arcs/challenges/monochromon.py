@@ -1,24 +1,19 @@
 # Great Canyon Top Area 44: Monochromon, near where it was recruited in the original game; it works at the item shop.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_MONOCHROMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_MONOCHROMON
 
 site = screen(Screen.great_canyon_top_area_44)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Monochromon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-monochromon = site.npc(Species.Monochromon, at=(-1350, -650), bits=300, range=0, still=True, when=recruited(Species.Monochromon))
+monochromon = site.npc(Species.Monochromon, at=(-1350, -650), bits=300, range=0, still=True, when=challenger == CH_MONOCHROMON, alone=challenger == CH_MONOCHROMON)
 
-
-@site.on_enter(when=recruited(Species.Monochromon))
-def challenge_away_monochromon():
-    if not engine.game_beaten or challenger != CH_MONOCHROMON or challenge_won:
-        monochromon.leave()
 
 
 @monochromon.on_talk
 def challenge_monochromon():
-    if challenger != CH_MONOCHROMON or challenge_won:
+    if challenger != CH_MONOCHROMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_monochromon():
                 give(Item.MonoStone)
                 give(bits=2500)
                 narrator.say(t("monochromon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(-400, -2650)
                 leave()

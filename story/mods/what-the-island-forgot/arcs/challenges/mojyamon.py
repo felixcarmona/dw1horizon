@@ -1,24 +1,19 @@
 # Freezeland 133: Mojyamon, recruited here in the original game; it runs the trades.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_MOJYAMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_MOJYAMON
 
 site = screen(Screen.freezeland_133)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Mojyamon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-mojyamon = site.npc(Species.Mojyamon, at=(2000, -3400), bits=300, range=0, still=True, when=recruited(Species.Mojyamon))
+mojyamon = site.npc(Species.Mojyamon, at=(2000, -3400), bits=300, range=0, still=True, when=challenger == CH_MOJYAMON, alone=challenger == CH_MOJYAMON)
 
-
-@site.on_enter(when=recruited(Species.Mojyamon))
-def challenge_away_mojyamon():
-    if not engine.game_beaten or challenger != CH_MOJYAMON or challenge_won:
-        mojyamon.leave()
 
 
 @mojyamon.on_talk
 def challenge_mojyamon():
-    if challenger != CH_MOJYAMON or challenge_won:
+    if challenger != CH_MOJYAMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_mojyamon():
                 give(Item.HairGrower)
                 give(bits=2500)
                 narrator.say(t("mojyamon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(2000, -900)
                 leave()

@@ -1,7 +1,7 @@
 # The Restaurant (214, the first kitchen): Kiwimon, from the Gear Savanna, stays near the food.
 from dw import *
 from dw.base.restaurant_214 import restaurant
-from ..state import challenger, challenge_won, CH_KIWIMON
+from ..state import new_challenger, CH_KIWIMON
 
 kiwimon = restaurant.npc(Species.Kiwimon, at=(-550, -450), when=recruited(Species.Kiwimon))
 
@@ -15,5 +15,5 @@ def talk():
 # spot, it is not here.
 @restaurant.on_enter(when=engine.game_beaten)
 def challenger_out_kiwimon():
-    if challenger == CH_KIWIMON and not challenge_won:
+    if new_challenger == CH_KIWIMON:
         kiwimon.leave()

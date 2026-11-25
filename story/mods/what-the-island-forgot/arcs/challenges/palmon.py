@@ -1,24 +1,19 @@
-# Native Forest 2: Palmon, recruited here in the original game; it lives in the city.
+# Native Forest 4, next to Native Forest 2 where it was recruited in the original game (screen 2 has no heap left for it beside the night hunter); it lives in the city.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_PALMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_PALMON
 
-site = screen(Screen.native_forest_2)
+site = screen(Screen.native_forest_4)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Palmon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-palmon = site.npc(Species.Palmon, at=(1750, 2450), bits=300, range=0, still=True, when=recruited(Species.Palmon))
+palmon = site.npc(Species.Palmon, at=(2650, -500), bits=300, range=0, still=True, when=challenger == CH_PALMON, alone=challenger == CH_PALMON)
 
-
-@site.on_enter(when=recruited(Species.Palmon))
-def challenge_away_palmon():
-    if not engine.game_beaten or challenger != CH_PALMON or challenge_won:
-        palmon.leave()
 
 
 @palmon.on_talk
 def challenge_palmon():
-    if challenger != CH_PALMON or challenge_won:
+    if challenger != CH_PALMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_palmon():
                 give(Item.Digipine)
                 give(bits=1500)
                 narrator.say(t("palmon.challenge.reward"))
-                challenge_won.set()
-                run(250, 450)
+                challenger.add(CHALLENGE_BEATEN)
+                run(3100, -100)
                 leave()

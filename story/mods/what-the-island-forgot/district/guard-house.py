@@ -1,6 +1,6 @@
 # 359, the Guard House: the Works' watch post. Knightmon, who guarded a door to nothing on Mt. Infinity, has a wall to guard now.
 from dw import *
-from ..state import challenger, challenge_won, CH_KNIGHTMON
+from ..state import new_challenger, CH_KNIGHTMON
 
 guard_house = new_screen(359, map="build/what-the-island-forgot-maps/screens/BARR03.MAP")
 knightmon = guard_house.npc(Species.Knightmon, at=(-500, -400), range=0, when=recruited(Species.Knightmon))
@@ -18,5 +18,5 @@ def talk():
 # spot, it is not here.
 @guard_house.on_enter
 def challenger_out_knightmon():
-    if challenger == CH_KNIGHTMON and not challenge_won:
+    if new_challenger == CH_KNIGHTMON:
         knightmon.leave()

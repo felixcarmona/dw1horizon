@@ -1,38 +1,33 @@
 # Native Forest 4: Floramon guards a seed that wants patience; a Sweet Nut wakes it (consumed, once). No fight. Its home
 # is the Market Shed (district/market-shed.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_FLORAMON
+from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_FLORAMON
 
 forest = screen(Screen.native_forest_4)
-floramon = forest.npc(Species.Floramon, at=(2550, 800), range=0, still=True, when=not recruited(Species.Floramon) or trigger(50))
+floramon = forest.npc(Species.Floramon, at=(2550, 800), range=0, still=True, when=not recruited(Species.Floramon) or new_challenger == CH_FLORAMON, alone=new_challenger == CH_FLORAMON)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Floramon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home (district/market-shed.py).
-@forest.on_enter(when=recruited(Species.Floramon) and engine.game_beaten)
-def challenge_away_floramon():
-    if challenger != CH_FLORAMON or challenge_won:
-        floramon.leave()
-
 
 def challenge_floramon():
-    if challenger != CH_FLORAMON or challenge_won:
+    if new_challenger != CH_FLORAMON:
         say(t("challenge.home"))
         leave()
     else:
-        if challenge_tried:
+        if new_challenge_tried:
             say(t("floramon.challenge.retry"))
         else:
             say(t("floramon.challenge.intro1"), t("floramon.challenge.intro2"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
-            challenge_tried.set()
-            pstat(CHALLENGE_ARMED).set(1)
+            new_challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(2)
             if fight(floramon, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
                 say(t("floramon.challenge.won"))
                 give(Item.BigBerry)
                 give(bits=1500)
                 narrator.say(t("floramon.challenge.reward"))
-                challenge_won.set()
+                new_challenger.add(CHALLENGE_BEATEN)
                 run(3150, -800)
                 leave()
 

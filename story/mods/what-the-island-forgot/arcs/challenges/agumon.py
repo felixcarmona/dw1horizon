@@ -1,24 +1,19 @@
 # Native Forest 109: Agumon, recruited here in the original game; it works at the Item Keeper.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_AGUMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_AGUMON
 
 site = screen(Screen.native_forest_109)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Agumon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-agumon = site.npc(Species.Agumon, at=(-250, 1700), bits=300, range=0, still=True, when=recruited(Species.Agumon))
+agumon = site.npc(Species.Agumon, at=(-250, 1700), bits=300, range=0, still=True, when=challenger == CH_AGUMON, alone=challenger == CH_AGUMON)
 
-
-@site.on_enter(when=recruited(Species.Agumon))
-def challenge_away_agumon():
-    if not engine.game_beaten or challenger != CH_AGUMON or challenge_won:
-        agumon.leave()
 
 
 @agumon.on_talk
 def challenge_agumon():
-    if challenger != CH_AGUMON or challenge_won:
+    if challenger != CH_AGUMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_agumon():
                 give(Item.GreyClaws)
                 give(bits=1500)
                 narrator.say(t("agumon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(-250, -800)
                 leave()

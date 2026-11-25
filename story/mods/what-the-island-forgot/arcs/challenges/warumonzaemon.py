@@ -1,24 +1,19 @@
 # Toy Mansion 149: WaruMonzaemon, near where it was recruited in the original game; it lives in the city.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_WARUMONZAEMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_WARUMONZAEMON
 
 site = screen(Screen.toy_mansion_149)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day WaruMonzaemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-warumonzaemon = site.npc(Species.WaruMonzaemon, at=(0, -250), bits=300, range=0, still=True, when=recruited(Species.WaruMonzaemon))
+warumonzaemon = site.npc(Species.WaruMonzaemon, at=(0, -250), bits=300, range=0, still=True, when=challenger == CH_WARUMONZAEMON, alone=challenger == CH_WARUMONZAEMON)
 
-
-@site.on_enter(when=recruited(Species.WaruMonzaemon))
-def challenge_away_warumonzaemon():
-    if not engine.game_beaten or challenger != CH_WARUMONZAEMON or challenge_won:
-        warumonzaemon.leave()
 
 
 @warumonzaemon.on_talk
 def challenge_warumonzaemon():
-    if challenger != CH_WARUMONZAEMON or challenge_won:
+    if challenger != CH_WARUMONZAEMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_warumonzaemon():
                 give(Item.XBandage)
                 give(bits=4000)
                 narrator.say(t("warumonzaemon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(1450, 800)
                 leave()

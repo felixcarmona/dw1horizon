@@ -1,38 +1,33 @@
 # Sewer 163: Clockmon's hands have stopped. Between 11 and 13 the hour looks right to it and it will not listen; at any other
 # hour it asks a riddle, as often as needed. No fight. Its home is the Courtyard (district/the-courtyard.py).
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_CLOCKMON
+from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_CLOCKMON
 
 sewer = screen(Screen.sewer_163)
-clockmon = sewer.npc(Species.Clockmon, at=(-350, -900), range=0, still=True, when=not recruited(Species.Clockmon) or trigger(50))
+clockmon = sewer.npc(Species.Clockmon, at=(-350, -900), range=0, still=True, when=not recruited(Species.Clockmon) or new_challenger == CH_CLOCKMON, alone=new_challenger == CH_CLOCKMON)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Clockmon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home (district/the-courtyard.py).
-@sewer.on_enter(when=recruited(Species.Clockmon) and engine.game_beaten)
-def challenge_away_clockmon():
-    if challenger != CH_CLOCKMON or challenge_won:
-        clockmon.leave()
-
 
 def challenge_clockmon():
-    if challenger != CH_CLOCKMON or challenge_won:
+    if new_challenger != CH_CLOCKMON:
         say(t("challenge.home"))
         leave()
     else:
-        if challenge_tried:
+        if new_challenge_tried:
             say(t("clockmon.challenge.retry"))
         else:
             say(t("clockmon.challenge.intro1"), t("clockmon.challenge.intro2"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
-            challenge_tried.set()
-            pstat(CHALLENGE_ARMED).set(1)
+            new_challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(2)
             if fight(clockmon, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
                 say(t("clockmon.challenge.won"))
                 give(Item.AutoPilot)
                 give(bits=2500)
                 narrator.say(t("clockmon.challenge.reward"))
-                challenge_won.set()
+                new_challenger.add(CHALLENGE_BEATEN)
                 run(-1750, -250)
                 leave()
 

@@ -1,24 +1,19 @@
 # Lava Cave 31: Meramon, recruited here in the original game; it cooks at the Restaurant.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_MERAMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_MERAMON
 
 site = screen(Screen.lava_cave_31)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Meramon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-meramon = site.npc(Species.Meramon, at=(-1550, -200), bits=300, range=0, still=True, when=recruited(Species.Meramon))
+meramon = site.npc(Species.Meramon, at=(-1550, -200), bits=300, range=0, still=True, when=challenger == CH_MERAMON, alone=challenger == CH_MERAMON)
 
-
-@site.on_enter(when=recruited(Species.Meramon))
-def challenge_away_meramon():
-    if not engine.game_beaten or challenger != CH_MERAMON or challenge_won:
-        meramon.leave()
 
 
 @meramon.on_talk
 def challenge_meramon():
-    if challenger != CH_MERAMON or challenge_won:
+    if challenger != CH_MERAMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_meramon():
                 give(Item.GiantMeat)
                 give(bits=2500)
                 narrator.say(t("meramon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(450, -1700)
                 leave()

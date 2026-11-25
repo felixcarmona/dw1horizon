@@ -1,24 +1,19 @@
 # Drill Tunnel 32: Drimogemon, recruited here in the original game; it runs the treasure hunt.
 from dw import *
-from ...state import challenger, challenge_won, challenge_tried, CHALLENGE_ARMED, CH_DRIMOGEMON
+from ...state import challenger, challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_DRIMOGEMON
 
 site = screen(Screen.drill_tunnel_32)
 
 
 # Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Drimogemon is the challenger
 # and has not been beaten yet it waits here, stronger; any other day it is home.
-drimogemon = site.npc(Species.Drimogemon, at=(-400, -1400), bits=300, range=0, still=True, when=recruited(Species.Drimogemon))
+drimogemon = site.npc(Species.Drimogemon, at=(-400, -1400), bits=300, range=0, still=True, when=challenger == CH_DRIMOGEMON, alone=challenger == CH_DRIMOGEMON)
 
-
-@site.on_enter(when=recruited(Species.Drimogemon))
-def challenge_away_drimogemon():
-    if not engine.game_beaten or challenger != CH_DRIMOGEMON or challenge_won:
-        drimogemon.leave()
 
 
 @drimogemon.on_talk
 def challenge_drimogemon():
-    if challenger != CH_DRIMOGEMON or challenge_won:
+    if challenger != CH_DRIMOGEMON:
         say(t("challenge.home"))
         leave()
     else:
@@ -34,6 +29,6 @@ def challenge_drimogemon():
                 give(Item.Digimushrm)
                 give(bits=2500)
                 narrator.say(t("drimogemon.challenge.reward"))
-                challenge_won.set()
+                challenger.add(CHALLENGE_BEATEN)
                 run(300, 1000)
                 leave()
