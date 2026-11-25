@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
 """Resident challenges end to end (content/tables/resident-challenges.json, docs/mods/resident-challenges.md).
 
-  xvfb-run -a python3 tools/dev/playtest/resident_challenges.py DISC --exe EXE --card CARD [--partner TYPE]
+  xvfb-run -a python3 tools/dev/playtest/resident_challenges.py DISC --exe EXE --card CARD [--partner TYPE] [--rows R ...]
 
 Original 2 MB RAM. With the game beaten (flag 50) and every challenger recruited, it lets the clock run over midnight
 and requires: a challenger picked (its row in the saved var, its bit in the bag), absent from its city home and waiting
 at its recruit site; its fight starts with every stat max(sheet x (100 + sheetPercent), partner x (100 + partnerPercent))
 / 100, no late-game step (NORMAL fromHp 0) and an empty bag, all put back after the battle; a lost fight leaves it at
 its site with the won flag clear; a won fight pays the item and the bits, sets the won flag and it runs off. A second
-midnight picks another resident, never the same, and adds its bit to the bag. Screenshots and result.json under --out.
+midnight picks another resident, never the same, and adds its bit to the bag; the bag and the challenger come back
+from a save at Jijimon's machine. Every row is placed on its day and on another's (a row with no home: its site only);
+--rows (names or row numbers) lose and win those rows' fights too. Screenshots and result.json under --out.
 """
 from pathlib import Path
 import argparse
 import json
 import re
+import shutil
 import struct
 import sys
 import time
@@ -180,13 +183,63 @@ class Run:
         return info
 
 
+    def fight(self, which):
+        """Today's challenger is row `which`: away from home and at its site; a lost fight puts back what the challenge
+        took and leaves it there; a won one, from the same spot, pays the item and the bits, sets the flag, and it goes."""
+        e, out, save = self.e, self.out, self.save
+        row = self.rows[which - 1]; tag = f'row{which}'; result = {}
+        home = self.home_screen(row)
+        if home is not None:
+            self.go(home, tag + '-home'); slot, _ = self.npc_slot(self.home_species(row))
+            result['atHome'] = slot is not None
+            assert slot is None, f"{row['name']} still at home on {home}"
+        self.go(row['site']['screen'], tag + '-site')
+        slot, pd = self.npc_slot(row['species']); assert slot is not None, f"{row['name']} not at its site"
+        partner = dict(zip(('off', 'def', 'speed', 'brain'), e.peek('PARTNER_ENTITY+0x38', '4h')))
+        partner.update(zip(('hp', 'mp'), e.peek('PARTNER_ENTITY+0x48', '2h')))
+        result['partner'] = partner
+        before = self.state(); site = out / f'{tag}-site.state'; e.run('save', str(site))
+
+        # a lost fight: everything put back, it is still there
+        assert self.talk_into_battle(slot, tag + '-lost'), f"{row['name']}: the talk did not start a battle"
+        b = self.battle(pd, partner, row['species'], 'lost', tag + '-lost'); result['lostBattle'] = b
+        assert b['stats'] == b['expected'], b
+        assert b['fromHp'] == 0 and b['noBag'] == 1 and b['ended'], b
+        e.wait(5); e.in_control(60); after = self.state(); result['afterLoss'] = after
+        # the usual defeat (the bag may lose items); what the challenge took is back: the late step and the bag switch
+        assert after['fromHp'] == self.fromHpNormal and e.peek('MOD_CHALLENGE_NO_BAG', 'B') == 0, after
+        assert after['tried'] == 1 and after['won'] == 0 and after['row'] == which, after
+        self.go(row['site']['screen'], tag + '-site-after-loss')
+        result['stillThereAfterLoss'] = self.npc_slot(row['species'])[0] is not None
+        assert result['stillThereAfterLoss'], f"{row['name']} gone after a lost fight"
+
+        # a won fight from the same spot: reward, the flag, it leaves
+        e.run('load', str(site)); e.wait(3)
+        assert self.talk_into_battle(slot, tag + '-won'), f"{row['name']}: the talk did not start a battle"
+        b = self.battle(pd, partner, row['species'], 'won', tag + '-won'); result['wonBattle'] = b
+        assert b['stats'] == b['expected'] and b['fromHp'] == 0 and b['noBag'] == 1 and b['ended'], b
+        for _ in range(40):
+            if e.in_control(1) and self.flag(save['wonFlag']): break
+            e.press('CONFIRM', 6); e.wait(1)
+        e.wait(6); self.shot(tag + '-after-win'); after = self.state(); result['afterWin'] = after
+        assert after['won'] == 1 and after['fromHp'] == self.fromHpNormal, after
+        assert after['items'].get(row['item'], 0) == before['items'].get(row['item'], 0) + 1, (before, after)
+        assert after['money'] >= before['money'] + row['bits'], (before['money'], after['money'])
+        result['goneAfterWin'] = self.npc_slot(row['species'])[0] is None
+        assert result['goneAfterWin'], f"{row['name']} still at its site after the win"
+        print(row['name'], 'lost and won', flush=True)
+        return result
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('disc'); ap.add_argument('--exe', required=True); ap.add_argument('--card', required=True)
     ap.add_argument('--partner', type=int, default=3, help='partner type on the test card (3 = Agumon, a Rookie)')
+    ap.add_argument('--rows', nargs='*', default=[], help="also lose and win these rows' fights (name or number)")
     ap.add_argument('--out', default='build/resident-challenges'); ap.add_argument('--port', type=int, default=44211)
     a = ap.parse_args(); out = Path(a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     doc = json.loads((ROOT / 'content/tables/resident-challenges.json').read_text())
+    names = [row['name'] for row in doc['residents']]
+    a.rows = [int(n) if n.isdigit() else names.index(n) + 1 for n in a.rows]
     e = Emu(a.disc, a.exe, a.port, str(out / 'emu'))
     for name, (addr, _, _) in elf_symbols(a.exe + '.elf').items(): e.table.setdefault(name, addr)
     e.env['EMU_ARGS'] = '-interpreter -debugger'
@@ -199,7 +252,7 @@ def main():
         e.poke('MOD_OPT_STORY', struct.pack('<i', 1))
         e.gs('trigger', '50', '1')
         for row in doc['residents']: r.recruit(row['species'])
-        result['fromHpNormal'] = e.peek(f'MOD_BATTLE+{2 * FROM_HP}', 'h')
+        result['fromHpNormal'] = r.fromHpNormal = e.peek(f'MOD_BATTLE+{2 * FROM_HP}', 'h')
         assert result['fromHpNormal'] > 0, 'NORMAL has no late step in this build'
 
         day1 = r.midnight('day1')
@@ -208,14 +261,16 @@ def main():
         r.fixture = out / 'day1.state'; e.run('save', str(r.fixture))
         for i, each in enumerate(doc['residents'], 1):
             seen = {}
-            home, at_home = r.home_screen(each), r.home_species(each)
+            home = r.home_screen(each); at_home = home is not None and r.home_species(each)
             r.fixture_row = i % len(doc['residents']) + 1
             e.gs('pstat', str(doc['save']['challengerVar']), str(r.fixture_row))                     # another's day
-            r.go(home, f'row{i}-home-other-day'); seen['homeOtherDay'] = r.npc_slot(at_home)[0] is not None
+            if home is not None:
+                r.go(home, f'row{i}-home-other-day'); seen['homeOtherDay'] = r.npc_slot(at_home)[0] is not None
             r.go(each['site']['screen'], f'row{i}-site-other-day'); seen['siteOtherDay'] = r.npc_slot(each['species'])[0] is None
             r.fixture_row = i
             e.gs('pstat', str(doc['save']['challengerVar']), str(i))                                  # its day
-            r.go(home, f'row{i}-home'); seen['home'] = r.npc_slot(at_home)[0] is None
+            if home is not None:
+                r.go(home, f'row{i}-home'); seen['home'] = r.npc_slot(at_home)[0] is None
             r.go(each['site']['screen'], f'row{i}-site'); seen['site'] = r.npc_slot(each['species'])[0] is not None
             result['rows'][each['name']] = seen; print(each['name'], seen, flush=True)
         e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.fixture_row = day1['row']
@@ -225,49 +280,30 @@ def main():
         row = doc['residents'][day1['row'] - 1]; result['challenger1'] = row['name']
         assert day1['bag'] == 1 << (day1['row'] - 1) and not day1['won'] and not day1['tried'], day1
 
-        home = r.home_screen(row)
-        if home is not None:
-            r.go(home, 'home'); slot, _ = r.npc_slot(r.home_species(row))
-            result['atHome'] = slot is not None
-            assert slot is None, f"{row['name']} still at home on {home}"
-        r.go(row['site']['screen'], 'site')
-        slot, pd = r.npc_slot(row['species']); assert slot is not None, f"{row['name']} not at its site"
-        partner = dict(zip(('off', 'def', 'speed', 'brain'), e.peek('PARTNER_ENTITY+0x38', '4h')))
-        partner.update(zip(('hp', 'mp'), e.peek('PARTNER_ENTITY+0x48', '2h')))
-        result['partner'] = partner
-        before = r.state(); e.run('save', str(out / 'site.state'))
-
-        # a lost fight: everything put back, it is still there
-        assert r.talk_into_battle(slot, 'lost'), 'the talk did not start a battle'
-        b = r.battle(pd, partner, row['species'], 'lost', 'lost'); result['lostBattle'] = b
-        assert b['stats'] == b['expected'], b
-        assert b['fromHp'] == 0 and b['noBag'] == 1 and b['ended'], b
-        e.wait(5); e.in_control(60); after = r.state(); result['afterLoss'] = after
-        # the usual defeat (the bag may lose items); what the challenge took is back: the late step and the bag switch
-        assert after['fromHp'] == result['fromHpNormal'] and e.peek('MOD_CHALLENGE_NO_BAG', 'B') == 0, after
-        assert after['tried'] == 1 and after['won'] == 0 and after['row'] == day1['row'], after
-        r.go(row['site']['screen'], 'site-after-loss')
-        result['stillThereAfterLoss'] = r.npc_slot(row['species'])[0] is not None
-        assert result['stillThereAfterLoss']
-
-        # a won fight from the same spot: reward, the flag, it runs off
-        e.run('load', str(out / 'site.state')); e.wait(3)
-        assert r.talk_into_battle(slot, 'won'), 'the talk did not start a battle'
-        b = r.battle(pd, partner, row['species'], 'won', 'won'); result['wonBattle'] = b
-        assert b['stats'] == b['expected'] and b['fromHp'] == 0 and b['noBag'] == 1 and b['ended'], b
-        for _ in range(40):
-            if e.in_control(1) and r.flag(doc['save']['wonFlag']): break
-            e.press('CONFIRM', 6); e.wait(1)
-        e.wait(6); r.shot('after-win'); after = r.state(); result['afterWin'] = after
-        assert after['won'] == 1 and after['fromHp'] == result['fromHpNormal'], after
-        assert after['items'].get(row['item'], 0) == before['items'].get(row['item'], 0) + 1, (before, after)
-        assert after['money'] >= before['money'] + row['bits'], (before['money'], after['money'])
-        result['goneAfterWin'] = r.npc_slot(row['species'])[0] is None
+        result['fights'] = {}
+        for which in [day1['row']] + [n for n in a.rows if n != day1['row']]:
+            e.run('load', str(r.fixture)); e.wait(3); e.in_control()
+            e.gs('pstat', str(doc['save']['challengerVar']), str(which)); r.set_bag(day1['bag'] | 1 << (which - 1))
+            r.fixture_row = which
+            result['fights'][doc['residents'][which - 1]['name']] = r.fight(which)
+        e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.fixture_row = day1['row']
+        e.gs('pstat', str(doc['save']['challengerVar']), str(day1['row'])); r.set_bag(day1['bag'])
 
         day2 = r.midnight('day2')
         assert day2['row'] and day2['row'] != day1['row'], day2
         assert day2['bag'] == day1['bag'] | 1 << (day2['row'] - 1) and not day2['won'] and not day2['tried'], day2
         result['challenger2'] = doc['residents'][day2['row'] - 1]['name']
+
+        # the bag and today's challenger through a save at Jijimon's machine and a fresh Continue
+        r.fixture = None
+        assert e.warp(218, 2) or e.warp(218), "no control in Jijimon's house"
+        e.in_control(); e.gs('set', 'gametime_running=0'); kept = r.state()
+        e.save_at_jijimon(); e.stop()
+        saved = out / 'saved.mcd'; shutil.copyfile(e.card_out(), saved)
+        e.start(str(saved)); assert e.continue_game() == 0, 'Continue of the saved card failed'
+        e.wait(3); e.in_control(); back = r.state(); result['reloaded'] = back
+        keys = ('row', 'bag', 'won', 'tried')
+        assert [back[k] for k in keys] == [kept[k] for k in keys], (kept, back)
         result['pass'] = True
     except BaseException as error:
         result['error'] = str(error)[:2000]; r.shot('failure'); raise
