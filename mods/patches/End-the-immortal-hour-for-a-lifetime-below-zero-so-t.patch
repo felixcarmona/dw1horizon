@@ -5,7 +5,7 @@ Subject: [PATCH] End the immortal hour for a lifetime below zero, so the rite
  of return can start the death at once
 
 Saves are loaded into Jijimon's house, which arms the immortal hour, and tickDeathCondition returned
-at once during it. Only the rite of return writes a lifetime below zero (every other writer clamps
+at once during it. Only the rite of rebirth writes a lifetime below zero (every other writer clamps
 at 0), so tickDeathCondition now ignores the immortal hour for it.
 ---
  src/main/partner_impl.c | 4 +++-
@@ -20,7 +20,7 @@ index 0c9fd0ee..bd57b3ba 100644
  void tickDeathCondition(void)
  {
 -	if ((HAS_IMMORTAL_HOUR == 1) && (IMMORTAL_HOUR == HOUR)) {
-+	/* A lifetime below zero is only written by the rite of return (script 212, section 74): it ends the
++	/* A lifetime below zero is only written by the rite of rebirth (script 212, section 74): it ends the
 +	 * immortal hour, which saves loaded in Jijimon's house start with. Every other path clamps at 0. */
 +	if ((HAS_IMMORTAL_HOUR == 1) && (IMMORTAL_HOUR == HOUR) && (PARTNER_PARA.remainingLifetime >= 0)) {
  		return;
