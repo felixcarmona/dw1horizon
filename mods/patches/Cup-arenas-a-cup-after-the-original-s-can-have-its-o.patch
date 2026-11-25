@@ -1,0 +1,86 @@
+From 963fa433251161e63b88ff797fd9724e437c9d5a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 24 Nov 2026 14:01:03 +0000
+Subject: [PATCH] Cup arenas: a cup after the original's can have its own arena
+
+The arenas follow the banners in STDDAT/GRADE/NEWCUPS.BIN (tools/cup_arenas.py), a slot per arena: 54 sectors of
+textures, then 13 of model. STD_NEW_CUP_ARENA gives each of the twenty cups its slot, or -1 for the File City arena.
+STD_loadArenaAssets reads the slot of the cup being played (STD_ARENA_CUP, set from the cup number before the arena
+loads) only for the File City arena's place (id 0): Beetle Land keeps its own. The textures go to the places the File
+City arena's take in video memory and the model to a heap block of the same 13 sectors, so a new arena costs no
+memory; the collision and the renderer stay the File City arena's, so the model has its three objects.
+
+No main executable cost: all of it is in the STD overlay.
+---
+ src/std/std_setup.c | 40 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 37 insertions(+), 3 deletions(-)
+
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index 018b1bf..cba649a 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -164,6 +164,14 @@ int16_t STD_NEW_CUP_BASE_STATS[20] = {
+ #define STD_NEW_CUPS		20
+ #define STD_NEW_CUP_SECTORS	17
+ static char STD_PATH_NEW_CUPS[] = "\\STDDAT\\GRADE\\NEWCUPS.BIN";
++/* MOD (cup arenas): the arenas of the cups after the original's follow the banners in the same file
++ * (tools/cup_arenas.py): a slot per arena of STD_ARENA_TIM_SECTORS of textures, then STD_ARENA_TMD_SECTORS of model,
++ * both no larger than the File City arena's, so they take its video memory and its heap block. Every new cup has its
++ * own, in cup order. */
++#define STD_ARENA_TIM_SECTORS	54
++#define STD_ARENA_TMD_SECTORS	13
++#define STD_ARENA_FIRST_SECTOR	(MOD_LANGS * STD_NEW_CUPS * STD_NEW_CUP_SECTORS)
++static int16_t STD_ARENA_CUP;
+ 
+ char STD_PATH_GRADE_STDDAT_GRADE_GRADED_TIM[] = "\\STDDAT\\GRADE\\GRADED.TIM";
+ 
+@@ -268,6 +276,7 @@ void STD_initializeTournament(int32_t arena, uint16_t *arg)
+ 	STD_removeOverworldObjects();
+ 	STD_initializeCamera();
+ 	STD_initializeLighting(arena);
++	STD_ARENA_CUP = arg[0]; /* MOD (cup arenas) */
+ 	STD_loadArenaAssets(arena);
+ 	STD_loadWinLoseModel();
+ 	if (arg[0] < 23) {
+@@ -849,10 +858,35 @@ void STD_loadArenaAssets(id)
+ // clang-format on
+ {
+ 	int32_t i;
++	int32_t slot;
++	GsIMAGE img;
++	int32_t *p;
+ 
+-	STD_loadArenaTIMToVRAM(STD_ARENA_TIMS[id], ((uint8_t *)STD_ARENA_COUNTS.timCount)[id]);
+-	STD_ARENA_MODEL = malloc3(((int32_t)lookupFileSize(STD_ARENA_MODELS[id]) + 0x7ff) & ~0x7ff);
+-	readFile(STD_ARENA_MODELS[id], STD_ARENA_MODEL);
++	slot = -1;
++	if (id == 0 && STD_ARENA_CUP >= 23 && STD_ARENA_CUP < 23 + STD_NEW_CUPS) {
++		slot = STD_ARENA_CUP - 23;
++	}
++	if (slot >= 0) {
++		/* MOD (cup arenas): its textures (TIMs one after another, up to a word that is not a TIM's), then its model */
++		slot = STD_ARENA_FIRST_SECTOR + slot * (STD_ARENA_TIM_SECTORS + STD_ARENA_TMD_SECTORS);
++		p = (int32_t *)GENERAL_BUFFER;
++		readFileSectors(STD_PATH_NEW_CUPS, p, slot, STD_ARENA_TIM_SECTORS);
++		while (*p == 0x10) {
++			GsGetTimInfo((u_long *)(p + 1), &img);
++			LoadImage((RECT *)&img.px, img.pixel);
++			if ((img.pmode >> 3) & 1) {
++				LoadImage((RECT *)&img.cx, img.clut);
++				p += ((img.cw * img.ch) / 2) + 3;
++			}
++			p += ((img.pw * img.ph) / 2) + 5;
++		}
++		STD_ARENA_MODEL = malloc3(STD_ARENA_TMD_SECTORS << 11);
++		readFileSectors(STD_PATH_NEW_CUPS, STD_ARENA_MODEL, slot + STD_ARENA_TIM_SECTORS, STD_ARENA_TMD_SECTORS);
++	} else {
++		STD_loadArenaTIMToVRAM(STD_ARENA_TIMS[id], ((uint8_t *)STD_ARENA_COUNTS.timCount)[id]);
++		STD_ARENA_MODEL = malloc3(((int32_t)lookupFileSize(STD_ARENA_MODELS[id]) + 0x7ff) & ~0x7ff);
++		readFile(STD_ARENA_MODELS[id], STD_ARENA_MODEL);
++	}
+ 	GsMapModelingData((u_long *)&STD_ARENA_MODEL->flags);
+ 	for (i = 0; i < STD_ARENA_COUNTS.modelCount[id]; i++) {
+ 		GsLinkObject4((u_long)STD_ARENA_MODEL->obj, &STD_ARENA_OBJECTS[i], i);
+-- 
+2.55.0
+
