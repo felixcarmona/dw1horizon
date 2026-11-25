@@ -62,16 +62,21 @@ class Recipe(unittest.TestCase):
         registry = json.loads((ROOT / 'content/models/imports/models.json').read_text())
         batches = json.loads((ROOT / 'content/modeldelta/import-batches.json').read_text())['recipes']
         made = {f'{r["out"]}/{r["entry"]["name"]}.MMD': r for r in batches}
+        sizes = {r['target'] for r in json.loads((ROOT / 'content/modeldelta/import-sizes.json').read_text())['files']}
         from tools.derive.steps import imports
         for sid, row in bound_battle.rows().items():
             with self.subTest(species=sid):
                 overlay = species.OVERLAYS[registry[sid]['field_overlay']]
                 self.assertEqual(overlay[:2], (sid, 'tools.models.field_animations.bound_battle'))
-                recipe = made[row['battle_source']['path']]
-                self.assertTrue(recipe['entry']['battle_source'])
-                source = (ROOT / recipe['spec']).read_bytes()
-                self.assertEqual(hashlib.sha256(source).hexdigest(), recipe['spec_sha256'])
-                self.assertEqual(json.loads(source)['format'], 'native-battle-source-v1')
+                path = row['battle_source']['path']
+                if path in made:                 # a source made for the battle alone
+                    recipe = made[path]
+                    self.assertTrue(recipe['entry']['battle_source'])
+                    source = (ROOT / recipe['spec']).read_bytes()
+                    self.assertEqual(hashlib.sha256(source).hexdigest(), recipe['spec_sha256'])
+                    self.assertEqual(json.loads(source)['format'], 'native-battle-source-v1')
+                else:                            # or the importer's own output of the species, size pass included
+                    self.assertIn(path, sizes)
                 bound_battle.binding_spec(row)                       # its pin holds
                 self.assertIn(f'imported-models/{sid}.battle.MMD', imports.files(sid))
                 # battle and technique slots only; compaction never reaches a field or care slot
