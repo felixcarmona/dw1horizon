@@ -72,12 +72,14 @@ def membership_bits():
 
 
 CHALLENGES = ROOT / 'content/tables/resident-challenges.json'
-CHALLENGE_HEAD = 12            # mod_rules.h MOD_CHALLENGE_ROWS
+CHALLENGE_HEAD = 18            # mod_rules.h MOD_CHALLENGE_ROWS
 CHALLENGE_ROW = 7              # species, hp, mp, off, def, speed, brain
 CHALLENGE_MAX = 72             # mod_rules.h MOD_CHALLENGE_MAX
 CHALLENGE_BAG_LAST = 14        # the bag's saved wide registers end before w15 (Sukamon's backup)
 CHALLENGE_STATS = {'max-sheet-or-partner': 0}
 CHALLENGE_STAGES = {'same-or-lower': 0, 'any': 1}
+CHALLENGE_POOLS = ('original', 'new')  # MOD_CHALLENGE_NEW: one bit per row, 1 = the new pool
+CHALLENGE_NEW_FIRST = 112      # Horizon's own species: the original game's are 0-111
 
 
 def challenge_rows(doc=None):
@@ -90,6 +92,9 @@ def challenge_rows(doc=None):
     for r in rows:
         if r['species'] not in roster:
             raise ValueError(f"resident-challenges.json: {r['name']} ({r['species']}) is not a city resident")
+        pool = 'new' if r['species'] >= CHALLENGE_NEW_FIRST else 'original'
+        if r.get('pool') != pool:
+            raise ValueError(f"resident-challenges.json: {r['name']} ({r['species']}): pool must be {pool!r}")
     return rows
 
 
@@ -106,8 +111,8 @@ def challenge_sheet(row, species):
 
 
 def challenge_table(doc=None):
-    """MOD_CHALLENGE (mod_rules.h): the rule, the save numbers, then per row the species and its floor stats
-    (challenge_sheet)."""
+    """MOD_CHALLENGE (mod_rules.h): the rule, the save numbers of both pools, the new pool's row mask, then per row the
+    species and its floor stats (challenge_sheet)."""
     doc = doc or json.loads(CHALLENGES.read_text())
     rule, save = doc['rule'], doc['save']
     species = {s['id']: s for p in (ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
@@ -116,18 +121,25 @@ def challenge_table(doc=None):
     v[1] = rule['partnerPercent']
     v[2] = 1 if rule['noItems'] else 0
     v[3] = CHALLENGE_STAGES[rule['stages']]
-    v[4], v[5], v[6], v[7] = save['challengerVar'], save['wonFlag'], save['triedFlag'], save['armedPstat']
-    v[8], v[9] = save['bagWreg'], -(-CHALLENGE_MAX // 16)
-    if not 0 <= v[8] or v[8] + v[9] - 1 > CHALLENGE_BAG_LAST:
-        raise ValueError(f'{CHALLENGES.name}: the bag takes {v[9]} saved wide registers from bagWreg, within w0-w{CHALLENGE_BAG_LAST}')
+    v[4] = rule['sheetPercent']
+    v[5] = 1 if rule['noLateStep'] else 0
+    v[6], v[7] = save['armedPstat'], save['bagWreg']
+    v[8] = -(-CHALLENGE_MAX // 16)
+    if not 0 <= v[7] or v[7] + v[8] - 1 > CHALLENGE_BAG_LAST:
+        raise ValueError(f'{CHALLENGES.name}: the bag takes {v[8]} saved wide registers from bagWreg, within w0-w{CHALLENGE_BAG_LAST}')
     if not 0 <= rule['sheetPercent'] <= 1000 or not 0 <= rule['partnerPercent'] <= 1000:
         raise ValueError(f'{CHALLENGES.name}: sheetPercent and partnerPercent must be 0..1000 (the species sheet is the minimum)')
-    v[10] = rule['sheetPercent']
-    v[11] = 1 if rule['noLateStep'] else 0
+    v[9], v[10], v[11], v[12] = save['challengerVar'], save['triedFlag'], save['newChallengerVar'], save['newTriedFlag']
+    if v[9] == v[11] or v[10] == v[12]:
+        raise ValueError(f'{CHALLENGES.name}: the two pools need their own challenger var and tried flag')
+    mask = [0] * 5
     for i, r in enumerate(challenge_rows(doc)):
         w = challenge_sheet(r, species)
         v[CHALLENGE_HEAD + CHALLENGE_ROW * i:CHALLENGE_HEAD + CHALLENGE_ROW * (i + 1)] = [
             r['species'], w['hp'], w['mp'], w['off'], w['def'], w['speed'], w['brain']]
+        if r['pool'] == 'new':
+            mask[i >> 4] |= 1 << (i & 15)
+    v[13:18] = [m - 0x10000 if m & 0x8000 else m for m in mask]
     return struct.pack(f'<{len(v)}h', *v)
 
 

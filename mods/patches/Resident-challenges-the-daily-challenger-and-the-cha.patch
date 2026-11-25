@@ -1,56 +1,66 @@
-From 28698e074b40e39c58119cd1fb39262169f45948 Mon Sep 17 00:00:00 2001
+From 9c5fe76f6d7312e2a26f76af3464308b9d16cf5f Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Wed, 25 Nov 2026 14:57:59 +0000
-Subject: [PATCH] Resident challenges: the daily challenger and the challenge
+Subject: [PATCH] Resident challenges: the daily challengers and the challenge
  fight's stats and bag
 
-After the game is beaten, midnight (dailyPStatTrigger) picks one recruited resident of MOD_CHALLENGE's rows (72 at
-most), not the day before's and of a level at most the partner's, into a saved pstat (row + 1, 0 nobody), and clears the
-won and tried flags. The pick is a shuffle bag, one bit a row in saved wide registers (w10-w14, which no script uses).
-A battle the script arms through a scratch pstat gives every foe of that row's species, for each stat, the larger
-of the partner's and the row's (the species sheet) plus a percent, at most 9999, and can empty the bag for the fight
-(the bag comes back whole when it closes). Everything is read from MOD_CHALLENGE, written by tools/balance.py from
-content/tables/resident-challenges.json; with the table empty nothing changes.
+After the game is beaten, midnight (dailyPStatTrigger) picks one recruited resident of each open pool of MOD_CHALLENGE's
+rows (72 at most), not that pool's of the day before and of a level at most the partner's, into the pool's saved pstat
+(row + 1, 0 nobody; the story adds 0x80 when it is beaten), and clears the pool's tried flag. The rows are two pools,
+the original game's residents and Horizon's new ones (a bit per row); the new pool opens once every one of its rows is
+recruited. The pick is a shuffle bag, one bit a row in saved wide registers (w10-w14, which no script uses), each pool
+starting its own new cycle. A battle the script arms through a scratch pstat (1 or 2, the pool) gives every foe of that
+row's species, for each stat, the larger of the partner's and the row's (the species sheet) plus a percent, at most
+9999, and can empty the bag for the fight (the bag comes back whole when it closes). Everything is read from
+MOD_CHALLENGE, written by tools/balance.py from content/tables/resident-challenges.json; with the table empty nothing
+changes.
 ---
- include/dw/mod_rules.h   | 31 ++++++++++++++++++
- src/main/mod_feed.c      |  9 +++--
- src/main/script_common.c | 71 ++++++++++++++++++++++++++++++++++++++++
- src/main/tamer.c         | 61 ++++++++++++++++++++++++++++++++++
- 4 files changed, 169 insertions(+), 3 deletions(-)
+ include/dw/mod_rules.h   |  38 +++++++++++++++
+ src/main/mod_feed.c      |   9 ++--
+ src/main/script_common.c | 102 +++++++++++++++++++++++++++++++++++++++
+ src/main/tamer.c         |  64 ++++++++++++++++++++++++
+ 4 files changed, 210 insertions(+), 3 deletions(-)
 
 diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
-index a662d023..b8c92b93 100644
+index a662d023..e34185ce 100644
 --- a/include/dw/mod_rules.h
 +++ b/include/dw/mod_rules.h
-@@ -66,6 +66,37 @@ int32_t econPercent(int32_t slot);
+@@ -66,6 +66,44 @@ int32_t econPercent(int32_t slot);
  #define MOD_DAILY_CLEAR_MASK	6 /* ... with this mask */
  extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
  
 +/* resident challenges (postgame): MOD_CHALLENGE[], every slot -1 = off, written by tools/balance.py from
-+ * content/tables/resident-challenges.json. At midnight, once the game is beaten, one recruited resident of the rows is
-+ * written to the saved pstat MOD_CHALLENGE_VAR as row + 1 (0 = nobody) and the won and tried flags are cleared; the
-+ * story does the rest. The pick is a shuffle bag: saved wide registers from MOD_CHALLENGE_BAG on hold one bit per row
-+ * already sent out this cycle (16 rows a register, low bit first).
++ * content/tables/resident-challenges.json. The rows are two pools: the original game's residents and Horizon's new ones
++ * (MOD_CHALLENGE_NEW, one bit per row). At midnight, once the game is beaten, each open pool sends out one recruited
++ * resident of its rows: its saved pstat (MOD_CHALLENGE_VAR, MOD_CHALLENGE_VAR2) becomes row + 1 (0 = nobody; the story
++ * adds MOD_CHALLENGE_BEATEN when the challenger is beaten) and its tried flag is cleared; the story does the rest. The
++ * original pool is always open; the new one only once every one of its rows is recruited. The pick is a shuffle bag:
++ * saved wide registers from MOD_CHALLENGE_BAG on hold one bit per row already sent out this cycle (16 rows a register,
++ * low bit first).
 + * Stage rule 0: only residents whose level is at most the partner's can go, the partner's own level first, then the
-+ * next one down; when every one that can go has gone the bag is emptied and a new cycle starts. Stage rule 1: any
-+ * level, no order. Never the resident of the day before. A battle started while the scratch pstat MOD_CHALLENGE_ARMED
-+ * is 1 is a challenge: every foe of the row's species gets, for each stat, the larger of the partner's times
-+ * (100 + percent) / 100 and the row's (the species sheet) times (100 + sheet percent) / 100, at most 9999. */
++ * next one down; when every one of a pool that can go has gone, that pool's bits are emptied and a new cycle starts.
++ * Stage rule 1: any level, no order. Never the pool's resident of the day before. A battle started while the scratch
++ * pstat MOD_CHALLENGE_ARMED is 1 (2) is the challenge of the first (second) pool: every foe of the row's species gets,
++ * for each stat, the larger of the partner's times (100 + percent) / 100 and the row's (the species sheet) times
++ * (100 + sheet percent) / 100, at most 9999. */
 +#define MOD_CHALLENGE_MODE	0 /* 0: max(partner + percent, sheet + sheet percent) */
 +#define MOD_CHALLENGE_PERCENT	1 /* the partner's stats' bonus */
 +#define MOD_CHALLENGE_NO_ITEMS	2 /* 1: the bag is empty in a challenge */
 +#define MOD_CHALLENGE_STAGES	3 /* 0: level at most the partner's, own level first; 1: any level */
-+#define MOD_CHALLENGE_VAR	4 /* saved pstat: today's challenger, row + 1 */
-+#define MOD_CHALLENGE_WON	5 /* flag: won today */
-+#define MOD_CHALLENGE_TRIED	6 /* flag: fought today */
-+#define MOD_CHALLENGE_ARMED	7 /* scratch pstat: 1 = the next battle is the challenge (cleared by the battle) */
-+#define MOD_CHALLENGE_BAG	8 /* the first saved wide register (w0-w15) of the bag: rows sent out this cycle, one bit each */
-+#define MOD_CHALLENGE_BAG_WREGS	9 /* how many registers the bag takes (MOD_CHALLENGE_MAX / 16 rounded up) */
-+#define MOD_CHALLENGE_SHEET_PERCENT	10 /* the species sheet's bonus */
-+#define MOD_CHALLENGE_NO_LATE	11 /* 1: no NORMAL late-game step (battleFormulas normal) in a challenge */
-+#define MOD_CHALLENGE_ROWS	12 /* the first row: species, hp, mp, off, def, speed, brain */
++#define MOD_CHALLENGE_SHEET_PERCENT	4 /* the species sheet's bonus */
++#define MOD_CHALLENGE_NO_LATE	5 /* 1: no NORMAL late-game step (battleFormulas normal) in a challenge */
++#define MOD_CHALLENGE_ARMED	6 /* scratch pstat: 1 or 2 = the next battle is that pool's challenge (cleared by the battle) */
++#define MOD_CHALLENGE_BAG	7 /* the first saved wide register (w0-w15) of the bag: rows sent out this cycle, one bit each */
++#define MOD_CHALLENGE_BAG_WREGS	8 /* how many registers the bag takes (MOD_CHALLENGE_MAX / 16 rounded up) */
++#define MOD_CHALLENGE_VAR	9 /* saved pstat: the original pool's challenger today, row + 1; then its tried flag (fought today); */
++#define MOD_CHALLENGE_TRIED	10 /* then the same two of the new pool (MOD_CHALLENGE_VAR + 2 * pool) */
++#define MOD_CHALLENGE_VAR2	11
++#define MOD_CHALLENGE_TRIED2	12
++#define MOD_CHALLENGE_NEW	13 /* 5 words: one bit per row (16 a word, low bit first), 1 = Horizon's new residents' pool */
++#define MOD_CHALLENGE_ROWS	18 /* the first row: species, hp, mp, off, def, speed, brain */
 +#define MOD_CHALLENGE_ROW	7
 +#define MOD_CHALLENGE_MAX	72
++#define MOD_CHALLENGE_BEATEN	0x80 /* added to the challenger var by the story when it is beaten: it goes home, the wilds come back */
 +#define MOD_CHALLENGE_SIZE	(MOD_CHALLENGE_ROWS + MOD_CHALLENGE_ROW * MOD_CHALLENGE_MAX)
 +extern int16_t MOD_CHALLENGE[MOD_CHALLENGE_SIZE];
 +extern uint8_t MOD_CHALLENGE_NO_BAG; /* the bag is empty in this battle */
@@ -109,7 +119,7 @@ index 940a5cc7..59ff9679 100644
  				n++;
  			}
 diff --git a/src/main/script_common.c b/src/main/script_common.c
-index 735b36f8..97a33b5e 100644
+index 735b36f8..7f3995ce 100644
 --- a/src/main/script_common.c
 +++ b/src/main/script_common.c
 @@ -23,6 +23,7 @@
@@ -120,7 +130,7 @@ index 735b36f8..97a33b5e 100644
  #include <dw/sound.h>
  #include <dw/species.h>
  #include <dw/ui.h>
-@@ -1427,6 +1428,75 @@ uint8_t getRecycleId(uint8_t value)
+@@ -1427,6 +1428,106 @@ uint8_t getRecycleId(uint8_t value)
  
  int16_t MOD_DAILY[MOD_DAILY_SIZE] = { -1, -1, -1, -1, -1, -1, -1 };
  
@@ -141,62 +151,93 @@ index 735b36f8..97a33b5e 100644
 +	return SCRIPT_STATE_PTR->wregs[MOD_CHALLENGE[MOD_CHALLENGE_BAG] + (i >> 4)] >> (i & 15) & 1;
 +}
 +
-+/* the rows that can go out today: recruited, not yesterday's (prev is its row + 1), of a level the stage rule allows,
-+ * and not yet sent out this cycle; with only, of that level alone */
-+static int32_t modChallengeCan(int32_t i, int32_t prev, int32_t level, int32_t only)
++/* the row's pool: 0 the original game's residents, 1 Horizon's new ones */
++static int32_t modChallengePool(int32_t i)
++{
++	return MOD_CHALLENGE[MOD_CHALLENGE_NEW + (i >> 4)] >> (i & 15) & 1;
++}
++
++/* the rows of the pool that can go out today: recruited, not yesterday's (prev is its row + 1), of a level the stage
++ * rule allows, and not yet sent out this cycle; with only, of that level alone */
++static int32_t modChallengeCan(int32_t i, int32_t pool, int32_t prev, int32_t level, int32_t only)
 +{
 +	int32_t type, own;
 +
 +	type = MOD_CHALLENGE[MOD_CHALLENGE_ROWS + MOD_CHALLENGE_ROW * i];
-+	if (type <= 0 || i + 1 == prev || modChallengeUsed(i) || !isDigimonRecruited(type)) return 0;
++	if (type <= 0 || modChallengePool(i) != pool || i + 1 == prev || modChallengeUsed(i) || !isDigimonRecruited(type)) return 0;
 +	if (MOD_CHALLENGE[MOD_CHALLENGE_STAGES] != 0) return 1;
 +	own = DIGI_PARA(type).level;
 +	return only ? own == level : own <= level;
 +}
 +
-+void modChallengeDaily(void)
++/* the new residents' pool opens once every one of its rows is recruited */
++static int32_t modChallengeOpen(int32_t pool, int32_t rows)
 +{
-+	int32_t i, count, pick, prev, level, only, rows;
++	int32_t i, type;
++
++	for (i = 0; pool && i < rows; i++) {
++		type = MOD_CHALLENGE[MOD_CHALLENGE_ROWS + MOD_CHALLENGE_ROW * i];
++		if (type > 0 && modChallengePool(i) && !isDigimonRecruited(type)) return 0;
++	}
++	return 1;
++}
++
++static void modChallengePick(int32_t pool, int32_t rows)
++{
++	int32_t i, count, pick, prev, level, only, var, tried;
 +	uint16_t *bag;
 +
-+	rows = modChallengeRows();
-+	if (MOD_CHALLENGE[MOD_CHALLENGE_VAR] < 0 || MOD_CHALLENGE[MOD_CHALLENGE_WON] < 0 || MOD_CHALLENGE[MOD_CHALLENGE_TRIED] < 0 || !rows) return;
++	var = MOD_CHALLENGE[MOD_CHALLENGE_VAR + 2 * pool];
++	tried = MOD_CHALLENGE[MOD_CHALLENGE_TRIED + 2 * pool];
++	if (var < 0 || tried < 0) return;
 +	bag = &SCRIPT_STATE_PTR->wregs[MOD_CHALLENGE[MOD_CHALLENGE_BAG]];
-+	prev = readPStat(MOD_CHALLENGE[MOD_CHALLENGE_VAR]);
-+	writePStat(MOD_CHALLENGE[MOD_CHALLENGE_VAR], 0);
-+	unsetTrigger(MOD_CHALLENGE[MOD_CHALLENGE_WON]);
-+	unsetTrigger(MOD_CHALLENGE[MOD_CHALLENGE_TRIED]);
-+	if (!isTriggerSet(TRIGGER_BEATEN_GAME_ONCE)) return;
++	prev = readPStat(var) & ~MOD_CHALLENGE_BEATEN;
++	writePStat(var, 0);
++	unsetTrigger(tried);
++	if (!isTriggerSet(TRIGGER_BEATEN_GAME_ONCE) || !modChallengeOpen(pool, rows)) return;
 +	level = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
 +	count = 0;
-+	for (i = 0; i < rows; i++) count += modChallengeCan(i, prev, level, 0);
++	for (i = 0; i < rows; i++) count += modChallengeCan(i, pool, prev, level, 0);
 +	if (!count) {
-+		/* every one that can go has gone: a new cycle (yesterday's still stays home) */
-+		for (i = 0; i < MOD_CHALLENGE[MOD_CHALLENGE_BAG_WREGS]; i++) bag[i] = 0;
-+		for (i = 0; i < rows; i++) count += modChallengeCan(i, prev, level, 0);
++		/* every one of the pool that can go has gone: a new cycle for it (yesterday's still stays home) */
++		for (i = 0; i < rows; i++) {
++			if (modChallengePool(i) == pool) bag[i >> 4] &= ~(1 << (i & 15));
++		}
++		for (i = 0; i < rows; i++) count += modChallengeCan(i, pool, prev, level, 0);
 +		if (!count) return;
 +	}
 +	/* the partner's own level first, then the next one down */
 +	only = MOD_CHALLENGE[MOD_CHALLENGE_STAGES] == 0;
 +	for (; level >= 0; level--) {
 +		count = 0;
-+		for (i = 0; i < rows; i++) count += modChallengeCan(i, prev, level, only);
++		for (i = 0; i < rows; i++) count += modChallengeCan(i, pool, prev, level, only);
 +		if (count || !only) break;
 +	}
 +	pick = randomLimit(count);
 +	for (i = 0; i < rows; i++) {
-+		if (modChallengeCan(i, prev, level, only) && pick-- == 0) {
++		if (modChallengeCan(i, pool, prev, level, only) && pick-- == 0) {
 +			bag[i >> 4] |= 1 << (i & 15);
-+			writePStat(MOD_CHALLENGE[MOD_CHALLENGE_VAR], i + 1);
++			writePStat(var, i + 1);
 +			break;
 +		}
 +	}
 +}
 +
++/* one challenger a day from each open pool, picked on their own */
++void modChallengeDaily(void)
++{
++	int32_t rows;
++
++	rows = modChallengeRows();
++	if (!rows) return;
++	modChallengePick(0, rows);
++	modChallengePick(1, rows);
++}
++
  void dailyPStatTrigger(void)
  {
  	ScriptState *st;
-@@ -1482,6 +1552,7 @@ void dailyPStatTrigger(void)
+@@ -1482,6 +1583,7 @@ void dailyPStatTrigger(void)
  			writePStat(MOD_DAILY[MOD_DAILY_CLEAR_PSTAT], v);
  		}
  	}
@@ -205,7 +246,7 @@ index 735b36f8..97a33b5e 100644
  
  int32_t isPartnerBaby(void)
 diff --git a/src/main/tamer.c b/src/main/tamer.c
-index 65110dc1..d60cd253 100644
+index 65110dc1..4ff07671 100644
 --- a/src/main/tamer.c
 +++ b/src/main/tamer.c
 @@ -9,6 +9,8 @@
@@ -226,7 +267,7 @@ index 65110dc1..d60cd253 100644
  extern int16_t TOURNAMENT_WINS;
  int32_t hasMedal(uint16_t medal);
  int32_t hasDigimonRaised(int32_t digimonId);
-@@ -881,6 +885,57 @@ extern int8_t MOD_TFS_SAME_MAP; /* tfs_stream.c */
+@@ -881,6 +885,60 @@ extern int8_t MOD_TFS_SAME_MAP; /* tfs_stream.c */
  void modResumeFieldMusic(void); /* sound_async.c */
  void tfsStreamHoldPrefetch(void); /* tfs_stream.c */
  
@@ -254,9 +295,12 @@ index 65110dc1..d60cd253 100644
 +	BaseStats *p;
 +
 +	MOD_CHALLENGE_NO_BAG = 0;
-+	if (MOD_CHALLENGE[MOD_CHALLENGE_ARMED] < 0 || readPStat(MOD_CHALLENGE[MOD_CHALLENGE_ARMED]) != 1) return;
++	if (MOD_CHALLENGE[MOD_CHALLENGE_ARMED] < 0) return;
++	k = readPStat(MOD_CHALLENGE[MOD_CHALLENGE_ARMED]); /* 1 or 2: the first or the second pool's challenger */
++	if (k != 1 && k != 2) return;
 +	writePStat(MOD_CHALLENGE[MOD_CHALLENGE_ARMED], 0);
-+	row = readPStat(MOD_CHALLENGE[MOD_CHALLENGE_VAR]);
++	if (MOD_CHALLENGE[MOD_CHALLENGE_VAR + 2 * (k - 1)] < 0) return;
++	row = readPStat(MOD_CHALLENGE[MOD_CHALLENGE_VAR + 2 * (k - 1)]);
 +	if (row < 1 || row > MOD_CHALLENGE_MAX || MOD_CHALLENGE[MOD_CHALLENGE_MODE] != 0) return;
 +	r = &MOD_CHALLENGE[MOD_CHALLENGE_ROWS + MOD_CHALLENGE_ROW * (row - 1)];
 +	MOD_CHALLENGE_NO_BAG = MOD_CHALLENGE[MOD_CHALLENGE_NO_ITEMS] > 0;
@@ -284,7 +328,7 @@ index 65110dc1..d60cd253 100644
  int8_t startBattle(int16_t instanceId)
  {
  	int8_t result;
-@@ -895,8 +950,14 @@ int8_t startBattle(int16_t instanceId)
+@@ -895,8 +953,14 @@ int8_t startBattle(int16_t instanceId)
  	stopGameTime();
  
  	battleData = handleBattleStart(instanceId);

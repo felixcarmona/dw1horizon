@@ -1,5 +1,5 @@
 {
-  "_about": "Resident challenges (postgame; docs/mods/resident-challenges.md). Once the game is beaten, at every midnight one recruited resident of these rows leaves its home and waits at its recruit site, stronger; won once, it goes home with its reward and nobody else goes out that day; lost, it waits all day. tools/balance.py writes `rule`, `save` and each row's species and sheet stats into MOD_CHALLENGE (tools/city_residents.py challenge_table); the story (story/mods/what-the-island-forgot) has the rest of each row: `story` checks its constant (state.py CH_<NAME> = row number), site, exit path, item and bits. Rows are numbered in the save (the challenger var and the bag: saved wide registers w10-w14, one bit a row): once released, a row is never moved or removed, only appended.",
+  "_about": "Resident challenges (postgame; docs/mods/resident-challenges.md). Two pools: `original` (the original game's residents, species below 112) and `new` (Horizon's residents, closed until every one of them is recruited). Once the game is beaten, at every midnight each open pool sends one of its recruited residents from its home to its recruit site, stronger; while it waits there the site has no wild Digimon; won once, it goes home with its reward and the wilds come back; lost, it waits all day. The two pools' fights are independent. tools/balance.py writes `rule`, `save`, each row's pool and its species and sheet stats into MOD_CHALLENGE (tools/city_residents.py challenge_table); the story (story/mods/what-the-island-forgot) has the rest of each row: `story` checks its constant (state.py CH_<NAME> = row number), site, exit path, item and bits. Rows are numbered in the save (the challenger vars and the bag: saved wide registers w10-w14, one bit a row): once released, a row is never moved, removed or given another pool, only appended.",
   "rule": {
     "stats": "max-sheet-or-partner",
     "_stats": "each stat of the challenger = max(floor stat x (100 + sheetPercent) / 100, partner stat x (100 + partnerPercent) / 100), at most 9999; the floor is the species' `wild` sheet, or the row's `base` when its species has none",
@@ -14,15 +14,17 @@
   },
   "save": {
     "challengerVar": 15,
-    "bagWreg": 10,
-    "wonFlag": 783,
     "triedFlag": 784,
+    "newChallengerVar": 8,
+    "newTriedFlag": 783,
+    "bagWreg": 10,
     "armedPstat": 239
   },
   "residents": [
     {
       "species": 185,
       "name": "Armadillomon",
+      "pool": "new",
       "story": "arcs/residents/armadillomon.py",
       "home": "district/the-courtyard.py",
       "site": {
@@ -51,6 +53,7 @@
     {
       "species": 235,
       "name": "Candlemon",
+      "pool": "new",
       "story": "arcs/residents/candlemon.py",
       "home": "district/forge-workshop.py",
       "site": {
@@ -79,6 +82,7 @@
     {
       "species": 17,
       "name": "Gabumon",
+      "pool": "original",
       "story": "arcs/mist/hunters-120.py",
       "home": "city/treasure-hunt.py",
       "site": {
@@ -116,6 +120,7 @@
     {
       "species": 193,
       "name": "Digmon",
+      "pool": "new",
       "story": "arcs/residents/digmon.py",
       "home": "district/stone-yard.py",
       "site": {
@@ -144,6 +149,7 @@
     {
       "species": 243,
       "name": "Starmon",
+      "pool": "new",
       "story": "arcs/residents/starmon.py",
       "home": "district/container-house.py",
       "site": {
@@ -172,6 +178,7 @@
     {
       "species": 48,
       "name": "Leomon",
+      "pool": "original",
       "story": "arcs/residents/kiwimon.py",
       "home": "city/birdra-transport.py",
       "site": {
@@ -209,6 +216,7 @@
     {
       "species": 257,
       "name": "Triceramon",
+      "pool": "new",
       "story": "arcs/residents/triceramon.py",
       "home": "district/forge-workshop.py",
       "site": {
@@ -237,6 +245,7 @@
     {
       "species": 294,
       "name": "Datamon",
+      "pool": "new",
       "story": "arcs/factory/remodelling.py",
       "home": "district/scrap-office.py",
       "site": {
@@ -265,6 +274,7 @@
     {
       "species": 41,
       "name": "Giromon",
+      "pool": "original",
       "story": "arcs/residents/giromon.py",
       "home": "city/restaurant-215.py",
       "site": {
@@ -302,6 +312,7 @@
     {
       "species": 14,
       "name": "Monzaemon",
+      "pool": "original",
       "story": "arcs/gear/robot-house.py",
       "home": "city/jijimons-house-206.py",
       "site": {
@@ -339,6 +350,7 @@
     {
       "species": 3,
       "name": "Agumon",
+      "pool": "original",
       "story": "arcs/challenges/agumon.py",
       "home": null,
       "site": {
@@ -367,6 +379,7 @@
     {
       "species": 4,
       "name": "Betamon",
+      "pool": "original",
       "story": "arcs/challenges/betamon.py",
       "home": null,
       "site": {
@@ -404,6 +417,7 @@
     {
       "species": 5,
       "name": "Greymon",
+      "pool": "original",
       "story": "arcs/challenges/greymon.py",
       "home": null,
       "site": {
@@ -441,6 +455,7 @@
     {
       "species": 8,
       "name": "Tyrannomon",
+      "pool": "original",
       "story": "arcs/challenges/tyrannomon.py",
       "home": null,
       "site": {
@@ -478,6 +493,7 @@
     {
       "species": 9,
       "name": "Meramon",
+      "pool": "original",
       "story": "arcs/challenges/meramon.py",
       "home": null,
       "site": {
@@ -515,6 +531,7 @@
     {
       "species": 10,
       "name": "Seadramon",
+      "pool": "original",
       "story": "arcs/challenges/seadramon.py",
       "home": null,
       "site": {
@@ -552,6 +569,7 @@
     {
       "species": 11,
       "name": "Numemon",
+      "pool": "original",
       "story": "arcs/challenges/numemon.py",
       "home": null,
       "site": {
@@ -589,6 +607,7 @@
     {
       "species": 13,
       "name": "Mamemon",
+      "pool": "original",
       "story": "arcs/challenges/mamemon.py",
       "home": null,
       "site": {
@@ -626,6 +645,7 @@
     {
       "species": 18,
       "name": "Elecmon",
+      "pool": "original",
       "story": "arcs/challenges/elecmon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -663,6 +683,7 @@
     {
       "species": 19,
       "name": "Kabuterimon",
+      "pool": "original",
       "story": "arcs/challenges/kabuterimon.py",
       "home": "city/green-gym.py",
       "site": {
@@ -700,6 +721,7 @@
     {
       "species": 20,
       "name": "Angemon",
+      "pool": "original",
       "story": "arcs/challenges/angemon.py",
       "home": "city/jijimons-house-205.py",
       "site": {
@@ -737,6 +759,7 @@
     {
       "species": 21,
       "name": "Birdramon",
+      "pool": "original",
       "story": "arcs/challenges/birdramon.py",
       "home": null,
       "site": {
@@ -774,6 +797,7 @@
     {
       "species": 22,
       "name": "Garurumon",
+      "pool": "original",
       "story": "arcs/challenges/garurumon.py",
       "home": null,
       "site": {
@@ -811,6 +835,7 @@
     {
       "species": 23,
       "name": "Frigimon",
+      "pool": "original",
       "story": "arcs/challenges/frigimon.py",
       "home": null,
       "site": {
@@ -848,6 +873,7 @@
     {
       "species": 24,
       "name": "Whamon",
+      "pool": "original",
       "story": "arcs/challenges/whamon.py",
       "home": null,
       "site": {
@@ -885,6 +911,7 @@
     {
       "species": 25,
       "name": "Vegiemon",
+      "pool": "original",
       "story": "arcs/challenges/vegiemon.py",
       "home": null,
       "site": {
@@ -922,6 +949,7 @@
     {
       "species": 26,
       "name": "SkullGreymon",
+      "pool": "original",
       "story": "arcs/challenges/skullgreymon.py",
       "home": null,
       "site": {
@@ -959,6 +987,7 @@
     {
       "species": 27,
       "name": "MetalMamemon",
+      "pool": "original",
       "story": "arcs/challenges/metalmamemon.py",
       "home": null,
       "site": {
@@ -996,6 +1025,7 @@
     {
       "species": 28,
       "name": "Vademon",
+      "pool": "original",
       "story": "arcs/challenges/vademon.py",
       "home": null,
       "site": {
@@ -1033,6 +1063,7 @@
     {
       "species": 31,
       "name": "Patamon",
+      "pool": "original",
       "story": "arcs/challenges/patamon.py",
       "home": null,
       "site": {
@@ -1070,6 +1101,7 @@
     {
       "species": 32,
       "name": "Kunemon",
+      "pool": "original",
       "story": "arcs/challenges/kunemon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1107,6 +1139,7 @@
     {
       "species": 33,
       "name": "Unimon",
+      "pool": "original",
       "story": "arcs/challenges/unimon.py",
       "home": null,
       "site": {
@@ -1144,6 +1177,7 @@
     {
       "species": 34,
       "name": "Ogremon",
+      "pool": "original",
       "story": "arcs/challenges/ogremon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1181,6 +1215,7 @@
     {
       "species": 35,
       "name": "Shellmon",
+      "pool": "original",
       "story": "arcs/challenges/shellmon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1218,6 +1253,7 @@
     {
       "species": 36,
       "name": "Centarumon",
+      "pool": "original",
       "story": "arcs/challenges/centarumon.py",
       "home": null,
       "site": {
@@ -1255,6 +1291,7 @@
     {
       "species": 37,
       "name": "Bakemon",
+      "pool": "original",
       "story": "arcs/challenges/bakemon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1292,6 +1329,7 @@
     {
       "species": 38,
       "name": "Drimogemon",
+      "pool": "original",
       "story": "arcs/challenges/drimogemon.py",
       "home": null,
       "site": {
@@ -1329,6 +1367,7 @@
     {
       "species": 39,
       "name": "Sukamon",
+      "pool": "original",
       "story": "arcs/challenges/sukamon.py",
       "home": null,
       "site": {
@@ -1357,6 +1396,7 @@
     {
       "species": 40,
       "name": "Andromon",
+      "pool": "original",
       "story": "arcs/challenges/andromon.py",
       "home": null,
       "site": {
@@ -1394,6 +1434,7 @@
     {
       "species": 42,
       "name": "Etemon",
+      "pool": "original",
       "story": "arcs/challenges/etemon.py",
       "home": null,
       "site": {
@@ -1431,6 +1472,7 @@
     {
       "species": 45,
       "name": "Biyomon",
+      "pool": "original",
       "story": "arcs/challenges/biyomon.py",
       "home": null,
       "site": {
@@ -1468,19 +1510,20 @@
     {
       "species": 46,
       "name": "Palmon",
+      "pool": "original",
       "story": "arcs/challenges/palmon.py",
       "home": null,
       "site": {
-        "screen": 2,
+        "screen": 4,
         "at": [
-          1750,
-          2450
+          2650,
+          -500
         ]
       },
       "exit": [
         [
-          250,
-          450
+          3100,
+          -100
         ]
       ],
       "item": 47,
@@ -1505,6 +1548,7 @@
     {
       "species": 47,
       "name": "Monochromon",
+      "pool": "original",
       "story": "arcs/challenges/monochromon.py",
       "home": null,
       "site": {
@@ -1542,6 +1586,7 @@
     {
       "species": 49,
       "name": "Coelamon",
+      "pool": "original",
       "story": "arcs/challenges/coelamon.py",
       "home": "city/centar-clinic.py",
       "site": {
@@ -1570,19 +1615,20 @@
     {
       "species": 50,
       "name": "Kokatorimon",
+      "pool": "original",
       "story": "arcs/challenges/kokatorimon.py",
       "home": "city/file-city-services.py",
       "site": {
-        "screen": 118,
+        "screen": 119,
         "at": [
-          50,
-          1200
+          0,
+          -1800
         ]
       },
       "exit": [
         [
-          50,
-          3700
+          0,
+          -3500
         ]
       ],
       "item": 85,
@@ -1607,6 +1653,7 @@
     {
       "species": 51,
       "name": "Kuwagamon",
+      "pool": "original",
       "story": "arcs/challenges/kuwagamon.py",
       "home": "city/green-gym.py",
       "site": {
@@ -1644,6 +1691,7 @@
     {
       "species": 52,
       "name": "Mojyamon",
+      "pool": "original",
       "story": "arcs/challenges/mojyamon.py",
       "home": null,
       "site": {
@@ -1681,6 +1729,7 @@
     {
       "species": 53,
       "name": "Nanimon",
+      "pool": "original",
       "story": "arcs/challenges/nanimon.py",
       "home": "city/item-keeper.py",
       "site": {
@@ -1718,6 +1767,7 @@
     {
       "species": 54,
       "name": "Megadramon",
+      "pool": "original",
       "story": "arcs/challenges/megadramon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1755,6 +1805,7 @@
     {
       "species": 55,
       "name": "Piximon",
+      "pool": "original",
       "story": "arcs/challenges/piximon.py",
       "home": "city/item-shop.py",
       "site": {
@@ -1792,6 +1843,7 @@
     {
       "species": 56,
       "name": "Digitamamon",
+      "pool": "original",
       "story": "arcs/challenges/digitamamon.py",
       "home": null,
       "site": {
@@ -1829,6 +1881,7 @@
     {
       "species": 57,
       "name": "Penguinmon",
+      "pool": "original",
       "story": "arcs/challenges/penguinmon.py",
       "home": null,
       "site": {
@@ -1857,6 +1910,7 @@
     {
       "species": 58,
       "name": "Ninjamon",
+      "pool": "original",
       "story": "arcs/challenges/ninjamon.py",
       "home": "city/secret-item-shop.py",
       "site": {
@@ -1894,6 +1948,7 @@
     {
       "species": 66,
       "name": "Myotismon",
+      "pool": "original",
       "story": "arcs/challenges/myotismon.py",
       "home": null,
       "site": {
@@ -1931,6 +1986,7 @@
     {
       "species": 70,
       "name": "WaruMonzaemon",
+      "pool": "original",
       "story": "arcs/challenges/warumonzaemon.py",
       "home": null,
       "site": {
@@ -1959,6 +2015,7 @@
     {
       "species": 184,
       "name": "Hawkmon",
+      "pool": "new",
       "story": "arcs/residents/hawkmon.py",
       "home": "city/birdra-transport.py",
       "site": {
@@ -1987,6 +2044,7 @@
     {
       "species": 229,
       "name": "Phantomon",
+      "pool": "new",
       "story": "arcs/residents/phantomon.py",
       "home": "city/secret-item-shop.py",
       "site": {
@@ -2015,6 +2073,7 @@
     {
       "species": 241,
       "name": "Wizardmon",
+      "pool": "new",
       "story": "arcs/residents/wizardmon.py",
       "home": "district/power-station.py",
       "site": {
@@ -2043,6 +2102,7 @@
     {
       "species": 251,
       "name": "Solarmon",
+      "pool": "new",
       "story": "arcs/vault/statue-room.py",
       "home": "district/power-station.py",
       "site": {
@@ -2071,6 +2131,7 @@
     {
       "species": 263,
       "name": "Mushroomon",
+      "pool": "new",
       "story": "arcs/residents/mushroomon.py",
       "home": "city/centar-clinic.py",
       "site": {
@@ -2099,6 +2160,7 @@
     {
       "species": 267,
       "name": "Mammothmon",
+      "pool": "new",
       "story": "arcs/residents/mammothmon.py",
       "home": "district/cold-store.py",
       "site": {
@@ -2127,6 +2189,7 @@
     {
       "species": 273,
       "name": "Floramon",
+      "pool": "new",
       "story": "arcs/residents/floramon.py",
       "home": "district/market-shed.py",
       "site": {
@@ -2155,6 +2218,7 @@
     {
       "species": 280,
       "name": "Pumpkinmon",
+      "pool": "new",
       "story": "arcs/residents/pumpkinmon.py",
       "home": "district/scrap-office.py",
       "site": {
@@ -2183,6 +2247,7 @@
     {
       "species": 282,
       "name": "Kiwimon",
+      "pool": "new",
       "story": "arcs/challenges/kiwimon.py",
       "home": "city/restaurant-214.py",
       "site": {
@@ -2211,6 +2276,7 @@
     {
       "species": 287,
       "name": "Tapirmon",
+      "pool": "new",
       "story": "arcs/residents/tapirmon.py",
       "home": "district/market-shed.py",
       "site": {
@@ -2239,6 +2305,7 @@
     {
       "species": 290,
       "name": "Clockmon",
+      "pool": "new",
       "story": "arcs/residents/clockmon.py",
       "home": "district/the-courtyard.py",
       "site": {
@@ -2267,6 +2334,7 @@
     {
       "species": 321,
       "name": "Knightmon",
+      "pool": "new",
       "story": "arcs/residents/knightmon.py",
       "home": "district/guard-house.py",
       "site": {
@@ -2295,6 +2363,7 @@
     {
       "species": 351,
       "name": "Kotemon",
+      "pool": "new",
       "story": "arcs/residents/kotemon.py",
       "home": null,
       "site": {
@@ -2323,6 +2392,7 @@
     {
       "species": 353,
       "name": "Bearmon",
+      "pool": "new",
       "story": "arcs/seam/kennel.py",
       "home": "district/container-house.py",
       "site": {
