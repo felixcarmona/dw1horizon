@@ -11,6 +11,7 @@
                  "Electric Cloud", "Spnning Needle", "Shadow Claw", "Dark Bolt", "Evil Whisper"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
+  "own_effect": {"technique": "Spnning Needle", "chunk": 163},
   "model": {
     "file": "build/batch5/DemiDevimon.MMD",
     "radius": 169,

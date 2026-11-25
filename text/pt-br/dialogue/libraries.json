@@ -37,7 +37,7 @@
  "s195.sec7.u0": "Ordens. Importante.",
  "s196.sec5.u0": "Sentirei sua falta...",
  "s196.sec6.u0": "Graaah, você não vai escapar!",
- "s196.sec7.u0": "Acha que vai sair vivo?",
+ "s196.sec7.u0": "Acha que vai sair com vida?",
  "s196.sec8.u0": [
   [
    "Avançaaar!"
@@ -135,7 +135,7 @@
  "s199.sec51.m29.o0": "1000 a 700: OK",
  "s199.sec51.m29.o1": "Pensar de novo",
  "s199.sec51.u0": "Dê-me um pouco de {color 6}Carne{color 1}.",
- "s199.sec51.u1": "Bem-vindo! {color 6}Carne{color 1}, não é? Hum...",
+ "s199.sec51.u1": "Olá! {color 6}Carne{color 1}, não é? Hum...",
  "s199.sec51.u2": "{color 6}Carne{color 1}, certo...",
  "s199.sec51.u3": [
   [
@@ -251,7 +251,7 @@
  "s199.sec51.u24": "O quê? Isso é muito caro!",
  "s199.sec51.u25": "Sério? Bem, então...",
  "s199.sec51.u26": "Dê-me um {color 6}Penico portátil{color 1}.",
- "s199.sec51.u27": "Bem-vindo! {color 6}Penico portátil{color 1}, não é? Hum...",
+ "s199.sec51.u27": "Olá! {color 6}Penico portátil{color 1}, não é? Hum...",
  "s199.sec51.u28": "{color 6}Penico portátil{color 1}, certo...",
  "s199.sec51.u29": [
   [
@@ -373,7 +373,7 @@
  "s199.sec51.u48": "O quê? Isso é muito caro!",
  "s199.sec51.u49": "Sério? Bem, então...",
  "s199.sec51.u50": "Dê-me um pouco de {color 6}Remédio{color 1}.",
- "s199.sec51.u51": "Bem-vindo! {color 6}Remédio{color 1}, não é? Hum...",
+ "s199.sec51.u51": "Olá! {color 6}Remédio{color 1}, não é? Hum...",
  "s199.sec51.u52": "{color 6}Remédio{color 1}, certo...",
  "s199.sec51.u53": [
   [
@@ -550,7 +550,7 @@
  "s200.sec51.m29.o0": "1000 a 700: OK",
  "s200.sec51.m29.o1": "Pensar de novo",
  "s200.sec51.u0": "Estou atrás de um {color 6}Carne{color 1}, sabe.",
- "s200.sec51.u1": "Bem-vindo! {color 6}Carne{color 1}, não é? Hum...",
+ "s200.sec51.u1": "Olá! {color 6}Carne{color 1}, não é? Hum...",
  "s200.sec51.u2": "{color 6}Carne{color 1}, certo...",
  "s200.sec51.u3": [
   [
@@ -665,12 +665,12 @@
  "s200.sec51.u23": "Nenhum cliente vem...",
  "s200.sec51.u24": [
   [
-   "Isso está caro demais, amigo!"
+   "Isso está caro demais!"
   ]
  ],
  "s200.sec51.u25": "Sério? Bem, então...",
  "s200.sec51.u26": "Estou atrás de um {color 6}Penico portátil{color 1}.",
- "s200.sec51.u27": "Bem-vindo! {color 6}Penico portátil{color 1}, não é? Hum...",
+ "s200.sec51.u27": "Olá! {color 6}Penico portátil{color 1}, não é? Hum...",
  "s200.sec51.u28": "{color 6}Penico portátil{color 1}, certo...",
  "s200.sec51.u29": [
   [
@@ -791,12 +791,12 @@
  ],
  "s200.sec51.u48": [
   [
-   "Isso está caro demais, amigo!"
+   "Isso está caro demais!"
   ]
  ],
  "s200.sec51.u49": "Sério? Bem, então...",
  "s200.sec51.u50": "Estou atrás de um {color 6}Remédio{color 1}, sabe.",
- "s200.sec51.u51": "Bem-vindo! {color 6}Remédio{color 1}, não é? Hum...",
+ "s200.sec51.u51": "Olá! {color 6}Remédio{color 1}, não é? Hum...",
  "s200.sec51.u52": "{color 6}Remédio{color 1}, certo...",
  "s200.sec51.u53": [
   [
@@ -909,7 +909,7 @@
  ],
  "s200.sec51.u72": [
   [
-   "Isso está caro demais, amigo!"
+   "Isso está caro demais!"
   ]
  ],
  "s200.sec51.u73": "Sério? Bem, então...",
@@ -977,7 +977,7 @@
  "s201.sec51.m29.o0": "1000 a 700: OK",
  "s201.sec51.m29.o1": "Pensar de novo",
  "s201.sec51.u0": "Eu gostaria... de um pouco de {color 6}Carne{color 1}...",
- "s201.sec51.u1": "Bem-vindo! {color 6}Carne{color 1}, não é? Hum...",
+ "s201.sec51.u1": "Olá! {color 6}Carne{color 1}, não é? Hum...",
  "s201.sec51.u2": "{color 6}Carne{color 1}, certo...",
  "s201.sec51.u3": [
   [
@@ -1098,7 +1098,7 @@
  ],
  "s201.sec51.u25": "Sério? Bem, então...",
  "s201.sec51.u26": "Eu gostaria... de um {color 6}Penico portátil{color 1}...",
- "s201.sec51.u27": "Bem-vindo! {color 6}Penico portátil{color 1}, não é? Hum...",
+ "s201.sec51.u27": "Olá! {color 6}Penico portátil{color 1}, não é? Hum...",
  "s201.sec51.u28": "{color 6}Penico portátil{color 1}, certo...",
  "s201.sec51.u29": [
   [
@@ -1225,7 +1225,7 @@
  ],
  "s201.sec51.u49": "Sério? Bem, então...",
  "s201.sec51.u50": "Eu gostaria... de um pouco de {color 6}Remédio{color 1}...",
- "s201.sec51.u51": "Bem-vindo! {color 6}Remédio{color 1}, não é? Hum...",
+ "s201.sec51.u51": "Olá! {color 6}Remédio{color 1}, não é? Hum...",
  "s201.sec51.u52": "{color 6}Remédio{color 1}, certo...",
  "s201.sec51.u53": [
   [
@@ -1407,7 +1407,7 @@
  "s202.sec51.m29.o0": "1000 a 700: OK",
  "s202.sec51.m29.o1": "Pensar de novo",
  "s202.sec51.u0": "Eu adoraria um pouco de {color 6}Carne{color 1}!",
- "s202.sec51.u1": "Bem-vindo! {color 6}Carne{color 1}, não é? Hum...",
+ "s202.sec51.u1": "Olá! {color 6}Carne{color 1}, não é? Hum...",
  "s202.sec51.u2": "{color 6}Carne{color 1}, certo...",
  "s202.sec51.u3": [
   [
@@ -1523,7 +1523,7 @@
  "s202.sec51.u24": "Não é muito caro?",
  "s202.sec51.u25": "Sério? Bem, então...",
  "s202.sec51.u26": "Eu adoraria um {color 6}Penico portátil{color 1}!",
- "s202.sec51.u27": "Bem-vindo! {color 6}Penico portátil{color 1}, não é? Hum...",
+ "s202.sec51.u27": "Olá! {color 6}Penico portátil{color 1}, não é? Hum...",
  "s202.sec51.u28": "{color 6}Penico portátil{color 1}, certo...",
  "s202.sec51.u29": [
   [
@@ -1645,7 +1645,7 @@
  "s202.sec51.u48": "Não é muito caro?",
  "s202.sec51.u49": "Sério? Bem, então...",
  "s202.sec51.u50": "Eu adoraria um pouco de {color 6}Remédio{color 1}!",
- "s202.sec51.u51": "Bem-vindo! {color 6}Remédio{color 1}, não é? Hum...",
+ "s202.sec51.u51": "Olá! {color 6}Remédio{color 1}, não é? Hum...",
  "s202.sec51.u52": "{color 6}Remédio{color 1}, certo...",
  "s202.sec51.u53": [
   [
@@ -1769,7 +1769,7 @@
  "s205.sec6.m0.o2": "Adivinho",
  "s205.sec6.m1.o0": "Examine meu Digimon",
  "s205.sec6.m1.o1": "Vender-me remédios",
- "s205.sec6.m1.o2": "Nada, obrigado.",
+ "s205.sec6.m1.o2": "Nada, valeu.",
  "s205.sec6.m2.o0": "Examinar de novo",
  "s205.sec6.m2.o1": "Vender-me remédios",
  "s205.sec6.m2.o2": "Só isso",
@@ -1781,7 +1781,7 @@
  "s205.sec6.m4.o2": "Só isso",
  "s205.sec6.m5.o0": "Explique, por favor",
  "s205.sec6.m5.o1": "Não precisa explicar",
- "s205.sec6.m5.o2": "Nada, obrigado.",
+ "s205.sec6.m5.o2": "Nada, valeu.",
  "s205.sec6.m6.o0": "Explique de novo",
  "s205.sec6.m6.o1": "Caçar por tesouro",
  "s205.sec6.m6.o2": "Não, só isso",
@@ -1804,7 +1804,7 @@
  "s205.sec6.u4": "Pronto. Melhor. Tenha cuidado a partir de agora.",
  "s205.sec6.u5": "Bem, parece que não há doença ou lesão. Então, o que posso fazer por você?",
  "s205.sec6.u6": "Então deixe-me dar uma olhada no {color 10}{partner}{color 1}.",
- "s205.sec6.u7": "Oh, querido, isso não vai servir. {color 10}{partner}{color 1} está quase no limite da exaustão. Se não fizer algo, está em perigo!",
+ "s205.sec6.u7": "Oh, céus, isso não vai servir. {color 10}{partner}{color 1} está quase no limite da exaustão. Se não fizer algo, está em perigo!",
  "s205.sec6.u8": "{color 10}{partner}{color 1} tem acumulado muita fadiga. Descanse antes que seja tarde demais.",
  "s205.sec6.u9": "O {color 10}{partner}{color 1} parece um pouco cansado. Não exagere.",
  "s205.sec6.u10": [
@@ -1860,7 +1860,7 @@
  "s205.sec6.u34": "Tudo bem! Você terá resultados em três dias. Farei o meu melhor!",
  "s205.sec6.u35": [
   [
-   "Faltam Bits, amigo. Nem eu",
+   "Faltam Bits. Nem eu",
    "consigo desenterrar tesouros",
    "sem um dinheiro para começar."
   ]
@@ -1887,7 +1887,7 @@
  "s206.sec6.m1.o1": "Vou passar",
  "s206.sec6.u0": [
   [
-   "E aí, mano, quer jogar comigo?",
+   "E aí, quer jogar comigo?",
    "Se me vencer, faço o que você",
    "quiser."
   ]
@@ -1904,10 +1904,10 @@
  ],
  "s206.sec6.u5": "Entendi. Então, se ganharmos, você vem para a cidade. Se estiver tudo bem, vamos jogar.",
  "s206.sec6.u6": "Sim. Por mim tudo bem. Entre.",
- "s206.sec6.u7": "Ei, mano, vai me enfrentar? Custa um peixe me desafiar.",
+ "s206.sec6.u7": "Ei, vai me enfrentar? Custa um peixe me desafiar.",
  "s206.sec6.u8": [
   [
-   "Ei, mano! Eu fiz uma pista de patinação aqui,",
+   "Ei! Eu fiz uma pista de patinação aqui,",
    "também."
   ],
   [
@@ -1915,15 +1915,15 @@
    "se me vencer, eu te dou um ótimo prêmio."
   ]
  ],
- "s206.sec6.u9": "Então, mano, vai me enfrentar? É um peixe para me desafiar.",
- "s206.sec6.u10": "Você não é divertido.",
+ "s206.sec6.u9": "Então, vai me enfrentar? É um peixe para me desafiar.",
+ "s206.sec6.u10": "Você não tem graça.",
  "s206.sec6.u11": "Me dê um peixe!",
  "s206.sec6.u12": "Certo, não tenho nada agora...",
  "s206.sec6.u13": "Oops, dar isso não vai adiantar.",
  "s206.sec6.u14": "Nossa, parece gostoso. Oops, jogo primeiro. Entre.",
- "s206.sec6.u15": "Qual é, mano. Vá pegar um peixe no Lago Olho de Dragão!",
+ "s206.sec6.u15": "Qual é. Vá pegar um peixe no Lago Olho de Dragão!",
  "s206.sec7.m0.o0": "Vamos fazer isso!",
- "s206.sec7.m0.o1": "Não, obrigado",
+ "s206.sec7.m0.o1": "Não, valeu",
  "s206.sec7.u0": "Ei, {color 6}{player}{color 1}. Penguinmon me pediu para cuidar da pista. Por que não me aceita desta vez? Bata em mim e ganhará um prêmio muito especial. Então?",
  "s206.sec7.u1": "Vou pegar o peixe antes do jogo.",
  "s206.sec7.u2": "Certo, não tenho nada agora...",
@@ -1931,41 +1931,41 @@
  "s206.sec7.u4": "Heh. Hoje, a vitória é minha. Agora, vamos entrar.",
  "s206.sec7.u5": "Cuidando do rinque do Penguinmon, não posso jogar sem um peixe. Que pena. Volte mais tarde.",
  "s206.sec7.u6": "Você me recusa...?",
- "s206.sec10.u0": "Desculpe por isso, mano. Traga outro peixe e me desafie de novo!",
- "s206.sec10.u1": "Uau, uma nota perfeita! Mano... você é algum tipo de profissional?",
+ "s206.sec10.u0": "Desculpe por isso. Traga outro peixe e me desafie de novo!",
+ "s206.sec10.u1": "Uau, uma nota perfeita! Você é algum tipo de profissional?",
  "s206.sec10.u2": "{color 7}Parabéns! Por seu grande feito, você ganhou uma medalha!{color 1}",
- "s206.sec10.u3": "Isso é incrível, mano. É a primeira vez que perco.",
+ "s206.sec10.u3": "Isso é incrível. É a primeira vez que perco.",
  "s206.sec10.u4": "Você vai para a cidade, como prometeu.",
  "s206.sec10.u5": "Justo é justo. Mas já sei o que vou fazer na cidade. Espere!",
  "s206.sec10.u6": "Penguinmon veio para a cidade!",
- "s206.sec11.u0": "Desculpe por isso, mano. Traga outro peixe e me desafie de novo!",
- "s206.sec11.u1": "Uau, uma nota perfeita! Mano... você é algum tipo de profissional?",
+ "s206.sec11.u0": "Desculpe por isso. Traga outro peixe e me desafie de novo!",
+ "s206.sec11.u1": "Uau, uma nota perfeita! Você é algum tipo de profissional?",
  "s206.sec11.u2": "{color 7}Parabéns! Por seu grande feito, você ganhou uma medalha!{color 1}",
- "s206.sec11.u3": "Você é demais, mano. Perdi de novo.",
+ "s206.sec11.u3": "Você é demais. Perdi de novo.",
  "s206.sec11.u4": "Justo é justo. Aqui, seu prêmio.",
  "s206.sec11.u5": "Você não pode carregar mais!",
  "s206.sec11.u6": "Peguei {color 6}{item 110}{color 1}!",
  "s206.sec12.u0": "Hahaha! Use sua cabeça um pouco mais se quiser me bater! Até a próxima vez.",
  "s206.sec12.u1": "Uma pontuação perfeita contra mim? Você é algum gênio do curling?",
  "s206.sec12.u2": "{color 7}Parabéns! Por seu grande feito, você ganhou uma medalha!{color 1}",
- "s206.sec12.u3": "Hmph, você é bom, {color 6}{player}{color 1}! Aqui está o prêmio que prometi.",
+ "s206.sec12.u3": "Hmph, você manda bem, {color 6}{player}{color 1}! Aqui está o prêmio que prometi.",
  "s206.sec12.u4": "Você não pode carregar mais!",
  "s206.sec12.u5": "Peguei {color 6}{item 110}{color 1}!",
  "s206.sec13.m0.o0": "Partidas e copas",
- "s206.sec13.u7": "Empate, mano! Vamos jogar de novo.",
- "s206.sec13.u8": "Você passou, mano! Agora, a semifinal.",
- "s206.sec13.u9": "Uau, você está na final, mano! O campeão está esperando.",
+ "s206.sec13.u7": "Empate! Vamos jogar de novo.",
+ "s206.sec13.u8": "Você passou! Agora, a semifinal.",
+ "s206.sec13.u9": "Uau, você está na final! O campeão está esperando.",
  "s206.sec13.u10": "{color 7}Você ganhou a Copa Novato!{color 1}",
  "s206.sec13.u11": "{color 7}Você ganhou a Copa Amador!{color 1}",
  "s206.sec13.u12": "{color 7}Você ganhou a Copa Experiente!{color 1}",
  "s206.sec13.u13": "{color 7}Você ganhou a Copa Elite!{color 1}",
  "s206.sec13.u14": "{color 7}Você ganhou a Copa Lenda!{color 1}",
  "s206.sec13.u24": "{color 7}Você venceu a Copa Lenda: você ganhou a medalha Lenda do Curling!{color 1}",
- "s206.sec13.u25": "Que dupla, mano! Ninguém lança como vocês dois.",
- "s206.sec13.u26": "Todos contra todos, e você ficou em primeiro, mano!",
- "s206.sec13.u27": "Uma lenda leva o conjunto inteiro, mano! Um chip de cada tipo.",
- "s206.sec13.u28": "Você não pode carregar mais, mano! Eu guardo o resto dos chips. Volte quando tiver espaço.",
- "s206.sec13.u29": "Mano! Guardei seus chips. Aqui estão.",
+ "s206.sec13.u25": "Que dupla! Ninguém lança como vocês dois.",
+ "s206.sec13.u26": "Todos contra todos, e você ficou em primeiro!",
+ "s206.sec13.u27": "Uma lenda leva o conjunto inteiro! Um chip de cada tipo.",
+ "s206.sec13.u28": "Você não pode carregar mais! Eu guardo o resto dos chips. Volte quando tiver espaço.",
+ "s206.sec13.u29": "Guardei seus chips. Aqui estão.",
  "s207.sec11.m0.o0": "Comprar",
  "s207.sec11.m0.o1": "Não comprar",
  "s207.sec11.m1.o0": "Comprar",
@@ -2808,7 +2808,7 @@
   ]
  ],
  "s210.sec51.u7": "Então é o calabouço final? Manda ver!",
- "s210.sec51.u8": "Estou contando com você! Mas não se apresse. Não faça nada imprudente até que esteja pronto.",
+ "s210.sec51.u8": "Estou contando com você! Mas não se apresse. Não faça nada imprudente antes da hora.",
  "s210.sec51.u9": [
   [
    "O caminho para o Monte",
@@ -2834,7 +2834,7 @@
  ],
  "s210.sec77.u4": "Tornou-se uma bela cidade, de fato.",
  "s210.sec77.u5": "E pensar que você fez isso tão esplêndido... maravilhoso!",
- "s210.sec77.u6": "Não há mais nada que eu possa dizer. É maravilhoso, meu rapaz!",
+ "s210.sec77.u6": "Não há mais nada que eu possa dizer. É maravilhoso, minha criança!",
  "s210.sec77.u7": [
   [
    "{color 7}Seu nível de treinador subiu!{color 1}",
@@ -2842,7 +2842,7 @@
   ]
  ],
  "s210.sec77.u8": "{color 7}Parabéns! Por seu grande feito, você ganhou uma medalha!{color 1}",
- "s211.sec8.u0": "Bem-vindo de volta, {color 6}{player}{color 1}.",
+ "s211.sec8.u0": "Que bom ter você de volta, {color 6}{player}{color 1}.",
  "s211.sec8.u1": "Mantenho os registros de Jijimon.",
  "s211.sec8.u2": "Meu papel é gravar o que Jijimon lembra dia após dia, os rumores, e o que eu mesmo sei, e passar tudo para você.",
  "s211.sec8.u3": [
@@ -4076,11 +4076,11 @@
  "s215.sec6.u41": "Não é ruim.",
  "s216.sec51.m0.o0": "Aliviar o cansaço",
  "s216.sec51.m0.o1": "Vender-me remédios",
- "s216.sec51.m0.o2": "Nada, obrigado.",
+ "s216.sec51.m0.o2": "Nada, valeu.",
  "s216.sec51.u0": [
   [
-   "Olá, {color 6}{player}{color 1}. Surpreso? Aposto que",
-   "nunca pensou que eu abriria uma clínica."
+   "Olá, {color 6}{player}{color 1}. Surpresa, né? Aposto",
+   "que nunca pensou que eu abriria uma clínica."
   ],
   [
    "Deixe suas doenças e ferimentos comigo. Não",
@@ -4189,7 +4189,7 @@
  "s217.sec51.m2.o0": "Bife T-bone: 400 Bits",
  "s217.sec51.m2.o1": "Bife DX-bone: 800 Bits",
  "s217.sec51.m2.o2": "Bife fantasma: 1200 Bits",
- "s217.sec51.u0": "Pronto para pedir?",
+ "s217.sec51.u0": "Já vai pedir?",
  "s217.sec51.u1": "O que você gostaria de comer?",
  "s217.sec51.u2": "Então? O que vai querer?",
  "s217.sec51.u3": "Sem Bits, parece.",

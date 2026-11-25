@@ -12,6 +12,7 @@
                  "Poison Powder"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 57,
+  "own_effect": {"technique": "Mail Strome", "chunk": 376},
   "model": {
     "name": "BRIK",
     "bones": 7,

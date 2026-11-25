@@ -63,7 +63,7 @@ def the_ambush():
     # held back and still standing when the time ran out: he is spared; beaten (held back or not), he falls
     if not holding_back or pstat(241) != 1:   # patch 0172: 1 when that battle ended by the time
         narrator.say("Airdramon fell to the ground, and did not move.")
-        narrator.say(page("{color 7}Jijimon {color 1}", "...He's still breathing! Quick, my boy!"))
+        narrator.say(page("{color 7}Jijimon {color 1}", "...He's still breathing! Quick, child!"))
     tamer.play(7)
     wait(250)
     tamer.say(t57.u16)

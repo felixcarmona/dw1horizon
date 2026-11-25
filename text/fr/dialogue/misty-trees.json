@@ -191,7 +191,7 @@
  ],
  "s114.sec5.u0": [
   [
-   "Tu t'es perdu, {color 6}{player}{color 1} ?",
+   "On s'égare, {color 6}{player}{color 1} ?",
    "Ké hé hé hé hé !"
   ]
  ],
@@ -277,7 +277,7 @@
  "s115.sec51.u0": [
   [
    "Ho ho. Bienvenue, bienvenue,",
-   "jeune homme."
+   "mon enfant."
   ]
  ],
  "s115.sec51.u1": "Tu es Cherrymon, c'est ça ?",
@@ -540,8 +540,8 @@
  ],
  "s117.sec10.u0": [
   [
-   "Bonjour. Bonjour. Tu es",
-   "sérieux ?"
+   "Bonjour. Bonjour. C'est",
+   "du sérieux ?"
   ]
  ],
  "s117.sec11.u0": [

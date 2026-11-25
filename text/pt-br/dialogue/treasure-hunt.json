@@ -11,7 +11,7 @@
  ],
  "s169.sec81.m0.o0": "Explique, por favor",
  "s169.sec81.m0.o1": "Não precisa explicar",
- "s169.sec81.m0.o2": "Nada, obrigado.",
+ "s169.sec81.m0.o2": "Nada, valeu.",
  "s169.sec81.m1.o0": "Buscar tesouro",
  "s169.sec81.m1.o1": "Explique de novo",
  "s169.sec81.m1.o2": "Não, só isso",
@@ -20,7 +20,7 @@
  "s169.sec81.m2.o2": "Cancelar",
  "s169.sec81.u0": [
   [
-   "Ei, bem-vindo, {color 6}{player}{color 1}! Aqui é a loja de",
+   "Ei, olá, {color 6}{player}{color 1}! Aqui é a loja de",
    "Caça ao Tesouro. Eu uso meu talento de",
    "escavador para trazer tesouros do subsolo."
   ],

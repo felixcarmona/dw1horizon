@@ -15,9 +15,8 @@ import ast
 import os
 
 # The derive steps that open the source discs (build/NAME/source-games): the imported models, the record originals
-# that import, the species pins chosen by the World 3 disc's boot file, the techniques' own effects converted from
-# Digimon World 2 and Digimon World 2003.
-SOURCE_STEPS = ('imports', 'record_originals', 'species', 'effects')
+# that import, the species pins chosen by the World 3 disc's boot file.
+SOURCE_STEPS = ('imports', 'record_originals', 'species')
 
 
 def step_graph(derive_dir):

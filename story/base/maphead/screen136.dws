@@ -8,6 +8,7 @@ maphead {
         set_script(131, 136);
         engine.music_mode = 1;
         set_bgm(16);
+        unless (curling_format == 0) return;    // a cup match: the rink brings its own rivals
         if (curling_opponent == 1) {
             load_digimon(species(149));
             set_digimon(species(149), 1, 0);

@@ -3,7 +3,6 @@
  "note": "tools/dcbrelease.py make: do not edit by hand",
  "files": {
   "F.DRV": "23c99e023e69ebc712bba60016d46073eea97771",
-  "E.DRV": "d35a1f3ad2b0d8e87a16adb0e781c86e9ac5fe53",
   "SLES_039.00": "050ae623135d5c233c255c9e76956eaeabd2fa6e"
  },
  "models": {

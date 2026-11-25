@@ -56,14 +56,14 @@
    "incontri! Sconfiggerti sarà la"
   ],
   [
-   "mia centesima vittoria! Il",
-   "grande {color 6}{player}{color 1} non",
+   "mia centesima vittoria! Su,",
+   "{color 6}{player}{color 1} non",
    "scapperà di certo?"
   ]
  ],
  "s147.sec9.u1": [
   [
-   "Mmm... Sei più bravo del",
+   "Mmm... Vali più del",
    "previsto! Ho deciso: ti",
    "riconosco come rivale! Un"
   ],
@@ -148,7 +148,7 @@
  "s149.sec11.m1.o0": "Lascia perdere.",
  "s149.sec11.m1.o1": "Quando cambi turno?",
  "s149.sec11.m2.o0": "Ho il permesso",
- "s149.sec11.m2.o1": "Mi do il permesso da solo!",
+ "s149.sec11.m2.o1": "Il permesso me lo do io!",
  "s149.sec11.u0": [
   [
    "Non puoi passare di qui."
@@ -386,12 +386,12 @@
  "s151.sec5.u14": [
   [
    "Lo troverò... e farò qualcosa",
-   "per fermarlo. Ora capisco. Sono",
-   "stato chiamato qui per"
+   "per fermarlo. Ora capisco. Mi",
+   "hanno chiamato qui per"
   ],
   [
-   "sconfiggerlo, perché sono umano",
-   "anch'io."
+   "sconfiggerlo, perché anch'io",
+   "sono un essere umano."
   ]
  ],
  "s151.sec5.u15": [
@@ -559,8 +559,8 @@
  ],
  "s151.sec5.u40": [
   [
-   "Oh... Sei tu... Come sei",
-   "entrato in questa città?"
+   "Oh... Sei tu... Come",
+   "hai fatto a entrare qui?"
   ]
  ],
  "s151.sec5.u41": [

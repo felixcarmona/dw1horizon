@@ -39,7 +39,7 @@
  ],
  "s162.sec5.u4": [
   [
-   "Tu es déjà allé au Grand",
+   "Tu as déjà visité le Grand",
    "Canyon ? Il paraît que des",
    "bandits y rôdent."
   ]
@@ -67,7 +67,7 @@
  ],
  "s162.sec5.u8": [
   [
-   "Tu es déjà allé au Grand",
+   "Tu as déjà visité le Grand",
    "Canyon ? Il paraît qu'il y a un",
    "pont invisible là-bas."
   ]
@@ -243,10 +243,10 @@
   [
    "Hé, tu me donnes du fil à",
    "retordre... pas mal du tout.",
-   "Mais tu es encore trop novice"
+   "Mais tu es encore"
   ],
   [
-   "pour atteindre ton but !"
+   "loin de ton but !"
   ]
  ],
  "s162.sec57.u8": [
@@ -257,14 +257,14 @@
  "s162.sec57.u9": [
   [
    "Je vais rester ici pour",
-   "t'endurcir. Tu vas devenir",
-   "beaucoup, beaucoup plus fort !"
+   "t'endurcir. Tu vas gagner",
+   "beaucoup, beaucoup de force !"
   ]
  ],
  "s162.sec57.u10": "Greymon a rejoint la ville !",
  "s162.sec57.u11": [
   [
-   "Hé hé, je t'ai trouvé,",
+   "Hé hé, te voilà,",
    "{color 6}{player}{color 1} !"
   ]
  ],
@@ -634,7 +634,7 @@
  ],
  "s163.sec9.u4": [
   [
-   "Tu es allé au Marais Geko ? Il",
+   "Tu as vu le Marais Geko ? Il",
    "paraît qu'un Digimon farceur y",
    "joue parfois des tours."
   ]
@@ -1075,14 +1075,14 @@
  ],
  "s193.sec54.u0": [
   [
-   "Hmm... Il reprend connaissance",
-   "? On dirait que ça a marché !"
+   "Hmm... Des signes de réveil ?",
+   "On dirait que ça a marché !"
   ]
  ],
  "s193.sec54.u1": [
   [
-   "Un humain... comme Jiji l'a",
-   "dit!"
+   "Un enfant d'ailleurs...",
+   "comme Jiji l'a dit !"
   ]
  ],
  "s193.sec54.u2": [
@@ -1092,7 +1092,7 @@
  ],
  "s193.sec54.u3": [
   [
-   "Chut ! Il se réveille !"
+   "Chut ! Ça bouge !"
   ]
  ],
  "s193.sec54.u4": [
@@ -1240,8 +1240,8 @@
  ],
  "s193.sec54.u27": [
   [
-   "C'est ça... ! J'ai été aspiré",
-   "dans mon porte-clés Digimon..."
+   "C'est ça... ! Mon porte-clés",
+   "Digimon m'a aspiré..."
   ]
  ],
  "s193.sec54.u28": [
@@ -1266,8 +1266,8 @@
  "s193.sec55.u0": [
   [
    "Bon, où en étais-je ? C'est",
-   "moi qui t'ai appelé ici. Nous",
-   "avons besoin que tu nous"
+   "moi qui t'ai fait venir ici.",
+   "Nous avons besoin que tu nous"
   ],
   [
    "sauves."
@@ -1360,8 +1360,8 @@
  ],
  "s193.sec55.u13": [
   [
-   "Hein ? ...Ah oui. Je suis très",
-   "doué ! Hé hé."
+   "Hein ? ...Ah oui. Je me",
+   "débrouille très bien ! Hé hé."
   ]
  ],
  "s193.sec55.u14": [
@@ -1372,8 +1372,8 @@
  ],
  "s193.sec55.u15": [
   [
-   "Quoi ? Je suis pourtant sûr de",
-   "parler français normalement."
+   "Quoi ? Pourtant, je parle",
+   "français normalement."
   ]
  ],
  "s193.sec55.u16": [
@@ -1404,8 +1404,8 @@
  ],
  "s193.sec55.u20": [
   [
-   "C'est pour cela que je t'ai",
-   "choisi. Tu peux ramener ici les",
+   "C'est pour cela que j'ai pensé",
+   "à toi. Tu peux ramener ici les",
    "Digimon de toute l'île File !"
   ]
  ],

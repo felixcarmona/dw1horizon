@@ -103,21 +103,6 @@ class Record(unittest.TestCase):
             os.unlink(f.name)
 
 
-class AreaChunks(unittest.TestCase):
-    def test_area_only_with_the_designed_numbers(self):
-        """An own effect chunk picks its own targets: it hits every enemy only when the designed numbers play."""
-        from unittest import mock
-        from tools.derive.steps import effects
-        real = json.load
-
-        def chunks(neutral):
-            with mock.patch('json.load', lambda f, **k: (lambda d: dict(d, neutral=neutral) if 'finishers' in d else d)(real(f, **k))):
-                return effects.finisher_area_chunks(ROOT)
-        self.assertEqual(chunks(True), set())
-        self.assertIn(122, chunks(False))          # SkullMeramon's Metal Fireball
-        self.assertNotIn(123, chunks(False))       # Raremon's Buffalo Breath: one target
-
-
 class Names(unittest.TestCase):
     def test_every_species_has_a_name_in_every_bank(self):
         english = {e['species']: e['name'] for e in DATA['finishers']}

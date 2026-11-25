@@ -6,7 +6,8 @@ The original's banners are one TIM file per cup, with a copy per language. These
 in the style of the original's banners (content/localized/tournament/new-cups/prompts.py has the prompts) and kept as
 256x128 PNGs of 256 colours, colour 0 the transparent background (content/localized/tournament/new-cups/<language>/).
 One file holds them all, a banner per language and cup in the order of include/dw/lang.h and of CUPS, each SECTORS
-long, so the arena reads the one it shows with a single file name (STD_initializeTournament).
+long, so the arena reads the one it shows with a single file name (STD_initializeTournament). The cups' own arenas
+follow the banners (tools/cup_arenas.py).
 
 No Pillow, no downloads: the player's build packs them too.
 """
@@ -37,7 +38,7 @@ def tim(path):
     if (w, h, mode) != (W, H, 'P'):
         raise ValueError(f'{path}: a {w}x{h} {mode} picture, a banner is {W}x{H} with a palette')
     colours = (list(colours) + [(0, 0, 0)] * 256)[:256]
-    clut = [0] + [max(1, (r >> 3) | (g >> 3) << 5 | (b >> 3) << 10) for r, g, b in colours[1:]]
+    clut = [0] + [0x8000 | (r >> 3) | (g >> 3) << 5 | (b >> 3) << 10 for r, g, b in colours[1:]]
     data = struct.pack('<II', 0x10, 9)
     data += struct.pack('<IHHHH', 12 + 512, *CLUT_XY, 256, 1) + struct.pack('<256H', *clut)
     data += struct.pack('<IHHHH', 12 + W * H, *IMAGE_XY, W // 2, H) + b''.join(bytes(row) for row in rows)
@@ -47,7 +48,9 @@ def tim(path):
 
 
 def build(out):
+    import cup_arenas
     data = b''.join(tim(os.path.join(ART, language, cup + '.png')) for language in LANGUAGES for cup in CUPS)
+    data += cup_arenas.slots()          # the cups' arenas follow the banners (STD_ARENA_FIRST_SECTOR)
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     with open(out, 'wb') as f:
         f.write(data)

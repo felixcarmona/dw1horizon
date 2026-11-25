@@ -12,6 +12,7 @@
                  "Delete Program", "Reverse Prog", "Genoside Attack"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 51,
+  "own_effect": {"technique": "Genoside Attack", "chunk": 167},
   "model": {
     "file": "build/sizes-out/models/Paildramon.MMD",
     "radius": 256,

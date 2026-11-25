@@ -286,7 +286,7 @@
  ],
  "m1230.u44": [
   [
-   "Hé hé... Sois prudent dehors."
+   "Hé hé... Prudence dehors."
   ]
  ],
  "m1230.u45": [
@@ -303,7 +303,7 @@
  ],
  "m1230.u47": [
   [
-   "Oh, toi, client !"
+   "Oh, toi, là !"
   ]
  ],
  "m1230.u48": [
@@ -696,7 +696,7 @@
  ],
  "m1237.u2": [
   [
-   "Tu es sûr ? Viens l'utiliser",
+   "Vraiment ? Viens l'utiliser",
    "quand tu veux, d'accord ?"
   ]
  ],
@@ -751,7 +751,7 @@
  ],
  "m1238.u6": [
   [
-   "Tu es sûr ? Une fois parti,",
+   "Vraiment ? Après le départ,",
    "c'est fini."
   ]
  ],
@@ -923,8 +923,8 @@
  "m1240.u3": [
   [
    "Alors, {color 10}{partner}{color 1} participe",
-   "au -{cup 3}-... Tu es",
-   "sûr ?"
+   "au -{cup 3}-... Vraiment",
+   "?"
   ]
  ],
  "m1240.u4": [
@@ -953,9 +953,9 @@
  ],
  "m1241.u0": [
   [
-   "Ah oui, je suis inscrit au",
-   "-{cup 3}- aujourd'hui,",
-   "non ?"
+   "Ah oui, j'ai une",
+   "inscription au -{cup 3}-",
+   "aujourd'hui, non ?"
   ]
  ],
  "m1242.u0": [

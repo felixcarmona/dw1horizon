@@ -16,7 +16,7 @@
  ],
  "s067.sec8.u0": "Quer que eu te dê isso? Tee-hee...",
  "s067.sec9.u0": "Você e eu somos amigos agora, certo...",
- "s067.sec10.u0": "Você é inimigo? Você quer lutar?",
+ "s067.sec10.u0": "Você está do lado inimigo? Quer lutar?",
  "s068.sec5.u0": "Toque em mim e terá um grande ZAP, certo?",
  "s068.sec5.u1": "Ei, ei, você... isso não dói?",
  "s068.sec5.u2": [
@@ -34,7 +34,7 @@
   ],
   [
    "Mmm. Ok, eu vou te ajudar. Eu sou Elecmon.",
-   "Prazer em conhecê-lo!"
+   "Prazer em te conhecer!"
   ]
  ],
  "s068.sec5.u5": "Elecmon veio para a cidade!",
@@ -49,7 +49,7 @@
  "s068.sec10.u0": "Hahh... você tem mau gosto.",
  "s068.sec11.u0": [
   [
-   "Que atrevido! Vou te vencer!"
+   "Que ousadia! Vou te vencer!"
   ]
  ],
  "s068.sec51.u0": "Uma porta de ferro resistente... se não abrir, não tem como entrarmos.",
@@ -76,7 +76,7 @@
  "s069.sec5.u8": "Se está entediado, venha para a cidade. Há todos os tipos de Digimon lá.",
  "s069.sec5.u9": "Ooh, parece bom. Eu vou. Sou Patamon. Até logo!",
  "s069.sec5.u10": "Patamon veio para a cidade!",
- "s069.sec5.u11": "Você não é divertido!",
+ "s069.sec5.u11": "Você não tem graça!",
  "s069.sec6.u0": "Oh, você vem?",
  "s069.sec7.u0": "Você... sem cheiro!",
  "s069.sec8.u0": [
@@ -85,7 +85,7 @@
    "você!"
   ]
  ],
- "s069.sec9.u0": "Gah ha ha ha! Você é engraçado!",
+ "s069.sec9.u0": "Gah ha ha ha! Você me faz rir!",
  "s070.sec5.u0": [
   [
    "Eek, você voltou, piu!"
@@ -189,7 +189,7 @@
   ]
  ],
  "s070.sec54.u5": "Espere um segundo. Não somos os bandidos.",
- "s070.sec54.u6": "Huh? Você não é o sequestrador Digimon que todos falam?",
+ "s070.sec54.u6": "Huh? Você não é quem anda sequestrando Digimon, de quem todos falam?",
  "s070.sec54.u7": "Parece que há rumores errados por aí.",
  "s070.sec54.u8": "{color 6}{player}{color 1} tentou convencê-la!",
  "s070.sec54.u9": [
@@ -255,7 +255,7 @@
  ],
  "s073.sec51.u4": "Huh, quem é esse?",
  "s073.sec51.u5": "Você está bem?",
- "s073.sec51.u6": "Obrigado.",
+ "s073.sec51.u6": "Valeu.",
  "s073.sec51.u7": [
   [
    "Não precisa agradecer. Sempre que estiver em",
@@ -404,7 +404,7 @@
   ]
  ],
  "s126.sec81.u3": "Huh.",
- "s126.sec81.u4": "Para começar, tenha este de graça. Prazer em conhecê-lo, sim!",
+ "s126.sec81.u4": "Para começar, tenha este de graça. Prazer em te conhecer, sim!",
  "s126.sec81.u5": [
   [
    "Ei! Esta é uma carta minha!"

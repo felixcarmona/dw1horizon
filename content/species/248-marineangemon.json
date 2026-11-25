@@ -13,6 +13,7 @@
                  "Grand Cross"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 28,
+  "own_effect": {"technique": "Lovely Attack", "chunk": 372},
   "model": {
     "file": "build/sizes-out/models/MarineAngemon.MMD",
     "radius": 183,

@@ -22,15 +22,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 2,
-    "look": "Two fast claw rakes.",
-    "dash": true,
+    "look": "Cold glints run to the paws, a blue streak leaps at the target and two rakes of three claws tear across it one after the other.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/415.PAK",
-    "shared_by_cards": 11,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 64,
      "name": "Howling Blaster"
@@ -79,25 +78,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 1,
-    "look": "Fires a black gear that spins into the target.",
+    "look": "A black cog winds up before Hagurumon in a dark haze, rolls into the target and grinds on it in a shower of sparks before flying apart.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA2700.BIN",
-     "EFFECT/EFFESA/AESA2700.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     1003,
-     1025,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 66,
      "name": "Electric Shock"
@@ -146,29 +134,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A cold beam.",
+    "look": "Snowflakes gather into a lamp on the chest, a thin cold beam with frost hoops running down it opens a great snowflake on the target.",
     "dash": false,
     "clip": "G0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEMA/MEMA7600.BIN",
-     "EFFECT/EFFEMA/MEMA7700.BIN",
-     "EFFECT/EFFEMA/AEMA7600.BIN",
-     "EFFECT/EFFEMA/AEMA7700.BIN",
-     "EFFECT/EFFEMD/MEMD1700.BIN",
-     "EFFECT/EFFEMD/AEMD1700.BIN"
-    ],
-    "file_ids": [
-     3006,
-     2992,
-     3056,
-     3038,
-     3002,
-     3046
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -209,15 +182,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Blows one big bubble.",
+    "look": "A bubble swells at the mouth to the size of a Digimon, wobbles after the target with small bubbles in its wake and bursts on it in a ring of spray.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/437.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -258,15 +230,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Veemon lowers its head and charges; a white V flash on contact.",
-    "dash": true,
+    "look": "A blue light swells on the brow and shoots head first at the target as a blunt comet, and a great white V flashes up where it butts.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2000.PAK",
-    "shared_by_cards": 12,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 99,
      "name": "Blue Blaster"
@@ -306,15 +277,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 3,
-    "look": "Leaps in and hammers the target three times with its mallet; wood-knock hits.",
-    "dash": true,
+    "look": "Three wooden mallets drop on strings onto the target, left, right and middle, each knocking a jagged star and splinters out of it.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -363,22 +333,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A heat blast from the wings.",
+    "look": "Both wings glow and each throws a front of sickly green heat; the two close on the target and it goes up in green and orange flame.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
     "files": null,
-    "file_ids": [
-     2990,
-     2978,
-     3055,
-     3053,
-     953,
-     915
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -419,15 +381,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Spits a white silk net that wraps the target.",
+    "look": "A spat ball of silk opens in the air into a turning net that falls over the target and draws tight round it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2021.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 98,
      "name": "Poison Ivy"
@@ -467,15 +428,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A thin red beam from the forehead feather.",
+    "look": "A glint on the brow feather fires a hair-thin red beam that stings the target with a star and leaves red feathers tumbling.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/474.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 71,
      "name": "Boom Bubble"
@@ -512,18 +472,17 @@
     "name": "Drill Spin"
    },
    "behavior": {
-    "kind": "dash",
+    "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Curls into a ball and rolls into the target; dust trail.",
-    "dash": true,
+    "look": "A curled, plated ball rolls along the ground at the target kicking up dust and bounces off it in a burst of grit.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2000.PAK",
-    "shared_by_cards": 12,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 75,
      "name": "Drill Spin"
@@ -533,7 +492,7 @@
     "power": 89,
     "element": "battle",
     "range": 2,
-    "distance": 160000,
+    "distance": 360000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -563,15 +522,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Darts in and stabs with the wrist stinger; green spark.",
-    "dash": true,
+    "look": "A pink point lights on the wrist, two feints flick out, then a long green spike runs the target through and sparks fly out of its far side.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2004.PAK",
-    "shared_by_cards": 12,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -611,15 +569,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Dives at sonic speed; white shock rings behind it.",
-    "dash": true,
+    "look": "A light climbs into the air and dives on the target as a white dart, leaving shock rings in the sky and three booming rings where it lands.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/474.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 84,
      "name": "Aerial Attack"
@@ -659,15 +616,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 1,
-    "look": "Turns and slams its club tail down; ground shockwave.",
+    "look": "A spiked ball of stone swings over in a high arc and slams down on the target; rocks fly, dust rolls out in a ring and the ground jumps a second time.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2004.PAK",
-    "shared_by_cards": 12,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 75,
      "name": "Drill Spin"
@@ -705,15 +661,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Draws a bow of light and fires one shining arrow.",
+    "look": "A golden bow forms as light gathers on it and looses one arrow of rose light that breaks in a cross of light and falling feathers; it can be dodged.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2015.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -753,15 +708,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A freezing blue beam from the mouth; frost on impact.",
+    "look": "A broad freezing beam from the jaws sheds rime and raises spikes of ice round the target that shatter.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2041.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 78,
      "name": "Genoside Attack"
@@ -802,15 +756,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "The arm cannon fires a broad red-orange energy beam.",
+    "look": "Hoops close on the arm cannon, then a huge orange beam with hoops racing down it whitens the screen and bursts on the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2043.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 77,
      "name": "Energy Bomb"
@@ -851,15 +804,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 5,
-    "look": "Fires its drills as a volley of spinning golden spikes.",
+    "look": "Five spinning golden drills fly out one after another on bright wakes and bore into the target in bursts of gold chips.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/406.PAK",
-    "shared_by_cards": 15,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 75,
      "name": "Drill Spin"
@@ -899,15 +851,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "An X-shaped beam from the chest emblem.",
+    "look": "The X on the chest swells, tears loose and flies at the target as a growing burning X that stamps it with a blaze.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/449.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -944,18 +895,17 @@
     "name": "Fireball"
    },
    "behavior": {
-    "kind": "dash",
+    "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Wreathed in flame, it rockets into the target.",
-    "dash": true,
+    "look": "Flames wreathe the caster and leave it as a lance of fire with two flames corkscrewing round it, which blows a cone of fire out of the target.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 61,
      "name": "Fireball"
@@ -965,7 +915,7 @@
     "power": 175,
     "element": "fire",
     "range": 2,
-    "distance": 160000,
+    "distance": 360000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -995,15 +945,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Spins into a horizontal whirlwind that drills through the target.",
+    "look": "Wind whips round the caster and drills to the target as a sideways whirlwind of hoops and coiling streaks that blows apart on it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2006.PAK",
-    "shared_by_cards": 8,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 69,
      "name": "Spnning Needle"
@@ -1043,15 +992,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 4,
-    "look": "Golden plasma missiles burst from the armour.",
+    "look": "Four crackling plasma orbs charge above the caster, then dive one by one and burst on the target in white-gold flares.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/450.PAK",
-    "shared_by_cards": 5,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 77,
      "name": "Energy Bomb"
@@ -1091,15 +1039,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 2,
-    "look": "Two carved stone tablets drop onto the target.",
+    "look": "Two carved stone tablets form in shafts of sunlight over the target and drop one after the other in dust and chips of stone.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 86,
      "name": "Solar Ray"
@@ -1140,15 +1087,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 6,
-    "look": "Rapid fire from both hip guns.",
+    "look": "Two hip guns fire in turn a row of blue tracers with muzzle flashes and flung cases, each flaring and sparking on the target before a last star burst.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 78,
      "name": "Genoside Attack"
@@ -1188,15 +1134,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 6,
-    "look": "Golden stars rain from above onto the target.",
+    "look": "A shower of five-pointed stars falls from the sky on glittering tails and bursts on the target one after another.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2037.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 84,
      "name": "Aerial Attack"
@@ -1236,15 +1181,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A crackling lightning bolt from the mouth.",
+    "look": "A jagged bolt that changes shape every instant stands between the jaws and the target while arcs crawl over it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2019.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 86,
      "name": "Solar Ray"
@@ -1281,18 +1225,17 @@
     "name": "Blasting Spout"
    },
    "behavior": {
-    "kind": "dash",
+    "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Rams the target like a torpedo; a spray of water.",
-    "dash": true,
+    "look": "Bubbles rise and a sonar ring pings out, then a steel torpedo runs at the target in a wake of foam and throws up a column of spray.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2059.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 90,
      "name": "Blasting Spout"
@@ -1302,7 +1245,7 @@
     "power": 153,
     "element": "ice",
     "range": 2,
-    "distance": 160000,
+    "distance": 360000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -1332,15 +1275,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A blazing beam from the chest V.",
+    "look": "The V on the chest flares gold and pours a roaring band of flame that bursts on the target as a great golden V.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/449.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -1380,15 +1322,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Electric energy gathers on the horn and fires as a bolt.",
+    "look": "Arcs feed a ball of lightning swelling on the horn; it is flung in a straight line and bursts in a ringed shock, leaving current on the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/496.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -1429,15 +1370,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Draws a golden gate in the air that pulls the target in.",
+    "look": "A spark draws a golden round gate behind the target; it opens on white light, pulls lights out of the target and flares.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/498.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -1478,15 +1418,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 7,
-    "look": "Seven golden orbs circle and strike in turn.",
+    "look": "Seven holy orbs turn as a wheel around the caster, then strike the target in turn under a pillar of light and drifting feathers.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2046.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 112,
      "name": "High Electro Shocker"
@@ -1526,15 +1465,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 6,
-    "look": "Spins and sprays a burst of needles.",
+    "look": "A green whirl spins at the caster and sprays volleys of white needles that prick the target in green bursts.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2003.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 91,
      "name": "Fist of the Beast King"
@@ -1574,15 +1512,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A green energy blast from a flower held in both hands.",
+    "look": "A pink flower opens and turns between the hands and fires a green beam that bursts on the target in a cloud of petals.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/400.PAK",
-    "shared_by_cards": 42,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -1622,15 +1559,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 2,
-    "look": "Two crossing slashes that leave a dark X.",
-    "dash": true,
+    "look": "Two violet mandibles close on the target from either side in two crossing cuts, and the black X they leave bursts.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2064.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -1670,15 +1606,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A huge blue beam from the nose cannon.",
+    "look": "Hoops close on the nose cannon and a thick river of blue power sprays drops and raises a column of water on the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2033.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -1718,15 +1653,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A crimson-black blast from the chest maw.",
+    "look": "A toothed maw opens on the chest and pours a crimson blast with a black heart that leaves a dark blot and rising red bubbles.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 96,
      "name": "Nightmare Syndromer"
@@ -1766,15 +1700,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A V-shaped blade of light flung from the wings.",
+    "look": "Lights from the two wingtips meet at the chest and a V-shaped blade of light is flung straight ahead, growing, with echoes behind it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/497.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 96,
      "name": "Nightmare Syndromer"
@@ -1814,15 +1747,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 3,
-    "look": "Lobs clay figurines that burst on impact.",
+    "look": "Three clay figures tumble in high arcs onto the target's spot and burst into potsherds and red dust.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/498.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -1862,15 +1794,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A spiralling column of flame.",
+    "look": "Two ropes of rose flame coil round each other to the target and wind up into a spinning funnel of fire.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2015.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 109,
      "name": "Crimson Flare"
@@ -1910,15 +1841,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Lunges and rakes with a red-trailed claw.",
-    "dash": true,
+    "look": "Four red eyes open, a red streak lunges at the target and three talons rake down through it side by side, dragging trails of red.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/415.PAK",
-    "shared_by_cards": 11,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -1958,15 +1888,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 5,
-    "look": "A line of fish leaps out of the ground into the target.",
+    "look": "A file of blue and striped orange fish leaps out in arcs and slaps into the target with splashing crowns of water.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2002.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 95,
      "name": "Super Slap"
@@ -2006,15 +1935,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Fires its horn as a harpoon missile.",
+    "look": "The horn leaves the head on a jet of flame trailing smoke and bursts into frost and splinters of ice; it can be dodged.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/406.PAK",
-    "shared_by_cards": 15,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 85,
      "name": "Bone Boomerang"
@@ -2054,15 +1982,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 1,
-    "look": "Brings the hammer down; a ring of energy bursts out.",
+    "look": "Sparks run up into a hammer hanging over the target; it drops, and rings of energy burst out twice with bolts dancing over the spot.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/443.PAK",
-    "shared_by_cards": 7,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -2101,15 +2028,14 @@
     "kind": "breath",
     "target": "one",
     "hits": 1,
-    "look": "Swings its morning stars and blasts the target with a freezing gale.",
+    "look": "Two spiked balls of ice whirl round Vikemon, then a gale of snow and flakes blows over the target and spikes of ice grow from the ground under it and break.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2014.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -2149,15 +2075,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A high howl; sound rings fly at the target.",
+    "look": "Four howls leave the mouth as widening sound rings with tumbling notes and keep ringing over the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2063.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 71,
      "name": "Boom Bubble"
@@ -2198,15 +2123,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Its eyes flash; a violet ripple hits the target.",
+    "look": "The light dims, two yellow cat's eyes open and flash, violet ripples cross to the target and huge eyes open over it in a violet haze.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2005.PAK",
-    "shared_by_cards": null,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_a.py",
+    "status": "authored",
     "template": {
      "id": 83,
      "name": "Dark Claw"
@@ -2247,15 +2171,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 6,
-    "look": "A swarm of black bats flies at the target.",
+    "look": "A swarm of bats pours out of a cloud of gloom and tears across the target in violet slashes before scattering.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2025.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -2295,14 +2218,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 1,
-    "look": "Fires its metal claw arm on a cable; it clamps the target and snaps back.",
+    "look": "The metal claw shoots out on a chain, clamps the target in a burst of sparks, wrenches it and reels back.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW1 effects",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 79,
      "name": "Giga Scissor Claw"
@@ -2343,15 +2266,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 2,
-    "look": "Two giant shuriken flung from its arms.",
+    "look": "Two great shuriken spin up at Shurimon's sides in a swirl of leaves and are flung straight at the target one after the other.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2057.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 89,
      "name": "Iga School Knife Throw"
@@ -2391,15 +2313,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A sphere of red-white energy from both hands.",
+    "look": "A light from each hand joins into a red and white sphere with wind wound round it; thrown, it breaks on the target in a whirl of gusts.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2048.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -2439,15 +2360,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 1,
-    "look": "Hurls its bone club end over end.",
+    "look": "The bone club is hurled end over end in a high arc, lands with a crack, splinters and dust, and bounces away.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2003.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 81,
      "name": "Pummel Whack"
@@ -2487,15 +2407,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 5,
-    "look": "Flaming meteors fall on the target.",
+    "look": "Burning rocks spiral down in a dance and crash on the spot where the target stood in bursts of fire.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2044.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 94,
      "name": "Meteor Wing"
@@ -2535,15 +2454,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Sweeps the scythe; a dark crescent.",
-    "dash": true,
+    "look": "Wisps of shadow gather, a dark spinning crescent flies to the target and reaps through it in one wide pale sweep.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2075.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -2583,15 +2501,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 3,
-    "look": "Lashes three times with a thorned whip.",
+    "look": "A thorned vine lashes the target three times, high, low and over the top, each crack throwing rose petals and leaves.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2054.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -2630,15 +2547,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Slams the target with its shell.",
-    "dash": true,
+    "look": "Slime bubbles up and a pink spiral shell is lobbed high, spinning and dripping, lands on the target's head and bounces off in a green splash.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2000.PAK",
-    "shared_by_cards": 12,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 89,
      "name": "Iga School Knife Throw"
@@ -2679,15 +2595,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 1,
-    "look": "Lobs a big round bomb; it explodes on the target.",
+    "look": "A big round bomb with a spitting fuse is lobbed high and goes up in a fireball, a blast ring and rolling black smoke.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/406.PAK",
-    "shared_by_cards": 15,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 89,
      "name": "Iga School Knife Throw"
@@ -2727,15 +2642,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 3,
-    "look": "Blows three boiling bubbles.",
+    "look": "Three scalding bubbles blown one after another hop through the air steaming and burst on the target in boiling water.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2017.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 59,
      "name": "Pepper Breath"
@@ -2775,15 +2689,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Darts in with a glowing paw punch.",
-    "dash": true,
+    "look": "Gold sparks crackle on the paw, a bolt jumps to the target and a great glowing paw print stamps on it in a shower of stars.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/412.PAK",
-    "shared_by_cards": 8,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 82,
      "name": "Hand of Fate"
@@ -2823,15 +2736,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Flings its head flame as a fireball.",
+    "look": "The head flame swells, tears free and is flung in a high arc dripping wax; a ring of small flames stands up where it lands; it can be dodged.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/400.PAK",
-    "shared_by_cards": 42,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 99,
      "name": "Blue Blaster"
@@ -2871,15 +2783,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 1,
-    "look": "Throws a syringe dart.",
+    "look": "A syringe loaded with violet serum is thrown like a dart, dripping as it flies, and bursts in a violet spray.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2029.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 69,
      "name": "Spnning Needle"
@@ -2919,15 +2830,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A black-red energy blast from the chest.",
+    "look": "A hollow red ball with a black heart swells on the chest and tears open into a ragged red torrent with a black core that bursts on the target and leaves soot.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 80,
      "name": "Dark Shot"
@@ -2967,15 +2877,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Ultrasonic rings from the head.",
+    "look": "Six rings of sound leave the head one after another, swelling as they swim to the target and breaking on it in ripples.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/486.PAK",
-    "shared_by_cards": 2,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 90,
      "name": "Blasting Spout"
@@ -3016,15 +2925,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Spins with its fin like a saw blade.",
-    "dash": true,
+    "look": "A toothed teal blade spins up, runs at the target throwing sparks, bites in and grinds there before the cut goes through.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2000.PAK",
-    "shared_by_cards": 12,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 95,
      "name": "Super Slap"
@@ -3064,15 +2972,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 3,
-    "look": "Fires sharp lumps of coral.",
+    "look": "Three jagged lumps of coral hurled one after another, each spinning in a sheath of sea water and breaking where it lands; they can be dodged.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2065.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 87,
      "name": "Hydro Pressure"
@@ -3112,15 +3019,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A ball of lightning from the staff.",
+    "look": "Sparks at the tip of the staff knot into a ball of lightning that rolls after the target and forks out all round it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/402.PAK",
-    "shared_by_cards": 16,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 86,
      "name": "Solar Ray"
@@ -3160,15 +3066,14 @@
     "kind": "breath",
     "target": "one",
     "hits": 1,
-    "look": "A cloud of ice crystals engulfs the target.",
+    "look": "A sparkling fog rolls from the staff to the target and closes round it; six ice crystals circle in the fog, draw in and shatter together.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2068.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 88,
      "name": "Ice Blast"
@@ -3208,15 +3113,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 5,
-    "look": "Small burning stars stream down on the target.",
+    "look": "A burning gate opens high above the caster and a stream of bright stars pours down from it on fiery tails into the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/450.PAK",
-    "shared_by_cards": 5,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 94,
      "name": "Meteor Wing"
@@ -3256,15 +3160,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 6,
-    "look": "A cluster of comets falls on the target.",
+    "look": "A cluster of cold blue comets plunges from the sky on tall wakes onto the spot where the target stood and ends in a white nova.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 112,
      "name": "High Electro Shocker"
@@ -3304,15 +3207,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 4,
-    "look": "Four swords thrown in a fan.",
+    "look": "Four swords appear in a fan over Piedmon with a wink of magic, then fly at the target one after another on pink trails.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2020.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -3352,15 +3254,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A dark sphere fired from the mouth.",
+    "look": "Darkness gathers in the mouth into a black ball veined with fire, shot straight and smoking; it bursts into a pillar of hellfire; it can be dodged.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 74,
      "name": "Deadly Bomb"
@@ -3401,15 +3302,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 2,
-    "look": "Two quick pincer snips with a spark.",
+    "look": "Current hums on Kokuwamon; two toothed steel blades snap shut on the target from the sides, then two more from above and below, and the current jumps over it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/472.PAK",
-    "shared_by_cards": 5,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 66,
      "name": "Electric Shock"
@@ -3447,15 +3347,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 3,
-    "look": "Pink heart bubbles float into the target.",
+    "look": "Three bubbles with a pink heart in each float swaying into the target and burst into small hearts; a great heart opens over it at the end.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/471.PAK",
-    "shared_by_cards": 3,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 60,
      "name": "Lovely Attack"
@@ -3496,15 +3395,14 @@
     "kind": "breath",
     "target": "one",
     "hits": 1,
-    "look": "A breath of freezing wind.",
+    "look": "Five growing fronts of freezing wind cross to the target one after another; the first freezes it in a star of frost and icy feathers fly from each that follows.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2039.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 69,
      "name": "Spnning Needle"
@@ -3544,15 +3442,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A flame blast from the horn.",
+    "look": "A ball of fire on the horn stretches into a spear of flame that runs through the target and leaves flames standing along its path.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 61,
      "name": "Fireball"
@@ -3592,15 +3489,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A bright solar flash from its face.",
+    "look": "The face becomes a small sun with a flickering corona, the field whites out and a fan of rays leaves it, the middle one burning the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/400.PAK",
-    "shared_by_cards": 42,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 70,
      "name": "Spiral Twister"
@@ -3640,15 +3536,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Lightning shot from both maces.",
+    "look": "Current crackles on both maces and two crooked strokes of lightning meet on the target, holding it in a cage of sparks.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2023.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 86,
      "name": "Solar Ray"
@@ -3688,15 +3583,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Charges tusk first.",
-    "dash": true,
+    "look": "Dust is pawed up and two great ivory tusks plough across the ground, gore the target and toss upward, throwing stones and dust.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2004.PAK",
-    "shared_by_cards": 12,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 75,
      "name": "Drill Spin"
@@ -3736,15 +3630,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 2,
-    "look": "Two torpedoes from the back.",
+    "look": "Two torpedoes leap from the back, arc over and dive at the spot where the target stands, each throwing up a column of water; they can be dodged.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2038.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 87,
      "name": "Hydro Pressure"
@@ -3784,15 +3677,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A single sweeping cut of the sword.",
-    "dash": true,
+    "look": "A sword of light forms overhead and falls into one widening cut that passes through the target as a bright line, with white feathers after it.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2001.PAK",
-    "shared_by_cards": 2,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -3832,15 +3724,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A jagged violet lightning bolt.",
+    "look": "A crooked violet bolt in three restless legs jumps to the target and leaves the air around it broken into blocks of static.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2080.PAK",
-    "shared_by_cards": 2,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 101,
      "name": "Super Thunder Strike"
@@ -3889,29 +3780,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Charges horns first.",
-    "dash": true,
+    "look": "Three lights and a triangle kindle at the horns, three blue horns fly and meet on the target, and a three-pointed gold star breaks out.",
+    "dash": false,
     "clip": "H0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA3900.BIN",
-     "EFFECT/EFFEUA/MEUA4000.BIN",
-     "EFFECT/EFFEUA/AEUA3900.BIN",
-     "EFFECT/EFFEUA/AEUA4000.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     3121,
-     3126,
-     3135,
-     3140,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_a.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -3960,29 +3836,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A claw strike from a leap.",
-    "dash": true,
+    "look": "SaberLeomon roars, and the roar leaves it as a lion's head of amber light that bounds across the ground in one leap, fangs first;",
+    "dash": false,
     "clip": "H0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA1400.BIN",
-     "EFFECT/EFFEUA/MEUA1500.BIN",
-     "EFFECT/EFFEUA/AEUA1400.BIN",
-     "EFFECT/EFFEUA/AEUA1500.BIN",
-     "EFFECT/EFFESD/MESD1500.BIN",
-     "EFFECT/EFFESD/AESD1500.BIN"
-    ],
-    "file_ids": [
-     2083,
-     2087,
-     2104,
-     2110,
-     3137,
-     3149
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -4032,29 +3893,14 @@
     "kind": "area",
     "target": "all",
     "hits": 2,
-    "look": "Two crossing slash arcs over every enemy.",
+    "look": "Two great stag pincers open wide at the caster's sides and snap shut twice across the whole enemy line, each bite leaving crossed cuts on everyone.",
     "dash": false,
     "clip": "H0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA1400.BIN",
-     "EFFECT/EFFEUA/MEUA1500.BIN",
-     "EFFECT/EFFEUA/AEUA1400.BIN",
-     "EFFECT/EFFEUA/AEUA1500.BIN",
-     "EFFECT/EFFESD/MESD1500.BIN",
-     "EFFECT/EFFESD/AESD1500.BIN"
-    ],
-    "file_ids": [
-     2083,
-     2087,
-     2104,
-     2110,
-     3137,
-     3149
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -4104,25 +3950,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Fires an organic missile from the arm.",
+    "look": "A living missile leaves the arm on a thread of smoke and hunts the target down; the field flashes and a green fireball climbs while ash falls.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA0000.BIN",
-     "EFFECT/EFFESA/AESA0000.BIN",
-     "EFFECT/EFFESD/MESD0000.BIN",
-     "EFFECT/EFFESD/AESD0000.BIN"
-    ],
-    "file_ids": [
-     934,
-     896,
-     953,
-     915
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 74,
      "name": "Deadly Bomb"
@@ -4172,29 +4007,14 @@
     "kind": "area",
     "target": "all",
     "hits": 3,
-    "look": "Shoots the horns of its shell at every enemy.",
+    "look": "The spiked shell rises over the caster and fires three volleys of horn spikes that arc up and stab down on every enemy.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA6000.BIN",
-     "EFFECT/EFFESA/MESA6100.BIN",
-     "EFFECT/EFFESA/AESA6000.BIN",
-     "EFFECT/EFFESA/AESA6100.BIN",
-     "EFFECT/EFFESD/MESD7400.BIN",
-     "EFFECT/EFFESD/AESD7400.BIN"
-    ],
-    "file_ids": [
-     2774,
-     2271,
-     2728,
-     2256,
-     1002,
-     1030
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 89,
      "name": "Iga School Knife Throw"
@@ -4244,29 +4064,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 3,
-    "look": "Shoots poisoned needles.",
+    "look": "The tail spits three long stingers in a burst; they drive into the target and violet venom spatters and bubbles up.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA4000.BIN",
-     "EFFECT/EFFESA/MESA4100.BIN",
-     "EFFECT/EFFESA/AESA4000.BIN",
-     "EFFECT/EFFESA/AESA4100.BIN",
-     "EFFECT/EFFESD/MESD7100.BIN",
-     "EFFECT/EFFESD/AESD7100.BIN"
-    ],
-    "file_ids": [
-     2759,
-     2732,
-     2726,
-     2764,
-     1011,
-     1020
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 69,
      "name": "Spnning Needle"
@@ -4316,29 +4121,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A cloud of poison spores (poison 20 %).",
+    "look": "A small toadstool lobbed tumbling at the target bursts over it in a violet cloud that hangs there shedding spores.",
     "dash": false,
     "clip": "G0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEMA/MEMA4000.BIN",
-     "EFFECT/EFFEMA/MEMA4100.BIN",
-     "EFFECT/EFFEMA/AEMA4000.BIN",
-     "EFFECT/EFFEMA/AEMA4100.BIN",
-     "EFFECT/EFFEMD/MEMD0900.BIN",
-     "EFFECT/EFFEMD/AEMD0900.BIN"
-    ],
-    "file_ids": [
-     2737,
-     2287,
-     2798,
-     2353,
-     3022,
-     3061
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 75,
      "name": "Drill Spin"
@@ -4388,25 +4178,14 @@
     "kind": "breath",
     "target": "one",
     "hits": 1,
-    "look": "A foul green breath.",
+    "look": "A rolling green-brown gas swells as it crosses to the target and hangs on it, bubbling, dripping and reeking.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEWA/MEWA0300.BIN",
-     "EFFECT/EFFEWA/AEWA0300.BIN",
-     "EFFECT/EFFEWD/MEWD0200.BIN",
-     "EFFECT/EFFEWD/AEWD0200.BIN"
-    ],
-    "file_ids": [
-     967,
-     929,
-     970,
-     932
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -4456,29 +4235,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "Sweeps a stream of flame over every enemy.",
+    "look": "A long breath of red fire gouts from the caster's jaws and sweeps over the field, leaving every enemy licked by flames.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEFA/MEFA0900.BIN",
-     "EFFECT/EFFEFA/MEFA1000.BIN",
-     "EFFECT/EFFEFA/AEFA0900.BIN",
-     "EFFECT/EFFEFA/AEFA1000.BIN",
-     "EFFECT/EFFEFD/MEFD0400.BIN",
-     "EFFECT/EFFEFD/AEFD0400.BIN"
-    ],
-    "file_ids": [
-     3016,
-     3024,
-     3028,
-     3045,
-     719,
-     690
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 112,
      "name": "High Electro Shocker"
@@ -4527,29 +4291,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Blows a heart kiss.",
+    "look": "A kiss pops on the lips and turns into a big beating heart that drifts into the target; hearts and stars circle its head.",
     "dash": false,
     "clip": "G0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEMA/MEMA4500.BIN",
-     "EFFECT/EFFEMA/MEMA4600.BIN",
-     "EFFECT/EFFEMA/AEMA4500.BIN",
-     "EFFECT/EFFEMA/AEMA4600.BIN",
-     "EFFECT/EFFESD/MESD7100.BIN",
-     "EFFECT/EFFESD/AESD7100.BIN"
-    ],
-    "file_ids": [
-     2307,
-     2322,
-     2348,
-     2346,
-     1011,
-     1020
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_a.py",
+    "status": "authored",
     "template": {
      "id": 60,
      "name": "Lovely Attack"
@@ -4599,29 +4348,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Charges tusks first.",
-    "dash": true,
+    "look": "Mammothmon stamps twice, raising dust, and a pair of great ivory tusks ploughs along the ground to the target in a cloud; they gore upwards through it and stones fly.",
+    "dash": false,
     "clip": "H0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA3900.BIN",
-     "EFFECT/EFFEUA/MEUA4000.BIN",
-     "EFFECT/EFFEUA/AEUA3900.BIN",
-     "EFFECT/EFFEUA/AEUA4000.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     3121,
-     3126,
-     3135,
-     3140,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -4670,29 +4404,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A spinning bone hits every enemy.",
+    "look": "A giant bone spins out in a wide boomerang curve through the enemy line, cracking each enemy as it passes, and shatters into splinters.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA9100.BIN",
-     "EFFECT/EFFESA/MESA9200.BIN",
-     "EFFECT/EFFESA/AESA9100.BIN",
-     "EFFECT/EFFESA/AESA9200.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     2733,
-     2779,
-     2781,
-     2749,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -4742,29 +4461,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 3,
-    "look": "Throws junk from its can.",
+    "look": "A tin, a fish bone and an old boot are slung out of the can and land in splats of green stench and flies.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA6200.BIN",
-     "EFFECT/EFFESA/MESA6300.BIN",
-     "EFFECT/EFFESA/AESA6200.BIN",
-     "EFFECT/EFFESA/AESA6300.BIN",
-     "EFFECT/EFFESD/MESD3800.BIN",
-     "EFFECT/EFFESD/AESD3800.BIN"
-    ],
-    "file_ids": [
-     2283,
-     2275,
-     2294,
-     2258,
-     1687,
-     1680
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 77,
      "name": "Energy Bomb"
@@ -4813,29 +4517,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A smiling warhead.",
+    "look": "A grinning bomb is lobbed in a high arc with a sputtering fuse, laughs as it lands and goes up in fire, smoke and stars.",
     "dash": false,
     "clip": "H0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA2000.BIN",
-     "EFFECT/EFFEUA/MEUA2100.BIN",
-     "EFFECT/EFFEUA/AEUA2000.BIN",
-     "EFFECT/EFFEUA/AEUA2100.BIN",
-     "EFFECT/EFFESD/MESD0000.BIN",
-     "EFFECT/EFFESD/AESD0000.BIN"
-    ],
-    "file_ids": [
-     2266,
-     2337,
-     2318,
-     2310,
-     953,
-     915
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 68,
      "name": "Smiley Bomb"
@@ -4884,29 +4573,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A sad song and a wave of water over every enemy.",
+    "look": "A mournful cry gathers falling tears over the caster's head, then a tall wall of water rolls out and breaks over every enemy.",
     "dash": false,
     "clip": "G0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEMA/MEMA6100.BIN",
-     "EFFECT/EFFEMA/MEMA6200.BIN",
-     "EFFECT/EFFEMA/AEMA6100.BIN",
-     "EFFECT/EFFEMA/AEMA6200.BIN",
-     "EFFECT/EFFESD/MESD3200.BIN",
-     "EFFECT/EFFESD/AESD3200.BIN"
-    ],
-    "file_ids": [
-     2091,
-     2099,
-     2103,
-     2106,
-     1675,
-     1690
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -4955,29 +4629,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 2,
-    "look": "Two swipes with its twig arms.",
+    "look": "A forked branch swings down on the target from above, then back up from below, each tap with a smack and a burst of leaves and splinters.",
     "dash": false,
     "clip": "H0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA3100.BIN",
-     "EFFECT/EFFEUA/MEUA3200.BIN",
-     "EFFECT/EFFEUA/AEUA3100.BIN",
-     "EFFECT/EFFEUA/AEUA3200.BIN",
-     "EFFECT/EFFESD/MESD7600.BIN",
-     "EFFECT/EFFESD/AESD7600.BIN"
-    ],
-    "file_ids": [
-     3122,
-     3125,
-     3153,
-     3152,
-     3595,
-     3596
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 72,
      "name": "Sweet Breath"
@@ -5025,29 +4684,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Blows a cloud of pollen at the target.",
+    "look": "A slow yellow cloud glittering with pollen rolls from the flower hands to where the target stood and settles there.",
     "dash": false,
     "clip": "G0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEMA/MEMA3300.BIN",
-     "EFFECT/EFFEMA/MEMA3400.BIN",
-     "EFFECT/EFFEMA/AEMA3300.BIN",
-     "EFFECT/EFFEMA/AEMA3400.BIN",
-     "EFFECT/EFFEBD/MEBD0000.BIN",
-     "EFFECT/EFFEBD/AEBD0000.BIN"
-    ],
-    "file_ids": [
-     2097,
-     2093,
-     2113,
-     2111,
-     702,
-     673
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 98,
      "name": "Poison Ivy"
@@ -5096,29 +4740,14 @@
     "kind": "area",
     "target": "all",
     "hits": 4,
-    "look": "Flower shuriken over every enemy.",
+    "look": "Four volleys of spinning flower shuriken fly out trailing leaves and petals and burst on every enemy.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA6800.BIN",
-     "EFFECT/EFFESA/MESA6900.BIN",
-     "EFFECT/EFFESA/AESA6800.BIN",
-     "EFFECT/EFFESA/AESA6900.BIN",
-     "EFFECT/EFFEWD/MEWD0200.BIN",
-     "EFFECT/EFFEWD/AEWD0200.BIN"
-    ],
-    "file_ids": [
-     2715,
-     2724,
-     2777,
-     2787,
-     970,
-     932
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 72,
      "name": "Sweet Breath"
@@ -5168,29 +4797,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "Lunges with its tail blade.",
-    "dash": true,
+    "look": "Scorpiomon's tail uncoils over its head segment by segment, the blade at its end held high above the target;",
+    "dash": false,
     "clip": "H0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA2800.BIN",
-     "EFFECT/EFFEUA/MEUA2900.BIN",
-     "EFFECT/EFFEUA/AEUA2800.BIN",
-     "EFFECT/EFFEUA/AEUA2900.BIN",
-     "EFFECT/EFFESD/MESD0200.BIN",
-     "EFFECT/EFFESD/AESD0200.BIN"
-    ],
-    "file_ids": [
-     2277,
-     2280,
-     2289,
-     2329,
-     954,
-     916
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -5239,29 +4853,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A diamond-hard charge.",
+    "look": "Six plates of adamant close round Baihumon into a shell that rings as it hardens;",
     "dash": false,
     "clip": "G0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA4500.BIN",
-     "EFFECT/EFFEUA/MEUA4600.BIN",
-     "EFFECT/EFFEUA/AEUA4500.BIN",
-     "EFFECT/EFFEUA/AEUA4600.BIN",
-     "EFFECT/EFFEMD/MEMD2300.BIN",
-     "EFFECT/EFFEMD/AEMD2300.BIN"
-    ],
-    "file_ids": [
-     2966,
-     2967,
-     3008,
-     3020,
-     3215,
-     3201
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 78,
      "name": "Genoside Attack"
@@ -5311,25 +4910,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "Fires hot metal; the DW2 Metal Fireball effect.",
+    "look": "A ball of molten metal wrapped in blue flame is forged, lobbed high and bursts on the enemies, raining burning slag on each of them.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEWA/MEWA0200.BIN",
-     "EFFECT/EFFEWA/AEWA0200.BIN",
-     "EFFECT/EFFEWD/MEWD0100.BIN",
-     "EFFECT/EFFEWD/AEWD0100.BIN"
-    ],
-    "file_ids": [
-     966,
-     928,
-     969,
-     931
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -5379,29 +4967,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 3,
-    "look": "Fires black ink shots.",
+    "look": "Three gouts of black ink are spat one after another trailing drops; the one that lands blots the target and splashes all around.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA4800.BIN",
-     "EFFECT/EFFESA/MESA4900.BIN",
-     "EFFECT/EFFESA/AESA4800.BIN",
-     "EFFECT/EFFESA/AESA4900.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     2753,
-     2770,
-     2755,
-     2750,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 87,
      "name": "Hydro Pressure"
@@ -5450,25 +5023,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A dark gust over every enemy.",
+    "look": "Dark ink gusts curl out from the caster in a spreading foul wind that wraps every enemy in black-violet swirls.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA2600.BIN",
-     "EFFECT/EFFESA/AESA2600.BIN",
-     "EFFECT/EFFEWD/MEWD0300.BIN",
-     "EFFECT/EFFEWD/AEWD0300.BIN"
-    ],
-    "file_ids": [
-     952,
-     914,
-     3190,
-     3205
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -5518,29 +5080,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "Pumpkin bombs over every enemy.",
+    "look": "A grinning pumpkin is conjured overhead, drops among the enemies and bursts, throwing rind and candy-coloured sparks over all of them.",
     "dash": false,
     "clip": "G0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEMA/MEMA4200.BIN",
-     "EFFECT/EFFEMA/MEMA4400.BIN",
-     "EFFECT/EFFEMA/AEMA4200.BIN",
-     "EFFECT/EFFEMA/AEMA4400.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     2098,
-     2326,
-     2105,
-     2354,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 112,
      "name": "High Electro Shocker"
@@ -5589,29 +5136,14 @@
     "kind": "breath",
     "target": "one",
     "hits": 1,
-    "look": "A super-hot blast from its arm.",
+    "look": "Rings of heat draw in on Cyclonemon's arm and a white-hot jet runs to the target and holds on it, molten drops spraying from where it bites.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEBA/MEBA0600.BIN",
-     "EFFECT/EFFEBA/MEBA0700.BIN",
-     "EFFECT/EFFEBA/AEBA0600.BIN",
-     "EFFECT/EFFEBA/AEBA0700.BIN",
-     "EFFECT/EFFEFD/MEFD0400.BIN",
-     "EFFECT/EFFEFD/AEFD0400.BIN"
-    ],
-    "file_ids": [
-     933,
-     1027,
-     895,
-     1035,
-     719,
-     690
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -5660,29 +5192,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Sends a mini Kiwimon running at the target.",
+    "look": "A little kiwi bird pelts along the ground at the target kicking up dust and bursts into feathers on whoever it runs into.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA4200.BIN",
-     "EFFECT/EFFESA/MESA4300.BIN",
-     "EFFECT/EFFESA/AESA4200.BIN",
-     "EFFECT/EFFESA/AESA4300.BIN",
-     "EFFECT/EFFESD/MESD7400.BIN",
-     "EFFECT/EFFESD/AESD7400.BIN"
-    ],
-    "file_ids": [
-     2324,
-     2291,
-     2308,
-     2276,
-     1002,
-     1030
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 72,
      "name": "Sweet Breath"
@@ -5731,25 +5248,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Fires a pearl from its shell.",
+    "look": "Light wells up in the open shell and a pearl flies out trailing bubbles, bursting on the target in a crown of water.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA2900.BIN",
-     "EFFECT/EFFESA/AESA2900.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     997,
-     1018,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 90,
      "name": "Blasting Spout"
@@ -5799,29 +5305,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 2,
-    "look": "A double snip of the claws.",
+    "look": "A great red claw opens beside the target and snaps shut on it, then a bigger one snaps again; each snap leaves a crossed glint and rising bubbles.",
     "dash": false,
     "clip": "H0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA1400.BIN",
-     "EFFECT/EFFEUA/MEUA1500.BIN",
-     "EFFECT/EFFEUA/AEUA1400.BIN",
-     "EFFECT/EFFEUA/AEUA1500.BIN",
-     "EFFECT/EFFESD/MESD1500.BIN",
-     "EFFECT/EFFESD/AESD1500.BIN"
-    ],
-    "file_ids": [
-     2083,
-     2087,
-     2104,
-     2110,
-     3137,
-     3149
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 100,
      "name": "Scissor Claw"
@@ -5868,25 +5359,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "An electric blast from the mouth.",
+    "look": "A crackling ball of current is spat from the jaws along a jagged path and bolts stab down where it lands, leaving it twitching.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA2500.BIN",
-     "EFFECT/EFFESA/AESA2500.BIN",
-     "EFFECT/EFFESD/MESD0200.BIN",
-     "EFFECT/EFFESD/AESD0200.BIN"
-    ],
-    "file_ids": [
-     951,
-     913,
-     954,
-     916
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 98,
      "name": "Poison Ivy"
@@ -5936,29 +5416,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 1,
-    "look": "Fires an egg like a shell.",
+    "look": "An egg is fired like a shell with a bang and a smoke ring, and cracks open on the target in a burst of yolk and shell.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA7800.BIN",
-     "EFFECT/EFFESA/MESA7900.BIN",
-     "EFFECT/EFFESA/AESA7800.BIN",
-     "EFFECT/EFFESA/AESA7900.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     2763,
-     2269,
-     2765,
-     2257,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 91,
      "name": "Fist of the Beast King"
@@ -6007,29 +5472,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A cloud of nightmare smoke.",
+    "look": "A winding trail of violet dream-smoke closes over the target, an eye opens in the coil, stares, and the nightmare bursts.",
     "dash": false,
     "clip": "G0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEMA/MEMA3100.BIN",
-     "EFFECT/EFFEMA/MEMA3200.BIN",
-     "EFFECT/EFFEMA/AEMA3100.BIN",
-     "EFFECT/EFFEMA/AEMA3200.BIN",
-     "EFFECT/EFFESD/MESD3400.BIN",
-     "EFFECT/EFFESD/AESD3400.BIN"
-    ],
-    "file_ids": [
-     2085,
-     2092,
-     2109,
-     2108,
-     1650,
-     1653
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 86,
      "name": "Solar Ray"
@@ -6079,29 +5529,14 @@
     "kind": "area",
     "target": "all",
     "hits": 2,
-    "look": "Throws axes at every enemy.",
+    "look": "The battle axe is hurled spinning through the enemy line and comes back for a second pass, sparking on every enemy both times.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA8700.BIN",
-     "EFFECT/EFFESA/MESA8800.BIN",
-     "EFFECT/EFFESA/AESA8700.BIN",
-     "EFFECT/EFFESA/AESA8800.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     2286,
-     2315,
-     2278,
-     2272,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 79,
      "name": "Giga Scissor Claw"
@@ -6150,29 +5585,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A cannon blast that bursts over the field.",
+    "look": "A cannon charge of unstable energy swells at the muzzle and fires a wide shell that detonates in a ragged chaos burst over every enemy.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEBA/MEBA2400.BIN",
-     "EFFECT/EFFEBA/MEBA2500.BIN",
-     "EFFECT/EFFEBA/AEBA2400.BIN",
-     "EFFECT/EFFEBA/AEBA2500.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     2998,
-     3003,
-     3030,
-     3036,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 77,
      "name": "Energy Bomb"
@@ -6221,29 +5641,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A clock-hand ripple that freezes time.",
+    "look": "A clock face of light opens over the target with racing hands that snap to twelve; the field greys as time stops and the dial breaks in rings.",
     "dash": false,
     "clip": "G0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEMA/MEMA5300.BIN",
-     "EFFECT/EFFEMA/MEMA5400.BIN",
-     "EFFECT/EFFEMA/AEMA5300.BIN",
-     "EFFECT/EFFEMA/AEMA5400.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     2784,
-     2735,
-     2802,
-     2800,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 74,
      "name": "Deadly Bomb"
@@ -6293,29 +5698,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 1,
-    "look": "Throws its trident.",
+    "look": "The trident is thrown out of a swirl of dark water, trailing spray, and a spout of sea shoots up where it strikes.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA6600.BIN",
-     "EFFECT/EFFESA/MESA6700.BIN",
-     "EFFECT/EFFESA/AESA6600.BIN",
-     "EFFECT/EFFESA/AESA6700.BIN",
-     "EFFECT/EFFESD/MESD0600.BIN",
-     "EFFECT/EFFESD/AESD0600.BIN"
-    ],
-    "file_ids": [
-     2719,
-     2325,
-     2792,
-     2297,
-     956,
-     918
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -6364,29 +5754,14 @@
     "kind": "area",
     "target": "all",
     "hits": 3,
-    "look": "Energy bursts from all three heads.",
+    "look": "Three heads fire a red, a blue and a yellow orb one after another; they land in turn and merge into a three-coloured blast on every enemy.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEBA/MEBA0200.BIN",
-     "EFFECT/EFFEBA/MEBA0300.BIN",
-     "EFFECT/EFFEBA/AEBA0200.BIN",
-     "EFFECT/EFFEBA/AEBA0300.BIN",
-     "EFFECT/EFFESD/MESD6800.BIN",
-     "EFFECT/EFFESD/AESD6800.BIN"
-    ],
-    "file_ids": [
-     698,
-     699,
-     669,
-     670,
-     1004,
-     1023
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -6436,25 +5811,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A sonic blade over every enemy.",
+    "look": "A beat of golden wings throws a broad crescent blade of light that sweeps across the field, cutting every enemy amid falling feathers.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA2000.BIN",
-     "EFFECT/EFFESA/AESA2000.BIN",
-     "EFFECT/EFFESD/MESD0400.BIN",
-     "EFFECT/EFFESD/AESD0400.BIN"
-    ],
-    "file_ids": [
-     947,
-     909,
-     955,
-     917
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -6503,29 +5867,14 @@
     "kind": "area",
     "target": "all",
     "hits": 4,
-    "look": "Small bombs on every enemy.",
+    "look": "Four data bombs are lobbed in sequence, each locking on with target brackets and bursting into pixels and digits over the enemies.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA7200.BIN",
-     "EFFECT/EFFESA/MESA7300.BIN",
-     "EFFECT/EFFESA/AESA7200.BIN",
-     "EFFECT/EFFESA/AESA7300.BIN",
-     "EFFECT/EFFESD/MESD0000.BIN",
-     "EFFECT/EFFESD/AESD0000.BIN"
-    ],
-    "file_ids": [
-     2754,
-     2263,
-     2740,
-     2292,
-     953,
-     915
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 68,
      "name": "Smiley Bomb"
@@ -6564,14 +5913,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A dark shock from its eye.",
+    "look": "The field darkens, a slit of light opens at the eye and a writhing rope of shadow reaches the target while rings of dusk close in on it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -6610,14 +5959,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A charging maul.",
-    "dash": true,
+    "look": "A bear's paw of blue light as big as the target swings down on it from above and to one side, leaving four gashes; a second set crosses the first.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -6656,14 +6005,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A fist-shaped energy wave.",
+    "look": "Flames climb round the caster and a burning fist flies out, growing as it goes, then a flurry of smaller fists hammers the same spot.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -6703,14 +6052,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A poisoned web.",
+    "look": "A knot of silk unfolds into a wide web in flight and wraps the target while venom runs along the threads and boils off in green fumes.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 72,
      "name": "Sweet Breath"
@@ -6749,14 +6098,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A cannonball from the ship cannon.",
+    "look": "The ship cannon fires in a tongue of flame and a roll of smoke, and the iron ball flies low and breaks on whoever it meets in fire and splinters.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 80,
      "name": "Dark Shot"
@@ -6795,14 +6144,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A golden blade cut.",
-    "dash": true,
+    "look": "Feathers drift from SlashAngemon's wings;",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -6841,14 +6190,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A beam from the chest.",
+    "look": "An atom lights up on the chest, a hair-thin line finds the target and a hard green-white ray with six-sided collars follows it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 102,
      "name": "Spiral Sword"
@@ -6887,14 +6236,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A dark song wave.",
+    "look": "A dark sphere with a sneering face swells over the caster and bursts into a concert of sound waves and musical notes that rolls over every enemy.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 92,
      "name": "Dark Network & Concert Crush"
@@ -6933,14 +6282,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A harpoon fish.",
+    "look": "A harpoon fish darts in a straight line in a sleeve of spray and bubbles and drives into whoever is in its way, throwing up a fan of water.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 85,
      "name": "Bone Boomerang"
@@ -6979,14 +6328,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 1,
-    "look": "Crushes with its claw.",
+    "look": "Two toothed jaws of water close over and under the target, press with rings of pressure drawing in, then crush: ice and water burst out and a spout stands where it was.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 100,
      "name": "Scissor Claw"
@@ -7023,14 +6372,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A spinning cyclone kick.",
-    "dash": true,
+    "look": "The wind gathers round GrapLeomon and leaves as a turbine of teal whirlwinds, one behind another, that bores across to the target and stands up there as a twister.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -7069,14 +6418,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 1,
-    "look": "A crowned lump of muck.",
+    "look": "A crowned lump of muck wobbles through a lazy arc and lands with a splat and a foul cloud; the crown pops off and tumbles down.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -7115,14 +6464,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 4,
-    "look": "A dancing flurry of slashes.",
-    "dash": true,
+    "look": "Four times a green blur darts through the target from a different side, kicking up dust where it sets off, and each time a burning cut is left across it;",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 100,
      "name": "Scissor Claw"
@@ -7161,14 +6510,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 2,
-    "look": "Two axe-arm slashes.",
-    "dash": true,
+    "look": "Antylamon's arms become axes: one great blade swings down across the target from the right, a second from the left, each leaving a heavy wake;",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -7207,14 +6556,14 @@
     "kind": "rain",
     "target": "one",
     "hits": 5,
-    "look": "Gatling and missile barrage.",
+    "look": "Machine-gun tracers rake the target from a starred muzzle, then rockets arc over on smoke trails and blast it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_rain.py",
+    "status": "authored",
     "template": {
      "id": 78,
      "name": "Genoside Attack"
@@ -7253,14 +6602,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A needle of spirit.",
+    "look": "Threads of light draw into one long needle that crosses the field in a blink leaving a pink line in the air and a cross of light where it pierces.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -7299,14 +6648,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "Dark flames over the field.",
+    "look": "The ground glows and pillars of hellfire with screaming faces erupt under every enemy at once.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 96,
      "name": "Nightmare Syndromer"
@@ -7345,14 +6694,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A bright flash.",
+    "look": "A glass bulb over the caster stutters on and off, then catches: the field goes white, spokes of glare shoot out and a broad shaft pins the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 80,
      "name": "Dark Shot"
@@ -7391,14 +6740,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A beam from its staff.",
+    "look": "A stone above the caster fills with sick yellow light and throws a beam wrapped in black lightning; a pale skull rises out of the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 96,
      "name": "Nightmare Syndromer"
@@ -7438,27 +6787,27 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Writes a glowing charm and sends it.",
+    "look": "A paper charm thrown at the target that opens into a seal of light.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
     }
    },
    "move": {
-    "power": 228,
+    "power": 225,
     "element": "fire",
     "range": 2,
     "distance": 360000,
     "accuracy": 100,
-    "status": 0,
-    "statusChance": 0,
+    "status": 2,
+    "statusChance": 20,
     "iframes": 1,
     "flags": [
      "T"
@@ -7485,14 +6834,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A violet mandala over every enemy.",
+    "look": "A violet wheel of petals opens from her and reaches every enemy.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -7532,14 +6881,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A sacred gale.",
+    "look": "A white whirlwind spins up around the caster and spreads outwards, carrying paper charms through every enemy.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 102,
      "name": "Spiral Sword"
@@ -7578,14 +6927,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Holy light from the shield.",
+    "look": "A ray of holy light from the shield.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 102,
      "name": "Spiral Sword"
@@ -7593,7 +6942,7 @@
    },
    "move": {
     "power": 255,
-    "element": "air",
+    "element": "weapon",
     "range": 2,
     "distance": 640000,
     "accuracy": 100,
@@ -7624,14 +6973,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Light from a pyramid.",
+    "look": "A line of gold goes up and draws a pyramid of light around the target edge by edge, then a shaft of gold pours down inside it and turquoise ankhs rise.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -7667,34 +7016,32 @@
     "name": "Blaze Blast"
    },
    "behavior": {
-    "kind": "dash",
+    "kind": "melee",
     "target": "one",
-    "hits": 1,
-    "look": "Arm blades charged with plasma.",
-    "dash": true,
+    "hits": 2,
+    "look": "Two crossing cuts of the plasma blades, close up.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 58,
      "name": "Blaze Blast"
     }
    },
    "move": {
-    "power": 163,
+    "power": 160,
     "element": "fire",
-    "range": 2,
-    "distance": 160000,
+    "range": 1,
+    "distance": 0,
     "accuracy": 100,
-    "status": 0,
-    "statusChance": 0,
+    "status": 3,
+    "statusChance": 10,
     "iframes": 1,
-    "flags": [
-     "T"
-    ],
+    "flags": [],
     "mpCost": 40
    }
   },
@@ -7716,14 +7063,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A heavy sword blow.",
-    "dash": true,
+    "look": "Rage burns red round Knightmon while a sword of steel as tall as a house takes shape in the air over the target;",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 102,
      "name": "Spiral Sword"
@@ -7759,17 +7106,17 @@
     "name": "Death Claw"
    },
    "behavior": {
-    "kind": "dash",
+    "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Spinning wing blades.",
-    "dash": true,
+    "look": "The wind whirls up round Kyukimon and throws a wheel of three sickles that spins across the field;",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -7779,7 +7126,7 @@
     "power": 228,
     "element": "air",
     "range": 2,
-    "distance": 160000,
+    "distance": 360000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -7808,14 +7155,14 @@
     "kind": "breath",
     "target": "one",
     "hits": 1,
-    "look": "Its mane flares and it breathes a cone of fire.",
+    "look": "Lynxmon's mane flares up in a crown of curling flames shedding sparks, then a widening cone of fire rolls to the target and leaves it burning.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 109,
      "name": "Crimson Flare"
@@ -7854,14 +7201,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Arrow bombs.",
+    "look": "Three finned bombs climb from the back on smoke and whistle straight down on the target one after another, each bursting in fire and iron.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -7900,14 +7247,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A sword cut.",
-    "dash": true,
+    "look": "Ghost lights climb round Musyamon.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -7946,21 +7293,21 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Twin chest cannons.",
+    "look": "Twin red beams from the chest cannons.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 77,
      "name": "Energy Bomb"
     }
    },
    "move": {
-    "power": 228,
+    "power": 220,
     "element": "mech",
     "range": 2,
     "distance": 640000,
@@ -7992,14 +7339,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A diving charge.",
-    "dash": true,
+    "look": "White streaks shoot up from Gargoylemon into the sky;",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 81,
      "name": "Pummel Whack"
@@ -8038,14 +7385,14 @@
     "kind": "thrown",
     "target": "one",
     "hits": 2,
-    "look": "Two crescent blades.",
+    "look": "Two green crescents peel from Snimon's scythes, sweep wide to either side and close on the target like shears in a white X.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_thrown.py",
+    "status": "authored",
     "template": {
      "id": 73,
      "name": "Bit Bomb"
@@ -8084,14 +7431,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A red beam from its eye.",
+    "look": "A great red eye opens lid by lid and looses a needle of red light with motes winding round it; pale wisps drift up out of the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 80,
      "name": "Dark Shot"
@@ -8130,14 +7477,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "A ground quake.",
+    "look": "The hammer arm slams the ground and a shockwave of flying rock spikes and rubble runs out from the caster under every enemy.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 81,
      "name": "Pummel Whack"
@@ -8176,14 +7523,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 1,
-    "look": "A body slam.",
+    "look": "Dashed rings close on Vemmon;",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 100,
      "name": "Scissor Claw"
@@ -8220,14 +7567,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A charge.",
-    "dash": true,
+    "look": "Ten cockroaches scuttle out from under Roachmon and race across the ground in zigzags, leaving a stink behind them;",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 93,
      "name": "Electro Shocker"
@@ -8266,14 +7613,14 @@
     "kind": "area",
     "target": "all",
     "hits": 1,
-    "look": "Drum thunder over the field.",
+    "look": "A ring of thunder drums lights up above the caster beat by beat, then lightning bolts fall on every enemy at once.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 74,
      "name": "Deadly Bomb"
@@ -8312,14 +7659,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A gunshot.",
+    "look": "A gunshot: a white muzzle flash and an instant streak, then a pale skull rises through the target with wisps of grave-mist.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 80,
      "name": "Dark Shot"
@@ -8359,14 +7706,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Two huge missiles from the back.",
+    "look": "Two great shoulder missiles ignite and fly on roaring flames trailing smoke, landing one after the other in two huge explosions.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 78,
      "name": "Genoside Attack"
@@ -8405,14 +7752,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A lightning strike.",
+    "look": "A spark thrown into the sky piles storm cloud over the target, which lets go two forked bolts while the field flashes and current crawls on the ground.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 112,
      "name": "High Electro Shocker"
@@ -8451,14 +7798,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A flaming head strike.",
-    "dash": true,
+    "look": "Flames climb Kotemon's bamboo sword;",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 99,
      "name": "Blue Blaster"
@@ -8497,14 +7844,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 2,
-    "look": "Swings round and hits twice.",
+    "look": "A golden star swings in a spiral round the target and smacks into it, then a wider one swings the other way and smacks harder;",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 71,
      "name": "Boom Bubble"
@@ -8541,14 +7888,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 1,
-    "look": "A heavy straight punch.",
+    "look": "Light gathers on Bearmon's paw; a great glowing fist drives straight into the target, growing as it comes, and three rings of the blow go on through it.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 95,
      "name": "Super Slap"
@@ -8585,21 +7932,21 @@
     "kind": "rain",
     "target": "one",
     "hits": 6,
-    "look": "A storm of crystal shards.",
+    "look": "Crystal shards form overhead and rain on the spot where the target stood.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 70,
      "name": "Spiral Twister"
     }
    },
    "move": {
-    "power": 93,
+    "power": 90,
     "element": "battle",
     "range": 2,
     "distance": 360000,
@@ -8632,15 +7979,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Gathers a giant orange energy sphere overhead and hurls it.",
+    "look": "Fire streams up from the ground into a small rayed sun overhead that is hurled down and raises a wall of flame and burning rock through the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/435.PAK",
-    "shared_by_cards": 33,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 109,
      "name": "Crimson Flare"
@@ -8680,15 +8026,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A sphere of darkness swallows the target.",
+    "look": "Slivers of dark fall in on the target as the field dims, a black sphere with a torn violet rim and turning five-sided walls closes round it, then collapses and shatters.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2010.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 74,
      "name": "Deadly Bomb"
@@ -8737,29 +8082,14 @@
     "kind": "area",
     "target": "all",
     "hits": 6,
-    "look": "Spines in every direction.",
+    "look": "The body puffs up and bursts six waves of needles outwards in all directions, riddling every enemy.",
     "dash": false,
     "clip": "F0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFESA/MESA9300.BIN",
-     "EFFECT/EFFESA/MESA9400.BIN",
-     "EFFECT/EFFESA/AESA9300.BIN",
-     "EFFECT/EFFESA/AESA9400.BIN",
-     "EFFECT/EFFESD/MESD7400.BIN",
-     "EFFECT/EFFESD/AESD7400.BIN"
-    ],
-    "file_ids": [
-     2775,
-     2711,
-     2752,
-     2761,
-     1002,
-     1030
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_area.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"
@@ -8809,29 +8139,14 @@
     "kind": "dash",
     "target": "random",
     "hits": 1,
-    "look": "A blind charge at a random fighter.",
-    "dash": true,
+    "look": "Two red eyes open over NeoCrimson and the field goes dark.",
+    "dash": false,
     "clip": "H0"
    },
    "effect": {
-    "files": [
-     "EFFECT/EFFEUA/MEUA1400.BIN",
-     "EFFECT/EFFEUA/MEUA1500.BIN",
-     "EFFECT/EFFEUA/AEUA1400.BIN",
-     "EFFECT/EFFEUA/AEUA1500.BIN",
-     "EFFECT/EFFESD/MESD1500.BIN",
-     "EFFECT/EFFESD/AESD1500.BIN"
-    ],
-    "file_ids": [
-     2083,
-     2087,
-     2104,
-     2110,
-     3137,
-     3149
-    ],
-    "logic": "DW2 A* effect files (decoded on branch dw2-signature-skullmeramon)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 109,
      "name": "Crimson Flare"
@@ -8866,27 +8181,27 @@
     "name": "Dark Shot"
    },
    "behavior": {
-    "kind": "beam",
+    "kind": "shot",
     "target": "one",
-    "hits": 1,
-    "look": "An energy blast from the arm cannon.",
+    "hits": 3,
+    "look": "Three shots from the arm cannon through a drawn seal.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 80,
      "name": "Dark Shot"
     }
    },
    "move": {
-    "power": 255,
-    "element": "mech",
+    "power": 258,
+    "element": "dark",
     "range": 2,
-    "distance": 640000,
+    "distance": 360000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -8913,27 +8228,27 @@
     "name": "Nightmare Syndromer"
    },
    "behavior": {
-    "kind": "shot",
-    "target": "one",
+    "kind": "area",
+    "target": "all",
     "hits": 1,
-    "look": "A dark energy sphere hurled from overhead.",
+    "look": "A black sun gathered overhead and thrown down; its blast reaches every enemy.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 96,
      "name": "Nightmare Syndromer"
     }
    },
    "move": {
-    "power": 255,
-    "element": "fire",
-    "range": 2,
-    "distance": 360000,
+    "power": 250,
+    "element": "dark",
+    "range": 3,
+    "distance": 160000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -8962,14 +8277,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "Both back cannons fire.",
+    "look": "Two dynamos spin up over the shoulders and fire six blue shells by turns, each bursting orange on the target.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 78,
      "name": "Genoside Attack"
@@ -9009,14 +8324,14 @@
     "kind": "melee",
     "target": "one",
     "hits": 1,
-    "look": "A whip of blood.",
+    "look": "Blood wells in MaloMyotismon's hand and runs out into a swaying whip that lashes the target and clings to it, dripping;",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers_close.py",
+    "status": "authored",
     "template": {
      "id": 96,
      "name": "Nightmare Syndromer"
@@ -9053,14 +8368,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A flare from the mouth.",
+    "look": "Embers stream into the jaws and come back as a widening cone of crimson and gold fire with three blasts inside it and black smoke after.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 109,
      "name": "Crimson Flare"
@@ -9099,14 +8414,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A spiral of water.",
+    "look": "Two ropes of water corkscrew round one another to the target, where a spout bursts up and falls back as rain.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 106,
      "name": "Infinity Cannon"
@@ -9142,27 +8457,27 @@
     "name": "Fireball"
    },
    "behavior": {
-    "kind": "dash",
+    "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "Spins into a fire dragon.",
-    "dash": true,
+    "look": "A wheel of blue fire that flies as a dragon; it can be dodged.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 61,
      "name": "Fireball"
     }
    },
    "move": {
-    "power": 163,
+    "power": 172,
     "element": "fire",
     "range": 2,
-    "distance": 160000,
+    "distance": 360000,
     "accuracy": 100,
     "status": 0,
     "statusChance": 0,
@@ -9191,14 +8506,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A long sword cut.",
-    "dash": true,
+    "look": "Dust rises under Zanbamon's hooves as it lifts a sword longer than the gap between the fighters;",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 62,
      "name": "Death Claw"
@@ -9237,14 +8552,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A data blast.",
+    "look": "A block of raw data is compiled from streaming ones and zeroes, stutters across the field and breaks over the target in squares and scan lines.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 72,
      "name": "Sweet Breath"
@@ -9283,14 +8598,14 @@
     "kind": "beam",
     "target": "one",
     "hits": 1,
-    "look": "A laser from its eyes.",
+    "look": "Two green cat's eyes open over the caster and loose thin rose rays that sweep in to cross on the target in a star of light and a scatter of jewels.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "dw1-template",
+    "logic": "tools/technique_effects/finishers_beam_b.py",
+    "status": "authored",
     "template": {
      "id": 60,
      "name": "Lovely Attack"
@@ -9329,21 +8644,21 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A fireball from the mouth.",
+    "look": "A ball of fire grown in the mouth and spat at the target; it can be dodged.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
     "files": null,
-    "logic": "DW2003 E<num><code>/MEFT mapping not decoded",
-    "status": "source-undecoded",
+    "logic": "tools/technique_effects/finishers.py",
+    "status": "authored",
     "template": {
      "id": 59,
      "name": "Pepper Breath"
     }
    },
    "move": {
-    "power": 93,
+    "power": 97,
     "element": "fire",
     "range": 2,
     "distance": 360000,
@@ -9376,15 +8691,14 @@
     "kind": "shot",
     "target": "one",
     "hits": 1,
-    "look": "A firebird shape launched from the wings.",
+    "look": "Flames knit into a great bird of fire overhead that dives in a straight line shedding burning feathers and wraps its wings round whoever it strikes.",
     "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/495.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_shot_b.py",
+    "status": "authored",
     "template": {
      "id": 63,
      "name": "Mega Flame"
@@ -9424,15 +8738,14 @@
     "kind": "dash",
     "target": "one",
     "hits": 1,
-    "look": "A long glowing cut of the Grey Sword.",
-    "dash": true,
+    "look": "The Grey Sword lights: a blade of blue-white light with written signs burning orange along it grows from Omnimon across the field and through the target.",
+    "dash": false,
     "clip": "by eye"
    },
    "effect": {
-    "file": "E.DRV/2060.PAK",
-    "shared_by_cards": 1,
-    "logic": "MSCD script of the card model (not decoded)",
-    "status": "source",
+    "files": null,
+    "logic": "tools/technique_effects/finishers_dash_b.py",
+    "status": "authored",
     "template": {
      "id": 111,
      "name": "Mail Strome"

@@ -54,7 +54,7 @@
  "s165.sec7.u1": "Oh yeah, Yuramon says it knows some new rumors.",
  "s165.sec7.u2": "The city's getting livelier, and the talk around town is changing a bit, too.",
  "s165.sec7.u3": "{color 6}{player}{color 1}, the way you go adventuring is pretty unusual, y'know.",
- "s165.sec20.u0": "So you've come to... I'm so sorry, my boy.",
+ "s165.sec20.u0": "So you've come to... I'm so sorry, my child.",
  "s165.sec85.m0.o0": "Use it",
  "s165.sec85.m0.o1": "Don't use it",
  "s165.sec85.u0": "Oh? What's this machine?",
@@ -286,7 +286,7 @@
    "No need to stand nearby."
   ]
  ],
- "s178.sec20.u0": "So you've come to... I'm so sorry, my boy.",
+ "s178.sec20.u0": "So you've come to... I'm so sorry, my child.",
  "s178.sec82.m0.o0": "Rest a while",
  "s178.sec82.m0.o1": "Don't rest",
  "s178.sec82.u0": "Punimon isn't here, but I guess I could just rest anyway.",

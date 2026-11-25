@@ -49,7 +49,7 @@ def the_tale():
     sound(8, 18)
     raw.show_textbox(t51.u13)
     cherrymon.say("The fog has hidden this forest a long time.", "The hunters cannot find what they cannot see.",
-                  "Shall I clear it, young man, or keep it?")
+                  "Shall I clear it, young one, or keep it?")
     if ask(yes="Clear it", no="Keep it"):
         clear_the_fog()
     else:

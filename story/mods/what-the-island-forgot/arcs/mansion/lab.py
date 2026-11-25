@@ -39,7 +39,7 @@ def the_collection():
     memories.add(1)
     memory_news.set()
     say("Grey... the Grey Lord of this house.", "Then the research I believed was mine was his, all along.")
-    say("Tell me, boy. What should become of SkullGreymon?",
+    say("Tell me, child. What should become of SkullGreymon?",
         "I can keep him, and now he would obey. Or the bones can go back to the circle downstairs, and he can rest.")
     if ask(yes="Let him rest", no="Keep him"):
         say("...Yes. I think it is what the bones want.", "I will close the circle. Come down to the basement, under the stairs, when you are ready.")
