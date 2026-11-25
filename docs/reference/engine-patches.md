@@ -501,7 +501,7 @@ The list expansion costs 16 bytes of aligned heap (`main_BSS_END` 0x801cee08 →
 
 The resident music-sequence buffer is reduced from 0x8000 to 0x7800 to preserve 2 MB model-loading headroom: the largest of the 35 built music fonts uses 0x7284 bytes, leaving 0x57c bytes of capacity above that peak. The sound authoring limit matches the resident buffer. The final nine-language layout has `main_BSS_END` 0x801ce610 and 186592 bytes of heap; all 320 model-aware screen setups fit, with a minimum margin of 1872 bytes on screen 207.
 
-Later content took that margin, so the buffer is now 0x7400 (380 bytes above the same peak; a font that does not fit fails the authoring check). The nine-language build then has 184608 bytes of heap and 800 bytes of margin on screen 207. The partner rewind later cut it to 0x7288 (4 bytes above the peak): 183920 bytes of heap, 112 on screen 207.
+Later content took that margin, so the buffer is now 0x7400 (380 bytes above the same peak; a font that does not fit fails the authoring check). The nine-language build then has 184608 bytes of heap and 800 bytes of margin on screen 207. The partner rewind later cut it to 0x7288 (4 bytes above the peak): 184112 bytes of heap, 304 on screen 207.
 
 Language padding also keeps the executable's layout equal in every language: two macro texts that are the same in one language but not in another get padded sizes that differ (`apart` in `text-bank-pad.json`), so the compiler cannot merge them in one language's executable only.
 

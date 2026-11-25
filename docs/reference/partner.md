@@ -543,7 +543,7 @@ Species data, requirements and links are edited as described in [../mods/species
 
 ### Virus form and reverting
 
-In a New Game Plus run the save machine can also rewind the partner one form back to the state it arrived with
+In a New Game Plus run the save machine can also rewind the partner, one form at a time through the forms of its egg, to the state each arrived with
 (digimon routines 13 and 14, `MOD_PARTNER_LINE`): see [New Game Plus](../mods/new-game-plus.md#rewind).
 
 The King of Sukamon (screen 165 GOMI02, NPC slot 0, script 159 section 81) only reverts the virus form: if the partner

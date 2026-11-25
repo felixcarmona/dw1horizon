@@ -165,7 +165,7 @@ An extension counts only when magic, its own checksum and its copy of the v1 che
 | 0x000D | u8[223] additional card counts: two 4-bit counts per byte, low nibble first, IDs 66–511 | card expansion |
 | 0x000E | u16[6] daily card shop stock, `0xFFFF` = sold; IDs 0–511 | card expansion |
 | 0x000F | u8 tamer look (0 = the original tamer), u8 hair colour, u8 boy or girl (0 = boy, 1 = girl: the face and the hands follow it; absent in records of two bytes = boy), u8 shirt and u8 shirt colour, u8 trousers and u8 their colour, u8 shoes and u8 their colour, u8 backpack (0 = the original, 1 = none) and u8 its colour (absent in shorter records = the original garment), u8 skin (bit 0 unused; the bits above: the skin tone, 0 = his own, 1 to 5 from pale to dark; absent = his own skin); a value out of range = the original | tamer looks |
-| 0x0010 | the partner's line: the 44-byte `ModPartnerLine` as it is in RAM: u8 forms in use (0..2), u8 rewinds this egg has used, u8 levels rewound out of (bit n), u8 0, then two entries of `{i16 species, hp, mp, offense, defense, speed, brains, lifetime, age, weight}` (20 bytes): the state the form before and the current form (the last in use) arrived with. A record of another size remembers nothing | partner rewind |
+| 0x0010 | the partner's line, 83 bytes: u8 forms in use (0..5), u8 rewinds this egg has used, u8 levels rewound out of (bit n), then five 16-byte forms, newest (the current form) first. Each form packs `species, hp, mp, offense, defense, speed, brains, lifetime, age, weight` low bit first in 10, 15, 15, 14, 14, 14, 14, 15, 8 and 8 bits: the state that form arrived with. A record of another size remembers nothing | partner rewind |
 | 0x8001, 0x8002 | reserved in the registry for required story-state records; not written by this patch series | |
 
 ### Reading rules
@@ -418,7 +418,7 @@ bytes for IDs 0–65. Optional tag `0x000D` adds 446 nibbles (223 bytes), and op
 payload use 243 bytes. With them the conservative inline bound was 1,093 of 1,120 bytes;
 the tamer's look record (`0x000F`, 16 bytes with framing) brings it to 1,109, leaving 11 bytes.
 The compile-time assertion includes all three records. The partner rewind stopped writing `0x0005` (84 bytes with
-framing) and added the partner's line (`0x0010`, 48 bytes with framing): 1,073 bytes, leaving 47.
+framing) and added the partner's line (`0x0010`, 87 bytes with framing): 1,112 bytes, leaving 8.
 
 Loading any old payload zeros the extra count bytes before applying records.
 A missing stock record takes its defaults from the v1 shop bytes (`0xFF` = sold).

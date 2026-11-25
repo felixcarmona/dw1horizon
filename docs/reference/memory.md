@@ -145,8 +145,8 @@ Both music loaders check this capacity, and the authoring check uses the same li
 `main_BSS_END` moves from 0x801cee08 to 0x801ce608 and the heap grows from 184,560 to 186,608 bytes. All 320
 archive-backed screen setups fit; screen 207 is tightest at 1,888 bytes free (previously 160 bytes short). Those figures
 are from the 0x7800 size; with 0x7400 and the content added since, the heap is 184,608 bytes and screen 207 keeps 800.
-The partner rewind then cut it to 0x7288, 4 bytes over the largest block: the nine-language heap is 183,920 bytes and
-screen 207 keeps 112.
+The partner rewind then cut it to 0x7288, 4 bytes over the largest block: the nine-language heap is 184,112 bytes and
+screen 207 keeps 304.
 
 ### Partner model buffer (patches 0064, 0176)
 
