@@ -1,0 +1,162 @@
+From ea962d2a69122804f68feaf196d1c5051b514006 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 25 Nov 2026 13:05:08 +0000
+Subject: [PATCH] Evolution cancel: the button drawn like its design, a thick
+ ring over a dark disc with the button inside
+
+---
+ include/dw/mod_qol.h |  1 +
+ src/evl/evl.c        | 27 +++-----------------
+ src/main/mod_qol.c   | 59 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 63 insertions(+), 24 deletions(-)
+
+diff --git a/include/dw/mod_qol.h b/include/dw/mod_qol.h
+index 445eef8..be06be6 100644
+--- a/include/dw/mod_qol.h
++++ b/include/dw/mod_qol.h
+@@ -34,5 +34,6 @@ int32_t modTrainStopReason(int32_t t0, int32_t tiredAt);
+ #define MOD_EVO_CANCEL_HELD 2
+ extern int8_t MOD_EVO_CANCEL;
+ extern char MOD_EVO_CANCEL_TEXT[];
++void modEvoCancelDraw(int32_t hold, int32_t ticks, int32_t w, int32_t row);
+ 
+ #endif
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index bcdff43..3f0c88d 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -312,16 +312,11 @@ void EVL_resetSparks(void)
+ #define EVL_CANCEL_TICKS 20
+ #define EVL_CANCEL_FADE 16
+ #define EVL_CANCEL_ROW 0xD8 /* the text area's row of the tallies' hint: never on screen together */
+-#define EVL_CANCEL_X (-141)
+-#define EVL_CANCEL_Y 103
+ extern uint32_t POLLED_INPUT;
+ extern uint8_t PAUSE_STATE;
+ extern uint8_t *GENERAL_BUFFER_PTR;
+-void drawLine2P(uint32_t color, int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t order, uint32_t mode);
+-void renderString(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t h, uint8_t u, uint8_t v, long layer, int32_t shadow);
+ void clearTextSubArea(RECT *rect);
+ void setTextColor(int32_t color);
+-int32_t fitStringMode(char *str, int32_t maxW);
+ int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode);
+ int32_t loadVLALL(int32_t idx, uint8_t *buffer);
+ void fadeToBlack(int16_t frames);
+@@ -333,19 +328,15 @@ static int8_t EVL_cancelHold = 0;
+ static int8_t EVL_cancelPhase = 0; /* 1 fading out */
+ static int8_t EVL_cancelShown = 0;
+ 
+-/* the cancel button's glyph in its colour (the font draws it as the button that cancels now: a green triangle, with
+- * JAPANESE CONTROLS a blue cross), then the line */
++/* the line, into a row of the text area; main draws the button and its ring (modEvoCancelDraw) */
+ static void EVL_cancelHintDraw(void)
+ {
+ 	RECT area;
+-	static char glyph[] = { 0x81, 0x7E, 0 };
+ 
+ 	setRECT(&area, 0, EVL_CANCEL_ROW, 256, 12);
+ 	clearTextSubArea(&area);
+-	setTextColor(MOD_OPT_BUTTONS ? 6 : 5);
+-	drawStringMode(glyph, 0, EVL_CANCEL_ROW, 0);
+ 	setTextColor(1);
+-	EVL_cancelW = 20 + drawStringMode(MOD_EVO_CANCEL_TEXT, 20, EVL_CANCEL_ROW, 0);
++	EVL_cancelW = drawStringMode(MOD_EVO_CANCEL_TEXT, 0, EVL_CANCEL_ROW, 0);
+ }
+ 
+ /* every part of the model solid again, and the scene's pending loads done */
+@@ -431,21 +422,9 @@ static void EVL_cancelEnd(EvoSequenceData *data, int32_t instanceId)
+ 	removeObject(0x80a, instanceId);
+ }
+ 
+-/* the ring: twenty segments from the top, clockwise, one per tick held (nine pixels of radius, the corners of each
+- * segment below); yellow as it fills, a dark track for the rest. The glyph and the line beside it (one piece of
+- * the row) are dim, bright while the button is held, with the game's own drop shadow */
+ static void EVL_cancelRender(void)
+ {
+-	static const int8_t ring[] = { 0, -9, 3, -9, 5, -7, 7, -5, 9, -3, 9, 0, 9, 3, 7, 5, 5, 7, 3, 9, 0, 9, -3, 9, -5, 7, -7, 5, -9, 3, -9, 0, -9, -3, -7, -5, -5, -7, -3, -9, 0, -9 };
+-	const int8_t *p = ring;
+-	int32_t i;
+-	int32_t color;
+-
+-	for (i = 1; i <= EVL_CANCEL_TICKS; i++, p += 2) {
+-		color = i > EVL_cancelHold ? 0x483c3c : 0x28ccff;
+-		drawLine2P(color, EVL_CANCEL_X + p[0], EVL_CANCEL_Y + p[1], EVL_CANCEL_X + p[2], EVL_CANCEL_Y + p[3], 4, 0);
+-	}
+-	renderString(EVL_cancelHold ? 0 : 8, EVL_CANCEL_X - 5, EVL_CANCEL_Y - 6, EVL_cancelW, 12, 0, EVL_CANCEL_ROW, 4, 1);
++	modEvoCancelDraw(EVL_cancelHold, EVL_CANCEL_TICKS, EVL_cancelW, EVL_CANCEL_ROW);
+ }
+ 
+ void EVL_tickEvoSequence(int32_t instanceId)
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index 0c1bf48..a6b5e5c 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -180,6 +180,65 @@ void modShopPlateAdd(void)
+ int8_t MOD_EVO_CANCEL;
+ char MOD_EVO_CANCEL_TEXT[] = QOL_STR_EVO_CANCEL;
+ 
++/* the cancel's button, bottom left, worked out a pixel at a time from its centre (squared distances): a dark disc, a
++   black gap, a band from 6.6 to 9.5 pixels that fills clockwise from the top (yellow, white once full) over a dark
++   track, a black edge round the outside, and the cancel button inside as an outline (a green triangle, with
++   JAPANESE CONTROLS a blue cross), brighter while held. Each row goes out as runs of one colour; the line beside it
++   is the text area's row the EVL overlay drew, dim, white while held */
++#define EVO_CANCEL_X (-141)
++#define EVO_CANCEL_Y 104
++static int32_t modEvoCancelPixel(int32_t x, int32_t y, int32_t hold, int32_t ticks)
++{
++	int32_t ax = x < 0 ? -x : x;
++	int32_t ay = y < 0 ? -y : y;
++	int32_t d = x * x + y * y;
++	int32_t hw = (y + 4) >> 1;
++
++	if (MOD_OPT_BUTTONS ? (ax == ay && ax <= 2) : (y >= -3 && y <= 2 && (ax == hw || (y == 2 && ax <= 3)))) {
++		if (MOD_OPT_BUTTONS) {
++			return hold ? 0x68a8ff : 0x4078d8;
++		}
++		return hold ? 0x48e8b8 : 0x30a888;
++	}
++	if (d <= 31) {
++		return 0x2c2c34;
++	}
++	if (d <= 43) {
++		return 0;
++	}
++	if (d <= 90) {
++		if (((ratan2(x, -y) + 4096) & 4095) * ticks < hold * 4096) {
++			return hold >= ticks ? 0xffffff : 0xffcc28;
++		}
++		return 0x383840;
++	}
++	ax = ax ? ax - 1 : 0;
++	ay = ay ? ay - 1 : 0;
++	return ax * ax + ay * ay <= 90 ? 0 : -1;
++}
++
++void modEvoCancelDraw(int32_t hold, int32_t ticks, int32_t w, int32_t row)
++{
++	int32_t x, y, c, prev, start;
++
++	for (y = -11; y <= 11; y++) {
++		prev = -1;
++		start = 0;
++		for (x = -11; x <= 12; x++) {
++			c = x > 11 ? -1 : modEvoCancelPixel(x, y, hold, ticks);
++			if (c != prev) {
++				if (prev >= 0) {
++					modPlateRect(EVO_CANCEL_X + start, EVO_CANCEL_Y + y, x - start, 1, prev >> 16, (prev >> 8) & 0xff,
++					             prev & 0xff, 5);
++				}
++				prev = c;
++				start = x;
++			}
++		}
++	}
++	renderString(hold ? 0 : 8, EVO_CANCEL_X + 15, EVO_CANCEL_Y - 6, w, 12, 0, row, 4, 1);
++}
++
+ /* the tallies' skip hint (patch 0333): "Press × to skip" in a row of its own at the bottom of the box that counts (the
+    gym's stats box, the battle's bits box), under a divider like the battle box's. The line is drawn once into a row of
+    the text area when the box opens, its button in the colour of the button that confirms: × blue (6), with JAPANESE
+-- 
+2.55.0
+
