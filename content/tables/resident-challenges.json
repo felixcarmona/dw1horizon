@@ -1955,6 +1955,393 @@
         "won": "warumonzaemon.challenge.won",
         "reward": "warumonzaemon.challenge.reward"
       }
+    },
+    {
+      "species": 184,
+      "name": "Hawkmon",
+      "story": "arcs/residents/hawkmon.py",
+      "home": "city/birdra-transport.py",
+      "site": {
+        "screen": 36,
+        "at": [
+          1200,
+          -450
+        ]
+      },
+      "exit": [
+        [
+          -1200,
+          -1150
+        ]
+      ],
+      "item": 42,
+      "bits": 1500,
+      "text": {
+        "intro1": "hawkmon.challenge.intro1",
+        "intro2": "hawkmon.challenge.intro2",
+        "retry": "hawkmon.challenge.retry",
+        "won": "hawkmon.challenge.won",
+        "reward": "hawkmon.challenge.reward"
+      }
+    },
+    {
+      "species": 229,
+      "name": "Phantomon",
+      "story": "arcs/residents/phantomon.py",
+      "home": "city/secret-item-shop.py",
+      "site": {
+        "screen": 56,
+        "at": [
+          -500,
+          -400
+        ]
+      },
+      "exit": [
+        [
+          1150,
+          650
+        ]
+      ],
+      "item": 35,
+      "bits": 4000,
+      "text": {
+        "intro1": "phantomon.challenge.intro1",
+        "intro2": "phantomon.challenge.intro2",
+        "retry": "phantomon.challenge.retry",
+        "won": "phantomon.challenge.won",
+        "reward": "phantomon.challenge.reward"
+      }
+    },
+    {
+      "species": 241,
+      "name": "Wizardmon",
+      "story": "arcs/residents/wizardmon.py",
+      "home": "district/power-station.py",
+      "site": {
+        "screen": 59,
+        "at": [
+          0,
+          300
+        ]
+      },
+      "exit": [
+        [
+          -950,
+          -1400
+        ]
+      ],
+      "item": 25,
+      "bits": 2500,
+      "text": {
+        "intro1": "wizardmon.challenge.intro1",
+        "intro2": "wizardmon.challenge.intro2",
+        "retry": "wizardmon.challenge.retry",
+        "won": "wizardmon.challenge.won",
+        "reward": "wizardmon.challenge.reward"
+      }
+    },
+    {
+      "species": 251,
+      "name": "Solarmon",
+      "story": "arcs/vault/statue-room.py",
+      "home": "district/power-station.py",
+      "site": {
+        "screen": 97,
+        "at": [
+          800,
+          -600
+        ]
+      },
+      "exit": [
+        [
+          -700,
+          1400
+        ]
+      ],
+      "item": 28,
+      "bits": 1500,
+      "text": {
+        "intro1": "solarmon.challenge.intro1",
+        "intro2": "solarmon.challenge.intro2",
+        "retry": "solarmon.challenge.retry",
+        "won": "solarmon.challenge.won",
+        "reward": "solarmon.challenge.reward"
+      }
+    },
+    {
+      "species": 263,
+      "name": "Mushroomon",
+      "story": "arcs/residents/mushroomon.py",
+      "home": "city/centar-clinic.py",
+      "site": {
+        "screen": 234,
+        "at": [
+          -450,
+          -900
+        ]
+      },
+      "exit": [
+        [
+          -450,
+          1600
+        ]
+      ],
+      "item": 46,
+      "bits": 1500,
+      "text": {
+        "intro1": "mushroomon.challenge.intro1",
+        "intro2": "mushroomon.challenge.intro2",
+        "retry": "mushroomon.challenge.retry",
+        "won": "mushroomon.challenge.won",
+        "reward": "mushroomon.challenge.reward"
+      }
+    },
+    {
+      "species": 267,
+      "name": "Mammothmon",
+      "story": "arcs/residents/mammothmon.py",
+      "home": "district/cold-store.py",
+      "site": {
+        "screen": 94,
+        "at": [
+          0,
+          450
+        ]
+      },
+      "exit": [
+        [
+          1500,
+          2450
+        ]
+      ],
+      "item": 57,
+      "bits": 4000,
+      "text": {
+        "intro1": "mammothmon.challenge.intro1",
+        "intro2": "mammothmon.challenge.intro2",
+        "retry": "mammothmon.challenge.retry",
+        "won": "mammothmon.challenge.won",
+        "reward": "mammothmon.challenge.reward"
+      }
+    },
+    {
+      "species": 273,
+      "name": "Floramon",
+      "story": "arcs/residents/floramon.py",
+      "home": "district/market-shed.py",
+      "site": {
+        "screen": 4,
+        "at": [
+          2550,
+          800
+        ]
+      },
+      "exit": [
+        [
+          3150,
+          -800
+        ]
+      ],
+      "item": 51,
+      "bits": 1500,
+      "text": {
+        "intro1": "floramon.challenge.intro1",
+        "intro2": "floramon.challenge.intro2",
+        "retry": "floramon.challenge.retry",
+        "won": "floramon.challenge.won",
+        "reward": "floramon.challenge.reward"
+      }
+    },
+    {
+      "species": 280,
+      "name": "Pumpkinmon",
+      "story": "arcs/residents/pumpkinmon.py",
+      "home": "district/scrap-office.py",
+      "site": {
+        "screen": 147,
+        "at": [
+          -1300,
+          700
+        ]
+      },
+      "exit": [
+        [
+          1200,
+          700
+        ]
+      ],
+      "item": 53,
+      "bits": 4000,
+      "text": {
+        "intro1": "pumpkinmon.challenge.intro1",
+        "intro2": "pumpkinmon.challenge.intro2",
+        "retry": "pumpkinmon.challenge.retry",
+        "won": "pumpkinmon.challenge.won",
+        "reward": "pumpkinmon.challenge.reward"
+      }
+    },
+    {
+      "species": 282,
+      "name": "Kiwimon",
+      "story": "arcs/challenges/kiwimon.py",
+      "home": "city/restaurant-214.py",
+      "site": {
+        "screen": 77,
+        "at": [
+          400,
+          -750
+        ]
+      },
+      "exit": [
+        [
+          1900,
+          1250
+        ]
+      ],
+      "item": 48,
+      "bits": 2500,
+      "text": {
+        "intro1": "kiwimon.challenge.intro1",
+        "intro2": "kiwimon.challenge.intro2",
+        "retry": "kiwimon.challenge.retry",
+        "won": "kiwimon.challenge.won",
+        "reward": "kiwimon.challenge.reward"
+      }
+    },
+    {
+      "species": 287,
+      "name": "Tapirmon",
+      "story": "arcs/residents/tapirmon.py",
+      "home": "district/market-shed.py",
+      "site": {
+        "screen": 6,
+        "at": [
+          650,
+          -2000
+        ]
+      },
+      "exit": [
+        [
+          1350,
+          -4400
+        ]
+      ],
+      "item": 34,
+      "bits": 1500,
+      "text": {
+        "intro1": "tapirmon.challenge.intro1",
+        "intro2": "tapirmon.challenge.intro2",
+        "retry": "tapirmon.challenge.retry",
+        "won": "tapirmon.challenge.won",
+        "reward": "tapirmon.challenge.reward"
+      }
+    },
+    {
+      "species": 290,
+      "name": "Clockmon",
+      "story": "arcs/residents/clockmon.py",
+      "home": "district/the-courtyard.py",
+      "site": {
+        "screen": 163,
+        "at": [
+          -350,
+          -900
+        ]
+      },
+      "exit": [
+        [
+          -1750,
+          -250
+        ]
+      ],
+      "item": 22,
+      "bits": 2500,
+      "text": {
+        "intro1": "clockmon.challenge.intro1",
+        "intro2": "clockmon.challenge.intro2",
+        "retry": "clockmon.challenge.retry",
+        "won": "clockmon.challenge.won",
+        "reward": "clockmon.challenge.reward"
+      }
+    },
+    {
+      "species": 321,
+      "name": "Knightmon",
+      "story": "arcs/residents/knightmon.py",
+      "home": "district/guard-house.py",
+      "site": {
+        "screen": 222,
+        "at": [
+          -900,
+          100
+        ]
+      },
+      "exit": [
+        [
+          250,
+          2100
+        ]
+      ],
+      "item": 10,
+      "bits": 4000,
+      "text": {
+        "intro1": "knightmon.challenge.intro1",
+        "intro2": "knightmon.challenge.intro2",
+        "retry": "knightmon.challenge.retry",
+        "won": "knightmon.challenge.won",
+        "reward": "knightmon.challenge.reward"
+      }
+    },
+    {
+      "species": 351,
+      "name": "Kotemon",
+      "story": "arcs/residents/kotemon.py",
+      "home": null,
+      "site": {
+        "screen": 45,
+        "at": [
+          1000,
+          850
+        ]
+      },
+      "exit": [
+        [
+          700,
+          3300
+        ]
+      ],
+      "item": 60,
+      "bits": 1500,
+      "text": {
+        "intro1": "kotemon.challenge.intro1",
+        "intro2": "kotemon.challenge.intro2",
+        "retry": "kotemon.challenge.retry",
+        "won": "kotemon.challenge.won",
+        "reward": "kotemon.challenge.reward"
+      }
+    },
+    {
+      "species": 353,
+      "name": "Bearmon",
+      "story": "arcs/seam/kennel.py",
+      "home": "district/container-house.py",
+      "site": {
+        "screen": 325,
+        "at": [
+          -600,
+          300
+        ]
+      },
+      "exit": [],
+      "item": 49,
+      "bits": 1500,
+      "text": {
+        "intro1": "bearmon.challenge.intro1",
+        "intro2": "bearmon.challenge.intro2",
+        "retry": "bearmon.challenge.retry",
+        "won": "bearmon.challenge.won",
+        "reward": "bearmon.challenge.reward"
+      }
     }
   ]
 }

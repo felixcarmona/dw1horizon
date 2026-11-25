@@ -2,7 +2,7 @@
 # at (1078, 786)).
 from dw import *
 from dw.base.centar_clinic import clinic, coelamon
-from ..state import challenger, challenge_won, CH_COELAMON
+from ..state import challenger, challenge_won, CH_COELAMON, CH_MUSHROOMON
 
 mushroomon = clinic.npc(Species.Mushroomon, at=(50, 1150), behaves_like=coelamon, when=recruited(Species.Mushroomon))
 
@@ -13,9 +13,11 @@ def talk():
     shop(Item.Bandage, Item.Medicine, Item.SmRecovery, Item.MPFloppy)
 
 
-# Resident challenges (content/tables/resident-challenges.json): the day Coelamon is out waiting at its old
+# Resident challenges (content/tables/resident-challenges.json): the day one of them is out waiting at its old
 # spot, it is not here.
 @clinic.on_enter(when=engine.game_beaten)
-def challenger_out_coelamon():
+def challenger_out_coelamon_mushroomon():
     if challenger == CH_COELAMON and not challenge_won:
         coelamon.leave()
+    if challenger == CH_MUSHROOMON and not challenge_won:
+        mushroomon.leave()

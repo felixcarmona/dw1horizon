@@ -61,6 +61,9 @@ wide registers); the table has room for 72 (`MOD_CHALLENGE_MAX`).
 A row (72 at most) names the species, its story file, home file, site (screen and `at`), the exit path it runs after a
 win, the item, the bits, its `base` when its species has no `wild` sheet, and its five named lines. The story side is the row's constant `CH_<NAME>` in
 `state.py` (its 1-based row), the site file's presence (`not recruited(...) or trigger(50)` for a Digimon of ours; for one of the game's own,
-whose original NPC leaves once recruited, a new NPC of the species with `recruited(...) and trigger(50)` on the same
-spot), `on_enter` and challenge talk, the home's `on_enter`, and the lines in `text/en.json` and every translation. The site must keep the hang rules:
+whose original NPC leaves once recruited, a file in `arcs/challenges/` with a new NPC of the species, `when=recruited(...)`
+on the same spot, that leaves from `on_enter` unless the game is beaten and it is today's challenger: the shorter
+condition keeps MAPHEAD inside its buffer), `on_enter` and challenge talk, the home's `on_enter`, and the lines in `text/en.json` and every translation. The site must keep the hang rules:
 the exit on walkable ground in a straight line, `run` only for models with a run clip (slot 4).
+A resident whose home NPC shares its slot layout with other screens of the same script (the arena lobby), or is a
+clerk or a slot the script spawns, has no home file (`home: null`): it only appears at its site.

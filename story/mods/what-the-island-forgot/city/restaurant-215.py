@@ -1,7 +1,7 @@
 # The Restaurant (215, Digitamamon's kitchen): Kiwimon cooks here too.
 from dw import *
 from dw.base.restaurant_215 import restaurant, giromon
-from ..state import challenger, challenge_won, CH_GIROMON
+from ..state import challenger, challenge_won, CH_GIROMON, CH_KIWIMON
 
 kiwimon = restaurant.npc(Species.Kiwimon, at=(-550, -450), behaves_like=giromon, when=recruited(Species.Kiwimon))
 
@@ -17,3 +17,11 @@ def talk():
 def challenger_out_giromon():
     if challenger == CH_GIROMON and not challenge_won:
         giromon.leave()
+
+
+# Resident challenges (content/tables/resident-challenges.json): the day Kiwimon is out waiting at its old
+# spot, it is not here.
+@restaurant.on_enter(when=engine.game_beaten)
+def challenger_out_kiwimon():
+    if challenger == CH_KIWIMON and not challenge_won:
+        kiwimon.leave()
