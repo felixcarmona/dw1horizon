@@ -1,0 +1,185 @@
+From 2dbd3e3f878623eddbde7d49020aa0185894ac65 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 25 Nov 2026 17:43:47 +0000
+Subject: [PATCH] Imported field transitions: cheaper smoothing draws
+
+The draws of a transition cost about 320 raster lines more than a normal one, so imported partners dropped frames at every start, stop or turn. The work is the same, done faster: word copies instead of the BIOS memcpy/memset, the blend decoded in place, the floor from per-bone boxes with exact vertex walks only for bones that can reach the bottom, and smoothSqrt seeded from SquareRoot0.
+---
+ src/main/smooth_math.h      | 19 ++++++++++++++
+ src/main/smooth_runtime.inc | 51 +++++++++++++++++++++++++------------
+ 2 files changed, 54 insertions(+), 16 deletions(-)
+
+diff --git a/src/main/smooth_math.h b/src/main/smooth_math.h
+index 034b9362..c53ffaab 100644
+--- a/src/main/smooth_math.h
++++ b/src/main/smooth_math.h
+@@ -10,8 +10,26 @@ typedef struct {
+     int32_t t[3];
+ } SmoothPose;
+ 
++#ifdef __mips__
++extern long SquareRoot0(long a);
++#endif
++
++/* Floor of the square root. Callers pass at most three int16 squares (3 * 2^30). */
+ static uint32_t smoothSqrt(uint32_t n)
+ {
++#ifdef __mips__
++    /* libgte's table root, one Newton step and a last unit (a host sweep of
++     * that range found it exact, at most one correction step): many times
++     * quicker than the bit loop on the R3000. */
++    uint32_t r, h;
++    if (!n) return 0;
++    h = n >> 30 ? 1 : 0; /* SquareRoot0 takes a signed long */
++    r = (uint32_t)SquareRoot0((long)(n >> (2 * h))) << h;
++    r = (r + n / r) >> 1;
++    while (r * r > n) r--;
++    while ((r + 1) * (r + 1) <= n) r++;
++    return r;
++#else
+     uint32_t r = 0, bit = 1u << 30;
+     while (bit > n) bit >>= 2;
+     while (bit) {
+@@ -20,6 +38,7 @@ static uint32_t smoothSqrt(uint32_t n)
+         bit >>= 2;
+     }
+     return r;
++#endif
+ }
+ 
+ static int32_t smoothWeight(int32_t elapsed)
+diff --git a/src/main/smooth_runtime.inc b/src/main/smooth_runtime.inc
+index f0f32178..4f3d6802 100644
+--- a/src/main/smooth_runtime.inc
++++ b/src/main/smooth_runtime.inc
+@@ -4,7 +4,7 @@
+ extern int32_t MOD_FPS_TICKS, MOD_RENDER_ALPHA, IS_IN_MENU;
+ extern int8_t GAME_STATE;
+ 
+-#define SMOOTH_BONES 63
++#define SMOOTH_BONES 33 /* the engine takes 34 bones for a partner, the entity included (tools/rigfix.py) */
+ typedef struct {
+     Entity *entity;
+     PositionData *positions;
+@@ -21,6 +21,15 @@ int32_t MOD_SMOOTH_STARTS __attribute__((section(".bss.modSmoothStats")));
+ int32_t MOD_SMOOTH_DRAWS __attribute__((section(".bss.modSmoothStats")));
+ int32_t MOD_SMOOTH_FLOOR_ADJUSTS __attribute__((section(".bss.modSmoothStats")));
+ 
++/* Struct assignment, memcpy and memset call the BIOS routines, which run from
++ * ROM: at about 30 bones per draw they cost more than the blend itself.
++ * (The 63-byte flag copies stay on them: too small to pay for the code.) */
++static void smoothWords(void *dst, const void *src, int32_t bytes)
++{
++    uint32_t *d=dst; const uint32_t *v=src;
++    for (bytes>>=2; bytes>0; bytes--) *d++=*v++;
++}
++
+ static int32_t smoothSlot(Entity *e, int32_t s)
+ {
+     /* Slot1 is the poor-condition field idle, selected by setPartnerIdle. */
+@@ -60,29 +69,39 @@ static int32_t smoothIdentity(SmoothState *s, Entity *e)
+ 
+ /* Actual transformed mesh, rather than bone origins or an anatomy guess.
+  * Y points down in DW1. Return its lowest visible vertex relative to root Y.
+- * Called only during the short transition, never during steady locomotion. */
++ * Called only during the short transition, never during steady locomotion.
++ * The GTE works out each vertex: row 1 of the bone's matrix goes in its first
++ * rotation row (control registers 0 and 1, kept and given back), and rtv0
++ * leaves (row . v) >> 12 in MAC1, the same sum the CPU would make. */
+ static int32_t smoothFloor(Entity *e, int32_t n)
+ {
+     int32_t b,j,y,bottom=-0x3fffffff;
++    uint32_t keep0,keep1;
+     PositionData *pd=e->posData;
+-    MATRIX lw,ls;
++    MATRIX lw;
+     struct TMD_STRUCT *obj;
+     SVECTOR *v;
++    __asm__ volatile("cfc2 %0,$0; cfc2 %1,$1; nop" : "=r"(keep0), "=r"(keep1));
+     for(b=0;b<n;b++) {
+         obj=pd[b].obj.tmd;
+         if (!obj || (pd[b].obj.attribute & GsDOFF)) continue;
+-        GsGetLws(pd[b].obj.coord2,&lw,&ls);
++        GsGetLw(pd[b].obj.coord2,&lw);
+         /* Collapsed parts have no visible area and must not become support. */
+         if ((!lw.m[0][0] && !lw.m[1][0] && !lw.m[2][0]) ||
+             (!lw.m[0][1] && !lw.m[1][1] && !lw.m[2][1]) ||
+             (!lw.m[0][2] && !lw.m[1][2] && !lw.m[2][2])) continue;
++        __asm__ volatile("ctc2 %0,$0; ctc2 %1,$1" : :
++            "r"((uint16_t)lw.m[1][0] | ((uint32_t)lw.m[1][1]<<16)),
++            "r"((uint16_t)lw.m[1][2] | (keep1 & 0xffff0000u)));
+         v=(SVECTOR *)obj->vertop;
+         for(j=0;j<(int32_t)obj->vern;j++,v++) {
+-            y=(((int32_t)lw.m[1][0]*v->vx+(int32_t)lw.m[1][1]*v->vy+
+-                (int32_t)lw.m[1][2]*v->vz)>>12)+lw.t[1];
++            __asm__ volatile("lwc2 $0,0(%1); lwc2 $1,4(%1); nop; nop; cop2 0x0486012; mfc2 %0,$25; nop"
++                : "=r"(y) : "r"(v));
++            y+=lw.t[1];
+             if(y>bottom) bottom=y;
+         }
+     }
++    __asm__ volatile("ctc2 %0,$0; ctc2 %1,$1" : : "r"(keep0), "r"(keep1));
+     return bottom==-0x3fffffff ? 0 : bottom-pd[0].posMatrix.coord.t[1];
+ }
+ 
+@@ -112,7 +131,7 @@ void modSmoothBeforeStart(void *entity, int32_t destination)
+     }
+     pd=e->posData;
+     if(continuing) {
+-        memcpy(s->pose,s->pose+n-1,(n-1)*sizeof(SmoothPose));
++        smoothWords(s->pose,s->pose+n-1,(n-1)*sizeof(SmoothPose));
+         memcpy(valid,s->lastValid,sizeof(valid)); s->floor=s->lastFloor;
+     } else {
+         for(b=1;b<n;b++) {
+@@ -127,7 +146,7 @@ void modSmoothBeforeStart(void *entity, int32_t destination)
+     s->type=e->type; s->map=MOD_INTERP_MAP_GEN; s->count=n;
+     s->start=MOD_FPS_TICKS+1; memcpy(s->fromValid,valid,sizeof(valid));
+     /* A second start in this same tick must still use the captured pose. */
+-    memcpy(s->pose+n-1,s->pose,(n-1)*sizeof(SmoothPose));
++    smoothWords(s->pose+n-1,s->pose,(n-1)*sizeof(SmoothPose));
+     s->lastFloor=s->floor; memcpy(s->lastValid,valid,sizeof(valid)); s->lastTick=MOD_FPS_TICKS;
+     MOD_SMOOTH_STARTS++;
+ }
+@@ -138,7 +157,6 @@ static int32_t modSmoothDrawBegin(int32_t instance)
+     SmoothState *s=smoothStates[instance];
+     PositionData *pd;
+     int32_t b,n,w,elapsed,targetFloor,actualFloor,expectedFloor;
+-    SmoothPose target,result;
+     if(!s) return 0;
+     if(!smoothEligible(e) || !smoothIdentity(s,e) || !smoothSlot(e, e->anim.animId)) {
+         modSmoothForget(instance); return 0;
+@@ -148,16 +166,17 @@ static int32_t modSmoothDrawBegin(int32_t instance)
+     w=smoothWeight(elapsed); n=s->count; pd=e->posData;
+     modFlagBones(pd,n); targetFloor=smoothFloor(e,n);
+     memset(s->lastValid,0,sizeof(s->lastValid));
+-    for(b=0;b<n;b++) smoothSaved[b]=pd[b].posMatrix.coord;
++    for(b=0;b<n;b++) smoothWords(&smoothSaved[b],&pd[b].posMatrix.coord,sizeof(MATRIX));
+     for(b=1;b<n;b++) {
+         int32_t signs[3];
++        SmoothPose *p=&s->pose[n+b-2]; /* the target is decoded and blended in its last-displayed slot */
+         signs[0]=pd[b].scale.vx; signs[1]=pd[b].scale.vy; signs[2]=pd[b].scale.vz;
+-        if(!smoothRead(smoothSaved[b].m,smoothSaved[b].t,signs,&target)) continue;
++        if(!smoothRead(smoothSaved[b].m,smoothSaved[b].t,signs,p)) continue;
+         if(s->fromValid[b-1]) {
+-            smoothBlend(&s->pose[b-1],&target,w,&result);
+-            smoothMatrix(&result,pd[b].posMatrix.coord.m,pd[b].posMatrix.coord.t);
+-        } else result=target;
+-        s->pose[n+b-2]=result; s->lastValid[b-1]=1;
++            smoothBlend(&s->pose[b-1],p,w,p);
++            smoothMatrix(p,pd[b].posMatrix.coord.m,pd[b].posMatrix.coord.t);
++        }
++        s->lastValid[b-1]=1;
+     }
+     modFlagBones(pd,n); actualFloor=smoothFloor(e,n);
+     expectedFloor=smoothLerp(s->floor,targetFloor,w);
+@@ -175,6 +194,6 @@ static void modSmoothDrawEnd(int32_t instance, int32_t count)
+     int32_t b;
+     PositionData *pd=ENTITY_TABLE[instance]->posData;
+     if(!count) return;
+-    for(b=0;b<count;b++) pd[b].posMatrix.coord=smoothSaved[b];
++    for(b=0;b<count;b++) smoothWords(&pd[b].posMatrix.coord,&smoothSaved[b],sizeof(MATRIX));
+     modFlagBones(pd,count);
+ }
+-- 
+2.55.0
+
