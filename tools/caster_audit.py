@@ -2,7 +2,7 @@
 """Which wild Digimon really cast each technique in a fight that can be had again.
 
 A placement of content/maps/<MAP>.json is only a fight when two things hold. Something puts a Digimon in its slot: the
-screen's MAPHEAD section (`set_digimon`, story/base/maphead/screenNNN.dws) or the screen's script (`spawn`). And talking
+screen's MAPHEAD section (`set_digimon`, story/base/maphead/hooks.py) or the screen's script (`spawn`). And talking
 to that slot fights: its `on_talk` is `recruitable(...)` (the game's wild encounter) or `fight()`. A slot nothing fills,
 or one that only talks, never casts anything, whatever its move list says.
 
@@ -26,13 +26,21 @@ FIGHTS = ('recruitable', 'fight')
 TIME_ONLY = re.compile(r'date_hour|random_roll\w*|clock\.hour|clock\.day|\broll\b|not:|\bnot\b|\band\b|\bor\b|[\d\s<>=!()&|]')
 
 
+def maphead_sections():
+    """{MAPHEAD section: its DWS} of story/base (maphead/hooks.py lowered; the `shared` blocks are not in any)."""
+    sys.path.insert(0, os.path.join(ROOT, 'tools'))
+    from dws.py.lower import maphead_dws, PY_MARK
+    text = PY_MARK.sub('', maphead_dws(os.path.join(ROOT, 'story', 'base')))
+    return {int(m.group(1)): m.group(0) for m in re.finditer(r'^    section\((\d+)\).*?^    \}$', text, re.S | re.M)}
+
+
 def _maphead():
     """screen -> scripts it runs, and (screen, slot) -> [conditions of each set_digimon]."""
     scripts, placed = collections.defaultdict(list), collections.defaultdict(list)
-    for path in sorted(glob.glob(os.path.join(ROOT, 'story/base/maphead/screen*.dws'))):
-        screen = int(re.search(r'screen(\d+)', path).group(1))
+    for screen, text in sorted(maphead_sections().items()):
+        if screen > 254: continue
         stack, returned = [], []
-        for line in open(path, encoding='utf-8'):
+        for line in text.split('\n'):
             s = line.strip()
             m = re.match(r'set_script\((\d+), *\d+\)', s)
             if m:

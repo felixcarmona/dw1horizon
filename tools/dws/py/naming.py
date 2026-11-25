@@ -6,24 +6,26 @@ each, so a name a mod imports from `dw.base.<screen>` is the name the view print
     screen vars    the caption's last word in the script's view (house, forest, bed); `<word>_<id>` when it repeats there
     NPC vars       the species in the slot (lift.Names: `<species><slot>` when it repeats in the script, `slot<k>` unknown)
 
-The screens of each script, the NPCs MAPHEAD places for it and the sections it has are read from story/base (its MAPHEAD's
-DWS, maphead/*.dws, and each script's `sections(...)`), our source, not from a disc: the build works on any release's
-disc (docs/mods/data-sources.md). `story-base` points BASE at the folder it is generating.
+The screens of each script, the NPCs MAPHEAD places for it and the sections it has are read from story/base (its MAPHEAD,
+maphead/hooks.py lowered, and each script's `sections(...)`), our source, not from a disc: the build works on any release's
+disc (docs/mods/data-sources.md). `story-base` points BASE at the folder it is generating, whose MAPHEAD is still DWS.
 """
 import keyword, os, re
 from .. import build as B
 
 ROOT = B.ROOT
 BASE = os.path.join(ROOT, 'story', 'base')        # the story the names are read from
+MAPHEAD_DWS = None          # a folder of MAPHEAD's DWS (maphead/*.dws) read instead of lowering BASE's hooks.py (use_base)
 _CACHE = {}
 
 
-def use_base(path):
-    """Read the screens, NPCs and sections from another story/base folder (the one `story-base` is writing, a test's). -> the
-    previous folder (to restore)."""
-    global BASE
-    old = BASE; BASE = path
-    for k in [k for k in _CACHE if k in ('screens', 'screen_members', 'maphead') or k.startswith('sections')]: del _CACHE[k]
+def use_base(path, maphead_dws=None):
+    """Read the screens, NPCs and sections from another story/base folder (the one `story-base` is writing, a test's).
+    maphead_dws: the folder of MAPHEAD's DWS to read the placements from, when the folder has no hooks.py yet (`story-base`
+    prints it from them). -> the previous folder (to restore)."""
+    global BASE, MAPHEAD_DWS
+    old = BASE; BASE = path; MAPHEAD_DWS = maphead_dws
+    for k in [k for k in _CACHE if k in ('screens', 'screen_members', 'screen_ids', 'maphead', 'maphead-text') or k.startswith('sections')]: del _CACHE[k]
     return old
 
 
@@ -89,32 +91,89 @@ def enum_members(kind):
 
 
 MH_SECTION = re.compile(r'^\s*section\((\d+)\)')
-MH_SHARED = re.compile(r'^\s*shared \w+ \{\s*// code of sec(\d+)\b')      # the readable form's shared code: where it stood
+MH_SHARED = re.compile(r'^    shared (\w+) \{')                       # a shared block of MAPHEAD (code several sections jump to)
+MH_GOTO = re.compile(r'\bgoto (\w+);')
 MH_SCRIPT = re.compile(r'\bset_script\((\d+),')
 MH_DIGIMON = re.compile(r'\bset_digimon\(species\((\d+|"[^"]*")\), (\d+), (\d+)\)')
 
 
 def maphead_facts(texts=None):
-    """{MAPHEAD section: ([script ids it sets], [(species id, slot, x)] it places)} of story/base's MAPHEAD: its DWS
-    (maphead/*.dws, the proven intermediate beside hooks.py), the code of a `shared` block counted in the section it stood in
-    on the disc (`// code of secN`), as the disc's disassembly did. texts: other DWS texts to read (the build's own check)."""
-    import glob
+    """{MAPHEAD section: ([script ids it sets], [(species id, slot, x)] it places)} of story/base's MAPHEAD (maphead/hooks.py,
+    lowered); a `shared` block's code counts in every section that jumps to it. texts: DWS texts to read instead."""
     from .. import backend as BE
     if texts is None:
-        files = sorted(glob.glob(os.path.join(BASE, 'maphead', '*.dws')))
-        if not files: raise FileNotFoundError(f'{os.path.relpath(BASE, ROOT)}/maphead/*.dws: no MAPHEAD in story/base')
-        texts = [open(f, encoding='utf-8').read() for f in files]
+        texts = maphead_texts()
     spn = BE.names()['species']
-    out = {}; cur = None
+    own = {}; jumps = {}; cur = None
     for t in texts:
         for line in t.split('\n'):
             m = MH_SECTION.match(line) or MH_SHARED.match(line)
-            if m: cur = out.setdefault(int(m.group(1)), ([], [])); continue
+            if m: cur = m.group(1); own.setdefault(cur, ([], [])); jumps.setdefault(cur, []); continue
             if cur is None: continue
-            cur[0].extend(int(x) for x in MH_SCRIPT.findall(line))
+            own[cur][0].extend(int(x) for x in MH_SCRIPT.findall(line))
             for sp, slot, x in MH_DIGIMON.findall(line):
-                cur[1].append((int(sp) if sp.isdigit() else spn[sp.strip('"').strip().lower()], int(slot), int(x)))
+                own[cur][1].append((int(sp) if sp.isdigit() else spn[sp.strip('"').strip().lower()], int(slot), int(x)))
+            jumps[cur] += MH_GOTO.findall(line)
+    out = {}
+    for sec in (k for k in own if k.isdigit()):
+        scripts, digs = list(own[sec][0]), list(own[sec][1]); seen = set(); todo = list(jumps[sec])
+        while todo:
+            j = todo.pop(0)
+            if j in seen or j not in own or j.isdigit(): continue
+            seen.add(j); scripts += own[j][0]; digs += own[j][1]; todo += jumps[j]
+        out[int(sec)] = (scripts, digs)
     return out
+
+
+def maphead_texts():
+    """MAPHEAD's DWS: maphead/hooks.py lowered (its `Screen.x` names need the screens these placements give: they are
+    resolved first by caption alone, then checked against the names the result gives), or the DWS of MAPHEAD_DWS."""
+    import glob
+    if MAPHEAD_DWS:
+        files = sorted(glob.glob(os.path.join(MAPHEAD_DWS, '*.dws')))
+        if not files: raise FileNotFoundError(f'{os.path.relpath(MAPHEAD_DWS, ROOT)}/*.dws: no MAPHEAD')
+        return [open(f, encoding='utf-8').read() for f in files]
+    from . import lower as PL
+    hooks = os.path.join(BASE, 'maphead', 'hooks.py')
+    if not os.path.exists(hooks): raise FileNotFoundError(f'{os.path.relpath(hooks, ROOT)}: no MAPHEAD in story/base')
+    if 'maphead-lowering' in _CACHE: raise RuntimeError(f'{os.path.relpath(hooks, ROOT)}: lowering it needs its own placements')
+    _CACHE['maphead-lowering'] = True
+    try:
+        _CACHE['screen_ids'] = caption_screen_ids()
+        first = PL.lower_file(hooks, base=BASE)[2]
+        facts = maphead_facts([first])
+        _CACHE['maphead'] = facts
+        for k in ('screens', 'screen_members', 'screen_ids'): _CACHE.pop(k, None)
+        text = PL.lower_file(hooks, base=BASE)[2]           # with the names the placements give: the same placements
+        if maphead_facts([text]) != facts:
+            raise ValueError(f'{os.path.relpath(hooks, ROOT)}: a Screen name means another screen than its caption says; '
+                             'name the screen in story/names.toml [screens]')
+        _CACHE['maphead-text'] = text                       # (lower.maphead_dws: the readers of MAPHEAD's code)
+        return [text]
+    finally:
+        _CACHE.pop('maphead-lowering', None); _CACHE.pop('maphead', None)
+        for k in ('screens', 'screen_members', 'screen_ids'): _CACHE.pop(k, None)
+
+
+def caption_screen_ids():
+    """{Screen member: id} that reads every name screen_members can give without knowing which screens have a script: the
+    caption's name, the caption's name with the id, and story/names.toml's names (a caption's name that several screens
+    have is left out)."""
+    from dws import bytecode
+    caption = bytecode.names()['m']
+    out = {}; plain = {}
+    for i, c in caption.items():
+        if i > 254 or not snake(c or ''): continue
+        out[f'{snake(c)}_{i}'] = i; plain.setdefault(snake(c), []).append(i)
+    out.update({n: ids[0] for n, ids in plain.items() if len(ids) == 1})
+    out.update({v: k for k, v in names_toml().get('screens', {}).items()})
+    return out
+
+
+def screen_ids():
+    """{Screen member: screen id} (the inverse of screen_members)."""
+    if 'screen_ids' not in _CACHE: _CACHE['screen_ids'] = {m: i for i, m in screen_members().items()}
+    return _CACHE['screen_ids']
 
 
 def base_maphead():

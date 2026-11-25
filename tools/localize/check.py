@@ -20,7 +20,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 from dws import backend as BE
-from dws.text.profiles import NAMED_PAGE_ROWS, header_row, maphead_page_too_tall, merged_name_rows, named_keys, narrator_keys
+from dws.text.profiles import NAMED_PAGE_ROWS, base_dws, header_row, maphead_page_too_tall, merged_name_rows, named_keys, narrator_keys
 from dws.textbank import TextBank
 from dws.text.jaspace import kinsoku_problems, problems as ja_space_problems
 from dws.py.lower import escape_problems, font_problems, literal_escapes, resolve_escapes
@@ -302,8 +302,8 @@ def custom_boxes(root=ROOT):
     result = {}
     pattern = re.compile(r'set_textbox_size\([^,]+,\s*(\d+),\s*(\d+)\);\s*'
                          r'show_textbox\(text\("([^"]+)"\)\)')
-    for path in (root / 'story/base').rglob('*.dws'):
-        for cols, rows, key in pattern.findall(path.read_text()):
+    for text in base_dws(root).values():
+        for cols, rows, key in pattern.findall(text):
             result[key] = (int(cols) * 12 + 8, int(rows))
     return result
 

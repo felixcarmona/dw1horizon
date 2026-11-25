@@ -1137,6 +1137,8 @@
  "main.LAB_STR_PAUSE_HINT": "SELECT: truques",
  "main.LAB_STR_SHORTCUTS_OFF": "Atalhos com SELECT: NÃO",
  "main.LAB_STR_SHORTCUTS_ON": "Atalhos com SELECT: SIM",
+ "main.LAB_STR_FINISHER_OFF": "Barra Final cheia: NÃO",
+ "main.LAB_STR_FINISHER_ON": "Barra Final cheia: SIM",
  "main.LAB_STR_SHORTCUTS_HELP": "L1/R1: Digimon; L2/R2: mapa",
  "main.LAB_STR_SATISFIED": "Cuidados atendidos",
  "main.LAB_STR_DISCIPLINE": "Disciplina",

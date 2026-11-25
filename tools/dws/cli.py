@@ -131,7 +131,7 @@ def main(argv=None):
     p = sub.add_parser('coverage', help='what the language can express without asm(): CSV + ranked missing constructs')
     p.add_argument('--out', default=None, help='directory of the CSV files (default build/story-analysis)')
     p = sub.add_parser('decompile-all', help='decompile the whole disc into the story/base layout (one file per section chunk)')
-    p.add_argument('-o', default=None, help='output root (default story/base)')
+    p.add_argument('-o', default=None, help='output root (default build/story-dws; story/base keeps only the Python views, `story-base`)')
     p.add_argument('--readable', action='store_true', help='the beautifier (readable events, each proven against the disc) instead of the port form')
     p.add_argument('--scripts', default=None, help='with --readable: only these script numbers, e.g. 2,3,178 (default all, plus MAPHEAD)')
     p = sub.add_parser('readable-coverage', help='run the beautifier over the whole disc: build/story-analysis/beautifier-coverage.csv and the numbers')
@@ -172,7 +172,6 @@ def main(argv=None):
                    help='whose text the story shows (default: $TEXT, else us): text/<source>/ over the US bank; a key it lacks '
                         'stays US English and is listed (text-fallback.txt beside -o). Needs --exe mods/species/story-state for accents')
     p.add_argument('--strict', action='store_true', help='fail when the text source lacks a key')
-    p.add_argument('--from-dws', action='store_true', help='build the base from its generated DWS (story/base/**/script.dws) instead of its Python view (the default; the same bytes)')
     p.add_argument('--from-py', action='store_true', help=argparse.SUPPRESS)            # (the default since 2026-10-13)
     # the build's settings (backend.configure); not given, the environment's: tools/derive gives each story pass its own
     p.add_argument('--screen-content', metavar='DIR:DIR', help='more screen files (ids >= 255) beside content/screens '
@@ -388,7 +387,7 @@ def cmd_story(a):
     try:
         prog, report, run, maphead = BB.build(mod_files(a.files), a.o, a.exe, a.lang, a.text, a.lock, a.update_lock, a.profile,
                                               mods=BB.parse_mods(a.mods), refresh=a.refresh,
-                                              base=os.path.abspath(a.base) if a.base else BB.BASE, from_py=not a.from_dws,
+                                              base=os.path.abspath(a.base) if a.base else BB.BASE,
                                               text_source=a.text_source, strict=a.strict)
     except B.DwsErrors as e:
         for w in e.warnings: print(w.render('warning'), file=sys.stderr)
@@ -484,7 +483,7 @@ def cmd_coverage(a):
 
 def cmd_decompile_all(a):
     from . import layout
-    out = a.o or os.path.join(B.ROOT, 'story', 'base')
+    out = a.o or os.path.join(B.ROOT, 'build', 'story-dws')
     if a.readable:
         from . import readable
         only = {int(x) for x in a.scripts.split(',')} if a.scripts else None

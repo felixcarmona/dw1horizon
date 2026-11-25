@@ -471,8 +471,8 @@ details are in `tools/dws/bytecode/__init__.py` and [the interpreter reference](
 ### `story/base`
 
 `story/base` is the original story as owned source: per script a Python view (`zones/<zone>/s<ID>-<screens>/script.py`,
-one handler per section) beside the DWS it lowers to (`script.dws`), MAPHEAD as `maphead/hooks.py` and
-`maphead/screenNNN.dws`, `global-NNNN.dws`, plus `names.dws` (from `story/names.toml`) and `city/` (the C city rules).
+one handler per section; the build lowers it to DWS, in `build/<name>/story/base-py/`), MAPHEAD as `maphead/hooks.py`,
+plus `names.dws` (from `story/names.toml`) and `city/` (the C city rules).
 Text is only keys into the text bank (`s002.sec6.u0` per utterance, `s002.sec6.m0.o1` per menu option). It was made from the
 USA disc by `dws story-base`. The key-only sources are committed and may include
 reviewed Horizon changes. `story-base --reproduce` generates an original comparison

@@ -1,11 +1,11 @@
-"""The directory layout of story sources (docs/mods/dws.md section 1) and the writer that
-lands the decompiler's output in it:
+"""The directory layout of the decompiler's output (`decompile-all`, build/story-dws by default; docs/mods/dws.md
+section 1) and the writer that lands it there:
 
-    story/base/zones/<zone>/s<ID>-<screens>/script.dws          port header: tail, entries, includes
+    <out>/zones/<zone>/s<ID>-<screens>/script.dws          port header: tail, entries, includes
                                             sec<NNN>-<role>.dws one file per section chunk (a `part { }`)
                                             README.md
-    story/base/zones/<zone>/README.md
-    story/base/maphead/                                          the global entry points and screen setups
+    <out>/zones/<zone>/README.md
+    <out>/maphead/                                               the global entry points and screen setups
 
 Every file holds keys, never game text. The include order is the address order, so the compile of the
 directory is byte-identical to the disc (`dws.py roundtrip --layout`)."""

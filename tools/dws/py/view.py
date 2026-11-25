@@ -1,9 +1,8 @@
-"""The Python view of the base story (milestone 3b of docs/mods/story-language.md): each generated `script.dws` of
-story/base printed as `script.py` in the story language, and MAPHEAD as `maphead/hooks.py`.
+"""The Python view of the base story (milestone 3b of docs/mods/story-language.md): each `script.dws` the beautifier lifts
+from the disc printed as `script.py` in the story language, and MAPHEAD as `maphead/hooks.py` (story/base keeps only these).
 
 The view is a projection of the proven DWS: every form it prints lowers back (tools/dws/py/lower.py) to the very DWS it came
-from, so the base is built from it (`story-build`, the default since 2026-10-13; `--from-dws` reads the DWS) and proven again
-(`story-base --check`). A statement with no
+from, so the base is built from it (`story-build`) and proven again (`story-base --check`). A statement with no
 Python form is printed as `dws(\"\"\"...\"\"\")` with its DWS text (a hatch); a section that keeps labels and jumps (the jump
 tables, the few partial sections) is one hatch (`literal`). One command with no sugar is `raw.<command>(...)`.
 
@@ -887,7 +886,7 @@ def header(sid, scr, npcs, species_of, ctx):
         f'script {sid} of DG.SCN' + (f': {", ".join(f"screen {s} {names.get(s, chr(63))}" for s, _ in scr)}' if scr else ' (no screen loads it)')
     out = [f'# The Python view of {title}.',
            '# Made from the disc by `dws story-base`; the source of the story since 2026-10-15: edit it (no file = no script). Keys only, never the',
-           '# game\'s words. `story-build` reads this file (lowered); the DWS beside it is the proven intermediate; mods import `dw.base`.',
+           '# game\'s words. `story-build` reads this file (lowered to DWS); mods import `dw.base`.',
            'from dw import *']
     if ctx.text_alias: out.append('from dw.text import text')
     if ctx.uses_names: out.append('from dw.names import *')
@@ -934,7 +933,7 @@ def maphead_source(base):
 
 
 def write_base(base, names=None, log=None):
-    """script.py beside every script.dws of story/base, and maphead/hooks.py. -> {(script|'maphead', section): verdict}"""
+    """script.py beside every script.dws of `base` (story-base's scratch folder), and maphead/hooks.py. -> {(script|'maphead', section): verdict}"""
     import glob
     if names is None:
         from .. import readable

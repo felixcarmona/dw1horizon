@@ -1137,6 +1137,8 @@
  "main.LAB_STR_PAUSE_HINT": "SELECT: Cheats",
  "main.LAB_STR_SHORTCUTS_OFF": "SELECT-Kürzel: AUS",
  "main.LAB_STR_SHORTCUTS_ON": "SELECT-Kürzel: AN",
+ "main.LAB_STR_FINISHER_OFF": "Final-Leiste voll: AUS",
+ "main.LAB_STR_FINISHER_ON": "Final-Leiste voll: AN",
  "main.LAB_STR_SHORTCUTS_HELP": "L1/R1: Digimon; L2/R2: Karte",
  "main.LAB_STR_SATISFIED": "Bedürfnisse erfüllt",
  "main.LAB_STR_DISCIPLINE": "Disziplin",

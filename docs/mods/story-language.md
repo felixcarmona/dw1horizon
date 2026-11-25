@@ -335,7 +335,7 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
    What the compiler finds after that (a slot or a position the screen's `.MAP` refuses, the screen's heap, an engine
    tier) is reported at the `.py` line too, through the source map: a writer never sees the lowered DWS.
 2. The DWS compiler emits the bytecode and fills the script containers from scratch (steps 1 and 2: done). The base is
-   compiled from its committed Python view by default (`--from-dws` selects DWS).
+   compiled from its committed Python view (the only form committed; it is lowered at each build).
    The generated view must lower to equivalent code, and `typings/dw/base` supplies
    the import surface for mods.
 3. **Proof**: `dws.py story-verify` compares builds by control-flow equivalence per
@@ -401,7 +401,7 @@ python3 tools/dws.py text sync [MOD]                 # text/en.json of a mod fro
 python3 tools/dws.py why NPC [MOD...] [--as "Horn=ASKED, invited"]   # where a mod's NPC is (story/mods, or the mod folders given), when it is there, which handler answers
 python3 tools/dws.py slots SCREEN                    # a screen's NPC slots (species, base names, positions), the next free one, where a new NPC can stand (at=), its entries (warp entry=)
 python3 tools/dws.py story-base --check              # remake story/base with its Python view and prove the view against the disc
-python3 tools/dws.py story-build ...                 # the base is built from its Python view (`--from-dws`: from the DWS; same bytes)
+python3 tools/dws.py story-build ...                 # the base is built from its Python view, lowered
 ```
 
 A mod reserves its save flags in `mod.toml` (`[save] flags = "12000-12099"`); the numbers it got are in `save.lock`

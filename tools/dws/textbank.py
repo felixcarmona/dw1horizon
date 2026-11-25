@@ -67,16 +67,16 @@ TEXT_ZONES = os.environ.get('TEXT_ZONES', '').replace(',', ' ').split()
 def single_page_keys():
     """The keys of the lines the game's C code shows as one box each, never a second page: the texts of MAPHEAD's table
     sections (1220-1253 that start with a table of jumps: the shopkeepers' lines, the item keeper's...), which the code reads by
-    entry (script_common.c getShopkeeperLine, resolveMapHeadEntry) and shows with one showTextbox. From story/base."""
+    entry (script_common.c getShopkeeperLine, resolveMapHeadEntry) and shows with one showTextbox. From story/base
+    (maphead/hooks.py, lowered)."""
     if not _SINGLE:
-        import glob
+        from .py.lower import maphead_dws
         keys = set()
-        for f in glob.glob(os.path.join(ROOT, 'story', 'base', 'maphead', 'global-*.dws')):
-            src = open(f, encoding='utf-8').read()
-            for m in re.finditer(r'section\((\d+)\)[^\n]*\n(.*?)(?=\n    section\(|\Z)', src, re.S):
-                body = [l.strip() for l in m.group(2).split('\n') if l.strip() and not l.strip().startswith('//')]
-                if len(body) > 1 and body[0].startswith('goto ') and body[1].startswith('goto '):
-                    keys |= set(re.findall(r'text\("(m\d+\.[^"]+)"\)', m.group(2)))
+        src = maphead_dws(os.path.join(ROOT, 'story', 'base'))
+        for m in re.finditer(r'^    section\((\d+)\)[^\n]*\n(.*?)\n    \}', src, re.S | re.M):
+            body = [l.strip() for l in m.group(2).split('\n') if l.strip() and not l.strip().startswith('//')]
+            if int(m.group(1)) > 254 and len(body) > 1 and body[0].startswith('goto ') and body[1].startswith('goto '):
+                keys |= set(re.findall(r'text\("(m\d+\.[^"]+)"\)', m.group(2)))
         _SINGLE.append(frozenset(keys))
     return _SINGLE[0]
 
