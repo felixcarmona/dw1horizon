@@ -182,6 +182,10 @@ def decode_records(recs):
         elif name == 'cardStock': out[name] = list(struct.unpack(f'<{len(d) // 2}H', d[:len(d) // 2 * 2]))
         elif name == 'wregs': out[name] = list(struct.unpack(f'<{len(d) // 2}H', d[:len(d) // 2 * 2]))
         elif name == 'techniqueLayout': out[name] = list(d)
+        elif name == 'partnerLine' and len(d) >= 4:
+            keys = ('species', 'hp', 'mp', 'off', 'def', 'speed', 'brain', 'lifetime', 'age', 'weight')
+            forms = [dict(zip(keys, struct.unpack_from('<10h', d, 4 + i * 20))) for i in range(min(d[0], (len(d) - 4) // 20))]
+            out[name] = {'used': d[1], 'rewoundLevels': [n for n in range(8) if d[2] >> n & 1], 'forms': forms}
         elif name == 'partnerType': out[name] = struct.unpack('<i', d[:4])[0]
         elif name in ('speciesRaised', 'speciesRecruited', 'groundPickupBits'): out[name] = [i * 8 + b for i, x in enumerate(d) for b in range(8) if x >> b & 1]
         elif name == 'storyFlags': out['story_flags_set'] = [800 + i * 8 + b for i, x in enumerate(d) for b in range(8) if x >> b & 1]

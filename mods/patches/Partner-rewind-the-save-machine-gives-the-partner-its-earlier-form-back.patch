@@ -1,0 +1,467 @@
+From 551b9f35111019ef3bc9440f49c8e36bfac55932 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 25 Nov 2026 15:46:09 +0000
+Subject: [PATCH] Tamer looks: a new game asks the look before the name
+
+After boy or girl Jijimon asks what the tamer looks like and the Look page opens; the name comes after it, so the
+player can choose it to suit the look. The name's confirmation goes straight on to the partner's name again.
+---
+ include/dw/memmap.h    |  8 ++---
+ include/dw/mod_qol.h   | 21 ++++++++++++
+ include/dw/save_tags.h |  3 +-
+ src/evl/evl.c          | 38 ++++++++++++++++++---
+ src/main/evolution.c   |  2 ++
+ src/main/game_menu.c   | 13 +++-----
+ src/main/main.c        |  2 ++
+ src/main/main_menu.c   | 20 ++++++++---
+ src/main/mod_qol.c     | 75 ++++++++++++++++++++++++++++++++++++++++++
+ src/main/partner.c     |  8 +++++
+ src/shop/script_menu.c |  2 +-
+ 11 files changed, 169 insertions(+), 23 deletions(-)
+
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index eca278a6..6300ac08 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -150,11 +150,11 @@
+ /*
+  * The SEQ block of the current music font (every track of it), copied from
+  * the FAALL chunk (sound.c). Original 0x5800 (font 0xB uses 0x55F8); the
+- * built fonts need at most 0x7284 bytes. Keep 0x7400 bytes (380 spare):
+- * tools/sound.py refuses a font with a bigger block, and sound.c checks the
+- * size before the copy.
++ * built fonts need at most 0x7284 bytes. Keep 0x7288 bytes (the partner
++ * rewind took the 380 spare for the heap): tools/sound.py refuses a font with
++ * a bigger block, and sound.c checks the size before the copy.
+  */
+-#define SEQ_BUFFER_SIZE		0x7400
++#define SEQ_BUFFER_SIZE		0x7288
+ 
+ /*
+  * SPU RAM (512 KB, sound.c): what the sound banks may use. Below it the
+diff --git a/include/dw/mod_qol.h b/include/dw/mod_qol.h
+index be06be66..f9962126 100644
+--- a/include/dw/mod_qol.h
++++ b/include/dw/mod_qol.h
+@@ -36,4 +36,25 @@ extern int8_t MOD_EVO_CANCEL;
+ extern char MOD_EVO_CANCEL_TEXT[];
+ void modEvoCancelDraw(int32_t hold, int32_t ticks, int32_t w, int32_t row);
+ 
++/* the partner's line (mod_qol.c): the state the current form and the one before it arrived with, for the save
++   machine's rewind. The top entry is the current form; a rewind pops it and gives the partner the one under it back.
++   Saved as record SAVE_TAG_PARTNER_LINE (MOD_LINE_BYTES, written by main_menu.c). */
++#define MOD_LINE_MAX 2
++typedef struct {
++	int16_t species, hp, mp, off, def, speed, brain, lifetime, age, weight;
++} ModLineEntry;
++typedef struct {
++	uint8_t count;   /* entries in use */
++	uint8_t used;    /* rewinds this egg has made */
++	uint8_t rewound; /* bit n: the partner was rewound out of level n (its tamer-level roll is not given again) */
++	uint8_t pending; /* a rewind the script started, for EVL_applyEvolution (always 0 when saved) */
++	ModLineEntry entry[MOD_LINE_MAX];
++} ModPartnerLine;
++#define MOD_LINE_BYTES 44 /* sizeof(ModPartnerLine): the save record is the struct as it is in RAM (save_tags.h) */
++_Static_assert(sizeof(ModPartnerLine) == MOD_LINE_BYTES, "the partner line record is the struct as it is in RAM");
++extern ModPartnerLine MOD_PARTNER_LINE;
++void modPartnerLinePush(int32_t oldType);
++#define modPartnerLineStart() modPartnerLinePush(-1) /* a new egg */
++void modPartnerLineQuery(int32_t start);
++
+ #endif
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index b0f30337..58d2755a 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -24,7 +24,7 @@
+ #define SAVE_TAG_INVENTORY		0x0002 /* i16[n] item ids of the inventory slots, -1 = empty */
+ #define SAVE_TAG_PARTNER_TYPE		0x0003 /* i32 species of the partner */
+ #define SAVE_TAG_WREGS			0x0004 /* u16[n] the script registers w0.. */
+-#define SAVE_TAG_REGISTERED		0x0005 /* i16[n] species of the registered Digimon of the VS mode (kept for reading tools) */
++#define SAVE_TAG_REGISTERED		0x0005 /* i16[n] species of the registered Digimon of the VS mode (no longer written: each registration holds its wide species) */
+ #define SAVE_TAG_POOP_MAPS		0x0006 /* i16[n] screens of the poop in the world, -1 = none (authoritative since screens beyond 255; the v1 byte is 0xFF for a screen >= 255) */
+ #define SAVE_TAG_SPECIES_RAISED		0x0007 /* bit array: species the tamer has raised */
+ #define SAVE_TAG_SPECIES_RECRUITED	0x0008 /* bit array: species the tamer has recruited */
+@@ -36,6 +36,7 @@
+ #define SAVE_TAG_CARD_COUNTS		0x000D /* nibbles for card ids 66..511, low nibble first */
+ #define SAVE_TAG_CARD_STOCK		0x000E /* u16[6] daily shop cards, 0xffff sold */
+ #define SAVE_TAG_TAMER_LOOK		0x000F /* MOD_TAMER_STATE: u8 look (0 = the original tamer), hair colour, face, shirt (0 = the original), shirt colour, trousers, their colour, shoes, their colour, backpack (0 = the original, 1 = none), its colour, hands (1 = small); older saves end earlier */
++#define SAVE_TAG_PARTNER_LINE		0x0010 /* the 44-byte ModPartnerLine as it is in RAM: u8 forms in use (0..2), u8 rewinds this egg used, u8 levels rewound out of (bit n), u8 0, then 2 x {i16 species, hp, mp, off, def, speed, brain, lifetime, age, weight}: the state the form before and the current form (last in use) arrived with (mod_qol.h) */
+ #define SAVE_TAG_REQUIRED		0x8000
+ #define SAVE_TAG_TECHNIQUE_LAYOUT	0x8003 /* u8: 1 = option A animation slots, 2 = and the learned bits 64..87 are the new rows' techniques, 3 = and 88..103; required to prevent silent downgrade substitution */
+ /* engine tier 2 */
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index ec256f8d..4d4bfac5 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -1441,7 +1441,36 @@ static int16_t EVL_blendStat(int32_t stat, int32_t gain)
+ 	return evoAmt(MOD_EVF_STAT_AVG_DIV) > 0 ? (gain + stat) / evoAmt(MOD_EVF_STAT_AVG_DIV) : stat;
+ }
+ 
+-/* the species whose evolution scales the base stats by a percent instead of blending them */
++/* MOD (partner rewind): once the new form stands, a rewind gets the state the form arrived with back; any other form
++ * is written on top of the line (mod_qol.c). While pending is set EVL_applyEvolution gives no tamer-level roll */
++static __attribute__((noinline)) void lineArrived(Stats *s, PartnerPara *para, int32_t oldType, int32_t oldLevel)
++{
++	ModPartnerLine *l = &MOD_PARTNER_LINE;
++	ModLineEntry *e = &l->entry[0];
++	int32_t rewind = l->pending && e->species == PARTNER_ENTITY.digimonEntity.entity.type;
++
++	l->pending = 0;
++	if (rewind) { /* modPartnerLineQuery saw two forms and started this evolution, into the form before */
++		l->rewound |= 1 << oldLevel;
++		l->count = 1;
++		l->used++; /* never past pstat 20 (modPartnerLineQuery) */
++		s->base.hp = s->current.currentHP = e->hp; /* HP and MP full: a clamp does not fit in the overlay */
++		s->base.mp = s->current.currentMP = e->mp;
++		s->base.off = e->off;
++		s->base.def = e->def;
++		s->base.speed = e->speed;
++		s->base.brain = e->brain;
++		para->remainingLifetime = e->lifetime;
++		para->age = e->age;
++		para->weight = e->weight;
++		para->careMistakes = 0;
++		para->battles = 0;
++		para->evoTimer = 0;
++		return;
++	}
++	modPartnerLinePush(oldType);
++}
++
+ static int32_t EVL_scalesStats(int32_t id)
+ {
+ 	return id == MOD_EVO_FORMULA[MOD_EVF_SCALE_SPECIES0] || id == MOD_EVO_FORMULA[MOD_EVF_SCALE_SPECIES1] ||
+@@ -1487,8 +1516,8 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 			stats->base.brain = EVL_blendStat(stats->base.brain, gains->brains);
+ 
+ 			EVL_clampBaseStats();
+-			if (IS_SCRIPT_PAUSED == 1) {
+-				/* MOD (tamer level as data): the chances are MOD_TAMER_LEVEL's */
++			if (IS_SCRIPT_PAUSED == 1 && !MOD_PARTNER_LINE.pending && !(MOD_PARTNER_LINE.rewound & (1 << DIGI_PARA(newId).level))) {
++				/* MOD (tamer level as data): the chances are MOD_TAMER_LEVEL's; MOD (partner rewind): once an egg */
+ 				if (DIGI_PARA(newId).level == 4) {
+ 					modTamerLevelEvent(MOD_TL_EVOLVE_CHAMPION_CHANCE, 1);
+ 				}
+@@ -1513,7 +1542,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	}
+ 	level = DIGI_PARA(newId).level;
+ 	/* MOD (partners-npc-a): only on reaching Ultimate, not Etemon -> MetalEtemon */
+-	if (level == 5 && oldLevel != 5 && HAS_USED_EVOITEM == 0) {
++	if (level == 5 && oldLevel != 5 && HAS_USED_EVOITEM == 0) { /* MOD (partner rewind): lineArrived puts the lifetime back */
+ 		para->remainingLifetime += evoAmt(MOD_EVF_LIFE_ULTIMATE);
+ 	}
+ 	if (level == LEVEL_MEGA && HAS_USED_EVOITEM == 0) { /* MOD (mega) */
+@@ -1583,6 +1612,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	if (oldLevel != DIGI_PARA(newId).level) {
+ 		para->evoTimer = 0;
+ 	}
++	lineArrived(stats, para, oldType, oldLevel); /* MOD (partner rewind) */
+ }
+ 
+ /* MOD (caps) */
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 5a3e8ded..9199d6ec 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -16,6 +16,7 @@
+ #include <dw/types.h>
+ #include <dw/mod_rules.h>
+ #include <dw/mod_options.h>
++#include <dw/mod_qol.h>
+ 
+ void initializeReincarnatedPartner(int32_t type, int32_t posX, int32_t posY,
+                                    int32_t posZ, int32_t rotX, int32_t rotY,
+@@ -1332,6 +1333,7 @@ void reincarnatePartner(unused, stats, partner, digimonId)
+   initializeReincarnatedPartner(id, 0, 0, 0, 0, 0, 0);
+   PARTNER_ENTITY.lives = modNewGame(MOD_NG_LIVES);
+   setDigimonRaised(id);
++  modPartnerLineStart(); /* MOD (partner rewind): a new egg, a new line */
+ }
+ 
+ /*
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 9d2e66e3..9b872eff 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -6959,7 +6959,7 @@ static void lookPageNewGameClose(void)
+ }
+ 
+ /* A new game's questions about the tamer, among Jijimon's (newGameStateMachine sends its states from 0x30 here): boy
+- * or girl after his seven questions, and the Look page after the name. MAPHEAD 1238 lines 0x3a to 0x3c. */
++ * or girl after his seven questions, then the Look page, then the name. MAPHEAD 1238 lines 0x3a to 0x3c. */
+ int32_t lookPageQuiz(void)
+ {
+ 	switch (SCRIPT_STATE_2) {
+@@ -6975,18 +6975,15 @@ int32_t lookPageQuiz(void)
+ 		break;
+ 	case 0x32: /* a boy: the original tamer */
+ 		memset(MOD_TAMER_STATE, 0, TAMER_STATE_SIZE);
+-		SCRIPT_STATE_2 = 0x12;
++		SCRIPT_STATE_2 = 0x34;
+ 		break;
+ 	case 0x33: /* a girl: as she starts, to change on the page */
+ 		memcpy(MOD_TAMER_STATE, (uint8_t *)lookPageGirl, TAMER_STATE_SIZE);
+-		SCRIPT_STATE_2 = 0x12;
++		SCRIPT_STATE_2 = 0x34;
+ 		break;
+-	case 0x34: /* the name is right */
++	case 0x34: /* what the tamer looks like, before the name: the name can follow the look */
+ 		showNewGameDialogue(0x3c, 0x36);
+ 		break;
+-	case 0x35: /* it is not: the keyboard again */
+-		SCRIPT_STATE_2 = 0x13;
+-		break;
+ 	case 0x36:
+ 		closeBox(0);
+ 		fadeToBlack(0x14);
+@@ -7015,7 +7012,7 @@ int32_t lookPageQuiz(void)
+ 		if (lookPageState.ask == 0 || FADE_OUT_CURRENT >= 0x14) {
+ 			lookPageNewGameClose();
+ 			setupNewGameDialogueBox();
+-			SCRIPT_STATE_2 = 0x18;
++			SCRIPT_STATE_2 = 0x12; /* the name */
+ 		}
+ 		break;
+ 	}
+diff --git a/src/main/main.c b/src/main/main.c
+index 3fa9d0df..7532f12a 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -31,6 +31,7 @@ int VSyncCallbacks(int slot, void (*callback)(void));
+ #include <dw/map_object.h>
+ #include <dw/mod_fps.h>
+ #include <dw/mod_options.h>
++#include <dw/mod_qol.h>
+ #include <dw/mod_version.h>
+ #include <dw/mod_rules.h>
+ #include <dw/model.h>
+@@ -3530,6 +3531,7 @@ int32_t main(void)
+ 			initializePartner(partnerId, 0, 0, 0, 0, 0, 0);
+ 			modInitializeStarterTechniques(partnerId);
+ 			setDigimonRaised(partnerId);
++			modPartnerLineStart(); /* MOD (partner rewind): the starter's line */
+ 			initializeMap();
+ 			initializeChest();
+ 			runMapHeadScript(modNewGame(MOD_NG_START_SCRIPT)); /* was 0xcc */
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 6d946c2a..e9574ae7 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -11,6 +11,7 @@ extern int MOD_CHEATS_CARD_MODE, MOD_CHEATS_CARD_DONE;
+ #include <dw/font.h>
+ #include <dw/ids.h>
+ #include <dw/mod_options.h>
++#include <dw/mod_qol.h>
+ #include <dw/mod_fps.h>
+ #include <dw/mod_version.h>
+ #include <dw/mod_rules.h>
+@@ -245,7 +246,8 @@ SAVE_LAYOUT_CHECK(extHead, sizeof(SaveExtHead) == 12);
+ /* Bound every record, including the optional swap and daily pickup bitmap. */
+ #define SAVE_RECORDS_MAX (sizeof(SaveExtHead) + 12 * 4 + 4 + 60 + 4 + 32 + 80 + 200 + \
+                          2 * (NUM_DIGIMON / 8) + MOD_OPT_BYTES + 4 + sizeof(MOD_GROUND_PICKED) + 4 + 4 + 8 + CARD_EXTRA_BYTES + 12 + \
+-                         4 + TAMER_STATE_SIZE /* the tamer's look */)
++                         4 + TAMER_STATE_SIZE /* the tamer's look */ + 4 + MOD_LINE_BYTES /* the partner's line */ - \
++                         (4 + 80) /* SAVE_TAG_REGISTERED, no longer written */)
+ SAVE_LAYOUT_CHECK(recordsFit, SAVE_RECORDS_MAX <= SAVE_INLINE_BYTES);
+ SAVE_LAYOUT_CHECK(inlinePadding, sizeof(((RegisteredDigimon *)0)->unk24) == 28 &&
+                   __builtin_offsetof(RegisteredDigimon, unk24) == 0x24 && sizeof(RegisteredDigimon) == 0x40);
+@@ -4516,6 +4518,7 @@ void loadSavegame(SavegamePayload *savegame)
+ 
+ 	modForgetGroundPicked(); /* A missing new record, in any old layout, means no pickups today. */
+ 	memset(MOD_TAMER_STATE, 0, TAMER_STATE_SIZE); /* MOD (tamer looks): and the original tamer */
++	memset(&MOD_PARTNER_LINE, 0, sizeof(MOD_PARTNER_LINE)); /* MOD (partner rewind): a save without the record remembers nothing */
+ 
+ 	SAVED_STATE.playerPos = savegame->tamerPosition;
+ 	SAVED_STATE.money = savegame->money;
+@@ -4808,6 +4811,7 @@ static int32_t isExtensionValid(int32_t copy)
+ }
+ 
+ /* appends a record at p (the room is checked at the build: SAVE_RECORDS_MAX); returns where the next one goes */
++
+ static uint8_t *putRecord(uint8_t *p, int32_t tag, void *data, int32_t len)
+ {
+ 	int32_t i;
+@@ -5203,10 +5207,8 @@ static void prepareSaveFile(int32_t fromRam)
+ 		}
+ 		p = putRecord(p, SAVE_TAG_WREGS, words, 2 * SAVE_EXT_SAVED_WREGS);
+ 	}
+-	for (i = 0; i < 40; i++) {
+-		words[i] = registeredSpecies(&savegame->battleRegistrationData[i]);
+-	}
+-	p = putRecord(p, SAVE_TAG_REGISTERED, words, 2 * 40);
++	/* MOD (partner rewind): SAVE_TAG_REGISTERED is no longer written: nothing read it, and each registration holds its
++	 * own wide species (bytes 0x20-0x23); its 84 bytes hold the partner's line */
+ 	for (i = 0; i < 100; i++) { /* MOD (screens beyond 255): from RAM the wide screen */
+ 		words[i] = fromRam ? WORLD_POOP[i].map : savegame->worldPoop[i].map == 0xFF ? -1 : savegame->worldPoop[i].map;
+ 	}
+@@ -5229,6 +5231,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 		p = putRecord(p, SAVE_TAG_CARD_COUNTS, MOD_CARD_EXTRA, sizeof(MOD_CARD_EXTRA));
+ 		p = putRecord(p, SAVE_TAG_CARD_STOCK, MOD_CARD_STOCK, sizeof(MOD_CARD_STOCK));
+ 		p = putRecord(p, SAVE_TAG_TAMER_LOOK, MOD_TAMER_STATE, TAMER_STATE_SIZE); /* MOD (tamer looks) */
++		p = putRecord(p, SAVE_TAG_PARTNER_LINE, &MOD_PARTNER_LINE, sizeof(MOD_PARTNER_LINE)); /* MOD (partner rewind) */
+ 	}
+ 	{ uint8_t layout = 3; p = putRecord(p, SAVE_TAG_TECHNIQUE_LAYOUT, &layout, 1); }
+ 	/* MOD (tier 2): the story state's records go here */
+@@ -5514,6 +5517,7 @@ static int32_t isRecordKnown(int32_t tag)
+ 	case SAVE_TAG_CARD_COUNTS:
+ 	case SAVE_TAG_CARD_STOCK:
+ 	case SAVE_TAG_TAMER_LOOK:
++	case SAVE_TAG_PARTNER_LINE:
+ 	case SAVE_TAG_GROUND_PICKUP_BITS:
+ 	case SAVE_TAG_TECHNIQUE_LAYOUT:
+ 		return 1;
+@@ -5614,6 +5618,12 @@ static void applyRecords(uint8_t *e)
+ 				MOD_TAMER_STATE[i] = (uint32_t)i < len ? d[i] : 0;
+ 			}
+ 			break;
++		case SAVE_TAG_PARTNER_LINE: /* MOD (partner rewind): a record of another size remembers nothing */
++			if (len == sizeof(MOD_PARTNER_LINE)) {
++				memcpy(&MOD_PARTNER_LINE, d, len);
++				MOD_PARTNER_LINE.pending = 0;
++			}
++			break;
+ 		case SAVE_TAG_GROUND_PICKUP_BITS:
+ 			n = len < sizeof(MOD_GROUND_PICKED) ? len : sizeof(MOD_GROUND_PICKED);
+ 			for (i = 0; i < n; i++) {
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index a6b5e5c6..0ef7ec84 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -10,6 +10,7 @@
+  * its life (the gym's own box, a technique or new orders, is the block's own check).
+  */
+ #include <stdio.h>
++#include <string.h>
+ #include <sys/types.h>
+ #include <libgte.h>
+ #include <libgpu.h>
+@@ -20,6 +21,7 @@
+ #include <dw/evl.h>
+ #include <dw/evolution.h>
+ #include <dw/font.h>
++#include <dw/ids.h>
+ #include <dw/level.h>
+ #include <dw/line.h>
+ #include <dw/mod_options.h>
+@@ -28,8 +30,10 @@
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/sound.h>
++#include <dw/pstat.h>
+ #include <dw/script.h>
+ #include <dw/sjis.h>
++#include <dw/species.h>
+ #include <dw/world_object.h>
+ 
+ #include <text/main/mod_qol.h>
+@@ -374,3 +378,74 @@ int32_t modTrainStopReason(int32_t t0, int32_t tiredAt)
+ 	}
+ 	return MOD_TB_GO;
+ }
++
++/*
++ * MOD (partner rewind): the line of the partner. Each form of this egg writes the state it arrived with (species,
++ * base stats, lifetime, age, weight) on top of MOD_PARTNER_LINE; the save machine of Jijimon's houses, in a New Game
++ * Plus run, can rewind the partner: the top entry goes and the one under it is the partner again, exactly as it was
++ * when it arrived, with its techniques kept. The line keeps two forms (the save has room for no more), so a rewind goes
++ * one form back. An egg may rewind as many times as the save has started New Game Plus runs (pstat 20). Sukamon and the
++ * King of Sukamon's way back are not written: the top entry is then not the current form, and the machine says it does
++ * not remember. Only what must be resident is here; the evolution side is in the EVL overlay (evl.c).
++ */
++extern int16_t EVOLUTION_TARGET;
++ModPartnerLine MOD_PARTNER_LINE;
++
++static void modPartnerLineFill(ModLineEntry *e)
++{
++	Stats *s = &PARTNER_ENTITY.digimonEntity.stats;
++
++	e->species = PARTNER_ENTITY.digimonEntity.entity.type;
++	e->hp = s->base.hp;
++	e->mp = s->base.mp;
++	e->off = s->base.off;
++	e->def = s->base.def;
++	e->speed = s->base.speed;
++	e->brain = s->base.brain;
++	e->lifetime = PARTNER_PARA.remainingLifetime;
++	e->age = PARTNER_PARA.age;
++	e->weight = PARTNER_PARA.weight;
++}
++
++/* oldType -1: a new egg (a new game or a rebirth), whose line starts with the form it hatched as. Otherwise the end of
++ * EVL_applyEvolution (not a rewind): the form the partner arrived at is written on top, the form before it stays under
++ * it. Turning into Sukamon is not written, and neither is his way back */
++void modPartnerLinePush(int32_t oldType)
++{
++	ModPartnerLine *l = &MOD_PARTNER_LINE;
++
++	if (oldType < 0) {
++		l->count = l->used = l->rewound = l->pending = 0;
++	} else if (PARTNER_ENTITY.digimonEntity.entity.type == DIGIMON_SUKAMON || oldType == DIGIMON_SUKAMON) {
++		return;
++	}
++	if (l->count >= MOD_LINE_MAX) {
++		l->entry[0] = l->entry[1];
++		l->count = 1;
++	}
++	modPartnerLineFill(&l->entry[l->count++]);
++}
++
++/* digimon routines 13 (start 0) and 14 (start 1). 13: p254 = 0 the machine does not remember an earlier form, 1 none
++ * left, 2 it can, 3 it can and this egg has not gone back yet; p253 = how many this egg has left (read only on 2 and
++ * 3). 14: the rewind's evolution scene starts into the form before (p254 = 1) or, when 13 would refuse, does not (0) */
++void modPartnerLineQuery(int32_t start)
++{
++	ModPartnerLine *l = &MOD_PARTNER_LINE;
++	int32_t left = readPStat(20) - l->used;
++	int32_t r = 0;
++
++	if (l->count == MOD_LINE_MAX && l->entry[1].species == PARTNER_ENTITY.digimonEntity.entity.type) {
++		r = left <= 0 ? 1 : l->used ? 2 : 3;
++	}
++	if (start) {
++		r = r >= 2;
++		if (r) {
++			l->pending = 1;
++			EVOLUTION_TARGET = l->entry[0].species;
++			partnerSetState(13);
++		}
++	}
++	writePStat(PSTAT_253, left);
++	writePStat(PSTAT_254, r);
++}
+diff --git a/src/main/partner.c b/src/main/partner.c
+index b0f2e714..894d7be8 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -1291,6 +1291,14 @@ uint8_t routine;
+ 		}
+ 		SOME_SCRIPT_SYNC_BIT = 0;
+ 		break;
++	case 13: /* MOD (partner rewind): can the save machine rewind the partner? (p254, p253; mod_qol.c) */
++		modPartnerLineQuery(0);
++		SOME_SCRIPT_SYNC_BIT = 0;
++		break;
++	case 14: /* MOD (partner rewind): the rewind's evolution scene into the form before (p254 = 1 started) */
++		modPartnerLineQuery(1);
++		SOME_SCRIPT_SYNC_BIT = 0;
++		break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 03226bf5..cf78a8cf 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1375,7 +1375,7 @@ int32_t newGameStateMachine(void)
+ 		}
+ 		break;
+ 	case 0x17:
+-		showNewGameSelection(0x1c, 0x34); /* MOD (tamer looks): was 0x18; the Look page first */
++		showNewGameSelection(0x1c, 0x18);
+ 		break;
+ 	case 0x18:
+ 		showNewGameDialogue(0x21, 0x20); /* MOD (optional name): was 0x1d -> 0x1a; first, does the player name it? */
+-- 
+2.55.0
+

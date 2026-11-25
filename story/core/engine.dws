@@ -8,6 +8,7 @@ pub group engine {
     pub alias var death_map_entry = 124;   // 1 while Jijimon's house was loaded by the partner's death or lost life (C, not saved)
     pub alias var rite_keepsake = 125;     // 1 from the rite of return to the rebirth after it: the baby keeps the happy farewell (unsaved)
     pub alias var new_game_plus = 126;     // 1 makes routine save_machine start a New Game Plus instead of opening the menu (unsaved)
+    pub alias var rewind_left = 253;       // after digimon routine rewind_check: rewinds this egg has left (C, up to 255)
     pub alias var music_mode = 245;
     pub alias var object = 247;            // CALL_ROUTINE argument: map object / script entity
     pub alias var animation = 248;         // CALL_ROUTINE argument: animation / exit / mood
@@ -31,4 +32,5 @@ pub group engine {
     pub alias flag new_game_plus_unlocked = 642;   // set by a New Game Plus: the save machine keeps the option in the new run
     pub alias flag medal_new_beginning = 643;      // medal 21, New Beginning: set by every New Game Plus
     pub alias flag medal_second_journey = 644;     // medal 22, Second Journey: the island saved in a New Game Plus run
+    pub alias flag machine_new_explained = 648;    // Jijimon told what the save machine gained with the island saved (kept by New Game Plus)
 }
