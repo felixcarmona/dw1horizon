@@ -162,7 +162,7 @@ def _local(matrix, points):
 
 def source_model(data, spec):
     """The battle source parsed on the binding's source rig (registered under the source spec's type)."""
-    kind = json.loads((ROOT / spec['mesh']['spec']).read_text())['type']
+    kind = spec['mesh'].get('type') or json.loads((ROOT / spec['mesh']['spec']).read_text())['type']
     mmd.exe().add_type(kind, [list(b) for b in spec['mesh']['skeleton']])
     model = mmd.MMD.parse(data, len(spec['mesh']['skeleton']))
     model.type = kind

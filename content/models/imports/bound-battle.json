@@ -1,25 +1,14 @@
 {
   "206": {
     "name": "MagnaAngemon",
-    "source_sha256": "81bdffafaca5b15fd993dc825513b49c4b2db3a3d2ac14acba649287574a96d4",
+    "source_sha256": "4abe9fce2647974defe87d39fc609625beeccbd8a4e379c4ec6cc9b210922840",
     "binding": {
       "spec": "content/imports/specs/MagnaAngemon.json",
-      "sha256": "e0589c0bfaba505d920a0707617f1d9fb2ae4d1ae417dbe7c761d74bf76e3dd4"
+      "sha256": "966b7f26d59105a2534d22120e19ec8e2fa527cdebec1b367ef98ed02813851c"
     },
     "battle_source": {
-      "path": "build/native-battle/MagnaAngemon-battle.MMD",
-      "sha256": "c2787bb084d5b8aaf1211af80635d06355046b4f2f30bc9b051b076a23303c36"
-    },
-    "mirror": {
-      "13": 19,
-      "14": 20,
-      "15": 21,
-      "16": 22,
-      "17": 23,
-      "18": 24
-    },
-    "leads": {
-      "18": 1
+      "path": "build/sizes-out/models/MagnaAngemon.MMD",
+      "sha256": "b5fb25768fc0188fb69021ce90f4857913645517e0442ba8f119d8c879756f02"
     },
     "keep_events": [
       40,
@@ -30,83 +19,18 @@
       40,
       41,
       43,
-      44,
-      46,
-      47,
-      48,
-      49,
-      50,
-      51,
-      52
+      55,
+      59,
+      60
     ],
     "compact_from": 33,
-    "repairs": {
-      "44": [
-        {
-          "op": "turn",
-          "bone": 19,
-          "axis": "z",
-          "deg": -15,
-          "ticks": [
-            0,
-            0,
-            6,
-            10
-          ]
-        },
-        {
-          "op": "turn",
-          "bone": 20,
-          "axis": "x",
-          "deg": -6,
-          "ticks": [
-            0,
-            0,
-            6,
-            10
-          ]
-        },
-        {
-          "op": "lift",
-          "bone": 1,
-          "up": 40,
-          "ticks": [
-            3,
-            7,
-            12,
-            20
-          ]
-        }
-      ],
-      "43": [
-        {
-          "op": "lift",
-          "bone": 1,
-          "up": 60,
-          "ticks": [
-            18,
-            23,
-            33,
-            33
-          ]
-        },
-        {
-          "op": "turn",
-          "bone": 20,
-          "axis": "x",
-          "deg": -10,
-          "ticks": [
-            26,
-            29,
-            33,
-            33
-          ]
-        }
-      ]
-    },
+    "drop_npc_slots": true,
+    "extra_vertices": [
+      4,
+      8
+    ],
     "ticks": {
-      "43": 34
-    },
-    "drop_npc_slots": true
+      "60": 29
+    }
   }
 }
