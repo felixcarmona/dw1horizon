@@ -45,7 +45,6 @@ against, leave this list.
 | Fewer loading screens between maps: zoom the camera out and join areas into bigger ones | 🛠️ | Player suggestion (2026-11-15). A map file is one screen with one fixed background and camera, and the game must keep running on an original 2 MB PlayStation, where each screen's map, models and Digimon already have to fit the heap budget (the build stops when they do not), so joining areas means more data resident at once and fixed-camera art at a larger scale. Our own new maps follow the same one-screen rule. See also faster loading screens.
 | Monochromon's shop minigame reworked (players point to the Vice mod's version) | 🎭 | Gameplay change of an original minigame. |
 | A Card Battle style card game | 🆕 | Very large. |
-| Learn single techniques from the Cheats menu | 🛠️ | A testing aid; cheap. |
 | Hunger bar in the Digimon menu | 🛠️ | Being designed together with the field need bars (hunger, toilet, tiredness). |
 | Metal Banana obtainable outside its event | ⚖️ | Needs a source that doesn't break its rarity. |
 | Jijimon explains the City tab (a list of the residents who lost their memories) and comments on new recruits | ✨ | Players are split on whether it needs explaining. |
@@ -68,7 +67,6 @@ against, leave this list.
 | New content in Beetle Land: more insect enemies and HerculesKabuterimon as a recruit | 🆕 | Area always felt empty; needs a recruit scene. |
 | Terriermon, the third Tamers partner (Guilmon and Renamon lines are already in) | 🆕 | Needs a source model and a place in the evolution tree. |
 | Models from Pocket Digimon World and Digital Card Arena (Japanese prequel of Digital Card Battle): MagnaAngemon, Keramon, babies, Babamon | 🆕 | New source discs for the importer; their formats need support first. |
-| A Cheats option to unlock every technique for the partner | 🎭 | Cheats are opt-in; simple to add next to the existing cheat rows. |
 | The evolution requirements table remembers the last species you looked at | 🛠️ | Saves scrolling back to the same cell every time. |
 | Seasonal decorations in File City (winter/Christmas) | ✨ | New art per building; after the game is more stable. |
 | Lock evolutions (as in Next Order) to steer a raise toward a chosen Digimon, or choose when several evolutions qualify at once | 🎭 ⚖️ | Helps completing the roster; must not bypass requirements. Two players asked. |
@@ -83,7 +81,6 @@ against, leave this list.
 | Machine techniques taught only by unique bosses become learnable later, e.g. a recruit who teaches a random learnable technique for a hefty price | ⚖️ 🆕 | Today they are missable unless you face those bosses with a Machine partner. |
 | Savanna card vendors show the image of the card you're buying, like the booster machine | ✨ | UI only. |
 | Ikkakumon and Zudomon eat much more (a food-bill like Tyrannomon) | ⚖️ | Species care data; check the economy rule. |
-| A Cheats option to unlock the whole evolution chart | 🎭 | For testing; cheats are opt-in. |
 | Reorganise the Rookie routes: add Zurumon (Baby) and Pagumon (In-Training, the Virus line: Gazimon, DemiDevimon, Gizamon...) and give each Rookie a single In-Training parent as in the original, about five Rookies each | ⚖️ 🆕 | A player's full table is in the Discord thread "Rookie evolution path re-balance"; animations could reuse Pabumon's and Koromon's. Changes routes players know. |
 | Multiplayer co-op | 🆕 | Very large: the engine is single-player; would need a link-cable/netplay design from scratch. Player question (2026-11-15). What exists today is the original two-player VS battle mode from the main menu (same console, registered Digimon from each memory card; see the minigames reference). |
 | A randomizer mode (species, items, encounters) | 🆕 | A different kind of challenge; large. |
@@ -194,3 +191,5 @@ against, leave this list.
 | New Game Plus: start the story again on the same save, keeping the chart, medals and cards | 🆕 | Player suggestion (2026-11-24), as something to do while raising new partners after the ending. Needs a rule for every flag and item that carries over. |
 | Technique power that grows with the user's level (Rookie, Champion, Ultimate, Mega), so higher stages hit harder with the same technique and stats | ⚖️ | Player suggestion (2026-11-23). Changes every damage figure in the game; needs a full balance audit. |
 | A shorter life for Mega partners, so trying other Digimon does not take so long | ⚖️ 🎭 | Player suggestion (2026-11-24); related to the lifespan proposal with three lengths. |
+| A counter at each gym station showing how many sessions count toward its upgrade | 🛠️ | Player suggestion (2026-11-25). As in the original, ten sessions at a station with a Fresh or In-Training partner raise that station's gains by 20% for good; nothing in the game shows the count. |
+| A Cheats row that keeps the finisher gauge full | 🛠️ | Player suggestion (2026-11-25), for testing finishers; emulator codes written for the original game do not work here. |
