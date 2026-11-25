@@ -543,6 +543,9 @@ Species data, requirements and links are edited as described in [../mods/species
 
 ### Virus form and reverting
 
+In a New Game Plus run the save machine can also rewind the partner, one form at a time through the forms of its egg, to the state each arrived with
+(digimon routines 13 and 14, `MOD_PARTNER_LINE`): see [New Game Plus](../mods/new-game-plus.md#rewind).
+
 The King of Sukamon (screen 165 GOMI02, NPC slot 0, script 159 section 81) only reverts the virus form: if the partner
 is Sukamon (39) he runs `CALL_DIGIMON_ROUTINE 2` (`partner.c:1136`: `EVOLUTION_TARGET = readPStat(5)`, partner state
 13), then sets trigger 363, which only changes his dialogue next time. There is no cost, item or limit on repetition.
