@@ -62,10 +62,12 @@ def bind(mesh,texture,donor,donor_texture,spec):
      hand[b]=np.array(n.tmd.obj_verts(obj))[sorted(ids),:3]@nw[b,:3,:3].T*scale+nw[b,:3,3]
     for sb,tb in mapping.items():
      obj=sk[sb][0];points=cloud(s,sb,sw,sk);mat=np.eye(3);off=nw[tb,:3,3]-sw[sb,:3,3]
-     if sb in children:
-      child=children[sb];a=sw[child,:3,3]-sw[sb,:3,3];b=nw[mapping[child],:3,3]-nw[tb,:3,3]
+     # A piece riding a limb (the shoulder shield) follows that limb's swing instead of only its offset.
+     seg=spec.get('rides',{}).get(str(sb),sb)
+     if seg in children:
+      child=children[seg];a=sw[child,:3,3]-sw[seg,:3,3];b=nw[mapping[child],:3,3]-nw[tb,:3,3]
       ua=a/np.linalg.norm(a);mat=np.array(retarget.swing(a.tolist(),b.tolist()))@(np.eye(3)+(np.linalg.norm(b)/np.linalg.norm(a)-1)*np.outer(ua,ua))
-      points=(points-sw[sb,:3,3])@mat.T+nw[tb,:3,3]
+      points=(points-sw[seg,:3,3])@mat.T+nw[tb,:3,3]
      elif sb in (4,7,28,31):
       target=hand[tb] if sb in (28,31) else cloud(n,tb,nw,nk)+(cloud(n,tb,nw,nk)-nw[tb,:3,3])*(scale-1)
       ratio=np.ptp(target,axis=0)/np.maximum(np.ptp(points,axis=0),1);mat=np.diag(ratio)

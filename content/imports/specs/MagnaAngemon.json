@@ -186,6 +186,9 @@
     "29": 30,
     "30": 31
   },
+  "rides": {
+    "32": 29
+  },
   "staff": false,
   "wings": {
     "sources": [
