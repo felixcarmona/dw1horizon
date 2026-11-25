@@ -16,7 +16,8 @@ t85 = text.s165.sec85
 
 @house.on_enter
 def enter():    # section 254
-    pass
+    if engine.death_map_entry == 0:    # a normal entry, not the load behind a death: no old keepsake may reach a later death
+        engine.rite_keepsake.set(0)
 
 @house.on_step(3)
 def step3():    # section 54
@@ -106,11 +107,13 @@ def use5():    # section 85
         wait(250)
         return
     narrator.say(t85.u2)
-    match narrator.choose(a=t85.m0.o0, b=t85.m0.o1):
+    match narrator.choose(a=t85.m0.o0, d=text.rite.menu, b=t85.m0.o1):
         case "a":
             hide_hud()
             call(Routine.save_machine)
             return
+        case "d":
+            jump_to_script(212, 74)
         case "b":
             return
         case _:

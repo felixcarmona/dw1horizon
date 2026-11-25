@@ -6,7 +6,7 @@ import "../../../../core/recruit.dws";
 import "../../../names.dws";
 script 212 {
     npc slot0 = 5;
-    sections 254, 71, 72, 73;
+    sections 254, 71, 72, 73, 74;
     on enter replace {    // enter
     }
     on step(20) replace {    // step20
@@ -18,6 +18,11 @@ script 212 {
         hide_hud();
         call_digimon_routine(routine("dying_b"));
         await narrator;
+        if (engine.rite_keepsake == 1) {
+            engine.rite_keepsake = 0;
+            set_stat(9, 80);
+            set_stat(10, 80);
+        }
         engine.music_mode = 0;
         music(28);
         say(slot0, text("s212.sec71.u1"));
@@ -32,6 +37,63 @@ script 212 {
                 return;
             }
         }
+    }
+    on step(23) replace {    // step23
+        engine.rite_keepsake = 0;
+        face(slot0, tamer);
+        face(tamer, slot0);
+        wait(5);
+        store_digimon_type(partner_type);
+        if (partner_type in [species(1), species(2), species(3), species(4), species(15), species(16), species(17), species(18), species(29), species(30), species(31), species(32), species(43), species(44), species(45), species(46), species(57)]) {
+            say(slot0, text("rite.decline"));
+            rotate(tamer, 0);
+            return;
+        }
+        say(slot0, text("rite.explain"));
+        choice(slot0) {
+            text("rite.yes") => {}
+            text("rite.no") => {
+                rotate(tamer, 0);
+                return;
+            }
+            cancel => {
+                rotate(tamer, 0);
+                return;
+            }
+        }
+        if (stat(9) >= 20) {
+            say(narrator, text("rite.happy"));
+        } else {
+            say(narrator, text("rite.unhappy"));
+        }
+        say(slot0, text("rite.sure"));
+        choice(slot0) {
+            text("rite.sure_yes") => {}
+            text("rite.no") => {
+                rotate(tamer, 0);
+                return;
+            }
+            cancel => {
+                rotate(tamer, 0);
+                return;
+            }
+        }
+        store_digimon_type(partner_type);
+        if (partner_type in [species(59), species(60)]) {
+            say(slot0, text("rite.farewell_mega"));
+        } else if (partner_type in [species(12), species(13), species(14), species(24), species(26), species(27), species(28), species(40), species(41), species(42), species(54), species(55), species(56), species(59), species(60), species(61), species(62)]) {
+            say(slot0, text("rite.farewell_ultimate"));
+        } else {
+            say(slot0, text("rite.farewell_champion"));
+        }
+        if (engine.prosperity >= 50) {
+            say(slot0, text("rite.city"));
+        }
+        if (stat(9) >= 20) {
+            engine.rite_keepsake = 1;
+        }
+        set_stat(13, 65535);
+        rotate(tamer, 0);
     }
     on step(21) replace {    // step21
         engine.no_escape = false;

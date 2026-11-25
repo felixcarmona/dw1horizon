@@ -278,13 +278,13 @@
     },
     "zones/libraries/s212/script.py": {
       "original_sha256": "4f0f94827732b0baa8771f2f03b6a8973181be5ff80b0c4e366cb4250f4b5f67",
-      "authored_sha256": "83d9bcca31c3252aae8c54beebc88818b0a2eb091d570f152ab1c805c055c508",
-      "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution"
+      "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell",
+      "authored_sha256": "2d32d0282c20eb27a35f500ad863050728d3e000ea158bee152d84cc2565c8bb"
     },
     "zones/libraries/s212/script.dws": {
       "original_sha256": "b27061b40a24f6f8fc8b63cd805b57c19bb47b44549a1a71215da03b222c9ec8",
-      "authored_sha256": "99ea6092be4dd594d2a76212f6a85a26093660a3f01a9c1b3ad9c35d656346b0",
-      "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution; DWS synchronized with the authored Python source"
+      "authored_sha256": "8742065e112db036845d9c06c49af134f4f566248a91492b769a0266e554e255",
+      "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution; DWS synchronized with the authored Python source; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell"
     },
     "zones/libraries/s217/script.py": {
       "original_sha256": "b8be36bdb1e2ca54b4b6ecc079dcfd38e3698f03ded7a038a395fadc24ac1378",
@@ -1335,6 +1335,26 @@
       "original_sha256": "002692ab5c43b287a5f171c65f1691d9901790b627f3d67f2e8c5d45744bc127",
       "authored_sha256": "27271bbe3760f891b34e856531b87541a3a14b3af697344a89ef391e91b92ddb",
       "reason": "Curling cups: a cup match brings its own rivals to the rink, and chips that do not fit in the inventory are kept and handed back"
+    },
+    "zones/jijimons-house/s165-205/script.dws": {
+      "original_sha256": "9456016392cada5d37d699085725716534461b7a0c4198503a4d5913a7e25eb0",
+      "reason": "The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; DWS synchronized with the authored Python source; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell",
+      "authored_sha256": "53895cd284d4119dc53ab32bc4d25c20f2174d6760d687a8f870bec8a5500dcb"
+    },
+    "zones/jijimons-house/s165-205/script.py": {
+      "original_sha256": "393d6c29de4039fe66cd914747be910e8cec99a7a2748196fde3552a3bf8e084",
+      "reason": "The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell",
+      "authored_sha256": "5d5595588097b52111aae1afb2f4f7f503c95ff58f9bf6c797a364b5b961760c"
+    },
+    "zones/jijimons-house/s178-218/script.dws": {
+      "original_sha256": "1213774c8eb385909de781d31fd19c23fe1ffb1677cdeb70bfe494d19da23ce4",
+      "reason": "The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; DWS synchronized with the authored Python source; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell",
+      "authored_sha256": "bf010226e46ed5ce050c4c2d7c1bd85ac7de52fff0126b240f4324308e9dce26"
+    },
+    "zones/jijimons-house/s178-218/script.py": {
+      "original_sha256": "9f79645276fe393980295d64ae9fefbfff357297ec15235c5f173fa93792f23e",
+      "reason": "The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell",
+      "authored_sha256": "b6c5310b8e0678744900e114ab05567f93ade935573417411ec6d30557665d2c"
     }
   }
 }

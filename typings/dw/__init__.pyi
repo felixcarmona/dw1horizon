@@ -1770,6 +1770,7 @@ class _engine:
     shop_hi: Var    # var 243: SHOP_VARIABLE, high byte
     shop_lo: Var    # var 244: SHOP_VARIABLE, low byte
     death_map_entry: Var    # var 124: 1 while Jijimon's house was loaded by the partner's death or lost life (C, not saved)
+    rite_keepsake: Var    # var 125: 1 from the rite of return to the rebirth after it: the baby keeps the happy farewell (unsaved)
     music_mode: Var    # var 245
     object: Var    # var 247: CALL_ROUTINE argument: map object / script entity
     animation: Var    # var 248: CALL_ROUTINE argument: animation / exit / mood
