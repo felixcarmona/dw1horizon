@@ -16,4 +16,5 @@ def talk():
     if fight(kotemon, escape=False) != "won":
         return                    # a lost battle wakes the tamer in Jijimon's house: Kotemon goes on swinging
     say("Teach me? No, I'll teach you. Where's the Arena?")
-    send_to_city(line="Kotemon joined the city!", species=Species.Kotemon)
+    run(250, 1150)
+    send_to_city(line="Kotemon joined the city!", species=Species.Kotemon, camera=False)
