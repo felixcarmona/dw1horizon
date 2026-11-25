@@ -72,7 +72,7 @@ def membership_bits():
 
 
 CHALLENGES = ROOT / 'content/tables/resident-challenges.json'
-CHALLENGE_HEAD = 11            # mod_rules.h MOD_CHALLENGE_ROWS
+CHALLENGE_HEAD = 12            # mod_rules.h MOD_CHALLENGE_ROWS
 CHALLENGE_ROW = 7              # species, hp, mp, off, def, speed, brain
 CHALLENGE_MAX = 16             # two saved bag pstats: one bit a row
 CHALLENGE_STATS = {'max-sheet-or-partner': 0}
@@ -105,6 +105,7 @@ def challenge_table(doc=None):
     v[4], v[5], v[6], v[7] = save['challengerVar'], save['wonFlag'], save['triedFlag'], save['armedPstat']
     v[8], v[9] = save['bagVars']
     v[10] = rule['sheetPercent']
+    v[11] = 1 if rule['noLateStep'] else 0
     for i, r in enumerate(challenge_rows(doc)):
         w = species[r['species']]['wild']
         v[CHALLENGE_HEAD + CHALLENGE_ROW * i:CHALLENGE_HEAD + CHALLENGE_ROW * (i + 1)] = [

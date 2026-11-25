@@ -21,7 +21,7 @@ class ResidentChallenges(unittest.TestCase):
         data = city.challenge_table(self.doc)
         v = struct.unpack(f'<{len(data) // 2}h', data)
         self.assertEqual(len(v), city.CHALLENGE_HEAD + city.CHALLENGE_ROW * city.CHALLENGE_MAX)
-        self.assertEqual(v[:city.CHALLENGE_HEAD], (0, 25, 1, 0, 15, 783, 784, 239, 20, 8, 0))
+        self.assertEqual(v[:city.CHALLENGE_HEAD], (0, 25, 1, 0, 15, 783, 784, 239, 20, 8, 10, 1))
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
         for i, r in enumerate(self.rows):
             row = v[city.CHALLENGE_HEAD + city.CHALLENGE_ROW * i:][:city.CHALLENGE_ROW]

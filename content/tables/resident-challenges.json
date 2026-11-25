@@ -3,9 +3,11 @@
   "rule": {
     "stats": "max-sheet-or-partner",
     "_stats": "each stat of the challenger = max(species sheet stat x (100 + sheetPercent) / 100, partner stat x (100 + partnerPercent) / 100), at most 9999",
-    "sheetPercent": 0,
+    "sheetPercent": 10,
     "partnerPercent": 25,
     "noItems": true,
+    "noLateStep": true,
+    "_noLateStep": "true: the challenge fight has none of battle-formulas.json normal's late-game step (HP and attack ramp, damage floor), on any difficulty: the challenger's stats are exactly the rule's. HARD keeps its own factors and floor.",
     "stages": "same-or-lower",
     "_stages": "same-or-lower: only residents whose stage is the partner's or lower go out, the partner's own stage first, then the next one down, each one once per cycle (a shuffle bag); any: every stage, once per cycle. Never the one of the day before."
   },

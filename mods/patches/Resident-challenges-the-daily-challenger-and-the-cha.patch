@@ -1,4 +1,4 @@
-From 7ff6252fd26283e2f67d6926602e122ea5eb8417 Mon Sep 17 00:00:00 2001
+From 634f98d5181f71e36e10ae55d4dc8be553c28f46 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Wed, 25 Nov 2026 14:57:59 +0000
 Subject: [PATCH] Resident challenges: the daily challenger and the challenge
@@ -11,17 +11,17 @@ of the partner's and the row's (the species sheet) plus a percent, at most 9999,
 (the bag comes back whole when it closes). Everything is read from MOD_CHALLENGE, written by tools/balance.py from
 content/tables/resident-challenges.json; with the table empty nothing changes.
 ---
- include/dw/mod_rules.h   | 29 ++++++++++++++++++
+ include/dw/mod_rules.h   | 30 +++++++++++++++++++
  src/main/mod_feed.c      |  9 ++++--
  src/main/script_common.c | 64 ++++++++++++++++++++++++++++++++++++++++
- src/main/tamer.c         | 47 +++++++++++++++++++++++++++++
- 4 files changed, 146 insertions(+), 3 deletions(-)
+ src/main/tamer.c         | 61 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 161 insertions(+), 3 deletions(-)
 
 diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
-index a662d02..9f291ff 100644
+index a662d02..297f7a2 100644
 --- a/include/dw/mod_rules.h
 +++ b/include/dw/mod_rules.h
-@@ -66,6 +66,35 @@ int32_t econPercent(int32_t slot);
+@@ -66,6 +66,36 @@ int32_t econPercent(int32_t slot);
  #define MOD_DAILY_CLEAR_MASK	6 /* ... with this mask */
  extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
  
@@ -45,7 +45,8 @@ index a662d02..9f291ff 100644
 +#define MOD_CHALLENGE_USED	8 /* saved pstats: rows 1-8 sent out this cycle, one bit each */
 +#define MOD_CHALLENGE_USED2	9 /* saved pstat: rows 9-16 */
 +#define MOD_CHALLENGE_SHEET_PERCENT	10 /* the species sheet's bonus */
-+#define MOD_CHALLENGE_ROWS	11 /* the first row: species, hp, mp, off, def, speed, brain */
++#define MOD_CHALLENGE_NO_LATE	11 /* 1: no NORMAL late-game step (battleFormulas normal) in a challenge */
++#define MOD_CHALLENGE_ROWS	12 /* the first row: species, hp, mp, off, def, speed, brain */
 +#define MOD_CHALLENGE_ROW	7
 +#define MOD_CHALLENGE_MAX	16
 +#define MOD_CHALLENGE_SIZE	(MOD_CHALLENGE_ROWS + MOD_CHALLENGE_ROW * MOD_CHALLENGE_MAX)
@@ -195,18 +196,19 @@ index 735b36f..5b84dff 100644
  
  int32_t isPartnerBaby(void)
 diff --git a/src/main/tamer.c b/src/main/tamer.c
-index 65110dc..0d3e4c4 100644
+index 65110dc..d60cd25 100644
 --- a/src/main/tamer.c
 +++ b/src/main/tamer.c
-@@ -9,6 +9,7 @@
+@@ -9,6 +9,8 @@
  #include <dw/anim.h>
  #include <dw/butterfly.h>
  #include <dw/clock.h>
 +#include <dw/combat.h>
++#include <dw/mod_battle.h>
  #include <dw/dooa.h>
  #include <dw/eab.h>
  #include <dw/endi.h>
-@@ -184,6 +185,8 @@ int32_t tickOpenChestTray(int32_t chestId);
+@@ -184,6 +186,8 @@ int32_t tickOpenChestTray(int32_t chestId);
  int32_t tickCloseChestTray(int32_t chestId);
  int32_t hasMove(int32_t moveId);
  int32_t isTriggerSet(uint16_t trigger);
@@ -215,7 +217,7 @@ index 65110dc..0d3e4c4 100644
  extern int16_t TOURNAMENT_WINS;
  int32_t hasMedal(uint16_t medal);
  int32_t hasDigimonRaised(int32_t digimonId);
-@@ -881,6 +884,48 @@ extern int8_t MOD_TFS_SAME_MAP; /* tfs_stream.c */
+@@ -881,6 +885,57 @@ extern int8_t MOD_TFS_SAME_MAP; /* tfs_stream.c */
  void modResumeFieldMusic(void); /* sound_async.c */
  void tfsStreamHoldPrefetch(void); /* tfs_stream.c */
  
@@ -231,6 +233,8 @@ index 65110dc..0d3e4c4 100644
 +}
 +
 +uint8_t MOD_CHALLENGE_NO_BAG;
++static uint8_t modChallengeLateOff; /* NORMAL's late-game step was set aside for this battle */
++static int16_t modChallengeLateHP;
 +
 +/* the foes of a battle the script armed as a challenge take the stats of the rule; the bag empties if the rule says so */
 +void modChallengeBattle(int32_t count)
@@ -247,6 +251,13 @@ index 65110dc..0d3e4c4 100644
 +	if (row < 1 || row > MOD_CHALLENGE_MAX || MOD_CHALLENGE[MOD_CHALLENGE_MODE] != 0) return;
 +	r = &MOD_CHALLENGE[MOD_CHALLENGE_ROWS + MOD_CHALLENGE_ROW * (row - 1)];
 +	MOD_CHALLENGE_NO_BAG = MOD_CHALLENGE[MOD_CHALLENGE_NO_ITEMS] > 0;
++	if (MOD_CHALLENGE[MOD_CHALLENGE_NO_LATE] > 0) {
++		/* the challenger's stats are the rule's: no late-game HP and attack step, no late-game damage floor (both read
++		 * fromHp, 0 = none), on every difficulty; HARD keeps its own factors and floor */
++		modChallengeLateHP = MOD_BATTLE[MOD_BT_NORMAL_FROM_HP];
++		MOD_BATTLE[MOD_BT_NORMAL_FROM_HP] = 0;
++		modChallengeLateOff = 1;
++	}
 +	p = &PARTNER_ENTITY.digimonEntity.stats.base;
 +	for (i = 1; i <= count; i++) {
 +		k = COMBAT_DATA_PTR->player.entityIds[i];
@@ -264,7 +275,7 @@ index 65110dc..0d3e4c4 100644
  int8_t startBattle(int16_t instanceId)
  {
  	int8_t result;
-@@ -895,8 +940,10 @@ int8_t startBattle(int16_t instanceId)
+@@ -895,8 +950,14 @@ int8_t startBattle(int16_t instanceId)
  	stopGameTime();
  
  	battleData = handleBattleStart(instanceId);
@@ -272,6 +283,10 @@ index 65110dc..0d3e4c4 100644
  	loadBattleData(instanceId, battleData);
  	result = BTL_battleMain();
 +	MOD_CHALLENGE_NO_BAG = 0;
++	if (modChallengeLateOff) { /* won, lost or fled: every other battle has the step again */
++		MOD_BATTLE[MOD_BT_NORMAL_FROM_HP] = modChallengeLateHP;
++		modChallengeLateOff = 0;
++	}
  
  	GAME_STATE = 0;
  
