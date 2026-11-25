@@ -30,3 +30,6 @@ more model, so Hawkmon, Pumpkinmon and Triceramon moved too.
 | `../factory/remodelling.py` | Datamon | Factorial Town 162 | Fight. |
 | `../seam/kennel.py` | Bearmon | Kennel 325 | Freed after the hunter falls. |
 | `../vault/statue-room.py` | Solarmon | Ice Sanctuary 97 | Joins on either answer. |
+
+After the ending ten of them come back to their sites, one a day, as challengers (`CH_*` in `state.py`, the
+challenge talk at the end of each file): [resident challenges](../../../../../docs/mods/resident-challenges.md).
