@@ -11,6 +11,7 @@ starmon = ledge.npc(Species.Starmon, at=(1000, -1000), hp=1200, mp=2000, offense
 def talk():
     say("Do you know how far I've fallen?")
     say("Never mind. Want to see some stars?")
-    if fight(starmon) == "won":
+    if fight(starmon, escape=False) == "won":
         say("A hit like that! The city must be full of stars.")
-        send_to_city(line="Starmon joined the city!", species=Species.Starmon)
+        run(850, -250)
+        send_to_city(line="Starmon joined the city!", species=Species.Starmon, camera=False)

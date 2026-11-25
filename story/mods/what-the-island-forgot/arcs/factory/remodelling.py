@@ -18,9 +18,10 @@ def no_power():
 @datamon.on_talk
 def talk():
     say("Everything lost ends up in a file. I keep the files.")
-    if fight(datamon) == "won":
+    if fight(datamon, escape=False) == "won":
         say("You are worth a file of your own.")
-        send_to_city(line="Datamon joined the city!", species=Species.Datamon)
+        run(-50, -2650)
+        send_to_city(line="Datamon joined the city!", species=Species.Datamon, camera=False)
 
 
 # More remodelling (Discord, 2026-11): Guardromon also reworks the species that have a same-level sibling, always one step
