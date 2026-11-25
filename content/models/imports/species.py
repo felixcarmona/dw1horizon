@@ -409,7 +409,13 @@ def species_file(out, t, recs=None, names=None, generate=False):
     # Grounding and rig fitting above still need the original vertex
     # pools. This pass preserves their result within the fixed resident ceiling.
     from tools.models import mesh_stability
-    stable, stability = mesh_stability.apply_provider(model, s['model']['skeleton'], t)
+    finals = {}
+    if size and size.get('after_cleanup'):
+        # a release whose repair is deferred still takes its own size afterwards
+        for release in size.get('variants', {}):
+            finals[f'imports@{release}'] = lambda data, r=species_size.variant_row(size, release): \
+                species_size.apply(data, s['model']['skeleton'], t, r)[0]
+    stable, stability = mesh_stability.apply_provider(model, s['model']['skeleton'], t, finals)
     if stability['applied']:
         generated = Path(os.path.abspath(out) + '-models')
         generated.mkdir(parents=True, exist_ok=True)
@@ -438,10 +444,10 @@ def species_file(out, t, recs=None, names=None, generate=False):
         (generated / f'{t}-mesh-cleanup-report.json').write_text(json.dumps(cleanup, indent=2) + '\n')
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
-    if size and size.get('after_cleanup') and not stability.get('deferred'):
+    if size and size.get('after_cleanup'):
         # a surface repair reviewed on exact vertices: the size goes onto its result
-        # (a variant whose repair is deferred keeps its reviewed size)
-        cleaned, s = _resize(out, t, s, cleaned, size)
+        release = stability.get('source_variant', '').partition('@')[2] if stability.get('deferred') else None
+        cleaned, s = _resize(out, t, s, cleaned, species_size.variant_row(size, release))
     # Final storage pass: measure and recompress after every geometry/pose repair.
     from tools.models import partner_headroom
     final, headroom = partner_headroom.apply(cleaned, s['model']['skeleton'], t)
