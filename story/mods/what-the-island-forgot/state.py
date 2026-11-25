@@ -115,16 +115,14 @@ HUNTER_PRESENT_PSTAT = 120  # unsaved night-model witness, reset on either hunte
 rift_duel_won = flag()
 
 # Resident challenges (postgame, content/tables/resident-challenges.json): at midnight the executable writes today's
-# challenger (its row + 1, 0 = nobody) and empties the two flags; the two bag counters are the executable's own (one bit
-# per row already sent out this cycle) and are declared here only so that nothing else takes their numbers. The site and
+# challenger (its row + 1, 0 = nobody) and empties the two flags; the bag (one bit per row already sent out this cycle) is
+# the executable's own, in the saved wide registers w10-w14 that no script uses. The site and
 # the home of each row compare `challenger` with the row's constant. ARMED: a scratch pstat the talk sets to 1 just before
 # the fight, so that the executable gives that one battle the challenge's stats (the battle clears it). The rows are
 # numbered in the saved var and the bag: once released, rows are only ever appended.
 challenger = counter()
 challenge_won = flag()
 challenge_tried = flag()
-challenge_bag = counter()
-challenge_bag2 = counter()
 CHALLENGE_ARMED = 239
 CH_ARMADILLOMON = 1
 CH_CANDLEMON = 2

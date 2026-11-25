@@ -25,6 +25,8 @@ from tools.langpatch import elf_symbols
 
 MOD = ROOT / 'story/mods/what-the-island-forgot'
 FROM_HP = 175                      # MOD_BT_NORMAL_FROM_HP in include/dw/mod_battle.h
+WREGS = 668                        # ScriptState.wregs (include/dw/script.h): smth, cards, triggers, pstats, stack[8]
+BAG_WREGS = 5                      # the bag's saved wide registers (tools/city_residents.py: CHALLENGE_MAX / 16 rounded up)
 
 
 def species_sheets():
@@ -55,10 +57,19 @@ class Run:
     def state(self):
         e = self.e; ram = e.ram()
         return dict(row=self.pstat(self.save['challengerVar']),
-                    bag=self.pstat(self.save['bagVars'][0]) | self.pstat(self.save['bagVars'][1]) << 8,
+                    bag=self.bag(ram),
                     won=self.flag(self.save['wonFlag']), tried=self.flag(self.save['triedFlag']),
                     money=e.peek('MONEY', 'I', ram), fromHp=e.peek(f'MOD_BATTLE+{2 * FROM_HP}', 'h', ram),
                     items=self.items(ram), screen=e.peek('CURRENT_SCREEN', 'h', ram))
+
+    def bag(self, ram=None):
+        """The bag as one int, bit i = row i + 1: the saved wide registers from bagWreg (ScriptState.wregs, +668)."""
+        regs = self.e.peek(f"SCRIPT_STATE+{WREGS + 2 * self.save['bagWreg']}", f'{BAG_WREGS}H', ram or self.e.ram())
+        return sum(w << 16 * i for i, w in enumerate(regs))
+
+    def set_bag(self, bits):
+        self.e.poke(f"SCRIPT_STATE+{WREGS + 2 * self.save['bagWreg']}",
+                    struct.pack(f'<{BAG_WREGS}H', *(bits >> 16 * i & 0xffff for i in range(BAG_WREGS))))
 
     def items(self, ram):
         types = self.e.peek('INVENTORY', '30h', ram); amounts = self.e.peek('INVENTORY+60', '30B', ram)

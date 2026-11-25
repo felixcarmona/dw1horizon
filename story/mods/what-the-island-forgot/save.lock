@@ -70,8 +70,6 @@
   "whamon_hurt": 753
  },
  "vars": {
-  "challenge_bag": 20,
-  "challenge_bag2": 8,
   "challenger": 15,
   "deal_day": 12,
   "deal_item": 13,

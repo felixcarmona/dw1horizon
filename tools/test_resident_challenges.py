@@ -21,7 +21,7 @@ class ResidentChallenges(unittest.TestCase):
         data = city.challenge_table(self.doc)
         v = struct.unpack(f'<{len(data) // 2}h', data)
         self.assertEqual(len(v), city.CHALLENGE_HEAD + city.CHALLENGE_ROW * city.CHALLENGE_MAX)
-        self.assertEqual(v[:city.CHALLENGE_HEAD], (0, 25, 1, 0, 15, 783, 784, 239, 20, 8, 0, 1))
+        self.assertEqual(v[:city.CHALLENGE_HEAD], (0, 25, 1, 0, 15, 783, 784, 239, 10, 5, 0, 1))
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
         for i, r in enumerate(self.rows):
             row = v[city.CHALLENGE_HEAD + city.CHALLENGE_ROW * i:][:city.CHALLENGE_ROW]
@@ -46,7 +46,7 @@ class ResidentChallenges(unittest.TestCase):
         lock = json.loads((MOD / 'save.lock').read_text())
         save = self.doc['save']
         self.assertEqual(lock['vars']['challenger'], save['challengerVar'])
-        self.assertEqual([lock['vars']['challenge_bag'], lock['vars']['challenge_bag2']], save['bagVars'])
+        self.assertNotIn('challenge_bag', ' '.join(lock['vars']))   # the bag is in saved wide registers, not story vars
         self.assertEqual(lock['flags']['challenge_won'], save['wonFlag'])
         self.assertEqual(lock['flags']['challenge_tried'], save['triedFlag'])
         self.assertIn(f"CHALLENGE_ARMED = {save['armedPstat']}\n", (MOD / 'state.py').read_text())

@@ -74,7 +74,8 @@ def membership_bits():
 CHALLENGES = ROOT / 'content/tables/resident-challenges.json'
 CHALLENGE_HEAD = 12            # mod_rules.h MOD_CHALLENGE_ROWS
 CHALLENGE_ROW = 7              # species, hp, mp, off, def, speed, brain
-CHALLENGE_MAX = 16             # two saved bag pstats: one bit a row
+CHALLENGE_MAX = 72             # mod_rules.h MOD_CHALLENGE_MAX
+CHALLENGE_BAG_LAST = 14        # the bag's saved wide registers end before w15 (Sukamon's backup)
 CHALLENGE_STATS = {'max-sheet-or-partner': 0}
 CHALLENGE_STAGES = {'same-or-lower': 0, 'any': 1}
 
@@ -116,7 +117,9 @@ def challenge_table(doc=None):
     v[2] = 1 if rule['noItems'] else 0
     v[3] = CHALLENGE_STAGES[rule['stages']]
     v[4], v[5], v[6], v[7] = save['challengerVar'], save['wonFlag'], save['triedFlag'], save['armedPstat']
-    v[8], v[9] = save['bagVars']
+    v[8], v[9] = save['bagWreg'], -(-CHALLENGE_MAX // 16)
+    if not 0 <= v[8] or v[8] + v[9] - 1 > CHALLENGE_BAG_LAST:
+        raise ValueError(f'{CHALLENGES.name}: the bag takes {v[9]} saved wide registers from bagWreg, within w0-w{CHALLENGE_BAG_LAST}')
     if not 0 <= rule['sheetPercent'] <= 1000 or not 0 <= rule['partnerPercent'] <= 1000:
         raise ValueError(f'{CHALLENGES.name}: sheetPercent and partnerPercent must be 0..1000 (the species sheet is the minimum)')
     v[10] = rule['sheetPercent']

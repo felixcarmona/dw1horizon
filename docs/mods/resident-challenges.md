@@ -44,20 +44,21 @@ after the battle whatever its outcome. HARD keeps its own factors and floor.
 | What | Where |
 |---|---|
 | today's challenger (row + 1, 0 = nobody) | saved pstat `challengerVar` (story `challenger`) |
-| the bag: rows 1-8, 9-16 | saved pstats `bagVars` (story `challenge_bag`, `challenge_bag2`, executable only) |
+| the bag: one bit a row, 16 rows a register | saved wide registers from `bagWreg` (w10-w14; executable only) |
 | won today / fought today | flags `wonFlag`, `triedFlag` |
 
-All are pinned in the story's `save.lock`; `tools/test_resident_challenges.py` checks that the table, the lock and the
+The vars and flags are pinned in the story's `save.lock`; the bag's registers are saved with the others (save tag `WREGS`,
+w0-w15) and no script uses them; `tools/test_resident_challenges.py` checks that the table, the lock and the
 story agree.
 
 ## Adding a resident
 
 The roster is every visible city resident (`content/tables/city-residents.json`), the game's own and ours, each at the
 spot where it was recruited; the rows come in batches. Rows are numbered in the save (the challenger var and the bag
-bits), so a released row is never moved or removed: new ones are appended. The bag holds 16 rows (two saved 8-bit
-counters); rows 17 and up need more saved bits than the free vars and flags hold.
+bits), so a released row is never moved or removed: new ones are appended. The bag holds 80 rows (five saved 16-bit
+wide registers); the table has room for 72 (`MOD_CHALLENGE_MAX`).
 
-A row (16 at most) names the species, its story file, home file, site (screen and `at`), the exit path it runs after a
+A row (72 at most) names the species, its story file, home file, site (screen and `at`), the exit path it runs after a
 win, the item, the bits, its `base` when its species has no `wild` sheet, and its five named lines. The story side is the row's constant `CH_<NAME>` in
 `state.py` (its 1-based row), the site file's presence (`not recruited(...) or trigger(50)` for a Digimon of ours; for one of the game's own,
 whose original NPC leaves once recruited, a new NPC of the species with `recruited(...) and trigger(50)` on the same
