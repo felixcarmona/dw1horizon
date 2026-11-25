@@ -1,8 +1,8 @@
 # Jijimon's house, room 10 (205): the news told on coming home, as on 218 (jijimons-house.py): the door leads here once
 # the city has grown.
 from dw import *
-from dw.base.jijimons_house_205 import house, jijimon
-from ..state import memories, memory_news, root2, root3
+from dw.base.jijimons_house_205 import house, jijimon, angemon
+from ..state import memories, memory_news, root2, root3, challenger, challenge_won, CH_ANGEMON
 
 # Later, of their own will: SkullGreymon after "Let him rest" (R2) and Angemon after "Open it and stay" (R3) come back to the
 # city and Jijimon tells it. Those choices set memory_news, told at the first homecoming below, so this is the next one. A
@@ -34,3 +34,11 @@ def what_the_city_remembers():
     else:
         jijimon.say("So much is coming back... Ho ho. I haven't felt this clear-headed in eighty years.")
     memory_news.clear()
+
+
+# Resident challenges (content/tables/resident-challenges.json): the day Angemon is out waiting at its old
+# spot, it is not here.
+@house.on_enter(when=engine.game_beaten)
+def challenger_out_angemon():
+    if challenger == CH_ANGEMON and not challenge_won:
+        angemon.leave()
