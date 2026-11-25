@@ -102,7 +102,7 @@
  ],
  "s196.sec7.u0": [
   [
-   "Pensi di uscire di qui vivo?"
+   "Pensi di uscirne in vita?"
   ]
  ],
  "s196.sec8.u0": [
@@ -2665,7 +2665,7 @@
  "s206.sec10.u1": [
   [
    "Wow, un punteggio perfetto!",
-   "Amico... sei un professionista?"
+   "Ehi... giochi da professionista?"
   ]
  ],
  "s206.sec10.u2": [
@@ -2702,7 +2702,7 @@
  "s206.sec11.u1": [
   [
    "Wow, un punteggio perfetto!",
-   "Amico... sei un professionista?"
+   "Ehi... giochi da professionista?"
   ]
  ],
  "s206.sec11.u2": [
@@ -5915,7 +5915,7 @@
  "s216.sec51.m0.o2": "Niente. Grazie.",
  "s216.sec51.u0": [
   [
-   "Ciao, {color 6}{player}{color 1}. Che sorpresa!",
+   "Ciao, {color 6}{player}{color 1}. Sorpresa, eh?",
    "Non pensavi che avrei aperto",
    "una clinica, eh? Affida a me"
   ],

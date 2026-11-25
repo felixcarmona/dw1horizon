@@ -86,9 +86,9 @@
  "s130.sec81.u3": "Soy Whamon. Normalmente vivo en el mar. No tengo ojos, pero puedo percibir casi todo.",
  "s130.sec81.u4": [
   [
-   "Soy {color 6}{player}{color 1}, ser humano,",
-   "y este... bueno, no puedes",
-   "verlo, pero es"
+   "Soy {color 6}{player}{color 1}, del mundo",
+   "humano, y este... bueno, no",
+   "puedes verlo, pero es"
   ],
   [
    "{digimon 103}",
@@ -117,7 +117,7 @@
  "s132.sec5.u12": "¡Uf, ya volveréee!",
  "s132.sec51.u0": "¿Q... qué es este sitio...? ¿Un sueño...?",
  "s132.sec51.u1": "¡Hala! ¿¡Quién eres tú!? ¿¡Dónde está {color 10}{partner}{color 1}!? ¿D-d-dónde está?",
- "s132.sec51.u2": "Vale, vale, tranquilo. Soy Frigimon, un Digimon del hielo y la nieve. Esta es mi casa. Os habíais desmayado los dos en la nieve. Os recogí y os he cuidado. ¿Entendido?",
+ "s132.sec51.u2": "Vale, vale, calma. Soy Frigimon, un Digimon del hielo y la nieve. Esta es mi casa. Os habíais desmayado los dos en la nieve. Os recogí y os he cuidado. ¿Entendido?",
  "s132.sec51.u3": "¡Ah, {color 10}{partner}{color 1}, estás bien! ¡Uf!",
  "s132.sec51.u4": "¡Eh! ¿Me estás escuchando? ¡Si no os hubiera cuidado, NO estaríais bien!",
  "s132.sec51.u5": "Je, je, perdona, perdona. Muchas gracias.",
