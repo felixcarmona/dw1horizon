@@ -74,7 +74,7 @@ one-block file. No save is deleted to resize it.
 
 Each `RegisteredDigimon` has 28 unused bytes at record offsets `0x24..0x3F`.
 Across 40 registrations these provide **1,120 bytes per payload copy**. The current
-record list uses at most **1,100 bytes including framing**, leaving **20 bytes**
+record list uses at most **1,073 bytes including framing**, leaving **47 bytes**
 of margin even with every bit populated. No compression is necessary. Each
 copy's extension is scattered in order through these bytes; no registration
 field or payload offset changes. A compile-time bound includes every written
@@ -154,7 +154,7 @@ An extension counts only when magic, its own checksum and its copy of the v1 che
 | 0x0002 | i16[n] inventory item ids, -1 = empty | 0129 (16-bit items: 0018) |
 | 0x0003 | i32 partner species | 0129 |
 | 0x0004 | u16[n] script registers w0.. (w0..w15 are saved, the rest are scratch) | 0129 |
-| 0x0005 | i16[n] species of the VS-mode registered Digimon (kept for reading tools; the whole species since `Register-a-species-past-255-for-battle-mode-as-itsel.patch`) | 0129 |
+| 0x0005 | i16[n] species of the VS-mode registered Digimon. No longer written since the partner rewind: nothing read it, and each registration holds its own species past 255 in bytes 0x20-0x23. Older saves still have it; it is skipped | 0129, partner rewind |
 | 0x0006 | i16[n] screens of the poop piles, -1 = none; authoritative since screens beyond 255 (a pile on screen 255+ is 0xFF in the v1 bytes) | 0129, 0146 |
 | 0x0007 | bit array: species raised | 0129 |
 | 0x0008 | bit array: species recruited | 0129 |
@@ -165,6 +165,7 @@ An extension counts only when magic, its own checksum and its copy of the v1 che
 | 0x000D | u8[223] additional card counts: two 4-bit counts per byte, low nibble first, IDs 66–511 | card expansion |
 | 0x000E | u16[6] daily card shop stock, `0xFFFF` = sold; IDs 0–511 | card expansion |
 | 0x000F | u8 tamer look (0 = the original tamer), u8 hair colour, u8 boy or girl (0 = boy, 1 = girl: the face and the hands follow it; absent in records of two bytes = boy), u8 shirt and u8 shirt colour, u8 trousers and u8 their colour, u8 shoes and u8 their colour, u8 backpack (0 = the original, 1 = none) and u8 its colour (absent in shorter records = the original garment), u8 skin (bit 0 unused; the bits above: the skin tone, 0 = his own, 1 to 5 from pale to dark; absent = his own skin); a value out of range = the original | tamer looks |
+| 0x0010 | the partner's line, 83 bytes: u8 forms in use (0..5), u8 rewinds this egg has used, u8 levels rewound out of (bit n), then five 16-byte forms, newest (the current form) first. Each form packs `species, hp, mp, offense, defense, speed, brains, lifetime, age, weight` low bit first in 10, 15, 15, 14, 14, 14, 14, 15, 8 and 8 bits: the state that form arrived with. A record of another size remembers nothing | partner rewind |
 | 0x8001, 0x8002 | reserved in the registry for required story-state records; not written by this patch series | |
 
 ### Reading rules
@@ -416,7 +417,8 @@ bytes for IDs 0–65. Optional tag `0x000D` adds 446 nibbles (223 bytes), and op
 `0x000E` adds the six wide daily shop IDs (12 bytes). Together their framing and
 payload use 243 bytes. With them the conservative inline bound was 1,093 of 1,120 bytes;
 the tamer's look record (`0x000F`, 16 bytes with framing) brings it to 1,109, leaving 11 bytes.
-The compile-time assertion includes all three records.
+The compile-time assertion includes all three records. The partner rewind stopped writing `0x0005` (84 bytes with
+framing) and added the partner's line (`0x0010`, 87 bytes with framing): 1,112 bytes, leaving 8.
 
 Loading any old payload zeros the extra count bytes before applying records.
 A missing stock record takes its defaults from the v1 shop bytes (`0xFF` = sold).

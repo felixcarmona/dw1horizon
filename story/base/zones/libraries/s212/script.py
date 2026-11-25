@@ -117,6 +117,67 @@ def step24():    # section 75: New Game Plus, from the save machine of Jijimon's
     call(Routine.save_machine)
     wait(10000)
 
+@lib.on_step(25)
+def step25():    # section 76: the rewind, from the save machine of Jijimon's houses in a New Game Plus run
+    slot0.face(tamer)
+    tamer.face(slot0)
+    wait(250)
+    raw.call_digimon_routine(DigimonRoutine.rewind_check)
+    if engine.arg == 0:
+        slot0.say(text.rewind.forgotten)
+        tamer.turn(0)
+        return
+    if engine.arg == 1:
+        slot0.say(text.rewind.none_left)
+        tamer.turn(0)
+        return
+    if engine.arg == 3:   # this egg has not gone back yet: how it works, in full
+        slot0.say(text.rewind.how_1)
+        slot0.say(text.rewind.how_2)
+        slot0.say(text.rewind.how_3)
+        slot0.say(text.rewind.how_4)
+    else:
+        slot0.say(text.rewind.explain)
+    if engine.rewind_left == 1:
+        slot0.say(text.rewind.left_1)
+    elif engine.rewind_left == 2:
+        slot0.say(text.rewind.left_2)
+    elif engine.rewind_left == 3:
+        slot0.say(text.rewind.left_3)
+    elif engine.rewind_left == 4:
+        slot0.say(text.rewind.left_4)
+    elif engine.rewind_left == 5:
+        slot0.say(text.rewind.left_5)
+    else:
+        slot0.say(text.rewind.left_many)
+    match slot0.choose(a=text.rewind.yes, b=text.rewind.no):
+        case "a":
+            pass
+        case "b":
+            tamer.turn(0)
+            return
+        case _:
+            tamer.turn(0)
+            return
+    slot0.say(text.rewind.sure)
+    match slot0.choose(a=text.rewind.sure_yes, b=text.rewind.no):
+        case "a":
+            pass
+        case "b":
+            tamer.turn(0)
+            return
+        case _:
+            tamer.turn(0)
+            return
+    slot0.say(text.rewind.go)
+    hide_hud()
+    raw.call_digimon_routine(DigimonRoutine.rewind)
+    if engine.arg == 0:
+        tamer.turn(0)
+        return
+    entity(201).arrived()
+    tamer.turn(0)
+
 @lib.on_step(21)
 def step21():    # section 72
     engine.no_escape.clear()
