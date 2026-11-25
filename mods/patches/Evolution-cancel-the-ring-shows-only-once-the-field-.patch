@@ -1,0 +1,37 @@
+From 905c68217da928ec7e3a13ff04b7f62ef9ded52a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 25 Nov 2026 13:33:18 +0000
+Subject: [PATCH] Evolution cancel: the ring shows only once the field has
+ faded to black
+
+---
+ src/evl/evl.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index 3f0c88d..ec256f8 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -359,7 +359,8 @@ static int32_t EVL_cancelTick(EvoSequenceData *data)
+ 	Entity *entity = &data->partner->digimonEntity.entity;
+ 
+ 	if (EVL_cancelPhase == 0) {
+-		if (!(MOD_EVO_CANCEL & MOD_EVO_CANCEL_ALLOWED) || PAUSE_STATE != 0 || data->state > 2 || data->timer >= 0xcc) {
++		if (!(MOD_EVO_CANCEL & MOD_EVO_CANCEL_ALLOWED) || PAUSE_STATE != 0 || data->state == 0 || data->state > 2 ||
++		    data->timer >= 0xcc) { /* from the black (state 1, the field is gone) until the new form shows */
+ 			EVL_cancelHold = 0;
+ 			EVL_cancelShown = 0;
+ 			return 0;
+@@ -373,9 +374,6 @@ static int32_t EVL_cancelTick(EvoSequenceData *data)
+ 				EVL_cancelHold++;
+ 				return 0;
+ 			}
+-			if (data->state == 0) { /* the map is hidden at this state's end: state 3 gives back what was hidden */
+-				return 0;
+-			}
+ 			EVL_cancelHold = EVL_CANCEL_TICKS;
+ 			EVL_cancelPhase = 1;
+ 			stopSound();
+-- 
+2.55.0
+
