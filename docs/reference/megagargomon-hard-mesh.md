@@ -1,5 +1,56 @@
 # MegaGargomon 335: geometry repair and remaining work
 
+## Bulk restored (current)
+
+The earlier rounds below cleared crossings by shrinking parts: the shoulder
+pods (objects 12/22) to .385 of the source, the calves/thighs (objects 3/8) to
+.9 and then .6..7 with a raised knee collar, and the lower skirt (object 1) to
+.5 radial and .45 vertical. The partner read as a small robot. This round keeps
+the mass and moves the motion instead (`tools/models/mesh_megagargomon.py`):
+
+- Pods at full source size, seated 10 units up and 10 back about the shoulder
+  mount (`POD_OFFSET`), so the forearm swing of the idle, condition idles, walk,
+  tired walk and run (slots 0-4, 14-18) passes in front of them.
+- Thigh shells at full source size (no radial fit, no collar profile); the skirt
+  taper is softened to .8 radial and .7 vertical below the waist ring.
+- Tighter elbow arcs in the two care clips whose swing still met the pod
+  (`ELBOW_SLOTS`: slot 10 keeps 60 and eases to 75 degrees, slot 12 50 to 65).
+- A calmer head swing in five care clips whose head roll or yaw swept the fins
+  into a pod (`HEAD_SWING`: the head rotation is eased toward the idle pose by
+  .6..75 in slots 9, 13, 19, 22, 24). Root, timing, events, loops and aliases
+  are unchanged; the global elbow arc, the slot-48 upper-arm pitch and the fin
+  removal stay as before.
+
+Resident data is 96,464 B (previous round 96,384 B, ceiling 97,536 B): the
+full-size pods keep four more GPU-diagonal splits. Only the 335 provider pin
+moves; the field overlay input and the texture are unchanged.
+
+Crossings, symmetric depth in world units over all 52 clips and 2,009 ticks
+(`tools.models.mesh_round4`), previous round → this round. 57 → 71 pairs.
+Static mounts that are not visible: 13/14 (the right upper-arm socket sits
+inside its pod, about 56 in every clip) and 1/13, 1/23 (the pods mounted into
+the chest, about 41..52). Contacts that remain:
+
+| Where | Pairs | Depth |
+| --- | --- | ---: |
+| Signature (11/42): guns raised over the shoulders, pods rolled | 23/25, 13/15, 13/17, 17/23, 13/22, 19/23 | 38..49 |
+| Two-gun attacks (48/49, 51/54-57/59/60) | 23/25, 13/15 | 42..59 |
+| Attack group 46/47/50/52/53/58/61/62 | 13/17 (head against the pod) | 48 |
+| Care clips 7, 21, 23 and battle 43/44: head rolled about 110 degrees | 17/23, 19/23 | 48..62 |
+| Care clips 10, 12: fin brushing the pod | 13/22, 19/23 | 23..27 |
+| Walk and run (2, 4): left upper arm through the back of its pod | 23/24 | 42 |
+| Thigh top against the skirt hem: 10..32 standing, deeper as the thigh swings in the walk, run and attacks | 2/4, 2/9 | up to 53 |
+| Walk and run: thighs against the hip flaps and toes | 2/3, 2/8, 8/9, 9/11 | 41..48 |
+| Full thighs against hanging guns/forearms | 4/25, 4/26, 9/15, 9/16 | 44..49 |
+
+The forearms, guns and head no longer meet a pod in slots 0-4 and 14-18. The
+thigh/skirt contacts in the walk and run read as the thigh shell passing over
+the hem in renders; they are the price of the full thighs and were not cleared. The certificates, render
+archive and preservation record below belong to the previous round and were
+not regenerated for this one; the test of local floors skips without them.
+
+## Previous rounds
+
 This worktree starts at `integ5`. Nine crossing pairs clear, including both
 reported torso/pelvis-to-calf pairs, and all retained nonplanar quads receive
 independent GPU-triangle culling. **The requested complete repair is unfinished:
