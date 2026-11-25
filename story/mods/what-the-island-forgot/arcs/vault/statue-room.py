@@ -17,7 +17,8 @@ def talk():
     else:
         say("Then somebody has to shine.")
     say("Then I'll go where the lights are.")
-    send_to_city(line="Solarmon joined the city!", species=Species.Solarmon)
+    walk_away(-250, -950, looks=3)
+    send_to_city(line="Solarmon joined the city!", species=Species.Solarmon, camera=False)
 
 
 # The band across the corridor (step 1) is also the only way on to the Sanctuary proper (BlueMeramon, the gym): the way

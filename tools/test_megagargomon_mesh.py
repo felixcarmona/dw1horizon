@@ -31,7 +31,10 @@ class FinalMesh(unittest.TestCase):
         import motionstorage
         before=motionstorage.require(self.before.m.build(),27)
         after=motionstorage.require(self.after.m.build(),27)
-        self.assertLessEqual(after['resident_bytes'],before['resident_bytes'])
+        # Full-size pods keep four more GPU-diagonal splits (80 B) than the
+        # shrunken ones; the repair's own ceiling and the partner buffer still hold.
+        self.assertLessEqual(after['resident_bytes'],before['resident_bytes']+80)
+        self.assertLessEqual(after['resident_bytes'],97536)
         self.assertLessEqual(after['resident_bytes'],100256)
         self.assertFalse(bent_quads(self.after.m,.001))
         self.assertFalse(self.after.m.tmd.objects[19].prims)
@@ -43,6 +46,13 @@ class FinalMesh(unittest.TestCase):
         self.assertEqual(a.bones,b.bones)
         self.assertEqual(a.m.anims.table,b.m.anims.table)
         self.assertEqual(a.tim.to_bytes(),b.tim.to_bytes())
+        from tools.models import mesh_megagargomon as G
+        # channels this round re-times on purpose: tighter elbow arcs and a calmer head swing
+        edited={}
+        for slot in G.ELBOW_SLOTS:
+            edited.setdefault(a.m.anims.table[slot],[]).extend([(15,3),(25,3)])
+        for slot in G.HEAD_SWING:
+            edited.setdefault(a.m.anims.table[slot],[]).extend([(17,3),(17,4),(17,5)])
         ticks=0
         for slot in a.slots():
             aa,info=mmd.simulate(a.m.anims.anims[a.m.anims.table[slot]],27,slot=slot)
@@ -52,6 +62,8 @@ class FinalMesh(unittest.TestCase):
             ticks+=len(aa)
             mask=np.ones((27,9),bool)
             mask[[20,21],:3]=False  # removed, permanently invisible objects
+            for bone,channel in edited.get(a.m.anims.table[slot],()):
+                mask[bone,channel]=False
             self.assertTrue(np.array_equal(np.asarray(aa)[:,mask],np.asarray(bb)[:,mask]),slot)
         self.assertEqual(ticks,2009)
 
@@ -61,10 +73,20 @@ class FinalMesh(unittest.TestCase):
         report=json.loads(path.read_text())
         self.assertEqual(report['ticks'],2009)
         self.assertEqual(len(report['slots']),52)
-        self.assertNotIn('2/4',report['pairs'])
-        self.assertNotIn('2/9',report['pairs'])
-        self.assertNotIn('13/15',report['pairs'])
-        self.assertNotIn('23/25',report['pairs'])
+        # Full-size pods: the forearm meets its pod only where the clip raises the
+        # guns over the shoulders (signature 11/42 and the two-gun attacks).
+        raised={11,42,48,49,51,54,55,56,57,59,60}
+        for pair in ('13/15','23/25'):
+            slots={int(k) for k,row in report['slots'].items() if pair in row['pairs']}
+            self.assertLessEqual(slots,raised,pair)
+        # 23/24 (left upper arm against the back of its pod) stays in the walk and run.
+        for slot in (0,1,2,3,4,14,15,16,17,18):
+            for pair in ('13/15','23/25','13/16','23/26','13/17','17/23'):
+                self.assertNotIn(pair,report['slots'][str(slot)]['pairs'],(slot,pair))
+        # Full thighs: the top of the thigh shell meets the skirt hem (2/4, 2/9),
+        # deepest in the walk and run; bounded, not cleared.
+        for pair in ('2/4','2/9'):
+            self.assertLess(report['pairs'][pair]['depth'],60,pair)
 
     def test_accelerator_matches_reference_sorting_and_rasterization(self):
         import math

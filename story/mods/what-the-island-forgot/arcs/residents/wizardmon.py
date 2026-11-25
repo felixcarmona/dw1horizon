@@ -12,6 +12,7 @@ def talk():
     say("The words are leaving. I need someone who still remembers things.")
     if engine.prosperity >= 20:
         say("A whole city that remembers you? Then I will read there.")
-        send_to_city(line="Wizardmon joined the city!", species=Species.Wizardmon)
+        walk_away(950, -450, looks=3)
+        send_to_city(line="Wizardmon joined the city!", species=Species.Wizardmon, camera=False)
     else:
         say("Come back when you have read more of this island.")

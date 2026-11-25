@@ -8,21 +8,22 @@ def smoothstep(x):
     return x*x*(3-2*x)
 
 
-def elbow_pitch(value):
+def elbow_pitch(value, keep=70, limit=90):
     """Mechanical elbow arc, continuous with its derivative across a full turn.
 
-    Keep the ordinary 70-degree swing. Ease into a 90-degree limit; an imported
-    full-turn windup opens the elbow through a smooth arc instead of folding
-    the gun back into the shoulder. A signed clamp would jump at half a turn.
+    Keep the ordinary swing (70 degrees). Ease into the limit (90 degrees); an
+    imported full-turn windup opens the elbow through a smooth arc instead of
+    folding the gun back into the shoulder. A signed clamp would jump at half a turn.
     """
     angle = ((value+2048) % 4096-2048)*360/4096
     a = abs(angle)
-    if a <= 70:
+    knee = keep+2*(limit-keep)
+    if a <= keep:
         result = a
-    elif a <= 110:
-        result = 70+(a-70)-(a-70)**2/80
+    elif a <= knee:
+        result = keep+(a-keep)-(a-keep)**2/(4*(limit-keep))
     else:
-        result = 90*(1-smoothstep((a-110)/70))
+        result = limit*(1-smoothstep((a-knee)/(180-knee)))
     return round(math.copysign(result, angle)*4096/360)
 
 

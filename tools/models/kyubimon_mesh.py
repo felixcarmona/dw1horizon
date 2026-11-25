@@ -12,6 +12,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import mmd
 from tools.models import mesh_fan, mesh_stability
 
+# The fan's socket moves this far back from the rear thighs along the tail
+# stalk (which grows to reach it), so the full-width fan clears the legs.
+SOCKET = (30, -10)
+# Extra fan yaw/roll (4096ths) eased over the two clips that swing it into a leg.
+CLEAR_SWAY = {8: (200, 500), 52: (500, 100)}
+
 
 def weld_fan(model):
     obj = model.tmd.objects[9]
@@ -94,10 +100,11 @@ def apply(model, bones):
     from tools.models.mesh_cleanup import translate_bone, transform_piece
     if tuple(bones[15]) != (9,14) or tuple(bones[14]) != (8,1):
         raise ValueError('tail repair requires the reviewed fan/socket binding')
-    translate_bone(model,15,0,60)
-    translate_bone(model,15,2,-20)
-    transform_piece(model,8,scale=(144/84,1,1),shear_zx=-20/84)
-    report = dict(tail_socket_extension=[60,0,-20],tail_fan=mesh_fan.apply(model))
+    dx, dz = SOCKET
+    translate_bone(model,15,0,dx)
+    translate_bone(model,15,2,dz)
+    transform_piece(model,8,scale=((84+dx)/84,1,1),shear_zx=dz/84)
+    report = dict(tail_socket_extension=[dx,0,dz],tail_fan=mesh_fan.apply(model))
     report['fan_surface'] = weld_fan(model)
     report['sway_slots'] = finish(model,bones)
     report['split_quads'] = split_bends(model,report['fan_surface'])
@@ -117,18 +124,19 @@ def fan_sway(value, center=0, amplitude=200):
 
 def finish(model, bones):
     from tools.models import mesh_pose
+    dx, dz = SOCKET
     ob = model.tmd.objects[8]
     for i, v in enumerate(model.tmd.obj_verts(8)):
         if i == 21:
-            model.tmd.verts[ob.vert_start+i] = (121,0,-54,0)
-        elif v[0] > 110:
-            model.tmd.verts[ob.vert_start+i] = (110,)+tuple(v[1:])
+            model.tmd.verts[ob.vert_start+i] = (61+dx,0,-34+dz,0)
+        elif v[0] > 50+dx:
+            model.tmd.verts[ob.vert_start+i] = (50+dx,)+tuple(v[1:])
     def mapper(slot, tick, poses):
         p = poses[tick]
         values = {(15,a):fan_sway(p[15][3+a],103 if a==1 else 0) for a in range(3)}
         if slot in (8,52):
             weight = mesh_pose.smoothstep(tick/6)*(1-mesh_pose.smoothstep((tick-(len(poses)-7))/6))
-            yaw, roll = (0,500) if slot == 8 else (100,100)
+            yaw, roll = CLEAR_SWAY[slot]
             values[15,1] += round(yaw*weight)
             values[15,2] += round(roll*weight)
         if slot == 42:

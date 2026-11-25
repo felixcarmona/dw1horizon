@@ -10,6 +10,7 @@ phantomon = gallery.npc(Species.Phantomon, at=(-500, -400), hp=3400, mp=3600, of
 @phantomon.on_talk
 def talk():
     say("I carry things for those who no longer need them.")
-    if fight(phantomon) == "won":
+    if fight(phantomon, escape=False) == "won":
         say("Your name stays on my list a little longer. Do you have a shop for me?")
-        send_to_city(line="Phantomon joined the city!", species=Species.Phantomon)
+        run(850, -150)
+        send_to_city(line="Phantomon joined the city!", species=Species.Phantomon, camera=False)

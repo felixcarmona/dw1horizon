@@ -13,6 +13,7 @@ def talk():
         if ask(yes="Offer a {item Item.SweetNut}", no="Leave it be"):
             take(Item.SweetNut)
             say("It woke up! I'm taking it somewhere safe.")
-            send_to_city(line="Floramon joined the city!", species=Species.Floramon)
+            walk_away(2550, -250, looks=3)
+            send_to_city(line="Floramon joined the city!", species=Species.Floramon, camera=False)
     else:
         say("It likes sweet things. A {item Item.SweetNut} might wake it, if you ever find one.")
