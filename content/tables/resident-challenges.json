@@ -1,5 +1,5 @@
 {
-  "_about": "Resident challenges (postgame; docs/mods/resident-challenges.md). Two pools: `original` (the original game's residents, species below 112) and `new` (Horizon's residents, closed until every one of them is recruited). Once the game is beaten, at every midnight each open pool sends one of its recruited residents from its home to its recruit site, stronger; while it waits there the site has no wild Digimon; won once, it goes home with its reward and the wilds come back; lost, it waits all day. The two pools' fights are independent. tools/balance.py writes `rule`, `save`, each row's pool and its species and sheet stats into MOD_CHALLENGE (tools/city_residents.py challenge_table); the story (story/mods/what-the-island-forgot) has the rest of each row: `story` checks its constant (state.py CH_<NAME> = row number), site, exit path, item and bits. Rows are numbered in the save (the challenger vars and the bag: saved wide registers w10-w14, one bit a row): once released, a row is never moved, removed or given another pool, only appended.",
+  "_about": "Resident challenges (postgame; docs/mods/resident-challenges.md). Two pools: `original` (the original game's residents, species below 112) and `new` (Horizon's residents, closed until every one of them is recruited). Once the game is beaten, at every midnight each open pool sends one of its recruited residents from its home to its recruit site, stronger; while it waits there the site has no wild Digimon; won once, it goes home with its reward and the wilds come back; lost, it waits all day. The two pools' fights are independent. tools/balance.py writes `rule`, `save`, each row's pool and its species and sheet stats into MOD_CHALLENGE (tools/city_residents.py challenge_table); the story (story/mods/what-the-island-forgot) has the rest of each row: `story` checks its constant (state.py CH_<NAME> = row number), site, exit path, item and bits. Rows are numbered in the save (the challenger vars and the bag: saved wide registers w10-w14, one bit a row): once released, a row is never moved, removed or given another pool, only appended. `hint`: true for the residents whose absence a walk through the city does not show (out by the hour or by chance, under a story condition, or with no city home): Yuramon (arcs/rumours/yuramon.py) gives a riddle for each of them on its day.",
   "rule": {
     "stats": "max-sheet-or-partner",
     "_stats": "each stat of the challenger = max(floor stat x (100 + sheetPercent) / 100, partner stat x (100 + partnerPercent) / 100), at most 9999; the floor is the species' `wild` sheet, or the row's `base` when its species has none",
@@ -380,6 +380,7 @@
       "species": 4,
       "name": "Betamon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/betamon.py",
       "home": null,
       "site": {
@@ -456,6 +457,7 @@
       "species": 8,
       "name": "Tyrannomon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/tyrannomon.py",
       "home": null,
       "site": {
@@ -494,6 +496,7 @@
       "species": 9,
       "name": "Meramon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/meramon.py",
       "home": null,
       "site": {
@@ -532,6 +535,7 @@
       "species": 10,
       "name": "Seadramon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/seadramon.py",
       "home": null,
       "site": {
@@ -570,6 +574,7 @@
       "species": 11,
       "name": "Numemon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/numemon.py",
       "home": null,
       "site": {
@@ -608,6 +613,7 @@
       "species": 13,
       "name": "Mamemon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/mamemon.py",
       "home": null,
       "site": {
@@ -646,6 +652,7 @@
       "species": 18,
       "name": "Elecmon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/elecmon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -798,6 +805,7 @@
       "species": 22,
       "name": "Garurumon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/garurumon.py",
       "home": null,
       "site": {
@@ -836,6 +844,7 @@
       "species": 23,
       "name": "Frigimon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/frigimon.py",
       "home": null,
       "site": {
@@ -950,6 +959,7 @@
       "species": 26,
       "name": "SkullGreymon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/skullgreymon.py",
       "home": null,
       "site": {
@@ -988,6 +998,7 @@
       "species": 27,
       "name": "MetalMamemon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/metalmamemon.py",
       "home": null,
       "site": {
@@ -1026,6 +1037,7 @@
       "species": 28,
       "name": "Vademon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/vademon.py",
       "home": null,
       "site": {
@@ -1064,6 +1076,7 @@
       "species": 31,
       "name": "Patamon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/patamon.py",
       "home": null,
       "site": {
@@ -1102,6 +1115,7 @@
       "species": 32,
       "name": "Kunemon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/kunemon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1140,6 +1154,7 @@
       "species": 33,
       "name": "Unimon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/unimon.py",
       "home": null,
       "site": {
@@ -1178,6 +1193,7 @@
       "species": 34,
       "name": "Ogremon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/ogremon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1216,6 +1232,7 @@
       "species": 35,
       "name": "Shellmon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/shellmon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1292,6 +1309,7 @@
       "species": 37,
       "name": "Bakemon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/bakemon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1368,6 +1386,7 @@
       "species": 39,
       "name": "Sukamon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/sukamon.py",
       "home": null,
       "site": {
@@ -1397,6 +1416,7 @@
       "species": 40,
       "name": "Andromon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/andromon.py",
       "home": null,
       "site": {
@@ -1435,6 +1455,7 @@
       "species": 42,
       "name": "Etemon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/etemon.py",
       "home": null,
       "site": {
@@ -1473,6 +1494,7 @@
       "species": 45,
       "name": "Biyomon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/biyomon.py",
       "home": null,
       "site": {
@@ -1549,6 +1571,7 @@
       "species": 47,
       "name": "Monochromon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/monochromon.py",
       "home": null,
       "site": {
@@ -1587,6 +1610,7 @@
       "species": 49,
       "name": "Coelamon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/coelamon.py",
       "home": "city/centar-clinic.py",
       "site": {
@@ -1616,6 +1640,7 @@
       "species": 50,
       "name": "Kokatorimon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/kokatorimon.py",
       "home": "city/file-city-services.py",
       "site": {
@@ -1692,6 +1717,7 @@
       "species": 52,
       "name": "Mojyamon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/mojyamon.py",
       "home": null,
       "site": {
@@ -1768,6 +1794,7 @@
       "species": 54,
       "name": "Megadramon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/megadramon.py",
       "home": "city/lower-city.py",
       "site": {
@@ -1806,6 +1833,7 @@
       "species": 55,
       "name": "Piximon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/piximon.py",
       "home": "city/item-shop.py",
       "site": {
@@ -1844,6 +1872,7 @@
       "species": 56,
       "name": "Digitamamon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/digitamamon.py",
       "home": null,
       "site": {
@@ -1882,6 +1911,7 @@
       "species": 57,
       "name": "Penguinmon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/penguinmon.py",
       "home": null,
       "site": {
@@ -1949,6 +1979,7 @@
       "species": 66,
       "name": "Myotismon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/myotismon.py",
       "home": null,
       "site": {
@@ -1987,6 +2018,7 @@
       "species": 70,
       "name": "WaruMonzaemon",
       "pool": "original",
+      "hint": true,
       "story": "arcs/challenges/warumonzaemon.py",
       "home": null,
       "site": {
@@ -2364,6 +2396,7 @@
       "species": 351,
       "name": "Kotemon",
       "pool": "new",
+      "hint": true,
       "story": "arcs/residents/kotemon.py",
       "home": null,
       "site": {
