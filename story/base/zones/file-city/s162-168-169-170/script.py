@@ -88,6 +88,10 @@ def enter():    # section 254
         medal.ending.set()
         sound(0, 7)
         narrator.say(t254.u3)
+        if engine.new_game_plus_unlocked and not engine.medal_second_journey:   # saved again in a New Game Plus run
+            engine.medal_second_journey.set()
+            sound(0, 7)
+            narrator.say(t254.u3)
         raw.give_card(65)
         narrator.say(t254.u4)
     if recruited(Species.Drimogemon):

@@ -164,7 +164,7 @@ def use5():    # section 85
         wait(250)
         return
     narrator.say(t85.u2)
-    if engine.game_beaten or engine.new_game_plus_unlocked:
+    if engine.game_beaten:   # every run must save the island before it can restart
         match narrator.choose(a=t85.m0.o0, d=text.rite.menu, e=text.ngplus.menu, b=t85.m0.o1):
             case "a":
                 hide_hud()

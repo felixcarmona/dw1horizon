@@ -1766,6 +1766,7 @@ class anim:
     unhappy: int = 19    # partner
 
 class _engine:
+    new_game_plus_count: Var    # var 20: New Game Plus runs started on this save (C adds 1, stops at 255)
     prosperity: Var    # var 1: recomputed by C on every save and game start
     shop_hi: Var    # var 243: SHOP_VARIABLE, high byte
     shop_lo: Var    # var 244: SHOP_VARIABLE, low byte
@@ -1792,6 +1793,8 @@ class _engine:
     card_machine: Flag    # flag 42: routine card_shop sells the item shop's machine cards (patch 0237)
     game_beaten: Flag    # flag 50
     new_game_plus_unlocked: Flag    # flag 642: set by a New Game Plus: the save machine keeps the option in the new run
+    medal_new_beginning: Flag    # flag 643: medal 21, New Beginning: set by every New Game Plus
+    medal_second_journey: Flag    # flag 644: medal 22, Second Journey: the island saved in a New Game Plus run
 engine: _engine
 glances: Var    # var 101
 

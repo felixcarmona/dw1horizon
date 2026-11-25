@@ -25,6 +25,8 @@ medal of the rink's hardest cup ([curling](curling.md)). The rules are data:
 | 18 | Horizon City | every resident recruited (EXTENDED STORY on) |
 | 19 | Full Collection | every card (NEW CARDS on) |
 | 20 | Technique Master | the 57 original techniques and every technique of the new rows (kind `everyMove`) |
+| 21 | New Beginning | starting a [New Game+](new-game-plus.md) (set by the reset, no row) |
+| 22 | Second Journey | saving the island again in a New Game+ run (the story gives it, no row) |
 
 - A classic medal does not change with the options: Classic Collection counts only the original cards even with NEW CARDS on.
 - Horizon Master, Horizon City and Full Collection wait for their option. While it is off the medal is not shown in the
@@ -32,7 +34,8 @@ medal of the rink's hardest cup ([curling](curling.md)). The rules are data:
 - Classic City is checked every tick from the recruit flags. Jijimon's scene at 100 prosperity still raises the tamer
   level and brings Tsunomon, and no longer gives the medal.
 
-Medals 0-19 are the triggers `0x16C + medal`; medal 20 is trigger 641 (`MEDAL_TRIGGER`, ids.h), because `0x180` is the shop stock.
+Medals 0-19 are the triggers `0x16C + medal`; medal 20 is trigger 641 and medals 21-26 are triggers 643-648 (`MEDAL_TRIGGER`, ids.h),
+because `0x180` is the shop stock and 642 is New Game+. A medal past 26 needs another free block of triggers.
 
 ## The Medals view
 
@@ -41,8 +44,10 @@ selected medal's name, two lines of description and its state: earned, a count s
 
 Each medal is a drawn picture: `content/medals/NN.txt` holds its fifteen colours, a 24x24 grid (`small`, the list) and a
 48x48 grid (`large`, the selected medal). A medal not earned yet is the same picture in dark metal; that palette is
-computed by `tools/species.py medal_block`, which packs the art into `DIGI.DAT`. The view loads the small pictures over
-the old coin stamps in video memory when it opens and the large one when the cursor moves, so the art costs no memory.
+computed by `tools/species.py medal_block`, which packs the art into `DIGI.DAT`. The view keeps fifteen small pictures in video memory, over
+the old coin stamps: the three rows on screen. When the list scrolls it loads the rows that came into view
+(`medalLoadRows`, one disc sector per five medals), and the large one when the cursor moves, so the art costs no memory
+and the number of medals is not limited by video memory.
 The spinning coin of the original view is gone, and with it its 2 KB mesh buffer. The cursor stays on the medal last
 looked at; when an option was switched off and that medal is no longer listed, it returns to the first.
 

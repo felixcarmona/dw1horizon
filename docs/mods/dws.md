@@ -55,7 +55,7 @@ recipe uses the original allocation pools on the production mod executable.
 
 ```
 flag reward_taken;                 // a free trigger (717-788), allocated by the compiler
-var visits;                        // a saved pstat (7-15, 20)
+var visits;                        // a saved pstat (7-15)
 
 script 178 {                       // DG.SCN script 178: Jijimon's house
     npc jijimon = 5;               // entity number = the slot's script id in the .MAP (usually 5 + slot)
@@ -93,7 +93,7 @@ Comments `// ...` and `/* ... */`. Statements end in `;`. Names are case-sensiti
 | `module name;` | namespace prefix of the allocation keys (default: the file name) |
 | `import "lib.dws";` | loads another file first; its `pub` flags, vars, consts and fns become visible |
 | `flag f;` / `flag f = 717;` | bool, one trigger 717-788. With `= N` the number is **pinned** |
-| `var v;` / `var v = 12;` / `var v: u8;` | u8 saved on the memory card: pstats 7-15, 20 |
+| `var v;` / `var v = 12;` / `var v: u8;` | u8 saved on the memory card: pstats 7-15 |
 | `persistent`, `session`, `temp`, `screen` before `flag`/`var` | the scope (see "State"): `persistent` is the default; the other three are not saved (pstats 45-93; 94-99 are the compiler's scratch registers) |
 | `flag[16] chests;` / `var[3] n;` | an array: consecutive numbers; `chests[3]` with a constant index (original) |
 | `var stage: Stage;` | a variable of an enum type (`enum Stage { None, Found = 5, Done }`): only its values are accepted |
@@ -114,7 +114,7 @@ Parameter types of `fn`: `int bool ticks text entity item species tech card scre
 
 | Scope | Lives | Original storage | Extended-save storage |
 |---|---|---|---|
-| `persistent` | memory card | triggers 717-788 (72), pstats 7-15, 20 (10, u8) | 16 384 flag bits (trigger 800 + n), 1 024 `i32` (`v0`-`v1023`) |
+| `persistent` | memory card | triggers 717-788 (72), pstats 7-15 (9, u8) | 16 384 flag bits (trigger 800 + n), 1 024 `i32` (`v0`-`v1023`) |
 | `session`, `screen`, `temp` | original: pstats 45-93 | pstats 45-93 | 256 scene `i32` (`s0`-`s255`): not saved, cleared on a screen change and on a load |
 
 The optional extended-save target uses a 3-block save slot; it compiles with `--exe story-state`: a story flag `f` is the trigger 800 + its
