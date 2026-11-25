@@ -98,6 +98,22 @@ class ResidentChallenges(unittest.TestCase):
             bank = json.loads((MOD / f'text/{lang}.json').read_text())
             self.assertEqual(sorted(names - set(bank)), [], lang)
 
+    def test_yuramon_riddles_are_the_hint_rows(self):
+        """Yuramon's after-ending talk has a riddle (who, where) for every row marked `hint` and for no other, tested on its
+        own pool's var, in every language."""
+        src = (MOD / 'arcs/rumours/yuramon.py').read_text()
+        talk = src[src.index('def the_day_rumours'):]
+        told = re.findall(r'(new_challenger|challenger) == CH_(\w+):\n\s+say\(t\("(\w+)\.rumour\.who"\), t\("\3\.rumour\.where"\)\)', talk)
+        want = {('new_challenger' if r['pool'] == 'new' else 'challenger', r['name'].upper(), r['name'].lower())
+                for r in self.rows if r.get('hint')}
+        self.assertEqual(sorted(set(told)), sorted(want))
+        self.assertEqual(len(told), len(want))
+        self.assertTrue(all(isinstance(r.get('hint', False), bool) for r in self.rows))
+        keys = {f'{n}.rumour.{w}' for _, _, n in want for w in ('who', 'where')} | {'rumour.unheard', 'rumour.quiet'}
+        for lang in ('en',) + LANGS:
+            bank = json.loads((MOD / f'text/{lang}.json').read_text())
+            self.assertEqual(sorted(keys - set(bank)), [], lang)
+
     def test_every_stage_has_challengers(self):
         """Stage rule same-or-lower: a Rookie partner and up always has a few residents who can go out."""
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
