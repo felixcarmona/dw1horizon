@@ -1754,12 +1754,16 @@
       "list": "content/imports/lists/sixth-12.json",
       "entry": {
         "name": "MarineAngemon",
-        "game": "dcb",
-        "model": 230
+        "game": "dw2",
+        "model": "M216MANG",
+        "level": 5,
+        "element": 5,
+        "donor": 28,
+        "scale": 0.17
       },
       "level": 5,
       "spec": "content/imports/specs/MarineAngemon.json",
-      "spec_sha256": "b1995aa204172a0e6489cab5d952c278f0882483c36c52828eca83519df06770",
+      "spec_sha256": "487f664b7acfa5d3103968679009555df75825a3d57093fc77f469e8ea50e4f7",
       "out": "build/batch6"
     },
     {

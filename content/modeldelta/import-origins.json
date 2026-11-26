@@ -683,17 +683,12 @@
     },
     {
       "path": "build/batch6/MarineAngemon.MMD",
-      "sha": "1349d2fa780b52e650574d990018348e71ad3f513f86dc9a9b98c1258f1770c3",
-      "size": 93832
-    },
-    {
-      "path": "build/sizes-out/models/MarineAngemon.MMD",
-      "sha": "a7d95ba71c4e2383b805a882e01ab25cae59d5f3e35a37eaa2099de3af272993",
-      "size": 93832
+      "sha": "71ad44ab9240c1ac9a54a4919e0fce483ad34491ba5eaba601010132a002fc97",
+      "size": 98250
     },
     {
       "path": "build/batch6/MarineAngemon.TIM",
-      "sha": "fbbd8843e728d0acc7ee20fd7124b4793a42972b9e09c55eada03295665a7741",
+      "sha": "e29ec788910fdd0635148e30f0753cc214e6e197079ff2067120aa532933eaeb",
       "size": 18432
     },
     {
