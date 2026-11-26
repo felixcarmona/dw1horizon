@@ -10,7 +10,7 @@ releases carry the same models (2026-10-25):
   jp  DigimonWorld: Digital Card Arena (Japan), SLPS-03101, the game the USA one localises: 247 of 268 identical,
       every recipe model among them
 
-Every packed record of the 78 recipe models (624: textures and animations) unpacks to the same bytes on each release:
+Every packed record of the 77 recipe models (616: textures and animations) unpacks to the same bytes on each release:
 dcb/unpack.py ($DCB_ROOT) is the game's routine rewritten in plain Python, proven equal to the game's
 own code of all three executables run under unicorn (`python -m dcb.decompress check`), so no executable is needed.
 (The Japanese Digital Card Battle of 1999, SLPS-02506, is another game: no model in common.)

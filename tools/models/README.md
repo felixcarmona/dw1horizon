@@ -882,8 +882,10 @@ drives the arms and has both boots in the air between steps.
 
 Wizardmon (241) is bound to native Angemon (`native_binding.py`, recipe 241) and plays
 Angemon's own idle, walk, condition walk and run, root travel included (21.25, 16.25 and
-37.5 units a tick). Its source stands turned 45 degrees side-on, so the recipe turns the
-whole source forward first (`source_yaw`); the staff is turned from its source direction
+37.5 units a tick). Its source is Digimon World 2's model (M194WIZA; until 2026-11-26 the Card Battle's, which
+stands turned 45 degrees side-on): the recipe's `bind_pose` gives every bone the pose the Card Battle recipe was
+reviewed in, matched piece by piece onto the same mesh, and `source_joints` keeps the Card Battle model's joints as the
+points the pieces are anchored and aimed from, since World 2's bones pivot elsewhere; the staff is turned from its source direction
 onto a held-out direction clear of the hat brim and thighs (`swing`) and rides Angemon's
 staff hand, bone 9; the free glove is turned 70 degrees about the forearm (`roll`) so its
 palm faces the body, not forward. Angemon's hips are set 22 units further apart
@@ -894,7 +896,9 @@ binding: in the field clips it holds the upper arms further out from the body
 (`ARMS_OUT`), and in every program it replaces the wing beat on those three bones with
 followers that take part of the head's (cape top, hair) or chest's (cape hem) turn a
 few ticks late and trail back with the root's speed, which wraps around each endless loop (`closed`) so the
-loop ends on the pose it began from and the cape and hair do not creep further with every pass. Techniques and
+loop ends on the pose it began from and the cape and hair do not creep further with every pass. The battle clips of
+`battle_originals` are World 2's own (the idle's loop seam closed with `seam`, the two hit clips at 25 ticks).
+Techniques and
 the training clip (57, Angemon's 46) are Angemon's; the record's effect points and
 condition bubble are carried onto the new bones (`species_patch`).
 

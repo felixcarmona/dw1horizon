@@ -1809,26 +1809,26 @@
         "sources": [
           {
             "path": "build/batch6/Wizardmon.MMD",
-            "sha256": "ea75dd448118244bd05367eb5b3ae73c2b9404b7791ee5da54a493481dfddbdf",
-            "size": 98840
+            "sha256": "63216cf8d342e7c03f88aee6bd1e370f3dfa1612d2fdf1475c8b69fcab114013",
+            "size": 96514
           }
         ],
         "delta": "content/modeldelta/deltas/241-Wizardmon.MMD.mdelta",
-        "delta_sha256": "93dd4d464641a0bbe20d0cdfab9c888c02fd47eb2a87ee84c414d63c3e419bad",
-        "sha256": "b403f2dca8d9048696e8e41b0ae933d542c708a3582a31bf46dabb0f2dd1ae78",
-        "size": 105404
+        "delta_sha256": "8caf766a4b634627c391421bba2ab7d5cdd39a9be4980fdb304a988237f29356",
+        "sha256": "77299de48fee5fba7877293b05f4415840761b00dd34b4f488b6f1ff64497dad",
+        "size": 96518
       },
       "tim": {
         "sources": [
           {
             "path": "build/batch6/Wizardmon.TIM",
-            "sha256": "1e69bdccb8b1c0ce38a1b06803b61743c6139e54d6f40a403cb4cc94680c4598",
+            "sha256": "7336a5d0de797747c7164b7e6f088a09758d7e480aa8180eb7989225d966bd35",
             "size": 18432
           }
         ],
         "delta": "content/modeldelta/deltas/241-Wizardmon.TIM.mdelta",
-        "delta_sha256": "11e5dcb4b497cd84d4a8542396fb882815e4466dcff4624049d817d4707028c0",
-        "sha256": "1e69bdccb8b1c0ce38a1b06803b61743c6139e54d6f40a403cb4cc94680c4598",
+        "delta_sha256": "d2073ab3f018ab65dd364d80e67a8df956a0a03ef90ea53462f1aa219560e11c",
+        "sha256": "7336a5d0de797747c7164b7e6f088a09758d7e480aa8180eb7989225d966bd35",
         "size": 18432
       }
     },

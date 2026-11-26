@@ -1654,15 +1654,19 @@
       "list": "content/imports/lists/sixth-12.json",
       "entry": {
         "name": "Wizardmon",
-        "game": "dcb",
-        "model": 154,
+        "game": "dw2",
+        "model": "M194WIZA",
+        "level": 4,
+        "element": 1,
+        "donor": 9,
+        "scale": 0.193,
         "from": [
           235
         ]
       },
       "level": 4,
       "spec": "content/imports/specs/Wizardmon.json",
-      "spec_sha256": "52da2ad5db18f1c9a01f25033a7253208fa8d767eda94b928e80b2c8c72aaf65",
+      "spec_sha256": "c8eeed7b9cad0afc4a79f4e1fe90c38dbd0782dab853509aeac76bcc059a42f9",
       "out": "build/batch6"
     },
     {

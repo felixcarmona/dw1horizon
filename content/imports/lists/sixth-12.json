@@ -4,8 +4,12 @@
  "digimon": [
   {
    "name": "Wizardmon",
-   "game": "dcb",
-   "model": 154,
+   "game": "dw2",
+   "model": "M194WIZA",
+   "level": 4,
+   "element": 1,
+   "donor": 9,
+   "scale": 0.193,
    "from": [
     235
    ]

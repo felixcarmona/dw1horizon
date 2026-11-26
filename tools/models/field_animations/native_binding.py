@@ -176,6 +176,12 @@ def bind(data, skeleton, recipe, placements=None, final=True, battle_context=Non
         # a source posed turned about the vertical (a side-on stance) is turned to face forward whole before fitting
         c, s = math.cos(math.radians(recipe['source_yaw'])), math.sin(math.radians(recipe['source_yaw']))
         sw = np.array([np.array([[c, 0, s, 0], [0, 1, 0, 0], [-s, 0, c, 0], [0, 0, 0, 1]]) @ m for m in sw])
+    # `source_joints`: where the reviewed source had its joints in this world, for another model of the same mesh whose
+    # bones pivot elsewhere (a Card Battle recipe carried onto the World 2 model): the pieces' default anchors and the
+    # segment directions are measured from these points, so the reviewed placement holds
+    joints = {int(b): np.array(v, dtype=float) for b, v in recipe.get('source_joints', {}).items()}
+    def joint_of(b):
+        return joints[b] if b in joints else sw[b, :3, 3]
     nw = np.array(mmd.bone_matrices(native, native_pose))
     nw[:, :3, 3] *= recipe['scale']
     if recipe.get('spread_fit'):
@@ -227,7 +233,7 @@ def bind(data, skeleton, recipe, placements=None, final=True, battle_context=Non
         direction = rule.get('direction', [sb, segments[sb]] if sb in segments else None)
         if direction:
             start, end = direction
-            a = sw[end, :3, 3] - sw[start, :3, 3]
+            a = joint_of(end) - joint_of(start)
             b = nw[mapping[end], :3, 3] - nw[mapping[start], :3, 3]
             axis = a / np.linalg.norm(a)
             transform = np.array(retarget.swing(a.tolist(), b.tolist())) @ (
@@ -244,7 +250,7 @@ def bind(data, skeleton, recipe, placements=None, final=True, battle_context=Non
         if 'follow' in rule:
             # a rigid end piece (a fist) turns with the fitted segment it hangs from, without its stretch
             start = rule['follow']
-            a = sw[segments[start], :3, 3] - sw[start, :3, 3]
+            a = joint_of(segments[start]) - joint_of(start)
             b = nw[mapping[segments[start]], :3, 3] - nw[mapping[start], :3, 3]
             transform = np.array(retarget.swing(a.tolist(), b.tolist())) @ transform
             if 'roll' in rule:
@@ -280,7 +286,7 @@ def bind(data, skeleton, recipe, placements=None, final=True, battle_context=Non
             x = x - y*(x @ y)
             x = x / np.linalg.norm(x)
             transform = np.column_stack([x, y, np.cross(x, y)]) @ source.T * factor
-        anchor = np.array(rule.get('anchor', sw[sb, :3, 3].tolist()))
+        anchor = np.array(rule.get('anchor', joint_of(sb).tolist()))
         destination = nw[rule.get('joint', tb), :3, 3] + np.array(rule.get('offset', [0, 0, 0]))
         if 'follow_piece' in rule:
             reference = int(rule['follow_piece'])
