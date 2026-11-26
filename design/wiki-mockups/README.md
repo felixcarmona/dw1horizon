@@ -14,7 +14,7 @@ Stop the preview with Ctrl-C when finished.
 
 The build uses `tools/guide/build.py` and `recruits.py` to read the selected Git snapshot and validate recruit assertions. It copies the unchanged main-site stylesheet and the existing licensed local font into ignored build output. `snapshot.json` records the tag/commit and the exact facts displayed. No disc extraction, game build, network service or new artwork is needed.
 
-Search forms, type filters, requirements disclosures and recruitment spoiler controls work locally. The search index covers only the preview records, explicitly labeled on the screen. Home links to unwritten articles use the closest preview; the production URL scheme and nine-language workflow are proposed in `WIKI-PROPOSAL.md`. The header's English label is static. The Android article is a draft with device verification pending.
+Search forms, type filters, requirements disclosures and recruitment spoiler controls work locally. The search index covers only the preview records, explicitly labeled on the screen. Home links to unwritten articles use the closest preview; the production URL scheme and nine-language workflow are proposed in `docs/proposals/wiki-proposal.md`. The header's English label is static. The Android article is a draft with device verification pending.
 
 Capture and check the four pages at 390 px and 1440 px widths:
 

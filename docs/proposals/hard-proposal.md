@@ -2,12 +2,12 @@
 
 > Historical approach review. Approach A is implemented with the subsequently
 > specified HARD damage floor and shared Defense continuation; see
-> [current rules and evidence](HARD-DIFFICULTY.md). Tables below describe the
+> [current rules and evidence](../reference/hard-difficulty.md). Tables below describe the
 > original alternatives and do not include those later changes.
 
 **Status at this review: proposal only; no HARD game changes were included.**
 Experimental implementation work was parked. The existing
-[stat audit](STAT-SOFTCAP.md) is retained as historical analysis; its universal
+[stat audit](../reference/stat-softcap.md) is retained as historical analysis; its universal
 soft-growth and finisher-soft-cap candidates are not recommended here.
 Gameplay inputs are pinned to `origin/main` commit
 `0cbdeb2ccef749de68abe2f6be9376fa2e97ed9d`.
@@ -341,13 +341,13 @@ that all stats should grow more slowly.
 
 ## Evidence and next decision
 
-Numeric sources: [battle formulas](content/tables/battle-formulas.json),
-[type factors](content/tables/type-factors.json),
-[Thunder Justice](content/techniques/8-thunder-justice.json),
-[training](content/tables/training.json),
-[training gains](content/tables/training-gains.json),
-[evolution rules](content/tables/evolution-rules.json),
-[Pukumon](content/species/401-pukumon.json), owned map placements and the
+Numeric sources: [battle formulas](../../content/tables/battle-formulas.json),
+[type factors](../../content/tables/type-factors.json),
+[Thunder Justice](../../content/techniques/8-thunder-justice.json),
+[training](../../content/tables/training.json),
+[training gains](../../content/tables/training-gains.json),
+[evolution rules](../../content/tables/evolution-rules.json),
+[Pukumon](../../content/species/401-pukumon.json), owned map placements and the
 Horizon challenge scripts. Integer calculations use the existing audit's
 `damage`/signed-truncation functions. The table parameters and formulas above
 fully specify A/B/C; no game code is needed to evaluate them.

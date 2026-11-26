@@ -250,9 +250,9 @@ floor cannot resolve a finisher one-shot, since finishers ignore Defense. These
 exploratory losses are retained in local logs; the primary table proves story
 boss winnability, not universal first-life post-game winnability.
 
-Portable evidence: [live CSV](docs/data/hard-difficulty/live-fights.csv),
-[damage and action traces](docs/data/hard-difficulty/live-fights.json), and
-[build/UI/selftest measurements](docs/data/hard-difficulty/verification.json).
+Portable evidence: [live CSV](../data/hard-difficulty/live-fights.csv),
+[damage and action traces](../data/hard-difficulty/live-fights.json), and
+[build/UI/selftest measurements](../data/hard-difficulty/verification.json).
 There are 18 primary before/current trials and two additional current repeat
 trials. No full-life raise or physical-console run is claimed.
 
@@ -284,4 +284,4 @@ Growth is unchanged. 8005 HP and 9520 MP normalize to 800.5 and 952 on the other
 stats' scale. The constructed no-chip Pukumon witness reproduces these values
 with evolution and 54 ordinary training sessions; it is not a replay of the
 reported save or a complete first-life care schedule. The source-by-source
-finding and proposal to retain growth are in [STAT-SOFTCAP.md](STAT-SOFTCAP.md).
+finding and proposal to retain growth are in [stat-softcap.md](stat-softcap.md).

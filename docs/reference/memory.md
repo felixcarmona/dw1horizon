@@ -720,7 +720,7 @@ play ticks apart while care time stays fixed. Both native x5 gym runs, cancel,
 hunger stop, tally/new-order clearance, OFF and callback cleanup pass again on
 this build. The hunger stop renders full red immediately from overdue food,
 before the paused native HUNGRY flag updates. See
-[need-alert evidence](../../HUD-DESIGN.md#need-alert-runtime-confirmation).
+[need-alert evidence](../proposals/hud-design.md#need-alert-runtime-confirmation).
 
 ### Code out of the executable (patch 0098)
 
@@ -1187,7 +1187,7 @@ are **509,648 / 29,656 / 134,264 / 621,116 B**. MENU grows
 Normal heapcheck passes without an override; all **320 actual-archive setups**
 fit, with **2,112 B** remaining on the tightest setup, screen 207.
 
-See [the bubble implementation and proof](../../BUBBLE-DESIGN.md) for the pixel
+See [the bubble implementation and proof](../proposals/bubble-design.md) for the pixel
 allocation, behaviour and reproducible checks.
 
 

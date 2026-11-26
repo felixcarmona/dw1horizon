@@ -35,7 +35,7 @@ presentation only; the two care needs and their menu entries would stay separate
 
 The source evidence is the existing `hpmp-native-proof.png` and
 `hpmp-eight-needs-4x.png` native 2 MB verification sheets described in
-[BUBBLE-DESIGN.md](BUBBLE-DESIGN.md). Local copies are named
+[bubble-design.md](bubble-design.md). Local copies are named
 `source-native-proof.png` and `source-eight-needs-4x.png` in the output directory.
 `evidence.json` records SHA-256 hashes of both inputs and the local texture atlas.
 This task reuses those captures; it does not claim a fresh emulator run.
@@ -303,7 +303,7 @@ the final result comes from a complete fresh run.
 ## Current implementation: proposal 4, faded native colour
 
 The dark 4a art is superseded by proposal 4 from
-[the lighter-treatment review](HPMP-LOW-LOOK-MOCKUPS.md). Native battle HUD
+[the lighter-treatment review](hpmp-low-look-mockups.md). Native battle HUD
 silhouettes remain 11×11, with a continuous dark outer contour, pale desaturated
 native shading above, and saturated red/blue below. Internal black rings fade
 with the native shading instead of forming a dark mass. The original battle HUD

@@ -21,7 +21,7 @@ opens a box of thirteen switches (twelve in a `FONT=original` build, which has n
 
 The care HUD and status-screen care panels are always enabled. The field and gym
 HUD shows happiness, discipline, hunger, toilet and tiredness; the status screen
-shows care bars, numbers and care mistakes. See [gauge meanings](../../HUD-DESIGN.md#exact-gauge-contract).
+shows care bars, numbers and care mistakes. See [gauge meanings](../proposals/hud-design.md#exact-gauge-contract).
 The digital clock beneath the field dial and continuous enemy head bars are also
 permanent. Saved-options bytes 1 and 3 are ignored on load and written as 1.
 Byte 2 stores FRAME RATE as 0xA0 (AUTO), 0xA1 (60), or 0xA2 (20). All other values load as AUTO.
@@ -83,9 +83,9 @@ value uses spare language-row texture/width slots; menu arrays stay the same siz
 All difficulties use the ordinary-technique Defense continuation above 999;
 HARD additionally floors enemy damage to the partner at 15% of the same hit
 against Defense zero. Finishers already ignore Defense, so the floor is
-automatically satisfied. See [implementation and evidence](../../HARD-DIFFICULTY.md).
+automatically satisfied. See [implementation and evidence](../reference/hard-difficulty.md).
 
-See [the difficulty and growth review](../../STAT-SOFTCAP.md) and
+See [the difficulty and growth review](../reference/stat-softcap.md) and
 `python3 tools/hard_audit.py` for targets, first-life HP/MP analysis and budgets.
 
 ## FONT
