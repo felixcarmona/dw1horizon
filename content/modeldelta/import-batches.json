@@ -2163,15 +2163,20 @@
       "list": "content/imports/lists/third-12.json",
       "entry": {
         "name": "Magnadramon",
-        "game": "dcb",
-        "model": 186,
+        "game": "dw2",
+        "model": "M235HDRA",
+        "level": 5,
+        "element": 3,
+        "donor": 24,
+        "scale": 0.1806,
+        "clip_policy": null,
         "from": [
           190
         ]
       },
       "level": 5,
       "spec": "content/imports/specs/Magnadramon.json",
-      "spec_sha256": "f6eb1f3391723a3c135bbe1b872021c84f948c6eae8c40e76963791e66d29f53",
+      "spec_sha256": "d8f733b1099ebce6580db54164550b3923f3904ecc1a332c4edd758f800a758e",
       "out": "build/batch3"
     },
     {

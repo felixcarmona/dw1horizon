@@ -1019,26 +1019,26 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Magnadramon.MMD",
-            "sha256": "76155c49e89059b9eee2a38dd63dcfdc66cba73262a083ab8c4518931e1d1784",
-            "size": 83362
+            "sha256": "87f6262c7dde58250c2315bbe24875b64b6ef1805d100e8ce47955dd98516484",
+            "size": 97824
           }
         ],
         "delta": "content/modeldelta/deltas/215-Magnadramon.MMD.mdelta",
-        "delta_sha256": "cad3331891dd6a72ef5336cb76d45075e48b31ab2c2e16cf4983ba487e5f9526",
-        "sha256": "1d3267a9960d50f648fe7e079d4ed4fd921db61830dcbca90a6555d420272e16",
-        "size": 93032
+        "delta_sha256": "abb46c112eef3b212afc7941e58ca321802dacd0ad619f9d45fba84bf5da35d7",
+        "sha256": "46b4edf8b1063f1aba3366f9da7afc345f2e041955157131e69e46d535b46c15",
+        "size": 97844
       },
       "tim": {
         "sources": [
           {
             "path": "build/batch3/Magnadramon.TIM",
-            "sha256": "61f32f13ad704e3a62c2776d8df6e94d629dca39b483e8f35b0663e31e9d1e00",
+            "sha256": "3ebcddb49744dda129b31797a9ae5c5c848af764ef2d48f3d8acdd8bea907c6b",
             "size": 18432
           }
         ],
         "delta": "content/modeldelta/deltas/215-Magnadramon.TIM.mdelta",
-        "delta_sha256": "07aedd0325ec557bda2e1549b47a1eb103e7d9adcf93cea196444432ccd9ce58",
-        "sha256": "61f32f13ad704e3a62c2776d8df6e94d629dca39b483e8f35b0663e31e9d1e00",
+        "delta_sha256": "1eeecde6442e5ddd196f347662551dd58db31404990149d5a354f858eaf531b8",
+        "sha256": "3ebcddb49744dda129b31797a9ae5c5c848af764ef2d48f3d8acdd8bea907c6b",
         "size": 18432
       }
     },

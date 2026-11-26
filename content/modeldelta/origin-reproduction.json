@@ -549,9 +549,9 @@
     },
     {
       "path": "build/batch3/Magnadramon.TIM",
-      "sha": "61f32f13ad704e3a62c2776d8df6e94d629dca39b483e8f35b0663e31e9d1e00",
+      "sha": "3ebcddb49744dda129b31797a9ae5c5c848af764ef2d48f3d8acdd8bea907c6b",
       "size": 18432,
-      "actual": "61f32f13ad704e3a62c2776d8df6e94d629dca39b483e8f35b0663e31e9d1e00",
+      "actual": "3ebcddb49744dda129b31797a9ae5c5c848af764ef2d48f3d8acdd8bea907c6b",
       "actual_size": 18432,
       "status": "equal"
     },
