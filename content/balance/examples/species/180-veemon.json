@@ -1,7 +1,7 @@
 {
   "id": 180,
   "name": "Veemon",
-  "_source": "Digimon Digital Card Battle F.DRV/148.PAK (tools/dcb2mmd.py partner content/models/dcb-import/veemon.json build/dcb)",
+  "_source": "Digimon World 2 AAA/4.AAA/MODEL/MODEL100/M145NTVA.BIN (tools/dw2mmd.py partner content/models/dcb-import/veemon-dw2.json build/dw2)",
   "level": "rookie",
   "attribute": "data",
   "specialties": ["battle", null, "fire"],
@@ -10,18 +10,18 @@
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 17,
   "model": {
-    "file": "build/dcb/Veemon.MMD",
+    "file": "build/dw2/Veemon.MMD",
     "radius": 130,
     "height": 270,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 2], [5, 5], [6, 6], [7, 2], [8, 8], [9, 9], [10, 1],
                  [11, 11], [12, 12], [13, 1], [14, 14], [15, 15], [16, 1], [17, 17], [18, 18]]
   },
-  "texture": {"file": "build/dcb/Veemon.TIM", "entry": 0},
+  "texture": {"file": "build/dw2/Veemon.TIM", "entry": 0},
   "voice": 15,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -85, -7, 3],
-  "effect_origins": [[3, 110, -140, 0, 3, 0, -5, -177], [3, 50, -40, 0, 3, 0, -3, -67],
-                     [3, "any", 0, 0, 3, 0, -3, -67]],
+  "condition_bubble": [3, -81, 7, 3],
+  "effect_origins": [[3, 110, -140, 0, 3, 1, -30, -152], [3, 50, -40, 0, 3, 1, -23, -51],
+                     [3, "any", 0, 0, 3, 1, -23, -51]],
   "_effect_origins": "Gabumon's head-bone origins moved onto Veemon's head (bone 3): Heat Laser in front of the face, Blue Blaster and anything else from the mouth",
   "wild": {"hp": 600, "mp": 500, "off": 120, "def": 90, "speed": 110, "brain": 80, "bits": 200},
   "partner": {

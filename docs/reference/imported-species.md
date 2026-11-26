@@ -414,8 +414,8 @@ the moves must come from one donor. Specialties Fire first, so the evolution tea
 a recipe of its own ([motion.md](motion.md)).
 
 **Veemon 180, Puppetmon 181, Kimeramon 182.** The first imports, each from a hand-written spec in
-`content/models/dcb-import/` (`dcb2mmd.py partner`, `dw2mmd.py partner`): Veemon from DCB with Gabumon's everyday
-slots, Puppetmon from DCB with Ogremon's (the club hand drives the hammer hand), Kimeramon from DW2 (geometry and
+`content/models/dcb-import/` (`dcb2mmd.py partner`, `dw2mmd.py partner`): Veemon from DW2 (M145NTVA since 2026-11-26, DCB before) with
+Gabumon's everyday slots, Puppetmon from DCB with Ogremon's (the club hand drives the hammer hand), Kimeramon from DW2 (geometry and
 texture exact, DW2's blink, its tail re-hung under the pelvis) with MetalGreymon's. Parts the donor does not drive
 (tails, extra wings and arms) play the source game's own idle in the looping everyday slots, retimed to whole cycles.
 

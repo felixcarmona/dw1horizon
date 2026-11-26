@@ -8,27 +8,27 @@
       "mmd": {
         "sources": [
           {
-            "path": "build/dcb/Veemon.MMD",
-            "sha256": "60b54f3da2e99f2805060cbd040f954e63e87d701570dbe06d298579033236c2",
-            "size": 98742
+            "path": "build/dw2/Veemon.MMD",
+            "sha256": "e8f2e565401987c99862bd3a9473c50346581f5c97cb3ff67422d27c1a178094",
+            "size": 95118
           }
         ],
         "delta": "content/modeldelta/deltas/180-Veemon.MMD.mdelta",
-        "delta_sha256": "f21bf6b93e02c206e0041d9295b41ee12d56cd60b2b9c9f6cad16b8a8e51f49a",
-        "sha256": "eb42132f083e9cce2cd487f14f74e013782a364d25e08217d4482e6ee22bafb6",
-        "size": 105246
+        "delta_sha256": "e6b2eac983c22399a9063a9433f57866260fc313381e8633e9f5755576a40ae0",
+        "sha256": "d42969d1e0d19e3b8bd3a0ead6d2f9bb3002c3df810c511581cb68e78342c44c",
+        "size": 102670
       },
       "tim": {
         "sources": [
           {
-            "path": "build/dcb/Veemon.TIM",
-            "sha256": "80fef9316ae20ba45cf13a3cb1e5652cd60dd7706bc54c89993332a5932b5469",
+            "path": "build/dw2/Veemon.TIM",
+            "sha256": "d830ad2275ce5d8bef2208e9dc01a7906846dfd2daaad545192c62b17b258700",
             "size": 18432
           }
         ],
         "delta": "content/modeldelta/deltas/180-Veemon.TIM.mdelta",
-        "delta_sha256": "eeae0adbc2eedc788e957ee2e61f10b8c215fe0b0768d7d5040e392687971b22",
-        "sha256": "a2d6fd874d0c8239c427c12758ba4fb0fe61c12ec9b15933c0b3be2cdf8ea5fd",
+        "delta_sha256": "74475c8b5875e1edd37961456b2a3df685ac10667066a6ed924d7790318b83f3",
+        "sha256": "d830ad2275ce5d8bef2208e9dc01a7906846dfd2daaad545192c62b17b258700",
         "size": 18432
       }
     },
