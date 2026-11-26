@@ -65,6 +65,26 @@ class FieldHUDArt(unittest.TestCase):
                 else:
                     self.assertEqual(actual,native_pal[self.pixel(self.base,bu+sx,bv-128+y,self.native)],(x,y))
 
+    def test_japan_rev1_bar_palette_gives_the_same_frame(self):
+        # Japan Rev 1 ships the same bar pixels; only CLUT row 500 differs:
+        # slot index 12 is near black (0x0421) and index 13 is 0.
+        jp=bytearray(self.base)
+        row=self.native-12-512+(NATIVE_BAR[2]-488)*32
+        struct.pack_into('<2H',jp,row+12*2,0x0421,0)
+        new=build(bytes(jp))
+        cells=[(u,v,ICON,ICON) for u,v in ICONS]+[(*FRAME,FRAME_W,FRAME_H),(*FILL,SLOT,2)]
+        for u,v,w,h in cells:
+            for y in range(v,v+h):
+                for x in range(u,u+w):
+                    self.assertEqual(self.pixel(new,x,y),self.pixel(self.new,x,y),(x,y))
+        for r in range(4,12):
+            self.assertEqual(self.pal(r,new),self.pal(r),r)
+        # The frame keeps that disc's own outline colour.
+        self.assertEqual(self.pal(12,new),tuple(0x0421 if c==0x7acc else c for c in self.pal(12)))
+        bad=bytearray(self.base);struct.pack_into('<H',bad,row+12*2,0x1234)
+        with self.assertRaisesRegex(ValueError,'native bar slot'):
+            build(bytes(bad))
+
     def test_fill_is_one_native_blue(self):
         pal=self.pal(11)
         for y,rgb in enumerate(FILL_COLOURS):
