@@ -300,7 +300,10 @@ class Exe:
     def write(self, table, blob):
         f, off, size = self.where(table)
         assert len(blob) == size, (table, len(blob), size)
-        self.data(f)[off:off + size] = blob
+        data = self.data(f)
+        # a table the linker put elsewhere (a small overlay array in the executable's .sdata) would be appended
+        if not 0 <= off <= len(data) - size: raise SystemExit(f'{table}: not inside {f} ({off:#x}, {size} bytes)')
+        data[off:off + size] = blob
 
 
 # ------------------------------------------------------------------ codecs: table bytes <-> JSON document
