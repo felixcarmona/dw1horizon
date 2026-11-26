@@ -32,6 +32,13 @@ def rows():
         return {k: v for k, v in json.load(f).items() if not k.startswith('_')}
 
 
+def variant_row(row, release):
+    """Row `row` as it applies to source release `release` (its `variants` entry, e.g. another factor
+    for another release's model), or the row itself."""
+    over = row.get('variants', {}).get(release) if release else None
+    return {**row, **over} if over else row
+
+
 def _translation(a):
     return (6, 7, 8) if a.has_scale else (3, 4, 5)
 

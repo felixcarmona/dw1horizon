@@ -22,6 +22,12 @@ class SpeciesSize(unittest.TestCase):
         self.assertEqual(out['effect_origin_fallback'], [1, 0, -20, 0])
         self.assertEqual(s['model']['height'], 500)
 
+    def test_a_release_can_take_its_own_factor(self):
+        row = {'target': 1.4, 'factor': 1.1, 'variants': {'dw3-us': {'factor': 1.3}}}
+        self.assertEqual(species_size.variant_row(row, 'dw3-us')['factor'], 1.3)
+        self.assertEqual(species_size.variant_row(row, None)['factor'], 1.1)
+        self.assertEqual(species_size.variant_row({'factor': 1.1}, 'dw3-us'), {'factor': 1.1})
+
     def test_manifest_rows_are_complete(self):
         rows = species_size.rows()
         for sid, row in rows.items():

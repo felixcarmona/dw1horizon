@@ -23,15 +23,27 @@ PINS = Path(__file__).resolve().parents[1] / 'derive/recipes/species-pins.json'
 HEADROOM = Path(__file__).resolve().parents[2] / 'content/models/imports/mesh-headroom.json'
 
 
-def apply_provider(data, skeleton, sid=None):
-    """Preserve already pinned alternate-release outputs until independently
-    verified/repinned. This uses the existing release pins, never species rules.
-    The developer apply() entry point remains available to audit those inputs."""
+def pinned_variant(data):
+    """The alternate release (imports@RELEASE) whose pinned species output is `data`, or None."""
     digest = hashlib.sha1(data).hexdigest()
     pins = json.loads(PINS.read_text())
     for provider, rows in pins.items():
         if provider.startswith('imports@') and any(pair[0] == digest for pair in rows.values()):
-            return data, dict(applied=False, source_variant=provider, deferred=True)
+            return provider
+    return None
+
+
+def apply_provider(data, skeleton, sid=None, finals=None):
+    """Preserve already pinned alternate-release outputs until independently
+    verified/repinned. This uses the existing release pins, never species rules.
+    `finals` ({imports@RELEASE: pass}) names a later pass that makes that release's
+    species output from this one's (its size): an input whose output through it is
+    pinned for that release is deferred too.
+    The developer apply() entry point remains available to audit those inputs."""
+    provider = pinned_variant(data) or next(
+        (p for p, final in (finals or {}).items() if pinned_variant(final(data)) == p), None)
+    if provider:
+        return data, dict(applied=False, source_variant=provider, deferred=True)
     reviewed = json.loads(HEADROOM.read_text())['ids']
     limit = MAX_RESIDENT if sid is not None and int(sid) in reviewed else None
     return apply(data, skeleton, resident_limit=limit)

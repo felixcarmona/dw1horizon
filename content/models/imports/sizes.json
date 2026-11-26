@@ -67,7 +67,7 @@
  "404": {"name": "BlackWarGreymon", "target": 1.4, "factor": 0.895},
  "405": {"name": "Cannondramon", "target": 1.8, "factor": 1.34, "after_cleanup": true},
  "408": {"name": "Suijinmon", "target": 1.4, "factor": 0.961},
- "409": {"name": "Kyubimon", "target": 1.4, "factor": 1.126, "after_cleanup": true},
+ "409": {"name": "Kyubimon", "target": 1.4, "factor": 1.126, "after_cleanup": true, "variants": {"dw3-us": {"factor": 1.306}}},
  "432": {"name": "Bastemon", "target": 1.3, "factor": 0.924},
  "460": {"name": "Garudamon", "target": 1.4, "factor": 0.895},
  "461": {"name": "Omnimon", "target": 1.6, "factor": 1.028, "bones": {"2": 0.85, "3": 1.1, "4": 0.9091, "7": 1.15}}
