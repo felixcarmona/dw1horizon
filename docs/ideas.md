@@ -194,3 +194,4 @@ against, leave this list.
 | A Cheats row that keeps the finisher gauge full | 🛠️ | Player suggestion (2026-11-25), for testing finishers; emulator codes written for the original game do not work here. |
 | Whamon's travel menu lists Factorial Town first and the new shore after it, so a wrong pick does not cost two extra loads back to the city | 🛠️ | Player suggestion (2026-11-26). Today the new shore is the first option; it holds one box and some story. |
 | With quick battles on, the tamer runs to his spot while the angry icon shows, and only then FIGHT appears, instead of jumping there | 🛠️ | Player suggestion (2026-11-26), with a video. |
+| Hawkmon appears only after Birdramon is recruited, through a Shellmon news item, and once recruited opens new landing points for Birdramon | 🎭 🆕 | Player suggestion (2026-11-26). |
