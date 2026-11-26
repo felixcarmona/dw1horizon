@@ -2,13 +2,13 @@
   "format": 1,
   "files": [
     {
-      "path": "build/dcb/Veemon.MMD",
-      "sha": "60b54f3da2e99f2805060cbd040f954e63e87d701570dbe06d298579033236c2",
-      "size": 98742
+      "path": "build/dw2/Veemon.MMD",
+      "sha": "e8f2e565401987c99862bd3a9473c50346581f5c97cb3ff67422d27c1a178094",
+      "size": 95118
     },
     {
-      "path": "build/dcb/Veemon.TIM",
-      "sha": "80fef9316ae20ba45cf13a3cb1e5652cd60dd7706bc54c89993332a5932b5469",
+      "path": "build/dw2/Veemon.TIM",
+      "sha": "d830ad2275ce5d8bef2208e9dc01a7906846dfd2daaad545192c62b17b258700",
       "size": 18432
     },
     {

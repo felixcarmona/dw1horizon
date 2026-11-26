@@ -147,7 +147,7 @@ X=content/models
 SP_LIST=${SPECIES_PROVIDER:-}; USES_IMPORTED_MODELS=0; case " ${SP_LIST//,/ } " in *" imports "*) USES_IMPORTED_MODELS=1 ;; esac
 if [ "${IMPORTS:-1}" != 0 ] && [ "${USES_IMPORTED_MODELS}" = 0 ]; then
   step "imported models -> $M"
-  model $M/Veemon.MMD    $PY tools/dcb2mmd.py partner $X/dcb-import/veemon.json $M        # 180
+  model $M/Veemon.MMD    $PY tools/dw2mmd.py partner $X/dcb-import/veemon-dw2.json $M     # 180 (Digimon World 2)
   model $M/Puppetmon.MMD $PY tools/dcb2mmd.py partner $X/dcb-import/puppetmon.json $M     # 181
   model $M/Kimeramon.MMD $PY tools/dw2mmd.py partner $X/dcb-import/kimeramon-dw2.json $M  # 182 (Digimon World 2)
   model $M/WarGreymon.MMD $PY $X/mega/make-model.py $M                                    # Mega 373

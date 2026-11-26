@@ -1,13 +1,21 @@
 {
   "180": {
+    "33": {"ticks": null, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -3.0}
+    ]},
+    "34": {"ticks": null, "ops": [
+      {"op": "turn", "bone": 8, "axis": "z", "deg": 25.0},
+      {"op": "turn", "bone": 5, "axis": "z", "deg": -25.0}
+    ]},
     "35": {"ticks": 25, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -10.0},
       {"op": "turn", "bone": 8, "axis": "z", "deg": 36.0},
       {"op": "turn", "bone": 5, "axis": "y", "deg": 24.0},
       {"op": "turn", "bone": 5, "axis": "z", "deg": -24.0},
       {"op": "turn", "bone": 8, "axis": "y", "deg": -12.0}
     ]},
     "36": {"ticks": 17, "ops": [
-      {"op": "turn", "bone": 1, "axis": "x", "deg": -20.0},
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -31.0},
       {"op": "turn", "bone": 2, "axis": "x", "deg": 10.0},
       {"op": "turn", "bone": 8, "axis": "y", "deg": -20.0},
       {"op": "turn", "bone": 5, "axis": "x", "deg": 20.0},
@@ -16,6 +24,21 @@
       {"op": "turn", "bone": 8, "axis": "z", "deg": 20.0},
       {"op": "turn", "bone": 9, "axis": "z", "deg": 20.0},
       {"op": "turn", "bone": 6, "axis": "z", "deg": -20.0}
+    ]},
+    "47": {"ticks": null, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -4.0}
+    ]},
+    "50": {"ticks": null, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -14.0}
+    ]},
+    "51": {"ticks": null, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -8.0}
+    ]},
+    "52": {"ticks": null, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -14.0}
+    ]},
+    "53": {"ticks": null, "ops": [
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -6.0}
     ]}
   },
   "188": {

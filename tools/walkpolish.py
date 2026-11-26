@@ -64,7 +64,7 @@ def all_species():
     return out
 
 
-EXPLICIT = {180: 'content/models/dcb-import/veemon.json', 181: 'content/models/dcb-import/puppetmon.json',
+EXPLICIT = {180: 'content/models/dcb-import/veemon-dw2.json', 181: 'content/models/dcb-import/puppetmon.json',
             182: 'content/models/dcb-import/kimeramon-dw2.json', 373: 'content/models/mega/wargreymon-dcb.json'}
 
 
