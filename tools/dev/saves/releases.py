@@ -419,6 +419,7 @@ class Emu:
                 # warp armed meanwhile. Arm it again once the tamer is free.
                 if tries > 1 and self.peek('TAMER_STATE', 'b', ram) == 0 and self.peek('TAMER_SUB_STATE', 'b', ram) == 0:
                     tries -= 1
+                    print(f'  the warp to {screen} was dropped on screen {self.peek("CURRENT_SCREEN", "h", ram)}: armed again', flush=True)
                     arm()
                 continue
             state = self.peek('TAMER_STATE', 'b', ram)
