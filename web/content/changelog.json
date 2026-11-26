@@ -3,7 +3,7 @@
   "versions": [
     {
       "version": "0.0.10",
-      "date": "2026-11-25",
+      "date": "2026-11-26",
       "en": {
         "new": [
           "40 new techniques in five new rows (Darkness, Light, Water, Weapon and Earth, eight each), with healing and support techniques, new effects and animations. Wild Digimon and bosses cast them, and partners learn them as usual.",
@@ -15,6 +15,7 @@
           "New Game+: once the island is saved, Jijimon’s save machine can restart the adventure, keeping your chart, medals, cards, learned techniques, tamer level and look. In that run a Devolve row returns the partner to an earlier form. A Rebirth option, open from Champion on, lets a grown partner be reborn and leaves a keepsake if it was content.",
           "Earned evolutions: when a trained Greymon, Meramon, Mammothmon or Garudamon partner loses a life and still has one left, it has a 30% chance of evolving into a special form at Jijimon’s house, if its stats are high enough.",
           "An optional extra fight for players who have finished the game, harder than the final one. It recruits nobody, and the first win gives two stat chips.",
+          "After the ending, recruited residents take turns leaving the city once a day to wait where you recruited them, ready for a rematch with stats that keep up with your partner. Winning pays bits and an item; losing lets you try again that day. Yuramon gives riddles for the ones that are hard to find.",
           "Hold R1 in the field to run 40% faster; walking moves to R2.",
           "A DANGER ALERT option (on by default) marks wild Digimon far stronger than your partner with a purple devil. Cheats gains a Full finisher row that keeps the finisher gauge full.",
           "Hold Cancel during an evolution that starts by itself to stop it; a ring and a hint appear at the bottom left."
@@ -62,6 +63,7 @@
           "New Game+: cuando la isla está salvada, la máquina de guardado de Jijimon puede reiniciar la aventura conservando tu gráfico, medallas, cartas, técnicas aprendidas, nivel de Tamer y aspecto. En esa partida una fila Devolve devuelve al compañero a una forma anterior. Una opción Rebirth, disponible desde Champion, permite que un compañero adulto renazca y deja un recuerdo si estaba contento.",
           "Evoluciones merecidas: cuando un compañero Greymon, Meramon, Mammothmon o Garudamon bien entrenado pierde una vida y aún le queda otra, tiene un 30 % de probabilidad de evolucionar a una forma especial en la casa de Jijimon, si sus estadísticas son suficientes.",
           "Un combate extra opcional para quien ha terminado el juego, más difícil que el final. No recluta a nadie, y la primera victoria da dos chips de estadísticas.",
+          "Tras el final, los residentes reclutados salen de la ciudad por turnos, uno al día, y te esperan donde los reclutaste para una revancha con estadísticas a la altura de tu compañero. Si ganas te dan bits y un objeto; si pierdes, puedes volver a intentarlo ese mismo día. Yuramon da adivinanzas para los que cuesta encontrar.",
           "Mantén R1 en el campo para correr un 40 % más rápido; andar pasa a R2.",
           "Una opción DANGER ALERT (activada por defecto) marca con un diablillo morado a los Digimon salvajes mucho más fuertes que tu compañero. Trucos añade una fila Full finisher que mantiene llena la barra de remate.",
           "Mantén Cancelar durante una evolución que empieza sola para detenerla; abajo a la izquierda aparecen un anillo y una indicación."
@@ -109,6 +111,7 @@
           "New Game+: com a ilha salva, a máquina de salvar do Jijimon pode reiniciar a aventura, mantendo seu gráfico, medalhas, cartas, técnicas aprendidas, nível de Tamer e visual. Nessa jogada, uma linha Devolve devolve o parceiro a uma forma anterior. Uma opção Rebirth, disponível a partir de Champion, deixa um parceiro adulto renascer e deixa uma lembrança se ele estava contente.",
           "Evoluções conquistadas: quando um parceiro Greymon, Meramon, Mammothmon ou Garudamon bem treinado perde uma vida e ainda tem outra, ele tem 30% de chance de evoluir para uma forma especial na casa do Jijimon, se seus atributos forem altos o bastante.",
           "Uma luta extra opcional para quem terminou o jogo, mais difícil que a final. Ela não recruta ninguém, e a primeira vitória dá dois chips de atributos.",
+          "Depois do final, os residentes recrutados se revezam e saem da cidade um por dia para esperar onde você os recrutou, prontos para uma revanche com atributos à altura do seu parceiro. Vencer dá bits e um item; perder deixa você tentar de novo no mesmo dia. Yuramon dá charadas sobre os mais difíceis de achar.",
           "Segure R1 no campo para correr 40% mais rápido; andar passa para R2.",
           "Uma opção DANGER ALERT (ativada por padrão) marca com um diabinho roxo os Digimon selvagens muito mais fortes que seu parceiro. Cheats ganha uma linha Full finisher que mantém cheio o medidor de finalizador.",
           "Segure Cancelar durante uma evolução que começa sozinha para interrompê-la; um anel e uma dica aparecem no canto inferior esquerdo."
@@ -156,6 +159,7 @@
           "New Game+ : une fois l'île sauvée, la machine de sauvegarde de Jijimon peut relancer l'aventure en gardant votre tableau, vos médailles, cartes, techniques apprises, niveau de Tamer et look. Dans cette partie, une ligne Devolve ramène le partenaire à une forme précédente. Une option Rebirth, ouverte à partir de Champion, permet à un partenaire adulte de renaître et laisse un souvenir s'il était content.",
           "Évolutions méritées : quand un partenaire Greymon, Meramon, Mammothmon ou Garudamon bien entraîné perd une vie et lui en reste une, il a 30 % de chances d'évoluer en une forme spéciale chez Jijimon, si ses statistiques sont assez hautes.",
           "Un combat supplémentaire facultatif pour ceux qui ont fini le jeu, plus dur que le dernier. Il ne recrute personne, et la première victoire donne deux puces de statistiques.",
+          "Après la fin, les résidents recrutés quittent la ville à tour de rôle, un par jour, pour vous attendre là où vous les avez recrutés, prêts pour une revanche avec des stats à la hauteur de votre partenaire. La victoire rapporte des bits et un objet ; en cas de défaite, vous pouvez réessayer le jour même. Yuramon donne des énigmes pour ceux qui sont difficiles à trouver.",
           "Maintenez R1 sur le terrain pour courir 40 % plus vite ; la marche passe sur R2.",
           "Une option DANGER ALERT (activée par défaut) marque d'un petit diable violet les Digimon sauvages bien plus forts que votre partenaire. Cheats gagne une ligne Full finisher qui garde la jauge d'attaque finale pleine.",
           "Maintenez Annuler pendant une évolution qui démarre seule pour l'arrêter ; un anneau et une indication apparaissent en bas à gauche."
@@ -203,6 +207,7 @@
           "New Game+: Ist die Insel gerettet, kann Jijimons Speichergerät das Abenteuer neu starten und behält dein Diagramm, Medaillen, Karten, gelernte Techniken, Tamer-Level und Look. In diesem Durchgang bringt eine Zeile Devolve den Partner zu einer früheren Form zurück. Eine Option Rebirth, ab Champion verfügbar, lässt einen ausgewachsenen Partner wiedergeboren werden und hinterlässt ein Andenken, wenn er zufrieden war.",
           "Verdiente Evolutionen: Verliert ein gut trainierter Greymon-, Meramon-, Mammothmon- oder Garudamon-Partner ein Leben und hat noch eines übrig, entwickelt er sich mit 30 % Wahrscheinlichkeit in Jijimons Haus zu einer Sonderform, sofern seine Werte hoch genug sind.",
           "Ein optionaler Zusatzkampf für alle, die das Spiel beendet haben, härter als der letzte. Er rekrutiert niemanden, und der erste Sieg gibt zwei Werte-Chips.",
+          "Nach dem Ende verlassen angeworbene Bewohner abwechselnd einmal am Tag die Stadt und warten dort, wo du sie angeworben hast, auf eine Revanche mit Werten, die mit deinem Partner mithalten. Ein Sieg bringt Bits und einen Gegenstand; nach einer Niederlage kannst du es am selben Tag erneut versuchen. Yuramon gibt Rätsel zu denen, die schwer zu finden sind.",
           "Halte R1 im Feld, um 40 % schneller zu rennen; Gehen liegt jetzt auf R2.",
           "Eine Option DANGER ALERT (standardmäßig an) markiert wilde Digimon, die viel stärker sind als dein Partner, mit einem lila Teufelchen. Cheats bietet eine Zeile Full finisher, die die Finisher-Leiste voll hält.",
           "Halte Abbrechen während einer Evolution, die von selbst beginnt, um sie zu stoppen; unten links erscheinen ein Ring und ein Hinweis."
@@ -250,6 +255,7 @@
           "New Game+: salvata l'isola, la macchina di salvataggio di Jijimon può ricominciare l'avventura mantenendo grafico, medaglie, carte, tecniche imparate, livello del Tamer e look. In quella partita una riga Devolve riporta il partner a una forma precedente. Un'opzione Rebirth, disponibile da Champion in poi, lascia rinascere un partner adulto e lascia un ricordo se era contento.",
           "Evoluzioni meritate: quando un partner Greymon, Meramon, Mammothmon o Garudamon ben allenato perde una vita e ne ha ancora una, ha il 30% di probabilità di evolvere in una forma speciale a casa di Jijimon, se le sue statistiche sono abbastanza alte.",
           "Uno scontro extra facoltativo per chi ha finito il gioco, più duro dell'ultimo. Non recluta nessuno, e la prima vittoria dà due chip di statistiche.",
+          "Dopo il finale, i residenti reclutati lasciano a turno la città, uno al giorno, e ti aspettano dove li hai reclutati per una rivincita con statistiche al passo con il tuo partner. Vincere dà bit e un oggetto; se perdi puoi riprovare lo stesso giorno. Yuramon propone indovinelli per quelli difficili da trovare.",
           "Tieni premuto R1 sul campo per correre il 40% più veloce; camminare passa a R2.",
           "Un'opzione DANGER ALERT (attiva per impostazione predefinita) segna con un diavoletto viola i Digimon selvatici molto più forti del tuo partner. Cheats guadagna una riga Full finisher che tiene piena la barra della mossa finale.",
           "Tieni premuto Annulla durante un'evoluzione che parte da sola per fermarla; in basso a sinistra compaiono un anello e un suggerimento."
@@ -297,6 +303,7 @@
           "ニューゲーム＋：島を救ったあと、ジジモンのセーブ装置から冒険をやり直せます。進化図、メダル、カード、覚えた技、テイマーレベル、見た目は引き継がれます。この周回では「退化」の行でパートナーを以前の姿に戻せます。成熟期以上なら「転生」で成長したパートナーを生まれ変わらせられ、満足していれば思い出の品を残します。",
           "獲得進化：よく育てたグレイモン、メラモン、マンモン、ガルダモンのパートナーがライフを1つ失い、まだ1つ残っているとき、能力が十分なら30％の確率でジジモンの家で特別な姿に進化します。",
           "ゲームをクリアした人向けの、任意の追加バトルです。最終決戦より手ごわく、仲間にはなりません。初回の勝利で能力チップを2つもらえます。",
+          "エンディング後、仲間にした住人が1日に1体ずつ町を出て、仲間にした場所で再戦を待ちます。能力はパートナーに合わせて強くなります。勝つとbitとアイテムがもらえ、負けてもその日のうちに何度でも挑めます。見つけにくい住人はユラモンがなぞなぞで教えてくれます。",
           "フィールドでR1を押し続けると40％速く走れます。歩きはR2に移りました。",
           "オプションDANGER ALERT（初期値はオン）で、パートナーよりはるかに強い野生デジモンに紫の小悪魔マークが付きます。チートには、必殺技ゲージを満タンに保つ「Full finisher」行が加わりました。",
           "勝手に始まる進化中にキャンセルを長押しすると、進化を止められます。左下にリングとヒントが表示されます。"
@@ -344,6 +351,7 @@
           "New Game+: quan l'illa està salvada, la màquina de desar de Jijimon pot reiniciar l'aventura conservant el gràfic, les medalles, les cartes, les tècniques apreses, el nivell de Tamer i l'aspecte. En aquesta partida una fila Devolve torna el company a una forma anterior. Una opció Rebirth, disponible des de Champion, deixa renéixer un company adult i deixa un record si estava content.",
           "Evolucions guanyades: quan un company Greymon, Meramon, Mammothmon o Garudamon ben entrenat perd una vida i encara en té una altra, té un 30 % de probabilitat d'evolucionar a una forma especial a casa de Jijimon, si les seves estadístiques són prou altes.",
           "Un combat extra opcional per a qui ha acabat el joc, més difícil que el final. No recluta ningú, i la primera victòria dona dos xips d'estadístiques.",
+          "Després del final, els residents reclutats surten de la ciutat per torns, un cada dia, i t'esperen on els vas reclutar per a una revenja amb estadístiques a l'altura del teu company. Si guanyes reps bits i un objecte; si perds, pots tornar-ho a provar aquell mateix dia. Yuramon fa endevinalles dels que costa trobar.",
           "Mantén R1 al camp per córrer un 40 % més ràpid; caminar passa a R2.",
           "Una opció DANGER ALERT (activada per defecte) marca amb un diablet lila els Digimon salvatges molt més forts que el teu company. Cheats guanya una fila Full finisher que manté plena la barra de l'atac final.",
           "Mantén Cancel·lar durant una evolució que comença sola per aturar-la; a baix a l'esquerra apareixen un anell i una indicació."
@@ -391,6 +399,7 @@
           "New Game+：拯救岛屿后，Jijimon的存档机可以重新开始冒险，保留你的图表、勋章、卡片、已学技能、驯兽师等级和外观。该周目中，Devolve一行可让伙伴回到较早的形态。从Champion起开放的Rebirth选项能让成年伙伴转生，若它当时满足，还会留下纪念品。",
           "赢得的进化：训练有素的Greymon、Meramon、Mammothmon或Garudamon伙伴失去一条命但还剩一条时，若能力足够，有30%的几率在Jijimon的家中进化为特殊形态。",
           "为通关玩家准备的可选额外战斗，比最终战更难。不会招募任何数码兽，首次获胜可得两枚能力芯片。",
+          "通关后，已招募的居民每天轮流有一位离开城市，在你招募它的地方等你再战，能力会跟上你的搭档。获胜可得到bit和一件道具；失败后当天可以再次挑战。难找的居民，Yuramon会用谜语提示。",
           "在野外按住R1可加速40%奔跑；步行改为R2。",
           "选项DANGER ALERT（默认开启）会用紫色小恶魔标出远强于你的伙伴的野生数码兽。作弊菜单新增Full finisher一行，让必杀技槽保持满格。",
           "在自动开始的进化中按住取消可中止进化；左下角会出现一个圆环和提示。"
