@@ -681,12 +681,16 @@
       "list": "content/imports/lists/first-10.json",
       "entry": {
         "name": "Angewomon",
-        "game": "dcb",
-        "model": 170
+        "game": "dw2",
+        "model": "M234ANGW",
+        "level": 5,
+        "element": 0,
+        "donor": 36,
+        "scale": 0.1945
       },
       "level": 5,
       "spec": "content/imports/specs/Angewomon.json",
-      "spec_sha256": "ac23104b155571cd7eed52ba0db61aa9146cfa8e41bb18721e76032869d987e7",
+      "spec_sha256": "fb43287e44f9206500154dd677da5b0a8e1d52a43a6b74dc71665d6f789624b8",
       "out": "build/batch"
     },
     {

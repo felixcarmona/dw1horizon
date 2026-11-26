@@ -92,13 +92,13 @@
       "size": 18432
     },
     {
-      "path": "build/sizes-out/models/Angewomon.MMD",
-      "sha": "75ad113a2b013e1474ab1e3f48dd5d74f347bfcaf9bb423fab8f4b56a32330da",
-      "size": 97854
+      "path": "build/batch/Angewomon.MMD",
+      "sha": "4652747e0cdb599fcac7b4815710a027f9a0de7bf38c8386420b21bb25d2e4a5",
+      "size": 98506
     },
     {
       "path": "build/batch/Angewomon.TIM",
-      "sha": "d0ef52f6ade9b99f020ec2f7221dd382bc8487b8622163eb1ec7771c86690b6c",
+      "sha": "dbb60a645f666f8fb2750a276984d57cf468dd9e3aac59016fc45d4c372d228b",
       "size": 18432
     },
     {

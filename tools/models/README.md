@@ -457,16 +457,10 @@ through `edit.py put`, so no later field generator can restore the larger size.
 across all clips, including the hammer, with the before/after models supplied
 as `ZUDOMON_BEFORE` and `ZUDOMON_AFTER`.
 
-Angewomon keeps the original mesh, rig and acting, with the existing field
-celebrations baked before a uniform 0.74 resize of mesh vertices and animation
-translations. Its helmet height is close to native Angemon at a shared world
-scale. World 2 and World 3 mesh trials on Angemon and Myotismon did not improve
-the posture and wing silhouette, so their bindings are excluded. The model
-provider uses the resized delta directly.
-
-`PYTHONPATH=tools python3 -m unittest tools.test_angewomon_size` checks the
-reviewed before/after files under `build/angewomon-redo/`; override them with
-`ANGEWOMON_BEFORE` and `ANGEWOMON_AFTER` for reconstructed inputs.
+Angewomon (190) is Digimon World 2's model (M234ANGW; until 2026-11-26 the Card Battle's). The importer scale (0.1945)
+gives it the height the old resized model had (the former sizes step and 0.74 resize are folded into it), so no
+resize record remains. Its victory clip is the World 2 clip retargeted by the importer; the old Card Battle celebration
+bake (tied to that rig) is gone.
 
 The six-species [creature motion review](../../docs/reference/reviewed-creature-motion.md)
 records native-donor field/care changes, uniform sizes, sound donors and replay
@@ -624,8 +618,8 @@ trot from `quadruped.py`; its paws are bound sole-backwards, so the profile's
 `paw_flat` gives their flat standing rotation, and `tail_up` carries the club
 tail clear of the ground. The 73-frame idle and walk stay as they were.
 
-Angewomon's (190) walk and run slid the feet without the legs carrying them.
-`field_animations/angewomon.py` takes native Angemon's walk, condition walk and
+Angewomon's (190) walk and run (the World 2 walk floats, its feet lift about 94 units) are
+`field_animations/angewomon.py`, which takes native Angemon's walk, condition walk and
 run the way `valkyrimon.py` does (legs solved onto his feet, his lean on the
 body), with her own swinging arms (he carries a staff), and the sash ends and
 lowest feathers kept off the ground. Buster Dive is applied after it at build.

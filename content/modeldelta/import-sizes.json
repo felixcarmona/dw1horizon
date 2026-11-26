@@ -2,14 +2,6 @@
   "format": 1,
   "files": [
     {
-      "source": "build/batch/Angewomon.MMD",
-      "source_sha256": "2e4653ef8c52ac73422d0e520c6c5a6372be975ab251646b583751b56cb355f7",
-      "bones": 31,
-      "scale": 1.263022262908361,
-      "target": "build/sizes-out/models/Angewomon.MMD",
-      "sha256": "75ad113a2b013e1474ab1e3f48dd5d74f347bfcaf9bb423fab8f4b56a32330da"
-    },
-    {
       "source": "build/batch/MetalGarurumon.MMD",
       "source_sha256": "d3095cff234e7fffc86c518e710f57817945cce073325c63d53d010e819feb7a",
       "bones": 23,

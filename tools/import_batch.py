@@ -1536,7 +1536,8 @@ def load_list(path):
     L = json.load(open(path))
     if 'clip_policy' in L:
         for entry in L['digimon']:
-            entry.setdefault('clip_policy', L['clip_policy'])
+            if entry.get('game', 'dcb') == 'dcb':       # a World 2 entry plays its own clips
+                entry.setdefault('clip_policy', L['clip_policy'])
     L['_path'] = path
     return L
 

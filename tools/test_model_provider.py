@@ -366,6 +366,8 @@ class ModelProvider(unittest.TestCase):
         self.assertNotIn('221', assignments)
         # Woodmon (272) neither: its walk, tired walk and run are in its model delta (woodmon.py).
         self.assertNotIn('field_overlay', records['272'])
+        # Angewomon (190) neither: World 2's model, its walk, tired walk and run are in its model delta (angewomon.py).
+        self.assertNotIn('190', assignments)
         # Gryphonmon (293) keeps only its celebration overlay: the gaits are in its model delta (gryphonmon_gait.py).
         self.assertEqual(records['293']['field_overlay'], 'gryphonmon-celebration')
         # Grizzlymon (296) neither: its idle, walk, tired walk and run are in its model delta (grizzlymon_gait.py).
@@ -373,7 +375,7 @@ class ModelProvider(unittest.TestCase):
         # KingEtemon (303) and GrapLeomon (306) wear native rigs and have no chibi row any more: their two entries left the pin.
         # WarGrowlmon (326) wears Growlmon's rig; its row stays for the proportions guard and its baked chibi recipe stays as provenance.
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         'f018a892b549b28afc2ef56af8c0b3f01a378a7c')
+                         '8847334be4d8055a853415b8e1410bc48bb26537')
 
 
 if __name__ == '__main__':

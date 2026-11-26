@@ -40,8 +40,12 @@
   },
   {
    "name": "Angewomon",
-   "game": "dcb",
-   "model": 170
+   "game": "dw2",
+   "model": "M234ANGW",
+   "level": 5,
+   "element": 0,
+   "donor": 36,
+   "scale": 0.1945
   },
   {
    "name": "MetalGarurumon",

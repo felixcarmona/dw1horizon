@@ -278,27 +278,27 @@
       "mmd": {
         "sources": [
           {
-            "path": "build/sizes-out/models/Angewomon.MMD",
-            "sha256": "75ad113a2b013e1474ab1e3f48dd5d74f347bfcaf9bb423fab8f4b56a32330da",
-            "size": 97854
+            "path": "build/batch/Angewomon.MMD",
+            "sha256": "4652747e0cdb599fcac7b4815710a027f9a0de7bf38c8386420b21bb25d2e4a5",
+            "size": 98506
           }
         ],
         "delta": "content/modeldelta/deltas/190-Angewomon.MMD.mdelta",
-        "delta_sha256": "01fd602556de1717fa7b00ca6f8599e91ceb9dd8f6fe7a163c20884ba7aa111e",
-        "sha256": "ba9032dcdce7f609765c84fad75c4a1357c67304ec14d2a59defbdf38112d1e3",
-        "size": 106576
+        "delta_sha256": "09e36ac8d00e2d8ca42e9b425aac1cac6336de4548c09869107fbd3570e49e71",
+        "sha256": "37c734c2a69c8b9f3f7419ca8262bce433853020862563c8bde8e91d3aa3c27b",
+        "size": 104106
       },
       "tim": {
         "sources": [
           {
             "path": "build/batch/Angewomon.TIM",
-            "sha256": "d0ef52f6ade9b99f020ec2f7221dd382bc8487b8622163eb1ec7771c86690b6c",
+            "sha256": "dbb60a645f666f8fb2750a276984d57cf468dd9e3aac59016fc45d4c372d228b",
             "size": 18432
           }
         ],
         "delta": "content/modeldelta/deltas/190-Angewomon.TIM.mdelta",
-        "delta_sha256": "9b9a5dd43db4a936aebfb3b07b5fc53a8954739cb24d7a13477a7c4ad6de9494",
-        "sha256": "d0ef52f6ade9b99f020ec2f7221dd382bc8487b8622163eb1ec7771c86690b6c",
+        "delta_sha256": "b0460e8c70b658b60cf17eed622d518266f0f59d4aeb4e25864f17a0d72f690c",
+        "sha256": "dbb60a645f666f8fb2750a276984d57cf468dd9e3aac59016fc45d4c372d228b",
         "size": 18432
       }
     },
