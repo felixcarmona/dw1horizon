@@ -5,6 +5,8 @@ Usage: python3 tools/test_item_bank_text.py build/decomp-dev
 Glyph drawing is stubbed; the real parser and proportional clear rounding run
 under sanitizers. Emulator checks cover real glyphs and asynchronous page flips.
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
+from host_tree import host_tree
 import re
 import subprocess
 import sys
@@ -20,7 +22,7 @@ def function(source, name):
 
 
 def main():
-    source = Path(sys.argv[1], 'src/main/script_textbox.c').read_text()
+    source = (host_tree('src/main/script_textbox.c') / 'src/main/script_textbox.c').read_text()
     macros = source[source.index('#define CLEAR_FROM_PEN'):source.index('\n#else\n#define CLEAR_FROM_PEN')]
     code = r'''
 #include <assert.h>
@@ -39,6 +41,8 @@ int FONT_PROPORTIONAL, DRAW_STRING2_IS_FIXED_WIDTH, FONT_CELLS;
 void *DRAW2_PIECES;
 unsigned char pixels[256];
 int glyphAdvance;
+#define MOD_LANG_ZH 8
+int MOD_LANG, ITEM_MENU_TYPE;
 void clearTextSubArea(RECT *r) {
     /* Match the PSX's 4-bpp cell conversion. */
     int x=(r->x/4)*4, w=(r->w/4)*4;
@@ -69,8 +73,10 @@ int drawString2Pieces(uint8_t *s,int x,int y) {
 int main(void) {
     /* Redraw either column with every possible name pen and both fonts.
        Include the half-space code emitted before the count for short names. */
+    for(int variant=0;variant<3;variant++) {
+    MOD_LANG=variant==2?MOD_LANG_ZH:0; ITEM_MENU_TYPE=variant==1?5:0;
     for(FONT_PROPORTIONAL=0;FONT_PROPORTIONAL<=1;FONT_PROPORTIONAL++) {
-        for(int pen=0;pen<=104;pen++) {
+        for(int pen=0;pen<=(ITEM_MENU_TYPE==5?92:104);pen++) { /* with the bank icons a name wider than the count column keeps its place, so the fit is the name's business */
             for(int gap=0;gap<=1;gap++) {
                 uint8_t row[]={65,0x1c,0,'2','3',0,0,0};
                 if(gap) {
@@ -86,6 +92,7 @@ int main(void) {
                 for(int x=0;x<128;x++) assert(pixels[x]==0x7f);
             }
         }
+    }
     }
     puts("PASS: both bank columns preserve their neighbor for both fonts");
     return 0;

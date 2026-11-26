@@ -3,6 +3,7 @@
 GARBAGEMON_BEFORE=MODEL GARBAGEMON_AFTER=MODEL PYTHONPATH=tools python3 -m
 unittest tools.test_garbagemon_attachment
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import os
 from pathlib import Path
 import unittest

@@ -1,4 +1,5 @@
 """Rosemon's walk, condition walk and run: one step beat for every channel."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import cmath
 import json
 import math

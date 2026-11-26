@@ -108,11 +108,12 @@ def species_counts(root=None):
     root = os.fspath(root) if root is not None else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
     base = os.path.join(root, 'content', 'modeldelta')
     models = json.load(open(os.path.join(base, 'models.json')))['models']
-    by_source = {}
+    by_source, helper = {}, {}
     for r in json.load(open(os.path.join(base, 'import-batches.json')))['recipes']:
         for ext in ('MMD', 'TIM'):
             path = f"{r['out']}/{r['entry']['name']}.{ext}"
-            by_source.setdefault(path, set()).add(r['entry']['game'])
+            # a mesh_only recipe is a borrowed mesh (grafted onto the species' own model): it names no source disc
+            (helper if r['entry'].get('mesh_only') else by_source).setdefault(path, set()).add(r['entry']['game'])
     # the partner imports: the same specs tools/derive/importers/__init__.py partner() loads
     partners = {'build/dcb/Veemon': 'content/models/dcb-import/veemon.json',
                 'build/dcb/Puppetmon': 'content/models/dcb-import/puppetmon.json',
@@ -126,6 +127,7 @@ def species_counts(root=None):
     for m in models:
         sources = {s['path'] for s in m['mmd']['sources'] + m['tim']['sources']}
         games = set().union(*(by_source.get(s, set()) for s in sources))
+        games = games or set().union(*(helper.get(s, set()) for s in sources))
         if len(games) != 1:
             raise ValueError(f"species {m['id']} {m['name']}: its game is not clear from {sorted(sources)} ({sorted(games)})")
         counts[IMPORT_GAMES[games.pop()]] += 1

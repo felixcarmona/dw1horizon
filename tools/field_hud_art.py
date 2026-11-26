@@ -8,7 +8,8 @@ quads: the bar frame, its icon on the frame's left cap (as the original game
 draws its two bars) and the native two-tone blue fill.
 
 - FRAME (56x8): the native 76x8 bar from SYSTEM_W (entry 8, CLUT row 500),
-  its 50-texel slot cut to 30 and the slot's blue interior made the dark
+  its 50-texel slot cut to 30 and the slot's interior (blue; near black on
+  Japan Rev 1, which also outlines the bar near black) made the dark
   empty track. CLUT row 508.
 - ICONS (7 x 11x11): happy, sad, disciplined, undisciplined, meat, toilet,
   tired; native pixels with no background, CLUT rows 500..506. The meat and
@@ -38,6 +39,8 @@ FRAME = (144, 44)
 FRAME_W, FRAME_H = 56, 8
 SLOT = 30                      # fill texels; the native slot is 50
 NATIVE_BAR = (0, 236, 500)     # SYSTEM_W u, v, CLUT row: the original field bar
+SLOT_INDEX = 12                # the bar slot interior's CLUT index
+SLOT_COLOURS = (0x7acc, 0x0421)   # its colour: USA/Europe blue, Japan Rev 1 near black
 FILL = (200, 44)
 FILL_COLOURS = ((205,230,246), (0,106,189))   # the native MP bar's two rows
 EMPTY_COLOURS = ((40,40,40), (24,24,24))
@@ -127,11 +130,15 @@ def build(data):
     bu,bv,bc = NATIVE_BAR
     bar_palette = native_palette(bc)
     keep = list(range(0,18)) + [18]*SLOT + list(range(68,76))
-    blue = rgb15((96,176,240))
+    # The slot interior is CLUT index 12 on every disc. The USA and European
+    # palettes give it the native blue; Japan Rev 1's row 500 gives it near
+    # black (8,8,8). Either way it becomes the dark empty track below.
+    if bar_palette[SLOT_INDEX] not in SLOT_COLOURS:
+        raise ValueError('unexpected native bar slot colour')
     frame = [[bar_palette[pixel(src,bu+sx,bv-128+y)] for sx in keep] for y in range(FRAME_H)]
     for y in (3,4):
         for x in range(18,18+SLOT):
-            if frame[y][x] != blue:
+            if pixel(src,bu+keep[x],bv-128+y) != SLOT_INDEX:
                 raise ValueError('unexpected native bar slot')
             frame[y][x] = rgb15(EMPTY_COLOURS[y-3])
     colours = list(dict.fromkeys([0]+[c for row in frame for c in row]))

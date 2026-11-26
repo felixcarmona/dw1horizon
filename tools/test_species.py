@@ -91,7 +91,7 @@ CASES = [
     ('an element that does not exist', '180-veemon.json', setp(['specialties'], ['fire', 'wood', None]), 'specialties "wood"'),
     ('a technique name that does not exist', '180-veemon.json', setp(['techniques'], ['Fire Towr']), 'no technique "Fire Towr" (did you mean "Fire Tower"?)'),
     ('a shared technique name without its id', '180-veemon.json', setp(['techniques'], ['Bubble']), 'write "Bubble (113)"'),
-    ('a technique id that does not exist', '180-veemon.json', setp(['techniques'], [200]), 'technique 200 does not exist'),
+    ('a technique id that does not exist', '180-veemon.json', lambda s: (s.pop('boosted_technique', None), s.__setitem__('techniques', [200])), 'technique 200 does not exist'),
     ('a Fresh partner with a grown-up technique', '1-botamon.json', setp(['techniques'], ['Spit Fire']), 'bubble'),
     ('a drop item that does not exist', '180-veemon.json', setp(['drop'], {'item': 'Mega Meat', 'percent': 10}), 'no item "Mega Meat"'),
     ('a drop chance over 100 %', '180-veemon.json', setp(['drop'], {'item': 'Meat', 'percent': 150}), 'drop.percent = 150'),
@@ -152,10 +152,11 @@ def main():
     ok = not good_errs
     print(f'  {"ok  " if ok else "FAIL"} content/species itself: {len(good_errs)} errors' + (f' ({good_errs[:2]})' if good_errs else ''))
     results = [ok] + [case(*c) for c in CASES]
-    if os.path.exists(os.path.join(ROOT, 'extracted', 'SLUS_010.32')):
+    models = [os.path.join(ROOT, 'build/models', f'{n}-partner.MMD') for n in ('HOEE',)]   # the partner models the cases break
+    if os.path.exists(os.path.join(ROOT, 'extracted', 'SLUS_010.32')) and all(os.path.exists(m) for m in models):
         results += [model_case(*c[:4], **c[4]) for c in MODEL_CASES]
     else:
-        print(f'  skip {len(MODEL_CASES)} model cases (they read the models of extracted/)')
+        print(f'  skip {len(MODEL_CASES)} model cases (they read the partner models of build/models, made from extracted/)')
     print(f'{sum(results)} of {len(results)} passed')
     sys.exit(0 if all(results) else 1)
 

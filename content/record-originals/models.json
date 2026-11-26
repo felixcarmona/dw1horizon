@@ -1348,6 +1348,12 @@
             "sha256": "d91c3271c09d9050cfb1b8b39a6b042afe289ea6b031b777125300107e30b942"
           },
           {
+            "path": "extracted/CHDAT/MMD1/PENM.MMD",
+            "offset": 81144,
+            "size": 17,
+            "sha256": "dc3994b1b52babed4f6af6d0d4f8f70c49523e0336eaeec8ab0ec40fad2f42f9"
+          },
+          {
             "path": "extracted/CHDAT/MMD4/TIRS.MMD",
             "size": 25544,
             "sha256": "067ff8daf2c3a8cc9b45dd699b57b5c604636396cbe143abf95cc032b28c82fa"
@@ -1364,7 +1370,7 @@
           }
         ],
         "delta": "content/record-originals/deltas/124.MMD.mdelta",
-        "delta_sha256": "b83192b43f05c2f9b3d670e063e692039c9b3a912c9ca65e482c7fb76b73cf4a",
+        "delta_sha256": "0662e38b473f19a74b3615cafd5eb54b301c409e3fbdacbc49634db8ae75cad8",
         "sha256": "9d151f9de0c3a7d3f90af00b9c7590eb8de0458843ed479476456fe8abc8ca88",
         "size": 99030
       }

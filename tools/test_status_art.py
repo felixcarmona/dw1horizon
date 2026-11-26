@@ -4,7 +4,7 @@ import struct
 import unittest
 
 from tools.languages import CODES
-from tools.localize.status_art import TAG_RECT, ICON_RECT, VIRUS, tag, stamp, crop_tables
+from tools.localize.status_art import TAG_RECT, BATTLES_RECT, ICON_RECT, VIRUS, tag, stamp, crop_tables
 from tools.localize.build import tim_entries
 
 
@@ -49,7 +49,7 @@ class StatusArt(unittest.TestCase):
         data = bytearray(header + bytes(512) + struct.pack('<IHHHH', 16396, 320, 128, 64, 128) + bytes([255])*16384)
         before = bytes(data)
         start = tim_entries(data)[0][0]
-        allowed = {start + y*128 + x//2 for u,v,w,h in (TAG_RECT, ICON_RECT)
+        allowed = {start + y*128 + x//2 for u,v,w,h in (TAG_RECT, BATTLES_RECT, ICON_RECT)
                    for y in range(v,v+h) for x in range(u,u+w)}
         for language in CODES:
             after = bytearray(before)

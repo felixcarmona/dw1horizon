@@ -1,4 +1,5 @@
 """Asset-free alias/program identity checks; real ISO verification stays local."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import unittest
 from types import SimpleNamespace as N
 from motiondiscidentity import changed_programs, program

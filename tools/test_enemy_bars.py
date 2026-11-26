@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Exercise the overlay renderer with real digit runs and packet bounds on the host."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
+from host_tree import host_tree
 import json
 import subprocess
 import sys
@@ -10,7 +12,7 @@ from pathlib import Path
 def main():
     root = Path(__file__).resolve().parents[1]
     sys.path.insert(0, str(root))
-    work = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('build/decomp-dev')
+    work = host_tree()
     for lang in ('es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
         bank = json.loads((root / 'text' / lang / 'names.json').read_text())
         for key in ('BARS', 'CLOCK', 'ENEMY'):
@@ -29,6 +31,12 @@ typedef struct { int16_t vx, vy, vz; } SVECTOR;
 typedef struct { int16_t vx, vy; } DVECTOR;
 typedef struct { int x, y, w, h, r, g, b, z; } TILE;
 typedef TILE PACKET;
+#define ONE 4096
+typedef struct { int attribute, x, y, w, h, tpage, u, v, cx, cy, r, g, b, mx, my, scalex, scaley, rotate; } GsSPRITE;
+GsSPRITE sprite_seen; int sprites;
+void GsSortFastSprite(GsSPRITE *s, void *ot, int z) { sprite_seen = *s; sprites++; }
+struct { int digits, x, y, value; } text_seen; int texts;
+void drawEntityText(int32_t color, int32_t n, int32_t x, int32_t y, int32_t value, int32_t layer) { text_seen.digits = n; text_seen.x = x; text_seen.y = y; text_seen.value = value; texts++; }
 struct { void *org; } ot, *ACTIVE_ORDERING_TABLE = &ot;
 TILE packets[1024], *next = packets;
 #define setTile(p) ((void)0)
@@ -65,33 +73,35 @@ int main(void) {
         for (int edge = 0; edge < 5; edge++) {
             pos.location.vx = edge == 0 ? -159 : edge == 1 ? 159 : edge == 2 ? 80 : edge == 4 ? -130 : 0;
             head_y = (edge == 2 || edge == 4) ? -200 : -30;
-            calls = 0; next = packets; renderEnemyHeadHP(&d, &f, 1);
-            assert(next > packets && next < packets + 1024);
-            int n = 1; for (int v = hp; v >= 10; v /= 10) n++;
-            int frame_x = packets[0].x, max_x = frame_x;
-            if (edge == 1) assert(frame_x == 102); /* max HP reserves five digits, without padding the value */
+            calls = 0; next = packets; sprites = texts = 0; renderEnemyHeadHP(&d, &f);
+            /* the outline is four rectangles, the fill one sprite, the number one text run */
+            assert(next == packets + 4 && sprites == 1 && texts == 1);
+            int frame_x = packets[0].x, frame_y = packets[0].y;
+            if (edge == 0) assert(frame_x == -159);
+            if (edge == 1) assert(frame_x == 145 - 50); /* clamped clear of the partner panel's edge */
             for (TILE *p = packets; p < next; p++) {
                 assert(p->x >= -160 && p->x + p->w <= 160);
                 assert(p->y >= -120 && p->y + p->h <= 120);
-                if (edge == 2) assert(p->y >= -75);
-                if (edge == 4) assert(p->y >= -51);
-                if (p->x + p->w > max_x) max_x = p->x + p->w;
             }
-            assert(max_x == frame_x + 37 + (n-1)*4 + 4);
-            assert(packets[2].w >= 1 && packets[2].w <= 32);
-            assert(packets[1].r == 52 && packets[1].g == 52 && packets[1].b == 60);
-            assert(packets[3].r - packets[2].r == (packets[2].r > 205 ? 255-packets[2].r : 50));
-            /* Every glyph starts at the fixed gap, independent of digit count. */
-            assert(packets[4].x >= frame_x + 36 && packets[4].x <= frame_x + 38);
+            if (edge == 2) assert(frame_y >= -65);
+            if (edge == 4) assert(frame_y >= -41);
+            assert(packets[0].w == 50 && packets[1].y == frame_y + 6);
+            assert(packets[0].r == 10 && packets[0].g == 180 && packets[0].b == 10);
+            /* the fill never leaves the frame and keeps at least one pixel */
+            assert(sprite_seen.w >= 1 && sprite_seen.w <= 45);
+            assert(sprite_seen.x == frame_x + 2 && sprite_seen.y == frame_y + 2);
+            assert(sprite_seen.w == (hp * 45 / 32767 < 1 ? 1 : hp * 45 / 32767));
+            /* max HP reserves five digits, so the last digit stays put as the HP loses digits */
+            assert(text_seen.digits == 5 && text_seen.value == hp);
+            assert(text_seen.x == frame_x + 50 - 22 - 9 && text_seen.y == frame_y - 9);
         }
     }
     /* The gap between wild HUDs stays available at the top. */
     next = packets; calls = 0; pos.location.vx = -5; head_y = -200;
-    renderEnemyHeadHP(&d, &f, 1); assert(packets[0].y == -118);
-    /* Arena's left HP/MP panel reaches farther right than the wild portrait. */
+    renderEnemyHeadHP(&d, &f); assert(packets[0].y == -108);
+    /* Arena and VS draw none: their top-right panel already shows the opponent's HP. */
     GAME_STATE = 4; next = packets; calls = 0; pos.location.vx = -25;
-    renderEnemyHeadHP(&d, &f, 4);
-    for (TILE *p = packets; p < next; p++) assert(p->y >= -75);
+    renderEnemyHeadHP(&d, &f); assert(next == packets);
     GAME_STATE = 1;
     for (int reason = 0; reason < 6; reason++) {
         next = packets; calls = 0; pos.location.vx = 0; GAME_STATE = 1; NO_AI_FLAG = 0;
@@ -102,9 +112,9 @@ int main(void) {
         if (reason == 3) NO_AI_FLAG = 1;
         if (reason == 4) pos.location.vx = 160;
         if (reason == 5) pos.location.vx = -161;
-        renderEnemyHeadHP(&d, &f, 1); assert(next == packets);
+        renderEnemyHeadHP(&d, &f); assert(next == packets);
     }
-    puts("PASS: all 32767 living HP values at five anchors on a scrolled camera; bounds, fixed digit gap, HUD avoidance, track, minimum fill, dead/offscreen/finisher/results suppression");
+    puts("PASS: all 32767 living HP values at five anchors on a scrolled camera; bounds, fixed digit gap, HUD avoidance, minimum fill, dead/offscreen/finisher/results suppression, no bar in arena or VS");
 }
 '''
     with tempfile.TemporaryDirectory() as temp:

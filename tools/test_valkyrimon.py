@@ -1,4 +1,5 @@
 """Replay the authored Valkyrimon delta and check original-console storage."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import copy
 import json
 import math

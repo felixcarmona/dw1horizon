@@ -68,6 +68,7 @@ class PlanTests(unittest.TestCase):
             data.add('docs/data/map_files.csv')
             data.update(p.relative_to(root).as_posix() for p in (root / 'docs/data').glob('*.csv'))
             data.add('text/ours/pages.json')
+            data.update(('story/names.toml', 'story/base/maphead/hooks.py'))    # the base story is its Python views: single-page keys come from them
             data.add('content/tables/story-screens.json')
             data.update(p.relative_to(root).as_posix() for p in (root / 'content/screens').glob('*.json'))
             # Cold text generation imports the backend's owned encounter defaults.

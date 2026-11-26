@@ -12,12 +12,14 @@ A list that begins with 253 states a rule instead (include/dw/cup_rules.h): `253
 whatever the rule says. Kind 0 is the list and nothing else (the Version cups: the twelve Digimon of that V-Pet), 1 a
 level, 2 an attribute, 3 a first specialty, 4 a Field; the rule reads the species' cup tag (species.cup_tag).
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import json
 import re
 import unittest
 from pathlib import Path
 
 import species as S
+from dws.py import lower as PL
 
 ROOT = Path(__file__).resolve().parents[1]
 ZONES = ROOT / 'story/base/zones'
@@ -79,12 +81,13 @@ class CupLists(unittest.TestCase):
         return [t for t, s in self.species.items() if 'partner' in s and self.level(t) >= 3 and self.holds(eligible, t)]
 
     def test_python_and_dws_views_hold_the_same_lists(self):
-        self.assertEqual(self.lists, cup_lists(SCRIPT.with_suffix('.dws').read_text()))
+        self.assertEqual(self.lists, cup_lists(PL.lower_file(str(SCRIPT.with_suffix('.py')))[1]))
 
     def test_every_copy_of_the_table_holds_the_same_lists(self):
         for copy in COPIES:
-            for suffix in ('.py', '.dws'):
-                self.assertEqual(self.lists, cup_lists(copy.with_suffix(suffix).read_text()), copy)
+            view = copy.with_suffix('.py')       # story/base keeps the Python view only; the DWS is what it lowers to
+            self.assertEqual(self.lists, cup_lists(view.read_text()), copy)
+            self.assertEqual(self.lists, cup_lists(PL.lower_file(str(view))[1]), copy)
 
     def test_every_raisable_species_has_a_cup(self):
         raisable = [t for t, s in self.species.items() if 'partner' in s and self.level(t) >= 3]

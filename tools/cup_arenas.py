@@ -311,7 +311,7 @@ def tim(name):
 
 def import_pictures(name, src):
     """The generator's pictures scaled to their places and reduced together to one palette of 256 colours."""
-    from PIL import Image
+    from tools.image import Image
 
     def load(piece, w, h):
         return Image.open(os.path.join(src, piece + '.png')).convert('RGB').resize((w, h), Image.LANCZOS)
@@ -321,7 +321,7 @@ def import_pictures(name, src):
     b, c = load('cliff', *PAGES['b'][1]), load('pillar', *PAGES['c'][1])
     every = Image.new('RGB', (256, 480))
     every.paste(a, (0, 0)), every.paste(b, (0, 240)), every.paste(c, (0, 360))
-    q = every.quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    q = every.quantize(256)
     os.makedirs(os.path.join(ART, name), exist_ok=True)
     for page, box in (('a', (0, 0, 256, 240)), ('b', (0, 240, 256, 360)), ('c', (0, 360, 128, 480))):
         q.crop(box).save(os.path.join(ART, name, page + '.png'))

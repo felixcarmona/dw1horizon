@@ -33,6 +33,7 @@ def main():
 typedef struct { uint8_t buf[1539]; int itemCount, topRow, cursor, prevTopRow, prevCursor, visibleRows; uint8_t itemRow[8]; } ItemMenuBox;
 static ItemMenuBox storage, *ITEM_MENU_LEFT = &storage;
 static uint8_t cards[512];
+static int32_t modCardIsReal(int32_t id) { return id != 0 && id != 65; }
 static uint8_t getCardAmount(int id) { assert(id >= 1 && id < 512); return cards[id]; }
 void updateItemMenuStrings(ItemMenuBox *box, int row, int style) {
  assert(box == ITEM_MENU_LEFT && row == 9 && style == 1);

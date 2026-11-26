@@ -3,6 +3,8 @@
 
 Usage: python3 tools/test_cheats.py [build/decomp-cheats]
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
+from host_tree import host_tree
 import re
 import subprocess
 import sys
@@ -79,7 +81,7 @@ def compile_check(code):
 
 
 def main():
-    work = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'build/decomp-cheats'
+    work = host_tree()
     menu = (work / 'src/main/main_menu.c').read_text()
     lab = (work / 'src/main/mod_lab.c').read_text()
     code = r'''
@@ -107,6 +109,8 @@ def main():
 #define PAD_R2 2
 int32_t MOD_OPT_BUTTONS, MOD_OPT_EVO_GUIDE;
 int32_t MOD_OPT_NEW_CARDS=1, MOD_OPT_NEW_DIGIMON, MOD_LANG, MOD_OPT_SIGNS, MOD_OPT_STORY;
+int32_t MOD_OPT_STRENGTH=1, MOD_OPT_FULL_FINISHER;
+#define MOD_OPT_FULL_FINISHER_BIT 4
 int32_t MOD_OPT_DIFFICULTY, MOD_OPT_QUICK_BATTLE, MOD_OPT_CHEATS, MOD_OPT_SHORTCUTS, MOD_OPT_TOUCHED;
 int32_t MOD_SAVE_NUMBER, MOD_FPS_MODE_RUN = 2, MOD_OPT_FPS;
 #define MOD_FPS_AUTO 0
