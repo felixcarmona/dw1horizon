@@ -425,12 +425,16 @@ async function writeDisc(m) {
   const t0 = performance.now();
   const root = await navigator.storage.getDirectory();
   const top = await root.getDirectoryHandle(OPFS_DIR, { create: true });
-  // every hole's file opened for synchronous reads
-  const handles = new Map();
+  // every hole's file opened for synchronous reads, once: two disc paths can share one built file
+  // (a second access handle on the same file throws NoModificationAllowedError)
+  const handles = new Map(), opened = new Map();
   for (const [disc_path, rel] of m.holes) {
-    const [dir, name] = split(rel);
-    const h = await (await opfsDir(`tree${dir ? '/' + dir : ''}`, false)).getFileHandle(name);
-    handles.set(disc_path, await h.createSyncAccessHandle());
+    if (!opened.has(rel)) {
+      const [dir, name] = split(rel);
+      const h = await (await opfsDir(`tree${dir ? '/' + dir : ''}`, false)).getFileHandle(name);
+      opened.set(rel, await h.createSyncAccessHandle());
+    }
+    handles.set(disc_path, opened.get(rel));
   }
   for (const q of m.localized || []) {
     const b = await opfsRead(`localized/${q}`);
@@ -540,7 +544,7 @@ json.dumps(res)
   } catch (e) {
     post({ kind: 'done', ok: false, code: 'exception', out: patchError(e) });
   } finally {
-    for (const h of handles.values()) h.close();
+    for (const h of opened.values()) h.close();
     outH.close();
   }
 }
