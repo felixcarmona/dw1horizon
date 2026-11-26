@@ -46,7 +46,7 @@ jobs:
   openbios:
     # The free BIOS Horizon Play boots with (tools/player/build.py): it needs a MIPS cross compiler, so it is built
     # here once and handed to the Windows and macOS jobs.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04   # 24.04 has no gcc-mipsel-linux-gnu package
     steps:
       - uses: actions/checkout@v6
         with:
