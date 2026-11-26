@@ -235,17 +235,19 @@ class Run:
         want = self.expected(species, partner)
         # read from the battle's start: a foe may cast a stat-up technique (green sparkle) within seconds, and the
         # challenge's stats are the ones it started with
+        samples = []
         for _ in range(16):
             ram = e.ram()
             off, de, spd, brn = struct.unpack_from('<4h', ram, pd - 0x80000000 + 0x38)
             hp, mp = struct.unpack_from('<2h', ram, pd - 0x80000000 + 0x48)
             got = {'hp': hp, 'mp': mp, 'off': off, 'def': de, 'speed': spd, 'brain': brn}
+            samples.append((round(time.monotonic(), 2), e.peek('GAME_STATE', 'H', ram), de, spd))
             if got == want: break
             e.wait(0.25)
         e.wait(1); ram = e.ram()
         # noItems: the battle bag is filtered when its menu first opens (addInventoryUI -> modBagFilterForBattle), so
         # the test reads the rule's switch for this battle rather than opening the menu
-        info = dict(stats=got, expected=want, fromHp=e.peek(f'MOD_BATTLE+{2 * FROM_HP}', 'h', ram),
+        info = dict(stats=got, expected=want, samples=samples, fromHp=e.peek(f'MOD_BATTLE+{2 * FROM_HP}', 'h', ram),
                     noBag=e.peek('MOD_CHALLENGE_NO_BAG', 'B', ram))
         self.shot(label + '-battle')
         # knock out the loser (0 HP: at 1 the next forced write would undo every hit) and let the battle end
