@@ -223,7 +223,13 @@ run python-compiles   sh -c "$PY -m py_compile tools/*.py tools/dws/*.py tools/d
 disc dws-roundtrip     $PY tools/dws.py roundtrip
 disc dws-readable      $PY tools/dws.py decompile-all --readable -o "$OUT/readable" --scripts 2,22,178,184
 disc story-base-committed $PY tools/dws.py story-base --reproduce       # original generation + reviewed authored edits; both sides pinned
-disc story-build       $PY tools/dws.py story-build tools/dws/examples/dev-save.dws --mods none -o "$OUT/story/DG.SCN"   # story/base -> DG.SCN, MAPHEAD.SCN
+# With a derived build, build story/base as the release ships it (text ours, mod executable): s212's Horizon edits need the wide register
+if [ -n "${DW_SELFTEST_DERIVE:-}" ] && [ -f "$DERIVED/derived/exe-facts.json" ]; then
+    disc story-build env DWS_RELAYOUT=1 SCNASM_PACK_ASCII=1 DW_EXE_FACTS="$DERIVED/derived/exe-facts.json" DW_MODEL_ARCHIVE="$DERIVED/DIGI.DAT" \
+        $PY tools/dws.py story-build tools/dws/examples/dev-save.dws --mods none --text-source ours --exe mods --exe-dir "$DERIVED/exe" -o "$OUT/story/DG.SCN"
+else
+    disc story-build   $PY tools/dws.py story-build tools/dws/examples/dev-save.dws --mods none -o "$OUT/story/DG.SCN"   # story/base -> DG.SCN, MAPHEAD.SCN
+fi
 both dwstest-offline  $PY tools/dev/story_test.py offline
 run dw3-names        $PY tools/dw3_names_check.py                      # DW2003 imports named as the game names them (skips without $DW3_ROOT)
 run map-reach-policies $PY tools/test_reach_policies.py
