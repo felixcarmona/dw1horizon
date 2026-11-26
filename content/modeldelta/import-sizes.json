@@ -99,11 +99,11 @@
     },
     {
       "source": "build/batch3/Magnadramon.MMD",
-      "source_sha256": "6f5a00e441697e1741a43c48521c07601b8cad82cdf61c4e4b69341fac036ebe",
+      "source_sha256": "eb31799d133a7f8e669ffcc104c7f57b76f253f1a99a5fd3e45b6db0ae44414c",
       "bones": 30,
       "scale": 1.3074477086405876,
       "target": "build/sizes-out/models/Magnadramon.MMD",
-      "sha256": "76155c49e89059b9eee2a38dd63dcfdc66cba73262a083ab8c4518931e1d1784"
+      "sha256": "87f6262c7dde58250c2315bbe24875b64b6ef1805d100e8ce47955dd98516484"
     },
     {
       "source": "build/batch4/Zudomon.MMD",

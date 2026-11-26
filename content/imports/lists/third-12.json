@@ -89,8 +89,13 @@
   },
   {
    "name": "Magnadramon",
-   "game": "dcb",
-   "model": 186,
+   "game": "dw2",
+   "model": "M235HDRA",
+   "level": 5,
+   "element": 3,
+   "donor": 24,
+   "scale": 0.1806,
+   "clip_policy": null,
    "from": [
     190
    ]

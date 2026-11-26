@@ -601,12 +601,13 @@ vertically: the body bone keeps one height, the lowest mesh point stays within a
 turn about the vertical axis, roll a little and stroke the flippers. Resident animation storage 47 556 of 100 352 B.
 Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_dolphmon_gaits` (needs `edit.py get 238`).
 
-Magnadramon (215) had the idle, walk, condition walk and run as one 89-tick wave of the wing blades, body and tail
-that only the root travelled through. `field_animations/magnadramon_flight.py` runs after its steady glide and writes
-those five slots again: a hover with two slow, wide wing beats, a forward-leaning cruise with three beats per loop
-and a streamlined, faster run with four, a beat running from the inner blade pair to the outer, the tail and the limbs
-following the body a beat later. Ticks, distance per loop and the other slots are kept. Check with
-`tools/models/edit.py get 215` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_magnadramon_flight`.
+Magnadramon (215) uses Digimon World 2's model (M235HDRA), whose own field clips are a walker's (planted feet,
+footsteps). `field_animations/magnadramon_flight.py` writes the idle, walk, condition walk and run slots again as
+flights on its 30-bone rig: a hover with two slow, wide wing beats, a forward-leaning cruise (58 ticks), a lower
+tired cruise (44) and a streamlined, faster run (44), a beat running from the shoulder blade pair back to the
+hindquarters, the tail and the limbs following the body a beat later. The loops are shorter than the Card Battle
+model's 88 ticks so the five clips fit the resident animation buffer; the distance per tick is the old one. Check
+with `tools/models/edit.py get 215` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_magnadramon_flight`.
 Armadillomon (185) held its head level or lowered in the field idle, walk and
 run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
 adds one constant lift to the head joint in those clips (and the condition walk),
