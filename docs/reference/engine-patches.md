@@ -487,7 +487,7 @@ Darkness, Light and Water came first; Weapon and Earth after them, with the same
 - **Save layout 3**: a save made before a set of rows learns the first technique of each of them on the species'
   list at its first load.
 
-Details and the technique table: [mods/technique-rows.md](../mods/technique-rows.md).
+Details and the technique table: [docs/mods/technique-rows.md](../mods/technique-rows.md).
 
 ## Jijimon's starter quiz (0273)
 

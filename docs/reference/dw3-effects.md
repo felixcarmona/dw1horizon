@@ -3,7 +3,7 @@
 This page explains how Digimon World 2003 (PAL; Digimon World 3 in the USA) stores and plays a technique: its
 name and power, the caster's animation, the camera, the hits, and the visual effects. It also covers what
 carrying those effects into this game's effect engine gives today. Everything is read from the player's own
-disc with `tools/dw3effect.py`. Nothing from that disc is kept in the repository.
+disc (with `dw3effect.py`, since removed). Nothing from that disc is kept in the repository.
 
 No species plays these conversions now: every imported finisher is an effect written for this game
 ([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter this page
@@ -94,7 +94,7 @@ A spawn's z picks the space. z = 32767 draws in screen space in front of everyth
 x and y are then pixels from the screen's middle. Any other z is a field position, projected again every
 frame, not tied to a fighter. A sprite's size in pixels does not change with distance.
 
-A sprite block (`tools/dw3sprite.py`) is a header of words and an animation. Bit i of a key's channel mask
+A sprite block (`dw3sprite.py`) is a header of words and an animation. Bit i of a key's channel mask
 replaces header word 3 + i: 0 the frame, 1 a palette row offset, 2 and 3 x and y in pixels, 4 and 5 the
 scale x and y (4096 = 1), 6, 7 and 8 the turn about x, y and z. A block with a scale of 0 is not drawn. A
 turn about x or y only narrows the sprite, since depth is dropped. A frame is a list of parts, each drawn as
@@ -104,8 +104,8 @@ Colour 0x8000 is solid black; only 0x0000 is transparent.
 
 ## Carrying them into this game
 
-`tools/dw3efe.py` turns a technique's 3D effects into one effect chunk of this game (0x5000 bytes). It
-reuses the Digimon World 2 converter (`tools/dw2efe.py`):
+`dw3efe.py` turns a technique's 3D effects into one effect chunk of this game (0x5000 bytes). It
+reuses the Digimon World 2 converter (`dw2efe.py`):
 
 1. Each spawned 3D effect is placed in the caster's frame. The spawn's position and turn, and the half turn
    of a partner's side, are baked into the effect's root bones. A later spawn starts with hidden frames.
@@ -146,7 +146,7 @@ reuses the Digimon World 2 converter (`tools/dw2efe.py`):
 
 ### The fidelity check
 
-`python3 tools/dw3efe.py --disc DW3.bin compare M372SGRG 11 --like 63 --mp4 out.mp4` renders the original
+`python3 dw3efe.py --disc DW3.bin compare M372SGRG 11 --like 63 --mp4 out.mp4` renders the original
 and the conversion side by side from the same camera, scaled with the field, at 60 fps: a frame per DW2003
 tick, the conversion showing each 20 Hz engine tick for three frames, as the game does. The camera holds both fighters
 and the effect. It measures the two frame by frame and exits with an error when the conversion is not
@@ -162,7 +162,7 @@ these is true:
   An effect that holds each pose two ticks to fit a chunk moves at 10 Hz and scores about 0.5.
 
 The frame measures run on every second frame (30 fps), smoothness on all of them. To fit a chunk the converter
-(tools/dw2efe.py `LEVELS`) first coarsens translations, narrows the texture and draws flat parts one-sided,
+(dw2efe.py `LEVELS`) first coarsens translations, narrows the texture and draws flat parts one-sided,
 and holds poses only when nothing else fits; `info['held_ticks']` reports it.
 
 The box and the coverage curve may be one video frame early or late, since this game's effect engine runs at
