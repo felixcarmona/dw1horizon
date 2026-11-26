@@ -1,4 +1,5 @@
 """Gatomon (234) moves exactly like BlackGatomon (222): the same rig, the same field layers, the same parameters."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import json
 import os
 from pathlib import Path

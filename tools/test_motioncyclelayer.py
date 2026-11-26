@@ -2,6 +2,7 @@
 
     python3 tools/test_motioncyclelayer.py
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import copy,unittest
 from motioncyclelayer import layer,combine_events,repeat_native,share_identical_streams,normalize_field_world_support
 

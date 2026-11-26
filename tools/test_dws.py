@@ -492,8 +492,8 @@ class Allocation(unittest.TestCase):
         self.assertIn('no free', errors_of(''.join(f'flag f{i};' for i in range(84)))[0])
 
     def test_vars(self):
-        p = compile_src('var a; temp var t; var b = 20;')
-        self.assertEqual([p.alloc.table[k] for k in ('x.a', 'x.t', 'x.b')], [7, 45, 20])
+        p = compile_src('var a; temp var t; var b = 15;')
+        self.assertEqual([p.alloc.table[k] for k in ('x.a', 'x.t', 'x.b')], [7, 45, 15])
 
     def test_lock_file(self):
         d = tempfile.mkdtemp(dir=TMP); lock = os.path.join(d, 'story.lock')
@@ -2386,20 +2386,20 @@ class PythonMods(unittest.TestCase):
         a full range is reported at the declaration, with the way out; a pin outside the engine's numbers at its line."""
         head = 'from dw import *\nfrom dw.base.jijimons_house import jijimon\n'
         bad = head + 'last_hour = counter()\n@jijimon.on_talk(when=last_hour == 0)\ndef t():\n    if clock.hour - last_hour >= 2:\n        say("x")\n'
-        root, (p,) = self.mod({'a.py': bad}, toml='[save]\nvars = "20-20"\n')
+        root, (p,) = self.mod({'a.py': bad}, toml='[save]\nvars = "15-15"\n')
         lock = os.path.join(os.path.dirname(os.path.dirname(p)), 'save.lock')
         self.assertNotEqual(self.check_cli('check', p).returncode, 0)
         self.assertFalse(os.path.exists(lock))
         ok = bad.replace('    if clock.hour - last_hour >= 2:\n        say("x")\n', '    say("x")\n')
         open(p, 'w').write(ok)
-        self.assertEqual(self.check_cli('check', p).returncode, 0); self.assertEqual(json.load(open(lock)), {'vars': {'last_hour': 20}})
+        self.assertEqual(self.check_cli('check', p).returncode, 0); self.assertEqual(json.load(open(lock)), {'vars': {'last_hour': 15}})
         open(p, 'w').write(ok.replace('last_hour', 'other'))
         e = self.check_cli('check', p).stderr
-        self.assertIn('a.py:3:9: error: the vars range 20-20 of m-a (mod.toml) is full: save.lock gives its numbers to last_hour', e)
+        self.assertIn('a.py:3:9: error: the vars range 15-15 of m-a (mod.toml) is full: save.lock gives its numbers to last_hour', e)
         self.assertIn('remove it there if no saved game uses it', e)
-        open(os.path.join(os.path.dirname(os.path.dirname(p)), 'mod.toml'), 'w').write('name = "m-a"\n[save]\nvars = "20-25"\n')
+        open(os.path.join(os.path.dirname(os.path.dirname(p)), 'mod.toml'), 'w').write('name = "m-a"\n[save]\nvars = "15-20"\n')
         e = self.check_cli('check', p).stderr
-        self.assertIn('a.py:3:1: error: var "m_a.other" pinned to 21, which is not in the free range', e)
+        self.assertIn('a.py:3:1: error: var "m_a.other" pinned to 16, which is not in the free range', e)
         self.assertIn("a mod's [save] range in its mod.toml must be inside the free numbers", e)
 
     def test_pick_item_food(self):

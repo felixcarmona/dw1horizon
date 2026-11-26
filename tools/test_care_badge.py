@@ -96,7 +96,7 @@ class CareBadge(unittest.TestCase):
             source = root / 'extracted' / care_bubble_art.FEEL
             source.write_bytes(Path('extracted', care_bubble_art.FEEL).read_bytes())
             out = root / 'out'
-            ctx = SimpleNamespace(root=str(root), env={},
+            ctx = SimpleNamespace(root=str(root), env={}, jobs=1, record=False,
                                   path=lambda *parts: str(out.joinpath(*parts)), log=lambda line: None)
             localize.build(ctx)
             self.assertEqual({disc for _, disc in localize.outputs(ctx) if disc}, {p for p, _ in FILES} | {care_bubble_art.FEEL})

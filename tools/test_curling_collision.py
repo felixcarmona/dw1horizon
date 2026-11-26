@@ -19,9 +19,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class CurlingCollision(unittest.TestCase):
     def test_compacted_scan(self):
-        tree = Path(os.environ.get('DW_CURLING_TREE', ROOT/'build/decomp-dev'))
+        def patched(tree):
+            kar = tree/'src/kar/kar.c'
+            return kar.exists() and 'active[15]' in kar.read_text()
+        if 'DW_CURLING_TREE' in os.environ:
+            tree = Path(os.environ['DW_CURLING_TREE'])
+        else:       # the first tree with the compacted scan (an old pre-patch build tree cannot be held to it)
+            tree = next((t for t in (ROOT/'build/decomp-dev', ROOT/'build/decomp-int') if patched(t)), ROOT/'build/decomp-dev')
         path = tree/'src/kar/kar.c'
-        if not path.exists() or not shutil.which('cc'):
+        if not patched(tree) or not shutil.which('cc'):
             self.skipTest('needs prepared patched tree and host C compiler')
         def function(source):
             start = source.index('\nvoid KAR_updateCollisions(void)\n{')+1

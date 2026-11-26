@@ -1,4 +1,5 @@
 """Uniform world-space size and unchanged acting across Angewomon's clips."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import copy
 import os
 from pathlib import Path

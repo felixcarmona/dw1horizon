@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Run the target C compactor on native, replacement and imported models and preserve every kept animation."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import argparse
+import sys
 import os
 import struct
 import subprocess
@@ -12,6 +14,9 @@ from derive.facts import capture
 
 
 def main():
+    if len(sys.argv) == 1:
+        print('SKIP: needs a worktree and --archive of built models (see the usage with --help)')
+        return
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('worktree')
     ap.add_argument('--archive', required=True)

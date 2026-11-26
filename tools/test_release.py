@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Release orchestration safety: no disc builds, browser or remote writes."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import contextlib
 import io
 import json

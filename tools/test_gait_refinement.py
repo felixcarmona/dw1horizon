@@ -17,6 +17,10 @@ from motiontailspace import interpolate_pose
 from tools.models.field_animations import native_polish, gizamon_refine
 from tools.models.resize import resize, resize_with_pace
 
+# Species whose final model was changed on purpose after their last recipe (a later commit's delta), so that recipe's
+# output hash is a historical pin, not the current model: 297 (ff5901a3c, e3a7dfa92), 306 (e02f5fc5e), 316 (aa44a4752).
+REDONE_LATER = {297, 306, 316}
+
 ARTIFACTS = Path(os.environ.get('GAIT_REVIEW', ROOT / 'build/gait-review4'))
 
 
@@ -30,7 +34,7 @@ class RefinedGaits(unittest.TestCase):
                 next_cfg = json.loads(next_recipe.read_text())
                 expected = next_cfg['protected_prior']['sha256'] if cfg['species']==239 else next_cfg['source_sha256']
                 self.assertEqual(cfg['output_sha256'], expected)
-            elif not next_recipe.is_file():
+            elif cfg['species'] not in REDONE_LATER:
                 self.assertEqual(cfg['output_sha256'], records[cfg['species']]['mmd']['sha256'])
             preceding = cfg['preceding_delta']
             self.assertEqual(preceding['sha256'], cfg['source_sha256'])

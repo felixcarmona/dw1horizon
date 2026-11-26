@@ -9,6 +9,8 @@ the first missed frame at 60 drops to steady 30 and 60 is never tried there agai
 full window of late frames, the level never flaps, the world and the battle loops keep separate facts, and fast
 ticks, the test tick length, curling, pause frames and the locked policies leave it alone."""
 from pathlib import Path
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
+from host_tree import host_tree
 import re
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -25,7 +27,7 @@ def ladder_block(source):
 
 
 def main():
-    work = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('build/decomp-int')
+    work = host_tree()
     source = (work / 'src/main/main.c').read_text()
     code = r'''
 #include <stdint.h>
