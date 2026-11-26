@@ -1,4 +1,4 @@
-From d7a5ea0c3ad580b86ebe48ae17972de37d23090a Mon Sep 17 00:00:00 2001
+From a92f3ea6e077bda75665b3433a9ac1b2424afd70 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Wed, 25 Nov 2026 14:57:59 +0000
 Subject: [PATCH] Resident challenges: the daily challengers and the challenge
@@ -64,7 +64,7 @@ index a662d023..9e5f82c8 100644
   * from content/tables/new-game.json */
  #define MOD_NEWGAME_SIZE	78
 diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
-index 4da2e914..10dc48dc 100644
+index 4da2e914..d7373734 100644
 --- a/src/btl/battle_main.c
 +++ b/src/btl/battle_main.c
 @@ -1850,6 +1850,55 @@ void modBattleLoadFinish(void); /* MOD (quick battle start), btl.c */
@@ -107,9 +107,9 @@ index 4da2e914..10dc48dc 100644
 +
 +		if (e->entity.type != type) continue;
 +		own = (int16_t *)&e->stats.base;
-+		/* off, def, speed, brain, then (after the moves) hp and mp: the int16 slots 0-3 and 6-7 of BaseStats */
-+		for (k = 0; k < 8; k++) {
-+			if (k == 4) k = 6;
++		/* off, def, speed, brain, then (after the 8 bytes of moves) hp and mp: the int16 slots 0-3 and 8-9 of BaseStats */
++		for (k = 0; k < 10; k++) {
++			if (k == 4) k = 8;
 +			int32_t v = partner[k] * (100 + BTL_CHALLENGE_FIGHT[BTL_CHALLENGE_PERCENT]) / 100;
 +			if (v < own[k]) v = own[k];
 +			own[k] = v > 9999 ? 9999 : v;
