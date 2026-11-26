@@ -12,7 +12,9 @@ set; a won fight pays the item and the bits, adds the beaten bit (128) to its po
 wilds are back on the next visit, and the other pool's challenger still waits at its own site. A midnight with one new
 resident unrecruited sends only the original pool's; another midnight picks two others, never the same, and adds their
 bits to the bag; the bag, both vars and both flags come back from a save at Jijimon's machine. Every row is placed on
-its day and on another's (a row with no home: its site only); --rows (names or row numbers) lose and win those rows'
+its day and on another's (a row with no home: its site only). Yuramon on the top map tells a hinted challenger's riddle,
+"take a walk" for an unhinted or beaten one, "all quiet" with nobody out (English disc: its words read from the text
+box). --rows (names or row numbers) lose and win those rows'
 fights too. Screenshots and result.json under --out.
 """
 from pathlib import Path
@@ -35,6 +37,9 @@ FROM_HP = 175                      # MOD_BT_NORMAL_FROM_HP in include/dw/mod_bat
 WREGS = 668                        # ScriptState.wregs (include/dw/script.h): smth, cards, triggers, pstats, stack[8]
 BAG_WREGS = 5                      # the bag's saved wide registers (tools/city_residents.py: CHALLENGE_MAX / 16 rounded up)
 BEATEN = 128                       # MOD_CHALLENGE_BEATEN: added to the pool's var by the win
+
+
+EN = json.loads((ROOT / 'story/mods/what-the-island-forgot/text/en.json').read_text())
 
 
 def species_sheets():
@@ -117,6 +122,42 @@ class Run:
             if self.e.peek(f'ENTITY_TABLE+{4 * (2 + slot)}', 'I', ram) == rec: return slot, rec
         return None, None
 
+    def yuramon(self, day, label):
+        """Yuramon's after-ending talk on File City's top map (168) with `day`'s challengers: the words its text box
+        shows (font b writes English as ASCII). None when Andromon stood in its place at every arrival."""
+        e = self.e
+        from tools.dev.playtest.birdramon_recruitment import call_section
+        # Kokatorimon, recruited but not met yet (84), would stand in Yuramon's slot: a real run meets it on its first
+        # visit to the city after the recruit (presence/s168.dws)
+        e.gs('trigger', '84', '1')
+        e.gs('trigger', str(json.loads((MOD / 'save.lock').read_text())['flags']['rumours_asked']), '1')    # its first talk had
+        for _ in range(12):             # with Andromon recruited a coin decides at each arrival
+            self.set_day(day); self.go(168, label); self.set_day(day)
+            slot = self.npc_slot(43)[0]
+            if slot is not None: break
+            self.go(169, label + '-away')
+        else:
+            return None
+        e.gs('approach', str(slot))
+        e.run('poke', f"{e.peek('TEXTBOX_LINES_PTR', 'I'):#x}", bytes(0x400).hex())      # the last talk's words gone
+        e.poke('TALKED_TO_ENTITY', bytes([5 + slot])); call_section(e, e.peek('CURRENT_SCRIPT_ID', 'H'), 5 + slot)
+        seen = []
+        for _ in range(40):
+            e.wait(1); ram = e.ram()
+            pointer = e.peek('TEXTBOX_LINES_PTR', 'I', ram) - 0x80000000
+            if 0 <= pointer < len(ram) - 0x800:
+                seen.append(re.sub(rb'[^ -~]+', b' ', ram[pointer:pointer + 0x800]).decode())
+            if len(seen) == 1: self.shot(label + '-talk')
+            if len(seen) > 1 and e.peek('IS_SCRIPT_PAUSED', 'i', ram) == 1 and e.peek('TAMER_STATE', 'b', ram) == 0: break
+            e.press('CONFIRM', 6)
+        return ' '.join(seen)
+
+    @staticmethod
+    def heard(text, key):
+        """Every word of five letters or more of the English line `key` is in what Yuramon said."""
+        words = re.findall(r"[A-Za-z]{5,}", EN[key])
+        return bool(words) and all(w in text for w in words)
+
     def midnight(self, label):
         """23:59 with the clock running, until the day changes."""
         e = self.e
@@ -176,23 +217,32 @@ class Run:
         e = self.e
         from tools.dev.playtest.birdramon_recruitment import call_section
         e.gs('approach', str(slot))          # beside it, facing it; the talk itself is entered as the game does (5 + slot)
-        e.poke('TALKED_TO_ENTITY', bytes([5 + slot])); call_section(e, e.peek('CURRENT_SCRIPT_ID', 'H'), 5 + slot)
-        e.wait(1.5); self.shot(label + '-talk')
-        for _ in range(60):
-            if e.peek('GAME_STATE', 'H') == 1: return True
-            e.press('CONFIRM', 6); e.wait(1.5)
+        # twice at most: a first talk can be a resident's own line that a real recruit has heard already (Tapirmon's
+        # sleep talk sets its flag; the fixture recruits by poking)
+        for talk in range(2):
+            e.poke('TALKED_TO_ENTITY', bytes([5 + slot])); call_section(e, e.peek('CURRENT_SCRIPT_ID', 'H'), 5 + slot)
+            e.wait(1.5); self.shot(f'{label}-talk{talk + 1}')
+            for _ in range(60):
+                if e.peek('GAME_STATE', 'H') == 1: return True
+                if e.in_control(1): break
+                e.press('CONFIRM', 6); e.wait(1.5)
         self.shot(label + '-no-battle')
         return False
 
     def battle(self, pd, partner, species, outcome, label):
         """In the battle: check the challenger's stats, the bag and fromHp, then force `outcome` and wait for the end."""
         e = self.e
-        e.wait(4); ram = e.ram()
-        off, de, spd, brn = struct.unpack_from('<4h', ram, pd - 0x80000000 + 0x38)
-        hp, mp = struct.unpack_from('<2h', ram, pd - 0x80000000 + 0x48)
-        got = dict(hp=hp, mp=mp, off=off, def_=de, speed=spd, brain=brn)
-        got['def'] = got.pop('def_')
         want = self.expected(species, partner)
+        # read from the battle's start: a foe may cast a stat-up technique (green sparkle) within seconds, and the
+        # challenge's stats are the ones it started with
+        for _ in range(16):
+            ram = e.ram()
+            off, de, spd, brn = struct.unpack_from('<4h', ram, pd - 0x80000000 + 0x38)
+            hp, mp = struct.unpack_from('<2h', ram, pd - 0x80000000 + 0x48)
+            got = {'hp': hp, 'mp': mp, 'off': off, 'def': de, 'speed': spd, 'brain': brn}
+            if got == want: break
+            e.wait(0.25)
+        e.wait(1); ram = e.ram()
         # noItems: the battle bag is filtered when its menu first opens (addInventoryUI -> modBagFilterForBattle), so
         # the test reads the rule's switch for this battle rather than opening the menu
         info = dict(stats=got, expected=want, fromHp=e.peek(f'MOD_BATTLE+{2 * FROM_HP}', 'h', ram),
@@ -274,7 +324,8 @@ class Run:
             if 'no control' not in str(x): raise
             result['wildsAfterWin'] = ['battle on arrival']
             e.run('load', str(self.fixture)); e.wait(3); e.in_control(); self.set_day(self.fixture_day)
-        assert result['wildsAfterWin'] == self.wilds_other_day.get(which, []), (result['wildsAfterWin'], self.wilds_other_day.get(which))
+        want = self.wilds_other_day.get(which)          # measured by the place part (None when it did not run)
+        assert want is None or result['wildsAfterWin'] == want, (result['wildsAfterWin'], want)
         # the other pool's challenger still waits at its own site
         orow = self.rows[other - 1]
         self.go(orow['site']['screen'], tag + '-other-site')
@@ -289,10 +340,14 @@ def main():
     ap.add_argument('--partner', type=int, default=3, help='partner type on the test card (3 = Agumon, a Rookie)')
     ap.add_argument('--rows', nargs='*', default=[], help="also lose and win these rows' fights (name or number)")
     ap.add_argument('--out', default='build/resident-challenges'); ap.add_argument('--port', type=int, default=44211)
+    ap.add_argument('--parts', nargs='*', default=['place', 'yuramon', 'fights', 'days'],
+                    help='what to run (parallel instances can split them): place yuramon fights days')
+    ap.add_argument('--place', nargs='*', default=[], help='place only these rows (name or number; default every row)')
     a = ap.parse_args(); out = Path(a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     doc = json.loads((ROOT / 'content/tables/resident-challenges.json').read_text())
     names = [row['name'] for row in doc['residents']]
     a.rows = [int(n) if n.isdigit() else names.index(n) + 1 for n in a.rows]
+    a.place = [int(n) if n.isdigit() else names.index(n) + 1 for n in a.place]
     e = Emu(a.disc, a.exe, a.port, str(out / 'emu'))
     for name, (addr, _, _) in elf_symbols(a.exe + '.elf').items(): e.table.setdefault(name, addr)
     e.env['EMU_ARGS'] = '-interpreter -debugger'
@@ -304,6 +359,7 @@ def main():
         e.wait(5); assert e.in_control()
         e.poke('MOD_OPT_STORY', struct.pack('<i', 1))
         e.gs('trigger', '50', '1')
+        e.gs('trigger', '175', '1')         # the Ogre Fortress fallen: every run has it by the ending (Kotemon's yard)
         for row in doc['residents']: r.recruit(row['species'])
         result['fromHpNormal'] = r.fromHpNormal = e.peek(f'MOD_BATTLE+{2 * FROM_HP}', 'h')
         assert result['fromHpNormal'] > 0, 'NORMAL has no late step in this build'
@@ -311,6 +367,9 @@ def main():
         rows = doc['residents']; pool = {i: row['pool'] for i, row in enumerate(rows, 1)}
         ORIG, NEW = doc['save']['challengerVar'], doc['save']['newChallengerVar']
         bit = lambda n: 1 << (n - 1)
+        sheets = species_sheets(); levels = {'rookie': 3, 'champion': 4, 'ultimate': 5, 'mega': 6}
+        lvl = lambda n: levels[sheets[rows[n - 1]['species']]['level']]
+        top = levels.get(sheets[a.partner]['level'], 0); result['partnerLevel'] = top
         day1 = r.midnight('day1')
         # both pools out: one of each, its bit in the bag
         assert pool.get(day1['row']) == 'original' and pool.get(day1['new']) == 'new', day1
@@ -323,6 +382,7 @@ def main():
         result['rows'] = {}; r.wilds_other_day = {}
         r.fixture = out / 'day1.state'; e.run('save', str(r.fixture))
         for i, each in enumerate(rows, 1):
+            if 'place' not in a.parts or a.place and i not in a.place: continue
             seen = {}; v = r.var(i)
             home = r.home_screen(each); at_home = home is not None and r.home_species(each)
             mates = [n for n in pool if pool[n] == pool[i]]; another = mates[(mates.index(i) + 1) % len(mates)]
@@ -348,47 +408,84 @@ def main():
         result['homeNotShown'] = [n for n, v in result['rows'].items() if v.get('homeOtherDay') is False]
         bad = {n: v for n, v in result['rows'].items() if any(x is False for k, x in v.items() if k not in ('wildsOtherDay', 'homeOtherDay'))}
         assert not bad, f'not absent from home / not at the site / wilds while waiting: {bad}'
-        assert len(result['homeNotShown']) < len([v for v in result['rows'].values() if 'home' in v]) // 2, result['homeNotShown']
-        result['sitesWithWilds'] = sum(bool(w) for w in r.wilds_other_day.values())
-        assert result['sitesWithWilds'], 'no site has wild Digimon on another day: the wild check checks nothing'
+        if 'place' in a.parts and not a.place:          # the whole table: the checks must check something
+            assert len(result['homeNotShown']) < len([v for v in result['rows'].values() if 'home' in v]) // 2, result['homeNotShown']
+            result['sitesWithWilds'] = sum(bool(w) for w in r.wilds_other_day.values())
+            assert result['sitesWithWilds'], 'no site has wild Digimon on another day: the wild check checks nothing'
+
+        # Yuramon after the ending: a riddle for a hinted challenger out today (both pools: the original one hinted, the new
+        # one not), "take a walk" when only unhinted ones are out or the hinted one is beaten, "all quiet" with nobody out
+        if 'yuramon' in a.parts:
+            hinted = next(n for n in pool if pool[n] == 'original' and rows[n - 1].get('hint'))
+            plain = next(n for n in pool if pool[n] == 'original' and not rows[n - 1].get('hint'))
+            plain_new = next(n for n in pool if pool[n] == 'new' and not rows[n - 1].get('hint'))
+            hk = rows[hinted - 1]['name'].lower(); said = {}
+            said['hinted'] = r.yuramon({ORIG: hinted, NEW: plain_new}, 'yuramon-hinted')
+            said['plain'] = r.yuramon({ORIG: plain, NEW: plain_new}, 'yuramon-plain')
+            said['beaten'] = r.yuramon({ORIG: hinted + BEATEN, NEW: 0}, 'yuramon-beaten')
+            said['quiet'] = r.yuramon({ORIG: 0, NEW: 0}, 'yuramon-quiet')
+            result['yuramon'] = {'hinted': rows[hinted - 1]['name'], 'said': said}
+            assert None not in said.values(), f'Yuramon never at its place: {said}'
+            assert r.heard(said['hinted'], f'{hk}.rumour.who') and r.heard(said['hinted'], f'{hk}.rumour.where'), said['hinted']
+            assert r.heard(said['plain'], 'rumour.unheard') and not r.heard(said['plain'], f'{hk}.rumour.who'), said['plain']
+            assert r.heard(said['beaten'], 'rumour.unheard') and not r.heard(said['beaten'], f'{hk}.rumour.who'), said['beaten']
+            assert r.heard(said['quiet'], 'rumour.quiet'), said['quiet']
+            print('yuramon', {k: (v or '')[:160] for k, v in said.items()}, flush=True)
+            e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.set_day(today)
 
         # fights: each pool's challenger of day 1, then --rows; the other pool's challenger waits meanwhile
         result['fights'] = {}
-        for which in [day1['row'], day1['new']] + [n for n in a.rows if n not in (day1['row'], day1['new'])]:
+        for which in ([day1['row'], day1['new']] if 'fights' in a.parts else []) + [n for n in a.rows if n not in (day1['row'], day1['new'])]:
             other = day1['new'] if pool[which] == 'original' else day1['row']
-            e.run('load', str(r.fixture)); e.wait(3); e.in_control()
             r.fixture = out / 'day1.state'
+            e.run('load', str(r.fixture)); e.wait(3); e.in_control()
             r.set_day({r.var(which): which, r.var(other): other}); r.set_bag(day1['bag'] | bit(which))
             result['fights'][rows[which - 1]['name']] = r.fight(which, other)
         r.fixture = out / 'day1.state'
 
-        # the new pool closed: one new resident not recruited, only the original pool sends one
-        e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.set_day(today); r.set_bag(day1['bag'])
-        missing = rows[next(n for n in pool if pool[n] == 'new') - 1]; r.recruit(missing['species'], False)
-        closed = r.midnight('closed'); result['closedWithout'] = missing['name']
-        assert closed['new'] == 0 and not closed['newTried'], closed
-        assert pool.get(closed['row']) == 'original' and closed['row'] != day1['row'], closed
-        assert closed['bag'] == day1['bag'] | bit(closed['row']), closed
+        if 'days' in a.parts:
+            # the new pool closed: one new resident not recruited, only the original pool sends one
+            e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.set_day(today); r.set_bag(day1['bag'])
+            missing = rows[next(n for n in pool if pool[n] == 'new') - 1]; r.recruit(missing['species'], False)
+            closed = r.midnight('closed'); result['closedWithout'] = missing['name']
+            assert closed['new'] == 0 and not closed['newTried'], closed
+            assert pool.get(closed['row']) == 'original' and closed['row'] != day1['row'], closed
+            assert closed['bag'] == day1['bag'] | bit(closed['row']), closed
 
-        # both pools again, two others, never the same
-        e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.set_day(today); r.set_bag(day1['bag'])
-        day2 = r.midnight('day2')
-        assert pool.get(day2['row']) == 'original' and day2['row'] != day1['row'], day2
-        assert pool.get(day2['new']) == 'new' and day2['new'] != day1['new'], day2
-        assert day2['bag'] == day1['bag'] | bit(day2['row']) | bit(day2['new']), day2
-        assert not day2['tried'] and not day2['newTried'], day2
-        result['challenger2'] = rows[day2['row'] - 1]['name']; result['newChallenger2'] = rows[day2['new'] - 1]['name']
+            # both pools again, two others, never the same
+            e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.set_day(today); r.set_bag(day1['bag'])
+            day2 = r.midnight('day2')
+            assert pool.get(day2['row']) == 'original' and day2['row'] != day1['row'], day2
+            assert pool.get(day2['new']) == 'new' and day2['new'] != day1['new'], day2
+            assert day2['bag'] == day1['bag'] | bit(day2['row']) | bit(day2['new']), day2
+            assert not day2['tried'] and not day2['newTried'], day2
+            result['challenger2'] = rows[day2['row'] - 1]['name']; result['newChallenger2'] = rows[day2['new'] - 1]['name']
+            # the stage rule: every pick of the highest level at most the partner's that has a row left in the bag
+            for d in (day1, closed, day2):
+                for k, p in (('row', 'original'), ('new', 'new')):
+                    if not d[k]: continue
+                    left = [lvl(n) for n in pool if pool[n] == p and lvl(n) <= top and n != today.get(ORIG if p == 'original' else NEW) or n == d[k]]
+                    assert lvl(d[k]) == max(left), (d, k, lvl(d[k]), left)
 
-        # the bag and today's challenger through a save at Jijimon's machine and a fresh Continue
-        r.fixture = None
-        assert e.warp(218, 2) or e.warp(218), "no control in Jijimon's house"
-        e.in_control(); e.gs('set', 'gametime_running=0'); kept = r.state()
-        e.save_at_jijimon(); e.stop()
-        saved = out / 'saved.mcd'; shutil.copyfile(e.card_out(), saved)
-        e.start(str(saved)); assert e.continue_game() == 0, 'Continue of the saved card failed'
-        e.wait(3); e.in_control(); back = r.state(); result['reloaded'] = back
-        keys = ('row', 'new', 'bag', 'tried', 'newTried')
-        assert [back[k] for k in keys] == [kept[k] for k in keys], (kept, back)
+            # an empty bag: every original row already sent out this cycle, so the pool's bits are emptied and one goes
+            e.run('load', str(r.fixture)); e.wait(3); e.in_control(); r.set_day(today)
+            full = sum(bit(n) for n in pool if pool[n] == 'original')
+            r.set_bag(day1['bag'] | full); refill = r.midnight('refill')
+            assert pool.get(refill['row']) == 'original' and refill['row'] != day1['row'], refill
+            assert lvl(refill['row']) == max(lvl(n) for n in pool if pool[n] == 'original' and lvl(n) <= top), refill
+            assert refill['bag'] & full == bit(refill['row']), refill
+            result['refillChallenger'] = rows[refill['row'] - 1]['name']
+
+            # the bag and today's challenger through a save at Jijimon's machine and a fresh Continue
+            r.fixture = None
+            assert e.warp(218, 2) or e.warp(218), "no control in Jijimon's house"
+            e.in_control(); e.gs('set', 'gametime_running=0'); kept = r.state()
+            e.save_at_jijimon(); e.stop()
+            saved = out / 'saved.mcd'; shutil.copyfile(e.card_out(), saved)
+            e.start(str(saved)); assert e.continue_game() == 0, 'Continue of the saved card failed'
+            e.wait(3); e.in_control(); back = r.state(); result['reloaded'] = back
+            keys = ('row', 'new', 'bag', 'tried', 'newTried')
+            assert [back[k] for k in keys] == [kept[k] for k in keys], (kept, back)
         result['pass'] = True
     except BaseException as error:
         result['error'] = str(error)[:2000]; r.shot('failure'); raise
