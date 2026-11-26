@@ -51,7 +51,10 @@ Native maps may also carry a `collision` list of reviewed tile edits. Each entry
 values are bytes. The build checks the expected source value before applying the edit,
 accepts an already applied edit, and rejects duplicate tiles. These repairs apply in both
 story modes. Amida Forest uses this for exposed stone edges; its trial triggers and routes
-remain open. Backgrounds, sprites and unrelated collision cells keep their source bytes.
+remain open. A map may also carry a `sprites` list of reviewed depth-point edits of its cut-out sprites: `sprite` (index),
+`field` (`x`, `y` or `z`), `before`, `after` and a `reason`, checked like the tile edits. The restaurant counter (ROOM05A and
+ROOM05B, sprite 0) uses this so a tamer at the order tiles is drawn in front of it. Backgrounds and every other sprite and
+collision cell keep their source bytes.
 
 **One species per slot** (`content.py lint`, run by the build): MAPHEAD's `spawn(Species.X, slot=k)` (`maphead/hooks.py`)
 and a view's `npc(Species.X, slot=k)` must name the slot's species in content/maps, else the build stops (the engine's
