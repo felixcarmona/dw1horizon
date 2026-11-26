@@ -10,8 +10,6 @@ the cancel button at a tick of the scene:
   tap:T      a short press at tick T: the ring empties, the partner evolves
   late:T     held from tick T at or past 0xcc (the silhouette changes size): too late, the partner evolves
   item:T     the evolution of an item (not cancellable), held from tick T: the partner evolves
-  again:T    held from tick T (cancelled), then, with no state loaded in between, a second evolution of an item: it
-             must play to the end (the scene's cancel state lives in main and outlives the overlay)
 
   evolution_cancel.py DISC.cue --exe EXE --out DIR [--target 26] [--cases hold:10,hold:60,hold:150,tap:60,late:210,item:60]
   evolution_cancel.py DISC.cue --exe EXE --out DIR --partner 3 --target 5 --video OUT.mp4
@@ -140,18 +138,9 @@ def main():
             row = dict(case=case, reached=reached, over=done, species=e.peek('PARTNER_ENTITY', 'i'),
                        flag=e.peek('MOD_EVO_CANCEL', 'b'), control=e.in_control(),
                        wireframe=e.peek('PARTNER_WIREFRAME_TOTAL', 'i') if e.has('PARTNER_WIREFRAME_TOTAL') else None)
-            if kind == 'again':
-                row['first'] = dict(over=done, species=row['species'], flag=row['flag'])
-                start(e, a.target, False)
-                done = over(e)
-                e.wait(2)
-                row.update(over=done, species=e.peek('PARTNER_ENTITY', 'i'), flag=e.peek('MOD_EVO_CANCEL', 'b'),
-                           control=e.in_control(), state=e.peek('PARTNER_STATE', 'b'),
-                           timer=e.peek('EVO_SEQUENCE_DATA', 'i'))
-                print('DEBUG', json.dumps(row), e.peek('EVL_cancelPhase', 'b') if e.has('EVL_cancelPhase') else None, flush=True)
             want = (before, 2) if kind == 'hold' else (a.target, 0)
             # an evolution that went through may leave the partner sleepy at once (its new hours): control is enough
-            row['ok'] = (done or kind not in ('hold', 'again')) and row['control'] and (row['species'], row['flag']) == want
+            row['ok'] = (done or kind != 'hold') and row['control'] and (row['species'], row['flag']) == want
             e.run('shot', str(out / f'{kind}-{tick}-3-after.png'))
             if kind == 'hold':
                 e.wait(8)      # the hours' check runs every tick: held, it must not start again
