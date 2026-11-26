@@ -731,6 +731,25 @@ def open_folder(path):
         subprocess.Popen(['xdg-open', path])
 
 
+def player_program():
+    """The bundled Horizon Play program (docs/player.md), or None when this app was built without it."""
+    if sys.platform == 'darwin':
+        path = resource('player', 'Horizon Play.app', 'Contents', 'MacOS', 'horizon-play')
+    else:
+        path = resource('player', 'horizon-play.exe' if os.name == 'nt' else 'horizon-play')
+    return path if os.path.isfile(path) else None
+
+
+def play(cue):
+    """Start Horizon Play on the built disc; it runs on its own (closing the patcher does not stop it)."""
+    import subprocess
+    program = player_program()
+    if not program:
+        raise FileNotFoundError('Horizon Play is not part of this app')
+    kw = dict(creationflags=0x00000008 | 0x00000200) if os.name == 'nt' else dict(start_new_session=True)
+    return subprocess.Popen([program, os.path.abspath(cue)], cwd=os.path.dirname(program), **kw)
+
+
 def clock(s):
     s = int(s + 0.5)
     return f'{s // 3600}:{s // 60 % 60:02d}:{s % 60:02d}' if s >= 3600 else f'{s // 60}:{s % 60:02d}'

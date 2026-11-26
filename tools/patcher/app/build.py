@@ -101,6 +101,8 @@ def spec(work, a, ver):
              (os.path.join(ROOT, 'web', 'data', 'discs.json'), 'web/data'),
              (os.path.join(APP, 'i18n.json'), 'tools/patcher/app'),
              (os.path.join(APP, 'make_icons.py'), 'tools/patcher/app')]
+    if a.player:                                   # Horizon Play (tools/player/build.py --out DIR)
+        datas.append((os.path.abspath(a.player), 'player'))
     hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons']
     if sys.platform == 'darwin':
         hidden.append('certifi')
@@ -137,6 +139,7 @@ def main(argv=None):
     p.add_argument('--entitlements', help='macOS: the entitlements of the hardened runtime')
     p.add_argument('--repository', help='OWNER/NAME whose releases the app downloads (default: GITHUB_REPOSITORY, '
                    'else the checkout\'s origin)')
+    p.add_argument('--player', help='a Horizon Play folder (tools/player/build.py) to ship inside the app')
     p.add_argument('--out', default=os.path.join(ROOT, 'build', 'desktop'))
     a = p.parse_args(argv)
     ver = (a.version or version()).lstrip('v')

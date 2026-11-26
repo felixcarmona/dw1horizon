@@ -9,6 +9,7 @@ on:
   pull_request:
     paths:
       - 'tools/patcher/**'
+      - 'tools/player/**'
       - 'tools/isowriter.py'
       - 'tools/test_desktop_patcher.py'
       - 'tools/derive/steps/plan.py'
@@ -42,7 +43,28 @@ env:
   PYTHONUNBUFFERED: '1'
 
 jobs:
+  openbios:
+    # The free BIOS Horizon Play boots with (tools/player/build.py): it needs a MIPS cross compiler, so it is built
+    # here once and handed to the Windows and macOS jobs.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Build OpenBIOS
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq gcc-mipsel-linux-gnu g++-mipsel-linux-gnu > /dev/null
+          mkdir openbios
+          python3 tools/player/build.py --openbios-only openbios/openbios.bin --work "$RUNNER_TEMP/player"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openbios
+          path: openbios
+          if-no-files-found: error
+
   windows:
+    needs: openbios
     runs-on: windows-latest
     permissions:
       contents: write   # required to read draft release assets; token only used by the fetch step
@@ -72,11 +94,21 @@ jobs:
           python -m unittest -v
           tools.test_languages.Languages.test_chinese_resource_routes_use_portable_paths
           tools.test_model_variants.PinKeys.test_v007_windows_chinese_manifest_passes_hole_checks
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbios
+          path: ${{ runner.temp }}/openbios
+      - name: Build Horizon Play (the program, the SwanStation core, OpenBIOS)
+        shell: bash
+        run: python tools/player/build.py --out "$RUNNER_TEMP/Horizon Play" --work "$RUNNER_TEMP/player" --openbios "$RUNNER_TEMP/openbios/openbios.bin"
       - name: Build
         shell: bash
         run: |
           python -m pip install --disable-pip-version-check $PYINSTALLER
-          python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"}
+          python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"} --player "$RUNNER_TEMP/Horizon Play"
+          test -f "build/desktop/dist/Horizon Patcher/_internal/player/horizon-play.exe"
+          test -f "build/desktop/dist/Horizon Patcher/_internal/player/swanstation_libretro.dll"
+          test -f "build/desktop/dist/Horizon Patcher/_internal/player/system/openbios.bin"
       - name: Prepare the tag's verified self-test package
         if: env.RELEASE_TAG != ''
         shell: bash
@@ -137,6 +169,7 @@ jobs:
           if-no-files-found: error
 
   macos:
+    needs: openbios
     runs-on: macos-15
     permissions:
       contents: write   # required to read draft release assets; token only used by the fetch step
@@ -187,6 +220,22 @@ jobs:
           ID=$(security find-identity -v -p codesigning "$KC" | sed -nE 's/.*"(Developer ID Application: [^"]+)".*/\1/p' | head -1)
           [ -n "$ID" ] || { echo 'No Developer ID Application identity in MACOS_CERT_P12'; exit 1; }
           echo "SIGN_ID=$ID" >> "$GITHUB_ENV"
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbios
+          path: ${{ runner.temp }}/openbios
+      - name: Build Horizon Play (universal2; signed like the app when the owner's identity is there)
+        run: |
+          P="$RUNNER_TEMP/Horizon Play"
+          python tools/player/build.py --universal2 --out "$P" --work "$RUNNER_TEMP/player" --openbios "$RUNNER_TEMP/openbios/openbios.bin"
+          R="$P/Horizon Play.app/Contents/Resources"
+          lipo -archs "$P/Horizon Play.app/Contents/MacOS/horizon-play" "$R/swanstation_libretro.dylib"
+          if [ -n "$SIGN_ID" ]; then
+            # the core recompiles PlayStation code at run time: the hardened runtime must allow JIT memory
+            codesign --force --timestamp --options runtime --sign "$SIGN_ID" "$R/swanstation_libretro.dylib"
+            codesign --force --timestamp --options runtime --entitlements tools/player/entitlements.plist \
+              --sign "$SIGN_ID" "$P/Horizon Play.app"
+          fi
       - name: Build
         run: |
           python -m pip install --disable-pip-version-check $PYINSTALLER certifi==2026.10.23
@@ -194,8 +243,10 @@ jobs:
             echo '::warning::No signing secrets (MACOS_CERT_P12, ASC_KEY_P8...) or a pull request: the macOS app is NOT signed or notarized; Gatekeeper will warn players.'
           fi
           python tools/patcher/app/build.py --universal2 ${RELEASE_TAG:+--version "$RELEASE_TAG"} \
-            ${SIGN_ID:+--codesign-identity "$SIGN_ID" --entitlements tools/patcher/app/entitlements.plist}
+            ${SIGN_ID:+--codesign-identity "$SIGN_ID" --entitlements tools/patcher/app/entitlements.plist} \
+            --player "$RUNNER_TEMP/Horizon Play"
           lipo -archs "build/desktop/dist/Horizon Patcher.app/Contents/MacOS/Horizon Patcher"
+          find "build/desktop/dist/Horizon Patcher.app" -path '*player/Horizon Play.app/Contents/MacOS/horizon-play' | grep -q .
       - name: Prepare the tag's verified self-test package
         if: env.RELEASE_TAG != ''
         shell: bash

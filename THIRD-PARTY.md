@@ -32,6 +32,19 @@ The player patcher and source replay require Python 3.10+ and use only its stand
 | Plus Jakarta Sans | Google Fonts | SIL Open Font License 1.1 |
 | ECM decoding (`web/js/ecm.js`) | our own, written from the format's description and ECMA-130 | MIT (this project) |
 
+## Shipped in Horizon Play (tools/player, docs/player.md)
+
+Built from source by `tools/player/build.py` at pinned commits; each part keeps its licence text in the bundle's
+`licenses/` folder. The core is a separate library the MIT host loads, and its source is linked from the bundle's
+`NOTICE.txt`.
+
+| Piece | How | Licence |
+|---|---|---|
+| [SwanStation](https://github.com/libretro/swanstation) libretro core, commit 631f0fb | the emulator: `swanstation_libretro` next to the program | GPL-3.0 |
+| [OpenBIOS](https://github.com/pcsx-redux/nugget) from PCSX-Redux, commit c51f16e | the free PlayStation BIOS, `system/openbios.bin` | MIT |
+| [SDL2](https://github.com/libsdl-org/SDL) 2.32.10 | window, OpenGL, sound, pads; linked into the program | zlib |
+| `libretro.h` | the libretro API header, in `tools/player/` | MIT |
+
 ## Not included on purpose
 
 Original disc images and extracted game files are not distributed here. The tree

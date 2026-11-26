@@ -1,0 +1,87 @@
+name: Horizon Play
+
+# Horizon Play (tools/player, docs/player.md) for Linux, as its own download: the program, the SwanStation core and
+# OpenBIOS, all built from source here. Windows and macOS get it inside the desktop patcher (desktop.yml). A smoke test
+# boots OpenBIOS with no disc under a software OpenGL. A release tag attaches the archive to its GitHub Release.
+
+on:
+  pull_request:
+    paths:
+      - 'tools/player/**'
+      - '.github/workflows/player.yml'
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing vMAJOR.MINOR.PATCH tag: attach the archive to its release (empty: artifact only)'
+        required: false
+        default: ''
+        type: string
+
+concurrency:
+  group: player-${{ github.ref }}-${{ inputs.tag || '' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  RELEASE_TAG: ${{ github.event_name == 'push' && github.ref_name || inputs.tag || '' }}
+
+jobs:
+  linux:
+    # 22.04: the oldest glibc a GitHub runner still has, so the program runs on older distributions too
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write   # only the release upload uses the token
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Check out the release tag
+        if: env.RELEASE_TAG != ''
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          git fetch -q --depth 1 origin "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
+          git checkout --detach "refs/tags/$RELEASE_TAG"
+      - name: Build tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cmake ninja-build gcc-mipsel-linux-gnu g++-mipsel-linux-gnu \
+            libgl-dev libegl-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxss-dev \
+            libwayland-dev libxkbcommon-dev libasound2-dev libpulse-dev libudev-dev libdbus-1-dev \
+            xvfb libgl1-mesa-dri > /dev/null
+      - name: Build
+        run: python3 tools/player/build.py --out "Horizon Play" --work "$RUNNER_TEMP/player"
+      - name: Smoke test (OpenBIOS, no disc, software OpenGL)
+        run: |
+          cd "Horizon Play"
+          LIBGL_ALWAYS_SOFTWARE=1 SDL_AUDIODRIVER=dummy xvfb-run -a -s '-screen 0 1280x960x24' \
+            ./horizon-play --no-disc --windowed --saves "$RUNNER_TEMP/saves" --frames 240 --screenshot "$RUNNER_TEMP/bios.ppm"
+          python3 - "$RUNNER_TEMP/bios.ppm" <<'PY'
+          import sys
+          data = open(sys.argv[1], 'rb').read()
+          pixels = data[data.index(b'255\n') + 4:]
+          lit = sum(1 for b in pixels[::3] if b > 16) * 100 // (len(pixels) // 3)
+          print(f'{lit}% of the screen is drawn')
+          sys.exit(0 if lit >= 5 else 1)
+          PY
+      - name: Archive
+        run: tar -czf Horizon-Play-Linux-x86_64.tar.gz "Horizon Play"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Horizon-Play-Linux
+          path: Horizon-Play-Linux-x86_64.tar.gz
+          if-no-files-found: error
+      - name: Attach to the release
+        if: env.RELEASE_TAG != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          for i in $(seq 1 30); do
+            gh release view "$RELEASE_TAG" > /dev/null 2>&1 && break
+            sleep 20
+          done
+          gh release upload "$RELEASE_TAG" Horizon-Play-Linux-x86_64.tar.gz --clobber

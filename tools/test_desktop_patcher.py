@@ -631,6 +631,48 @@ class PbpGuiFlow(unittest.TestCase):
         self.assertEqual(app.notes, {})
 
 
+class HorizonPlay(unittest.TestCase):
+    """The Play button (docs/player.md): shown when the app carries Horizon Play and a disc was built."""
+
+    def test_player_program_found_in_the_app_data(self):
+        with tempfile.TemporaryDirectory() as d:
+            with patch.object(desktop, 'resource', side_effect=lambda *p: os.path.join(d, *p)):
+                self.assertIsNone(desktop.player_program())
+                if sys.platform == 'darwin':
+                    parts = ('player', 'Horizon Play.app', 'Contents', 'MacOS', 'horizon-play')
+                else:
+                    parts = ('player', 'horizon-play.exe' if os.name == 'nt' else 'horizon-play')
+                os.makedirs(os.path.join(d, *parts[:-1]))
+                open(os.path.join(d, *parts), 'wb').close()
+                self.assertEqual(desktop.player_program(), os.path.join(d, *parts))
+
+    def test_play_starts_the_program_on_the_disc(self):
+        with patch.object(desktop, 'player_program', return_value=os.path.join('app', 'player', 'horizon-play')), \
+                patch('subprocess.Popen') as popen:
+            desktop.play('disc.cue')
+        args = popen.call_args[0][0]
+        self.assertEqual(args, [os.path.join('app', 'player', 'horizon-play'), os.path.abspath('disc.cue')])
+        with patch.object(desktop, 'player_program', return_value=None):
+            with self.assertRaises(FileNotFoundError):
+                desktop.play('disc.cue')
+
+    def test_restore_offers_play_for_the_last_disc(self):
+        import gui
+        with tempfile.TemporaryDirectory() as d:
+            cue = os.path.join(d, 'horizon.cue')
+            open(cue, 'w').close()
+            app = gui.App.__new__(gui.App)
+            app.config = Mock()
+            app.config.get.side_effect = lambda k, default=None: cue if k == 'last_disc' else default
+            app.config.remembered_discs.return_value = {}
+            app.slots, app.notes = {}, {}
+            app._refresh = Mock()
+            app._finish_buttons = Mock()
+            with patch.object(desktop, 'cached_packages', return_value=[]):
+                app._restore()
+            app._finish_buttons.assert_called_once_with(d, None, cue)
+
+
 
 class CacheRefreshFlow(unittest.TestCase):
     def test_check_and_build_recheck_same_release_but_keep_imported_package(self):
