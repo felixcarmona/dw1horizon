@@ -201,6 +201,17 @@ class World:
                     section = re.search(r'# section (\d+)', lines[fn.lineno - 1])
                     if section:
                         self.sections[int(script_match[1]), int(section[1])] = (p, fn)
+            # a mod's library sections: `lib = script(N)` and `@lib.section(k, ...)` on a function
+            libs = {ast.unparse(a.targets[0]): a.value.args[0].value for a in tree.body
+                    if isinstance(a, ast.Assign) and len(a.targets) == 1 and isinstance(a.value, ast.Call)
+                    and ast.unparse(a.value.func) == 'script' and a.value.args
+                    and isinstance(a.value.args[0], ast.Constant) and isinstance(a.value.args[0].value, int)}
+            for fn in tree.body:
+                if not isinstance(fn, ast.FunctionDef): continue
+                for d in fn.decorator_list:
+                    if (isinstance(d, ast.Call) and isinstance(d.func, ast.Attribute) and d.func.attr == 'section'
+                            and ast.unparse(d.func.value) in libs and d.args and isinstance(d.args[0], ast.Constant)):
+                        self.sections[libs[ast.unparse(d.func.value)], d.args[0].value] = (p, fn)
             if str(p).startswith('story/base/zones/'):
                 for member, sid in self.members.items():
                     if any(v[0] == sid for v in env.values()):

@@ -101,6 +101,7 @@ static void renderBox(int16_t x,int16_t y,int16_t w,int16_t h,
 static int randomLimit(int n) { assert(n>0); if(n==100)return rarityRoll; return pickLast?n-1:0; }
 static int machineMode=1;
 static int isTriggerSet(int n) { (void)n; return machineMode; }
+static void modChallengeDaily(void) {}   /* the resident challengers' pick (resident_challenges.py tests it) */
 typedef struct { uint16_t digimonId; uint8_t spriteId,meritValue; } CardData;
 static CardData CARD_DATA[512];
 static int CARD_PRICES[6]={5000,1500,500,100,50,0}, MONEY=99999;

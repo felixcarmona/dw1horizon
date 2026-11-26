@@ -1326,7 +1326,7 @@
  "mushroomon.challenge.intro2": "I trained every day at the clinic. I'm much stronger now. Let's fight!",
  "mushroomon.challenge.retry": "You came back! I'll be here all day. Ready?",
  "mushroomon.challenge.won": "You win! I'll keep training. Here, a deluxe mushroom, my best one.",
- "mushroomon.challenge.reward": "Received a {item Item.Deluxmushrm} and 1500 bits.",
+ "mushroomon.challenge.reward": "{item Item.Deluxmushrm} and 1500 bits received.",
  "mammothmon.challenge.intro1": "Freezeland. I am not the Mammothmon you faced in this snow.",
  "mammothmon.challenge.intro2": "At the Cold Store I trained every day. I am much stronger now. Will you face me?",
  "mammothmon.challenge.retry": "You returned. I will stand here all day. Ready?",
