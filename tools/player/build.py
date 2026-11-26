@@ -107,7 +107,8 @@ def main():
             parts = []
             for arch in ('arm64', 'x86_64'):
                 b = os.path.join(work, f'swanstation-build-{arch}')
-                cmake(sw, b, a.jobs, f'-DCMAKE_OSX_ARCHITECTURES={arch}')
+                # the core picks its recompiler from CMAKE_SYSTEM_PROCESSOR (the runner's CPU), so name the target
+                cmake(sw, b, a.jobs, f'-DCMAKE_OSX_ARCHITECTURES={arch}', f'-DCMAKE_SYSTEM_PROCESSOR={arch}')
                 parts.append(find(b, {core_name()}))
             core_lib = os.path.join(work, core_name())
             run(['lipo', '-create', '-output', core_lib, *parts])
