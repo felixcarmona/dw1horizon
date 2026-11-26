@@ -509,17 +509,17 @@
     },
     {
       "path": "build/sizes-out/models/AeroVeedramon.MMD",
-      "sha": "bbbf886fecf0d6b46fe46d56f4665b7ad4f11761457e4fd6bf808c4bcb6e9d68",
-      "size": 96664,
-      "actual": "bbbf886fecf0d6b46fe46d56f4665b7ad4f11761457e4fd6bf808c4bcb6e9d68",
-      "actual_size": 96664,
+      "sha": "2fbf3222887a1219945513689758ba0a053102a671411e1abfd1ae486e8dc85f",
+      "size": 84862,
+      "actual": "2fbf3222887a1219945513689758ba0a053102a671411e1abfd1ae486e8dc85f",
+      "actual_size": 84862,
       "status": "equal"
     },
     {
       "path": "build/batch3/AeroVeedramon.TIM",
-      "sha": "3db55918adae70bc301a981ea6af05463a848f637add1b3e1a5474bebc943fa1",
+      "sha": "a93f8db7004d4cd28f3a9baafd061479dab90db29bd2b65e84b50e23dbc48742",
       "size": 18432,
-      "actual": "3db55918adae70bc301a981ea6af05463a848f637add1b3e1a5474bebc943fa1",
+      "actual": "a93f8db7004d4cd28f3a9baafd061479dab90db29bd2b65e84b50e23dbc48742",
       "actual_size": 18432,
       "status": "equal"
     },
