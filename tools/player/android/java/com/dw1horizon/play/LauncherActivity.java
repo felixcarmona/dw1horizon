@@ -41,6 +41,18 @@ public class LauncherActivity extends Activity {
 
     static File cue(Context c) { return new File(new File(dataDir(c), "disc"), "horizon.cue"); }
 
+    /** The cue of a disc the patcher put inside this APK (assets/horizon.bin, stored): its track is read in place. */
+    static File embeddedCue(Context c) { return new File(new File(dataDir(c), "disc"), "embedded.cue"); }
+
+    /** {offset, size} of assets/horizon.bin inside the APK, or null when this APK carries no disc. */
+    static long[] embedded(Context c) {
+        try (android.content.res.AssetFileDescriptor fd = c.getAssets().openFd("horizon.bin")) {
+            return new long[] {fd.getStartOffset(), fd.getLength()};
+        } catch (java.io.IOException e) {
+            return null;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle saved) {
         super.onCreate(saved);
@@ -84,6 +96,20 @@ public class LauncherActivity extends Activity {
         setContentView(root);
         installBios();
         new File(dataDir(this), "saves").mkdirs();
+        if (embedded(this) != null) {   // the patcher's own APK: straight into the game
+            try {
+                File cue = embeddedCue(this);
+                cue.getParentFile().mkdirs();
+                try (OutputStream o = new FileOutputStream(cue)) {
+                    o.write("FILE \"embedded.bin\" BINARY\n  TRACK 01 MODE2/2352\n    INDEX 01 00:00:00\n".getBytes("US-ASCII"));
+                }
+                startActivity(new Intent(this, HorizonActivity.class));
+                finish();
+                return;
+            } catch (java.io.IOException e) {
+                status.setText(e.toString());
+            }
+        }
         refresh(null);
         if (haveDisc()) play.requestFocus(); else choose.requestFocus();
     }

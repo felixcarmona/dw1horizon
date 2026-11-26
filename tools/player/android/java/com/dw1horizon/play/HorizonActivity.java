@@ -13,6 +13,11 @@ public class HorizonActivity extends SDLActivity {
     @Override
     protected String[] getArguments() {
         File d = LauncherActivity.dataDir(this);
+        long[] e = LauncherActivity.embedded(this);
+        if (e != null)
+            return new String[] {"--system", new File(d, "system").getPath(), "--saves", new File(d, "saves").getPath(),
+                                 "--embedded", getApplicationInfo().sourceDir, Long.toString(e[0]), Long.toString(e[1]),
+                                 LauncherActivity.embeddedCue(this).getPath()};
         return new String[] {"--system", new File(d, "system").getPath(), "--saves", new File(d, "saves").getPath(),
                              LauncherActivity.cue(this).getPath()};
     }

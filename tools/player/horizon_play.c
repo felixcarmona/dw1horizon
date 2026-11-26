@@ -195,8 +195,61 @@ static void make_fbo(unsigned w, unsigned h) {
   gl.BindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+/* A disc inside another file (Android: assets/horizon.bin stored in the APK, docs/player.md). The core reads files
+   through libretro's VFS; on Android a path it cannot open locally comes here, and the one path we serve is the track
+   named by the cue: it reads the range [embedded_at, embedded_at + embedded_size) of the APK. */
+#ifndef _WIN32
+#include <fcntl.h>
+#include <unistd.h>
+static char embedded_track[1200];
+static const char *embedded_file;
+static int64_t embedded_at, embedded_size;
+struct retro_vfs_file_handle { int fd; int64_t pos; };
+static const char *RETRO_CALLCONV vfs_get_path(struct retro_vfs_file_handle *h) { (void)h; return embedded_track; }
+static struct retro_vfs_file_handle *RETRO_CALLCONV vfs_open(const char *path, unsigned mode, unsigned hints) {
+  (void)hints;
+  if (!embedded_file || strcmp(path, embedded_track) || mode != RETRO_VFS_FILE_ACCESS_READ) return NULL;
+  int fd = open(embedded_file, O_RDONLY);
+  if (fd < 0) { SDL_Log("embedded disc: cannot open %s", embedded_file); return NULL; }
+  struct retro_vfs_file_handle *h = calloc(1, sizeof *h);
+  h->fd = fd;
+  return h;
+}
+static int RETRO_CALLCONV vfs_close(struct retro_vfs_file_handle *h) { close(h->fd); free(h); return 0; }
+static int64_t RETRO_CALLCONV vfs_size(struct retro_vfs_file_handle *h) { (void)h; return embedded_size; }
+static int64_t RETRO_CALLCONV vfs_tell(struct retro_vfs_file_handle *h) { return h->pos; }
+static int64_t RETRO_CALLCONV vfs_seek(struct retro_vfs_file_handle *h, int64_t off, int whence) {
+  int64_t to = whence == RETRO_VFS_SEEK_POSITION_START ? off : whence == RETRO_VFS_SEEK_POSITION_CURRENT ? h->pos + off
+             : embedded_size + off;
+  if (to < 0 || to > embedded_size) return -1;
+  h->pos = to;
+  return 0;   /* like the core's own local files (fseek): rfseek() takes anything else as a failure */
+}
+static int64_t RETRO_CALLCONV vfs_read(struct retro_vfs_file_handle *h, void *buf, uint64_t len) {
+  if (h->pos + (int64_t)len > embedded_size) len = (uint64_t)(embedded_size - h->pos);
+  ssize_t n = pread(h->fd, buf, (size_t)len, (off_t)(embedded_at + h->pos));
+  if (n < 0) return -1;
+  h->pos += n;
+  return n;
+}
+static int64_t RETRO_CALLCONV vfs_write(struct retro_vfs_file_handle *h, const void *b, uint64_t l) { (void)h; (void)b; (void)l; return -1; }
+static int RETRO_CALLCONV vfs_flush(struct retro_vfs_file_handle *h) { (void)h; return 0; }
+static int RETRO_CALLCONV vfs_remove(const char *p) { (void)p; return -1; }
+static int RETRO_CALLCONV vfs_rename(const char *a, const char *b) { (void)a; (void)b; return -1; }
+static struct retro_vfs_interface vfs = {vfs_get_path, vfs_open, vfs_close, vfs_size, vfs_tell, vfs_seek, vfs_read,
+                                         vfs_write, vfs_flush, vfs_remove, vfs_rename};
+#endif
+
 static bool environment(unsigned cmd, void *data) {
   switch (cmd) {
+#ifndef _WIN32
+  case RETRO_ENVIRONMENT_GET_VFS_INTERFACE: {   /* version 1 is all the embedded track needs */
+    struct retro_vfs_interface_info *info = data;
+    if (!embedded_file || info->required_interface_version > 1) return false;
+    info->iface = &vfs;
+    return true;
+  }
+#endif
   case RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY: *(const char **)data = system_dir; return true;
   case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY: *(const char **)data = save_dir; return true;
   case RETRO_ENVIRONMENT_GET_CORE_ASSETS_DIRECTORY: *(const char **)data = system_dir; return true;
@@ -504,8 +557,22 @@ int main(int argc, char **argv) {
     else if (!strcmp(argv[i], "--set") && i + 1 < argc) {   /* --set KEY=VALUE: override a core option */
       char *kv = argv[++i], *eq = strchr(kv, '='); if (eq) { *eq = 0; set_option(kv, eq + 1); }
     }
+#ifndef _WIN32
+    /* --embedded FILE OFFSET SIZE: the cue's track lies inside FILE (the APK) at OFFSET */
+    else if (!strcmp(argv[i], "--embedded") && i + 3 < argc) {
+      embedded_file = argv[++i]; embedded_at = strtoll(argv[++i], NULL, 10); embedded_size = strtoll(argv[++i], NULL, 10);
+    }
+#endif
     else disc = argv[i];
   }
+#ifndef _WIN32
+  if (embedded_file && disc) {   /* the cue names its track "embedded.bin", beside it */
+    const char *slash = strrchr(disc, '/');
+    snprintf(embedded_track, sizeof embedded_track, "%.*s/embedded.bin", slash ? (int)(slash - disc) : 1, slash ? disc : ".");
+    SDL_Log("embedded disc: %s at %lld, %lld bytes, as %s", embedded_file, (long long)embedded_at,
+            (long long)embedded_size, embedded_track);
+  }
+#endif
 
   SDL_SetHint(SDL_HINT_ANDROID_TRAP_BACK_BUTTON, "1");   /* a pad's B must not close the game */
   SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
