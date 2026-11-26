@@ -52,7 +52,10 @@ def main():
     ])
     # Run the actual album medal branch; the other medal kinds need game state.
     medal = tamer.split('case MOD_MEDAL_ALL_CARDS:', 1)[1].split('case MOD_MEDAL_ALL_MOVES:', 1)[0]
-    production += '\nint album(void) { int i; struct { int a; } value={-1}, *m=&value;' + medal + '}\n'
+    medal = medal.split('break;', 1)[0]
+    production += ('\nint album(void) { int32_t i, have = 0, end, count = 0, *need = &count;'
+                   ' struct { int a, b; } value = {-1, 0}, *m = &value;' + medal +
+                   ' return have >= count; }\n')
     # The record dispatcher is shared with many unrelated records. Retain its
     # loop and the two production card cases, excluding unrelated game globals.
     dispatch = function(save, 'static void applyRecords(uint8_t *e)\n')
