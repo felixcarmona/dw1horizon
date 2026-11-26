@@ -392,23 +392,35 @@ class Emu:
             self.press('CONFIRM', 6); self.wait(2)
         return False
 
-    def warp(self, screen, ex=0):
-        # A field frame between these writes can replace TARGET_MAP from the current exit.
-        # Submit the state transition together, without assuming the state bytes are adjacent.
-        # Execution-flow changes require POST; GET only reports status.
-        self.api('/api/v1/execution-flow?function=pause', data=b'')
-        try:
-            self.poke('TAMER_SUB_STATE', b'\0')
-            self.poke('TARGET_MAP', struct.pack('<h', screen))
-            self.poke('CURRENT_EXIT', bytes([ex]))
-            self.poke('TAMER_STATE', bytes([5]))
-        finally:
-            self.api('/api/v1/execution-flow?function=start', data=b'')
+    def warp(self, screen, ex=0, tries=5):
+        def arm():
+            # A field frame between these writes can replace TARGET_MAP from the current exit.
+            # Submit the state transition together, without assuming the state bytes are adjacent.
+            # Execution-flow changes require POST; GET only reports status.
+            self.api('/api/v1/execution-flow?function=pause', data=b'')
+            try:
+                self.poke('TAMER_SUB_STATE', b'\0')
+                self.poke('TARGET_MAP', struct.pack('<h', screen))
+                self.poke('CURRENT_EXIT', bytes([ex]))
+                self.poke('TAMER_STATE', bytes([5]))
+            finally:
+                self.api('/api/v1/execution-flow?function=start', data=b'')
+
+        arm()
         deadline = time.monotonic() + 120
         while time.monotonic() < deadline:
             self.wait(1)
             ram = self.ram()
-            if self.peek('CURRENT_SCREEN', 'h', ram) != screen: continue
+            if self.peek('CURRENT_SCREEN', 'h', ram) != screen:
+                # A map change leaves the tamer in state 5 until the new screen is in, so state 0 on the old screen
+                # means the game took the tamer back before the change began. After a Continue the harness sees
+                # control while main() still loads the screen (the map head script has handed control back, the
+                # loaded map is still being set up); main() then ends the load with tamerSetState(0) and drops a
+                # warp armed meanwhile. Arm it again once the tamer is free.
+                if tries > 1 and self.peek('TAMER_STATE', 'b', ram) == 0 and self.peek('TAMER_SUB_STATE', 'b', ram) == 0:
+                    tries -= 1
+                    arm()
+                continue
             state = self.peek('TAMER_STATE', 'b', ram)
             if state == 0: return True
             # Arrival conversations own the tamer until their dialogue is answered.
@@ -535,6 +547,28 @@ def ram_values(emu, locks, profile):
 # what a save written again after the load may change: the clock and play time are not records; the poop piles and the
 # ground spots picked today move with the time the check spends; the script registers w0.. are scratch for some scripts
 RESAVE_DRIFT = {'poopMaps', 'groundPicked', 'groundPickupBits', 'wregs'}
+# records an older release wrote that the game no longer writes, each with the v1 field that holds its data: a resave
+# drops the record and must keep that field. registered (SAVE_TAG_REGISTERED, the species of the 40 VS registrations)
+# stopped with the partner rewind: each registration carries its own wide species in the roster (bytes 0x20-0x23)
+RETIRED_RECORDS = {'registered': 'roster'}
+
+
+def registered_species(roster):
+    """The species of the 40 VS registrations (include/dw/vs.h registeredSpecies), as the registered record held them:
+    i16 each, 0 for an empty slot."""
+    out = []
+    for i in range(40):
+        r = roster[i * 0x40:(i + 1) * 0x40]
+        wide, check, tag = struct.unpack_from('<HBB', r, 0x20)
+        out.append(wide if r[0x1C] and tag == 0xD7 and check == r[0x1C] and wide else r[0x1C])
+    return out
+
+
+def retired_record_kept(name, record, roster):
+    """Whether the v1 data still says what a retired record said."""
+    if name == 'registered':
+        return list(struct.unpack(f'<{len(record) // 2}h', record)) == registered_species(roster)[:len(record) // 2]
+    raise KeyError(name)
 
 
 def check_emu(emu, js, card, locks, rows, keep):
@@ -588,7 +622,12 @@ def check_emu(emu, js, card, locks, rows, keep):
         rows.append((not bad, 'saved again: the file', '; '.join(bad) or f'{out}'))
         if bad: return
         old = file_values(card, locks['mods'], profile); new = file_values(out, locks['mods'], profile)
-        miss = [n for n in old['records'] if n not in new['records']]
+        miss = [n for n in old['records'] if n not in new['records'] and n not in RETIRED_RECORDS]
+        for n, kept in RETIRED_RECORDS.items():
+            if n in old['records']:
+                ok = retired_record_kept(n, bytes.fromhex(old['records'][n]), bytes.fromhex(new[kept]))
+                rows.append((ok, f'saved again: record {n} (retired) kept in the {kept}', '' if ok else
+                             f'the resaved {kept} no longer says what the old record did'))
         rows.append((not miss, f'saved again: every record kept ({len(old["records"])})', ', '.join(miss) and f'dropped: {", ".join(miss)}'))
         for n, hexv in old['records'].items():
             if n in new['records'] and n not in RESAVE_DRIFT:
@@ -766,9 +805,8 @@ def cmd_add(a):
         for k, val in got['options'].items():
             expected = effective_option(emu, k, RICH['options'][k])
             compare(checks, f'fixture option {k}', expected, val)
-        _, _, saved_records = read_card(card)
-        registered = saved_records.get(5, b'')
-        checks.append((any(registered), 'fixture VS registration', ''))
+        _, saved_payload, _ = read_card(card)
+        checks.append((any(registered_species(saved_payload[0x500:0xF00])), 'fixture VS registration', ''))
         if table(a.name + ' richness', checks): sys.exit('fixture missing required rich state')
         emu.stop()
         _, _, recs = read_card(card)
