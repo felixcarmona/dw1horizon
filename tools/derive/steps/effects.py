@@ -145,21 +145,21 @@ def launch_table(chunk):
 
 def own_effects(ctx, archive):
     """{chunk index: chunk} of the species' own effects (content/battle/own-effects.json; getSpeciesTechEffect):
-    "authored", drawn and scripted here (tools/technique_effects), or, with "compose", the disc's own chunk the
-    entry stands for with a look of its own (tools/efecompose.py)."""
-    import importlib
+    "authored", drawn and scripted in tools/technique_effects and committed as drawn
+    (tools/technique_effects/prebuilt.py: the drawing needs numpy, the player's patcher has none), or, with
+    "compose", the disc's own chunk the entry stands for with a look of its own (tools/efecompose.py)."""
     import json
+    from tools.technique_effects import prebuilt
     with open(os.path.join(ctx.root, OWN_EFFECTS)) as f:
         spec = json.load(f)
+    authored = prebuilt.load(ctx.root, spec)
     out = {}
     for key, e in spec.items():
         if key == 'note':
             continue
         if 'authored' in e:
-            row = importlib.import_module('tools.technique_effects.' + e['authored'])
-            chunk, kept = row.EFFECTS[e['technique']]().build(0x100 + int(key))
-            out[int(key)] = bytes(chunk)
-            ctx.log(f'own effect {key} {e["name"]}: authored, kept {kept}')
+            out[int(key)] = authored[int(key)]
+            ctx.log(f'own effect {key} {e["name"]}: authored')
         elif 'compose' in e:            # the disc's own chunk recoloured and resized (tools/efecompose.py)
             from tools import efecompose
             like = bytes(archive[e['stands_for'] * CHUNK_SIZE:(e['stands_for'] + 1) * CHUNK_SIZE])
