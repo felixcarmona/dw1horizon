@@ -6,7 +6,8 @@ Which files: dws.variants.plan compares the extended story's files (EXTRA_FILES 
 story's maps: story.map_files(ctx, '')) with the original story's (story.map_files(ctx, 'base')), each the disc's own
 when a list lacks it, before the balance maps (as the bash did). Their bytes: dws.variants.finish writes each copy again
 from the original story's balance maps (the balance step's base pass), which the bash could make only after the
-executable; both run here, one after the other.
+executable; both run here, one after the other. Then dws.variants.prune drops the copy of a .MAP whose only change is
+placed Digimon appended (a new NPC's slot, which the original story never spawns).
 
 Writes storycopies/<_AME.EXT> and storycopies/plan.txt (the --add and COPY lines dws/variants.py plan prints; the plan
 step reads the rows: the sign copies of the original story are named after them). Nothing without ALT.
@@ -57,7 +58,9 @@ def build(ctx):
         from dws import variants as SF
         made = SF.plan(d, pairs(ext_files(ctx)), pairs(base))
         n = SF.finish(d, made, pairs(base + BAL.files(ctx, 'base')))
+        kept = SF.prune(d, made); pruned = len(made) - len(kept); made = kept
         lines = SF.plan_lines(d, made)
     with open(os.path.join(d, 'plan.txt'), 'w') as f:
         f.write(''.join(l + '\n' for l in lines))
-    ctx.log(f'{len(made)} map files differ from the original story\'s (copies in {d}); {n} rewritten from its balance maps')
+    ctx.log(f'{len(made)} map files differ from the original story\'s (copies in {d}); {n} rewritten from its balance maps; '
+            f'{pruned} with only new Digimon slots need none')

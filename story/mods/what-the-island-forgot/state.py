@@ -113,3 +113,88 @@ HUNTER_PRESENT_PSTAT = 120  # unsaved night-model witness, reset on either hunte
 
 # After the ending (arcs/postgame/blackwargreymon.py): the first win in the Back Dimension pays once; the fight itself stays.
 rift_duel_won = flag()
+
+# Resident challenges (postgame, content/tables/resident-challenges.json): two pools, each with its own challenger var
+# (its row + 1, 0 = nobody) and tried flag: `challenger` for the original game's residents, `new_challenger` for Horizon's
+# new ones (closed until every one of them is recruited). At midnight the executable writes each open pool's challenger
+# and clears its tried flag; the bag (one bit per row already sent out this cycle) is the executable's own, in the saved
+# wide registers w10-w14 that no script uses. A beaten challenger's var gets CHALLENGE_BEATEN added: it goes home and
+# the site's wild Digimon come back (the site is `alone` while its var equals the row's constant). ARMED: a scratch pstat
+# the talk sets to 1 (original pool) or 2 (new pool) just before the fight, so that the executable gives that one battle
+# the challenge's stats (the battle clears it). The rows are numbered in the saved vars and the bag: once released, rows
+# are only ever appended.
+challenger = counter()
+challenge_tried = flag()
+new_challenger = counter()
+new_challenge_tried = flag()
+CHALLENGE_BEATEN = 128
+CHALLENGE_ARMED = 239
+CH_ARMADILLOMON = 1
+CH_CANDLEMON = 2
+CH_GABUMON = 3
+CH_DIGMON = 4
+CH_STARMON = 5
+CH_LEOMON = 6
+CH_TRICERAMON = 7
+CH_DATAMON = 8
+CH_GIROMON = 9
+CH_MONZAEMON = 10
+CH_AGUMON = 11
+CH_BETAMON = 12
+CH_GREYMON = 13
+CH_TYRANNOMON = 14
+CH_MERAMON = 15
+CH_SEADRAMON = 16
+CH_NUMEMON = 17
+CH_MAMEMON = 18
+CH_ELECMON = 19
+CH_KABUTERIMON = 20
+CH_ANGEMON = 21
+CH_BIRDRAMON = 22
+CH_GARURUMON = 23
+CH_FRIGIMON = 24
+CH_WHAMON = 25
+CH_VEGIEMON = 26
+CH_SKULLGREYMON = 27
+CH_METALMAMEMON = 28
+CH_VADEMON = 29
+CH_PATAMON = 30
+CH_KUNEMON = 31
+CH_UNIMON = 32
+CH_OGREMON = 33
+CH_SHELLMON = 34
+CH_CENTARUMON = 35
+CH_BAKEMON = 36
+CH_DRIMOGEMON = 37
+CH_SUKAMON = 38
+CH_ANDROMON = 39
+CH_ETEMON = 40
+CH_BIYOMON = 41
+CH_PALMON = 42
+CH_MONOCHROMON = 43
+CH_COELAMON = 44
+CH_KOKATORIMON = 45
+CH_KUWAGAMON = 46
+CH_MOJYAMON = 47
+CH_NANIMON = 48
+CH_MEGADRAMON = 49
+CH_PIXIMON = 50
+CH_DIGITAMAMON = 51
+CH_PENGUINMON = 52
+CH_NINJAMON = 53
+CH_MYOTISMON = 54
+CH_WARUMONZAEMON = 55
+CH_HAWKMON = 56
+CH_PHANTOMON = 57
+CH_WIZARDMON = 58
+CH_SOLARMON = 59
+CH_MUSHROOMON = 60
+CH_MAMMOTHMON = 61
+CH_FLORAMON = 62
+CH_PUMPKINMON = 63
+CH_KIWIMON = 64
+CH_TAPIRMON = 65
+CH_CLOCKMON = 66
+CH_KNIGHTMON = 67
+CH_KOTEMON = 68
+CH_BEARMON = 69

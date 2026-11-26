@@ -11,6 +11,7 @@
   "board_read": 763,
   "bone_field_visited": 777,
   "camp_read": 764,
+  "challenge_tried": 784,
   "chest_bone_field": 767,
   "chest_camp2": 770,
   "chest_crypt": 769,
@@ -41,6 +42,7 @@
   "m8_birdramon": 722,
   "m9_library": 729,
   "memory_news": 740,
+  "new_challenge_tried": 783,
   "news_m3": 747,
   "news_r1": 744,
   "news_r2": 745,
@@ -49,6 +51,7 @@
   "post_guided": 724,
   "post_kept": 725,
   "report_heard": 765,
+  "rift_duel_won": 782,
   "root1": 719,
   "root2": 727,
   "root3": 730,
@@ -60,7 +63,6 @@
   "seen": 773,
   "shore_told": 736,
   "shortcut_taken": 737,
-  "rift_duel_won": 782,
   "tapirmon_stirred": 779,
   "thaw_told": 734,
   "tuskmon_met": 781,
@@ -68,10 +70,12 @@
   "whamon_hurt": 753
  },
  "vars": {
+  "challenger": 15,
   "deal_day": 12,
   "deal_item": 13,
   "deal_step": 14,
   "memories": 9,
+  "new_challenger": 8,
   "whamon_left_day": 10,
   "whamon_left_year": 11
  }

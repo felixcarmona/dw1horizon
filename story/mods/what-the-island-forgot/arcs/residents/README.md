@@ -30,3 +30,8 @@ more model, so Hawkmon, Pumpkinmon and Triceramon moved too.
 | `../factory/remodelling.py` | Datamon | Factorial Town 162 | Fight. |
 | `../seam/kennel.py` | Bearmon | Kennel 325 | Freed after the hunter falls. |
 | `../vault/statue-room.py` | Solarmon | Ice Sanctuary 97 | Joins on either answer. |
+
+After the ending every visible city resident comes back to its site as a challenger (`CH_*` in `state.py`): the
+game's own, one a day; ours (`new_challenger`), one a day too once every one of them is recruited. For ours the challenge talk is at the end of the file that recruits it; for the game's own it is in
+`../challenges/<name>.py`, one file per resident with a new NPC on the spot where it was recruited (or close to it):
+[resident challenges](../../../../../docs/mods/resident-challenges.md).

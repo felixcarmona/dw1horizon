@@ -5,20 +5,49 @@
 from dw import *
 from dw.base.ice_sanctuary_97 import sanctuary
 from ...state import root3, vault_kept, thaw_told
+from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_SOLARMON
 
-solarmon = sanctuary.npc(Species.Solarmon, at=(800, -600), range=0, still=True, when=not recruited(Species.Solarmon))
+solarmon = sanctuary.npc(Species.Solarmon, at=(800, -600), hp=580, mp=600, offense=120, defense=90, speed=110, brain=85, range=0, still=True, when=not recruited(Species.Solarmon) or new_challenger == CH_SOLARMON, alone=new_challenger == CH_SOLARMON)
+
+
+# Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Solarmon is the challenger
+# and has not been beaten yet it waits here, stronger; any other day it is home (district/power-station.py).
+
+def challenge_solarmon():
+    if new_challenger != CH_SOLARMON:
+        say(t("challenge.home"))
+        leave()
+    else:
+        if new_challenge_tried:
+            say(t("solarmon.challenge.retry"))
+        else:
+            say(t("solarmon.challenge.intro1"), t("solarmon.challenge.intro2"))
+        if ask(yes=t("challenge.yes"), no=t("challenge.no")):
+            new_challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(2)
+            if fight(solarmon, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
+                say(t("solarmon.challenge.won"))
+                give(Item.MPChip)
+                give(bits=1500)
+                narrator.say(t("solarmon.challenge.reward"))
+                new_challenger.add(CHALLENGE_BEATEN)
+                run(-700, 1400)
+                leave()
 
 
 @solarmon.on_talk
 def talk():
-    say("The cold forgot me here. Is the sun still up?")
-    if ask(yes="It's still up", no="It has set"):
-        say("Good. Then I am not the last one.")
+    if recruited(Species.Solarmon):
+        challenge_solarmon()
     else:
-        say("Then somebody has to shine.")
-    say("Then I'll go where the lights are.")
-    walk_away(-250, -950, looks=3)
-    send_to_city(line="Solarmon joined the city!", species=Species.Solarmon, camera=False)
+        say("The cold forgot me here. Is the sun still up?")
+        if ask(yes="It's still up", no="It has set"):
+            say("Good. Then I am not the last one.")
+        else:
+            say("Then somebody has to shine.")
+        say("Then I'll go where the lights are.")
+        walk_away(-250, -950, looks=3)
+        send_to_city(line="Solarmon joined the city!", species=Species.Solarmon, camera=False)
 
 
 # The band across the corridor (step 1) is also the only way on to the Sanctuary proper (BlueMeramon, the gym): the way

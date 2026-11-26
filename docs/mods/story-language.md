@@ -179,9 +179,11 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   A new NPC's `when=` is its presence: the compiler writes it into the screen's MAPHEAD setup (`IF ... LOAD/SET_DIGIMON`),
   which every engine runs. It tests saved state and **the clock**, as the game's own shopkeepers do: an NPC there only at
   night is `house.npc(Species.Bakemon, at=(-450, -650), behaves_like=tokomon, when=clock.hour >= 20 or clock.hour < 5)`
-  (the setup reads the clock when the screen loads: leaving and coming back at 22:00 finds him there). Items, counters,
-  stats and random draws are not presence (`check` says so); to send an NPC away by one of them, `npc.leave()` in an
-  `on_enter`. `screen(a, b).npc(...)` puts it in the same slot of each screen (one script's screens: the
+  (the setup reads the clock when the screen loads: leaving and coming back at 22:00 finds him there). A saved counter
+  against a number is presence too (`when=challenger == CH_AGUMON`). Items, stats and random draws are not (`check` says
+  so); to send an NPC away by one of them, `npc.leave()` in an `on_enter`. `alone=` (the same tests) keeps the screen's
+  ordinary wild Digimon away while it holds: a resident challenger waits with `alone=challenger == CH_AGUMON`, so the
+  meeting is one against one; the story's own encounters on the screen stay. `screen(a, b).npc(...)` puts it in the same slot of each screen (one script's screens: the
   File City square is the twelve screens `file_city_168`-`file_city_179` of script 162, one per layout the recruits
   choose, every one with its eight slots used). On a `new_screen`, `npc(..., section=6)` can reserve a script speaker/talk
   id different from `5 + slot`, for a shared script that addresses that speaker. Talk ids must be unique and in 5-50.

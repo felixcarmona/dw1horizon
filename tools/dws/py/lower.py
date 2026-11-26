@@ -964,6 +964,10 @@ class Module:
                 cond = self.presence(kw['when']) if 'when' in kw else 'always'
                 for one in on:
                     pres.setdefault(one, []).append((f'npc species({d["species"]}) slot {d["slot"]}{" autotalk" if at else ""} when {cond};', at_py))
+            if 'alone' in kw:                           # while it holds, the screen's ordinary wild Digimon are not placed (tools/dws/recruit_screens.py)
+                cond = self.presence(kw['alone'])
+                for one in on:
+                    pres.setdefault(one, []).append((f'alone slot {d["slot"]} when {cond};', at_py))
         if pres:
             first = min(pres.items())[1][0][1]
             out.append('city {' + first); out.append('    presence {' + first)
@@ -973,12 +977,13 @@ class Module:
         return out
 
     def presence(self, node):
-        """An NPC's `when=` -> the presence grammar of `city { presence }` (flag(x), not, and, or, recruited, trigger)."""
+        """An NPC's `when=` (or `alone=`) -> the presence grammar of `city { presence }` (flag(x), not, and, or, recruited,
+        trigger, a saved counter against a number)."""
         b = Body(self, None, 'presence'); b.guard = True
         t = b.ctree(node, pre := [])
         if [p for p in pre if p != 'store_date(date_year);']:
-            raise self.err(node, f'an NPC\'s when= tests flags and the clock only (quest stages, flag(), recruited(...), trigger(n), '
-                                 f'clock.hour...); {read_now(pre)} is read when a line runs',
+            raise self.err(node, f'an NPC\'s when= tests flags, saved counters and the clock only (quest stages, flag(), recruited(...), '
+                                 f'trigger(n), `visits == 3`, clock.hour...); {read_now(pre)} is read when a line runs',
                            'test it with an `if` in a handler; to send the NPC away by it, `npc.leave()` in an on_enter')
         def r(t):
             if t[0] == 'lit':
@@ -988,13 +993,16 @@ class Module:
                     x = f'clock.{c.group(1)} {c.group(2)} {c.group(3)}'
                     if neg: x = f'clock.{c.group(1)} {NEG_CMP[c.group(2)]} {c.group(3)}'
                     return x
+                c = re.fullmatch(r'(\w+) (==|!=|<=|>=|<|>) (\d+)', s)
+                if c:                                  # a saved counter (a pstat on the original engine): the setup's IF compares it
+                    return f'var({c.group(1)}) {NEG_CMP[c.group(2)] if neg else c.group(2)} {c.group(3)}'
                 if re.fullmatch(r'\w+', s): x = f'flag({s})'
                 elif re.fullmatch(r'is_recruited\(species\((\d+)\)\)', s): x = 'recruited(' + s[len('is_recruited('):]
                 elif re.fullmatch(r'trigger\(\d+\)', s): x = s
                 else: raise self.err(node, f'an NPC\'s when= cannot test `{ast.get_source_segment(self.src, node) or s}`: who stands on '
-                                           'the screen is decided by its setup, whose rule tests flags and the clock only (quest stages, '
-                                           'flag(), recruited(...), trigger(n), clock.hour...)',
-                                     'test items, counters and stats with an `if` in a handler; to send the NPC away by one, '
+                                           'the screen is decided by its setup, whose rule tests flags, saved counters and the clock only '
+                                           '(quest stages, flag(), recruited(...), trigger(n), `visits == 3`, clock.hour...)',
+                                     'test items and stats with an `if` in a handler; to send the NPC away by one, '
                                      '`npc.leave()` in an on_enter')
                 return f'not {x}' if neg else x
             return '(' + f' {t[0]} '.join(r(x) for x in t[1]) + ')'

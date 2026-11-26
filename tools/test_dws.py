@@ -2268,9 +2268,9 @@ class PythonMods(unittest.TestCase):
         root, (p,) = self.mod({'a.py': 'from dw import *\nfrom dw.base.jijimons_house import house, tokomon\n'
                                        'g = house.npc(Species.Gekomon, slot=4, at=(450, -650), behaves_like=tokomon, when=has(Item.Meat))\n'})
         e = errors_of_py(p)
-        self.assertIn('when= cannot test `has(Item.Meat)`: who stands on the screen is decided by its setup, whose rule tests flags '
-                      'and the clock only (quest stages, flag(), recruited(...), trigger(n), clock.hour...)', e)
-        self.assertIn('hint: test items, counters and stats with an `if` in a handler', e)
+        self.assertIn('when= cannot test `has(Item.Meat)`: who stands on the screen is decided by its setup, whose rule tests flags, '
+                      'saved counters and the clock only (quest stages, flag(), recruited(...), trigger(n), `visits == 3`, clock.hour...)', e)
+        self.assertIn('hint: test items and stats with an `if` in a handler', e)
         root, (p,) = self.mod({'a.py': 'from dw import *\nfrom dw.base.jijimons_house import jijimon\nx = flag()\n'
                                        '@jijimon.on_talk(when=not x)\ndef t():\n    say("Hello there.")\n'}, 'm-sync')
         mod = os.path.dirname(os.path.dirname(p))
@@ -2761,7 +2761,7 @@ class PythonMods(unittest.TestCase):
                                                    'when=has(Item.Meat))\n'})
         e = errors_of_py(p)
         self.assertIn('an NPC\'s when= cannot test `has(Item.Meat)`: who stands on the screen is decided by its setup, whose rule tests '
-                      'flags and the clock only', e)
+                      'flags, saved counters and the clock only', e)
         self.assertIn('to send the NPC away by one, `npc.leave()` in an on_enter', e)
 
     def test_sixth_review_escapes(self):

@@ -158,7 +158,7 @@ class ScreenRef:
             when: Cond | ClockTest = ..., autotalk: bool = False, hp: int | None = None, mp: int | None = None,
             offense: int | None = None, defense: int | None = None, speed: int | None = None, brain: int | None = None,
             bits: int | None = None, range: int | None = None, still: bool = False, slot: int | None = None,
-            section: int | None = None) -> NPC:
+            section: int | None = None, alone: Cond = ...) -> NPC:
         """A new NPC of this mod. It takes the screen's next free slot: the new NPCs of a screen fill its free slots in the
         order the files and mods compiled together declare them (`slot=` may say it, and must be that one; `python3
         tools/dws.py slots SCREEN` lists the slots and the heap left for its model). The mod owns it: its `on_talk` handlers
@@ -167,7 +167,9 @@ class ScreenRef:
         behaviour, range, stats and path (moved to `at`); without it, the screen's first NPC that walks a path (none: its
         last slot, which `check` names).
         `section=N`: on a new screen, use script speaker/talk id N (5-50) instead of 5 + slot, for shared dialogue.
-        `when=`: it is there only while this holds (saved state: quest stages, flags, `recruited(...)`; on every engine);
+        `when=`: it is there only while this holds (saved state: quest stages, flags, `recruited(...)`, a saved counter
+        against a number, `challenger == 3`; on every engine); `alone=`: while this holds (same tests), the screen's ordinary
+        wild Digimon are not placed (a one-against-one meeting: no wild battle there; the story's own encounters stay);
         `range=N`: how far (world units) a chasing NPC runs after the player; 0 waits to be touched; a zigzag screen whose
         legs lie one above the other wants a short range, or the chase crosses the terrace and the battle cannot be fought.
         A new NPC without `when=` talks when touched; `autotalk=False` makes it wait for CROSS (a friendly NPC by an arrival). On `screen(a, b)` it stands in the same slot of each. Slots 8-15 and

@@ -1,6 +1,7 @@
 # 360, the Power Station: the battery that lights the Works. Solarmon, thawed out of the Ice Sanctuary, runs it. Wizardmon, from
 # the Grey Lord's Mansion, reads Datamon's files by its light: Datamon's and Wizardmon's models do not fit one screen.
 from dw import *
+from ..state import new_challenger, CH_WIZARDMON, CH_SOLARMON
 
 power_station = new_screen(360, map="build/what-the-island-forgot-maps/screens/BARR04.MAP")
 solarmon = power_station.npc(Species.Solarmon, at=(-300, -450), range=0, when=recruited(Species.Solarmon))
@@ -16,3 +17,13 @@ def talk():
 @wizardmon.on_talk
 def talk():
     say("Datamon files what is lost, and I read the files aloud.", "In the Mansion the pages went blank. Here the words stay.")
+
+
+# Resident challenges (content/tables/resident-challenges.json): the day one of them is out waiting at its old
+# spot, it is not here.
+@power_station.on_enter
+def challenger_out_wizardmon_solarmon():
+    if new_challenger == CH_WIZARDMON:
+        wizardmon.leave()
+    if new_challenger == CH_SOLARMON:
+        solarmon.leave()

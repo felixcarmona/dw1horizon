@@ -34,12 +34,13 @@ class CityResidents(unittest.TestCase):
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json')
                    for s in [json.loads(p.read_text())]}
         name = lambda i: species[i]['name'].replace('-', '')
+        # (arcs/challenges: a resident's postgame challenge spot, not a second Digimon)
         unique = {name(r['id']) for r in city.residents() if r['id'] > 58} - {'Myotismon', 'WaruMonzaemon'}
         mod = city.ROOT / 'story/mods/what-the-island-forgot'
         placed = Counter()
         for path in mod.rglob('*.py'):
             folder = path.relative_to(mod).parts[0]
-            if folder not in ('city', 'district', 'maps', 'test'):
+            if folder not in ('city', 'district', 'maps', 'test') and path.relative_to(mod).parts[:2] != ('arcs', 'challenges'):
                 placed.update(re.findall(r'\.npc\(Species\.(\w+)', path.read_text()))
                 placed.update(re.findall(r'take_over\(.*species=Species\.(\w+)', path.read_text()))
         for maps in (city.ROOT / 'content/maps').glob('*.json'):

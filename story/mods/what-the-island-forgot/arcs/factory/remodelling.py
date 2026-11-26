@@ -5,23 +5,52 @@ from dw import *
 from dw.base.factorial_town_162 import guardromon0
 from dw.text import text
 from ...state import factory_kept_shut
+from ...state import new_challenger, new_challenge_tried, CHALLENGE_ARMED, CHALLENGE_BEATEN, CH_DATAMON
 
 machine_room = screen(Screen.factorial_town_162)
 datamon = machine_room.npc(Species.Datamon, at=(100, -1450), hp=4000, mp=4200, offense=700, defense=370, speed=320, brain=350, bits=1300,
-                           range=0, still=True, when=not recruited(Species.Datamon))
+                           range=0, still=True, when=not recruited(Species.Datamon) or new_challenger == CH_DATAMON, alone=new_challenger == CH_DATAMON)
 
 @guardromon0.on_talk(when=factory_kept_shut)
 def no_power():
     say("Remodeling unavailable. All power is assigned to the archive.")
 
 
+# Resident challenges (content/tables/resident-challenges.json): once the game is beaten, the day Datamon is the challenger
+# and has not been beaten yet it waits here, stronger; any other day it is home.
+
+def challenge():
+    if new_challenger != CH_DATAMON:
+        say(t("challenge.home"))
+        leave()
+    else:
+        if new_challenge_tried:
+            say(t("datamon.challenge.retry"))
+        else:
+            say(t("datamon.challenge.intro1"), t("datamon.challenge.intro2"))
+        if ask(yes=t("challenge.yes"), no=t("challenge.no")):
+            new_challenge_tried.set()
+            pstat(CHALLENGE_ARMED).set(2)
+            if fight(datamon, escape=False) == "won":       # a lost one wakes the tamer at Jijimon's: it waits here all day
+                say(t("datamon.challenge.won"))
+                give(Item.CyberPart)
+                give(bits=4000)
+                narrator.say(t("datamon.challenge.reward"))
+                new_challenger.add(CHALLENGE_BEATEN)
+                run(3150, -850)
+                leave()
+
+
 @datamon.on_talk
 def talk():
-    say("Everything lost ends up in a file. I keep the files.")
-    if fight(datamon, escape=False) == "won":
-        say("You are worth a file of your own.")
-        run(-50, -2650)
-        send_to_city(line="Datamon joined the city!", species=Species.Datamon, camera=False)
+    if recruited(Species.Datamon):
+        challenge()
+    else:
+        say("Everything lost ends up in a file. I keep the files.")
+        if fight(datamon, escape=False) == "won":
+            say("You are worth a file of your own.")
+            run(-50, -2650)
+            send_to_city(line="Datamon joined the city!", species=Species.Datamon, camera=False)
 
 
 # More remodelling (Discord, 2026-11): Guardromon also reworks the species that have a same-level sibling, always one step

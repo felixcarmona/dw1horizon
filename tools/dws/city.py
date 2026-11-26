@@ -339,6 +339,8 @@ def to_dws(spec, header=True):
             for slot, sp, talk, cond in sc['npcs']:
                 w = '' if cond == ('true',) else ' when ' + PR.cond_text(cond)
                 L.append(f'            npc {species_text(sp)} slot {slot}{" autotalk" if talk else ""}{w};')
+            for slot, cond in sc.get('alone', []):
+                L.append(f'            alone slot {slot} when {PR.cond_text(cond)};')
             L.append('        }')
         L.append('    }')
     L.append('}')
@@ -455,6 +457,9 @@ def parse_city(p, c):
         if t0.val == 'trigger': p.i += 1; p.expect('('); n = num(); p.expect(')'); return ('trig', n)
         if t0.val == 'flag':                      # a flag of the program by name (resolved to its trigger by the compiler)
             p.i += 1; p.expect('('); nm = p.ident('a flag name'); p.expect(')'); return ('flag', nm.val, nm.pos)
+        if t0.val == 'var':                       # a saved counter of the program by name (resolved to its pstat by the compiler)
+            p.i += 1; p.expect('('); nm = p.ident('a variable name'); p.expect(')')
+            c = pcmp('var', t0); return ('var', nm.val, nm.pos, c[2], c[3])
         if t0.val == 'prosperity': p.i += 1; return pcmp('p1', t0)
         if t0.val in ('pstat', 'stat', 'roll'):
             p.i += 1; p.expect('('); n = num(); p.expect(')'); return pcmp({'pstat': f'p{n}', 'stat': f'stat{n}', 'roll': f'roll{n}'}[t0.val], t0)
@@ -496,17 +501,21 @@ def parse_city(p, c):
             while not p.at('}'):
                 p.expect('screen'); p.expect('('); scr = num(); last = scr
                 if p.accept('..'): p.accept('='); last = num()          # screen(168..=179): the same rules on each
-                p.expect(')'); p.expect('{'); lets = []; rules = []; defs.clear()
+                p.expect(')'); p.expect('{'); lets = []; rules = []; alone = []; defs.clear()
                 while not p.at('}'):
                     if p.at('let'):
                         p.i += 1; nm = p.ident('a name').val; p.expect('='); f = pcond(); p.expect(';'); lets.append((nm, f)); defs.add(nm); continue
+                    if p.at('alone'):                 # `alone slot K when C;`: while C holds, the screen's ordinary wild Digimon are not placed
+                        p.i += 1; p.expect('slot'); slot = num(); p.expect('when'); alone.append((slot, pcond())); p.expect(';'); continue
                     p.expect('npc'); sp = species(); p.expect('slot'); slot = num(); talk = 0
                     if p.at('autotalk'): p.i += 1; talk = 1
                     cnd = ('true',)
                     if p.at('when'): p.i += 1; cnd = pcond()
                     p.expect(';'); rules.append((slot, sp, talk, cnd))
                 p.expect('}')
-                for k in range(scr, last + 1): pres[k] = {'lets': list(lets), 'npcs': list(rules), 'form': 'circuit' if lets else 'flat'}
+                for k in range(scr, last + 1):
+                    pres[k] = {'lets': list(lets), 'npcs': list(rules), 'form': 'circuit' if lets else 'flat'}
+                    if alone: pres[k]['alone'] = list(alone)
             p.expect('}'); spec[w] = pres
         elif w in ('shop_maps', 'arena_maps'):
             p.expect(':'); p.expect('['); xs = []

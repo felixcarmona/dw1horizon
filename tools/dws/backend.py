@@ -746,6 +746,8 @@ def place_digimon(comp, mh, report):
         for slot, sp, talk, cnd in sc.get('npcs', []):
             if (screen, slot) not in used_rules:
                 report.append(f'note: presence screen {screen} slot {slot}: check-only (the slot is not one this program places)')
+    from .recruit_screens import guard_wilds            # before the heap check: a challenger's screen has no wilds while it waits
+    mh = guard_wilds(comp, mh, report)
     checked = set(); short = []
     for screen, dig, ln in pending:                         # after all of a screen's changes
         if screen in checked: continue
@@ -826,9 +828,7 @@ def build_maphead(comp, workdir, report):
     mh_path = os.path.join(mh_dir, 'maphead.scn.txt')
     mh = open(mh_path, encoding='utf-8').read()
     mh = new_scripts(comp, workdir, mh)
-    mh = place_digimon(comp, mh, report)
-    from .recruit_screens import guard_wilds
-    mh = guard_wilds(comp, mh, report)
+    mh = place_digimon(comp, mh, report)                 # (with the wild guards: tools/dws/recruit_screens.py)
     if comp.city is not None and getattr(comp, 'city_table', True):     # (below story-state only its presence rules: the IFs above)
         from . import city
         blob = city.encode(comp.city); sec, body = city.to_section_text(blob)
@@ -879,8 +879,11 @@ def apply(comp, workdir):
                 raise BackendError(f'script {script} section {sec}: ids above 254 can only replace a section the script already has')
             if has and not replace:
                 lab = re.match(rf'\.section\s+{sec}\s+(\S+)', text[has[0]]).group(1)
-                k = next(k for k, l in enumerate(text) if l.split(';')[0].strip() == f'{lab}:')
-                text[k + 1:k + 1] = [f'    ; --- dws ({os.path.basename(path)})'] + code + ['    ; --- end dws']
+                k = next((k for k, l in enumerate(text) if l.split(';')[0].strip() == f'{lab}:'), None)
+                at = text
+                if k is None:                               # a section another source of this script added above: its code waits in tail
+                    at = tail; k = next(k for k, l in enumerate(tail) if l.split(';')[0].strip() == f'{lab}:')
+                at[k + 1:k + 1] = [f'    ; --- dws ({os.path.basename(path)})'] + code + ['    ; --- end dws']
                 report.append(f'script {script} section {sec}: inserted at the start ({len(code)} lines)')
             else:
                 lab = f'dws_sec{sec}_{comp.label("s")}'

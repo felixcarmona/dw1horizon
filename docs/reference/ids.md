@@ -390,7 +390,7 @@ The save copies the first 0x17C bytes: 212 + 33 + 100 + the first **35 pstats**.
   these ranges use the bitsets described under Species. Original usage and compiler reservations are described in
   [usage diagnostics and reservations](../mods/scripts.md#free-triggers-and-pstats).
 - **Pstats** are u8 values with a u8 index and stay so: widening them would change every `SET_PSTAT`/`IF pN` and the
-  saved bytes. Wide ids go through the **wide registers** instead: w0–w15 are saved (save tag `WREGS`; w15 is the Sukamon backup), w16–w63 are
+  saved bytes. Wide ids go through the **wide registers** instead: w0–w15 are saved (save tag `WREGS`; w10–w14 are the resident challenges' bag, w15 is the Sukamon backup), w16–w63 are
   scratch, zeroed at boot. `CALL_ROUTINE 0` (choose an item) also leaves the item in w62 (0xFFFF = none) next to p254.
 
 ## Script ids

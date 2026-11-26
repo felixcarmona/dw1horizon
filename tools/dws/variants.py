@@ -21,11 +21,14 @@ mod_options.c).
 In Python: plan(out, ext, base) -> rows and finish(out, rows, base): tools/derive's storycopies step  calls both in
 one go, after its story and balance steps (the balance maps are made before the executable since 2026-10-26).
 
+A .MAP whose only change is placed Digimon appended (a new NPC's slot) gets no copy: the original story never spawns
+them (prune, after finish).
+
 Names: the file's name with an underscore for its first letter (MAYO03.MAP -> _AYO03.MAP): the executable finds a copy by
 that rule, with no table (each row would cost its heap). A name another disc file already has, or two copies' that
 meet, stops the build (the game looks files up by name only).
 """
-import argparse, filecmp, os, shutil, sys
+import argparse, filecmp, os, shutil, struct, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 EXTRACTED = os.path.join(ROOT, 'extracted')
@@ -92,6 +95,41 @@ def finish(out, rows, base):
             shutil.copyfile(src, copy)
             n += 1
     return n
+
+
+def only_new_slots(ext_file, base_file):
+    """True when the extended story's .MAP is the original story's with placed Digimon appended and nothing else: the
+    original story never spawns a slot past its own .MAP's (tools/test_dws_variants.py holds that for every screen), and
+    a slot nobody spawns is data only (loadMapDigimon fills MAP_DIGIMON_TABLE; an NPC exists through SET_DIGIMON alone),
+    so the extended file serves the original story as it is and needs no copy (each copy costs a file-table row of heap)."""
+    if not ext_file.upper().endswith('.MAP'):
+        return False
+    try:
+        import dwmap
+    except ImportError:
+        from tools import dwmap
+    e, b = (open(f, 'rb').read() for f in (ext_file, base_file))
+    try:
+        m, o = dwmap.MapFile(e), dwmap.MapFile(b)
+    except (ValueError, struct.error, IndexError):
+        return False
+    k = len(o.digimon)
+    if o.digimon_count != k or len(m.digimon) <= k or m.digimon_count != len(m.digimon):
+        return False
+    m.digimon, m.digimon_count = m.digimon[:k], k
+    return m.build() == b
+
+
+def prune(out, rows):
+    """rows without the copies only_new_slots finds needless (their files removed from out) -> the rows kept."""
+    keep = []
+    for row in rows:
+        copy = os.path.join(out, row[1])
+        if only_new_slots(row[2], copy):
+            os.remove(copy)
+        else:
+            keep.append(row)
+    return keep
 
 
 def cmd_plan(a):

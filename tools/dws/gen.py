@@ -341,7 +341,8 @@ class Program(Ext):
         return f'sh_{name}'
 
     def resolve_presence(self):
-        """`flag(name)` in a `city { presence }` condition: the declared flag's trigger (a story flag is 800 + n)."""
+        """`flag(name)` in a `city { presence }` condition: the declared flag's trigger (a story flag is 800 + n); `var(name) OP n`:
+        the declared saved counter's pstat (the original engine's: MAPHEAD's IF compares pstats, not story variables)."""
         pres = (self.b.city or {}).get('presence') or {}
         def walk(c):
             if c[0] == 'trig' and 0x8070 <= c[1] < 0x8400:
@@ -353,6 +354,14 @@ class Program(Ext):
                     raise DwsError(f'presence: "{c[1]}" is not a declared flag{self.near(c[1], [k for k, v in self.syms.items() if v.kind == "flag"])}', c[2])
                 s.reads += 1
                 return ('trig', s.num)
+            if c[0] == 'var':
+                s = self.syms.get(c[1])
+                if s is None or s.kind != 'var' or s.count or s.scope != 'save' or self.is_story_var(s) or not 0 <= s.num < 256:
+                    raise DwsError(f'presence: "{c[1]}" is not a saved counter (a pstat) of this engine'
+                                   f'{self.near(c[1], [k for k, v in self.syms.items() if v.kind == "var"])}', c[2])
+                s.reads += 1
+                self.byte_test(s.num, c[3], c[4], s.node, c[1])
+                return ('cmp', f'p{s.num}', c[3], c[4])
             if c[0] in ('and', 'or'): return (c[0], [walk(x) for x in c[1]])
             if c[0] == 'not': return ('not', walk(c[1]))
             return c
@@ -360,6 +369,7 @@ class Program(Ext):
             for sc in pres.values():
                 sc['lets'] = [(nm, walk(f)) for nm, f in sc['lets']]
                 sc['npcs'] = [(slot, sp, talk, walk(cnd)) for slot, sp, talk, cnd in sc['npcs']]
+                if sc.get('alone'): sc['alone'] = [(slot, walk(cnd)) for slot, cnd in sc['alone']]
         except DwsError as e:
             self.errors.append(e)
 
