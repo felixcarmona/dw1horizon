@@ -22,11 +22,16 @@ The program carries no game data. It plays the disc that the patcher builds from
   disc (`desktop.play`).
 - **Linux:** `Horizon-Play-Linux-x86_64.tar.gz` (`player.yml`), built on Ubuntu 22.04. Run
   `./horizon-play DISC.cue` once. With no argument it opens the last disc it played.
-- **Android:** `Horizon-Play.apk` (`player.yml`, arm64, Android 7+). The first screen asks once for the patched `.bin`
-  (the web or desktop patcher's output), copies it into the app's folder (`Android/data/com.dw1horizon.play/files`:
-  `disc/`, `saves/`, `system/`) and starts the game; later it starts with **Play**. The APK is signed with the
-  `HORIZON_KEYSTORE_B64` / `HORIZON_KEYSTORE_PASS` / `HORIZON_KEY_ALIAS` secrets; without them each build has a
-  throwaway key and cannot install over the one before.
+- **Android:** after a build, the desktop patcher's **Android app (.apk)** button writes `<disc>.apk` next to the disc
+  (`desktop.make_apk`, `tools/patcher/apk.py`). It is Horizon Play for Android (`tools/player/android`, arm64,
+  Android 7+) with the built disc added as `assets/horizon.bin`, stored and page aligned. The player copies it to the
+  phone and installs it: the game starts at once, with nothing to choose. The app reads the disc in place, through the
+  core's VFS (`--embedded APK OFFSET SIZE`), so the phone keeps one copy. The patcher signs it (APK Signature Scheme
+  v2, standard library only) with a key made on first use and kept in its settings folder (`android-key.json`), so
+  the next APK from that computer installs over it and keeps the saves. An APK signed with another key has to replace
+  the app; Android then offers to keep its data (`hasFragileUserData`). Saves, logs and options live in
+  `Android/data/com.dw1horizon.play/files/saves`. The template APK alone (`desktop.yml`'s `horizon-play-apk`
+  artifact) asks once for a patched `.bin` and copies it into the app's folder.
 
 OpenBIOS takes about 25-30 seconds to reach the game's first picture: the screen stays black until then.
 
@@ -36,7 +41,8 @@ OpenBIOS takes about 25-30 seconds to reach the game's first picture: the screen
 python3 tools/player/build.py --out build/player/bundle            # Linux (needs gcc-mipsel-linux-gnu for OpenBIOS)
 python tools/player/build.py --openbios openbios.bin --out ...      # Windows / macOS (an OpenBIOS built on Linux)
 python3 tools/player/build.py --universal2 --openbios ... --out ... # macOS, Apple silicon + Intel
-python3 tools/player/android/build_apk.py --out Horizon-Play.apk  # Android (ANDROID_HOME, NDK, JDK 17; no Gradle)
+python3 tools/player/android/build_apk.py --out Horizon-Play.apk  # Android template (ANDROID_HOME, NDK, JDK 17; no Gradle)
+python3 tools/patcher/apk.py Horizon-Play.apk DISC.bin OUT.apk --key key.json   # the template with a disc inside
 ```
 
 It checks out SwanStation and OpenBIOS (PCSX-Redux's `nugget`) at the commits pinned in `build.py`. It builds the
