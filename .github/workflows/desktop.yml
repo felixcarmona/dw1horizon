@@ -229,7 +229,9 @@ jobs:
           P="$RUNNER_TEMP/Horizon Play"
           python tools/player/build.py --universal2 --out "$P" --work "$RUNNER_TEMP/player" --openbios "$RUNNER_TEMP/openbios/openbios.bin"
           R="$P/Horizon Play.app/Contents/Resources"
-          lipo -archs "$P/Horizon Play.app/Contents/MacOS/horizon-play" "$R/swanstation_libretro.dylib"
+          for f in "$P/Horizon Play.app/Contents/MacOS/horizon-play" "$R/swanstation_libretro.dylib"; do
+            lipo -archs "$f" | tee /dev/stderr | grep -q "x86_64 arm64\|arm64 x86_64"
+          done
           if [ -n "$SIGN_ID" ]; then
             # the core recompiles PlayStation code at run time: the hardened runtime must allow JIT memory
             codesign --force --timestamp --options runtime --sign "$SIGN_ID" "$R/swanstation_libretro.dylib"
