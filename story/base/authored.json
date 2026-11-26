@@ -138,8 +138,8 @@
     },
     "zones/libraries/s212/script.py": {
       "original_sha256": "157f9981486d5958fd0bbda3cc7e2f33627059042419edc3998013616b7c498f",
-      "authored_sha256": "40630f32a1875c3d2ca065b62534b33ff377d47f7c2d5d4008ec1832f1127d19",
-      "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell"
+      "authored_sha256": "e323acaef841a7638bc46a209db9c888fcb6056f2c6e61e8027769db5ab0793a",
+      "reason": "Death evolutions at 30 percent; Devimon stays at 50; Greymon, Meramon, Mammothmon and Garudamon gain an earned life-loss evolution; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; New Game Plus: the save machine of Jijimon's house starts the adventure again, and in a New Game Plus run gives the partner its earlier form back (script 212 sections 75 and 76)"
     },
     "zones/libraries/s217/script.py": {
       "original_sha256": "f2a4e7a70d95c4d9e6f998fa47540c2411b8662ae91319b85a5b99f9654a958b",
@@ -158,8 +158,8 @@
     },
     "zones/file-city/s162-168-169-170/script.py": {
       "original_sha256": "a5c33d1276540eb13538e449a95e693419f0b012b8c03ec422132fdbb122ac2c",
-      "authored_sha256": "357b1705d238502328dab0aacfa01ec547de72b8e86655190e49ec6ff74b20c2",
-      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; entering the city hands back album cards 0 and 65 when their scene has played and the card is missing"
+      "authored_sha256": "0659edddc8c8d4727d46c4ff9df6085363c4f7fd5c5482e718116309229ccb10",
+      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; the Birdra Transport steps run to the centre of their tile so the tamer always arrives; awaited tamer walks and runs go to the centre of their tile so the tamer always arrives; entering the city hands back album cards 0 and 65 when their scene has played and the card is missing; after the album cards, a line points to the save machine's New Game Plus and its rewind"
     },
     "zones/kunemons-bed/s002-1/script.py": {
       "original_sha256": "397d1a6845502f7c2ff73860700a7685e29548a62e786f7e0c9fbeadba3bc2b4",
@@ -668,13 +668,13 @@
     },
     "zones/jijimons-house/s165-205/script.py": {
       "original_sha256": "a0cd906aa9a9ec8491609766ce69ed713d222a9aa97292d3bc6af32628279139",
-      "authored_sha256": "d797a999f43856e13e2ea85ddc5501330740b2b9cbd09bc07d565897afe799f0",
-      "reason": "The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell"
+      "authored_sha256": "2132af0af29127b7fa0a2dd2d83f926eba2787016f90841a40ea1e1eaede065f",
+      "reason": "The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; New Game Plus: the save machine of Jijimon's house starts the adventure again, and in a New Game Plus run gives the partner its earlier form back"
     },
     "zones/jijimons-house/s178-218/script.py": {
       "original_sha256": "d6f7b28ea5c0c58f57b68b4ee846073f6e921316c846c8efad9078e03d17f7be",
-      "authored_sha256": "5e541d84e20ecd469045d9da55e6a619952e310d63b21cdd8c468a6eaf63ef0a",
-      "reason": "The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell"
+      "authored_sha256": "adb90cfa01e98269b3c68df1e2a8964b61df026ffc588d3e954ae864de13d812",
+      "reason": "The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; The rite of return: a third option on the save machine menu sends a grown partner back to the egg (script 212 section 74), and the reborn baby keeps a happy farewell; New Game Plus: the save machine of Jijimon's house starts the adventure again, and in a New Game Plus run gives the partner its earlier form back"
     }
   }
 }

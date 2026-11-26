@@ -2,7 +2,7 @@
 
 This page explains how Digimon World 2 (USA) stores and plays a technique's visual effect. It also covers
 what carrying one into this game's effect engine would take. Everything here is read from the player's own
-DW2 disc with `tools/dw2effect.py`. Nothing from that disc is kept in the repository.
+DW2 disc (with `dw2effect.py`, since removed). Nothing from that disc is kept in the repository.
 
 No species plays these conversions now: every imported finisher is an effect written for this game
 ([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter this page
@@ -84,12 +84,12 @@ DW2's battles are turn-based. The two rows of fighters stand 0x2800 units apart,
 There is no projectile code. A breath or a beam travels inside the cast object's own clip: its parts reach
 7,700 to 9,000 units forward, almost the whole gap between the rows.
 
-`tools/dw2effect.py render` draws this from a fixed side camera, both objects' timelines together, with the
+`dw2effect.py render` draws this from a fixed side camera, both objects' timelines together, with the
 PlayStation's blending:
 
 ```
-python3 tools/dw2effect.py --disc DW2.bin skill "Hyper Heat"
-python3 tools/dw2effect.py --disc DW2.bin render "Hyper Heat" --caster Cyclonemon --out hyperheat.png
+python3 dw2effect.py --disc DW2.bin skill "Hyper Heat"
+python3 dw2effect.py --disc DW2.bin render "Hyper Heat" --caster Cyclonemon --out hyperheat.png
 ```
 
 ## Carrying one into this game's effect engine
@@ -108,7 +108,7 @@ The engine can draw a DW2 effect object:
   scale) takes its direction from the other two. Only a true shear could not be drawn, and none was found.
 - So a converter can turn each drawn bone into a TMD object and each distinct pose into nine fields (three angles,
   three scales, three translations), then write a script that picks the pose of the current tick from a table,
-  turns it by the caster's facing and draws it. `tools/dw2efe.py` does this; see
+  turns it by the caster's facing and draws it. `dw2efe.py` does this; see
   [signature effects](../mods/signature-effects.md).
 
 What the converter has to rebuild around the drawing, shown on Mega Flame (chunk 63), the ranged fire that
@@ -129,7 +129,7 @@ SkullMeramon and Cyclonemon use in this game:
   sub-effects that draw the DW2 poses. The converter must scale the DW2 travel so the picture reaches as far as
   the puffs, about 1,000 units here against about 9,000 in DW2. Otherwise the picture and the damage disagree.
 
-The limits come from the chunk, not the engine. The first estimates (`tools/dw2effect.py budget SKILL`) had
+The limits come from the chunk, not the engine. The first estimates (`dw2effect.py budget SKILL`) had
 most DW2 skills over a chunk: Hyper Heat at about 31,300 bytes, 11 palettes and 19,488 texels. The converter fits
 them with reductions instead:
 

@@ -4,6 +4,7 @@
 Usage: hard_host.py HARD_TREE, or hard_host.py BASELINE_TREE HARD_TREE
 """
 import json
+import os
 from pathlib import Path
 import struct
 import subprocess
@@ -21,14 +22,22 @@ def main():
         after=Path(sys.argv[1]).resolve()
         temporary=tempfile.TemporaryDirectory(prefix='hard-baseline-')
         before=Path(temporary.name)
-        for rel in ('btl/battle_main.c','std/std_main.c','vs/vs_main.c'):
-            target=before/'src'/rel;target.parent.mkdir(parents=True,exist_ok=True)
-            shutil.copy2(after/'src'/rel,target)
-        # -C1: later patches rewrite context lines next to HARD's hunks (MOVE_DATA[tech] became modSpeciesMove)
-        subprocess.run(['git','apply','-R','-C1','--include=src/btl/battle_main.c',
-                        '--include=src/std/std_main.c','--include=src/vs/vs_main.c',
-                        str(ROOT/'mods/patches/Add-HARD-single-player-difficulty.patch')],
-                       cwd=before,check=True)
+        # The baseline is the tree at HARD's own position in the series: the seed's three files with every patch
+        # before HARD applied (restricted to them). Reverse-applying HARD on the final tree stops working as soon as
+        # a later patch rewrites a line next to one of its hunks.
+        files=('src/btl/battle_main.c','src/std/std_main.c','src/vs/vs_main.c')
+        repo=os.environ.get('DECOMP_REPO') or str(ROOT/'decomp')
+        seed=subprocess.run(['git','rev-parse','HEAD:decomp'],cwd=ROOT,check=True,capture_output=True,text=True).stdout.strip()
+        for rel in files:
+            target=before/rel;target.parent.mkdir(parents=True,exist_ok=True)
+            target.write_bytes(subprocess.run(['git','-C',repo,'show',seed+':'+rel],check=True,capture_output=True).stdout)
+        series=subprocess.run([sys.executable,str(ROOT/'tools/patch_series.py'),'list','all'],cwd=ROOT,check=True,
+                              capture_output=True,text=True).stdout.split()
+        hard=[i for i,v in enumerate(series) if Path(v).name=='Add-HARD-single-player-difficulty.patch']
+        assert len(hard)==1,'HARD patch not found in the series'
+        for patch in series[:hard[0]]:
+            subprocess.run(['git','apply','--include='+files[0],'--include='+files[1],'--include='+files[2],
+                            str(ROOT/patch)],cwd=before,check=True)
     else:
         before,after=[Path(v).resolve() for v in sys.argv[1:3]]
     setup=(after/'src/btl/battle_setup.c').read_text()
@@ -66,7 +75,9 @@ struct {struct {int16_t finisherChargeup[2];} player;} combat;
 #define DIGI_PARA(id) para[id]
 int32_t MOD_OPT_DIFFICULTY;
 int rr;
-int32_t BTL_HARD_ZERO_DAMAGE, STD_HARD_ZERO_DAMAGE;
+int32_t BTL_HARD_ZERO_DAMAGE, STD_HARD_ZERO_DAMAGE, BTL_FLOOR_PCT, STD_FLOOR_PCT;
+#define MOD_BOOST_POWER(e,mv) (tech.power)
+#define modBoostPower(type,mv) (tech.power)
 static inline Move *modSpeciesMove(int id,int move){return &tech;}
 static inline int randomLimit(int n){return rr%n;}
 '''
@@ -79,12 +90,18 @@ int main(void){
     DigimonEntity a={{0},{{10000,10000,800,750,700,600},{10000,10000}}};
     DigimonEntity b={{1},{{9999,9999,999,800,800,800},{9999,9999}}};
     Stats initial=b.stats;
-    for(int mode=0;mode<2;mode++){
-        MOD_OPT_DIFFICULTY=mode;b.stats=initial;modHardEnemy(&b.stats);
-        assert(!memcmp(&b.stats,&initial,sizeof(initial)));
-    }
+    MOD_OPT_DIFFICULTY=MOD_DIFF_EASY;b.stats=initial;modHardEnemy(&b.stats);
+    assert(!memcmp(&b.stats,&initial,sizeof(initial)));
+    /* NORMAL leaves an early-game enemy (maximum HP under fromHp) alone; a late-game one gets only the NORMAL step */
+    Stats early=initial;early.base.hp=early.current.currentHP=3000;
+    MOD_OPT_DIFFICULTY=MOD_DIFF_NORMAL;b.stats=early;modHardEnemy(&b.stats);
+    assert(!memcmp(&b.stats,&early,sizeof(early)));
+    b.stats=initial;modHardEnemy(&b.stats);
+    assert(b.stats.base.hp==14998&&b.stats.current.currentHP==14998);
+    assert(b.stats.base.off==999&&b.stats.base.def==800&&b.stats.base.speed==800&&b.stats.base.brain==800);
+    /* HARD: the NORMAL step first, then its own factors */
     MOD_OPT_DIFFICULTY=MOD_DIFF_HARD;b.stats=initial;modHardEnemy(&b.stats);
-    assert(b.stats.base.hp==10998&&b.stats.current.currentHP==10998);
+    assert(b.stats.base.hp==16497&&b.stats.current.currentHP==16497);
     assert(b.stats.base.mp==9999&&b.stats.current.currentMP==9999);
     assert(b.stats.base.off==1498&&b.stats.base.def==840);
     assert(b.stats.base.speed==920&&b.stats.base.brain==1200);
@@ -99,12 +116,13 @@ int main(void){
     typedef int32_t (*Fn)(DigimonEntity*,DigimonEntity*,int16_t);
     Fn current[]={BTL_calculateDamage,STD_calculateDamage,VS_rollAttackOutcome};
     Fn reference[]={BTL_calculateDamage_reference,STD_calculateDamage_reference,VS_rollAttackOutcome_reference};
+    int hps[]={1000,5000,10000};
     long count=0;
     for(int field=0;field<3;field++)for(int mode=0;mode<3;mode++)
     for(int side=0;side<2;side++)for(int o=0;o<9;o++)for(int d=0;d<9;d++)
-    for(int p=0;p<4;p++)for(int m=0;m<3;m++)for(int c=0;c<4;c++)for(int r=0;r<101;r++){
+    for(int p=0;p<4;p++)for(int m=0;m<3;m++)for(int c=0;c<4;c++)for(int h=0;h<3;h++)for(int r=0;r<101;r++){
         if(field==2&&mode!=0)continue;
-        a.stats.base.off=values[o];b.stats.base.def=values[d];
+        a.stats.base.off=values[o];a.stats.base.hp=hps[h];b.stats.base.def=values[d];
         for(int i=0;i<3;i++){para[0].special[i]=i;para[1].special[i]=i;TYPE_FACTORS[0][i]=i==0?2:i==1?10:20;}
         ENTITY_TABLE[1]=side?&b.entity:&a.entity;
         tech.power=powers[p];tech.special=0;rr=r;combat.player.finisherChargeup[0]=charges[c];
@@ -120,14 +138,24 @@ int main(void){
         if(excess)base=base*1000/(1000+excess);
         int roll=rr%21+90;
         int want=(base*32/30)*roll/100;
-        if(mode==MOD_DIFF_HARD&&side){
+        int pct=0;
+        if(side&&field!=2&&mode!=MOD_DIFF_EASY){
+            /* the floor: HARD's own for every enemy, NORMAL's late-game one from fromHp to what the step gives fullHp */
+            int from=MOD_BATTLE[MOD_BT_NORMAL_FROM_HP],full=MOD_BATTLE[MOD_BT_NORMAL_FULL_HP];
+            int top=full*MOD_BATTLE[MOD_BT_NORMAL_HP]/100,late=0;
+            if(hps[h]>=top)late=MOD_BATTLE[MOD_BT_NORMAL_FLOOR];
+            else if(hps[h]>from)late=MOD_BATTLE[MOD_BT_NORMAL_FLOOR]*(hps[h]-from)/(top-from);
+            pct=late;
+            if(mode==MOD_DIFF_HARD&&MOD_BATTLE[MOD_BT_HARD_FLOOR]>pct)pct=MOD_BATTLE[MOD_BT_HARD_FLOOR];
+        }
+        if(pct>0){
             int zero=values[o]>500?500:values[o];
             int z=powers[p]+zero*powers[p]/500;
             if(values[o]>500)z+=powers[p]*(values[o]-500)/((values[o]-500+500)*MOD_BATTLE[MOD_BT_TAIL_DIV]);
             int floor=(z*32/30)*roll/100;
             if(floor>30000)floor=30000;
-            if(moves[m]<58)assert(got*100>=floor*15);
-            floor=(floor*15+99)/100;
+            if(moves[m]<58)assert(got*100>=floor*pct);
+            floor=(floor*pct+99)/100;
             if(want<floor)want=floor;
         }
         if(moves[m]>=58){
@@ -141,7 +169,7 @@ int main(void){
         if(mode==MOD_DIFF_EASY)want=side?(want+1)/2:want*2;
         if(mode==MOD_DIFF_HARD&&!side)want=want*95/100;
         if(want<1)want=1;if(want>(field==2?9999:30000))want=field==2?9999:30000;
-        if(mode!=MOD_DIFF_HARD&&rawDef<=999){
+        if(mode!=MOD_DIFF_HARD&&rawDef<=999&&pct==0){
             int old=reference[field](&a,&b,moves[m]);
             if(old>(field==2?9999:30000))old=field==2?9999:30000;
             assert(old==got);
@@ -150,11 +178,12 @@ int main(void){
     }
     MOD_OPT_DIFFICULTY=MOD_DIFF_HARD;
     long blocks=0;
-    for(int zero=0;zero<=30000;zero++)for(int pct=10;pct<=30;pct++){
-        int chip=modHardBlockedFloor(modHardMinimum(zero)*pct/100,zero,pct);
+    int floors[]={15,20};
+    for(int zero=0;zero<=30000;zero++)for(int pct=10;pct<=30;pct++)for(int f=0;f<2;f++){
+        int chip=modHardBlockedFloor(modHardMinimum(zero,floors[f])*pct/100,zero,pct,floors[f]);
         if(chip<1)chip=1;
         int reference=zero*pct/100;if(reference<1)reference=1;
-        assert(chip*100>=reference*15);blocks++;
+        assert(chip*100>=reference*floors[f]);blocks++;
     }
     printf("PASS %ld blocked-floor comparisons: final applied chip meets the minimum\\n",blocks);
     printf("PASS %ld actual BTL/STD/VS comparisons: EASY/NORMAL <=999 unchanged; reciprocal Defense and HARD floor/ordinary/counter/finishers, both sides, charge, variance and caps; UBSan clean\\n",count);

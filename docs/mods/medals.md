@@ -42,7 +42,7 @@ because `0x180` is the shop stock and 642 is New Game+. A medal past 26 needs an
 Five medals a row, three rows on screen, scrolling by rows; the classic medals first. The panel under the grid shows the
 selected medal's name, two lines of description and its state: earned, a count such as `37 / 61`, or not earned yet.
 
-Each medal is a drawn picture: `content/medals/NN.txt` holds its fifteen colours, a 24x24 grid (`small`, the list) and a
+Each medal is a drawn picture, one file in `content/medals/` (`00.txt`, `01.txt`, ...) holding its fifteen colours, a 24x24 grid (`small`, the list) and a
 48x48 grid (`large`, the selected medal). A medal not earned yet is the same picture in dark metal; that palette is
 computed by `tools/species.py medal_block`, which packs the art into `DIGI.DAT`. The view keeps fifteen small pictures in video memory, over
 the old coin stamps: the three rows on screen. When the list scrolls it loads the rows that came into view

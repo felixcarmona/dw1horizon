@@ -1,8 +1,8 @@
 # Digimon Digital Card Battle: attack effects
 
 How Digital Card Battle (DCB, SLUS-01328) draws the attacks of its Digimon, and how
-`tools/dcbeffect.py` and `tools/dcbefe.py` turn them into Digimon World effects. Nothing here comes
-from the disc into the repository: the tools read the player's own image (`DCB_IMAGE`).
+the converters `dcbeffect.py` and `dcbefe.py` (since removed) turned them into Digimon World effects. Nothing here
+came from the disc into the repository: the tools read the player's own image (`DCB_IMAGE`).
 
 No species plays these conversions now: every imported finisher is an effect written for this game
 ([authored finishers](../mods/signature-effects.md#authored-finishers)). The converter this page
@@ -97,19 +97,19 @@ i16 offset.
 
 ## Conversion to a DW1 effect
 
-`tools/dcbefe.py` traces both scripts, keeps the steps in which something is drawn and turns them into
-the input of the DW2 converter (`tools/dw2efe.py`), which writes the 20 KB EFEDAT chunk:
+`dcbefe.py` traces both scripts, keeps the steps in which something is drawn and turns them into
+the input of the DW2 converter (`dw2efe.py`), which writes the 20 KB EFEDAT chunk:
 
 - Units: DCB's fighters stand 5000 apart, DW2's 10240, so positions are scaled by 2.048 and then by
   the DW2 converter's own 0.266. An entry's optional `"scale"` in `content/battle/own-effects.json`
-  multiplies that 0.266 for an attack that reads small on the battle camera (`tools/efepresence.py`):
+  multiplies that 0.266 for an attack that reads small on the battle camera (`efepresence.py`):
   Veemon 1.53, Wormmon 1.24, Shurimon 1.16, Wizardmon 1.12, Kokuwamon 1.4. RedOtamamon and Gizamon stay
   at 1: scaled, a sprite near the camera covered the fighters (an orange block at 1.42, a white flash
   at 1.53). Kokuwamon's square-root factor, 2.05, threw a yellow block over half the screen.
 - Time: one DCB step is taken as one 30 Hz frame. A DW1 cast object lasts at most 60 frames and a hit
   object 30, so longer timelines are resampled evenly (WarGreymon's cast plays 1.9 times faster, its
   hit 3.8 times).
-- Each species has its own chunk id, from `content/finishers/dcb-effects.json` (the DCB range is
+- Each species has its own chunk id, from `dcb-effects.json` (the DCB range is
   251-329), with the two scripts its effect comes from.
 - The attack script becomes the cast (at the attacker, facing the defender); the hit script becomes
   the hit (on the defender).
@@ -121,15 +121,15 @@ the input of the DW2 converter (`tools/dw2efe.py`), which writes the 20 KB EFEDA
 - A sheet named without a frame list is read as 64 x 64 frames (an estimate).
 - Not converted: screen flashes, camera moves, ribbon trails and banners.
 
-`python tools/dcbefe.py convert <species> <out> --render` writes the chunk, a record of
+`python dcbefe.py convert <species> <out> --render` writes the chunk, a record of
 what was kept and dropped, and frame sheets of the traced original and the converted chunk;
-`python tools/dcbefe.py grid <out> <video.mp4> <names...>` puts several side by side.
+`python dcbefe.py grid <out> <video.mp4> <names...>` puts several side by side.
 
 ## Sounds
 
 `cmdB 3` plays a tone from `A.DRV/SE0.PAK`, a VAB header and ADPCM body after two
 header words. Its 161 tones are addressed by program = sound id / 16 (integer division),
-key = 60 + sound id % 16. `tools/dcbsound.py` decodes them with `tools/sound.py` and
+key = 60 + sound id % 16. `dcbsound.py` decodes them with `tools/sound.py` and
 matches each audible note to the closest of the 62 battle sounds the native effects use
 (`SB.VHB`, bank 8), as for the DW2 and DW2003 ports: render the pitch, loop and ADSR,
 then compare duration, loudness shape and spectrum. No samples are added to the game.
@@ -152,7 +152,7 @@ cues without giving up pose timing.
 ## Fidelity check
 
 Every rendered conversion is compared with the traced original on the same stage and camera, the cast
-and the hit apart (`fidelity_parts` in `tools/dcbefe.py`):
+and the hit apart (`fidelity_parts` in `dcbefe.py`):
 
 | number | what it measures | must be at least |
 |---|---|---|
@@ -167,7 +167,7 @@ A conversion that fails any part is not counted as converted and is left out of 
 When the first fit fails, one more round tries denser fits (more alike objects while the slot holds
 them, `DENSER`) and keeps the one with the fewest failed checks.
 
-Results for the 79 attacks are in `content/finishers/dcb-effects.json` (`result`):
+Results for the 79 attacks are in `dcb-effects.json` (`result`):
 
 | result | attacks |
 |---|---|

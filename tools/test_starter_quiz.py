@@ -293,6 +293,7 @@ struct { struct { struct { int type; } entity; } digimonEntity; char name[32]; }
 struct { int state; } UI_BOX_DATA[3];
 void setTrigger(int n) { (void)n; }
 void unsetTrigger(int n) { (void)n; }
+int32_t isTriggerSet(uint16_t n) { (void)n; return 0; }  /* a first run: no New Game Plus (trigger 642) */
 void closeBox(int n) { (void)n; }
 void triggerBoxCloseFlag(int n) { (void)n; }
 void setInputRepeatMask(int n) { (void)n; }
