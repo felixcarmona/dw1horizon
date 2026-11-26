@@ -83,11 +83,11 @@
     },
     {
       "source": "build/batch3/AeroVeedramon.MMD",
-      "source_sha256": "74f1a96702b3e0cb810b9f131128d050ccab306983fe6dcb95933c5de98c7fcc",
-      "bones": 25,
-      "scale": 1.339680839790652,
+      "source_sha256": "b977d123af9388c7a2297cbe5f9a9b6072d5c9085353e47729c3438a8a5e716b",
+      "bones": 23,
+      "scale": 1.2248,
       "target": "build/sizes-out/models/AeroVeedramon.MMD",
-      "sha256": "bbbf886fecf0d6b46fe46d56f4665b7ad4f11761457e4fd6bf808c4bcb6e9d68"
+      "sha256": "2fbf3222887a1219945513689758ba0a053102a671411e1abfd1ae486e8dc85f"
     },
     {
       "source": "build/batch3/Shakkoumon.MMD",
