@@ -72,7 +72,7 @@ def membership_bits():
 
 
 CHALLENGES = ROOT / 'content/tables/resident-challenges.json'
-CHALLENGE_HEAD = 10            # mod_rules.h MOD_CHALLENGE_ROWS: then one row each, species | level << 12
+CHALLENGE_HEAD = 5             # mod_rules.h MOD_CHALLENGE_ROWS: then one row each, species | level << 12
 CHALLENGE_MAX = 72             # mod_rules.h MOD_CHALLENGE_MAX
 CHALLENGE_BAG_LAST = 14        # the bag's saved wide registers end before w15 (Sukamon's backup)
 CHALLENGE_STATS = {'max-sheet-or-partner': 0}
@@ -111,35 +111,48 @@ def challenge_sheet(row, species):
     return w
 
 
-def challenge_table(doc=None):
-    """MOD_CHALLENGE (mod_rules.h): the rule, the save numbers of both pools, then each row's species (its pool is the
-    species: CHALLENGE_NEW_FIRST and above is the new one). The floor stats are not here: they are the site NPC's own
-    (challenge_site_stats), which the battle raises to the partner's when those are higher."""
-    doc = doc or json.loads(CHALLENGES.read_text())
-    rule, save = doc['rule'], doc['save']
-    v = [-1] * (CHALLENGE_HEAD + CHALLENGE_MAX)
+def challenge_rule(doc):
+    rule = doc['rule']
     if rule['stats'] not in CHALLENGE_STATS:
         raise ValueError(f"{CHALLENGES.name}: stats must be one of {sorted(CHALLENGE_STATS)}")
     if not 0 <= rule['sheetPercent'] <= 1000 or not 0 <= rule['partnerPercent'] <= 1000:
         raise ValueError(f'{CHALLENGES.name}: sheetPercent and partnerPercent must be 0..1000 (the species sheet is the minimum)')
-    v[0] = rule['partnerPercent']
-    v[1] = 1 if rule['noItems'] else 0
-    v[2] = CHALLENGE_STAGES[rule['stages']]
-    v[3] = 1 if rule['noLateStep'] else 0
-    v[4], v[5] = save['armedPstat'], save['bagWreg']
-    if not 0 <= v[5] or v[5] + (-(-CHALLENGE_MAX // 16)) - 1 > CHALLENGE_BAG_LAST:
+    return rule
+
+
+def challenge_table(doc=None):
+    """MOD_CHALLENGE (mod_rules.h, the executable): the save numbers of both pools (the bag, then each pool's challenger
+    var and tried flag), then each row: its species in the low 12 bits (its pool is the species: CHALLENGE_NEW_FIRST and
+    above is the new one) and its level (LEVELS, include/dw/level.h; 0 with the stage rule "any") above them, so the
+    daily pick reads no species sheet. The floor stats are not here: they are the site NPC's own
+    (challenge_site_stats), which the battle raises to the partner's when those are higher."""
+    doc = doc or json.loads(CHALLENGES.read_text())
+    rule, save = challenge_rule(doc), doc['save']
+    v = [-1] * (CHALLENGE_HEAD + CHALLENGE_MAX)
+    v[0] = save['bagWreg']
+    if not 0 <= v[0] or v[0] + (-(-CHALLENGE_MAX // 16)) - 1 > CHALLENGE_BAG_LAST:
         raise ValueError(f'{CHALLENGES.name}: the bag takes {-(-CHALLENGE_MAX // 16)} saved wide registers from bagWreg, '
                          f'within w0-w{CHALLENGE_BAG_LAST}')
-    v[6], v[7], v[8], v[9] = save['challengerVar'], save['triedFlag'], save['newChallengerVar'], save['newTriedFlag']
-    if v[6] == v[8] or v[7] == v[9]:
+    v[1], v[2], v[3], v[4] = save['challengerVar'], save['triedFlag'], save['newChallengerVar'], save['newTriedFlag']
+    if v[1] == v[3] or v[2] == v[4]:
         raise ValueError(f'{CHALLENGES.name}: the two pools need their own challenger var and tried flag')
+    any_level = CHALLENGE_STAGES[rule['stages']]
     levels = {d['id']: d['level'] for p in (ROOT / 'content/species').glob('*.json') for d in [json.loads(p.read_text())]}
     for i, r in enumerate(challenge_rows(doc)):
         if not 0 < r['species'] <= CHALLENGE_SPECIES:
             raise ValueError(f"{CHALLENGES.name}: {r['name']}: a row's species must be 1..{CHALLENGE_SPECIES}")
-        level = 0 if v[2] else LEVELS[levels[r['species']]]  # stage rule 1 (any level): every row is level 0
+        level = 0 if any_level else LEVELS[levels[r['species']]]
         v[CHALLENGE_HEAD + i] = level << CHALLENGE_LEVEL_SHIFT | r['species']
     return struct.pack(f'<{len(v)}h', *v)
+
+
+def challenge_fight_table(doc=None):
+    """BTL_CHALLENGE_FIGHT (mod_rules.h, the battle overlay): the partner's bonus, no items, no late-game step and the
+    scratch pstat that arms the fight."""
+    doc = doc or json.loads(CHALLENGES.read_text())
+    rule = challenge_rule(doc)
+    return struct.pack('<4h', rule['partnerPercent'], 1 if rule['noItems'] else 0, 1 if rule['noLateStep'] else 0,
+                       doc['save']['armedPstat'])
 
 
 # The residents whose challenge is fought by the very NPC of their recruit fight, with that fight's own stats: those

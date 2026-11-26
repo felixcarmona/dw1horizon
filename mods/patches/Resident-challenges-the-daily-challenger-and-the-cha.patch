@@ -1,4 +1,4 @@
-From 296791dab6cdf77a7458bd7d2287a9a536c6b75f Mon Sep 17 00:00:00 2001
+From 1c574d78608559472c06ac867912d392bdda826b Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Wed, 25 Nov 2026 14:57:59 +0000
 Subject: [PATCH] Resident challenges: the daily challengers and the challenge
@@ -15,64 +15,65 @@ row's species, for each stat, the larger of the partner's and the row's (the spe
 MOD_CHALLENGE, written by tools/balance.py from content/tables/resident-challenges.json; with the table empty nothing
 changes.
 ---
- include/dw/mod_rules.h   | 33 +++++++++++++++++++++++
- src/btl/battle_main.c    | 49 +++++++++++++++++++++++++++++++++++
+ include/dw/mod_rules.h   | 31 ++++++++++++++++++++++
+ src/btl/battle_main.c    | 52 +++++++++++++++++++++++++++++++++++++
  src/main/mod_feed.c      | 10 ++++---
  src/main/script_common.c | 56 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 145 insertions(+), 3 deletions(-)
+ 4 files changed, 146 insertions(+), 3 deletions(-)
 
 diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
-index a662d023..7eb989c4 100644
+index a662d023..9e5f82c8 100644
 --- a/include/dw/mod_rules.h
 +++ b/include/dw/mod_rules.h
-@@ -66,6 +66,39 @@ int32_t econPercent(int32_t slot);
+@@ -66,6 +66,37 @@ int32_t econPercent(int32_t slot);
  #define MOD_DAILY_CLEAR_MASK	6 /* ... with this mask */
  extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
  
-+/* resident challenges (postgame): MOD_CHALLENGE[], every slot -1 = off, written by tools/balance.py from
-+ * content/tables/resident-challenges.json. The rows are two pools: the original game's residents (species below
-+ * MOD_CHALLENGE_NEW_FIRST) and Horizon's new ones. At midnight, once the game is beaten, each open pool sends out one
-+ * recruited resident of its rows: its saved pstat (MOD_CHALLENGE_VAR, MOD_CHALLENGE_VAR2) becomes row + 1 (0 = nobody;
-+ * the story adds MOD_CHALLENGE_BEATEN when the challenger is beaten) and its tried flag is cleared; the story does the
-+ * rest. The original pool is always open; the new one only once every one of its rows is recruited. The pick is a
-+ * shuffle bag: saved wide registers from MOD_CHALLENGE_BAG on hold one bit per row already sent out this cycle (16 rows
-+ * a register, low bit first).
-+ * Stage rule 0: only residents whose level is at most the partner's can go, the highest such level first; when every
-+ * one of a pool that can go has gone, that pool's bits are emptied and a new cycle starts. Stage rule 1: any level, no
-+ * order. Never the pool's resident of the day before. A battle started while the scratch pstat MOD_CHALLENGE_ARMED is 1
-+ * (2) is the challenge of the first (second) pool (BTL_battleMain, battle_main.c): every foe of the row's species gets,
-+ * for each stat, the larger of its own (the story gives the challenger its species sheet's stats) and the partner's
-+ * times (100 + percent) / 100, at most 9999. */
-+#define MOD_CHALLENGE_PERCENT	0 /* the partner's stats' bonus */
-+#define MOD_CHALLENGE_NO_ITEMS	1 /* 1: the bag is empty in a challenge */
-+#define MOD_CHALLENGE_STAGES	2 /* 0: level at most the partner's, the highest first; 1: any level */
-+#define MOD_CHALLENGE_NO_LATE	3 /* 1: no NORMAL late-game step (battleFormulas normal) in a challenge */
-+#define MOD_CHALLENGE_ARMED	4 /* scratch pstat: 1 or 2 = the next battle is that pool's challenge (cleared by the battle) */
-+#define MOD_CHALLENGE_BAG	5 /* the first saved wide register (w0-w14) of the bag: rows sent out this cycle, one bit each */
-+#define MOD_CHALLENGE_VAR	6 /* saved pstat: the original pool's challenger today, row + 1; then its tried flag (fought today); */
-+#define MOD_CHALLENGE_TRIED	7 /* then the same two of the new pool (MOD_CHALLENGE_VAR + 2 * pool) */
-+#define MOD_CHALLENGE_ROWS	10 /* the first row: its species, its level above MOD_CHALLENGE_LEVEL */
-+#define MOD_CHALLENGE_LEVEL	12 /* a row's level (0 with stage rule 1, any level) is its value >> 12 */
++/* resident challenges (postgame): MOD_CHALLENGE[] (main) and BTL_CHALLENGE_FIGHT[] (the battle overlay), every slot
++ * -1 = off, written by tools/balance.py from content/tables/resident-challenges.json. The rows are two pools: the
++ * original game's residents (species below MOD_CHALLENGE_NEW_FIRST) and Horizon's new ones. At midnight, once the game
++ * is beaten, each open pool sends out one recruited resident of its rows: its saved pstat (MOD_CHALLENGE_VAR + 2 * pool)
++ * becomes row + 1 (0 = nobody; the story adds MOD_CHALLENGE_BEATEN when the challenger is beaten) and its tried flag is
++ * cleared; the story does the rest. The original pool is always open; the new one only once every one of its rows is
++ * recruited. The pick is a shuffle bag: saved wide registers from MOD_CHALLENGE_BAG on hold one bit per row already sent
++ * out this cycle (16 rows a register, low bit first). Only rows whose level is at most the partner's can go, the
++ * highest such level first (a row's level is 0 with the stage rule "any": no order); when every one of a pool that can
++ * go has gone, that pool's bits are emptied and a new cycle starts. Never the pool's resident of the day before.
++ * A battle started while the scratch pstat BTL_CHALLENGE_ARMED is 1 (2) is the challenge of the first (second) pool
++ * (BTL_battleMain, battle_main.c): every foe of the row's species gets, for each stat, the larger of its own (the
++ * story's site NPC's) and the partner's times (100 + percent) / 100, at most 9999. */
++#define MOD_CHALLENGE_BAG	0 /* the first saved wide register (w0-w14) of the bag: rows sent out this cycle, one bit each */
++#define MOD_CHALLENGE_VAR	1 /* saved pstat: the original pool's challenger today, row + 1; then its tried flag (fought today); */
++#define MOD_CHALLENGE_TRIED	2 /* then the same two of the new pool (MOD_CHALLENGE_VAR + 2 * pool) */
++#define MOD_CHALLENGE_ROWS	5 /* the first row: its species, its level above MOD_CHALLENGE_LEVEL */
++#define MOD_CHALLENGE_LEVEL	12 /* a row's level (0 with the stage rule "any") is its value >> 12 */
 +#define MOD_CHALLENGE_SPECIES	0xfff /* ... and its species the low 12 bits */
 +#define MOD_CHALLENGE_MAX	72
 +#define MOD_CHALLENGE_NEW_FIRST	112 /* Horizon's own species: the new pool */
 +#define MOD_CHALLENGE_BEATEN	0x80 /* added to the challenger var by the story when it is beaten: it goes home, the wilds come back */
 +#define MOD_CHALLENGE_SIZE	(MOD_CHALLENGE_ROWS + MOD_CHALLENGE_MAX)
 +extern int16_t MOD_CHALLENGE[MOD_CHALLENGE_SIZE];
++#define BTL_CHALLENGE_PERCENT	0 /* the partner's stats' bonus */
++#define BTL_CHALLENGE_NO_ITEMS	1 /* 1: the bag is empty in a challenge */
++#define BTL_CHALLENGE_NO_LATE	2 /* 1: no NORMAL late-game step (battleFormulas normal) in a challenge */
++#define BTL_CHALLENGE_ARMED	3 /* scratch pstat: 1 or 2 = the next battle is that pool's challenge (cleared by the battle) */
++#define BTL_CHALLENGE_SIZE	4
 +extern uint8_t MOD_CHALLENGE_NO_BAG; /* the bag is empty in this battle */
-+void modChallengeDaily(void);
 +
  /* a new game and a new partner: MOD_NEWGAME[], every slot -1 = the rule does not exist (modNewGame answers 0), written by tools/balance.py
   * from content/tables/new-game.json */
  #define MOD_NEWGAME_SIZE	78
 diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
-index 4da2e914..d818ec98 100644
+index 4da2e914..70f7934d 100644
 --- a/src/btl/battle_main.c
 +++ b/src/btl/battle_main.c
-@@ -1850,6 +1850,51 @@ void modBattleLoadFinish(void); /* MOD (quick battle start), btl.c */
+@@ -1850,6 +1850,54 @@ void modBattleLoadFinish(void); /* MOD (quick battle start), btl.c */
  void BTL_tickQuickStartText(void); /* MOD (quick battle start), battle_setup.c */
  void BTL_endQuickStartText(void);
  
++/* MOD (resident challenges): the fight's rules (mod_rules.h), in the battle overlay so the resident heap pays nothing */
++int16_t BTL_CHALLENGE_FIGHT[BTL_CHALLENGE_SIZE] = { -1, -1, -1, -1 };
++
 +/* MOD (resident challenges, mod_rules.h): a battle the script armed as a challenge. Every foe of the row's species
 + * takes, for each stat, the larger of its own (the story gives the challenger its species sheet's) and the partner's
 + * times (100 + percent) / 100, at most 9999; the bag empties if the rule says so; with the no-late-step rule NORMAL's
@@ -85,17 +86,17 @@ index 4da2e914..d818ec98 100644
 +	int16_t *own, *partner;
 +
 +	MOD_CHALLENGE_NO_BAG = 0;
-+	if (MOD_CHALLENGE[MOD_CHALLENGE_ARMED] < 0) return 0x10000;
-+	k = readPStat(MOD_CHALLENGE[MOD_CHALLENGE_ARMED]); /* 1 or 2: the first or the second pool's challenger */
++	if (BTL_CHALLENGE_FIGHT[BTL_CHALLENGE_ARMED] < 0) return 0x10000;
++	k = readPStat(BTL_CHALLENGE_FIGHT[BTL_CHALLENGE_ARMED]); /* 1 or 2: the first or the second pool's challenger */
 +	if (k != 1 && k != 2) return 0x10000;
-+	writePStat(MOD_CHALLENGE[MOD_CHALLENGE_ARMED], 0);
++	writePStat(BTL_CHALLENGE_FIGHT[BTL_CHALLENGE_ARMED], 0);
 +	if (MOD_CHALLENGE[MOD_CHALLENGE_VAR + 2 * (k - 1)] < 0) return 0x10000;
 +	k = readPStat(MOD_CHALLENGE[MOD_CHALLENGE_VAR + 2 * (k - 1)]);
 +	if (k < 1 || k > MOD_CHALLENGE_MAX) return 0x10000;
 +	type = MOD_CHALLENGE[MOD_CHALLENGE_ROWS + k - 1] & MOD_CHALLENGE_SPECIES;
-+	MOD_CHALLENGE_NO_BAG = MOD_CHALLENGE[MOD_CHALLENGE_NO_ITEMS] > 0;
++	MOD_CHALLENGE_NO_BAG = BTL_CHALLENGE_FIGHT[BTL_CHALLENGE_NO_ITEMS] > 0;
 +	late = 0x10000;
-+	if (MOD_CHALLENGE[MOD_CHALLENGE_NO_LATE] > 0) {
++	if (BTL_CHALLENGE_FIGHT[BTL_CHALLENGE_NO_LATE] > 0) {
 +		late = MOD_BATTLE[MOD_BT_NORMAL_FROM_HP];
 +		MOD_BATTLE[MOD_BT_NORMAL_FROM_HP] = 0;
 +	}
@@ -108,7 +109,7 @@ index 4da2e914..d818ec98 100644
 +		/* off, def, speed, brain, then (after the moves) hp and mp: the int16 slots 0-3 and 6-7 of BaseStats */
 +		for (k = 0; k < 8; k++) {
 +			if (k == 4) k = 6;
-+			int32_t v = partner[k] * (100 + MOD_CHALLENGE[MOD_CHALLENGE_PERCENT]) / 100;
++			int32_t v = partner[k] * (100 + BTL_CHALLENGE_FIGHT[BTL_CHALLENGE_PERCENT]) / 100;
 +			if (v < own[k]) v = own[k];
 +			own[k] = v > 9999 ? 9999 : v;
 +		}
@@ -121,7 +122,7 @@ index 4da2e914..d818ec98 100644
  int32_t BTL_battleMain(void)
  {
  	COMBAT_AREA_X = 0xa0 - DRAWING_OFFSET_X;
-@@ -1859,11 +1904,13 @@ int32_t BTL_battleMain(void)
+@@ -1859,11 +1907,13 @@ int32_t BTL_battleMain(void)
  	int32_t fighterIndex;
  	int16_t enemies[4];
  	int16_t remaining;
@@ -135,7 +136,7 @@ index 4da2e914..d818ec98 100644
  	BTL_initializeCombat();
  	BTL_handleBattleIntro();
  	for (;;) {
-@@ -1905,6 +1952,8 @@ int32_t BTL_battleMain(void)
+@@ -1905,6 +1955,8 @@ int32_t BTL_battleMain(void)
  	modBattleLoadFinish(); /* MOD (quick battle start), btl.c: what is still loading lands before the clean-up */
  	removePauseBox();
  	BTL_deinitializeCombat();
@@ -201,7 +202,7 @@ index 940a5cc7..23ad79d9 100644
  				n++;
  			}
 diff --git a/src/main/script_common.c b/src/main/script_common.c
-index 735b36f8..4e5b6c16 100644
+index 735b36f8..62631b90 100644
 --- a/src/main/script_common.c
 +++ b/src/main/script_common.c
 @@ -23,6 +23,7 @@
@@ -223,7 +224,7 @@ index 735b36f8..4e5b6c16 100644
 + * not yet sent out this cycle (the bag), of the highest level the stage rule allows (a row's level is in its high bits:
 + * MOD_CHALLENGE_LEVEL, 0 = any), each such row as likely as the others; when none can go the pool's bits are emptied
 + * and the rows are scanned once more */
-+void modChallengeDaily(void)
++static void modChallengeDaily(void)
 +{
 +	int32_t pool, again, i, n, best, top, prev, var, type, level, pick;
 +	uint16_t *bag, *w, bit;

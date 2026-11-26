@@ -28,7 +28,7 @@ the next load of the screen places its wilds again.
 
 ## Who goes out
 
-At midnight `modChallengeDaily` (patch "Resident challenges", `src/main/script_common.c`) picks, for each open pool, from
+At midnight `modChallengeDaily` (inlined into `dailyPStatTrigger`; patch "Resident challenges", `src/main/script_common.c`) picks, for each open pool, from
 that pool's rows whose species is recruited, with the table's stage rule (each pool has its own cycle):
 
 - `same-or-lower`: only residents whose stage is the partner's at that midnight or lower. A shuffle bag: one not sent
@@ -53,8 +53,11 @@ where the numbers come from: its fight in the original game, else the sheets of 
 NPC of their recruit fight (`CHALLENGE_RECRUIT_STATS` in `tools/city_residents.py`: Armadillomon, Candlemon, Datamon,
 Digmon, Knightmon, Kotemon, Mammothmon, Mushroomon, Phantomon, Pumpkinmon, Starmon, Triceramon) keep that fight's stats
 as their floor. `tools/city_residents.py` refuses a row with both or neither of `wild` and `base`, and
-`tools/test_resident_challenges.py` checks every site NPC against `challenge_site_stats`. The table itself holds only
-the rule, the save numbers and each row's species with its level in the high bits, so the daily pick reads no species sheet (164 bytes of the executable).
+`tools/test_resident_challenges.py` checks every site NPC against `challenge_site_stats`. The executable's table
+(`MOD_CHALLENGE`, 154 bytes) holds only the save numbers and each row's species with its level in the high bits (0 for
+every row with the stage rule `any`), so the daily pick reads no species sheet; the fight's rules (partner bonus, no
+items, no late step, the arming pstat) are `BTL_CHALLENGE_FIGHT` in the battle overlay, which costs the resident heap
+nothing.
 The stats are set before the battle records its initial stats, so its rewards and stat gains follow them.
 `noItems` opens the battle bag empty (it comes back whole); `noLateStep` gives the fight none of
 `battle-formulas.json` NORMAL's late-game step (HP and attack ramp, damage floor), on any difficulty, and puts it back

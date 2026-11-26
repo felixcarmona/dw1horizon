@@ -19,10 +19,12 @@ class ResidentChallenges(unittest.TestCase):
 
     def test_table_bytes(self):
         data = city.challenge_table(self.doc)
-        self.assertEqual(len(data), 164)                     # tools/balance.py TABLES residentChallenges
+        self.assertEqual(len(data), 154)                     # tools/balance.py TABLES residentChallenges
         v = struct.unpack(f'<{len(data) // 2}h', data)
         self.assertEqual(len(v), city.CHALLENGE_HEAD + city.CHALLENGE_MAX)
-        self.assertEqual(v[:city.CHALLENGE_HEAD], (25, 1, 0, 1, 239, 10, 15, 784, 8, 783))
+        self.assertEqual(v[:city.CHALLENGE_HEAD], (10, 15, 784, 8, 783))
+        fight = city.challenge_fight_table(self.doc)                 # tools/balance.py TABLES residentChallengeFight
+        self.assertEqual(struct.unpack('<4h', fight), (25, 1, 1, 239))
         rows = v[city.CHALLENGE_HEAD:][:len(self.rows)]
         self.assertEqual(tuple(x & city.CHALLENGE_SPECIES for x in rows), tuple(r['species'] for r in self.rows))
         species = {d['id']: d for p in (city.ROOT / 'content/species').glob('*.json') for d in [json.loads(p.read_text())]}
