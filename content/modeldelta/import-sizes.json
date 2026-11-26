@@ -19,11 +19,11 @@
     },
     {
       "source": "build/batch/Imperialdramon.MMD",
-      "source_sha256": "23e404ebeac9af270a9ee29bd0e2a58e04698ae4737705119105a3d834665a98",
-      "bones": 27,
-      "scale": 1.2072037226299752,
+      "source_sha256": "a39b914ed4fe4ad4e02452927cb82b2138a40c8b85d10e99ed424f31ba15faac",
+      "bones": 32,
+      "scale": 1.366,
       "target": "build/sizes-out/models/Imperialdramon.MMD",
-      "sha256": "5d733b78dedf9f4e730797a24e135858abc634bd6e14ab2f907767f87ce4ad73"
+      "sha256": "502acbc863168ce57b21d72d1f7d53ca5b2ee379a1905e973724002702603ea3"
     },
     {
       "source": "build/batch2/Paildramon.MMD",

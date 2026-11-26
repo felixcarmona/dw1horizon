@@ -44,50 +44,75 @@ import motionstorage  # noqa: E402
 from motiondiscidentity import changed_programs  # noqa: E402
 from tools.models.field_animations import quadruped  # noqa: E402
 
+CLAWS = {20: (21, 22), 25: (26, 27)}      # each fore paw's two sibling claw bones ride its paw bone
+
+
+class ClawRig(quadruped.Rig):
+    """The claw bones hang from the forearm beside the paw bone: their points count as the paw's for the sole and the
+    floor, and `slave` carries them with the paw."""
+
+    def __init__(self, model, skeleton, profile):
+        super().__init__(model, skeleton, profile)
+        for paw, sides in CLAWS.items():
+            for c in sides:
+                off = [(self.rest[c][i] - self.rest[paw][i]) * self.S for i in (6, 7, 8)]
+                self.verts[paw] = self.verts[paw] + [quadruped.add(v, off) for v in self.verts.pop(c)]
+
+
+def slave(rig, cfg, phase, pose):
+    """Each claw bone turns with its paw about the paw's origin (their own turns stay at rest)."""
+    for paw, sides in CLAWS.items():
+        turn = mmd.rot_matrix(*pose[paw][3:6])
+        for c in sides:
+            off = [rig.rest[c][i] - rig.rest[paw][i] for i in (6, 7, 8)]
+            pose[c][3:6] = list(pose[paw][3:6])
+            pose[c][6:9] = [pose[paw][6 + i] + v for i, v in enumerate(quadruped.mv(turn, off))]
+
+
+quadruped.Rig = ClawRig
+
 PROFILE = dict(
     species=192, name='Imperialdramon',
-    source='a86c9d6e7239e580e3c4f35c6ea85bb50f14f4b772192d0019e3dfe558429e19',
-    parents=[-1, 17, 1, 2, 3, 1, 5, 6, 1, 8, 9, 1, 11, 12, 1, 14, 15, 0, 17, 18, 19, 17, 21, 22, 17, 24, 25],
-    pelvis=17, chest=1, neck=2, head=3,
+    source='a8cd12ea872b30c83574f3d4f481d7115dadf1c8a9185a48a06e9a9f4f945fd2',
+    parents=[b[1] for b in json.loads((ROOT / 'content/species/192-imperialdramon.json').read_text())['model']['skeleton']],
+    pelvis=1, chest=2, neck=28, head=30,
     # (upper, lower, paw, side (+1 right), front)
-    legs={'RF': (11, 12, 13, 1, True), 'LF': (14, 15, 16, -1, True), 'RH': (21, 22, 23, 1, False),
-          'LH': (24, 25, 26, -1, False)},
-    tail=(18, 19, 20), loose=((5, 1), (8, -1)),
-    # the hands and feet stand turned out at their idle angles, each side its own way
-    paw_flat={'RF': [1.1, -9.8, 1.4], 'LF': [1.1, 9.8, -1.4], 'RH': [0.9, -26.2, 0.1], 'LH': [0.9, 26.2, -0.1]},
-    # elbows back, knees out: the hip sits right behind the shoulder, so a forward knee met the elbow
-    pole={True: [0.2, 0, 1], False: [1, 0, 0]},
-    swing_pole={True: [1, 0, 0.5]},                    # a lifted arm's elbow swings out past the thigh, not into it
-    aim={True: [0, 0, -1]},                            # the forearm blades point ahead, not across the head
-    sole={True: [0, 2, -110], False: [0, 72, -80]},    # the point of the sole a paw rolls about (paw bone space)
-    reach={'front': -170, 'hind': -60},                # the sole pivot's place ahead of the shoulder / hip, mid-stance
+    legs={'RF': (23, 24, 25, 1, True), 'LF': (18, 19, 20, -1, True), 'RH': (6, 7, 8, 1, False),
+          'LH': (9, 10, 11, -1, False)},
+    tail=(3, 4, 5), loose=(),
+    # the paws stand as the right ones rest (turned out), the left ones mirrored
+    paw_rest={'RF': [0, 0, -1], 'RH': [0, 0, -1]}, mirror_paws=True,
+    pole={True: [0.2, 0, 1], False: [1, 0, -0.6]},
+    swing_pole={True: [1, 0, 0.5]},
+    aim={True: [0, 0, -1]},
+    sole={True: [0, 46, -115], False: [0, 0, -100]},
+    reach={'front': -215, 'hind': -25},
     fold={True: 80, False: 70},
-    clear=3,
+    clear=8, extra=slave, floor_skip=(14, 17),
     gaits={
-        # each hand lands just before the foot behind it, so the two legs of a side swing together and never cross
-        2: dict(name='walk', kind='walk', ticks=16, speed=15,
+        2: dict(name='walk', kind='walk', ticks=12, speed=15,
                 touchdown={'LH': 0.0, 'LF': 0.93, 'RH': 0.5, 'RF': 0.43},
                 duty={'LH': 0.55, 'RH': 0.55, 'RF': 0.55, 'LF': 0.55},
-                lift={'front': 50, 'hind': 34}, curl={'front': 25, 'hind': 25}, peel={'front': 20, 'hind': 20},
-                reach={'front': -40, 'hind': 90}, out={'front': 25, 'hind': 10}, wide={'front': 40}, snap=False,
+                lift={'front': 70, 'hind': 34}, curl={'front': 25, 'hind': 25}, peel={'front': 20, 'hind': 20},
+                reach={'front': 0, 'hind': 65}, out={'front': 25, 'hind': 10}, wide={'front': 40}, snap=False,
                 slip=0.05,
                 height=0, tilt=0, chest_up=0, neck=2, nod=1.5, bob=12, high=0.2, pitch=2.5, flex=1.5, roll=2.5,
-                yaw=2.5, head=0.5, tail=8, loose=6, steps=('LF', 'LH', 'RF', 'RH')),
-        3: dict(name='condition walk', kind='walk', ticks=22, speed=12,
+                yaw=2.5, head=0.5, tail=8, tail_up=10, loose=6, steps=('LF', 'LH', 'RF', 'RH')),
+        3: dict(name='condition walk', kind='walk', ticks=16, speed=12,
                 touchdown={'LH': 0.0, 'LF': 0.93, 'RH': 0.5, 'RF': 0.43},
                 duty={'LH': 0.55, 'RH': 0.55, 'RF': 0.55, 'LF': 0.55},
-                lift={'front': 36, 'hind': 26}, curl={'front': 20, 'hind': 20}, peel={'front': 15, 'hind': 15},
-                reach={'front': -40, 'hind': 75}, out={'front': 15, 'hind': 6}, wide={'front': 40}, snap=False,
+                lift={'front': 50, 'hind': 26}, curl={'front': 20, 'hind': 20}, peel={'front': 15, 'hind': 15},
+                reach={'front': 0, 'hind': 65}, out={'front': 15, 'hind': 6}, wide={'front': 40}, snap=False,
                 slip=0.05,
                 height=0, tilt=2, chest_up=0, neck=-6, nod=1, bob=9, high=0.25, pitch=2, flex=1, roll=3, yaw=2,
-                head=0.5, tail=4, loose=2, steps=('LF', 'LH', 'RF', 'RH')),
-        4: dict(name='run', kind='gallop', ticks=12, speed=46,
+                head=0.5, tail=4, tail_up=10, loose=2, steps=('LF', 'LH', 'RF', 'RH')),
+        4: dict(name='run', kind='gallop', ticks=10, speed=40,
                 touchdown={'LH': 0.0, 'RH': 0.1, 'RF': 0.42, 'LF': 0.54},
                 duty={'LH': 0.3, 'RH': 0.3, 'RF': 0.3, 'LF': 0.3},
                 lift={'front': 70, 'hind': 20}, curl={'front': 15, 'hind': 25}, peel={'front': 30, 'hind': 25},
-                reach={'front': -60, 'hind': 80}, out={'front': 50, 'hind': 0}, wide={'front': 70}, snap=True,
+                reach={'front': 60, 'hind': 80}, out={'front': 50, 'hind': 0}, wide={'front': 70}, snap=True,
                 slip=0.08, height=0, tilt=4, chest_up=-2, neck=-10, nod=1.5, bob=20, high=0.8, pitch=10, flex=6,
-                roll=1.5, yaw=1.5, head=0.8, tail=12, loose=14, steps=('LH', 'RF')),
+                roll=1.5, yaw=1.5, head=0.8, tail=6, tail_up=10, loose=0, steps=('LH', 'RF')),
     },
 )
 
@@ -103,14 +128,20 @@ def plant_idle(data, skeleton):
     frames, loop, events = animsheet.slot_frames(old, n, 0)
     poses = copy.deepcopy(frames)
     history = {}
+    spots = {}
+    for name, (upper, lower, paw, side, front) in PROFILE['legs'].items():
+        still = [r[:3] for r in rig.still[paw][:3]]
+        origin = [rig.still[paw][i][3] for i in range(3)]
+        spots[name] = quadruped.add(origin, quadruped.mv(still, rig.sole(front, name)))
     for pose in poses:
         for name, (upper, lower, paw, side, front) in PROFILE['legs'].items():
-            world = [r[:3] for r in rig.still[paw][:3]]
-            wrist = [rig.still[paw][i][3] for i in range(3)]
-            wrist[1] -= max(0.0, rig.lowest(paw, world, wrist) + 1)     # the imported hands stood 2 units in the floor
-            rotation, short = rig.solve(pose, name, wrist, history)
+            world = rig.paw(front, 0, name)
+            wrist = quadruped.sub(spots[name], quadruped.mv(world, rig.sole(front, name)))
+            wrist[1] = -PROFILE['clear'] - rig.lowest(paw, world, [0, 0, 0])
+            rotation, short = rig.solve(pose, name, wrist, history, None, PROFILE['aim'].get(front))
             assert short <= 0.5, (name, short)
             quadruped.set_rot(pose, paw, quadruped.mul(quadruped.tr(rotation), world), history)
+        slave(rig, None, 0, pose)
     poses = [[[round(v) for v in b] for b in p] for p in poses]
     poses[-1] = copy.deepcopy(poses[0])
     index = old.anims.table[0]

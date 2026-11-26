@@ -40,7 +40,6 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'arukenimon-celebration': ('311', 'tools.models.field_animations.celebrations', '311-arukenimon-celebration'),
     'clockmon-celebration': ('290', 'tools.models.field_animations.celebrations', '290-clockmon-celebration'),
     'redotamamon-celebration': ('233', 'tools.models.field_animations.celebrations', '233-redotamamon-celebration'),
-    'imperialdramon-celebration': ('192', 'tools.models.field_animations.celebrations', '192-imperialdramon-celebration'),
     'ladydevimon-flight': ('223', 'tools.models.field_animations.ladydevimon_flight', '223-ladydevimon-flight'),
     'ladydevimon-chibi': ('223', 'tools.models.field_animations.chibi', '223-ladydevimon-chibi'),
     'slashangemon-chibi': ('300', 'tools.models.field_animations.chibi', '300-slashangemon-chibi'),
