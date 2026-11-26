@@ -743,12 +743,21 @@ class App:
         if cue and desktop.player_program():
             ttk.Button(self.finish, text=self.t('app.play'), style='Build.TButton',
                        command=lambda: desktop.play(cue)).grid(row=0, column=0, padx=(0, 6))
+        if cue and desktop.apk_template():
+            ttk.Button(self.finish, text=self.t('app.makeApk'),
+                       command=lambda: self.busy or self._spawn(self._job_apk, cue, busy='build')).grid(row=0, column=1, padx=(0, 6))
         if folder:
             ttk.Button(self.finish, text=self.t('app.openFolder'),
-                       command=lambda: desktop.open_folder(folder)).grid(row=0, column=1, padx=(0, 6))
+                       command=lambda: desktop.open_folder(folder)).grid(row=0, column=2, padx=(0, 6))
         if log and os.path.exists(log):
             ttk.Button(self.finish, text=self.t('app.openLog'),
-                       command=lambda: desktop.open_folder(log)).grid(row=0, column=2)
+                       command=lambda: desktop.open_folder(log)).grid(row=0, column=3)
+
+    def _job_apk(self, cue):
+        def progress(done, total):
+            self.events.put(('bar', done / total, self.t('app.makingApk', done=done * 100 // total)))
+        out = desktop.make_apk(cue, progress)
+        self.events.put(('stage', self.t('app.apkDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
 
     def _stop(self):
         self.cancel.set()

@@ -245,7 +245,7 @@ def sign_v2(f, cd, key, progress=None):
 
 
 def build(template, disc, out, key_path=None, progress=None):
-    """The APK with `disc` inside, at `out`. `progress(n)` is called with byte counts (about 3x the disc in total)."""
+    """The APK with `disc` inside, at `out`. `progress(n)` is called with byte counts (twice the disc in total)."""
     size = os.path.getsize(disc)
     if size == 0 or size % 2352:
         raise ValueError(f'{disc} is not a raw disc image (.bin, 2352-byte sectors)')

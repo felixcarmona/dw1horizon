@@ -1,10 +1,9 @@
 name: Horizon Play
 
 # Horizon Play (tools/player, docs/player.md) for Linux, as its own download: the program, the SwanStation core and
-# OpenBIOS, all built from source here, and the Android APK. Windows and macOS get it inside the desktop patcher
-# (desktop.yml). A smoke test boots OpenBIOS with no disc under a software OpenGL. A release tag attaches both to its
-# GitHub Release. The APK is signed with the HORIZON_KEYSTORE secrets when they exist (so it updates the one before),
-# otherwise with a throwaway key.
+# OpenBIOS, all built from source here. Windows and macOS get it inside the desktop patcher (desktop.yml), which also
+# carries the Android app. A smoke test boots OpenBIOS with no disc under a software OpenGL. A release tag attaches the
+# archive to its GitHub Release.
 
 on:
   pull_request:
@@ -87,56 +86,3 @@ jobs:
             sleep 20
           done
           gh release upload "$RELEASE_TAG" Horizon-Play-Linux-x86_64.tar.gz --clobber
-
-  android:
-    runs-on: ubuntu-22.04   # its Android SDK and NDK are preinstalled; 22.04 also has the MIPS compiler for OpenBIOS
-    permissions:
-      contents: write   # only the release upload uses the token
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          persist-credentials: false
-      - name: Check out the release tag
-        if: env.RELEASE_TAG != ''
-        run: |
-          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
-          git fetch -q --depth 1 origin "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
-          git checkout --detach "refs/tags/$RELEASE_TAG"
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-      - name: Build tools
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq cmake ninja-build gcc-mipsel-linux-gnu g++-mipsel-linux-gnu > /dev/null
-          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;35.0.0" "platforms;android-35" > /dev/null
-      - name: Signing key
-        env:
-          KEYSTORE_B64: ${{ secrets.HORIZON_KEYSTORE_B64 }}
-        run: |
-          if [ -n "$KEYSTORE_B64" ]; then
-            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/horizon.keystore"
-            echo "HORIZON_KEYSTORE=$RUNNER_TEMP/horizon.keystore" >> "$GITHUB_ENV"
-          fi
-      - name: Build
-        env:
-          HORIZON_KEYSTORE_PASS: ${{ secrets.HORIZON_KEYSTORE_PASS }}
-          HORIZON_KEY_ALIAS: ${{ secrets.HORIZON_KEY_ALIAS }}
-        run: python3 tools/player/android/build_apk.py --out Horizon-Play.apk --work "$RUNNER_TEMP/android"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Horizon-Play-Android
-          path: Horizon-Play.apk
-          if-no-files-found: error
-      - name: Attach to the release
-        if: env.RELEASE_TAG != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          for i in $(seq 1 30); do
-            gh release view "$RELEASE_TAG" > /dev/null 2>&1 && break
-            sleep 20
-          done
-          gh release upload "$RELEASE_TAG" Horizon-Play.apk --clobber

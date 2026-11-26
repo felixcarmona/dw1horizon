@@ -104,7 +104,9 @@ def spec(work, a, ver):
              (os.path.join(APP, 'make_icons.py'), 'tools/patcher/app')]
     if a.player and sys.platform != 'darwin':      # Horizon Play (tools/player/build.py --out DIR); macOS: nest_player
         datas.append((os.path.abspath(a.player), 'player'))
-    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons']
+    if a.player_apk:   # Horizon Play for Android: the template desktop.make_apk puts the built disc into
+        datas.append((os.path.abspath(a.player_apk), 'android'))
+    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk']
     if sys.platform == 'darwin':
         hidden.append('certifi')
     icon = os.path.join(icons, 'icon.ico' if os.name == 'nt' else 'icon.icns')
@@ -141,6 +143,8 @@ def main(argv=None):
     p.add_argument('--repository', help='OWNER/NAME whose releases the app downloads (default: GITHUB_REPOSITORY, '
                    'else the checkout\'s origin)')
     p.add_argument('--player', help='a Horizon Play folder (tools/player/build.py) to ship inside the app')
+    p.add_argument('--player-apk', help='Horizon Play for Android (tools/player/android/build_apk.py): the app then '
+                                        'also makes an APK with the built disc inside')
     p.add_argument('--out', default=os.path.join(ROOT, 'build', 'desktop'))
     a = p.parse_args(argv)
     ver = (a.version or version()).lstrip('v')

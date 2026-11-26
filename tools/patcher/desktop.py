@@ -744,6 +744,31 @@ def player_program():
     return path if os.path.isfile(path) else None
 
 
+def apk_template():
+    """Horizon Play for Android (tools/player/android), or None when this app was built without it."""
+    path = resource('android', 'Horizon-Play.apk')
+    return path if os.path.isfile(path) else None
+
+
+def make_apk(cue, progress=None):
+    """The Android app with the built disc inside (tools/patcher/apk.py), next to the disc: nothing to set up on the
+    phone. Signed with this computer's own key (kept in the settings folder), so a later one installs over it."""
+    try:
+        from . import apk
+    except ImportError:
+        import apk
+    image = cue_image(cue)
+    out = os.path.splitext(os.path.abspath(cue))[0] + '.apk'
+    total = 2 * os.path.getsize(image)   # read once for the zip, once for the signature
+    done = [0]
+
+    def tick(n):
+        done[0] += n
+        if progress:
+            progress(min(done[0], total), total)
+    return apk.build(apk_template(), image, out, os.path.join(config_dir(), 'android-key.json'), tick)
+
+
 def play(cue):
     """Start Horizon Play on the built disc; it runs on its own (closing the patcher does not stop it)."""
     import subprocess
