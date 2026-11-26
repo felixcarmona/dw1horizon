@@ -232,6 +232,72 @@ class AuthoredPayloadTests(unittest.TestCase):
         self.assertIsNone(tabledata.authored_recipe(obj, bytes(49)))
         self.assertIsNone(tabledata.authored_recipe(dict(obj, source='src/main/other.c'), data))
 
+    def test_tournament_schedule_comes_from_the_authored_table(self):
+        import json
+        import fontcopy
+        path = Path(__file__).resolve().parents[1] / 'content/tables/tournaments.json'
+        data = bytes(sum(json.loads(path.read_text())['tournaments']['schedule'], []))
+        obj = dict(offset=0, length=180, section='.data.TOURNAMENT_SCHEDULE', source='src/main/script_common.c')
+        self.assertEqual(fontcopy.semantic_table('tournament_schedule', []), data)
+        recipe = tabledata.authored_recipe(obj, data)
+        self.assertEqual(recipe['generator'], 'tournament_schedule')
+        self.assertEqual(fontcopy.table_tail([recipe], 'us', None), data)
+        self.assertIsNone(tabledata.authored_recipe(obj, bytes(180)))
+        self.assertIsNone(tabledata.authored_recipe(dict(obj, source='src/main/other.c'), data))
+
+    def test_brain_techniques_come_from_the_authored_table(self):
+        import json
+        import fontcopy
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import balance
+        self.assertEqual(list(fontcopy.ELEMENTS), balance.ELEMENTS)
+        path = Path(__file__).resolve().parents[1] / 'content/tables/brain-training.json'
+        techniques = json.loads(path.read_text())['brainTraining']['techniques']
+        for count in (7, 12):
+            data = bytes(sum((techniques[e] for e in balance.ELEMENTS[:count]), []))
+            obj = dict(offset=0, length=8 * count, section='.data.TRN_D_8008F14C', source='src/trn/trn_reward.c')
+            recipe = tabledata.authored_recipe(obj, data)
+            self.assertEqual((recipe['generator'], recipe['params']), ('brain_techniques', [count]))
+            self.assertEqual(fontcopy.table_tail([recipe], 'us', None), data)
+            self.assertIsNone(tabledata.authored_recipe(obj, bytes(8 * count)))
+            self.assertIsNone(tabledata.authored_recipe(dict(obj, source='src/trn/other.c'), data))
+        for count in (0, 13, '12'):
+            with self.assertRaises(ValueError):
+                fontcopy.semantic_table('brain_techniques', [count])
+
+    def test_technique_panel_lines_match_the_patched_c_table(self):
+        import re
+        import fontcopy
+        patch = (Path(__file__).resolve().parents[1] / 'mods/patches'
+                 / 'Techset-the-scroll-bar-s-thumb-fits-twelve-rows-Span.patch').read_text()
+        block = re.search(r'Line DIGIMON_MOVE_INFO_LINES_RIGHT\[18\] = \{\n(.*?)\n \};', patch, re.S).group(1)
+        rows = [[int(v, 16) for v in re.findall(r'0x[0-9a-f]+', line)]
+                for line in block.splitlines() if line.startswith('+\t{')]
+        self.assertEqual(len(rows), 18)
+        data = b''.join(struct.pack('<4h2B', *row) for row in rows)
+        self.assertEqual(fontcopy.semantic_table('technique_panel_lines', []), data)
+        obj = dict(offset=0, length=180, section='.data.DIGIMON_MOVE_INFO_LINES_RIGHT', source='src/main/game_menu.c')
+        recipe = tabledata.authored_recipe(obj, data)
+        self.assertEqual(recipe['generator'], 'technique_panel_lines')
+        self.assertIsNone(tabledata.authored_recipe(obj, bytes(180)))
+        self.assertIsNone(tabledata.authored_recipe(dict(obj, section='.data.DIGIMON_MOVE_INFO_LINES_LEFT'), data))
+
+    def test_card_shop_start_is_generated_inside_the_new_game_table(self):
+        import json
+        import fontcopy
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import balance
+        self.assertEqual(balance.NAMED_RULES['newGame'][14:20], [f'cardShopStart[{i}]' for i in range(6)])
+        self.assertEqual(balance.NAMED_FMT['newGame'], 'i')
+        path = Path(__file__).resolve().parents[1] / 'content/tables/new-game.json'
+        values = json.loads(path.read_text())['newGame']['cardShopStart']
+        data = bytes(range(56)) + struct.pack('<6i', *values) + b'\xff' * 232
+        obj = dict(offset=0, length=len(data), section='.data.MOD_NEWGAME', source='src/main/main_menu.c')
+        recipe = tabledata.authored_recipe(obj, data)
+        self.assertEqual((recipe['generator'], recipe['fields']), ('card_shop_start', [[56, 24]]))
+        self.assertEqual(fontcopy.table_tail([recipe], 'us', None), data[56:80])
+        self.assertIsNone(tabledata.authored_recipe(obj, bytes(len(data))))
+
     def test_banner_and_standard_encoding_have_no_supplied_byte_payload(self):
         import fontcopy
         for language in ('es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca'):

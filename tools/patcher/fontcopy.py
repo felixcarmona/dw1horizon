@@ -492,6 +492,52 @@ def semantic_table(kind, params, tool_root=None):
             raise ValueError('type factors take no supplied bytes')
         rows = json.loads((root / 'content/tables/type-factors.json').read_text())['typeFactors']
         return bytes(value for row in rows for value in row)
+    if kind == 'tournament_schedule':
+        if params:
+            raise ValueError('the tournament schedule takes no supplied bytes')
+        # TOURNAMENT_SCHEDULE: thirty six-byte rows, as tools/balance.py writes them.
+        rows = json.loads((root / 'content/tables/tournaments.json').read_text())['tournaments']['schedule']
+        if len(rows) != 30 or any(len(row) != 6 for row in rows):
+            raise ValueError('the tournament schedule has thirty rows of six cups')
+        return bytes(value for row in rows for value in row)
+    if kind == 'brain_techniques':
+        count, = params
+        if type(count) is not int or not 1 <= count <= len(ELEMENTS):
+            raise ValueError('brains training lists one row per element')
+        # TRN_D_8008F14C: eight technique ids per element, in the TYPE_FACTORS element order.
+        techniques = json.loads((root / 'content/tables/brain-training.json').read_text())['brainTraining']['techniques']
+        if any(len(techniques[element]) != 8 for element in ELEMENTS[:count]):
+            raise ValueError('a brains training row has eight techniques')
+        return bytes(value for element in ELEMENTS[:count] for value in techniques[element])
+    if kind == 'technique_panel_lines':
+        if params:
+            raise ValueError('the technique panel frame takes no supplied bytes')
+        # DIGIMON_MOVE_INFO_LINES_RIGHT: the right technique panel's frame, drawn
+        # as six bevelled strokes of three one-pixel lines (dark, light, dark).
+        # Each stroke: start, end, and the axis its three lines step along; the
+        # middle line of the two inner corners starts one pixel earlier.
+        strokes = (((46, 1), (132, 1), 'y', None),    # top edge
+                   ((3, 5), (3, 21), 'x', None),      # left edge of the name tab
+                   ((133, 5), (133, 92), 'x', None),  # right edge
+                   ((7, 22), (133, 22), 'y', 'x'),    # under the name tab
+                   ((49, 25), (49, 92), 'x', 'y'),    # left edge of the description
+                   ((53, 93), (132, 93), 'y', None))  # bottom edge
+        out = bytearray()
+        for (x1, y1), (x2, y2), axis, corner in strokes:
+            for i in range(3):
+                dx, dy = (i, 0) if axis == 'x' else (0, i)
+                sx = x1 + dx - (corner == 'x' and i == 1)
+                sy = y1 + dy - (corner == 'y' and i == 1)
+                out.extend(struct.pack('<4h2B', sx, sy, x2 + dx, y2 + dy, i == 1, 0))
+        return bytes(out)
+    if kind == 'card_shop_start':
+        if params:
+            raise ValueError('the card shop start takes no supplied bytes')
+        # MOD_NEWGAME slots 14..19 (newGame.cardShopStart), 32-bit like every slot of that table.
+        values = json.loads((root / 'content/tables/new-game.json').read_text())['newGame']['cardShopStart']
+        if len(values) != 6:
+            raise ValueError('the card shop starts from six script-state values')
+        return struct.pack('<6i', *values)
     if kind == 'banner':
         language, = params
         if language in ('es', 'pt-br'):
@@ -646,3 +692,7 @@ CD_REGISTERS = dict(reg0=0x1800, reg1=0x1801, reg2=0x1802, reg3=0x1803,
                     dv5_delay=0x1018, DEV5_DELAY=0x1018, bios_d_pcr=0x10f0,
                     Dma_PCR=0x10f0, Dma_ICR=0x10f4, Dma_CHCR1=0x1098, Dma_CHCR3=0x10b8,
                     d3_madr=0x10b0, d3_bcr=0x10b4)
+
+# The element order of TYPE_FACTORS rows and of the brains training lists
+# (tools/species.py ELEMENTS; the patcher does not import the build tools).
+ELEMENTS = ('fire', 'battle', 'air', 'nature', 'ice', 'mech', 'filth', 'dark', 'light', 'water', 'weapon', 'earth')
