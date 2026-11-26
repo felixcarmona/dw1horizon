@@ -19,7 +19,7 @@ ROOT = model.ROOT
 HERE = Path(__file__).resolve().parent
 CONTENT = ROOT / 'web/wiki'
 NAMES = dict(zip(model.LANGS, ('English','Español','Português (Brasil)','Français','Deutsch','Italiano','日本語','Català','简体中文')))
-WIKI_LIMIT = 64 * 1024 * 1024
+WIKI_LIMIT = 96 * 1024 * 1024
 SITE_LIMIT = 900 * 1024 * 1024
 INDEX_LIMIT = 400 * 1024
 
@@ -48,7 +48,7 @@ def budget(out):
     wiki = out / 'wiki'
     size = sum(p.stat().st_size for p in wiki.rglob('*') if p.is_file())
     if size > WIKI_LIMIT:
-        raise ValueError('Wiki exceeds 64 MiB budget')
+        raise ValueError('Wiki exceeds 96 MiB budget')
     for index in wiki.glob('*/search-index.json'):
         if index.stat().st_size > INDEX_LIMIT:
             raise ValueError('Search index exceeds 400 KiB: ' + str(index))

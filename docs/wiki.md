@@ -184,7 +184,7 @@ The wiki ships without Digimon images. Names, small coloured level/attribute bad
 
 ## Budgets and checks
 
-The incremental wiki limit is 64 MiB. Each language's selected-release search index must be at most 400 KiB; only that locale's index loads, and further queries/filters run without requests. The complete Pages output must stay below the existing 900 MiB limit, with each file below 100 MiB. `check.py` runs after showcase extraction in the workflow and checks all generated local links and anchors, resources, closed tagged dialogue, spoiler-classified indexes, engine provenance and budgets. Font files are shared under `media/font/` with their OFL license.
+The incremental wiki limit is 96 MiB (raised from 64 MiB in v0.0.10, when five new technique rows took the wiki with its PDFs to about 69 MiB). Each language's selected-release search index must be at most 400 KiB; only that locale's index loads, and further queries/filters run without requests. The complete Pages output must stay below the existing 900 MiB limit, with each file below 100 MiB. `check.py` runs after showcase extraction in the workflow and checks all generated local links and anchors, resources, closed tagged dialogue, spoiler-classified indexes, engine provenance and budgets. Font files are shared under `media/font/` with their OFL license.
 
 ```sh
 python3 -m unittest discover -s tools/wiki -p 'test_*.py'
@@ -226,7 +226,7 @@ No remote resources or artwork are loaded.
 
 The manifest records each PDF's release tag, game commit, SHA-256, byte size and
 page count. `check.py` verifies these against embedded provenance, all internal
-PDF destinations and bookmarks. PDFs count toward the existing 64 MiB wiki and
+PDF destinations and bookmarks. PDFs count toward the existing 96 MiB wiki and
 900 MiB site limits; each PDF must additionally stay below 10 MiB. The release
 workflow installs print dependencies before its presentation overlay, including
 page-only redeploys. PDF dates and document IDs are normalized for reproducible

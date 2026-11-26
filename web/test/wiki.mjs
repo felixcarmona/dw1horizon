@@ -175,7 +175,7 @@ try{
     assert.equal(await page.$$eval('.article-body table',es=>es.every(e=>!e.checkVisibility())),true);
     await page.goto(root+base+'digimon/7-airdramon/',{waitUntil:'load'});
     assert.equal(await page.$eval('.recruit-record h2',e=>e.checkVisibility()),false);
-    await page.goto(root+base+'digimon/116-analogman/#evolutions',{waitUntil:'load'});
+    await page.goto(root+base+'digimon/28-vademon/#evolutions',{waitUntil:'load'});
     assert.equal(await page.$eval('h1',e=>e.checkVisibility()),false);
     await page.goto(root+base+'recruits/#recruit-37',{waitUntil:'load'});
     assert.equal(await page.$$eval('.spoiler[open]',es=>es.length),0);

@@ -1285,7 +1285,7 @@
     ],
     "evidence": {
       "story/mods/what-the-island-forgot/arcs/residents/kotemon.py": [
-        "when=ogre_fortress_cleared,",
+        ["when=ogre_fortress_cleared and not recruited", "when=ogre_fortress_cleared,"],
         ["hp=1200", "hp=2400"],
         "fight(kotemon, escape=False)"
       ]
