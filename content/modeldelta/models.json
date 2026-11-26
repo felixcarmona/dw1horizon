@@ -2024,31 +2024,26 @@
         "sources": [
           {
             "path": "build/batch6/MarineAngemon.MMD",
-            "sha256": "1349d2fa780b52e650574d990018348e71ad3f513f86dc9a9b98c1258f1770c3",
-            "size": 93832
-          },
-          {
-            "path": "build/sizes-out/models/MarineAngemon.MMD",
-            "sha256": "a7d95ba71c4e2383b805a882e01ab25cae59d5f3e35a37eaa2099de3af272993",
-            "size": 93832
+            "sha256": "71ad44ab9240c1ac9a54a4919e0fce483ad34491ba5eaba601010132a002fc97",
+            "size": 98250
           }
         ],
         "delta": "content/modeldelta/deltas/248-MarineAngemon.MMD.mdelta",
-        "delta_sha256": "c4e435e606b7d3e97e1d924400a8ebca7860c4e837c56589de6cca6a0a9b60d3",
-        "sha256": "419c90ae7c80d7577f1f397de3367dc6259acb5a72f3308de46ff5c24bf86c1e",
-        "size": 114646
+        "delta_sha256": "5205bafa281e17feed908b3c3fe41fe6a5e742803dadffae0853875e495e2fdf",
+        "sha256": "e618086d002934531abf9c73d28f34a5130216f019ba7825e00c236df100a221",
+        "size": 98262
       },
       "tim": {
         "sources": [
           {
             "path": "build/batch6/MarineAngemon.TIM",
-            "sha256": "fbbd8843e728d0acc7ee20fd7124b4793a42972b9e09c55eada03295665a7741",
+            "sha256": "e29ec788910fdd0635148e30f0753cc214e6e197079ff2067120aa532933eaeb",
             "size": 18432
           }
         ],
         "delta": "content/modeldelta/deltas/248-MarineAngemon.TIM.mdelta",
-        "delta_sha256": "ba2bf6cf90621b817a7096186773584f1aa229b789ee64f2a7050b150045ded5",
-        "sha256": "8adb6dbcda6eaf6270097539b08c92dcc0f0dee0ca45e45a73275a07fc359303",
+        "delta_sha256": "0623a8121e781f87797dda47baedfc4ed1df75c0d43102ed3f4d498e464be0bc",
+        "sha256": "e29ec788910fdd0635148e30f0753cc214e6e197079ff2067120aa532933eaeb",
         "size": 18432
       }
     },

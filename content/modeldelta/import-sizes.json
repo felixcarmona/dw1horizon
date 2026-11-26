@@ -202,14 +202,6 @@
       "sha256": "2cb0f769b360b53b63c5a98e2d61d78cf27fe996069010d36c731110a8ebffe8"
     },
     {
-      "source": "build/batch6/MarineAngemon.MMD",
-      "source_sha256": "1349d2fa780b52e650574d990018348e71ad3f513f86dc9a9b98c1258f1770c3",
-      "bones": 26,
-      "scale": 1.3472243202440486,
-      "target": "build/sizes-out/models/MarineAngemon.MMD",
-      "sha256": "a7d95ba71c4e2383b805a882e01ab25cae59d5f3e35a37eaa2099de3af272993"
-    },
-    {
       "source": "build/batch7/Valkyrimon.MMD",
       "source_sha256": "3aa9bad1690d021ec4bd6177d487eee926dd6fa58fc0301da79c5b6687c00c0f",
       "bones": 30,

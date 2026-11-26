@@ -55,8 +55,12 @@
   },
   {
    "name": "MarineAngemon",
-   "game": "dcb",
-   "model": 230
+   "game": "dw2",
+   "model": "M216MANG",
+   "level": 5,
+   "element": 5,
+   "donor": 28,
+   "scale": 0.17
   },
   {
    "name": "Quetzalmon",
