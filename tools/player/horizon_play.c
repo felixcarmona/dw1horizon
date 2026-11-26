@@ -30,6 +30,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include "libretro.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+/* fopen with a UTF-8 path (Windows too) */
+static FILE *open_utf8(const char *path, const char *mode) {
+#ifdef _WIN32
+  wchar_t wp[1300], wm[8];
+  if (!MultiByteToWideChar(CP_UTF8, 0, path, -1, wp, 1300) || !MultiByteToWideChar(CP_UTF8, 0, mode, -1, wm, 8)) return NULL;
+  return _wfopen(wp, wm);
+#else
+  return fopen(path, mode);
+#endif
+}
+
+/* rename over an existing file (UTF-8 paths on Windows too) */
+static bool replace_file(const char *from, const char *to) {
+#ifdef _WIN32
+  wchar_t wf[1300], wt[1300];
+  if (!MultiByteToWideChar(CP_UTF8, 0, from, -1, wf, 1300) || !MultiByteToWideChar(CP_UTF8, 0, to, -1, wt, 1300)) return false;
+  return MoveFileExW(wf, wt, MOVEFILE_REPLACE_EXISTING) != 0;
+#else
+  return rename(from, to) == 0;
+#endif
+}
 
 #ifndef APIENTRY
 #define APIENTRY
@@ -57,6 +82,9 @@ typedef void(APIENTRY *p_Viewport)(GLint, GLint, GLsizei, GLsizei);
 typedef void(APIENTRY *p_ClearColor)(GLfloat, GLfloat, GLfloat, GLfloat);
 typedef void(APIENTRY *p_Clear)(GLbitfield);
 typedef void(APIENTRY *p_ReadPixels)(GLint, GLint, GLsizei, GLsizei, GLenum, GLenum, void *);
+typedef void(APIENTRY *p_Disable)(GLenum);
+typedef void(APIENTRY *p_ColorMask)(GLboolean, GLboolean, GLboolean, GLboolean);
+typedef GLenum(APIENTRY *p_GetError)(void);
 
 static struct {
   p_GenFramebuffers GenFramebuffers; p_DeleteFramebuffers DeleteFramebuffers; p_BindFramebuffer BindFramebuffer;
@@ -66,6 +94,7 @@ static struct {
   p_BlitFramebuffer BlitFramebuffer; p_GenTextures GenTextures; p_DeleteTextures DeleteTextures;
   p_BindTexture BindTexture; p_TexImage2D TexImage2D; p_TexSubImage2D TexSubImage2D; p_TexParameteri TexParameteri;
   p_PixelStorei PixelStorei; p_Viewport Viewport; p_ClearColor ClearColor; p_Clear Clear; p_ReadPixels ReadPixels;
+  p_Disable Disable; p_ColorMask ColorMask; p_GetError GetError;
 } gl;
 
 static bool load_gl(void) {
@@ -73,7 +102,7 @@ static bool load_gl(void) {
   L(GenFramebuffers) L(DeleteFramebuffers) L(BindFramebuffer) L(FramebufferTexture2D) L(GenRenderbuffers)
   L(DeleteRenderbuffers) L(BindRenderbuffer) L(RenderbufferStorage) L(FramebufferRenderbuffer) L(BlitFramebuffer)
   L(GenTextures) L(DeleteTextures) L(BindTexture) L(TexImage2D) L(TexSubImage2D) L(TexParameteri) L(PixelStorei)
-  L(Viewport) L(ClearColor) L(Clear) L(ReadPixels)
+  L(Viewport) L(ClearColor) L(Clear) L(ReadPixels) L(Disable) L(ColorMask) L(GetError)
 #undef L
   return true;
 }
@@ -94,6 +123,8 @@ static struct {
   bool (*load_game)(const struct retro_game_info *);
   void (*unload_game)(void);
   void (*run)(void);
+  void *(*get_memory_data)(unsigned);
+  size_t (*get_memory_size)(unsigned);
 } core;
 
 /* ---- host state ---- */
@@ -125,9 +156,22 @@ static void set_option(const char *k, const char *v) {
   if (opt_count < MAX_OPTIONS) { opt_key[opt_count] = k; opt_val[opt_count++] = v; }
 }
 
+/* horizon-play.log in the save folder: the last run's log, for reports (the core's notes and this program's) */
+static FILE *log_file;
+
 static void core_log(enum retro_log_level level, const char *fmt, ...) {
+  va_list a;
+  if (log_file && level >= RETRO_LOG_INFO) { va_start(a, fmt); vfprintf(log_file, fmt, a); va_end(a); fflush(log_file); }
   if (level < RETRO_LOG_WARN && !getenv("HORIZON_PLAY_DEBUG")) return;
-  va_list a; va_start(a, fmt); vfprintf(stderr, fmt, a); va_end(a);
+  va_start(a, fmt); vfprintf(stderr, fmt, a); va_end(a);
+}
+
+static SDL_LogOutputFunction sdl_default_log;
+static void *sdl_default_log_data;
+static void host_log(void *data, int category, SDL_LogPriority priority, const char *msg) {
+  (void)data;
+  if (log_file) { fprintf(log_file, "%s\n", msg); fflush(log_file); }
+  if (sdl_default_log) sdl_default_log(sdl_default_log_data, category, priority, msg);
 }
 
 static uintptr_t get_current_framebuffer(void) { return fbo; }
@@ -245,6 +289,9 @@ static void video_refresh(const void *data, unsigned w, unsigned h, size_t pitch
 static void save_screenshot(const char *path);
 static void present(bool last) {
   int ww, wh; SDL_GL_GetDrawableSize(window, &ww, &wh);
+  /* the core leaves its own state behind: scissor and masks clip a clear and a blit */
+  gl.Disable(GL_SCISSOR_TEST);
+  gl.ColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
   gl.BindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
   gl.Viewport(0, 0, ww, wh);
   gl.ClearColor(0, 0, 0, 1); gl.Clear(GL_COLOR_BUFFER_BIT);
@@ -259,6 +306,8 @@ static void present(bool last) {
     else   /* top-left origin: flip */
       gl.BlitFramebuffer(0, 0, frame_w, frame_h, dx, dy + dh, dx + dw, dy, GL_COLOR_BUFFER_BIT, GL_LINEAR);
     gl.BindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+    static int checked;
+    if (!checked++) { GLenum e = gl.GetError(); if (e) SDL_Log("first frame: GL error 0x%x", e); }
   }
   if (last && screenshot_path) save_screenshot(screenshot_path);
   SDL_GL_SwapWindow(window);
@@ -360,6 +409,8 @@ static void toggle_fullscreen(void) {
   SDL_ShowCursor(full ? SDL_ENABLE : SDL_DISABLE);
 }
 
+static void card_save(void);
+
 static void handle_events(void) {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
@@ -382,10 +433,43 @@ static void handle_events(void) {
       if (e.window.event == SDL_WINDOWEVENT_MINIMIZED) paused = true;
       else if (e.window.event == SDL_WINDOWEVENT_RESTORED || e.window.event == SDL_WINDOWEVENT_SHOWN) paused = false;
       break;
-    case SDL_APP_WILLENTERBACKGROUND: paused = true; break;
+    case SDL_APP_WILLENTERBACKGROUND: paused = true; card_save(); break;
+    case SDL_APP_TERMINATING: card_save(); break;
     case SDL_APP_DIDENTERFOREGROUND: paused = false; break;
     }
   }
+}
+
+/* ---- the memory card: the core's "Libretro" card is a 128 KB buffer this program keeps in the save folder, in the
+ * file DuckStation's shared card uses. It is written whenever it changes (checked every second), when the app goes to
+ * the background and at exit, so a closed window or an app Android kills keeps the last save. */
+static char card_path[1200];
+static uint8_t card_written[128 * 1024];
+
+static void card_load(void) {
+  uint8_t *data = core.get_memory_data(RETRO_MEMORY_SAVE_RAM);
+  size_t size = core.get_memory_size(RETRO_MEMORY_SAVE_RAM);
+  if (!data || size != sizeof card_written) return;
+  SDL_RWops *f = SDL_RWFromFile(card_path, "rb");
+  if (f) {
+    if (SDL_RWread(f, card_written, 1, size) == size) memcpy(data, card_written, size);
+    SDL_RWclose(f);
+  }
+  memcpy(card_written, data, size);
+}
+
+static void card_save(void) {
+  uint8_t *data = core.get_memory_data(RETRO_MEMORY_SAVE_RAM);
+  size_t size = core.get_memory_size(RETRO_MEMORY_SAVE_RAM);
+  if (!data || size != sizeof card_written || !memcmp(data, card_written, size)) return;
+  /* the whole card in one write to a fresh file, then over the old one: a cut in the middle keeps the old card */
+  char tmp[1300]; snprintf(tmp, sizeof tmp, "%s.new", card_path);
+  SDL_RWops *f = SDL_RWFromFile(tmp, "wb");
+  if (!f) { SDL_Log("cannot write %s", tmp); return; }
+  bool ok = SDL_RWwrite(f, data, 1, size) == size;
+  ok = SDL_RWclose(f) == 0 && ok;
+  if (ok && replace_file(tmp, card_path)) memcpy(card_written, data, size);
+  else SDL_Log("cannot save the memory card %s", card_path);
 }
 
 static bool load_core(const char *path) {
@@ -394,7 +478,7 @@ static bool load_core(const char *path) {
 #define F(n) if (!(*(void **)&core.n = SDL_LoadFunction(core.lib, "retro_" #n))) { SDL_Log("core lacks retro_%s", #n); return false; }
   F(set_environment) F(set_video_refresh) F(set_audio_sample) F(set_audio_sample_batch) F(set_input_poll)
   F(set_input_state) F(init) F(deinit) F(get_system_av_info) F(set_controller_port_device) F(load_game)
-  F(unload_game) F(run)
+  F(unload_game) F(run) F(get_memory_data) F(get_memory_size)
 #undef F
   return true;
 }
@@ -423,6 +507,8 @@ int main(int argc, char **argv) {
     else disc = argv[i];
   }
 
+  SDL_SetHint(SDL_HINT_ANDROID_TRAP_BACK_BUTTON, "1");   /* a pad's B must not close the game */
+  SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) != 0) { fprintf(stderr, "SDL: %s\n", SDL_GetError()); return 1; }
   char *base = SDL_GetBasePath();
   char here[1024]; snprintf(here, sizeof here, "%s", base ? base : "./"); SDL_free(base);
@@ -444,6 +530,19 @@ int main(int argc, char **argv) {
   if (saves) snprintf(save_dir, sizeof save_dir, "%s", saves);
   else { char *p = SDL_GetPrefPath("Horizon", "Horizon"); snprintf(save_dir, sizeof save_dir, "%s", p ? p : here); SDL_free(p); }
   size_t sl = strlen(save_dir); if (sl && (save_dir[sl - 1] == '/' || save_dir[sl - 1] == '\\')) save_dir[sl - 1] = 0;
+  { char lp[1300]; snprintf(lp, sizeof lp, "%s/horizon-play.log", save_dir); log_file = open_utf8(lp, "w"); }
+  { /* options.txt in the save folder: KEY=VALUE lines that override core options (troubleshooting) */
+    char op[1300]; snprintf(op, sizeof op, "%s/options.txt", save_dir);
+    FILE *f = open_utf8(op, "r"); char line[512];
+    while (f && fgets(line, sizeof line, f)) {
+      line[strcspn(line, "\r\n")] = 0;
+      char *eq = strchr(line, '=');
+      if (eq && line[0] != '#') { *eq = 0; set_option(SDL_strdup(line), SDL_strdup(eq + 1)); }
+    }
+    if (f) fclose(f);
+  }
+  SDL_LogGetOutputFunction(&sdl_default_log, &sdl_default_log_data);
+  SDL_LogSetOutputFunction(host_log, NULL);
 
   /* the disc: the one given (and remembered), else the one played last time */
   static char last_disc[2048];
@@ -466,8 +565,8 @@ int main(int argc, char **argv) {
   }
 
   /* the window: full screen on the desktop's mode unless --windowed */
-  SDL_DisplayMode dm; int disp_h = 1080;
-  if (SDL_GetDesktopDisplayMode(0, &dm) == 0) disp_h = dm.h;
+  SDL_DisplayMode dm = {0, 1440, 1080, 0, NULL}; int disp_h = 1080;
+  if (SDL_GetDesktopDisplayMode(0, &dm) == 0) disp_h = dm.h < dm.w ? dm.h : dm.w;   /* a phone may report portrait */
 #ifdef HORIZON_GLES
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -483,23 +582,35 @@ int main(int argc, char **argv) {
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   int win_h = disp_h * 3 / 4, win_w = win_h * 4 / 3;
   Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+#ifdef __ANDROID__
+  flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_ALLOW_HIGHDPI;   /* the whole screen, landscape */
+  win_w = dm.w > dm.h ? dm.w : dm.h; win_h = dm.w > dm.h ? dm.h : dm.w;
+#else
   if (!windowed) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+#endif
   window = SDL_CreateWindow("Digimon World: Horizon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, win_w, win_h, flags);
   if (!window) { fail("Horizon", SDL_GetError()); return 1; }
   if (!windowed) SDL_ShowCursor(SDL_DISABLE);
   glctx = SDL_GL_CreateContext(window);
   if (!glctx || !load_gl()) { fail("Horizon", "This computer's graphics do not support OpenGL 3.3."); return 1; }
   SDL_GL_SetSwapInterval(1);
+  { typedef const GLubyte *(APIENTRY *p_GetString)(GLenum); p_GetString gs = (p_GetString)SDL_GL_GetProcAddress("glGetString");
+    if (gs) SDL_Log("OpenGL: %s / %s", (const char *)gs(GL_VERSION), (const char *)gs(GL_RENDERER)); }
 
   /* fixed settings: the reason this program exists */
-  if (!scale) { scale = (disp_h + 239) / 240; if (scale < 2) scale = 2; if (scale > 8) scale = 8; }
+#ifdef __ANDROID__
+  const int max_scale = 4;    /* phone and handheld GPUs */
+#else
+  const int max_scale = 8;
+#endif
+  if (!scale) { scale = (disp_h + 239) / 240; if (scale < 2) scale = 2; if (scale > max_scale) scale = max_scale; }
   snprintf(scale_text, sizeof scale_text, "%d", scale);
   static const char *fixed[][2] = {
     {"swanstation_BIOS_PathNTSCU", "openbios.bin"}, {"swanstation_BIOS_PathNTSCJ", "openbios.bin"},
     {"swanstation_BIOS_PathPAL", "openbios.bin"}, {"swanstation_BIOS_PatchFastBoot", "false"},
     {"swanstation_Console_Enable8MBRAM", "true"}, {"swanstation_CPU_Overclock", "250"},
     {"swanstation_GPU_Renderer", "OpenGL"}, {"swanstation_GPU_TrueColor", "false"},
-    {"swanstation_MemoryCards_Card1Type", "Shared"}, {"swanstation_MemoryCards_Card2Type", "None"},
+    {"swanstation_MemoryCards_Card1Type", "Libretro"}, {"swanstation_MemoryCards_Card2Type", "None"},
     {"swanstation_Display_AspectRatio", "4:3"},
   };
   for (int i = (int)(sizeof fixed / sizeof *fixed) - 1; i >= 0; i--) {
@@ -524,6 +635,8 @@ int main(int argc, char **argv) {
   if (!core.load_game(disc ? &game : NULL)) { fail("Horizon", "The disc could not be started. Is it the patched Horizon disc (.cue)?"); return 1; }
   core.get_system_av_info(&av);
   core.set_controller_port_device(0, RETRO_DEVICE_JOYPAD);
+  snprintf(card_path, sizeof card_path, "%s/duckstation_shared_card_1.mcd", save_dir);
+  card_load();
   if (hw_requested) {
     make_fbo(av.geometry.max_width, av.geometry.max_height);
     if (hw.context_reset) hw.context_reset();
@@ -549,6 +662,13 @@ int main(int argc, char **argv) {
     pad_bits = bits;
     core.run();
     frame++;
+    if (frame % 60 == 0) card_save();
+    if (frame % 1800 == 0) {   /* the log notes the speed: a slow device shows here */
+      static Uint32 since; Uint32 now = SDL_GetTicks(); int dw, dh; SDL_GL_GetDrawableSize(window, &dw, &dh);
+      SDL_Log("frame %d: %.1f fps, picture %ux%u %s, screen %dx%d, scale %s", frame, since ? 1800000.0 / (now - since) : 0.0,
+              frame_w, frame_h, !have_frame ? "none" : frame_is_hw ? "hw" : "sw", dw, dh, scale_text);
+      since = now;
+    }
     present(run_frames >= 0 && frame >= run_frames);
     if (run_frames >= 0 && frame >= run_frames) break;
     /* the sound sets the pace: never more than about 80 ms queued */
@@ -556,7 +676,8 @@ int main(int argc, char **argv) {
       while (SDL_GetQueuedAudioSize(audio_dev) > bytes_per_sec / 12 && !quit) SDL_Delay(1);
   }
 
-  core.unload_game();      /* writes the memory card */
+  card_save();
+  core.unload_game();
   core.deinit();
   if (audio_dev) SDL_CloseAudioDevice(audio_dev);
   SDL_GL_DeleteContext(glctx);

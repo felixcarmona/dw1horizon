@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play">Jugar</string>
+    <string name="choose">Elegir el disco (.bin)</string>
+    <string name="change">Cambiar el disco</string>
+    <string name="no_disc">Elige el disco de Horizon que creó el parcheador: el archivo .bin. Se copia una vez dentro de esta app.</string>
+    <string name="ready">Disco listo.</string>
+    <string name="copying">Copiando el disco…</string>
+    <string name="pick_bin">Elige el archivo .bin, no el .cue.</string>
+    <string name="not_a_disc">Ese archivo no es una imagen de disco de PlayStation (.bin, 2352 bytes por sector).</string>
+    <string name="copy_failed">No se pudo copiar el disco: %1$s</string>
+    <string name="saves">Partidas: %1$s</string>
+</resources>
