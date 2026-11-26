@@ -100,6 +100,18 @@ def authored_recipe(obj, data, tool_root=None, words=()):
                             kind='semantic', fields=[[140, 14]], generator='versus_mode', params=[english])
     elif name == 'TYPE_FACTORS' and obj['source'] == 'src/main/item.c':
         choices = [('type_factors', [])]
+    elif name == 'TOURNAMENT_SCHEDULE' and obj['source'] == 'src/main/script_common.c' and len(data) == 180:
+        choices = [('tournament_schedule', [])]
+    elif (name == 'TRN_D_8008F14C' and obj['source'] == 'src/trn/trn_reward.c'
+            and len(data) % 8 == 0 and 1 <= len(data) // 8 <= len(fontcopy.ELEMENTS)):
+        choices = [('brain_techniques', [len(data) // 8])]
+    elif name == 'DIGIMON_MOVE_INFO_LINES_RIGHT' and obj['source'] == 'src/main/game_menu.c' and len(data) == 180:
+        choices = [('technique_panel_lines', [])]
+    elif name == 'MOD_NEWGAME' and obj['source'] == 'src/main/main_menu.c' and len(data) >= 80:
+        # Only slots 14..19 (the card shop's start): the rest stays in the delta.
+        if data[56:80] == fontcopy.semantic_table('card_shop_start', [], root):
+            return dict(offset=obj['offset'], size=obj['length'], section=obj['section'],
+                        kind='semantic', fields=[[56, 24]], generator='card_shop_start', params=[])
     elif name == 'NAMING_ROLLOVER_CHARS':
         choices = [('keyboard_rollover', [])]
     elif name == 'NAMING_CTRL_BOXES':
