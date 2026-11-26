@@ -206,12 +206,23 @@ class Run:
             self.set_day(self.fixture_day); print(f'{label}: battle on arrival, entry {entry + 1}')
         raise AssertionError(f'{label}: no control on {screen}')
 
-    def expected(self, species, partner):
+    def expected(self, floor, partner):
+        """The challenger's stats: max(its site NPC's stat, partner stat x (100 + partnerPercent) / 100), at most 9999."""
+        pp = self.rule['partnerPercent']
+        return {n: min(9999, max(floor[n], partner[n] * (100 + pp) // 100)) for n in floor}
+
+    def site_floor(self, row, pd):
+        """The site NPC's own stats on the field (the challenge's floor): the sheet's for every row but the
+        CHALLENGE_RECRUIT_STATS ones, which keep their recruit fight's."""
         from tools import city_residents
-        w = city_residents.challenge_sheet(next(r for r in self.rows if r['species'] == species), species_sheets())
-        sp, pp = self.rule['sheetPercent'], self.rule['partnerPercent']
-        names = ('hp', 'mp', 'off', 'def', 'speed', 'brain')
-        return {n: min(9999, max(w[n] * (100 + sp) // 100, partner[n] * (100 + pp) // 100)) for n in names}
+        ram = self.e.ram()
+        off, de, spd, brn = struct.unpack_from('<4h', ram, pd - 0x80000000 + 0x38)
+        hp, mp = struct.unpack_from('<2h', ram, pd - 0x80000000 + 0x48)
+        floor = {'hp': hp, 'mp': mp, 'off': off, 'def': de, 'speed': spd, 'brain': brn}
+        sheet = city_residents.challenge_site_stats(row)
+        if sheet is not None:
+            assert floor == {j: sheet[k] for k, j in city_residents.NPC_STATS}, (row['name'], floor, sheet)
+        return floor
 
     def talk_into_battle(self, slot, label):
         e = self.e
@@ -225,18 +236,21 @@ class Run:
             for _ in range(60):
                 if e.peek('GAME_STATE', 'H') == 1: return True
                 if e.in_control(1): break
-                e.press('CONFIRM', 6); e.wait(1.5)
+                e.press('CONFIRM', 6)
+                for _ in range(15):     # the battle's start is caught at once (a foe may buff itself within seconds)
+                    if e.peek('GAME_STATE', 'H') == 1: return True
+                    e.wait(0.1)
         self.shot(label + '-no-battle')
         return False
 
-    def battle(self, pd, partner, species, outcome, label):
+    def battle(self, pd, partner, floor, outcome, label):
         """In the battle: check the challenger's stats, the bag and fromHp, then force `outcome` and wait for the end."""
         e = self.e
-        want = self.expected(species, partner)
-        # read from the battle's start: a foe may cast a stat-up technique (green sparkle) within seconds, and the
-        # challenge's stats are the ones it started with
+        want = self.expected(floor, partner)
+        # the challenge's stats are the ones it starts with; a foe may cast a native buff move (BTL_buffStats: def x1.2,
+        # speed x1.1 a cast, rings and a countdown over it) within seconds, and its stats come back when the buff ends
         samples = []
-        for _ in range(16):
+        for _ in range(100):
             ram = e.ram()
             off, de, spd, brn = struct.unpack_from('<4h', ram, pd - 0x80000000 + 0x38)
             hp, mp = struct.unpack_from('<2h', ram, pd - 0x80000000 + 0x48)
@@ -284,11 +298,12 @@ class Run:
         partner = dict(zip(('off', 'def', 'speed', 'brain'), e.peek('PARTNER_ENTITY+0x38', '4h')))
         partner.update(zip(('hp', 'mp'), e.peek('PARTNER_ENTITY+0x48', '2h')))
         result['partner'] = partner
+        floor = self.site_floor(row, pd); result['siteFloor'] = floor
         before = self.state(); site = out / f'{tag}-site.state'; e.run('save', str(site))
 
         # a lost fight: everything put back, it is still there
         assert self.talk_into_battle(slot, tag + '-lost'), f"{row['name']}: the talk did not start a battle"
-        b = self.battle(pd, partner, row['species'], 'lost', tag + '-lost'); result['lostBattle'] = b
+        b = self.battle(pd, partner, floor, 'lost', tag + '-lost'); result['lostBattle'] = b
         assert b['stats'] == b['expected'], b
         assert b['fromHp'] == 0 and b['noBag'] == 1 and b['ended'], b
         e.wait(5); e.in_control(60); after = self.state(); result['afterLoss'] = after
@@ -303,11 +318,14 @@ class Run:
         # a won fight from the same spot: reward, the flag, it leaves
         e.run('load', str(site)); e.wait(3)
         assert self.talk_into_battle(slot, tag + '-won'), f"{row['name']}: the talk did not start a battle"
-        b = self.battle(pd, partner, row['species'], 'won', tag + '-won'); result['wonBattle'] = b
+        b = self.battle(pd, partner, floor, 'won', tag + '-won'); result['wonBattle'] = b
         assert b['stats'] == b['expected'] and b['fromHp'] == 0 and b['noBag'] == 1 and b['ended'], b
-        for _ in range(40):
-            if e.in_control(1) and self.pstat(var) & BEATEN: break
+        for _ in range(60):             # the reward lines, then its run off the screen (long on a wide site)
+            if e.in_control(1) and self.pstat(var) & BEATEN and self.npc_slot(row['species'])[0] is None: break
             e.press('CONFIRM', 6); e.wait(1)
+        else:
+            self.shot(tag + '-stuck-after-win')
+            raise AssertionError(f"{row['name']}: no control, or still there, after the win (pstat {self.pstat(var)})")
         e.wait(6); self.shot(tag + '-after-win'); after = self.state(); result['afterWin'] = after
         assert self.pstat(var) == which + BEATEN and after['fromHp'] == self.fromHpNormal, after
         assert self.pstat(ovar) == other and self.flag(otried) == 0, after       # the other pool's fight is untouched
