@@ -2,7 +2,7 @@
 
 > Historical growth proposal, superseded by opt-in HARD and a combat-only Defense
 > continuation above 999. Permanent stat growth remains unchanged. See
-> [HARD implementation and evidence](HARD-DIFFICULTY.md). The historical buff
+> [HARD implementation and evidence](hard-difficulty.md). The historical buff
 > sensitivity incorrectly allowed six Full Potential casts for repeat
 > Machinedramon: the current Brains rules allow five. Do not use that six-cast
 > row as a legal encounter state.
@@ -79,7 +79,7 @@ The tables measure committed numeric data and evaluate the current integer
 formulas. They are **controlled scenarios, not observed player-save ranges**.
 No ordinary, intensive or extreme complete raise was played for this audit, and
 no new wall-clock boss timing was recorded. Existing runtime evidence in
-[the damage investigation](docs/investigations/technique-damage.md) confirms that
+[the damage investigation](../investigations/technique-damage.md) confirms that
 boss buffs matter: repeat Machinedramon reached 3046 Offense / 1607 Defense
 in a recorded loss. That historical run does not validate the proposed growth.
 
@@ -131,7 +131,7 @@ boost uptime from Digipine, and +24 h lifetime from the melon. Inputs, daily
 caps, recruitment and travel still constrain use. The old unlimited chip or
 cash loop is absent. Buying chips for 9999 bits is a repeatable resource sink;
 there is no finite lifetime-independent maximum below 9999 while extensions
-and purchased boosts remain available. See [the economy audit](docs/mods/balance.md#61-the-economy-rule).
+and purchased boosts remain available. See [the economy audit](../mods/balance.md#61-the-economy-rule).
 
 Sources: `content/tables/{training,training-gains,battle-rules,evolution-rules,
 care-rules,tamer-level,shops}.json`; `content/items/*.json` effects;
@@ -329,7 +329,7 @@ The summit story branch reuses the same Machinedramon encounter. No additional
 unique high-stat post-game Mega encounter was found in this source census;
 friendly Mega actors are not counted as bosses.
 
-The full [boss CSV](docs/data/stat-softcap/bosses.csv) covers 42 encounter/fixture
+The full [boss CSV](../data/stat-softcap/bosses.csv) covers 42 encounter/fixture
 rows × three partner scenarios, including every explicit named `fight(...)`
 participant in the added arcs, optional resident challenges, multi-enemy escorts,
 and all six nonzero tournament base-stat bands. Imported base aliases were
@@ -401,8 +401,8 @@ also renders the one-page summary, full boss table and two-page PDF.
 
 The script emits event ledgers, ±25% scenarios, 126 boss comparison rows,
 resolved source paths, buff sensitivities and the >999 requirement scan.
-Committed numeric outputs: [scenario ledger](docs/data/stat-softcap/scenarios.json)
-and [boss CSV](docs/data/stat-softcap/bosses.csv). No disc input is needed.
+Committed numeric outputs: [scenario ledger](../data/stat-softcap/scenarios.json)
+and [boss CSV](../data/stat-softcap/bosses.csv). No disc input is needed.
 Current ordinary damage was checked with
 `python3 tools/dev/playtest/damage_curve_host.py build/softcap-source`:
 **1,699,915 C/Python comparisons**, 85 powers, differences −9999..9999,

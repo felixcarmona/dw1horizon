@@ -55,7 +55,7 @@ fig.text(.06,.327,'Full neutral finishers (normal / heavy / max grind):\n4102 �
 fig.text(.06,.271,'Growth slows, but most unbuffed attacks still deal 1 to heavy / max partners.\nNormal vs repeat Machinedramon, strongest active direct hit: 1 → 455.\nFull Potential can restore danger; its casts are not assumed in the TTK table.\nNo O / D / Speed / Brains evolution requirement exceeds 999 (maximum: 600).',fontsize=11,linespacing=1.65)
 fig.text(.06,.181,'REVIEW LIMITS',fontsize=13,weight='bold',color='#9a4e12')
 fig.text(.06,.158,'“Normal / heavy” are explicit budgets, not observed player distributions.\nChampion seed: 1500 HP/MP, 150 other stats. Fixed evolution checkpoints.\nHeavy needs lifetime extensions; max grind assumes stockpiled chips and money.\nNo complete raise, fresh boss replay, AI TTK, or hardware test was run.\nAnalogman is a scene actor; the summit fight is Machinedramon.',fontsize=10,linespacing=1.6,va='top')
-fig.text(.06,.055,'STOP FOR REVIEW  •  No gameplay code or balance data changed.\nSee STAT-SOFTCAP.md, the event ledger and 126-row boss CSV for assumptions and sources.',fontsize=11,weight='bold',linespacing=1.6)
+fig.text(.06,.055,'STOP FOR REVIEW  •  No gameplay code or balance data changed.\nSee docs/reference/stat-softcap.md, the event ledger and 126-row boss CSV for assumptions and sources.',fontsize=11,weight='bold',linespacing=1.6)
 fig.savefig(OUT/'summary.png',dpi=150)
 fig.savefig(OUT/'summary.pdf')
 # Every resolved encounter, separate printable table.
@@ -81,7 +81,7 @@ for (r,c),cell in t.get_celld().items():
  if r==0:cell.set_facecolor('#153550');cell.set_text_props(color='white',weight='bold')
  elif r%2:cell.set_facecolor(bg)
  if c==0 and r>0:cell.set_text_props(ha='left')
-fig2.text(.035,.055,'Analogman rows are hypothetical hits on a scene actor, not boss fights. Repeated branch rows share their authored profiles.\nN = normal budget, H = heavy budget, G = max grind. No player percentile, whole-fight damage total, or real elapsed TTK is claimed.\nSource: tools/stat_softcap_audit.py; baseline 0cbdeb2; see STAT-SOFTCAP.md and docs/data/stat-softcap/bosses.csv.',fontsize=11,linespacing=1.7)
+fig2.text(.035,.055,'Analogman rows are hypothetical hits on a scene actor, not boss fights. Repeated branch rows share their authored profiles.\nN = normal budget, H = heavy budget, G = max grind. No player percentile, whole-fight damage total, or real elapsed TTK is claimed.\nSource: tools/stat_softcap_audit.py; baseline 0cbdeb2; see docs/reference/stat-softcap.md and docs/data/stat-softcap/bosses.csv.',fontsize=11,linespacing=1.7)
 fig2.savefig(OUT/'boss-table.png',dpi=120)
 fig2.savefig(OUT/'boss-table.pdf')
 with PdfPages(OUT/'review.pdf') as pdf:

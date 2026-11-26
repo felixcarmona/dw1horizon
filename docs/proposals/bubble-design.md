@@ -28,7 +28,7 @@ One condition has a tail; two share a row without tails; three or more use the
 existing two-row layout. Two resources still add four ordinary textured quads,
 up to 160 command bytes per frame in the existing packet buffers.
 
-See [HPMP-REDESIGN.md](HPMP-REDESIGN.md) for the design history and current
+See [hpmp-redesign.md](hpmp-redesign.md) for the design history and current
 implementation evidence. The resident-memory tables below describe the earlier
 resource feature and disk/label iterations; the new icon patch’s measurements
 are recorded separately with its patch index row.
@@ -129,7 +129,7 @@ pass **720 presented frames** with all eight conditions and Square inside the
 viewport and clear of the clock. Every recorded frame retains at least **9 red
 HP pixels and 14 blue MP pixels**, with a distinct empty grey region. The
 inspected native/4× sheet is `build/hpmp-4a-proof/HPMP-4a-2MB-sheet.png`.
-See [HPMP-REDESIGN.md](HPMP-REDESIGN.md) for commands and complete evidence.
+See [hpmp-redesign.md](hpmp-redesign.md) for commands and complete evidence.
 Physical hardware remains untested.
 
 The complete standard selftest passes **128 groups, 0 failed, 0 skipped**,
@@ -141,7 +141,7 @@ Proposal 4 supersedes the dark 4a art. The upper heart/orb region now has pale
 native shading with a dark outer contour; a bright saturated lower third makes
 the low state visible. The fixed 320-byte atlas/palette allocation, native
 silhouettes, resource thresholds, bubble layout and Square badge are preserved.
-See [HPMP-REDESIGN.md](HPMP-REDESIGN.md#current-implementation-proposal-4-faded-native-colour)
+See [hpmp-redesign.md](hpmp-redesign.md#current-implementation-proposal-4-faded-native-colour)
 for the current implementation and its verification.
 
 The faded revision passes the full nine-language build, unchanged 187,904 B

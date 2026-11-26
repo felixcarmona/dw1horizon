@@ -72,7 +72,7 @@ def main():
     text(.206,'SAVE, OPTIONS AND GROWTH',14,True)
     text(.183,'Existing save byte 10: NORMAL=0, EASY=1, HARD=2; missing/invalid → NORMAL.\nNine owned translations; eight 2 MB languages checked in all three font styles.\nHP/MP growth unchanged: 8005 HP / 9520 MP normalize to 800.5 / 952.\nA constructed no-chip Pukumon example reaches these values in 54 ordinary sessions.',10)
     text(.105,'Limits: controlled fixtures, one trial per cell; no full raise or physical console proof.\nChinese keeps its existing 8 MB and dedicated-font requirement.',9)
-    text(.062,'HARD-DIFFICULTY.md  •  STAT-SOFTCAP.md  •  reproducible owned rules and playtests',10,True)
+    text(.062,'docs/reference/hard-difficulty.md  •  docs/reference/stat-softcap.md  •  reproducible owned rules and playtests',10,True)
     for suffix in ('png','pdf'):fig.savefig(args.out/('summary.'+suffix),dpi=150)
     plt.close(fig)
 

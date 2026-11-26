@@ -23,7 +23,7 @@ The wiki always describes only the latest released game. The deployment’s sele
 | `guides/`, `guides/<slug>/` | Authored articles |
 | `search/` | Unified article/data search |
 
-All nine page languages have generated HTML and local search JSON. Language switching preserves the article/entity, query and fragment. Spanish is Spain Spanish. The wiki ships without Digimon pictures. Text cards and compact tree nodes show names, labelled coloured level/attribute badges and specialties. Badge contrast is at least 4.5:1; labels carry the meaning alongside colour. An empty `web/wiki/owned-icons.json` map is the single future hook for reviewed owned local icons. See [the artwork audit](docs/wiki-art-audit.md), which lists the main page’s unchanged clips/maps separately.
+All nine page languages have generated HTML and local search JSON. Language switching preserves the article/entity, query and fragment. Spanish is Spain Spanish. The wiki ships without Digimon pictures. Text cards and compact tree nodes show names, labelled coloured level/attribute badges and specialties. Badge contrast is at least 4.5:1; labels carry the meaning alongside colour. An empty `web/wiki/owned-icons.json` map is the single future hook for reviewed owned local icons. See [the artwork audit](../wiki-art-audit.md), which lists the main page’s unchanged clips/maps separately.
 
 ## Generated facts and written explanations
 
@@ -37,7 +37,7 @@ Any spoiler-sensitive information may appear **only inside a clearly marked spoi
 
 Do not expose a solution in page titles, summaries, navigation, images, alt text or search snippets. Ordinary recruitment cards show their heading, location and role while folding steps. The tagged City roster’s hidden flag keeps secret recruit identities, locations, services and steps inside the disclosure. Special-route species and tree branches are folded, excluded from open pickers, and shown only in folded search results. Quiz answers, scoring solutions and starter grids are folded. Deep links and search never open a spoiler automatically.
 
-Use the shared `Pages.spoiler` renderer for generated information and article `spoiler_paragraphs` for sensitive authored text. Dialogue must use the release’s real localized strings, with readable Bakemon-partner text when the release implements that branch. Verify the question order and successful choice path against the script, and require every locale key. See [authoring documentation](docs/wiki.md) for the source map and verification procedure.
+Use the shared `Pages.spoiler` renderer for generated information and article `spoiler_paragraphs` for sensitive authored text. Dialogue must use the release’s real localized strings, with readable Bakemon-partner text when the release implements that branch. Verify the question order and successful choice path against the script, and require every locale key. See [authoring documentation](../wiki.md) for the source map and verification procedure.
 
 ## Article authoring and review
 

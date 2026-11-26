@@ -41,7 +41,7 @@ and the original PlayStation heap budget. Species-provider pins cover the final
 model bytes. Unit tests replay synthetic shared movement programs for nine
 cycles and compare poses, root travel, texture events and untouched slots.
 
-Rebalance decisions remain in [FILTH-PROPOSAL.md](../../FILTH-PROPOSAL.md).
+Rebalance decisions remain in [filth-proposal.md](../proposals/filth-proposal.md).
 No specialty, technique, evolution requirement, finisher or icon changes are
 included in this repair.
 
