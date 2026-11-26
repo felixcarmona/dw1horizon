@@ -52,7 +52,16 @@ def main():
 #include <stdio.h>
 #include "mod_battle.h"
 #include "caps.h"
-typedef struct { struct { int16_t off, def, speed; } base; } Stats;
+typedef struct { struct { int16_t off, def, speed, hp; } base; struct { int16_t currentHP; } current; } Stats;
+typedef struct { int status, statusChance, power; } Move;
+static Move noMove;
+#define TECH_DEF_UP 6
+#define TECH_SPEED_UP 7
+#define TECH_OFF_UP 9
+#define ENTITY_TEXT_RISE 0x80
+typedef struct { int heals[4]; } TechRules;
+static TechRules BTL_TECH_RULES, STD_TECH_RULES, VS_TECH_RULES;
+static Move *modSpeciesMove(int type,int move){(void)type;(void)move;return &noMove;}
 typedef struct { int type; } Entity;
 typedef struct { Entity entity; Stats stats; } DigimonEntity;
 static void addEntityText(Entity *e,int slot,int color,int value,int flag) {
