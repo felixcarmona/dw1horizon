@@ -68,6 +68,14 @@ def technique(tid):
 
 
 class TechniqueEffects(unittest.TestCase):
+    def test_committed_chunks_are_the_drawn_ones(self):
+        # The player's patcher reads content/battle/own-effects.bin.z: it has no numpy to draw them.
+        from tools.technique_effects import prebuilt
+        with open(os.path.join('content', 'battle', 'own-effects.json')) as f:
+            spec = json.load(f)
+        self.assertEqual(prebuilt.load('.', spec), prebuilt.draw(spec),
+                         'run python3 -m tools.technique_effects.prebuilt')
+
     def test_every_new_technique_has_its_effect(self):
         e = entries()
         self.assertEqual(sorted(e), list(range(330, 370)))

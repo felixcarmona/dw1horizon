@@ -23,6 +23,10 @@ the signature attacks of the games the species come from, listed in
   `tools/technique_effects` that holds the effect (`finishers` or `finishers_<kind>`), and `technique` picks its
   function. The 40 effects of the technique rows (Darkness, Light, Water, Weapon, Earth) are entries of the same
   kind ([the technique rows](technique-rows.md)).
+- The drawing needs numpy, which the player's patcher does not have, so the chunks are drawn once and committed in
+  `content/battle/own-effects.bin.z`, and the build reads them from there. After changing an effect or an
+  `authored` entry, run `python3 -m tools.technique_effects.prebuilt`; `tools/test_technique_effects.py` fails
+  while the file is stale.
 - Every effect is written here with the kit in `tools/technique_effects`: its pictures are painted by the code and
   its script, its flight and its hit are its own. No effect is converted from another game's disc and none is
   composed from the disc's own chunks. The build reads no effect file of another game: the converters that once
