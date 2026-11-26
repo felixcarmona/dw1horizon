@@ -1,5 +1,7 @@
 # Scold condition bubble — design review
 
+> The `design/` review scripts this note mentions were removed once the design was decided; they remain in the history at commit 641e108ee.
+
 Status: option 1 selected and implemented. The original four-option mockups remain
 reproducible with `design/scold/render.py`; the live proof uses the built game.
 

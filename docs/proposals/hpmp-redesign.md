@@ -1,5 +1,7 @@
 # HP/MP bubble proposals for v0.0.8
 
+> The `design/` review scripts this note mentions were removed once the design was decided; they remain in the history at commit 641e108ee.
+
 **Selected for v0.0.8: proposal 4, faded native colour**, with pale native
 shading above a saturated lower approximately 35%. The dark 4a treatment below
 is historical; the faded treatment supersedes it. The six-option and 4a–4e
