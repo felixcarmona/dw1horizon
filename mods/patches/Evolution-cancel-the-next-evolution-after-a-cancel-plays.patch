@@ -1,0 +1,73 @@
+From 376898904351adb41af0eca80cd63ba5d81eeaf2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 26 Nov 2026 21:55:34 +0000
+Subject: [PATCH] Evolution cancel: the next evolution after a cancel plays,
+ and training does not announce a held one
+
+The cancel's phase, hold and ring flags are statics of evl.c that the compiler puts in main's small data, not in the
+overlay, so loading EVL_REL.BIN again does not reset them. A cancel left the phase at 2: the next evolution (the one
+after the partner's sleep, an item's, any) returned from EVL_cancelTick on its first tick and waited for a fade that
+never came, with the partner looking at the tamer. EVL_initEvoSequence now clears the phase (the first tick clears the
+hold and the ring).
+
+modTrainStopReason previewed the hours' evolution while a cancel held it, so the gym's box said the partner was about
+to evolve and nothing happened: it now skips the preview while MOD_EVO_CANCEL_HELD is set.
+
+To keep the main executable's size, the end of a finished evolution's mark moves from partnerTickEvolving to the
+scene's form change (MOD_EVO_CANCEL = 0 next to EVL_applyEvolution).
+---
+ src/evl/evl.c      | 5 +++++
+ src/main/mod_qol.c | 1 +
+ src/main/partner.c | 1 -
+ 3 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index aaeaf60..365038e 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -615,6 +615,7 @@ shards:
+ 		}
+ 		if (frame == 0x11c) {
+ 			EVL_solidAndLoaded(data); /* MOD (evolution cancel): shared with the cancel */
++			MOD_EVO_CANCEL = 0; /* MOD (evolution cancel): evolved, nothing to cancel or to hold (was in main) */
+ 			PARTNER_WIREFRAME_TOTAL = 0;
+ 			EVL_applyEvolution(ENTITY_TABLE[1], &PARTNER_ENTITY.digimonEntity.stats, data->para, data->evoTarget);
+ 			waitForSoundBufferLoading(3);
+@@ -1391,6 +1392,10 @@ void EVL_initEvoSequence(void)
+ 	data = &EVO_SEQUENCE_DATA;
+ 	instance = 0;
+ 	partner = data->partner;
++	/* MOD (evolution cancel): the cancel's statics are in main's small data, not in the overlay, so a scene loaded
++	 * again finds what the last one left: a cancelled scene's phase would hold the next scene forever (the hold and
++	 * the ring are cleared by the scene's first tick) */
++	EVL_cancelPhase = 0;
+ 	data->timer = 0;
+ 	data->unk_0x8 = 0;
+ 	data->state = 0;
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index e790d27..789d84b 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -356,6 +356,7 @@ int32_t modTrainStopReason(int32_t t0, int32_t tiredAt)
+ 	   later field checks still run every hour. No random special-evolution rules are previewed. */
+ 	if (level >= 1 && level <= LEVEL_ULTIMATE && MOD_EVO_TIMING[level] >= 0 &&
+ 	    PARTNER_PARA.evoTimer >= MOD_EVO_TIMING[level] && (level < 4 || PARTNER_PARA.evoTimer == MOD_EVO_TIMING[level]) &&
++	    !(MOD_EVO_CANCEL & MOD_EVO_CANCEL_HELD) && /* MOD (evolution cancel): held until the partner has slept */
+ 	    getNaturalEvolutionTarget(PARTNER_ENTITY.digimonEntity.entity.type) != -1) {
+ 		return MOD_TB_EVOLVE;
+ 	}
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 894d7be..c4b76f9 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -781,7 +781,6 @@ void partnerTickEvolving(void)
+ 		if (value == -1) {
+ 			startGameTime();
+ 			EVOLUTION_TARGET = -1;
+-			MOD_EVO_CANCEL &= ~MOD_EVO_CANCEL_ALLOWED; /* MOD (evolution cancel) */
+ 			loadMapSounds(getMapSoundId(CURRENT_SCREEN));
+ 			checkShopMap(CURRENT_SCREEN);
+ 			checkArenaMap(CURRENT_SCREEN);
+-- 
+2.55.0
+
