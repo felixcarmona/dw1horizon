@@ -55,9 +55,13 @@
   },
   {
    "name": "Imperialdramon",
-   "game": "dcb",
-   "model": 181,
-   "level": "mega"
+   "game": "dw2",
+   "model": "M148IPDR",
+   "level": 6,
+   "element": 0,
+   "donor": 22,
+   "clip_policy": null,
+   "scale": 0.16343
   }
  ]
 }

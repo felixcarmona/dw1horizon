@@ -1,92 +1,77 @@
 {
  "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
- "dcb": 181,
- "type": 194,
+ "dw2": "M148IPDR",
+ "type": 192,
  "name": "Imperialdramon",
  "source": {
   "type": 22,
   "mmd": "extracted/CHDAT/MMD0/GARU.MMD"
  },
  "map": {
-  "1": 1,
-  "2": 6,
-  "3": 10,
-  "5": 2,
-  "11": 7,
-  "12": 8,
-  "13": 9,
-  "14": 11,
-  "15": 12,
-  "16": 13,
-  "17": 14,
-  "18": 18,
-  "19": 16,
-  "21": 19,
-  "24": 23,
-  "26": 25
+  "1": 14,
+  "2": 2,
+  "3": 23,
+  "6": 19,
+  "9": 1,
+  "11": 25,
+  "18": 11,
+  "19": 12,
+  "22": 13,
+  "23": 7,
+  "24": 8,
+  "27": 9,
+  "28": 6,
+  "29": 4,
+  "30": 5
  },
  "hips": [
-  17,
   1,
-  1.456
+  1,
+  1.091
  ],
- "root_scale": 1.456,
- "tol": 12,
- "tol_clips": 8,
+ "root_scale": 1.091,
+ "tol": 10,
+ "tol_clips": 6,
  "clips": {
   "0x21": {
-   "anim": "anim_00"
+   "anim": "A0"
   },
   "0x28": {
-   "anim": "anim_04",
-   "start": 0,
-   "end": 73,
-   "hips": "entity"
+   "anim": "B0"
   },
   "0x29": {
-   "anim": "anim_04",
-   "start": 0,
-   "end": 73,
-   "hips": "entity",
-   "root_scale": -0.8
+   "anim": "B0"
   },
   "0x2b": {
-   "anim": "anim_05",
-   "start": 104,
-   "end": 194,
-   "hips": "entity",
-   "root_scale": 0.3,
-   "speed": 1.5
+   "anim": "C012",
+   "eyes": "closed"
   },
-  "0x2a": {
-   "anim": "anim_06",
-   "start": 17,
-   "end": 97,
-   "hz": 0.3
+  "0x2c": {
+   "anim": "J0"
   },
   "0x39": {
-   "anim": "anim_01",
-   "start": 22,
-   "end": 132,
-   "speed": 1.5,
+   "anim": "F0",
+   "speed": 0.75,
    "hz": 0.2,
-   "settle": 4
+   "settle": 4,
+   "loop": false,
+   "rise": 187
   },
   "0x2e": {
-   "anim": "anim_03",
-   "start": 7,
-   "end": 54,
-   "speed": 1.49,
+   "anim": "H0",
+   "speed": 1.65,
    "hz": 0.2,
-   "settle": 4
+   "settle": 4,
+   "loop": false,
+   "rise": 187
   },
   "0x2f": {
-   "anim": "anim_02",
-   "start": 52,
-   "end": 144,
-   "speed": 1.5,
+   "anim": "I0",
+   "speed": 0.75,
    "hz": 0.2,
-   "settle": 4
+   "settle": 4,
+   "loop": false,
+   "rise": 187
   }
  },
  "skip": [
@@ -104,7 +89,7 @@
   "0x38"
  ],
  "layer": {
-  "anim": "anim_00",
+  "anim": "A0",
   "bones": "unmapped",
   "slots": [
    "0x00",
@@ -118,6 +103,15 @@
    "0x22",
    "0x23",
    "0x24"
+  ]
+ },
+ "scale": 0.16343,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
   ]
  }
 }
