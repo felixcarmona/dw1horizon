@@ -53,7 +53,7 @@ class BakemonTranslation(unittest.TestCase):
         cls.temp = tempfile.TemporaryDirectory(prefix='bakemon-test-', dir=ROOT / 'build')
         cls.addClassCleanup(cls.temp.cleanup)
         cls.compiled = {}
-        for extension in ('py', 'dws'):
+        for extension in ('py',):    # the base story has one source (the view); DWS is what it lowers to
             output = Path(cls.temp.name) / (extension + '.SCN')
             with contextlib.redirect_stdout(io.StringIO()):
                 program = build.compile_sources([str(SOURCE / ('script.' + extension))], text_source='ours')

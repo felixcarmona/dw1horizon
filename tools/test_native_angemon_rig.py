@@ -3,6 +3,7 @@
 Set DW_NATIVE_ANGEL_MODEL to the candidate MMD or edit.py get output. The native
 reference comes from the player's extraction; no game assets are test fixtures.
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import copy
 import hashlib
 import json

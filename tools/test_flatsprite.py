@@ -37,10 +37,10 @@ def icon(colours=(0x0421, 0x7FFF, 0x001F)):
 class Pure(unittest.TestCase):
     def test_native_field_texture_policy(self):
         import species
-        for t in (66, 67, 88, 102, 111):
+        for t in (66, 67, 88, 102, 103, 111):
             self.assertTrue(species.needs_authored_flat({'id': t}))
             self.assertTrue(species.needs_authored_flat({'id': 200, 'texture': {'from': t}}))
-        for t in (3, 51, 65, 103, 112):
+        for t in (3, 51, 65, 98, 112):  # 98 is the one field enemy with no authored icon; 103 got one with the card icons (e47323284)
             self.assertFalse(species.needs_authored_flat({'id': t}))
         self.assertFalse(species.needs_authored_flat({'id': 471, 'texture': {'file': 'owned.TIM'}}))
 

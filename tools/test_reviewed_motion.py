@@ -3,6 +3,7 @@
 Populate build/motion-review-models4/{before,after}/ID.MMD with the reviewed
 provider inputs and outputs; MODEL_REVIEW selects an alternate evidence folder.
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import copy
 import json
 import os

@@ -4,6 +4,9 @@
 Usage: python3 tools/test_text_render.py /path/to/patched/decomp
 The emulator matrix checks the real glyph widths, VRAM pixels and row timing.
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
+from host_tree import host_tree
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import subprocess
 import sys
 import tempfile
@@ -11,7 +14,7 @@ from pathlib import Path
 from test_lab import function
 
 def main():
-    source = Path(sys.argv[1], 'src/btl/battle_hud.c').read_text()
+    source = (host_tree('src/btl/battle_hud.c') / 'src/btl/battle_hud.c').read_text()
     code = r'''
     #include <stdint.h>
     #include <string.h>

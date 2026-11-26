@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Asset-free checks for nominal engine interpolation diagnostics."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import copy
 import unittest
 import numpy as np

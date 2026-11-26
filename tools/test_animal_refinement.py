@@ -16,6 +16,9 @@ from motiondiscidentity import changed_programs
 from motiontailspace import interpolate_pose
 from tools.models.field_animations import animal_refine
 
+# Final models changed on purpose after their last recipe, so its output hash is a historical pin:
+# 239 Gizamon (b248ab38f, finisher jumps), 409 Kyubimon (e3a7dfa92 blend mode; later size passes).
+REDONE_LATER={239,409}
 ART=ROOT/'build/gait-review5'
 
 
@@ -24,7 +27,7 @@ class AnimalRefinement(unittest.TestCase):
         rows={r['id']:r for r in json.loads((ROOT/'content/modeldelta/models.json').read_text())['models']}
         for path in (ROOT/'content/models/authoring/animal-refinement').glob('*.json'):
             cfg=json.loads(path.read_text());sid=cfg['species']
-            self.assertEqual(cfg['output_sha256'],rows[sid]['mmd']['sha256'])
+            if sid not in REDONE_LATER:self.assertEqual(cfg['output_sha256'],rows[sid]['mmd']['sha256'])
             if 'preceding_delta' in cfg:
                 pin=cfg['preceding_delta']
                 self.assertEqual(pin['sha256'],cfg['source_sha256'])

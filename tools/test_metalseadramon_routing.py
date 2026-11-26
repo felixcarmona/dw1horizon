@@ -1,4 +1,5 @@
 """Replay the native aquatic event routing with the local pre-edit import."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import hashlib
 import json
 import os

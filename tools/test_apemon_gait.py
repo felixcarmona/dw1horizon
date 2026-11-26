@@ -5,6 +5,7 @@ The generator reads the model as it was before the gorilla pass (APEMON_BEFORE=P
 
     APEMON_BEFORE=before.MMD PYTHONPATH=tools:. python3 -m unittest tools.test_apemon_gait
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import copy
 import glob
 import json

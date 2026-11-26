@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Regressions for Python story constructs that used to silently lose information."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import os
 from types import SimpleNamespace
 import unittest

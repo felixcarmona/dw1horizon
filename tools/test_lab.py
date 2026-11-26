@@ -3,6 +3,8 @@
 
 Run: python3 tools/test_lab.py [build/decomp-lab246]
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
+from host_tree import host_tree
 import re
 import subprocess
 import sys
@@ -24,7 +26,7 @@ def struct(text, name):
 
 
 def main():
-    work = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'build/decomp-lab246'
+    work = host_tree()
     source = (work / 'src/main/mod_lab_menu.inc').read_text()
     params = (work / 'include/dw/params.h').read_text()
     entity = (work / 'include/dw/entity.h').read_text()

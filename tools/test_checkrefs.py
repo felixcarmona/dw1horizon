@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Reference checking still detects missing targets after resolving historical moves and release templates."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 from pathlib import Path
 import tempfile
 import unittest

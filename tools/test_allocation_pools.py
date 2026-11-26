@@ -12,7 +12,7 @@ class AllocationPools(unittest.TestCase):
         a = alloc.Allocator()
         # The last eleven saved triggers hold daily trades and vending stock.
         self.assertEqual(a.pool('flag', 'save').numbers, list(range(717, 789)))
-        self.assertEqual(a.pool('var', 'save').numbers, list(range(7, 16)) + [20])
+        self.assertEqual(a.pool('var', 'save').numbers, list(range(7, 16)))  # pstat 20 is new_game_plus_count (Partner rewind), no longer a free variable
         self.assertEqual(a.pool('var', 'temp').numbers, list(range(45, 94)))
         self.assertEqual(a.engine_number('flag', 'save', 717), 717)
 

@@ -21,6 +21,9 @@ from tools.langpatch import elf_symbols
 
 
 def main():
+    if len(sys.argv) == 1:
+        print('SKIP: an emulator run; needs a built disc and --out (see the usage with --help)')
+        return
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('disc')
     p.add_argument('--exe')

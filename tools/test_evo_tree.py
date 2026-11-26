@@ -5,6 +5,7 @@
 Special/story roots, wild-only recolours, canon Megas and specialty exceptions
 are documented in content/tables/evolution-tree.json.
 """
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import json
 import sys
 

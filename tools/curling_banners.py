@@ -55,25 +55,31 @@ def pack():
 
 def make(src):
     """Each name is cut from the generator's flat magenta, scaled into its band and centred; what was magenta is KEY."""
-    from PIL import Image, ImageChops
+    import numpy as np
+    from tools.image import Image
     from tools.languages import CODES
+
+    def gray(a):
+        return Image.fromarray(np.ascontiguousarray(a, dtype=np.uint8), 'L')
+
+    def solid(a):
+        return a > 128
     for lang in CODES:
         path = os.path.join(src, lang + '.png')
         if not os.path.isfile(path):
             continue
         im = Image.open(path).convert('RGB')
-        r, g, b = im.split()
-        key = ImageChops.subtract(ImageChops.darker(r, b), g)          # how much of a pixel is the magenta
-        alpha = key.point(lambda v: 255 - min(255, v * 255 // 200))
-        solid = alpha.point(lambda v: 255 if v > 128 else 0)
-        rows = [solid.crop((0, y, im.width, y + 1)).histogram()[255] for y in range(im.height)]
+        rgb = np.array(im, dtype=np.int32).reshape(im.height, im.width, 3)
+        r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
+        key = np.clip(np.minimum(r, b) - g, 0, 255)                     # how much of a pixel is the magenta
+        alpha = 255 - np.minimum(255, key * 255 // 200)
+        rows = solid(alpha).sum(axis=1)
         for y, n in enumerate(list(rows)):                             # a line across the whole sheet is a divider
             if n >= im.width - 4:
-                for k in range(max(0, y - 3), min(im.height, y + 4)):
-                    alpha.paste(0, (0, k, im.width, k + 1))
-        rows = [alpha.point(lambda v: 255 if v > 128 else 0).crop((0, y, im.width, y + 1)).histogram()[255] for y in range(im.height)]
+                alpha[max(0, y - 3):min(im.height, y + 4)] = 0
+        rows = solid(alpha).sum(axis=1)
         spans, start = [], None
-        for y, n in enumerate(rows + [0]):
+        for y, n in enumerate(list(rows) + [0]):
             if n and start is None:
                 start = y
             elif not n and start is not None:
@@ -82,19 +88,22 @@ def make(src):
                 start = None
         if len(spans) != BANDS:
             sys.exit(f'{path}: {len(spans)} names found, a sheet has {BANDS}')
-        unmixed = Image.merge('RGB', [ImageChops.subtract(c, key) if i != 1 else c for i, c in enumerate((r, g, b))])
+        unmixed = np.stack([np.clip(c - key, 0, 255) if i != 1 else c for i, c in enumerate((r, g, b))], axis=-1)
+        unmixed_im = Image.fromarray(unmixed.astype(np.uint8), 'RGB')
+        alpha_im = gray(alpha)
         out = Image.new('RGB', (W, H * BANDS), KEY)
         for band, (top, bottom) in enumerate(spans):
-            box = alpha.crop((0, top, im.width, bottom)).point(lambda v: 255 if v > 128 else 0).getbbox()
-            box = (box[0], top + box[1], box[2], top + box[3])
+            ys, xs = np.nonzero(solid(alpha[top:bottom]))
+            box = (int(xs.min()), top + int(ys.min()), int(xs.max()) + 1, top + int(ys.max()) + 1)
             scale = min((W - 4) / (box[2] - box[0]), (H - 2) / (box[3] - box[1]))
             size = (max(1, round((box[2] - box[0]) * scale)), max(1, round((box[3] - box[1]) * scale)))
-            mask = alpha.crop(box).resize(size, Image.LANCZOS).point(lambda v: 255 if v > 128 else 0)
-            part = unmixed.crop(box).resize(size, Image.LANCZOS)
-            part = part.quantize(COLOURS - 8, method=Image.MEDIANCUT, dither=Image.NONE).convert('RGB')
-            part = Image.eval(part, lambda v: v & 0xF8)
+            mask = alpha_im.crop(box).resize(size, Image.LANCZOS)
+            mask = gray(np.where(solid(np.array(mask).reshape(size[1], size[0])), 255, 0))
+            part = unmixed_im.crop(box).resize(size, Image.LANCZOS)
+            part = part.quantize(COLOURS - 8).convert('RGB')
+            part = Image.fromarray((np.array(part).reshape(size[1], size[0], 3) & 0xF8).astype(np.uint8), 'RGB')
             out.paste(part, ((W - size[0]) // 2, band * H + (H - size[1]) // 2), mask)
-        out.save(os.path.join(ART, lang + '.png'), optimize=True)
+        out.save(os.path.join(ART, lang + '.png'))
         print(os.path.join(ART, lang + '.png'))
 
 

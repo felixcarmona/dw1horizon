@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Compile the screen cache and revisit cached captions after a language switch."""
 from pathlib import Path
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
+from host_tree import host_tree
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -8,7 +10,7 @@ from tools.test_cheats import compile_check, function
 
 
 def main():
-    work = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('build/decomp-dev')
+    work = host_tree()
     source = (work / 'src/main/mod_screen.c').read_text()
     start = source.index('static ScreenRecordHead *getScreenHead(')
     end = source.index('\n}', start) + 2

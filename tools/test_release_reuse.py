@@ -1,4 +1,5 @@
 """Tiny actual ISO/DWP fixtures: no game builds, source discs or emulators."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import copy
 import io
 import json

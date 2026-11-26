@@ -3,6 +3,7 @@ played its clip and hit nothing). docs/data/finisher-proof.json comes from tools
 merged by finisher_proof_merge.py. "proven" means every trial hit; a finisher that hits only sometimes is listed under
 "conditional" and one that never hit under "unproven", each with its reason. Changing a species' finisher means
 proving the new one and recording it."""
+import sys as _sys, pathlib as _pl; _sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))  # tools/ modules resolve under `python -m unittest tools.<name>`
 import json
 import os
 import unittest
