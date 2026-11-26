@@ -5,7 +5,7 @@ The recipes (content/imports/specs, the ones with "dw2") were made from the USA 
 tools/dw2mmd.py reads a model (AAA/4.AAA/MODEL/MODEL*/M<code>.BIN) and its animation banks (the other letters of
 the same code, next to it) from $DW2_DISC; on another release it checks each of those files against the USA
 file's SHA-1 kept here, so the import builds the same Digimon from either disc or stops. DigimonWorld 2 (Japan),
-SLPS-02844, has every file of the 45 recipes as the USA disc does (2026-10-25): no patch is needed, only the
+SLPS-02844, has every file of the 49 recipes as the USA disc does (2026-10-25): no patch is needed, only the
 checksums. A release that differed would need a patch like tools/dw3release.py's.
 
   dw2release.py make RELEASE     needs both discs ($DW2_ROOT/disc, the USA one, and $DW2_DISC, the release's);
