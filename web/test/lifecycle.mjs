@@ -157,6 +157,17 @@ try {
 
       const other = await browserLockProbe();
       check(other, 'a second build refuses an occupied Web Lock');
+      // This page's own storage work under the lock (the page-load tidy, a remembered copy being deleted) is not
+      // another tab: the build waits for it and runs.
+      let releaseTidy;
+      const tidying = withLock(async () => { await new Promise((r) => { releaseTidy = r; }); });
+      while (!releaseTidy) await new Promise((r) => setTimeout(r, 0));
+      const afterTidy = new TinyBuild({ us: new File([], 'fixture.bin') }, { workers: 1 });
+      const ownRun = afterTidy.run().then(() => afterTidy.state.phase, (e) => e.key);
+      await new Promise((r) => setTimeout(r, 30));
+      releaseTidy();
+      await tidying;
+      check(await ownRun === 'done', "the page's own tidy under the lock delays the build instead of refusing it");
     } finally {
       window.fetch = fetch0;
       await root.removeEntry('horizon-build', { recursive: true }).catch(() => {});
