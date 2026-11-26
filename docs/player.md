@@ -8,9 +8,9 @@ libretro core and boots the patched disc with the free OpenBIOS. Its settings ar
 |---|---|---|
 | RAM | 8 MB | extra heap headroom; the game still runs in 2 MB ([real hardware](../README.md)) |
 | CPU | 250 % | smoother play; the title screen's settings panel detects both and hides itself |
-| Renderer | OpenGL, internal resolution = display height / 240 (2x-8x; `--scale N`) | sharp 3D at full screen |
+| Renderer | OpenGL (GLES 3 on Android), internal resolution = display height / 240 (2x-8x, Android 2x-4x; `--scale N`) | sharp 3D at full screen |
 | BIOS | OpenBIOS (`system/openbios.bin`), no fast-boot patch | no Sony BIOS is needed or shipped |
-| Memory card | slot 1, `duckstation_shared_card_1.mcd` in the user's data folder | survives updates of the app |
+| Memory card | slot 1, `duckstation_shared_card_1.mcd` in the user's data folder, written by the program each second it changed and when the app goes to the background | survives updates of the app |
 | Screen | full screen, 4:3, F11 / Alt+Enter toggles | |
 
 The program carries no game data. It plays the disc that the patcher builds from the player's own disc.
@@ -22,6 +22,13 @@ The program carries no game data. It plays the disc that the patcher builds from
   disc (`desktop.play`).
 - **Linux:** `Horizon-Play-Linux-x86_64.tar.gz` (`player.yml`), built on Ubuntu 22.04. Run
   `./horizon-play DISC.cue` once. With no argument it opens the last disc it played.
+- **Android:** `Horizon-Play.apk` (`player.yml`, arm64, Android 7+). The first screen asks once for the patched `.bin`
+  (the web or desktop patcher's output), copies it into the app's folder (`Android/data/com.dw1horizon.play/files`:
+  `disc/`, `saves/`, `system/`) and starts the game; later it starts with **Play**. The APK is signed with the
+  `HORIZON_KEYSTORE_B64` / `HORIZON_KEYSTORE_PASS` / `HORIZON_KEY_ALIAS` secrets; without them each build has a
+  throwaway key and cannot install over the one before.
+
+OpenBIOS takes about 25-30 seconds to reach the game's first picture: the screen stays black until then.
 
 ## Building
 
@@ -29,6 +36,7 @@ The program carries no game data. It plays the disc that the patcher builds from
 python3 tools/player/build.py --out build/player/bundle            # Linux (needs gcc-mipsel-linux-gnu for OpenBIOS)
 python tools/player/build.py --openbios openbios.bin --out ...      # Windows / macOS (an OpenBIOS built on Linux)
 python3 tools/player/build.py --universal2 --openbios ... --out ... # macOS, Apple silicon + Intel
+python3 tools/player/android/build_apk.py --out Horizon-Play.apk  # Android (ANDROID_HOME, NDK, JDK 17; no Gradle)
 ```
 
 It checks out SwanStation and OpenBIOS (PCSX-Redux's `nugget`) at the commits pinned in `build.py`. It builds the
@@ -37,7 +45,8 @@ fetched by CMake at a pinned hash and linked statically.
 
 Test flags: `--windowed`, `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
 `--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option).
-`HORIZON_PLAY_DEBUG=1` prints the core's log.
+`HORIZON_PLAY_DEBUG=1` prints the core's log. The saves folder also gets `horizon-play.log` (the core's log, the
+OpenGL version and the speed every 30 seconds) and reads `options.txt` (`KEY=VALUE` lines, core options to override).
 
 ## Controls
 
