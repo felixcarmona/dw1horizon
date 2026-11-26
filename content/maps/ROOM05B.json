@@ -1,5 +1,14 @@
 {
   "file": "MAP/MAP15/ROOM05B.MAP",
+  "sprites": [
+    {
+      "sprite": 0,
+      "field": "z",
+      "before": 538,
+      "after": 1150,
+      "reason": "The counter's depth point (camera depth 10657) lay nearer than the order tiles (up to 10908), so a tamer ordering was drawn behind it with only head or shoes showing; 1150 puts it at about 10950, still nearer than the cooks behind it (about 11070)."
+    }
+  ],
   "digimon": [
     {
       "slot": 0,
