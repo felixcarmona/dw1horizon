@@ -39,7 +39,33 @@ class Field:
     def peek(self, name, fmt, ram=None): return self.values.get(name, 0)
 
 
+class LoadingField(Field):
+    """A Continue whose load is still ending: main() sets the tamer free once more and drops the first warp."""
+    def __init__(self):
+        super().__init__()
+        self.loading = True
+        self.arms = 0
+
+    def poke(self, name, data):
+        if name == 'TAMER_STATE': self.arms += 1
+        super().poke(name, data)
+
+    def tick(self):
+        if self.paused: return
+        if self.loading and self.values['TAMER_STATE'] == 5:
+            self.values['TAMER_STATE'] = 0
+            self.loading = False
+            return
+        super().tick()
+
+
 class WarpTests(unittest.TestCase):
+    def test_a_warp_dropped_by_the_end_of_a_load_is_armed_again(self):
+        field = LoadingField()
+        self.assertTrue(Emu.warp(field, 218))
+        self.assertEqual(field.values['CURRENT_SCREEN'], 218)
+        self.assertEqual(field.arms, 2)
+
     def test_exit_update_cannot_replace_requested_destination(self):
         field = Field()
         self.assertTrue(Emu.warp(field, 218))
