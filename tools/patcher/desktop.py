@@ -733,7 +733,11 @@ def open_folder(path):
 
 def player_program():
     """The bundled Horizon Play program (docs/player.md), or None when this app was built without it."""
-    if sys.platform == 'darwin':
+    if sys.platform == 'darwin' and getattr(sys, 'frozen', False):
+        # the app is nested at Contents/Helpers (tools/patcher/app/build.py), signed on its own
+        path = os.path.join(os.path.dirname(os.path.dirname(sys.executable)), 'Helpers', 'Horizon Play.app',
+                            'Contents', 'MacOS', 'horizon-play')
+    elif sys.platform == 'darwin':
         path = resource('player', 'Horizon Play.app', 'Contents', 'MacOS', 'horizon-play')
     else:
         path = resource('player', 'horizon-play.exe' if os.name == 'nt' else 'horizon-play')

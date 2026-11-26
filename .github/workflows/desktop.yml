@@ -248,7 +248,8 @@ jobs:
             ${SIGN_ID:+--codesign-identity "$SIGN_ID" --entitlements tools/patcher/app/entitlements.plist} \
             --player "$RUNNER_TEMP/Horizon Play"
           lipo -archs "build/desktop/dist/Horizon Patcher.app/Contents/MacOS/Horizon Patcher"
-          find "build/desktop/dist/Horizon Patcher.app" -path '*player/Horizon Play.app/Contents/MacOS/horizon-play' | grep -q .
+          test -x "build/desktop/dist/Horizon Patcher.app/Contents/Helpers/Horizon Play.app/Contents/MacOS/horizon-play"
+          codesign --verify --deep --strict "build/desktop/dist/Horizon Patcher.app"
       - name: Prepare the tag's verified self-test package
         if: env.RELEASE_TAG != ''
         shell: bash

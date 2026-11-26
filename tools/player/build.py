@@ -136,9 +136,10 @@ def main():
         shutil.copy2(core_lib, os.path.join(place, core_name()))
     shutil.copy2(bios, os.path.join(place, 'system', 'openbios.bin'))
 
-    lic = os.path.join(out, 'licenses')
+    docs = place if sys.platform == 'darwin' else out   # macOS: inside the app, which is shipped on its own
+    lic = os.path.join(docs, 'licenses')
     os.makedirs(lic, exist_ok=True)
-    shutil.copy2(os.path.join(HERE, 'NOTICE.txt'), os.path.join(out, 'NOTICE.txt'))
+    shutil.copy2(os.path.join(HERE, 'NOTICE.txt'), os.path.join(docs, 'NOTICE.txt'))
     sw_src = os.path.join(work, 'swanstation')
     for name in ('LICENSE', 'COPYING', 'LICENSE.txt'):
         if os.path.exists(os.path.join(sw_src, name)):
