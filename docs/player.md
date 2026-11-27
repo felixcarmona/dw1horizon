@@ -123,7 +123,9 @@ Under the cards the main screen shows the program's version (`tools/version.py`,
 When that release's X.Y.Z is higher than the program's own, a screen says "NEW VERSION V… AT DW1HORIZON.COM" once,
 as soon as the game is past its start and no other screen is open, with two cards: DOWNLOAD opens the website (the
 patcher there makes the new version from the player's disc; a full-screen window is minimised first) and LATER goes
-back to the game. The line also stays in the menu above the version. Offline or refused, nothing shows. This is the
+back to the game. The line also stays in the menu above the version. Offline or refused, nothing shows, and a
+development build (a version with `-dev`) never shows it: its number follows the nearest tag on its branch, not the
+latest release. This is the
 program's only use of the network: Android in Java (`INTERNET` permission), Windows with WinHTTP, macOS and Linux
 with the system's `curl` (without it, no notice). `--new-version TAG` shows the screen in tests (no check is made
 with `--frames` or `--press`).
