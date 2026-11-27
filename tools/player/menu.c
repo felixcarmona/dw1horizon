@@ -2,8 +2,7 @@
  * and show big pictures, each with a word in English under it:
  *
  *   play            back to the game
- *   controls        touch, controller or keyboard (as the first start asks):
- *                     touch       the touch pad (on a computer it is pressed with the mouse)
+ *   controls        controller or keyboard (as the first start asks; a tap or a click anywhere shows the touch pad):
  *                     controller  keep the buttons or set them (controls.c)
  *                     keyboard    a PlayStation controller drawn with each button's key, and the layouts RETROARCH,
  *                                 DUCKSTATION, EPSXE (the picture shows the focused one's keys) and CUSTOM: each
@@ -62,8 +61,8 @@ static const Card talpha_cards[] = {{I_CROSS, -1, A_ALPHA + 25, T_FAINT}, {I_CRO
 static Card scale_cards[8];
 static int scale_count, scale_now;
 int menu_scale;
-static const Card mode_cards[] = {{I_TOUCH, -1, MENU_TOUCH, T_TOUCH}, {I_GAMEPAD, -1, A_CONTROLLER, T_CONTROLLER},
-                                  {I_KEYBOARD, -1, A_KEYBOARD, T_KEYBOARD}};
+/* no TOUCH card: a tap anywhere brings the touch pad up */
+static const Card mode_cards[] = {{I_GAMEPAD, -1, A_CONTROLLER, T_CONTROLLER}, {I_KEYBOARD, -1, A_KEYBOARD, T_KEYBOARD}};
 /* the keyboard's layouts: the word is the card */
 static const Card layout_cards[] = {{T_RETROARCH, -1, A_PRESET + KEYS_RETROARCH, -1},
                                     {T_DUCKSTATION, -1, A_PRESET + KEYS_DUCKSTATION, -1},
@@ -76,7 +75,7 @@ static const Card card_cards[] = {{I_EXPORT, -1, MENU_EXPORT, T_EXPORT}, {I_IMPO
 static const Card *cards(int *n) {
   switch (screen) {
   case S_MAIN: *n = (int)(sizeof main_cards / sizeof *main_cards); return main_cards;
-  case S_FIRST: case S_CONTROLS: *n = 3; return mode_cards;
+  case S_FIRST: case S_CONTROLS: *n = 2; return mode_cards;
   case S_LAYOUT: *n = 4; return layout_cards;
   case S_PADCHECK: *n = 2; return check_cards;
   case S_CARD: *n = 2; return card_cards;
@@ -146,7 +145,7 @@ void menu_back(void) {
   case S_SCALE: case S_TSIZE: case S_TALPHA: go(S_SETTINGS); break;
   case S_CONTROLS: go(S_MAIN); break;
   case S_PADCHECK: case S_LAYOUT: {   /* back to the card that was chosen */
-    int card = screen == S_LAYOUT ? 2 : 1;
+    int card = screen == S_LAYOUT ? 1 : 0;
     go(first ? S_FIRST : S_CONTROLS); focus = card;
     break;
   }
@@ -276,7 +275,7 @@ static int act(int i) {
   }
   if (c[i].action >= A_PRESET && c[i].action < A_PRESET + KEY_PRESETS) {   /* a keyboard layout: in use at once */
     controls_set_keys(key_presets[c[i].action - A_PRESET]);
-    if (first) close_menu(); else { go(S_CONTROLS); focus = 2; }
+    if (first) close_menu(); else { go(S_CONTROLS); focus = 1; }
     return MENU_NONE;
   }
   if (c[i].action >= A_ALPHA) {   /* the touch pad's look: back to the game, to see it */

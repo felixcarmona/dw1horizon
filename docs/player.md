@@ -91,8 +91,8 @@ top of the touch pad, or on a computer Escape or a right click (F11 or Alt+Enter
 or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goes back:
 
 - ▶ back to the game.
-- 🎮⌨️ the controls: three cards, as at the first start.
-  - **TOUCH**: the touch pad (on a computer the mouse presses its buttons: a left click shows it).
+- 🎮⌨️ the controls: two cards, as at the first start. There is no touch card: a tap anywhere (or a left click on a
+  computer) shows the touch pad.
   - **CONTROLLER**: ✔ keep its buttons, or ✎ set them (below).
   - **KEYBOARD**: a drawn PlayStation controller with the key of each of its 14 buttons beside it, and under it the
     cards RETROARCH, DUCKSTATION, EPSXE and CUSTOM. Moving between the cards shows each layout's keys on the
@@ -136,9 +136,9 @@ as soon as it has been loaded, on QUIT and when a memory card is imported, so an
 newer save. Its header ties it to this program's version and this disc's size, and the memory card stays the one on
 file (the snapshot's copy of the card is not used). `--suspend-at N` keeps it at frame N and ends, as Android would.
 
-**The first start** asks TOUCH, CONTROLLER or KEYBOARD before the game (`--first-start` asks it again), with the
+**The first start** asks CONTROLLER or KEYBOARD before the game (`--first-start` asks it again), with the
 same screens as the menu's controls. The
-answer goes to `controls.txt` (`mode touch` or `mode pad`).
+answer goes to `controls.txt` (`mode pad`; an older `mode touch` still starts with the touch pad shown).
 
 **Setting the buttons** (✎): the game waits and the drawn PlayStation controller lights each of its buttons in turn
 (the pad's four directions, Cross, Circle, Square, Triangle, L1, R1, L2, R2, SELECT, START): press the key, controller
