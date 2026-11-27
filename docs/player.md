@@ -55,25 +55,44 @@ fetched by CMake at a pinned hash and linked statically.
 
 Test flags: `--windowed`, `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
 `--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option),
-`--touch` (the touch pad from the start), `--window WxH` (a window of that size), `--no-fast-start`.
+`--touch` (the touch pad from the start), `--first-start` (ask touch or controller again), `--window WxH` (a window
+of that size), `--no-fast-start`.
 `HORIZON_PLAY_DEBUG=1` prints the core's log. The saves folder also gets `horizon-play.log` (the core's log, the
 OpenGL version and the speed every 30 seconds) and reads `options.txt` (`KEY=VALUE` lines, core options to override).
 
 ## Controls
 
 Keyboard: arrows, Z Cross, X Circle, A Square, S Triangle, Q/W L1/R1, E/R L2/R2, Enter Start, Backspace Select.
-Any pad SDL knows is laid out like a PlayStation pad, and the left stick also moves.
+Any pad SDL knows is laid out like a PlayStation pad, and the left stick also moves. Any other joystick works too,
+read raw: buttons 0-3 Triangle, Circle, Cross, Square, 4-7 L2, R2, L1, R1, 8-9 SELECT, START, the first hat and the
+first two axes as the D-pad (the button setup below fits it to any other layout). A phone's tilt sensor is not taken
+for a joystick.
 
-**Setting the buttons:** hold SELECT and START together for two seconds. The game waits and the screen shows each
-PlayStation button in turn (the pad's four directions, Cross, Circle, Square, Triangle, L1, R1, L2, R2, SELECT, START):
-press the key or controller button wanted for it. There is no text, so it needs no language. The first press decides
-whether the keyboard or the controller is being set; one input cannot take two buttons. Nothing pressed for ten
-seconds leaves everything as it was. The choice goes to `controls.txt` in the saves folder (`pad cross=a`,
-`key cross=Z`: SDL's controller and key names), which can also be edited by hand. Held together, SELECT and START do
-not reach the game. (`tools/player/controls.c`)
+**The menu:** SELECT and START pressed together, at any moment (neither reaches the game), or the round button at the
+top of the touch pad. The game waits under it. It is all pictures, no text, so it needs no language; a tap, the mouse
+or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goes back:
 
-**Touch:** on Android with no controller connected, a touch pad is drawn over the picture (a D-pad, the four face
-buttons, L1/L2/R1/R2, SELECT and START; several fingers at once, the D-pad in eight directions). It steps aside when a
+- ▶ back to the game.
+- 🎮 touch or controller and keyboard. Choosing the controller asks next: ✔ keep the buttons, or ✎ set them.
+- 💾 the memory card: export or import. On Android both open the system's file picker. On a computer, export opens
+  the saves folder (the card is `duckstation_shared_card_1.mcd`) and import waits for a card file dropped on the
+  window. An import takes any raw 128 KB PlayStation card (`.mcd`, `.mcr`, `.srm`...); the card in use is copied first
+  to `duckstation_shared_card_1.backup-DATE.mcd` in the saves folder, then the game starts again to read the new one.
+- ⏻ quit.
+
+**The first start** asks the same touch / controller question before the game (`--first-start` asks it again). The
+answer goes to `controls.txt` (`mode touch` or `mode pad`).
+
+**Setting the buttons** (✎): the game waits and the screen shows each PlayStation button in turn (the pad's four
+directions, Cross, Circle, Square, Triangle, L1, R1, L2, R2, SELECT, START): press the key, controller button, hat or
+axis wanted for it. The first press decides whether the keyboard, the controller or the other joystick is being set;
+one input cannot take two buttons. Nothing pressed for ten seconds leaves everything as it was. The choice goes to
+`controls.txt` in the saves folder (`pad cross=a`, `key cross=Z`, `joy cross=b2` / `h0.1` / `a1-`: SDL's controller and
+key names, a raw button, hat direction or axis side), which can also be edited by hand. (`tools/player/controls.c`,
+`menu.c`)
+
+**Touch:** with touch chosen, a touch pad is drawn over the picture (a D-pad, the four face buttons, L1/L2/R1/R2,
+SELECT, START and the menu button; several fingers at once, the D-pad in eight directions). It steps aside when a
 controller button or a key is pressed and comes back at the next touch. `--touch` shows it from the start on any
 system. (`tools/player/overlay.c`: drawn at start into one texture, no image files.)
 

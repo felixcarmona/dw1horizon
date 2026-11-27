@@ -495,10 +495,10 @@ static void card_load(void) {
   memcpy(card_written, data, size);
 }
 
-static void card_save(void) {
+static void card_write(bool always) {
   uint8_t *data = core.get_memory_data(RETRO_MEMORY_SAVE_RAM);
   size_t size = core.get_memory_size(RETRO_MEMORY_SAVE_RAM);
-  if (!data || size != sizeof card_written || !memcmp(data, card_written, size)) return;
+  if (!data || size != sizeof card_written || (!always && !memcmp(data, card_written, size))) return;
   /* the whole card in one write to a fresh file, then over the old one: a cut in the middle keeps the old card */
   char tmp[1300]; snprintf(tmp, sizeof tmp, "%s.new", card_path);
   SDL_RWops *f = SDL_RWFromFile(tmp, "wb");
@@ -508,6 +508,8 @@ static void card_save(void) {
   if (ok && replace_file(tmp, card_path)) memcpy(card_written, data, size);
   else SDL_Log("cannot save the memory card %s", card_path);
 }
+
+static void card_save(void) { card_write(false); }
 
 /* ---- the menu's memory card export and import ---- */
 static bool restart_asked;   /* an imported card: the game starts again to read it */
@@ -570,7 +572,7 @@ static int card_waiting;   /* (Android) the picker is open: MENU_EXPORT or MENU_
 static void card_action(int action) {
   char import_path[1300];
   snprintf(import_path, sizeof import_path, "%s/import.mcd", save_dir);
-  card_save();
+  card_write(true);   /* a card never saved to yet has no file to export */
 #ifdef __ANDROID__
   android_pick(action == MENU_EXPORT, card_path, import_path);
   card_waiting = action;
@@ -658,6 +660,7 @@ int main(int argc, char **argv) {
 
   SDL_SetHint(SDL_HINT_ANDROID_TRAP_BACK_BUTTON, "1");   /* a pad's B must not close the game */
   SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
+  SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");   /* a phone's tilt would move the menu and the game */
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) != 0) { fprintf(stderr, "SDL: %s\n", SDL_GetError()); return 1; }
   char *base = SDL_GetBasePath();
   char here[1024]; snprintf(here, sizeof here, "%s", base ? base : "./"); SDL_free(base);
@@ -816,6 +819,7 @@ int main(int argc, char **argv) {
   if (booting) SDL_GL_SetSwapInterval(0);
   int boot_frame = 0;
   while (!quit) {
+    Uint32 loop_ms = SDL_GetTicks();
     handle_events();
     if (paused) { SDL_Delay(50); continue; }
     uint16_t bits = controls_bits() | (uint16_t)scripted_bits(frame);
@@ -825,6 +829,7 @@ int main(int argc, char **argv) {
     if (menu_open || remap_step >= 0) {   /* the game waits under the menu and the button setup */
       if (menu_open) {
         int a = menu_frame(bits);
+        if (a != MENU_NONE) SDL_Log("menu: action %d", a);
         if (a == MENU_QUIT) quit = true;
         else if (a == MENU_TOUCH) { controls_set_mode(MODE_TOUCH); touch_shown = true; }
         else if (a == MENU_PAD) { controls_set_mode(MODE_PAD); touch_shown = false; }
@@ -837,6 +842,7 @@ int main(int argc, char **argv) {
       present(run_frames >= 0 && frame >= run_frames);
       if (run_frames >= 0 && frame >= run_frames) break;
       if (booting) SDL_Delay(15);   /* (no vsync while booting) */
+      boot_ms += SDL_GetTicks() - loop_ms;   /* the start's time leaves out the time in the menu */
       continue;
     }
     if (restart_asked) {   /* a new memory card: the game starts again, fast, to read it */

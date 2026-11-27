@@ -1,5 +1,5 @@
-/* Horizon Play's menu (docs/player.md). SELECT and START together (or the touch pad's menu button, or a phone's Back)
- * pause the game and show big pictures, no text, so it needs no language:
+/* Horizon Play's menu (docs/player.md). SELECT and START together (or the touch pad's menu button) pause the game
+ * and show big pictures, no text, so it needs no language:
  *
  *   play            back to the game
  *   controller      touch, or controller and keyboard; then keep the buttons or set them (controls.c)

@@ -149,6 +149,8 @@ static void add_device(int index) {
     for (int i = 0; i < 4; i++)
       if (!pads[i]) { pads[i] = SDL_GameControllerOpen(index); SDL_Log("controller: %s", SDL_GameControllerName(pads[i])); return; }
   } else {
+    const char *name = SDL_JoystickNameForIndex(index);
+    if (name && SDL_strcasestr(name, "accelerometer")) return;   /* a phone's tilt is not a joystick */
     SDL_JoystickID id = SDL_JoystickGetDeviceInstanceID(index);
     for (int i = 0; i < 4; i++) if (joys[i] && SDL_JoystickInstanceID(joys[i]) == id) return;
     for (int i = 0; i < 4; i++)
