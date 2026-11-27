@@ -9,7 +9,7 @@
 
 [vars]
 2 = "tournament.day"           # day of the registered tournament
-3 = "tournament.cup"           # registered cup, 0-22 (255 = none)
+3 = "tournament.cup"           # registered cup, 0-42 (23.. the new cups; 255 = none)
 4 = "tournament.digimon"       # partner type at registration
 21 = "key_chains"              # Dimensional Key Chains found, 0-5
 110 = "random_roll"            # STORE_RANDOM p110, 99: the roll that decides ground items on screen entry
