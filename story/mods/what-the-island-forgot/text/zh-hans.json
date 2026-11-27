@@ -1026,6 +1026,7 @@
  "challenge.home": "该回城里了。城里见！",
  "challenge.yes": "来战",
  "challenge.no": "现在不了",
+ "challenge.noitems": "这场战斗不能使用道具！只能靠你和你的搭档！",
  "armadillomon.challenge.intro1": "你找到我了！我可不是很久以前你在这山谷里打败的那只犰狳兽了。",
  "armadillomon.challenge.intro2": "从那以后我每天挖掘、训练。我强多了。想见识一下吗？",
  "armadillomon.challenge.retry": "又来挑战一回？今天我哪儿也不去。这次准备好了吗？",

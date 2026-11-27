@@ -20,6 +20,7 @@ def challenge_knightmon():
             say(t("knightmon.challenge.retry"))
         else:
             say(t("knightmon.challenge.intro1"), t("knightmon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             new_challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(2)

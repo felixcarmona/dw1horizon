@@ -21,6 +21,7 @@ def challenge_meramon():
             say(t("meramon.challenge.retry"))
         else:
             say(t("meramon.challenge.intro1"), t("meramon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

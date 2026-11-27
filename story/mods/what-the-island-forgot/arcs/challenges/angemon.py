@@ -21,6 +21,7 @@ def challenge_angemon():
             say(t("angemon.challenge.retry"))
         else:
             say(t("angemon.challenge.intro1"), t("angemon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

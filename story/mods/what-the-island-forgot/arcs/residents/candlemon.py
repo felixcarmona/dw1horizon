@@ -20,6 +20,7 @@ def challenge():
             say(t("candlemon.challenge.retry"))
         else:
             say(t("candlemon.challenge.intro1"), t("candlemon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             new_challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(2)

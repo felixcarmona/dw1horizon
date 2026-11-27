@@ -21,6 +21,7 @@ def challenge_numemon():
             say(t("numemon.challenge.retry"))
         else:
             say(t("numemon.challenge.intro1"), t("numemon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

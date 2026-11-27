@@ -20,6 +20,7 @@ def challenge():
             say(t("armadillomon.challenge.retry"))
         else:
             say(t("armadillomon.challenge.intro1"), t("armadillomon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             new_challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(2)

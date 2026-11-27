@@ -21,6 +21,7 @@ def challenge_giromon():
             say(t("giromon.challenge.retry"))
         else:
             say(t("giromon.challenge.intro1"), t("giromon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

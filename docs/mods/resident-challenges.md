@@ -4,6 +4,14 @@ A postgame feature of the extended story. Once the game is beaten, every in-game
 `content/tables/resident-challenges.json` leaves its home in the city and waits at the spot where the tamer first
 met it, much stronger than then. Talking to it offers a fight with no running away.
 
+What a player needs to know (it belongs in every explanation of the feature, in the wiki and in answers to players):
+
+- **They need the EXTENDED STORY option ON** (`HIST. EXTRA` in Spanish). The challenges are part of the extended story,
+  like the new places and residents: with the row OFF (the original story, [options](options.md)) nobody goes out and
+  nothing is offered.
+- **Every challenge is fought without items** (every row has `noItems`, Megadramon included): the battle bag opens
+  empty and comes back whole when the fight ends, win or lose. Only the partner, its techniques and its stats count.
+
 The rows form two pools (each row's `pool`), and each open pool sends one challenger a day:
 
 - `original`: the game's own residents (species below 112). Open once the game is beaten.

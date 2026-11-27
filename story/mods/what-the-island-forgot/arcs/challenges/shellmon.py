@@ -21,6 +21,7 @@ def challenge_shellmon():
             say(t("shellmon.challenge.retry"))
         else:
             say(t("shellmon.challenge.intro1"), t("shellmon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

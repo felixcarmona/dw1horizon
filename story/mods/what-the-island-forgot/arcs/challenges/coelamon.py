@@ -21,6 +21,7 @@ def challenge_coelamon():
             say(t("coelamon.challenge.retry"))
         else:
             say(t("coelamon.challenge.intro1"), t("coelamon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

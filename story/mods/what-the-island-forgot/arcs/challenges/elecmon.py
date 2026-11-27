@@ -21,6 +21,7 @@ def challenge_elecmon():
             say(t("elecmon.challenge.retry"))
         else:
             say(t("elecmon.challenge.intro1"), t("elecmon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

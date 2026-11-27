@@ -21,6 +21,7 @@ def challenge_betamon():
             say(t("betamon.challenge.retry"))
         else:
             say(t("betamon.challenge.intro1"), t("betamon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

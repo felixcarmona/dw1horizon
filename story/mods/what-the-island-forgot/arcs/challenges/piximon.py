@@ -21,6 +21,7 @@ def challenge_piximon():
             say(t("piximon.challenge.retry"))
         else:
             say(t("piximon.challenge.intro1"), t("piximon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

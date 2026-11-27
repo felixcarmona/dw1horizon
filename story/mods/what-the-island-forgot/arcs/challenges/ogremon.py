@@ -22,6 +22,7 @@ def challenge_ogremon():
             say(t("ogremon.challenge.retry"))
         else:
             say(t("ogremon.challenge.intro1"), t("ogremon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

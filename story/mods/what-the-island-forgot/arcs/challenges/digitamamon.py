@@ -21,6 +21,7 @@ def challenge_digitamamon():
             say(t("digitamamon.challenge.retry"))
         else:
             say(t("digitamamon.challenge.intro1"), t("digitamamon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

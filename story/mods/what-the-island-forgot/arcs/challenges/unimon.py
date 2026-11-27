@@ -21,6 +21,7 @@ def challenge_unimon():
             say(t("unimon.challenge.retry"))
         else:
             say(t("unimon.challenge.intro1"), t("unimon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)
