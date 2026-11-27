@@ -187,20 +187,18 @@ computers only. Details in [player.md](player.md#a-setup-wizard).
   SHA-1; on the next start a disc that moved or changed empties its slot with the reason. Packages are kept in
   `%LOCALAPPDATA%\Horizon Patcher\packages` (macOS: the same folder as the settings; Linux `~/.cache/horizon-patcher`),
   the newest two. `HORIZON_PATCHER_HOME` moves both (tests). `app.log` there has the app's own errors.
-- **The package.** Nothing goes to the network until the player presses Download, "Check for a new release" or
-  Build. Then the app asks GitHub for the latest release of the repository it was built from (`build-info.json`,
+- **The package.** The window has no release box: when the app opens it asks, in the background, for the latest
+  release (and a make button asks again before building). The app asks GitHub for the latest release of the repository it was built from (`build-info.json`,
   written by the build from `GITHUB_REPOSITORY`), downloads `horizon-checksums.json` and `horizon-package.tar.gz`,
   checks the archive's SHA-256 against the asset digest GitHub reports, then unpacks it file by file: only regular
   files and folders, no path out of the folder, every file's SHA-256 equal to `horizon-checksums.json` `package`,
-  nothing missing or extra, else nothing is kept. Build downloads a newer release first; offline, the package already
-  there is used. For an already cached tag, Download, Check and Build fetch only the small checksums file
+  nothing missing or extra, else nothing is kept. A newer release is downloaded first; offline, the package already
+  there is used. For an already cached tag, the start and the make buttons fetch only the small checksums file
   first. The cache records the verified `package` map in `.verified-package.json`; older caches are hashed once
   (excluding generated Python bytecode). An unchanged map avoids downloading the archive. A changed map stages
   and verifies the complete replacement before swapping folders, with rollback if replacement fails and recovery
   on the next install if the app stops between renames. Offline or failed refresh keeps the old package usable
-  and logs the reason in `app.log`. "Use a package file..." takes a `horizon-package.tar.gz` (checked against a
-  `horizon-checksums.json` next to it when there is one, else the package is used as the player gave it: dwpatch
-  still checks the patch and every file it builds). TLS uses the system's certificates; a frozen macOS Python has no
+  and logs the reason in `app.log`. TLS uses the system's certificates; a frozen macOS Python has no
   OpenSSL certificate folder, so the app uses the certifi bundle frozen into it (a build-time dependency only), else
   `/etc/ssl/cert.pem`.
 - **The window.** Every longer text wraps at the width it gets, the window never gets narrower than its buttons
@@ -626,7 +624,7 @@ all archive entries against that map before replacing both release assets. Keep
 the manifest, payload, bundle, engine and output checksums unchanged. A desktop
 app rebuild alone cannot fix this: the app loads the package's reader.
 
-Desktop apps built with cache refresh detect a corrected package map for an already cached tag on Download, Check or Build. Older apps keep their tag cache. Players using those apps can import the corrected
+Desktop apps built with cache refresh detect a corrected package map for an already cached tag when the app starts or a make button is pressed. Older apps keep their tag cache. Players using those apps can import the corrected
 archive through the app's package-file chooser, with its matching checksums file
 beside it, to bypass that cache. Alternatively, close the app and remove only the
 cached `packages/v0.0.7` directory before downloading again. Until the corrected

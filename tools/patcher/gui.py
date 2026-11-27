@@ -127,6 +127,7 @@ class App:
         self.latest = None                # latest_release(), when known
         self.busy = None                  # 'build', 'download', 'check' while a job runs
         self.cancel = threading.Event()
+        self.package_lock = threading.Lock()  # held by the start-up download; a build waits for it
         self.patcher = None
         self.result = None
         self.built = None                 # (inputs, cue, package version) of the disc this session built last
@@ -219,16 +220,6 @@ class App:
         self.add_button.grid(row=0, column=0, sticky='w')
         self._wrap(ttk.Label(add, text=t('app.formats'), style='Muted.TLabel')).grid(row=0, column=1, sticky='ew',
                                                                                      padx=10)
-
-        pkg = ttk.LabelFrame(outer, text=t('app.package'), padding=(12, 8))
-        pkg.grid(row=2, column=0, sticky='ew', pady=(12, 0))
-        pkg.columnconfigure(0, weight=1)
-        self.pkg_label = self._wrap(ttk.Label(pkg, text='', justify='left'))
-        self.pkg_label.grid(row=0, column=0, columnspan=3, sticky='ew')
-        self.pkg_download = ttk.Button(pkg, text=t('app.download'), command=self._download)
-        self.pkg_download.grid(row=1, column=1, padx=(8, 0), pady=(8, 0))
-        self.pkg_file = ttk.Button(pkg, text=t('app.useFile'), command=self._use_file)
-        self.pkg_file.grid(row=1, column=2, padx=(4, 0), pady=(8, 0))
 
         # what can be made, each its own button: the disc image, and the installers with that disc inside (the
         # disc is built first when this session has not built it from the same discs and package). Each asks for the
@@ -352,28 +343,7 @@ class App:
             choose.state(['!disabled'] if idle else ['disabled'])
             remove.state(['!disabled'] if idle and (r or game in self.notes) else ['disabled'])
         idle = self.busy is None
-        for b in (self.add_button, self.pkg_file):
-            b.state(['!disabled'] if idle else ['disabled'])
-        # the package
-        if self.package:
-            key = 'app.packageFile' if self.package.get('source') == 'file' else 'app.packageReady'
-            text = t(key, version=self.package['version'], date=self.package['date'])
-            if self.package.get('source') == 'file' and not self.package.get('verified'):
-                text += '\n' + t('app.packageUnverified')
-        elif self.latest and (self.latest['assets'].get(desktop.PACKAGE_ASSET) or {}).get('size'):
-            mb = (self.latest['assets'][desktop.PACKAGE_ASSET].get('size') or 0) // 2 ** 20
-            text = t('app.packageNone', version=self.latest['version'], mb=mb)
-        else:
-            text = t('app.packageUnknown')
-        newer = self.latest and (not self.package or desktop.version_key(self.latest['version'])
-                                 > desktop.version_key(self.package['version']))
-        if newer and self.package:
-            text += '\n' + t('app.newer', version=self.latest['version'])
-        if getattr(self, 'latest_error', None) and not self.latest:
-            text += '\n' + t('app.offline', error=self.latest_error)
-        self.pkg_label.configure(text=text)
-        self.pkg_download.configure(text=t('app.download') if (newer or not self.package) else t('app.checkUpdates'))
-        self.pkg_download.state(['!disabled'] if idle else ['disabled'])
+        self.add_button.state(['!disabled'] if idle else ['disabled'])
         # build
         missing = [desktop.GAME_NAMES[g] for g in desktop.GAMES if g not in self.slots]
         if self.busy:
@@ -417,6 +387,19 @@ class App:
             self._finish_buttons(os.path.dirname(last), None, last)
         if reconvert:
             self._check(reconvert)
+        self._update_package()
+
+    def _update_package(self):
+        """At start, in the background and blocking nothing: the latest release is asked for and downloaded when it
+        is newer than the package here (or there is none). Offline it is quietly skipped: a make button asks again,
+        after waiting for this to end."""
+        def run():
+            with self.package_lock:
+                try:
+                    self._job_latest_checked()
+                except Exception as e:              # noqa: offline or a failed download, only logged
+                    self.events.put(('error', e, traceback.format_exc(), True))
+        threading.Thread(target=run, daemon=True).start()
 
     # -- background work: one job at a time, results through self.events
     def _spawn(self, fn, *args, busy=None, quiet=False):
@@ -473,6 +456,8 @@ class App:
     def _on_error(self, e, tb, quiet):
         if quiet:
             self.latest_error = str(getattr(e, 'reason', None) or e)
+            self.progress['value'] = 0               # a start-up download that failed: nothing to show
+            self.stage.configure(text='', style='TLabel')
             self._refresh()
             return
         self.stage.configure(text=self._message(e), style='Bad.TLabel')
@@ -606,21 +591,12 @@ class App:
         self.latest_error = None
         self._refresh()
 
-    def _download(self):
-        if self.latest and (not self.package or desktop.version_key(self.latest['version'])
-                            > desktop.version_key(self.package['version'])):
-            self._spawn(self._job_download, busy='download')
-        else:
-            self._spawn(self._job_latest_checked, busy='download')
-
     def _job_latest_checked(self):
         latest = desktop.latest_release()
         self.events.put(('latest', latest))
         if not self.package or (self.package.get('source') != 'file'
                                 and desktop.version_key(latest['version']) >= desktop.version_key(self.package['version'])):
             self._job_download(latest)
-        else:
-            self.events.put(('stage', self.t('app.upToDate'), 'TLabel'))
 
     def _job_download(self, latest=None):
         latest = latest or self.latest
@@ -632,6 +608,7 @@ class App:
                                                          done=done // 2 ** 20, total=size // 2 ** 20)))
         info = dict(desktop.install_release(latest, progress, self.cancel), source='release')
         info['name'] = os.path.basename(info['folder'])
+        self.package = info                         # at once: a build waiting on package_lock reads it next
         self.events.put(('package', info))
         return info
 
@@ -650,18 +627,6 @@ class App:
                              style='TLabel')
         self.progress['value'] = 0
         self._refresh()
-
-    def _use_file(self):
-        from tkinter import filedialog
-        path = filedialog.askopenfilename(parent=self.root, title=self.t('app.choosePackage'),
-                                          filetypes=[(self.t('app.packageFiles'), '*.tar.gz *.tgz'),
-                                                     (self.t('app.allFiles'), '*')])
-        if path:
-            def job():
-                self.events.put(('stage', self.t('app.verifying'), 'TLabel'))
-                info = desktop.install_file(path)
-                self.events.put(('package', dict(info, name=os.path.basename(info['folder']), source='file')))
-            self._spawn(job, busy='download')
 
     # -- output and build
     def _ask_folder(self):
@@ -730,6 +695,15 @@ class App:
     def _job_build(self, out, then=None):
         """Build pressed: the latest release is asked for (a newer one is downloaded first, a package file the
         player chose is kept); offline, the package already here is used."""
+        if not self.package_lock.acquire(blocking=False):   # the start-up download is still running: wait for it
+            self.events.put(('stage', self.t('now.start'), 'TLabel'))
+            self.package_lock.acquire()
+        try:
+            self._job_build_locked(out, then)
+        finally:
+            self.package_lock.release()
+
+    def _job_build_locked(self, out, then=None):
         package = self.package
         if not package or package.get('source') != 'file':
             try:

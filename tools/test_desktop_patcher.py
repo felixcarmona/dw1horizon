@@ -632,6 +632,7 @@ class PbpGuiFlow(unittest.TestCase):
         app._refresh = Mock()
         app._check = Mock()
         with patch.object(desktop, 'cached_packages', return_value=[]):
+            app._update_package = Mock()
             app._restore()
         app._check.assert_called_once_with([original])
         self.assertEqual(app.notes, {})
@@ -687,6 +688,7 @@ class HorizonPlay(unittest.TestCase):
             app._refresh = Mock()
             app._finish_buttons = Mock()
             with patch.object(desktop, 'cached_packages', return_value=[]):
+                app._update_package = Mock()
                 app._restore()
             app._finish_buttons.assert_called_once_with(d, None, cue)
 
@@ -698,6 +700,7 @@ class CacheRefreshFlow(unittest.TestCase):
         for source in ('release', 'file'):
             app = gui.App.__new__(gui.App)
             app.package = dict(version='9.9.9', source=source, folder='cached')
+            app.package_lock = threading.Lock()
             app.events = Mock()
             app.t = Mock(return_value='status')
             app._job_download = Mock(return_value=app.package)
@@ -711,6 +714,24 @@ class CacheRefreshFlow(unittest.TestCase):
                         app._job_build('output')
                 self.assertEqual(app._job_download.call_count, int(source == 'release'))
 
+
+    def test_build_waits_for_the_start_up_download(self):
+        import gui
+        app = gui.App.__new__(gui.App)
+        app.package_lock = threading.Lock()
+        app.events = Mock()
+        app.t = Mock(return_value='status')
+        app._job_build_locked = Mock()
+        app.package_lock.acquire()                  # the start-up download is running
+        worker = threading.Thread(target=app._job_build, args=('output',))
+        worker.start()
+        worker.join(0.3)
+        self.assertTrue(worker.is_alive())
+        app._job_build_locked.assert_not_called()
+        app.package_lock.release()
+        worker.join(5)
+        app._job_build_locked.assert_called_once_with('output', None)
+        self.assertFalse(app.package_lock.locked())
 
 class SetupExe(unittest.TestCase):
     """The Windows setup: a template with the player's disc appended (tools/patcher/setup_exe.py)."""
