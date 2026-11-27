@@ -100,7 +100,8 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
     layout). Choosing a layout uses it at once and saves it; the screen stays, its tick on the new one (the back arrow leaves). CUSTOM asks a key for each button in turn, the button lit
     on the controller and a ten-second bar under it; after that, or at any moment, a click or tap on one button (or
     the arrows and Cross) asks a key for that one alone. A key already on another button moves to the button being
-    set. Escape and F11 cannot be taken. Escape or the back arrow stops the asking.
+    set. Escape and F11 cannot be taken. Escape or the back arrow stops the asking. When the asking ends (the last
+    button set, or ten seconds with no key) no button stays lit; an arrow lights one again.
 - 💾 the memory card: export or import. On Android both open the system's file picker. On a computer, export opens
   the saves folder (the card is `duckstation_shared_card_1.mcd`) and import waits for a card file dropped on the
   window. An import takes any raw 128 KB PlayStation card (`.mcd`, `.mcr`, `.srm`...); the card in use is copied first

@@ -301,11 +301,17 @@ static int keys_frame(uint16_t edge) {
     controls_capture_left();   /* (ten seconds end it) */
     if (key_capture >= 0) { focus = asked = key_capture; prev = 0xFFFF; return MENU_NONE; }
     capturing = false; prev = 0xFFFF;   /* the key just pressed is not a menu press */
+    focus = -1;   /* done (or ten seconds without a key): no button stays lit; an arrow lights one again */
     bool timed_out = before >= 0;
     if (!timed_out && capture_chain && asked == CONTROL_COUNT - 1 && first) close_menu();   /* all set: the game */
     return MENU_NONE;
   }
 #define E(b) (edge & (1u << RETRO_DEVICE_ID_JOYPAD_##b))
+  if (focus < 0) {   /* nothing lit: the first arrow lights the first button, confirm waits for it */
+    if (E(LEFT) || E(UP) || E(RIGHT) || E(DOWN)) focus = 0;
+    else if (E(X)) menu_back();
+    return MENU_NONE;
+  }
   if ((E(LEFT) || E(UP)) && focus > 0) focus--;
   if ((E(RIGHT) || E(DOWN)) && focus < CONTROL_COUNT - 1) focus++;
   if (E(B) || E(A) || E(START)) { controls_capture_key(focus, false); capturing = true; capture_chain = false; asked = focus; }

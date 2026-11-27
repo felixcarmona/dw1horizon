@@ -98,6 +98,7 @@ static Cell cells[I_COUNT] = {
   [I_CHECK] = {0, 576, 160, 160}, [I_FAIL] = {160, 576, 160, 160}, [I_PENCIL] = {320, 576, 160, 160},
   [I_EXPORT] = {480, 576, 160, 160}, [I_IMPORT] = {640, 576, 160, 160}, [I_BACK] = {800, 576, 160, 160},
   [I_DROP] = {0, 736, 160, 160}, [I_GEAR] = {160, 736, 160, 160}, [I_SCREEN] = {320, 736, 160, 160},
+  [I_GLOW] = {480, 736, 128, 128},   /* a soft white glow, fading to nothing at its edge */
   /* the words (T_): as wide as their letters x 56, packed in rows from y = 1024, set in draw_words */
 };
 
@@ -419,6 +420,14 @@ static void draw_atlas(void) {
   pill(cells[I_SELECT], "SELECT"); pill(cells[I_START], "START");
   { Cell c = cells[I_PANEL]; float b[] = {32, 32, 32, 32, 0}; paint(c, sd_rbox, b, 0, 0, 0, 1); }
   { Cell c = cells[I_DOT]; float d[] = {16, 16, 12}; paint(c, sd_disc, d, 1, 1, 1, 1); }
+  { Cell c = cells[I_GLOW];   /* smooth all the way out: drawn big, a hard edge shows its steps */
+    for (int y = 0; y < c.h; y++)
+      for (int x = 0; x < c.w; x++) {
+        float dx = (x + 0.5f) / c.w * 2 - 1, dy = (y + 0.5f) / c.h * 2 - 1, t = clampf(1 - hypotf(dx, dy), 0, 1);
+        uint8_t v = (uint8_t)(255 * t * t * (3 - 2 * t));
+        uint8_t *d = pix + ((size_t)(c.y + y) * AW + c.x + x) * 4;
+        d[0] = d[1] = d[2] = d[3] = v;
+      } }
   { Cell c = cells[I_WHITE]; float b[] = {8, 8, 8, 8, 0}; paint(c, sd_rbox, b, 1, 1, 1, 1); }
   { Cell c = cells[I_MENU]; button_base(c);
     for (int i = 0; i < 3; i++) { float s[] = {44, 46 + i * 18.0f, 84, 46 + i * 18.0f, 7}; paint(c, sd_seg, s, 0.92f, 0.92f, 0.95f, 0.95f); } }
@@ -765,7 +774,7 @@ void overlay_pad(float cx, float cy, float w, int lit, const char *const labels[
   quad(I_PAD_BODY, PX(320), PY(185), 640 * k, 370 * k, 1, alpha, cur_w, cur_h);
   if (lit >= 0 && lit < CONTROL_COUNT) {   /* a glow under the lit button */
     float gw = fmaxf(pad_parts[lit].w, pad_parts[lit].h) * 1.9f * k;
-    quad(I_DOT, PX(pad_parts[lit].x), PY(pad_parts[lit].y), gw, lit >= 8 ? gw * 0.7f : gw, 1, 0.8f * alpha, cur_w, cur_h);
+    quad(I_GLOW, PX(pad_parts[lit].x), PY(pad_parts[lit].y), gw * 1.3f, (lit >= 8 ? gw * 0.7f : gw) * 1.3f, 1, alpha, cur_w, cur_h);
   }
   quad(I_DPAD, PX(165), PY(160), 150 * k, 150 * k, 1, alpha, cur_w, cur_h);
   for (int i = 4; i < CONTROL_COUNT; i++)
