@@ -485,6 +485,11 @@ static uint8_t card_written[128 * 1024];
 static bool card_existed;   /* the saves folder had a card at start (a new install has none) */
 #ifdef __ANDROID__
 static void android_backup(const char *card);
+/* a card with a save on it: a directory frame (1-15) marks a save's first block in use (0x51) */
+static bool card_has_save(const uint8_t *card) {
+  for (int i = 1; i < 16; i++) if (card[i * 128] == 0x51) return true;
+  return false;
+}
 #endif
 
 static void card_load(void) {
@@ -513,7 +518,7 @@ static void card_write(bool always) {
   if (ok && replace_file(tmp, card_path)) {
     memcpy(card_written, data, size);
 #ifdef __ANDROID__
-    android_backup(card_path);   /* the copy in Documents, which an uninstall leaves */
+    if (card_has_save(data)) android_backup(card_path);   /* the copy in Documents, which an uninstall leaves */
 #endif
   } else SDL_Log("cannot save the memory card %s", card_path);
 }
