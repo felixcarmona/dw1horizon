@@ -108,7 +108,7 @@ def spec(work, a, ver):
         datas.append((os.path.abspath(a.player_apk), 'android'))
     if a.setup_template:   # the Windows setup template (tools/player/installer.py): desktop.make_setup appends the disc
         datas.append((os.path.abspath(a.setup_template), 'windows'))
-    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk', 'setup_exe']
+    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk', 'setup_exe', 'mac_app']
     if sys.platform == 'darwin':
         hidden.append('certifi')
     icon = os.path.join(icons, 'icon.ico' if os.name == 'nt' else 'icon.icns')

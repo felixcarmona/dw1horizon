@@ -787,6 +787,24 @@ def make_setup(cue, progress=None):
     return setup_exe.build(setup_template(), cue, out, progress)
 
 
+def mac_app_template():
+    """The Horizon Play .app the macOS patcher carries (the one with the program inside), or None."""
+    if sys.platform != 'darwin':
+        return None
+    program = player_program()
+    return os.path.dirname(os.path.dirname(os.path.dirname(program))) if program else None
+
+
+def make_mac(cue, progress=None):
+    """The Mac app with the built disc inside (tools/patcher/mac_app.py), as a disk image next to the disc."""
+    try:
+        from . import mac_app
+    except ImportError:
+        import mac_app
+    out = os.path.splitext(os.path.abspath(cue))[0] + '-Mac.dmg'
+    return mac_app.build(mac_app_template(), cue, out, progress)
+
+
 def play(cue):
     """Start Horizon Play on the built disc; it runs on its own (closing the patcher does not stop it)."""
     import subprocess

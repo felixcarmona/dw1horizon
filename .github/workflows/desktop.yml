@@ -335,6 +335,25 @@ jobs:
           lipo -archs "build/desktop/dist/Horizon Patcher.app/Contents/MacOS/Horizon Patcher"
           test -x "build/desktop/dist/Horizon Patcher.app/Contents/Helpers/Horizon Play.app/Contents/MacOS/horizon-play"
           codesign --verify --deep --strict "build/desktop/dist/Horizon Patcher.app"
+      - name: A Mac app made from a dummy disc mounts, holds the disc byte for byte and verifies
+        run: |
+          T="$RUNNER_TEMP"
+          python3 -c "import sys; open(sys.argv[1] + '/dummy.bin', 'wb').write(bytes(range(251)) * 20000)" "$T"
+          printf 'FILE "dummy.bin" BINARY\r\n  TRACK 01 MODE2/2352\r\n    INDEX 01 00:00:00\r\n' > "$T/dummy.cue"
+          python3 tools/patcher/mac_app.py "$T/Horizon Play/Horizon Play.app" "$T/dummy.cue" "$T/dummy-Mac.dmg"
+          hdiutil attach "$T/dummy-Mac.dmg" -mountpoint "$T/mnt" -nobrowse -readonly
+          A="$T/mnt/Digimon World Horizon.app"
+          test -L "$T/mnt/Applications"
+          cmp "$A/Contents/Resources/Digimon World Horizon.bin" "$T/dummy.bin"
+          grep -q 'FILE "Digimon World Horizon.bin" BINARY' "$A/Contents/Resources/Digimon World Horizon.cue"
+          grep -q 'Digimon World Horizon' "$A/Contents/Info.plist"
+          codesign --verify --deep --strict "$A"
+          # the app finds the disc beside itself; a window may not open on a runner without a display, so this
+          # launch only reports (the log line is the proof when it does start)
+          mkdir -p "$T/saves"
+          (timeout 60 "$A/Contents/MacOS/horizon-play" --frames 60 --windowed --saves "$T/saves" || true)
+          grep -h "disc beside the program" "$T/saves/horizon-play.log" || echo '::warning::the launch check did not reach the disc line'
+          hdiutil detach "$T/mnt"
       - name: Prepare the tag's verified self-test package
         if: env.RELEASE_TAG != ''
         shell: bash

@@ -931,7 +931,11 @@ int main(int argc, char **argv) {
   if (disc) {
     SDL_RWops *f = SDL_RWFromFile(last_file, "wb"); if (f) { SDL_RWwrite(f, disc, 1, strlen(disc)); SDL_RWclose(f); }
   } else if (!no_disc) {
-    SDL_RWops *f = SDL_RWFromFile(last_file, "rb");
+    /* a disc put inside the app (tools/patcher/mac_app.py, linux_run.py) or beside the program: play it first */
+    static char beside[1300]; snprintf(beside, sizeof beside, "%s%s.cue", here, SETUP_NAME);
+    SDL_RWops *b = SDL_RWFromFile(beside, "rb");
+    if (b) { SDL_RWclose(b); disc = beside; SDL_Log("disc beside the program: %s", beside); }
+    SDL_RWops *f = disc ? NULL : SDL_RWFromFile(last_file, "rb");
     if (f) {
       size_t n = SDL_RWread(f, last_disc, 1, sizeof last_disc - 1); SDL_RWclose(f); last_disc[n] = 0;
       SDL_RWops *t = n ? SDL_RWFromFile(last_disc, "rb") : NULL;

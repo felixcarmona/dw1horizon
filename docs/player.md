@@ -163,6 +163,25 @@ The uninstaller removes the install folder with the disc; the saves stay (`%APPD
 `Setup.exe /S /D=DIR` works (the CI check runs it, then `Uninstall.exe /S`). The macOS patcher does not carry the
 template (the macOS job would have to wait for the whole Windows job): make the setup on a Windows computer.
 
+## A Mac app and a Linux installer
+
+On a Mac, the desktop patcher's **Mac app (.dmg)** button (`desktop.make_mac`, `tools/patcher/mac_app.py`) writes
+`<disc>-Mac.dmg` next to the disc: a disk image with `Digimon World Horizon.app` and an Applications link to drag it
+to (`hdiutil create -format UDZO`). The app is a copy of the Horizon Play .app the patcher carries, with the disc added
+in `Contents/Resources` as `Digimon World Horizon.bin` and `.cue`; Info.plist names it "Digimon World Horizon" and the
+bundle id stays, so both apps share the saves (`SDL_GetPrefPath("Horizon", "Horizon")`, `~/Library/Application
+Support/Horizon/Horizon`, not tied to the bundle). Started with no disc argument, Horizon Play first looks for
+`Digimon World Horizon.cue` beside its core (`SDL_GetBasePath`: the Resources folder in a Mac app, the program's own
+folder elsewhere) and plays it, and only then falls back to `last-disc.txt`. The CLI
+(`python3 tools/patcher/mac_app.py "Horizon Play.app" DISC.cue OUT.zip`) makes a zip that keeps symlinks and execute
+bits; a `.dmg` needs a Mac.
+
+Signing: adding files breaks the bundle's seal, so on a Mac the copy is signed again ad hoc (`codesign --force --deep -s
+-`, with the quarantine mark removed). That replaces the template's Developer ID signature and its notarization: the
+app runs on the Mac that made it, but one copied to another Mac (or made by the CLI elsewhere, which cannot sign at
+all) needs `xattr -cr "Digimon World Horizon.app"` once, or right-click then Open. `desktop.yml`'s macOS job makes a
+dummy-disc dmg, mounts it, compares the bin, runs `codesign --verify` and tries a short launch.
+
 ## Licences
 
 See [THIRD-PARTY.md](../THIRD-PARTY.md). The core is GPL-3.0 and ships as its own library with its source linked in

@@ -149,6 +149,10 @@ build, appends the disc to a copy of it (`desktop.make_setup`, `setup_exe.py`) a
 disc: a wizard that installs Horizon Play and the game for the current user. That file holds the player's own disc, so it
 is for their computers only. Details in [player.md](player.md#a-setup-wizard).
 
+On a Mac the same place has a **Mac app (.dmg)** button: `<disc>-Mac.dmg` with `Digimon World Horizon.app` (the bundled
+Horizon Play with the disc inside, signed again ad hoc, which drops the notarization of the copy; see
+[player.md](player.md#a-mac-app-and-a-linux-installer)).
+
 - **Same code path.** The app downloads the release package, checks it, and loads the package's own `dwpatch.py`
   (with its `isowriter.py` and `fontcopy.py`) from the package folder: the apply is the command line's, from the same
   release. dwpatch's interface for it (`GUI_API = 1`): `apply_disc(disc, {game: image}, output, release)` runs

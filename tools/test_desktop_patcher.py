@@ -20,6 +20,10 @@ import discformats  # noqa: E402
 import desktop  # noqa: E402
 import dwpatch as dw  # noqa: E402
 import setup_exe  # noqa: E402
+import mac_app  # noqa: E402
+import plistlib  # noqa: E402
+import stat  # noqa: E402
+import zipfile  # noqa: E402
 
 RAW = 2352
 
@@ -758,6 +762,68 @@ class SetupExe(unittest.TestCase):
                 out = desktop.make_setup(str(Path(d) / 'my disc.cue'))
             self.assertEqual(Path(out).name, 'my disc-Setup.exe')
             self.assertTrue(setup_exe.read_trailer(out))
+
+
+class MacApp(unittest.TestCase):
+    """The Mac app with the player's disc inside (tools/patcher/mac_app.py)."""
+
+    def make(self, d):
+        d = Path(d)
+        app = d / 'Horizon Play.app'
+        (app / 'Contents' / 'MacOS').mkdir(parents=True)
+        (app / 'Contents' / 'Resources').mkdir()
+        (app / 'Contents' / 'MacOS' / 'horizon-play').write_bytes(b'#!exec')
+        os.chmod(app / 'Contents' / 'MacOS' / 'horizon-play', 0o755)
+        (app / 'Contents' / 'Resources' / 'core.dylib').write_bytes(b'core')
+        os.symlink('core.dylib', app / 'Contents' / 'Resources' / 'link.dylib')
+        (app / 'Contents' / 'Info.plist').write_bytes(plistlib.dumps(
+            {'CFBundleName': 'Horizon Play', 'CFBundleIdentifier': 'com.dw1horizon.play'}))
+        (d / 'my disc.bin').write_bytes(b'\x07\x08' * 20000)
+        (d / 'my disc.cue').write_text('FILE "my disc.bin" BINARY\n  TRACK 01 MODE2/2352\n    INDEX 01 00:00:00\n')
+        return d, app
+
+    def test_app_gets_the_disc_and_the_name(self):
+        with tempfile.TemporaryDirectory() as d:
+            d, app = self.make(d)
+            out = d / 'out.app'
+            mac_app.build(str(app), str(d / 'my disc.cue'), str(out))
+            res = out / 'Contents' / 'Resources'
+            self.assertEqual((res / 'Digimon World Horizon.bin').read_bytes(), (d / 'my disc.bin').read_bytes())
+            self.assertIn('FILE "Digimon World Horizon.bin"', (res / 'Digimon World Horizon.cue').read_text())
+            plist = plistlib.loads((out / 'Contents' / 'Info.plist').read_bytes())
+            self.assertEqual((plist['CFBundleName'], plist['CFBundleDisplayName'], plist['CFBundleIdentifier']),
+                             ('Digimon World Horizon', 'Digimon World Horizon', 'com.dw1horizon.play'))
+            self.assertTrue(os.path.islink(res / 'link.dylib'))
+            self.assertTrue(os.access(out / 'Contents' / 'MacOS' / 'horizon-play', os.X_OK))
+
+    def test_zip_keeps_symlinks_and_exec_bits(self):
+        with tempfile.TemporaryDirectory() as d:
+            d, app = self.make(d)
+            seen = []
+            mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.zip'), lambda a, b: seen.append((a, b)))
+            self.assertEqual(seen[-1][0], seen[-1][1])
+            with zipfile.ZipFile(d / 'o.zip') as z:
+                modes = {i.filename: i.external_attr >> 16 for i in z.infolist()}
+                base = 'Digimon World Horizon.app/Contents/'
+                self.assertTrue(stat.S_ISLNK(modes[base + 'Resources/link.dylib']))
+                self.assertEqual(z.read(base + 'Resources/link.dylib'), b'core.dylib')
+                self.assertTrue(modes[base + 'MacOS/horizon-play'] & 0o100)
+                self.assertEqual(z.read(base + 'Resources/Digimon World Horizon.bin'), (d / 'my disc.bin').read_bytes())
+            self.assertEqual([p.name for p in d.iterdir() if p.name.startswith('.hzmac')], [])
+
+    def test_refuses(self):
+        with tempfile.TemporaryDirectory() as d:
+            d, app = self.make(d)
+            with self.assertRaisesRegex(mac_app.MacAppError, 'Info.plist'):
+                mac_app.build(str(d), str(d / 'my disc.cue'), str(d / 'o.zip'))
+            with self.assertRaisesRegex(mac_app.MacAppError, 'must end'):
+                mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.tar'))
+            (d / 'my disc.bin').unlink()
+            with self.assertRaises(setup_exe.SetupError):
+                mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.zip'))
+            if sys.platform != 'darwin':
+                with self.assertRaisesRegex(mac_app.MacAppError, 'only be made on a Mac'):
+                    mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.dmg'))
 
 
 class Interface(unittest.TestCase):

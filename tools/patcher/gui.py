@@ -749,12 +749,15 @@ class App:
         if cue and desktop.setup_template():
             ttk.Button(self.finish, text=self.t('app.makeSetup'),
                        command=lambda: self.busy or self._spawn(self._job_setup, cue, busy='build')).grid(row=0, column=2, padx=(0, 6))
+        if cue and desktop.mac_app_template():
+            ttk.Button(self.finish, text=self.t('app.makeMac'),
+                       command=lambda: self.busy or self._spawn(self._job_mac, cue, busy='build')).grid(row=0, column=3, padx=(0, 6))
         if folder:
             ttk.Button(self.finish, text=self.t('app.openFolder'),
-                       command=lambda: desktop.open_folder(folder)).grid(row=0, column=3, padx=(0, 6))
+                       command=lambda: desktop.open_folder(folder)).grid(row=0, column=4, padx=(0, 6))
         if log and os.path.exists(log):
             ttk.Button(self.finish, text=self.t('app.openLog'),
-                       command=lambda: desktop.open_folder(log)).grid(row=0, column=4)
+                       command=lambda: desktop.open_folder(log)).grid(row=0, column=5)
 
     def _job_apk(self, cue):
         def progress(done, total):
@@ -771,6 +774,16 @@ class App:
             self.events.put(('stage', str(e), 'Bad.TLabel'))
             return
         self.events.put(('stage', self.t('app.setupDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
+
+    def _job_mac(self, cue):
+        def progress(done, total):
+            self.events.put(('bar', done / total, self.t('app.makingMac', done=done * 100 // total)))
+        try:
+            out = desktop.make_mac(cue, progress)
+        except Exception as e:   # mac_app.MacAppError, or a full disk
+            self.events.put(('stage', str(e), 'Bad.TLabel'))
+            return
+        self.events.put(('stage', self.t('app.macDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
 
     def _stop(self):
         self.cancel.set()
