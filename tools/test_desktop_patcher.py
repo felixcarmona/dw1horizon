@@ -638,7 +638,7 @@ class PbpGuiFlow(unittest.TestCase):
 
 
 class HorizonPlay(unittest.TestCase):
-    """The Play button (docs/player.md): shown when the app carries Horizon Play and a disc was built."""
+    """The Horizon Play the app carries (docs/player.md), for the installers, and the last disc's folder button."""
 
     def test_player_program_found_in_the_app_data(self):
         with tempfile.TemporaryDirectory() as d:
@@ -652,17 +652,7 @@ class HorizonPlay(unittest.TestCase):
                 open(os.path.join(d, *parts), 'wb').close()
                 self.assertEqual(desktop.player_program(), os.path.join(d, *parts))
 
-    def test_play_starts_the_program_on_the_disc(self):
-        with patch.object(desktop, 'player_program', return_value=os.path.join('app', 'player', 'horizon-play')), \
-                patch('subprocess.Popen') as popen:
-            desktop.play('disc.cue')
-        args = popen.call_args[0][0]
-        self.assertEqual(args, [os.path.join('app', 'player', 'horizon-play'), os.path.abspath('disc.cue')])
-        with patch.object(desktop, 'player_program', return_value=None):
-            with self.assertRaises(FileNotFoundError):
-                desktop.play('disc.cue')
-
-    def test_restore_offers_play_for_the_last_disc(self):
+    def test_restore_offers_the_last_discs_folder(self):
         import gui
         with tempfile.TemporaryDirectory() as d:
             cue = os.path.join(d, 'horizon.cue')

@@ -64,7 +64,11 @@ def pixels(size):
 
 
 def png(size):
-    raw = pixels(size)
+    return encode_png(pixels(size), size)
+
+
+def encode_png(raw, size):
+    """RGBA bytes, size x size, as a PNG file's bytes."""
     rows = b''.join(b'\0' + raw[y * size * 4:(y + 1) * size * 4] for y in range(size))
 
     def chunk(kind, data):

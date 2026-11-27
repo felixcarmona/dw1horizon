@@ -108,8 +108,9 @@ def system_language():
 
 
 # what the make buttons make, in their order: the disc image first, then the installers with it inside
-MAKERS = (('disc', 'app.makeDisc'), ('apk', 'app.makeApk'), ('setup', 'app.makeSetup'), ('mac', 'app.makeMac'),
-          ('linux', 'app.makeLinux'))
+# (kind, name, file type); a picture each (tools/patcher/app/platform_icons.py)
+MAKERS = (('disc', 'PlayStation', '.bin / .cue'), ('apk', 'Android', '.apk'), ('setup', 'Windows', '.exe'),
+          ('mac', 'Mac', '.dmg' if sys.platform == 'darwin' else '.zip'), ('linux', 'Linux', '.run'))
 
 
 # ---------------------------------------------------------------- the window
@@ -155,6 +156,7 @@ class App:
         style.configure('Ok.TLabel', foreground='#1f7a3a')
         style.configure('Bad.TLabel', foreground='#b3261e')
         style.configure('Build.TButton', font=self.font_bold, padding=(18, 8))
+        style.configure('Make.TButton', justify='center', padding=(6, 8))
 
     def _build(self):
         tk, ttk, t = self.tk, self.ttk, self.t
@@ -240,15 +242,12 @@ class App:
         # disc is built first when this session has not built it from the same discs and package)
         make = ttk.LabelFrame(outer, text=t('app.makeAs'), padding=(12, 8))
         make.grid(row=4, column=0, sticky='ew', pady=(16, 0))
-        make.columnconfigure((0, 1), weight=1, uniform='makers')
+        make.columnconfigure(tuple(range(len(MAKERS))), weight=1, uniform='makers')
         self.make_buttons = []
-        for i, (kind, key) in enumerate(MAKERS):
-            b = ttk.Button(make, text=t(key), style='Build.TButton' if kind == 'disc' else 'TButton',
-                           command=lambda kind=kind: self._make(kind))
-            if i == 0:   # the disc image on a row of its own, the four installers two to a row under it
-                b.grid(row=0, column=0, columnspan=2, sticky='ew', pady=(0, 6))
-            else:
-                b.grid(row=1 + (i - 1) // 2, column=(i - 1) % 2, sticky='ew', padx=(0, 6) if i % 2 else (0, 0), pady=(0, 6))
+        for i, (kind, name, ext) in enumerate(MAKERS):
+            b = ttk.Button(make, text=f'{name}\n{ext}', image=getattr(self, 'make_icons', {}).get(kind, ''), compound='top',
+                           style='Make.TButton', command=lambda kind=kind: self._make(kind))
+            b.grid(row=0, column=i, sticky='ew', padx=(0 if i == 0 else 6, 0))
             self.make_buttons.append(b)
         run = ttk.Frame(outer)
         run.grid(row=5, column=0, sticky='ew', pady=(8, 0))
@@ -327,6 +326,15 @@ class App:
             self.root.iconphoto(True, self.icon)
         except Exception:
             self.icon = None
+        self.make_icons = {}
+        try:
+            import platform_icons
+            for kind in platform_icons.DRAWINGS:
+                self.make_icons[kind] = self.tk.PhotoImage(data=base64.b64encode(platform_icons.png(kind, 40)))
+        except Exception:
+            pass
+        for (kind, _, _), b in zip(MAKERS, getattr(self, 'make_buttons', [])):
+            b.configure(image=self.make_icons.get(kind, ''))
 
     # -- state shown
     def _refresh(self):
@@ -775,12 +783,12 @@ class App:
             self._finish_buttons(None, log)
 
     def _finish_buttons(self, folder, log, cue=None):
+        """Open the folder (and the log after a failure)."""
         ttk = self.ttk
         for w in self.finish.winfo_children():
             w.destroy()
         col = 0
         for ok, text, cmd, style in (
-                (cue and desktop.player_program(), 'app.play', lambda: desktop.play(cue), 'Build.TButton'),
                 (folder, 'app.openFolder', lambda: desktop.open_folder(folder), 'TButton'),
                 (log and os.path.exists(log), 'app.openLog', lambda: desktop.open_folder(log), 'TButton')):
             if ok:

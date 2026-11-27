@@ -21,8 +21,8 @@ The program carries no game data. It plays the disc that the patcher builds from
 
 - **Windows and macOS:** inside the desktop patcher (on Windows with the Visual C++ runtime's three DLLs beside
   `horizon-play.exe`, which the core needs and a clean Windows lacks) (`desktop.yml` builds it and passes `--player` to
-  `tools/patcher/app/build.py`). After a build, and when the app opens again, a **Play** button starts it on the
-  disc (`desktop.play`).
+  `tools/patcher/app/build.py`). The patcher uses it for the installers it makes (no Play button: the player
+  installs the game with one of them, or plays the disc image in an emulator).
 - **Linux:** `Horizon-Play-Linux-x86_64.tar.gz` (`player.yml`), built on Ubuntu 22.04. Run
   `./horizon-play DISC.cue` once. With no argument it opens the last disc it played.
 - **Android:** after a build, the desktop patcher's **Android app (.apk)** button writes `<disc>.apk` next to the disc
