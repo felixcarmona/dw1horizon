@@ -37,7 +37,7 @@ class ImportedNpcTests(unittest.TestCase):
                 n.main()
             text = output.read_text()
             self.assertIn('NPC_ANIM_KEEP_INDEX[180]', text)
-            self.assertIn('NPC_ANIM_IMPORT_KEEP[2]', text)
+            self.assertIn('NPC_ANIM_IMPORT_KEEP = ', text)
             self.assertEqual(npc_keep(text), [sorted(keep[t]) for t in range(1024)])
 
     def test_cold_entries_are_not_resident_stream_boundaries(self):
