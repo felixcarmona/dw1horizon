@@ -146,6 +146,7 @@ static uint16_t pad_bits;                              /* libretro joypad bits o
 static bool quit, paused;
 static const char *screenshot_path;                    /* --screenshot: write the last frame and leave */
 static int run_frames = -1;                            /* --frames N: leave after N frames (tests) */
+static bool fast_start = true;
 static const char *press_script;                       /* --press "frame:button:len,..." (tests) */
 
 #define MAX_OPTIONS 32
@@ -341,6 +342,22 @@ static void video_refresh(const void *data, unsigned w, unsigned h, size_t pitch
   gl.TexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
 }
 
+/* whether the last picture shows anything: a few rows of it, read back (only while booting) */
+static bool picture_lit(void) {
+  if (!have_frame || !frame_w || !frame_h) return false;
+  static uint8_t row[4096 * 4];
+  unsigned w = frame_w > 4096 ? 4096 : frame_w;
+  bool lit = false;
+  gl.BindFramebuffer(GL_READ_FRAMEBUFFER, frame_is_hw ? fbo : sw_fbo);
+  gl.PixelStorei(GL_PACK_ALIGNMENT, 4);
+  for (int k = 1; k < 8 && !lit; k++) {
+    gl.ReadPixels(0, (GLint)(frame_h * k / 8), (GLsizei)w, 1, GL_RGBA, GL_UNSIGNED_BYTE, row);
+    for (unsigned i = 0; i < w * 4; i++) if ((i & 3) != 3 && row[i] > 24) { lit = true; break; }
+  }
+  gl.BindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+  return lit;
+}
+
 static void save_screenshot(const char *path);
 static void present(bool last) {
   int ww, wh; SDL_GL_GetDrawableSize(window, &ww, &wh);
@@ -383,9 +400,10 @@ static void save_screenshot(const char *path) {
   free(px);
 }
 
-static void audio_sample(int16_t l, int16_t r) { int16_t s[2] = {l, r}; if (audio_dev) SDL_QueueAudio(audio_dev, s, sizeof s); }
+static bool booting;   /* the black start, run as fast as the machine goes: its sound is dropped */
+static void audio_sample(int16_t l, int16_t r) { int16_t s[2] = {l, r}; if (audio_dev && !booting) SDL_QueueAudio(audio_dev, s, sizeof s); }
 static size_t audio_batch(const int16_t *d, size_t frames) {
-  if (audio_dev) SDL_QueueAudio(audio_dev, d, (Uint32)(frames * 4));
+  if (audio_dev && !booting) SDL_QueueAudio(audio_dev, d, (Uint32)(frames * 4));
   return frames;
 }
 
@@ -510,8 +528,9 @@ int main(int argc, char **argv) {
     else if (!strcmp(argv[i], "--window") && i + 1 < argc) {   /* --window WxH: a window of that size (tests) */
       windowed = sscanf(argv[++i], "%dx%d", &force_w, &force_h) == 2;
     }
-    else if (!strcmp(argv[i], "--no-disc")) no_disc = true;
-    else if (!strcmp(argv[i], "--touch")) touch_shown = true;        /* the touch pad from the start */          /* the BIOS alone (a smoke test) */
+    else if (!strcmp(argv[i], "--no-disc")) no_disc = true;               /* the BIOS alone (a smoke test) */
+    else if (!strcmp(argv[i], "--touch")) touch_shown = true;             /* the touch pad from the start */
+    else if (!strcmp(argv[i], "--no-fast-start")) fast_start = false;     /* the start at the console's own pace */
     else if (!strcmp(argv[i], "--scale") && i + 1 < argc) scale = atoi(argv[++i]);
     else if (!strcmp(argv[i], "--core") && i + 1 < argc) core_path = argv[++i];
     else if (!strcmp(argv[i], "--system") && i + 1 < argc) sys = argv[++i];
@@ -646,6 +665,8 @@ int main(int argc, char **argv) {
     {"swanstation_GPU_Renderer", "OpenGL"}, {"swanstation_GPU_TrueColor", "false"},
     {"swanstation_MemoryCards_Card1Type", "Libretro"}, {"swanstation_MemoryCards_Card2Type", "None"},
     {"swanstation_Display_AspectRatio", "4:3"},
+    /* the CD at 8x reads and 10x seeks: loads take half the time (the core keeps music and movie sound at 1x) */
+    {"swanstation_CDROM_ReadSpeedup", "4"}, {"swanstation_CDROM_SeekSpeedup", "10"},
   };
   for (int i = (int)(sizeof fixed / sizeof *fixed) - 1; i >= 0; i--) {
     bool overridden = false;
@@ -688,6 +709,11 @@ int main(int argc, char **argv) {
 
   const Uint32 bytes_per_sec = (Uint32)want.freq * 4;
   int frame = 0;
+  /* the start is black for about 15 seconds (OpenBIOS and the game loading): it runs unpaced and unseen until the
+   * game's first picture after OpenBIOS's own screen, so it takes as long as the machine needs, not the console */
+  booting = fast_start && run_frames < 0;
+  Uint32 boot_ms = SDL_GetTicks();
+  if (booting) SDL_GL_SetSwapInterval(0);
   while (!quit) {
     handle_events();
     if (paused) { SDL_Delay(50); continue; }
@@ -697,7 +723,17 @@ int main(int argc, char **argv) {
     bits = controls_frame(bits, bits != 0);
     if (remap_step >= 0) {   /* the game waits under the setup */
       pad_bits = 0; frame++;
-      present(run_frames >= 0 && frame >= run_frames);
+      if (booting) {
+      if ((frame >= 400 && frame % 4 == 0 && picture_lit()) || frame >= 3000) {
+        booting = false;
+        SDL_GL_SetSwapInterval(1);
+        SDL_Log("started: the first picture at frame %d, after %u ms", frame, SDL_GetTicks() - boot_ms);
+      } else {
+        if (frame % 20 == 0) present(false);   /* the window stays alive (and the touch pad drawn) */
+        continue;
+      }
+    }
+    present(run_frames >= 0 && frame >= run_frames);
       if (run_frames >= 0 && frame >= run_frames) break;
       continue;
     }
@@ -718,6 +754,16 @@ int main(int argc, char **argv) {
       SDL_Log("frame %d: %.1f fps, picture %ux%u %s, screen %dx%d, scale %s", frame, since ? 1800000.0 / (now - since) : 0.0,
               frame_w, frame_h, !have_frame ? "none" : frame_is_hw ? "hw" : "sw", dw, dh, scale_text);
       since = now;
+    }
+    if (booting) {
+      if ((frame >= 400 && frame % 4 == 0 && picture_lit()) || frame >= 3000) {
+        booting = false;
+        SDL_GL_SetSwapInterval(1);
+        SDL_Log("started: the first picture at frame %d, after %u ms", frame, SDL_GetTicks() - boot_ms);
+      } else {
+        if (frame % 20 == 0) present(false);   /* the window stays alive (and the touch pad drawn) */
+        continue;
+      }
     }
     present(run_frames >= 0 && frame >= run_frames);
     if (run_frames >= 0 && frame >= run_frames) break;

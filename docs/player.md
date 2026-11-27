@@ -10,6 +10,7 @@ libretro core and boots the patched disc with the free OpenBIOS. Its settings ar
 | CPU | 250 % | smoother play; the title screen's settings panel detects both and hides itself |
 | Renderer | OpenGL (GLES 3 on Android), internal resolution = display height / 240 (2x-8x, Android 2x-4x; `--scale N`) | sharp 3D at full screen |
 | BIOS | OpenBIOS (`system/openbios.bin`), no fast-boot patch | no Sony BIOS is needed or shipped |
+| CD | reads 8x, seeks 10x (`CDROM_ReadSpeedup` 4, `CDROM_SeekSpeedup` 10) | loads take about half the time; the core keeps music and movie sound at 1x |
 | Memory card | slot 1, `duckstation_shared_card_1.mcd` in the user's data folder, written by the program each second it changed and when the app goes to the background | survives updates of the app |
 | Screen | full screen, 4:3, F11 / Alt+Enter toggles | |
 
@@ -33,7 +34,10 @@ The program carries no game data. It plays the disc that the patcher builds from
   `Android/data/com.dw1horizon.play/files/saves`. The template APK alone (`desktop.yml`'s `horizon-play-apk`
   artifact) asks once for a patched `.bin` and copies it into the app's folder.
 
-OpenBIOS takes about 25-30 seconds to reach the game's first picture: the screen stays black until then.
+OpenBIOS needs about 940 frames to reach the game's first picture (1800 without the fast CD). Horizon Play runs those
+frames as fast as the machine can, with no sound and the screen refreshed now and then, and returns to normal speed at
+the first lit picture after frame 400 (frame 3000 at the latest): about 3 seconds on a PC, 8-9 on a mid-range Android
+handheld. `--no-fast-start` boots at normal speed.
 
 ## Building
 
@@ -51,7 +55,7 @@ fetched by CMake at a pinned hash and linked statically.
 
 Test flags: `--windowed`, `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
 `--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option),
-`--touch` (the touch pad from the start), `--window WxH` (a window of that size).
+`--touch` (the touch pad from the start), `--window WxH` (a window of that size), `--no-fast-start`.
 `HORIZON_PLAY_DEBUG=1` prints the core's log. The saves folder also gets `horizon-play.log` (the core's log, the
 OpenGL version and the speed every 30 seconds) and reads `options.txt` (`KEY=VALUE` lines, core options to override).
 
