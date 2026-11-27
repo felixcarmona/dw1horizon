@@ -198,3 +198,4 @@ against, leave this list.
 | With quick battles on, the tamer runs to his spot while the angry icon shows, and only then FIGHT appears, instead of jumping there | 🛠️ | Player suggestion (2026-11-26), with a video. |
 | Hawkmon appears only after Birdramon is recruited, through a Shellmon news item, and once recruited opens new landing points for Birdramon | 🎭 🆕 | Player suggestion (2026-11-26). |
 | Polish the male tamer hairstyles: the quiff and other spiky cuts look broken; add cuts in the style of the anime's boy leads | ✨ 🆕 | Player suggestion (2026-11-27). |
+| The card album shows only the card's number (e.g. "No. 001") when the cursor is on a card; the current position counter reads as "0 cards owned" when no card is under the cursor | 🛠️ | Player suggestion (2026-11-27). |
