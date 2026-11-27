@@ -1,0 +1,58 @@
+From 73caf5df1f4b7167b4412ee629d7b62e773bc16d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 13:15:27 +0000
+Subject: [PATCH] Smooth motion: a thrown item flies at every frame
+
+The item's place before tickThrownItem's step is kept; renderThrownItem draws it between that and the new one.
+---
+ src/main/main.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 8744449..efe343b 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -6286,6 +6286,9 @@ void initializeInventoryModules(void)
+ 	initializeEntityText();
+ }
+ 
++/* MOD (smooth motion): the thrown item's place before this tick's step */
++static SVECTOR modThrowPrev;
++
+ void addThrownItem(type)
+ 	int16_t type;
+ {
+@@ -6296,6 +6299,7 @@ void addThrownItem(type)
+ 		TAMER_ITEM.worldItem.spriteLocation.vx = workm->t[0];
+ 		TAMER_ITEM.worldItem.spriteLocation.vy = workm->t[1];
+ 		TAMER_ITEM.worldItem.spriteLocation.vz = workm->t[2];
++		modThrowPrev = TAMER_ITEM.worldItem.spriteLocation;
+ 		TAMER_ITEM.time = 0;
+ 		TAMER_ITEM.worldItem.type = type;
+ 		addObject(0x194, 0, tickThrownItem, renderThrownItem);
+@@ -6316,6 +6320,7 @@ void tickThrownItem(int32_t instanceId)
+ 	MATRIX *workm;
+ 	VECTOR *loc;
+ 
++	modThrowPrev = TAMER_ITEM.worldItem.spriteLocation;
+ 	if ((TAMER_ENTITY.entity.anim.animId == 6) && (TAMER_ENTITY.entity.anim.animFrame < 7)) {
+ 		workm = &TAMER_ENTITY.entity.posData[9].posMatrix.workm;
+ 		TAMER_ITEM.worldItem.spriteLocation.vx = workm->t[0];
+@@ -6355,7 +6360,13 @@ void tickThrownItem(int32_t instanceId)
+ 
+ void renderThrownItem(int32_t instanceId)
+ {
+-	renderOverworldItem(&TAMER_ITEM.worldItem);
++	WorldItem item = TAMER_ITEM.worldItem;
++
++	/* MOD (smooth motion): drawn between the last two ticks' places */
++	item.spriteLocation.vx = modTickLerp(modThrowPrev.vx, item.spriteLocation.vx);
++	item.spriteLocation.vy = modTickLerp(modThrowPrev.vy, item.spriteLocation.vy);
++	item.spriteLocation.vz = modTickLerp(modThrowPrev.vz, item.spriteLocation.vz);
++	renderOverworldItem(&item);
+ }
+ 
+ void handleBuffDisks(type)
+-- 
+2.55.0
+

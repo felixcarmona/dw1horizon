@@ -1,0 +1,307 @@
+From 7f06b5d9a99e8349f5d9bfd72812d97cb947b3c4 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 13:15:27 +0000
+Subject: [PATCH] Smooth motion: doors, gates, hatches and the Toy Town lids
+ move at every frame
+
+tickRotateDoor keeps the moving object's place before its step and renderDoors draws it between the two (not the
+last step that snaps a door to its direction). The per-model switch becomes a table of motions, which pays for it.
+A Toy Town box's lid is drawn from where its tick's step started; the two boxes share one code path.
+---
+ src/main/map_object.c | 225 ++++++++++++++++++------------------------
+ 1 file changed, 94 insertions(+), 131 deletions(-)
+
+diff --git a/src/main/map_object.c b/src/main/map_object.c
+index ace8707..5a3eaa8 100644
+--- a/src/main/map_object.c
++++ b/src/main/map_object.c
+@@ -7,6 +7,7 @@
+ #include <dw/entity.h>
+ #include <dw/ids.h>
+ #include <dw/map_object.h>
++#include <dw/mod_fps.h>
+ #include <dw/screen.h>
+ #include <dw/params.h>
+ #include <dw/trigger.h>
+@@ -309,9 +310,36 @@ void loadDoorData(DoorStruct *door)
+ 	addObject(0xfa9, 0, NULL, renderDoors);
+ }
+ 
++/* MOD (smooth motion): the one MAP_3D_OBJ a script moves this tick (a door opening) and its place before
++ * the tick's step; a render pass draws it between the two */
++static Map3DObject modObjPrev;
++static int32_t modObjPrevTick;
++static int8_t modObjPrevId = -1;
++
++static void modObjSave(int32_t i)
++{
++	modObjPrev = MAP_3D_OBJ[i];
++	modObjPrevId = i;
++	modObjPrevTick = MOD_FPS_TICKS;
++}
++
++/* MAP_3D_OBJ[i] as this render pass shows it: between its last two places when it moved this tick */
++static void modObjShown(int32_t i, Map3DObject *out)
++{
++	int32_t k;
++
++	*out = MAP_3D_OBJ[i];
++	if (i == modObjPrevId && modObjPrevTick + 1 == MOD_FPS_TICKS) {
++		for (k = 0; k < 3; k++) {
++			(&out->translation.vx)[k] = modTickLerp((&modObjPrev.translation.vx)[k], (&out->translation.vx)[k]);
++			(&out->rotation.vx)[k] = modTickLerp((&modObjPrev.rotation.vx)[k], (&out->rotation.vx)[k]);
++		}
++	}
++}
++
+ void renderDoors(int32_t instanceId)
+ {
+-	Map3DObject doorCopy;
++	Map3DObject door;
+ 	VECTOR scale;
+ 	int32_t i;
+ 	int32_t slot;
+@@ -338,20 +366,19 @@ void renderDoors(int32_t instanceId)
+ 			continue;
+ 		}
+ 
+-		projectPosition(&DOOR_COORDS[slot],
+-				&MAP_3D_OBJ[i].translation,
+-				&MAP_3D_OBJ[i].rotation, &scale);
++		modObjShown(i, &door);
++		projectPosition(&DOOR_COORDS[slot], &door.translation,
++				&door.rotation, &scale);
+ 		drawObject(&DOOR_OBJECTS[slot],
+ 			   GS_ORDERING_TABLE + ACTIVE_FRAMEBUFFER, 2);
+ 
+-		if (MAP_3D_OBJ[i].modelId == 10) {
+-			doorCopy = MAP_3D_OBJ[i];
+-			doorCopy.translation.vz -=
+-				((doorCopy.rotation.vy < 0) ? 1 : -1) * 680;
+-			doorCopy.rotation.vy *= -1;
++		if (door.modelId == 10) {
++			door.translation.vz -=
++				((door.rotation.vy < 0) ? 1 : -1) * 680;
++			door.rotation.vy *= -1;
+ 			projectPosition(&DOOR_COORDS[slot],
+-					&doorCopy.translation,
+-					&doorCopy.rotation, &scale);
++					&door.translation,
++					&door.rotation, &scale);
+ 			drawObject(&DOOR_OBJECTS[slot],
+ 				   GS_ORDERING_TABLE + ACTIVE_FRAMEBUFFER, 2);
+ 		}
+@@ -642,37 +669,29 @@ extern int32_t MOD_RENDER_PASS;
+ void renderToyTownBoxes(int32_t instanceId)
+ {
+ 	SVECTOR rot;
++	int16_t *lid;
++	GsCOORDINATE2 *coord;
+ 	int32_t i;
+ 
+ 	if (MAP_LAYER_ENABLED) {
+-		if (TOY_TOWN_SELECTED_BOX == 1) {
+-			if (MOD_RENDER_PASS == 0) { /* MOD (fps): once per tick */
+-				BOX_LID_PROGRESS.big -= 100;
+-			}
+-			if (BOX_LID_PROGRESS.big < -0x400) {
+-				BOX_LID_PROGRESS.big = -0x400;
+-			}
+-
+-			rot.vx = BOX_LID_PROGRESS.big;
+-			rot.vy = 0;
+-			rot.vz = 0;
+-			RotMatrix(&rot, &WARP_CRYSTAL_COORDS[1].coord);
+-			WARP_CRYSTAL_COORDS[1].flg = 0;
+-		}
+-
+-		if (TOY_TOWN_SELECTED_BOX == 2) {
++		i = TOY_TOWN_SELECTED_BOX;
++		if (i == 1 || i == 2) {
++			lid = i == 1 ? &BOX_LID_PROGRESS.big : &BOX_LID_PROGRESS.small;
++			coord = i == 1 ? &WARP_CRYSTAL_COORDS[1] : &GENERAL_COORDS[1];
+ 			if (MOD_RENDER_PASS == 0) { /* MOD (fps): once per tick */
+-				BOX_LID_PROGRESS.small -= 100;
++				*lid -= 100;
+ 			}
+-			if (BOX_LID_PROGRESS.small < -0x400) {
+-				BOX_LID_PROGRESS.small = -0x400;
++			/* MOD (smooth motion): the lid opens at every frame, drawn from where the tick's step started; it is
++			 * kept one step past open so the last step is drawn too */
++			if (*lid < -0x464) {
++				*lid = -0x464;
+ 			}
+-
+-			rot.vx = BOX_LID_PROGRESS.small;
++			i = modTickLerp(*lid + 100, *lid);
++			rot.vx = i < -0x400 ? -0x400 : i;
+ 			rot.vy = 0;
+ 			rot.vz = 0;
+-			RotMatrix(&rot, &GENERAL_COORDS[1].coord);
+-			GENERAL_COORDS[1].flg = 0;
++			RotMatrix(&rot, &coord->coord);
++			coord->flg = 0;
+ 		}
+ 
+ 		for (i = 0; i < 2; ++i) {
+@@ -867,116 +886,60 @@ void unloadMapParts(void)
+ 	emptyChests();
+ }
+ 
++/* MOD (smooth motion): what each door model does per tick, as a table (it pays for the motion's interpolation):
++ * 1 turns back, 2 turns open and snaps to its direction, 3 turns open, 4 rises, 5 and 6 slide one way or the other,
++ * 7 is a hatch; 0 does nothing */
++static const uint8_t MOD_DOOR_MOTION[0x21] = {
++	1, 0, 0, 0, 0, 4, 0, 0, 0, 2, 2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 6, 5, 5, 6, 5, 6, 7, 5, 6, 5, 6, 4, 4,
++};
++
+ int32_t tickRotateDoor(int16_t instance, int8_t target)
+ {
+-	switch (MAP_3D_OBJ[instance].modelId) {
+-	case 0:
+-		++MAP_OBJ_ROTATE_TIMER;
+-		if (MAP_OBJ_ROTATE_TIMER > 32) {
+-			MAP_OBJ_ROTATE_TIMER = 0;
+-			return 1;
+-		}
++	Map3DObject *obj = &MAP_3D_OBJ[instance];
++	int32_t kind = (uint16_t)obj->modelId < 0x21 ? MOD_DOOR_MOTION[obj->modelId] : 0;
++	int32_t timer;
++	int32_t step;
+ 
+-		MAP_3D_OBJ[instance].rotation.vy -= target * 33;
+-
+-		break;
+-	case 9:
+-	case 0xa:
+-	case 0xb:
+-	case 0xc:
+-	case 0xd:
+-	case 0x10:
+-	case 0x11:
+-	case 0x12:
+-	case 0x13:
+-		++MAP_OBJ_ROTATE_TIMER;
+-		if (MAP_OBJ_ROTATE_TIMER > 32) {
+-			MAP_OBJ_ROTATE_TIMER = 0;
+-			MAP_3D_OBJ[instance].rotation.vy =
+-				MAP_3D_OBJ[instance].direction;
+-			return 1;
+-		}
+-
+-		MAP_3D_OBJ[instance].rotation.vy += target * 33;
+-
+-		break;
+-	case 0xe:
+-	case 0xf:
+-		++MAP_OBJ_ROTATE_TIMER;
+-		if (MAP_OBJ_ROTATE_TIMER > 32) {
+-			MAP_OBJ_ROTATE_TIMER = 0;
+-			return 1;
++	if (kind == 0) {
++		return 0;
++	}
++	modObjSave(instance);
++	timer = ++MAP_OBJ_ROTATE_TIMER;
++	if (kind == 7) {
++		step = obj->rotation.vx - target * 110;
++		if (step < -0x400) {
++			step = -0x400;
+ 		}
+-
+-		MAP_3D_OBJ[instance].rotation.vy += target * 33;
+-
+-		break;
+-	case 5:
+-	case 0x1f:
+-	case 0x20:
+-		++MAP_OBJ_ROTATE_TIMER;
+-		if (MAP_OBJ_ROTATE_TIMER > 9) {
+-			MAP_OBJ_ROTATE_TIMER = 0;
+-			return 1;
++		if (step > 0) {
++			step = 0;
+ 		}
+-
+-		MAP_3D_OBJ[instance].translation.vy -= target * 200;
+-
+-		break;
+-	case 0x15:
+-	case 0x16:
+-	case 0x18:
+-	case 0x1b:
+-	case 0x1d:
+-		++MAP_OBJ_ROTATE_TIMER;
+-		if (MAP_OBJ_ROTATE_TIMER > 9) {
++		obj->rotation.vx = step;
++		if (timer > 19) {
+ 			MAP_OBJ_ROTATE_TIMER = 0;
+ 			return 1;
+ 		}
+-
+-		if (CURRENT_SCREEN == 0x81) {
+-			MAP_3D_OBJ[instance].translation.vz += 30;
+-		} else {
+-			MAP_3D_OBJ[instance].translation.vx += 30;
+-		}
+-
+-		break;
+-	case 0x14:
+-	case 0x17:
+-	case 0x19:
+-	case 0x1c:
+-	case 0x1e:
+-		++MAP_OBJ_ROTATE_TIMER;
+-		if (MAP_OBJ_ROTATE_TIMER > 9) {
+-			MAP_OBJ_ROTATE_TIMER = 0;
+-			return 1;
++		return 0;
++	}
++	if (timer > (kind < 4 ? 32 : 9)) {
++		MAP_OBJ_ROTATE_TIMER = 0;
++		if (kind == 2) {
++			obj->rotation.vy = obj->direction;
++			modObjPrevId = -1; /* the snap shut is not a motion */
+ 		}
+-
++		return 1;
++	}
++	if (kind < 4) {
++		obj->rotation.vy += (kind == 1 ? -33 : 33) * target;
++	} else if (kind == 4) {
++		obj->translation.vy -= target * 200;
++	} else {
++		step = kind == 5 ? 30 : -30;
+ 		if (CURRENT_SCREEN == 0x81) {
+-			MAP_3D_OBJ[instance].translation.vz -= 0x1e;
++			obj->translation.vz += step;
+ 		} else {
+-			MAP_3D_OBJ[instance].translation.vx -= 0x1e;
+-		}
+-
+-		break;
+-	case 0x1a:
+-		++MAP_OBJ_ROTATE_TIMER;
+-
+-		MAP_3D_OBJ[instance].rotation.vx -= target * 110;
+-		if (MAP_3D_OBJ[instance].rotation.vx < -0x400) {
+-			MAP_3D_OBJ[instance].rotation.vx = -0x400;
+-		}
+-
+-		if (MAP_3D_OBJ[instance].rotation.vx > 0) {
+-			MAP_3D_OBJ[instance].rotation.vx = 0;
+-		}
+-
+-		if (MAP_OBJ_ROTATE_TIMER > 19) {
+-			MAP_OBJ_ROTATE_TIMER = 0;
+-			return 1;
++			obj->translation.vx += step;
+ 		}
+ 	}
+-
+ 	return 0;
+ }
+ 
+-- 
+2.55.0
+

@@ -1,0 +1,98 @@
+From a64255424362fed690a9842b509556f4d13a9e1e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 13:28:09 +0000
+Subject: [PATCH] Smooth motion: particle bursts and dust puffs at every frame
+
+A particle burst spreads and fades with its state in 1/4096 of a tick; a dust puff rises and grows between its last
+two steps. MOD_RENDER_ALPHA is declared in dw/mod_fps.h.
+---
+ include/dw/mod_fps.h |  1 +
+ src/main/efe.c       | 35 +++++++++++++++++++++++++----------
+ 2 files changed, 26 insertions(+), 10 deletions(-)
+
+diff --git a/include/dw/mod_fps.h b/include/dw/mod_fps.h
+index 695ebea..a30d34b 100644
+--- a/include/dw/mod_fps.h
++++ b/include/dw/mod_fps.h
+@@ -101,6 +101,7 @@ void modInterpInvalidate(void);
+ /* MOD (smooth motion): a value that moves once per tick (prev before the tick, cur after it) drawn at the fraction of
+  * the tick this render pass shows; cur itself at 20 fps and on a tick's last pass */
+ int32_t modTickLerp(int32_t prev, int32_t cur);
++extern int32_t MOD_RENDER_ALPHA; /* the fraction of the tick this render pass shows, 0..4096 */
+ extern int32_t MOD_FPS_TICKS; /* ticks presented: one more during a tick's render passes than during its logic */
+ 
+ #endif
+diff --git a/src/main/efe.c b/src/main/efe.c
+index f96faae..9e4c4fc 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -8,6 +8,7 @@
+ #include <dw/efe.h>
+ #include <dw/entity.h>
+ #include <dw/mod_present.h>
++#include <dw/mod_fps.h>
+ #include <dw/garbage.h>
+ #include <dw/ids.h>
+ #include <dw/math.h>
+@@ -561,11 +562,15 @@ void renderParticleFX(int32_t id)
+ 	if (fx->state >= fx->timer) {
+ 		return;
+ 	}
+-	state = fx->state;
+-	timer = fx->timer;
+-	color[0] = lerp(fx->r, 0, 0, timer, state);
+-	color[1] = lerp(fx->g, 0, 0, timer, state);
+-	color[2] = lerp(fx->b, 0, 0, timer, state);
++	/* MOD (smooth motion): the burst spreads and fades between ticks (state and timer in 1/4096 of a tick) */
++	state = fx->state * 4096 + MOD_RENDER_ALPHA - 4096;
++	if (state < 0) {
++		state = 0;
++	}
++	timer = fx->timer << 12;
++	for (i = 0; i < 3; i++) {
++		color[i] = lerp((&fx->r)[i], 0, 0, timer, state);
++	}
+ 	state = lerp(0, 0x6e, 0, timer, state);
+ 	state = _sin(state) >> 7;
+ 	for (i = 0; i < particleCount; i++) {
+@@ -724,6 +729,12 @@ void tickCloudFX(int32_t id)
+ 	}
+ }
+ 
++/* MOD (smooth motion): a puff's height or size between its last two ticks' steps */
++static int32_t modCloudStep(int16_t *table, int32_t state)
++{
++	return modTickLerp(table[state > 0 ? state - 1 : 0], table[state]);
++}
++
+ void renderCloudFX(int32_t id)
+ {
+ 	CloudFXEntry *cloud;
+@@ -731,15 +742,19 @@ void renderCloudFX(int32_t id)
+ 	DVECTOR screenPos;
+ 	int32_t depth;
+ 
++	int32_t s;
++	int32_t scale;
++
+ 	cloud = &CLOUD_FX_DATA[id];
++	s = cloud->state;
+ 	worldPos.vx = cloud->x;
+-	worldPos.vy = CLOUD_FX_Y[cloud->state];
++	worldPos.vy = modCloudStep(CLOUD_FX_Y, s);
+ 	worldPos.vz = cloud->z;
+ 	depth = worldPosToScreenPos(&worldPos, &screenPos);
+-	CLOUD_FX_SPRITE.u = CLOUD_FX_U[cloud->state];
+-	CLOUD_FX_SPRITE.r = CLOUD_FX_SPRITE.g = CLOUD_FX_SPRITE.b = CLOUD_FX_COLOR[cloud->state];
+-	renderSprite(&CLOUD_FX_SPRITE, screenPos.vx, screenPos.vy, depth,
+-	             CLOUD_FX_SCALE[cloud->state], CLOUD_FX_SCALE[cloud->state]);
++	CLOUD_FX_SPRITE.u = CLOUD_FX_U[s];
++	CLOUD_FX_SPRITE.r = CLOUD_FX_SPRITE.g = CLOUD_FX_SPRITE.b = CLOUD_FX_COLOR[s];
++	scale = modCloudStep(CLOUD_FX_SCALE, s);
++	renderSprite(&CLOUD_FX_SPRITE, screenPos.vx, screenPos.vy, depth, scale, scale);
+ }
+ 
+ void EFERotateVector(void)
+-- 
+2.55.0
+
