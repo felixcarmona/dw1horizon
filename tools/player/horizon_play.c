@@ -928,6 +928,7 @@ static void new_version_check(void) {
 /* a newer release's tag, once the check found one */
 static bool new_version_found(char *out, size_t n) {
   if (test_new_version[0]) { snprintf(out, n, "%s", test_new_version); return true; }
+  if (strstr(HORIZON_VERSION, "-dev")) return false;   /* a test build (not a release): its number is no guide */
 #ifdef __ANDROID__
   return android_new_version(out, n);
 #elif defined(HORIZON_REPOSITORY)
