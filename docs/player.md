@@ -69,7 +69,7 @@ first two axes as the D-pad (the button setup below fits it to any other layout)
 for a joystick.
 
 **The menu:** SELECT and START pressed together, at any moment (neither reaches the game), or the round button at the
-top of the touch pad. The game waits under it. It is all pictures, no text, so it needs no language; a tap, the mouse
+top of the touch pad. The game waits under it. It shows big pictures, each with a word in English under it (a 5x7 font drawn into the overlay's texture); a tap, the mouse
 or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goes back:
 
 - ▶ back to the game.

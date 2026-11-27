@@ -11,7 +11,10 @@ extern bool overlay_menu_tapped;    /* the touch pad's menu button was tapped */
 enum { I_TRI, I_CIRCLE, I_CROSS, I_SQUARE, I_UP, I_DOWN, I_LEFT, I_RIGHT, I_DPAD,
        I_L1, I_L2, I_R1, I_R2, I_SELECT, I_START, I_PANEL, I_DOT, I_WHITE, I_MENU,
        I_PLAY, I_GAMEPAD, I_CARD, I_POWER, I_TOUCH, I_KEYBOARD, I_CHECK, I_FAIL, I_PENCIL, I_EXPORT, I_IMPORT,
-       I_BACK, I_DROP, I_COUNT };
+       I_BACK, I_DROP,
+       /* the menu's words, in English, under its pictures */
+       T_RESUME, T_CONTROLS, T_CARD, T_QUIT, T_TOUCH, T_CONTROLLER, T_KEEP, T_SET, T_EXPORT, T_IMPORT, T_DONE,
+       T_FAILED, T_DROP, I_COUNT };
 
 bool overlay_init(void);
 void overlay_event(const SDL_Event *e, int ww, int wh);
@@ -19,3 +22,5 @@ uint16_t overlay_touch_bits(int ww, int wh);
 void overlay_draw(int ww, int wh);
 /* one picture centred at (cx, cy), w x h pixels, for the menu */
 void overlay_quad(int icon, float cx, float cy, float w, float h, float bright, float alpha);
+/* one of the T_ words centred at (cx, cy), its letters glyph_h pixels high, narrowed to max_w if it is wider */
+void overlay_text(int word, float cx, float cy, float glyph_h, float max_w, float bright, float alpha);

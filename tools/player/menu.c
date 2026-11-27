@@ -26,13 +26,13 @@ static bool fire, fire_back;  /* a tap or click to act on in the next frame */
 static int fire_card;
 static uint16_t prev;
 
-typedef struct { int icon, icon2, action; } Card;
+typedef struct { int icon, icon2, action, word; } Card;
 enum { A_CONTINUE = 100, A_CONTROLS, A_CARD, A_CHECK };
-static const Card main_cards[] = {{I_PLAY, -1, A_CONTINUE}, {I_GAMEPAD, -1, A_CONTROLS}, {I_CARD, -1, A_CARD},
-                                  {I_POWER, -1, MENU_QUIT}};
-static const Card mode_cards[] = {{I_TOUCH, -1, MENU_TOUCH}, {I_GAMEPAD, I_KEYBOARD, MENU_PAD}};
-static const Card check_cards[] = {{I_CHECK, -1, A_CHECK}, {I_PENCIL, -1, MENU_SETUP}};
-static const Card card_cards[] = {{I_EXPORT, -1, MENU_EXPORT}, {I_IMPORT, -1, MENU_IMPORT}};
+static const Card main_cards[] = {{I_PLAY, -1, A_CONTINUE, T_RESUME}, {I_GAMEPAD, -1, A_CONTROLS, T_CONTROLS},
+                                  {I_CARD, -1, A_CARD, T_CARD}, {I_POWER, -1, MENU_QUIT, T_QUIT}};
+static const Card mode_cards[] = {{I_TOUCH, -1, MENU_TOUCH, T_TOUCH}, {I_GAMEPAD, I_KEYBOARD, MENU_PAD, T_CONTROLLER}};
+static const Card check_cards[] = {{I_CHECK, -1, A_CHECK, T_KEEP}, {I_PENCIL, -1, MENU_SETUP, T_SET}};
+static const Card card_cards[] = {{I_EXPORT, -1, MENU_EXPORT, T_EXPORT}, {I_IMPORT, -1, MENU_IMPORT, T_IMPORT}};
 
 static const Card *cards(int *n) {
   switch (screen) {
@@ -187,13 +187,15 @@ void menu_draw(int ww, int wh) {
   float s = S(ww, wh);
   overlay_quad(I_PANEL, ww / 2.0f, wh / 2.0f, (float)ww, (float)wh, 1, screen == S_FIRST ? 0.92f : 0.75f);
   if (screen == S_RESULT) {
-    overlay_quad(result_ok ? I_CHECK : I_FAIL, ww / 2.0f, wh / 2.0f, 0.4f * s, 0.4f * s, 1, 1);
+    overlay_quad(result_ok ? I_CHECK : I_FAIL, ww / 2.0f, wh * 0.45f, 0.4f * s, 0.4f * s, 1, 1);
+    overlay_text(result_ok ? T_DONE : T_FAILED, ww / 2.0f, wh * 0.45f + 0.27f * s, 0.05f * s, ww * 0.9f, 1, 1);
     return;
   }
   if (screen == S_WAIT) return;
   if (screen == S_DROP) {   /* drop the memory card file on the window */
     overlay_quad(I_CARD, ww / 2.0f - 0.16f * s, wh * 0.5f, 0.3f * s, 0.3f * s, 1, 0.9f);
     overlay_quad(I_DROP, ww / 2.0f + 0.16f * s, wh * 0.5f, 0.36f * s, 0.36f * s, 1, 1);
+    overlay_text(T_DROP, ww / 2.0f, wh * 0.5f + 0.27f * s, 0.04f * s, ww * 0.9f, 1, 0.95f);
   }
   if (header() >= 0) overlay_quad(header(), ww / 2.0f, wh * 0.24f, 0.22f * s, 0.22f * s, 1, 0.85f);
   int n; const Card *c = cards(&n);
@@ -210,6 +212,9 @@ void menu_draw(int ww, int wh) {
       overlay_quad(c[i].icon, cx, cy - z * 0.17f, z * 0.58f, z * 0.58f, bright, 1);
       overlay_quad(c[i].icon2, cx, cy + z * 0.24f, z * 0.46f, z * 0.46f, bright, 1);
     }
+    /* the word under the card, as wide as the card and its gap at most */
+    float gh = 0.036f * s;
+    overlay_text(c[i].word, cx, cy + size * 0.53f + 0.03f * s + gh / 2, gh, size + 0.04f * s, on ? 1.1f : 0.8f, 1);
   }
   if (has_back()) {
     float cx, cy, size;

@@ -77,7 +77,7 @@ static bool ready;
 
 /* ---- the atlas: 1024 x 1024, premultiplied RGBA ---- */
 #define AW 1024
-#define AH 1024
+#define AH 1536
 static uint8_t *pix;
 
 typedef struct { int x, y, w, h; } Cell;
@@ -94,7 +94,17 @@ static Cell cells[I_COUNT] = {
   [I_CHECK] = {0, 576, 160, 160}, [I_FAIL] = {160, 576, 160, 160}, [I_PENCIL] = {320, 576, 160, 160},
   [I_EXPORT] = {480, 576, 160, 160}, [I_IMPORT] = {640, 576, 160, 160}, [I_BACK] = {800, 576, 160, 160},
   [I_DROP] = {0, 736, 160, 160},
+  /* the words (T_): 512 x 56 each from y = 1024, two a row, set in draw_words */
 };
+
+#define WORD_SCALE 6   /* one font dot is 6 x 6 atlas pixels: letters 42 high */
+static const struct { int id; const char *s; } words[] = {
+  {T_RESUME, "RESUME"}, {T_CONTROLS, "CONTROLS"}, {T_CARD, "MEMORY CARD"}, {T_QUIT, "QUIT"},
+  {T_TOUCH, "TOUCH SCREEN"}, {T_CONTROLLER, "CONTROLLER"}, {T_KEEP, "KEEP BUTTONS"}, {T_SET, "SET BUTTONS"},
+  {T_EXPORT, "EXPORT"}, {T_IMPORT, "IMPORT"}, {T_DONE, "DONE"}, {T_FAILED, "FAILED"},
+  {T_DROP, "DROP A MEMORY CARD FILE HERE"},
+};
+static float word_w[I_COUNT];   /* the letters' width in atlas pixels */
 
 static float clampf(float v, float lo, float hi) { return v < lo ? lo : v > hi ? hi : v; }
 
@@ -230,29 +240,62 @@ static void arrow(Cell c, float angle) {
   paint(c, sd_poly_fill, pts, 0.92f, 0.92f, 0.95f, 0.95f);
 }
 
-/* 5x7 font: the letters the labels need */
+/* 5x7 font: capitals, the digits the labels need and '/' */
 static const struct { char ch; uint8_t rows[7]; } font[] = {
-  {'L', {0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1F}}, {'R', {0x1E, 0x11, 0x11, 0x1E, 0x14, 0x12, 0x11}},
+  {'A', {0x0E, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11}}, {'B', {0x1E, 0x11, 0x11, 0x1E, 0x11, 0x11, 0x1E}},
+  {'C', {0x0E, 0x11, 0x10, 0x10, 0x10, 0x11, 0x0E}}, {'D', {0x1E, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1E}},
+  {'E', {0x1F, 0x10, 0x10, 0x1E, 0x10, 0x10, 0x1F}}, {'F', {0x1F, 0x10, 0x10, 0x1E, 0x10, 0x10, 0x10}},
+  {'G', {0x0E, 0x11, 0x10, 0x17, 0x11, 0x11, 0x0F}}, {'H', {0x11, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11}},
+  {'I', {0x0E, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0E}}, {'J', {0x07, 0x02, 0x02, 0x02, 0x02, 0x12, 0x0C}},
+  {'K', {0x11, 0x12, 0x14, 0x18, 0x14, 0x12, 0x11}}, {'L', {0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1F}},
+  {'M', {0x11, 0x1B, 0x15, 0x15, 0x11, 0x11, 0x11}}, {'N', {0x11, 0x11, 0x19, 0x15, 0x13, 0x11, 0x11}},
+  {'O', {0x0E, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0E}}, {'P', {0x1E, 0x11, 0x11, 0x1E, 0x10, 0x10, 0x10}},
+  {'Q', {0x0E, 0x11, 0x11, 0x11, 0x15, 0x12, 0x0D}}, {'R', {0x1E, 0x11, 0x11, 0x1E, 0x14, 0x12, 0x11}},
+  {'S', {0x0F, 0x10, 0x10, 0x0E, 0x01, 0x01, 0x1E}}, {'T', {0x1F, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04}},
+  {'U', {0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0E}}, {'V', {0x11, 0x11, 0x11, 0x11, 0x11, 0x0A, 0x04}},
+  {'W', {0x11, 0x11, 0x11, 0x15, 0x15, 0x15, 0x0A}}, {'X', {0x11, 0x11, 0x0A, 0x04, 0x0A, 0x11, 0x11}},
+  {'Y', {0x11, 0x11, 0x0A, 0x04, 0x04, 0x04, 0x04}}, {'Z', {0x1F, 0x01, 0x02, 0x04, 0x08, 0x10, 0x1F}},
   {'1', {0x04, 0x0C, 0x04, 0x04, 0x04, 0x04, 0x0E}}, {'2', {0x0E, 0x11, 0x01, 0x02, 0x04, 0x08, 0x1F}},
-  {'S', {0x0F, 0x10, 0x10, 0x0E, 0x01, 0x01, 0x1E}}, {'E', {0x1F, 0x10, 0x10, 0x1E, 0x10, 0x10, 0x1F}},
-  {'C', {0x0E, 0x11, 0x10, 0x10, 0x10, 0x11, 0x0E}}, {'T', {0x1F, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04}},
-  {'A', {0x0E, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11}},
+  {'/', {0x01, 0x02, 0x02, 0x04, 0x08, 0x08, 0x10}},
 };
+
+static const uint8_t *glyph(char ch) {
+  for (size_t f = 0; f < sizeof font / sizeof *font; f++) if (font[f].ch == ch) return font[f].rows;
+  return NULL;
+}
+
+/* the font's dots for s, scale atlas pixels each, from (x0, y0) in c; each dot painted over its own few pixels */
+static void dots(Cell c, const char *s, int scale, int x0, int y0) {
+  for (int i = 0; s[i]; i++) {
+    const uint8_t *g = glyph(s[i]);
+    if (!g) continue;
+    for (int row = 0; row < 7; row++)
+      for (int col = 0; col < 5; col++)
+        if (g[row] & (0x10 >> col)) {
+          int dx = x0 + (i * 6 + col) * scale, dy = y0 + row * scale;
+          Cell d = {c.x + dx - 2, c.y + dy - 2, scale + 4, scale + 4};
+          float b[] = {scale / 2.0f + 2, scale / 2.0f + 2, scale / 2.0f + 0.3f, scale / 2.0f + 0.3f, scale * 0.2f};
+          paint(d, sd_rbox, b, 0.95f, 0.95f, 0.97f, 1);
+        }
+  }
+}
+
+static void draw_words(void) {
+  for (size_t i = 0; i < sizeof words / sizeof *words; i++) {
+    int n = (int)strlen(words[i].s), id = words[i].id;
+    Cell c = {(int)(i % 2) * 512, 1024 + (int)(i / 2) * 56, 512, 56};
+    if (n * 6 * WORD_SCALE > 500) c = (Cell){0, 1024 + (int)((i + 1) / 2) * 56, 1024, 56};   /* the long one */
+    cells[id] = c;
+    word_w[id] = (float)((n * 6 - 1) * WORD_SCALE);
+    dots(c, words[i].s, WORD_SCALE, (int)(c.w - word_w[id]) / 2, (c.h - 7 * WORD_SCALE) / 2);
+  }
+}
 
 static void text(Cell c, const char *s) {
   int n = (int)strlen(s), scale = (c.w - 40) / (n * 6);
   if (scale > 6) scale = 6;
-  int tw = (n * 6 - 1) * scale, x0 = (c.w - tw) / 2, y0 = (c.h - 7 * scale) / 2;
-  for (int i = 0; i < n; i++)
-    for (size_t f = 0; f < sizeof font / sizeof *font; f++)
-      if (font[f].ch == s[i])
-        for (int row = 0; row < 7; row++)
-          for (int col = 0; col < 5; col++)
-            if (font[f].rows[row] & (0x10 >> col)) {
-              float b[] = {x0 + (i * 6 + col + 0.5f) * scale, y0 + (row + 0.5f) * scale, scale / 2.0f + 0.3f,
-                           scale / 2.0f + 0.3f, scale * 0.2f};
-              paint(c, sd_rbox, b, 0.95f, 0.95f, 0.97f, 1);
-            }
+  int tw = (n * 6 - 1) * scale;
+  dots(c, s, scale, (c.w - tw) / 2, (c.h - 7 * scale) / 2);
 }
 
 static void pill(Cell c, const char *label) {
@@ -295,6 +338,7 @@ static void draw_atlas(void) {
   { Cell c = cells[I_MENU]; button_base(c);
     for (int i = 0; i < 3; i++) { float s[] = {44, 46 + i * 18.0f, 84, 46 + i * 18.0f, 7}; paint(c, sd_seg, s, 0.92f, 0.92f, 0.95f, 0.95f); } }
   draw_menu_pictures();
+  draw_words();
 }
 
 /* ---- setup ---- */
@@ -540,6 +584,13 @@ static void draw_setup(int ww, int wh) {
 
 void overlay_quad(int icon, float cx, float cy, float w, float h, float bright, float alpha) {
   quad(icon, cx, cy, w, h, bright, alpha, cur_w, cur_h);
+}
+
+void overlay_text(int word, float cx, float cy, float glyph_h, float max_w, float bright, float alpha) {
+  if (word < T_RESUME || word >= I_COUNT || !word_w[word]) return;
+  float k = glyph_h / (7 * WORD_SCALE);
+  if (word_w[word] * k > max_w) k = max_w / word_w[word];
+  quad(word, cx, cy, cells[word].w * k, cells[word].h * k, bright, alpha, cur_w, cur_h);
 }
 
 void overlay_draw(int ww, int wh) {
