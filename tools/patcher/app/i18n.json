@@ -30,7 +30,7 @@
   "app.packageBad": "The package is damaged or not the release's ({detail}). Download it again.",
   "app.noPackage": "Release {tag} has no package to download.",
   "app.packageOld": "The package of Horizon {version} is older than this app. Download the latest release, or use the command-line patcher that came with that package.",
-  "app.output": "Save the new disc in",
+  "app.output": "Save in",
   "app.browse": "Change…",
   "app.ready": "Ready. It takes a while: 5 to 60 minutes, depending on your computer.",
   "app.cancel": "Stop",
@@ -55,7 +55,7 @@
   "app.makeMac": "Mac app (.dmg)",
   "app.makingMac": "Making the Mac app: {done}%",
   "app.macDone": "Mac app ready: {file}. Open it on a Mac and drag the app into Applications: the game is inside, nothing to set up. On another Mac, right-click the app and choose Open the first time.",
-  "app.makeAs": "Make an installer:",
+  "app.makeAs": "Make",
   "app.makeLinux": "Linux installer (.run)",
   "app.makingLinux": "Making the Linux installer: {done}%",
   "app.linuxDone": "Linux installer ready: {file}. Run it on any Linux computer (it installs for the current user, no sudo): the game is inside, nothing to set up.",
@@ -81,7 +81,8 @@
   "app.pbpSpace": "PBP conversion needs at least 700 MB of free space in the app cache.",
   "app.convertingChd": "Converting CHD {file}: {pct} %",
   "app.chdUnsupported": "CHD not supported: {reason}",
-  "app.chdSpace": "CHD conversion needs at least 700 MB of free space in the app cache."
+  "app.chdSpace": "CHD conversion needs at least 700 MB of free space in the app cache.",
+  "app.makeDisc": "Disc image (emulators, PlayStation)"
  },
  "es": {
   "app.title": "Horizon Patcher",
@@ -114,7 +115,7 @@
   "app.packageBad": "El paquete está dañado o no es el de la versión ({detail}). Descárgalo de nuevo.",
   "app.noPackage": "La versión {tag} no tiene paquete para descargar.",
   "app.packageOld": "El paquete de Horizon {version} es más antiguo que esta aplicación. Descarga la última versión, o usa el parcheador de línea de órdenes que venía con ese paquete.",
-  "app.output": "Guardar el disco nuevo en",
+  "app.output": "Guardar en",
   "app.browse": "Cambiar…",
   "app.ready": "Listo. Tarda un rato: de 5 a 60 minutos, según tu ordenador.",
   "app.cancel": "Parar",
@@ -139,7 +140,7 @@
   "app.makeMac": "App de Mac (.dmg)",
   "app.makingMac": "Creando la app de Mac: {done}%",
   "app.macDone": "App de Mac lista: {file}. Ábrela en un Mac y arrastra la app a Aplicaciones: lleva el juego dentro, no hay nada que configurar. En otro Mac, haz clic derecho sobre la app y elige Abrir la primera vez.",
-  "app.makeAs": "Crear un instalador:",
+  "app.makeAs": "Crear",
   "app.makeLinux": "Instalador de Linux (.run)",
   "app.makingLinux": "Creando el instalador de Linux: {done}%",
   "app.linuxDone": "Instalador de Linux listo: {file}. Ejecútalo en cualquier Linux (se instala para el usuario actual, sin sudo): lleva el juego dentro, no hay nada que configurar.",
@@ -165,7 +166,8 @@
   "app.pbpSpace": "La conversión PBP necesita al menos 700 MB libres en la caché de la aplicación.",
   "app.convertingChd": "Convirtiendo CHD {file}: {pct} %",
   "app.chdUnsupported": "CHD no compatible: {reason}",
-  "app.chdSpace": "La conversión CHD necesita al menos 700 MB libres en la caché de la aplicación."
+  "app.chdSpace": "La conversión CHD necesita al menos 700 MB libres en la caché de la aplicación.",
+  "app.makeDisc": "Imagen de disco (emuladores, PlayStation)"
  },
  "pt-br": {
   "app.title": "Horizon Patcher",
@@ -198,7 +200,7 @@
   "app.packageBad": "O pacote está danificado ou não é o da versão ({detail}). Baixe-o de novo.",
   "app.noPackage": "A versão {tag} não tem pacote para baixar.",
   "app.packageOld": "O pacote do Horizon {version} é mais antigo que este aplicativo. Baixe a versão mais recente, ou use o patcher de linha de comando que veio com esse pacote.",
-  "app.output": "Salvar o disco novo em",
+  "app.output": "Salvar em",
   "app.browse": "Alterar…",
   "app.ready": "Pronto. Demora um pouco: de 5 a 60 minutos, dependendo do seu computador.",
   "app.cancel": "Parar",
@@ -223,7 +225,7 @@
   "app.makeMac": "App para Mac (.dmg)",
   "app.makingMac": "Criando o app para Mac: {done}%",
   "app.macDone": "App para Mac pronto: {file}. Abra em um Mac e arraste o app para Aplicativos: o jogo vem dentro, nada para configurar. Em outro Mac, clique com o botão direito no app e escolha Abrir na primeira vez.",
-  "app.makeAs": "Criar um instalador:",
+  "app.makeAs": "Criar",
   "app.makeLinux": "Instalador do Linux (.run)",
   "app.makingLinux": "Criando o instalador do Linux: {done}%",
   "app.linuxDone": "Instalador do Linux pronto: {file}. Execute em qualquer Linux (instala para o usuário atual, sem sudo): o jogo vem dentro, nada para configurar.",
@@ -249,7 +251,8 @@
   "app.pbpSpace": "A conversão PBP precisa de pelo menos 700 MB livres no cache do aplicativo.",
   "app.convertingChd": "Convertendo CHD {file}: {pct} %",
   "app.chdUnsupported": "CHD não suportado: {reason}",
-  "app.chdSpace": "A conversão CHD precisa de pelo menos 700 MB livres no cache do aplicativo."
+  "app.chdSpace": "A conversão CHD precisa de pelo menos 700 MB livres no cache do aplicativo.",
+  "app.makeDisc": "Imagem de disco (emuladores, PlayStation)"
  },
  "fr": {
   "app.title": "Horizon Patcher",
@@ -282,7 +285,7 @@
   "app.packageBad": "Le paquet est endommagé ou n'est pas celui de la version ({detail}). Téléchargez-le de nouveau.",
   "app.noPackage": "La version {tag} n'a pas de paquet à télécharger.",
   "app.packageOld": "Le paquet d'Horizon {version} est plus ancien que cette application. Téléchargez la dernière version, ou utilisez le patcheur en ligne de commande fourni avec ce paquet.",
-  "app.output": "Enregistrer le nouveau disque dans",
+  "app.output": "Enregistrer dans",
   "app.browse": "Modifier…",
   "app.ready": "Prêt. Cela prend un moment : de 5 à 60 minutes selon votre ordinateur.",
   "app.cancel": "Arrêter",
@@ -307,7 +310,7 @@
   "app.makeMac": "Appli Mac (.dmg)",
   "app.makingMac": "Création de l'appli Mac : {done} %",
   "app.macDone": "Appli Mac prête : {file}. Ouvrez-la sur un Mac et faites glisser l'appli dans Applications : le jeu est dedans, rien à régler. Sur un autre Mac, faites un clic droit sur l'appli et choisissez Ouvrir la première fois.",
-  "app.makeAs": "Créer un installateur :",
+  "app.makeAs": "Créer",
   "app.makeLinux": "Installateur Linux (.run)",
   "app.makingLinux": "Création de l'installateur Linux : {done} %",
   "app.linuxDone": "Installateur Linux prêt : {file}. Lancez-le sur n'importe quel Linux (il s'installe pour l'utilisateur actuel, sans sudo) : le jeu est dedans, rien à régler.",
@@ -333,7 +336,8 @@
   "app.pbpSpace": "La conversion PBP nécessite au moins 700 Mo libres dans le cache de l’application.",
   "app.convertingChd": "Conversion CHD de {file} : {pct} %",
   "app.chdUnsupported": "CHD non pris en charge : {reason}",
-  "app.chdSpace": "La conversion CHD nécessite au moins 700 Mo libres dans le cache de l’application."
+  "app.chdSpace": "La conversion CHD nécessite au moins 700 Mo libres dans le cache de l’application.",
+  "app.makeDisc": "Image disque (émulateurs, PlayStation)"
  },
  "de": {
   "app.title": "Horizon Patcher",
@@ -366,7 +370,7 @@
   "app.packageBad": "Das Paket ist beschädigt oder nicht das der Version ({detail}). Lade es erneut herunter.",
   "app.noPackage": "Version {tag} hat kein Paket zum Herunterladen.",
   "app.packageOld": "Das Paket von Horizon {version} ist älter als diese App. Lade die neueste Version herunter oder verwende den Kommandozeilen-Patcher, der bei diesem Paket dabei war.",
-  "app.output": "Neue Disc speichern in",
+  "app.output": "Speichern in",
   "app.browse": "Ändern…",
   "app.ready": "Bereit. Es dauert eine Weile: 5 bis 60 Minuten, je nach Computer.",
   "app.cancel": "Stopp",
@@ -391,7 +395,7 @@
   "app.makeMac": "Mac-App (.dmg)",
   "app.makingMac": "Mac-App wird erstellt: {done} %",
   "app.macDone": "Mac-App fertig: {file}. Öffne sie auf einem Mac und ziehe die App in Programme: Das Spiel ist enthalten, nichts einzurichten. Auf einem anderen Mac beim ersten Mal die App mit Rechtsklick und Öffnen starten.",
-  "app.makeAs": "Installer erstellen:",
+  "app.makeAs": "Erstellen",
   "app.makeLinux": "Linux-Installer (.run)",
   "app.makingLinux": "Linux-Installer wird erstellt: {done} %",
   "app.linuxDone": "Linux-Installer fertig: {file}. Führe ihn auf einem beliebigen Linux-Rechner aus (Installation für den aktuellen Benutzer, ohne sudo): Das Spiel ist enthalten, nichts einzurichten.",
@@ -417,7 +421,8 @@
   "app.pbpSpace": "Die PBP-Konvertierung benötigt mindestens 700 MB freien Speicher im App-Cache.",
   "app.convertingChd": "CHD {file} wird konvertiert: {pct} %",
   "app.chdUnsupported": "CHD nicht unterstützt: {reason}",
-  "app.chdSpace": "Die CHD-Konvertierung benötigt mindestens 700 MB freien Speicher im App-Cache."
+  "app.chdSpace": "Die CHD-Konvertierung benötigt mindestens 700 MB freien Speicher im App-Cache.",
+  "app.makeDisc": "Disc-Abbild (Emulatoren, PlayStation)"
  },
  "it": {
   "app.title": "Horizon Patcher",
@@ -450,7 +455,7 @@
   "app.packageBad": "Il pacchetto è danneggiato o non è quello della versione ({detail}). Scaricalo di nuovo.",
   "app.noPackage": "La versione {tag} non ha un pacchetto da scaricare.",
   "app.packageOld": "Il pacchetto di Horizon {version} è più vecchio di questa app. Scarica l'ultima versione, oppure usa il patcher a riga di comando fornito con quel pacchetto.",
-  "app.output": "Salva il nuovo disco in",
+  "app.output": "Salva in",
   "app.browse": "Cambia…",
   "app.ready": "Pronto. Ci vuole un po': da 5 a 60 minuti, a seconda del computer.",
   "app.cancel": "Ferma",
@@ -475,7 +480,7 @@
   "app.makeMac": "App per Mac (.dmg)",
   "app.makingMac": "Creazione dell'app per Mac: {done}%",
   "app.macDone": "App per Mac pronta: {file}. Aprila su un Mac e trascina l'app in Applicazioni: il gioco è dentro, niente da configurare. Su un altro Mac, la prima volta fai clic destro sull'app e scegli Apri.",
-  "app.makeAs": "Crea un installatore:",
+  "app.makeAs": "Crea",
   "app.makeLinux": "Installatore Linux (.run)",
   "app.makingLinux": "Creazione dell'installatore Linux: {done}%",
   "app.linuxDone": "Installatore Linux pronto: {file}. Eseguilo su qualsiasi Linux (si installa per l'utente corrente, senza sudo): il gioco è dentro, niente da configurare.",
@@ -501,7 +506,8 @@
   "app.pbpSpace": "La conversione PBP richiede almeno 700 MB liberi nella cache dell’app.",
   "app.convertingChd": "Conversione CHD di {file}: {pct} %",
   "app.chdUnsupported": "CHD non supportato: {reason}",
-  "app.chdSpace": "La conversione CHD richiede almeno 700 MB liberi nella cache dell’app."
+  "app.chdSpace": "La conversione CHD richiede almeno 700 MB liberi nella cache dell’app.",
+  "app.makeDisc": "Immagine disco (emulatori, PlayStation)"
  },
  "ja": {
   "app.title": "Horizon Patcher",
@@ -534,7 +540,7 @@
   "app.packageBad": "パッケージが壊れているか、リリースのものではありません（{detail}）。もう一度ダウンロードしてください。",
   "app.noPackage": "リリース {tag} にはダウンロードできるパッケージがありません。",
   "app.packageOld": "Horizon {version} のパッケージはこのアプリより古いものです。最新のリリースをダウンロードするか、そのパッケージに付属のコマンドライン版パッチャーを使ってください。",
-  "app.output": "新しいディスクの保存先",
+  "app.output": "保存先",
   "app.browse": "変更…",
   "app.ready": "準備完了。パソコンによって 5〜60 分ほどかかります。",
   "app.cancel": "中止",
@@ -559,7 +565,7 @@
   "app.makeMac": "Mac アプリ (.dmg)",
   "app.makingMac": "Mac アプリを作成中: {done}%",
   "app.macDone": "Mac アプリができました: {file}。Mac で開いて、アプリを「アプリケーション」にドラッグしてください。ゲームが入っているので設定は不要です。別の Mac では、初回だけアプリを右クリックして「開く」を選んでください。",
-  "app.makeAs": "インストーラーを作る:",
+  "app.makeAs": "作る",
   "app.makeLinux": "Linux インストーラー (.run)",
   "app.makingLinux": "Linux インストーラーを作成中: {done}%",
   "app.linuxDone": "Linux インストーラーができました: {file}。どの Linux でも実行できます（現在のユーザー用にインストールされ、sudo は不要）。ゲームが入っているので設定は不要です。",
@@ -585,7 +591,8 @@
   "app.pbpSpace": "PBPの変換にはアプリのキャッシュに700 MB以上の空き容量が必要です。",
   "app.convertingChd": "CHD {file} を変換中: {pct} %",
   "app.chdUnsupported": "未対応のCHD: {reason}",
-  "app.chdSpace": "CHDの変換にはアプリのキャッシュに700 MB以上の空き容量が必要です。"
+  "app.chdSpace": "CHDの変換にはアプリのキャッシュに700 MB以上の空き容量が必要です。",
+  "app.makeDisc": "ディスクイメージ（エミュレーター、PlayStation）"
  },
  "ca": {
   "app.title": "Horizon Patcher",
@@ -618,7 +625,7 @@
   "app.packageBad": "El paquet està malmès o no és el de la versió ({detail}). Torna'l a baixar.",
   "app.noPackage": "La versió {tag} no té cap paquet per baixar.",
   "app.packageOld": "El paquet d'Horizon {version} és més antic que aquesta aplicació. Baixa l'última versió, o fes servir el pedaçador de línia d'ordres que venia amb aquell paquet.",
-  "app.output": "Desa el disc nou a",
+  "app.output": "Desa a",
   "app.browse": "Canvia…",
   "app.ready": "A punt. Triga una estona: de 5 a 60 minuts, segons l'ordinador.",
   "app.cancel": "Atura",
@@ -643,7 +650,7 @@
   "app.makeMac": "App de Mac (.dmg)",
   "app.makingMac": "Creant l'app de Mac: {done}%",
   "app.macDone": "App de Mac a punt: {file}. Obre-la en un Mac i arrossega l'app a Aplicacions: porta el joc a dins, no cal configurar res. En un altre Mac, fes clic dret sobre l'app i tria Obre la primera vegada.",
-  "app.makeAs": "Crea un instal·lador:",
+  "app.makeAs": "Crea",
   "app.makeLinux": "Instal·lador de Linux (.run)",
   "app.makingLinux": "Creant l'instal·lador de Linux: {done}%",
   "app.linuxDone": "Instal·lador de Linux a punt: {file}. Executa'l en qualsevol Linux (s'instal·la per a l'usuari actual, sense sudo): porta el joc a dins, no cal configurar res.",
@@ -669,7 +676,8 @@
   "app.pbpSpace": "La conversió PBP necessita almenys 700 MB lliures a la memòria cau de l’aplicació.",
   "app.convertingChd": "Convertint CHD {file}: {pct} %",
   "app.chdUnsupported": "CHD no compatible: {reason}",
-  "app.chdSpace": "La conversió CHD necessita almenys 700 MB lliures a la memòria cau de l’aplicació."
+  "app.chdSpace": "La conversió CHD necessita almenys 700 MB lliures a la memòria cau de l’aplicació.",
+  "app.makeDisc": "Imatge de disc (emuladors, PlayStation)"
  },
  "zh-hans": {
   "app.title": "Horizon Patcher",
@@ -702,7 +710,7 @@
   "app.packageBad": "发布包已损坏，或与发布版本不符（{detail}）。请重新下载。",
   "app.noPackage": "版本{tag}没有可下载的发布包。",
   "app.packageOld": "Horizon {version}的发布包比此应用更旧。请下载最新版本，或使用该发布包附带的命令行补丁工具。",
-  "app.output": "新镜像保存位置",
+  "app.output": "保存位置",
   "app.browse": "更改……",
   "app.ready": "准备就绪。根据电脑性能，制作需要5至60分钟。",
   "app.cancel": "停止",
@@ -727,7 +735,7 @@
   "app.makeMac": "Mac 应用 (.dmg)",
   "app.makingMac": "正在制作 Mac 应用：{done}%",
   "app.macDone": "Mac 应用已完成：{file}。在 Mac 上打开并把应用拖到“应用程序”中：游戏已包含在内，无需任何设置。在另一台 Mac 上，第一次请右键点击应用并选择“打开”。",
-  "app.makeAs": "制作安装程序：",
+  "app.makeAs": "制作",
   "app.makeLinux": "Linux 安装程序 (.run)",
   "app.makingLinux": "正在制作 Linux 安装程序：{done}%",
   "app.linuxDone": "Linux 安装程序已完成：{file}。可在任何 Linux 电脑上运行（为当前用户安装，无需 sudo）：游戏已包含在内，无需任何设置。",
@@ -753,6 +761,7 @@
   "app.pbpSpace": "PBP转换需要在应用缓存中保留至少700 MB可用空间。",
   "app.convertingChd": "正在转换CHD {file}：{pct} %",
   "app.chdUnsupported": "不支持的CHD：{reason}",
-  "app.chdSpace": "CHD转换需要在应用缓存中保留至少700 MB可用空间。"
+  "app.chdSpace": "CHD转换需要在应用缓存中保留至少700 MB可用空间。",
+  "app.makeDisc": "光盘镜像（模拟器、PlayStation）"
  }
 }

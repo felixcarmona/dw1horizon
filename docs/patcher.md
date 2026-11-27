@@ -147,8 +147,11 @@ side is in [release/README-players.md](release/README-players.md#the-desktop-app
 All three apps carry Horizon Play ([player.md](player.md)): after a build, **Play** starts the new disc in it, already
 set up (8 MB, CPU 250 %, upscaled, full screen).
 
-After a build the finish page offers four installer buttons: **Android app (.apk)**, **Windows installer (.exe)**,
-**Mac app** and **Linux installer (.run)**. The patcher does not carry their templates: each is a release asset
+What the patcher makes is chosen in its **Make** box, one button each: **Disc image (emulators, PlayStation)** (the
+.bin/.cue), then the installers with that disc inside: **Android app (.apk)**, **Windows installer (.exe)**, **Mac app**
+and **Linux installer (.run)**. All of them write into the **Save in** folder. An installer button uses the disc the
+patcher built last in this session when it came from the same discs and package and is still there; otherwise it
+builds the disc first (which stays in the folder, so **Play** works too). The patcher does not carry their templates: each is a release asset
 (`Horizon-Play.apk`, `Horizon-Setup.exe`, `Horizon-Play-macOS.zip`, `Horizon-Play-Linux-x86_64.tar.gz`), downloaded
 from the same release as the game package when a button is first used (`desktop.template`), checked against the digest
 GitHub publishes for the asset, and cached by tag in the settings folder (`templates/<tag>/`), so later builds and

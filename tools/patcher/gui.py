@@ -107,6 +107,11 @@ def system_language():
     return 'en'
 
 
+# what the make buttons make, in their order: the disc image first, then the installers with it inside
+MAKERS = (('disc', 'app.makeDisc'), ('apk', 'app.makeApk'), ('setup', 'app.makeSetup'), ('mac', 'app.makeMac'),
+          ('linux', 'app.makeLinux'))
+
+
 # ---------------------------------------------------------------- the window
 class App:
     def __init__(self, root, config):
@@ -123,6 +128,7 @@ class App:
         self.cancel = threading.Event()
         self.patcher = None
         self.result = None
+        self.built = None                 # (inputs, cue, package version) of the disc this session built last
         self.lang = config.get('language') or system_language()
         self.t = Strings(self.lang)
         self._style()
@@ -230,21 +236,33 @@ class App:
         self.out_button = ttk.Button(out, text=t('app.browse'), command=self._browse)
         self.out_button.grid(row=0, column=1, padx=(8, 0))
 
+        # what can be made, each its own button: the disc image, and the installers with that disc inside (the
+        # disc is built first when this session has not built it from the same discs and package)
+        make = ttk.LabelFrame(outer, text=t('app.makeAs'), padding=(12, 8))
+        make.grid(row=4, column=0, sticky='ew', pady=(16, 0))
+        make.columnconfigure((0, 1), weight=1, uniform='makers')
+        self.make_buttons = []
+        for i, (kind, key) in enumerate(MAKERS):
+            b = ttk.Button(make, text=t(key), style='Build.TButton' if kind == 'disc' else 'TButton',
+                           command=lambda kind=kind: self._make(kind))
+            if i == 0:   # the disc image on a row of its own, the four installers two to a row under it
+                b.grid(row=0, column=0, columnspan=2, sticky='ew', pady=(0, 6))
+            else:
+                b.grid(row=1 + (i - 1) // 2, column=(i - 1) % 2, sticky='ew', padx=(0, 6) if i % 2 else (0, 0), pady=(0, 6))
+            self.make_buttons.append(b)
         run = ttk.Frame(outer)
-        run.grid(row=4, column=0, sticky='ew', pady=(16, 0))
-        run.columnconfigure(1, weight=1, minsize=WRAP_LEAST + 24)
-        self.build_button = ttk.Button(run, text=t('patch.button'), style='Build.TButton', command=self._build_disc)
-        self.build_button.grid(row=0, column=0, rowspan=2, sticky='w')
+        run.grid(row=5, column=0, sticky='ew', pady=(8, 0))
+        run.columnconfigure(0, weight=1, minsize=WRAP_LEAST + 24)
         self.why_label = self._wrap(ttk.Label(run, text='', style='Muted.TLabel', justify='left'))
-        self.why_label.grid(row=0, column=1, sticky='ew', padx=12)
+        self.why_label.grid(row=0, column=0, sticky='ew')
         self.progress = ttk.Progressbar(run, maximum=1000, mode='determinate')
-        self.progress.grid(row=1, column=1, sticky='ew', padx=12)
+        self.progress.grid(row=1, column=0, sticky='ew')
         self.stop_button = ttk.Button(run, text=t('app.cancel'), command=self._stop)
-        self.stop_button.grid(row=0, column=2, rowspan=2)
+        self.stop_button.grid(row=0, column=1, rowspan=2, padx=(12, 0))
         self.stage = self._wrap(ttk.Label(outer, text='', justify='left'))
-        self.stage.grid(row=5, column=0, sticky='ew', pady=(8, 0))
+        self.stage.grid(row=6, column=0, sticky='ew', pady=(8, 0))
         self.finish = ttk.Frame(outer)
-        self.finish.grid(row=6, column=0, sticky='w', pady=(8, 0))
+        self.finish.grid(row=7, column=0, sticky='w', pady=(8, 0))
         self._refresh()
         self.root.update_idletasks()
         # The narrowest the window may be: what the buttons and names need with the texts wrapped at their least.
@@ -366,7 +384,8 @@ class App:
         else:
             why = t('app.ready')
         self.why_label.configure(text=why)
-        self.build_button.state(['!disabled'] if idle and not missing else ['disabled'])
+        for b in self.make_buttons:
+            b.state(['!disabled'] if idle and not missing else ['disabled'])
         self.stop_button.state(['!disabled'] if self.busy in ('build', 'download', 'check') and not self.cancel.is_set()
                                else ['disabled'])
 
@@ -662,7 +681,23 @@ class App:
         self.t = Strings(code)
         self._build()
 
-    def _build_disc(self):
+    def _make(self, kind):
+        """A make button: the disc image, or an installer with the disc inside. An installer uses the disc this
+        session built last when it came from the same discs and package and is still there; else the disc is built
+        first."""
+        if kind != 'disc' and self.built and self.built[0] == self._inputs() and os.path.isfile(self.built[1]):
+            for w in self.finish.winfo_children():
+                w.destroy()
+            self._spawn(self._job_make, kind, self.built[1], self.built[2], busy='build')
+            return
+        self._build_disc(None if kind == 'disc' else kind)
+
+    def _inputs(self):
+        """What a built disc depends on: the discs (path, size, time) and the package."""
+        discs = tuple(sorted((g, r.get('path'), r.get('size'), r.get('mtime_ns')) for g, r in self.slots.items()))
+        return discs, (self.package or {}).get('folder')
+
+    def _build_disc(self, then=None):
         out = self.output_folder()
         problems = desktop.space_problems(out)
         for game, r in list(self.slots.items()):
@@ -683,9 +718,9 @@ class App:
                 return
         for w in self.finish.winfo_children():
             w.destroy()
-        self._spawn(self._job_build, out, busy='build')
+        self._spawn(self._job_build, out, then, busy='build')
 
-    def _job_build(self, out):
+    def _job_build(self, out, then=None):
         """Build pressed: the latest release is asked for (a newer one is downloaded first, a package file the
         player chose is kept); offline, the package already here is used."""
         package = self.package
@@ -715,9 +750,12 @@ class App:
             return
         finally:
             self.patcher = None
-        self.events.put(('built', result))
+        self.events.put(('built', result, package['version']))
+        if then:   # an installer button: the installer now, from this disc
+            self._job_make(then, result['cue'], package['version'])
 
-    def _on_built(self, result):
+    def _on_built(self, result, version=None):
+        self.built = (self._inputs(), result['cue'], version)
         self.progress['value'] = 1000
         self.stage.configure(text=self.t('app.done', file=os.path.basename(result['cue'])) + '\n' + result['cue'],
                              style='Ok.TLabel')
@@ -748,22 +786,12 @@ class App:
             if ok:
                 ttk.Button(self.finish, text=self.t(text), style=style, command=cmd).grid(row=0, column=col, padx=(0, 6))
                 col += 1
-        # the installers that put the built disc inside: a second row, so that nothing is cut at the window's width
-        makers = [(self.t(key), kind) for kind, key in (('apk', 'app.makeApk'), ('setup', 'app.makeSetup'),
-                                                         ('mac', 'app.makeMac'), ('linux', 'app.makeLinux'))]
-        if cue and makers:
-            row = ttk.Frame(self.finish)
-            row.grid(row=1, column=0, columnspan=3, sticky='w', pady=(8, 0))
-            ttk.Label(row, text=self.t('app.makeAs')).grid(row=0, column=0, columnspan=2, sticky='w', pady=(0, 4))
-            for i, (text, kind) in enumerate(makers):   # two to a row
-                ttk.Button(row, text=text, command=lambda kind=kind: self.busy or self._spawn(self._job_make, kind, cue, busy='build')
-                           ).grid(row=1 + i // 2, column=i % 2, sticky='ew', padx=(0, 6), pady=(0, 4))
-            row.columnconfigure((0, 1), uniform='makers')
 
-    def _job_make(self, kind, cue):
-        """An installer with the built disc inside: the template comes from the release of the package in use."""
+    def _job_make(self, kind, cue, version=None):
+        """An installer with the built disc inside: the template comes from the release of the package it was
+        built with."""
         names = dict(apk='app.makingApk', setup='app.makingSetup', mac='app.makingMac', linux='app.makingLinux')
-        version = (self.package or {}).get('version') or ''
+        version = version or (self.package or {}).get('version') or ''
         tag = 'v' + version.lstrip('v')
 
         def fetching(done, total):
