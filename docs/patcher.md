@@ -213,6 +213,27 @@ computers only. Details in [player.md](player.md#a-setup-wizard).
   and "Open the log". The free space of the temporary folder (the build tree, about 700 MB; 2 GB asked) and of the
   output folder (1 GB) is checked before the build starts.
 
+### From a terminal: everything at once
+
+`tools/patcher/make_cli.py` does what the make buttons do, with no window: the discs in, the patched disc and every
+installer out. The frozen app runs the same code when `--make` comes first.
+
+```sh
+python3 tools/patcher/make_cli.py DW1.cue DCB.cue DW2.cue DW2003.cue --out OUT        # disc, .apk, .exe, Mac, .run
+"/Applications/Horizon Patcher.app/Contents/MacOS/Horizon Patcher" --make DISC... --out OUT   # the same, frozen
+python3 tools/patcher/make_cli.py DISC... --out OUT --only disc,apk                    # some of them
+python3 tools/patcher/make_cli.py DISC... --out OUT --package horizon-package.tar.gz --templates TEMPLATES/
+```
+
+The discs go in any order and are recognised as the window's drop recognises them; all four are needed. The package
+is the latest release's unless `--package` names a file, and the templates are that release's unless `--templates`
+names a folder that holds them under their release names (`Horizon-Play.apk`, `Horizon-Setup.exe`,
+`Horizon-Play-macOS.zip` or a Horizon Play `.app`, `Horizon-Play-Linux-x86_64.tar.gz`): CI's artifacts, for a build
+that is not released. The disc is built once and kept in the cache folder, as the window keeps it
+(`HORIZON_PATCHER_HOME` moves that folder). Progress goes to stderr, one line per thing made to stdout; the exit code is
+0 when everything asked for was made. (The Windows app is a windowed program: run from a terminal it prints nothing,
+but its exit code and files are the same.)
+
 ### The frozen app is its own Python
 
 dwpatch starts `sys.executable` as Python: `-m tools.derive ...` (macOS, Linux), `-c GATE tools.derive ...` with

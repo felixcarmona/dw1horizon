@@ -881,14 +881,15 @@ def template(kind, tag, progress=None, cancel=None):
     return os.path.join(result, [n for n in os.listdir(result) if n.endswith('.app')][0])
 
 
-def make(kind, cue, tag, progress=None, fetching=None, cancel=None, out_dir=None):
+def make(kind, cue, tag, progress=None, fetching=None, cancel=None, out_dir=None, source=None):
     """The installer of `kind` (apk, setup, mac, linux) with the built disc inside, in out_dir (default: next to the
-    disc) -> its path. fetching(done, total) follows the template's download, progress(done, total) the build."""
+    disc) -> its path. fetching(done, total) follows the template's download, progress(done, total) the build.
+    source: the template to use instead of the release's (make_cli.py --templates)."""
     try:
         from . import apk, setup_exe, mac_app, linux_run
     except ImportError:
         import apk, setup_exe, mac_app, linux_run
-    source = template(kind, tag, fetching, cancel)
+    source = source or template(kind, tag, fetching, cancel)
     base = os.path.splitext(os.path.abspath(cue))[0]
     if out_dir:
         base = os.path.join(out_dir, os.path.basename(base))

@@ -106,7 +106,7 @@ def spec(work, a, ver):
              (os.path.join(ROOT, 'tools', 'patcher', 'android-key.json'), '.')]   # apk.SHARED_KEY, beside apk
     if a.player and sys.platform != 'darwin':      # Horizon Play (tools/player/build.py --out DIR); macOS: nest_player
         datas.append((os.path.abspath(a.player), 'player'))
-    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk', 'setup_exe', 'mac_app', 'linux_run']
+    hidden = stdlib_modules() + ['desktop', 'selftest', 'make_cli', 'dwpatch', 'make_icons', 'apk', 'setup_exe', 'mac_app', 'linux_run']
     if sys.platform == 'darwin':
         hidden.append('certifi')
     icon = None if sys.platform.startswith('linux') else os.path.join(icons, 'icon.ico' if os.name == 'nt' else 'icon.icns')
