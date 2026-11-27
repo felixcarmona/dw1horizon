@@ -701,5 +701,20 @@
   "wiki.pdfContents": "Inhalt",
   "wiki.pdfSpoilers": "SPOILER — Anhang",
  "data.recruit.method.263.unreachable": "Diese Version platziert Mushroomon in einem ungenutzten Sporengebiet ohne Zugang zu Fuß. Aktualisiere auf eine Version mit der Korrektur für Mushroomons Rekrutierung.",
- "data.recruit.when.263.unreachable": "In dieser Version im normalen Spiel unerreichbar. Warten oder ein Gegenstand lässt es nicht erscheinen."
+ "data.recruit.when.263.unreachable": "In dieser Version im normalen Spiel unerreichbar. Warten oder ein Gegenstand lässt es nicht erscheinen.",
+ "make.title": "Fertig zum Spielen",
+ "make.lead": "Oder nimm Horizon Play, unseren Player, mit deiner Disc schon drin: installieren und spielen, ohne Emulator einzurichten. Er wird hier in deinem Browser aus der Disc erstellt, die du gerade erstellt hast.",
+ "make.fetch": "Horizon Play wird geladen…",
+ "make.making.apk": "Android-App wird erstellt",
+ "make.making.setup": "Windows-Installer wird erstellt",
+ "make.making.mac": "Mac-App wird erstellt",
+ "make.making.linux": "Linux-Installer wird erstellt",
+ "make.cancel": "Abbrechen",
+ "make.download": "{file} herunterladen ({mb} MB)",
+ "make.done.apk": "Kopiere sie aufs Handy oder Handheld und öffne sie zum Installieren (Android fragt eventuell einmal, ob Apps aus dieser Quelle erlaubt sind). Das Spiel ist enthalten, nichts einzurichten.",
+ "make.done.setup": "Starte ihn auf einem beliebigen Windows-Computer, um das Spiel und Horizon Play zu installieren. Sagt Windows, dass es die App nicht kennt, wähle Weitere Informationen und dann Trotzdem ausführen. Nichts einzurichten.",
+ "make.done.mac": "Entpacke es auf einem Mac und öffne die App. Sie ist nicht von Apple signiert: Beim ersten Mal mit Rechtsklick und Öffnen starten (oder xattr -cr darauf ausführen). Das Spiel ist enthalten.",
+ "make.done.linux": "Führe auf einem beliebigen Linux-Rechner sh \"{file}\" in einem Terminal aus. Er installiert für den aktuellen Benutzer (ohne sudo) und legt das Spiel ins Anwendungsmenü. Das Spiel ist enthalten.",
+ "make.failed": "Der Installer konnte nicht erstellt werden: {detail}",
+ "make.foot": "Er enthält deine eigene Kopie des Spiels: Behalte sie für dich. Dieser Browser behält nur den zuletzt erstellten."
 }

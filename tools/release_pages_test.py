@@ -220,6 +220,100 @@ class PublicationTests(unittest.TestCase):
             # the zips themselves are not part of the site
             self.assertFalse(any(p.suffix == '.zip' for p in out.rglob('*')))
 
+    def player_inputs(self, folder, kinds=tuple(pages.PLAYERS), digests=True, **changes):
+        """The installer templates and assets.json, as release.yml downloads them (synthetic bytes)."""
+        folder.mkdir(parents=True, exist_ok=True)
+        assets = []
+        for kind in kinds:
+            name = pages.PLAYERS[kind]
+            data = pages.PLAYER_MAGIC[kind] + f'synthetic {kind} template'.encode()
+            (folder / name).write_bytes(data)
+            assets.append(dict(name=name, size=len(data), digest='sha256:' + pages.digest(data) if digests else None))
+        assets.append(dict(name='horizon-package.tar.gz', size=1, digest=None))
+        for a in assets:
+            a.update(changes.get(a['name'], {}))
+        (folder / 'assets.json').write_text(json.dumps(assets))
+
+    def test_players(self):
+        with tempfile.TemporaryDirectory() as td:
+            folder, out = Path(td) / 'players', Path(td) / 'site'
+            # none on the release (up to v0.0.10): nothing offered, nothing written
+            self.assertIsNone(pages.players(folder, out, 'v1.2.3'))
+            self.player_inputs(folder)
+            got = pages.players(folder, out, 'v1.2.3')
+            self.assertEqual(sorted(got), sorted(pages.PLAYERS))
+            for kind, name in pages.PLAYERS.items():
+                data = (folder / name).read_bytes()
+                self.assertEqual(got[kind]['url'], f'players/v1.2.3/{name}')
+                self.assertEqual((out / got[kind]['url']).read_bytes(), data)
+                self.assertEqual((got[kind]['size'], got[kind]['sha256']), (len(data), pages.digest(data)))
+            # what the browser needs beside them: the shared APK key, the .run's header (with its SKIP), the icon
+            self.assertEqual((out / got['apk']['key']).read_bytes(),
+                             (pages.ROOT / 'tools/patcher/android-key.json').read_bytes())
+            header = (out / got['linux']['header']).read_text()
+            self.assertIn(f'SKIP={len(header.encode()):<10d}', header)
+            self.assertTrue((out / got['linux']['icon']).read_bytes().startswith(b'\x89PNG'))
+            # GitHub gives no digest: the size decides
+            out2 = Path(td) / 'site2'
+            self.player_inputs(folder, digests=False)
+            self.assertEqual(sorted(pages.players(folder, out2, 'v1.2.3')), sorted(pages.PLAYERS))
+
+    def test_players_bad_ones_are_left_out(self):
+        apk, linux = pages.PLAYERS['apk'], pages.PLAYERS['linux']
+        cases = {'missing': (lambda f: (f / linux).unlink(), {}),
+                 'size': (None, {linux: {'size': 1}}),
+                 'digest': (None, {linux: {'digest': 'sha256:' + '0' * 64}}),
+                 'not listed': (None, {linux: {'name': 'other'}}),
+                 'not a tarball': (lambda f: (f / linux).write_bytes(b'MZ'), {linux: {'size': 2, 'digest': None}})}
+        for what, (change, assets) in cases.items():
+            with self.subTest(what), tempfile.TemporaryDirectory() as td, \
+                    contextlib.redirect_stdout(io.StringIO()) as log:
+                folder, out = Path(td) / 'players', Path(td) / 'site'
+                self.player_inputs(folder, **assets)
+                if change:
+                    change(folder)
+                got = pages.players(folder, out, 'v1.2.3')
+                self.assertEqual(sorted(got), ['apk', 'mac', 'setup'])
+                self.assertFalse((out / 'players/v1.2.3/linux-run-header.sh').exists())
+                self.assertFalse((out / 'players/v1.2.3' / linux).exists())
+                if what != 'missing':
+                    self.assertIn('::warning::', log.getvalue())
+        # only Linux: no signing key on the site
+        with tempfile.TemporaryDirectory() as td:
+            folder, out = Path(td) / 'players', Path(td) / 'site'
+            self.player_inputs(folder, kinds=('linux',))
+            self.assertEqual(sorted(pages.players(folder, out, 'v1.2.3')), ['linux'])
+            self.assertFalse((out / 'players/v1.2.3/android-key.json').exists())
+            self.assertFalse((out / 'players/v1.2.3' / apk).exists())
+            # no list of the assets: nothing is offered
+            (folder / 'assets.json').unlink()
+            with contextlib.redirect_stdout(io.StringIO()) as log:
+                self.assertIsNone(pages.players(folder, Path(td) / 'site2', 'v1.2.3'))
+            self.assertIn('::warning::', log.getvalue())
+
+    def test_build_records_the_players(self):
+        package, engine = fixture(self.info)
+        with tempfile.TemporaryDirectory() as td:
+            inputs = Path(td) / 'inputs'
+            inputs.mkdir()
+            pages.write_archive(inputs / pages.PACKAGE, package)
+            pages.write_archive(inputs / pages.ENGINE, engine)
+            (inputs / 'horizon-checksums.json').write_text(json.dumps({
+                kind: {name: pages.digest(data) for name, data in entries.items()}
+                for kind, entries in [('package', package), ('engine', engine)]}))
+            self.player_inputs(inputs / 'players')
+            out = Path(td) / 'site'
+            with patch.object(pages.release, 'identity', return_value=self.info), \
+                    patch.object(pages, 'changelog_entry', return_value=dict(new=[], changed=[], fixed=[])), \
+                    patch.object(pages, 'page', side_effect=lambda dest: dest.mkdir()):
+                pages.build(SimpleNamespace(tag='v1.2.3', inputs=inputs, out=out))
+            cur = json.loads((out / 'engine/current.json').read_text())
+            self.assertEqual(sorted(cur['players']), sorted(pages.PLAYERS))
+            for entry in cur['players'].values():
+                self.assertTrue((out / entry['url']).is_file())
+            # outside the engine's own folder (immutable, checked against its plan)
+            self.assertFalse(any('players' in p.parts for p in (out / 'engine').rglob('*')))
+
     def test_identity_and_pack_corruption(self):
         package, engine = fixture(self.info)
         pages.validate(package, engine, self.info)

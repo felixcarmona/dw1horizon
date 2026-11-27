@@ -701,5 +701,20 @@
   "wiki.pdfContents": "目录",
   "wiki.pdfSpoilers": "剧透 — 附录",
  "data.recruit.method.263.unreachable": "此版本将Mushroomon放在一处没有步行入口的未使用孢子区。请更新到包含Mushroomon招募修复的版本。",
- "data.recruit.when.263.unreachable": "此版本中正常游玩无法到达；等待或携带道具都不会使其出现。"
+ "data.recruit.when.263.unreachable": "此版本中正常游玩无法到达；等待或携带道具都不会使其出现。",
+ "make.title": "直接开玩",
+ "make.lead": "或者获取已装好你的光盘的 Horizon Play 播放器：安装后即可游玩，无需设置模拟器。它就在你的浏览器里，用你刚做好的光盘制作。",
+ "make.fetch": "正在下载 Horizon Play…",
+ "make.making.apk": "正在制作安卓应用",
+ "make.making.setup": "正在制作 Windows 安装程序",
+ "make.making.mac": "正在制作 Mac 应用",
+ "make.making.linux": "正在制作 Linux 安装程序",
+ "make.cancel": "取消",
+ "make.download": "下载 {file}（{mb} MB）",
+ "make.done.apk": "复制到手机或掌机上打开即可安装（安卓可能会询问一次是否允许安装来自该来源的应用）。游戏已包含在内，无需任何设置。",
+ "make.done.setup": "在任何 Windows 电脑上运行即可安装游戏和 Horizon Play。如果 Windows 提示无法识别该应用，请选择“更多信息”，再选“仍要运行”。无需任何设置。",
+ "make.done.mac": "在 Mac 上解压并打开应用。由于没有 Apple 签名，第一次请右键点击它并选择“打开”（或对它运行 xattr -cr）。游戏已包含在内。",
+ "make.done.linux": "在任何 Linux 电脑的终端中运行 sh \"{file}\"。它会为当前用户安装（无需 sudo），并把游戏加入应用程序菜单。游戏已包含在内。",
+ "make.failed": "无法制作安装程序：{detail}",
+ "make.foot": "其中是你自己的游戏副本：请勿分享。本浏览器只保留最后制作的那一个。"
 }

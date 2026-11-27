@@ -128,6 +128,24 @@
             <p class="build-parts"><span data-i18n="build.downloadParts"></span>
               <a id="dl-bin" href="#" data-i18n="build.partBin"></a> · <a id="dl-cue" href="#" data-i18n="build.partCue"></a></p>
             <p id="build-sha" class="build-sha"></p>
+            <!-- Ready to play (js/app.js renderMake): Horizon Play with this disc inside, made here for each system
+                 the served release has a template of (engine/current.json players). -->
+            <section id="make" class="make" aria-labelledby="make-title" hidden>
+              <h3 id="make-title" data-i18n="make.title"></h3>
+              <p class="make-lead" data-i18n="make.lead"></p>
+              <div id="make-tiles" class="make-tiles"></div>
+              <div id="make-run" class="make-run" hidden>
+                <div class="build-head"><b id="make-phase" role="status" aria-live="polite"></b><span id="make-pct" class="build-time"></span></div>
+                <div id="make-progress" class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+                <button id="make-stop" class="link-button" type="button" data-i18n="make.cancel"></button>
+              </div>
+              <div id="make-done" class="make-done" hidden>
+                <a id="make-dl" class="button primary" href="#"></a>
+                <p id="make-note" class="build-note"></p>
+              </div>
+              <div id="make-error" class="build-error" role="alert" hidden></div>
+              <p class="make-foot" data-i18n="make.foot"></p>
+            </section>
           </div>
           <div class="build-foot">
             <button id="build-stop" class="link-button" type="button" data-i18n="build.stop"></button>

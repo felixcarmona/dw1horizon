@@ -701,5 +701,20 @@
   "wiki.pdfContents": "目次",
   "wiki.pdfSpoilers": "ネタバレ — 付録",
  "data.recruit.method.263.unreachable": "このバージョンでは、徒歩で入れない未使用の胞子地帯にMushroomonが配置されています。仲間加入の修正を含むバージョンに更新してください。",
- "data.recruit.when.263.unreachable": "このバージョンでは通常のプレイでは到達できません。待ったりアイテムを持参したりしても出現しません。"
+ "data.recruit.when.263.unreachable": "このバージョンでは通常のプレイでは到達できません。待ったりアイテムを持参したりしても出現しません。",
+ "make.title": "すぐに遊べる形で",
+ "make.lead": "または、ディスクを入れた状態のプレイヤー Horizon Play をどうぞ。インストールするだけで遊べて、エミュレーターの設定は要りません。いま作ったディスクから、このブラウザーの中で作成します。",
+ "make.fetch": "Horizon Play をダウンロード中…",
+ "make.making.apk": "Android アプリを作成中",
+ "make.making.setup": "Windows インストーラーを作成中",
+ "make.making.mac": "Mac アプリを作成中",
+ "make.making.linux": "Linux インストーラーを作成中",
+ "make.cancel": "キャンセル",
+ "make.download": "{file} をダウンロード（{mb} MB）",
+ "make.done.apk": "スマートフォンや携帯機にコピーして開くとインストールされます（このソースからのアプリを許可するよう Android に一度求められることがあります）。ゲームが入っているので設定は不要です。",
+ "make.done.setup": "Windows のパソコンで実行すると、ゲームと Horizon Play がインストールされます。Windows が「認識できないアプリ」と表示したら、「詳細情報」から「実行」を選んでください。設定は不要です。",
+ "make.done.mac": "Mac で展開してアプリを開いてください。Apple の署名がないため、初回はアプリを右クリックして「開く」を選ぶか、xattr -cr を実行してください。ゲームが入っています。",
+ "make.done.linux": "どの Linux でも、ターミナルで sh \"{file}\" を実行してください。現在のユーザー用にインストールされ（sudo は不要）、アプリケーションメニューにゲームが追加されます。ゲームが入っています。",
+ "make.failed": "インストーラーを作成できませんでした: {detail}",
+ "make.foot": "あなた自身のゲームのコピーが入っています。他の人には渡さないでください。このブラウザーには最後に作ったものだけが残ります。"
 }

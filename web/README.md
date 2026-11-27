@@ -105,6 +105,26 @@ browser builder and `dwpatch.py`; phones and tablets get one line that the apps 
 is notarized (`notarized: true`) its Gatekeeper steps become one line; the "not signed yet" note stays while either
 app is unsigned. `node web/test/desktop.mjs URL [SHOTS]` checks it with fixtures for `current.json` (no discs).
 
+## Installers with the disc inside
+
+After a build, "Ready to play" (`#make` in the build's done panel, `renderMake` in `js/app.js`) makes the same four
+installers as the desktop patcher's Make box: Android (`.apk`), Windows (`.exe`), Mac (`.zip` with the app) and Linux
+(`.run`), each Horizon Play (docs/player.md) with the disc just built inside. `js/installers.js` puts them together
+the way `tools/patcher/apk.py`, `setup_exe.py`, `mac_app.py` and `linux_run.py` do (the APK and the setup byte for
+byte, signed with the same public key); `js/installer-worker.js` runs it off the page's thread and writes the result
+to OPFS (`horizon-build/installers/`, one at a time: each holds the whole disc), under the build's lock and after the
+free-space check, with progress and Cancel. The download link names it as the desktop does
+(`Digimon World Horizon.apk`, `-Setup.exe`, `-Mac.zip`, `-Linux.run`). The disc never leaves the browser.
+
+GitHub's release downloads send no CORS headers, so the templates are served by the site: `release.yml` downloads
+the release's `Horizon-Play.apk`, `Horizon-Setup.exe`, `Horizon-Play-macOS.zip` and
+`Horizon-Play-Linux-x86_64.tar.gz` with the digests GitHub publishes for them, and `tools/release_pages.py`
+(`players`) copies the ones that match into `players/<tag>/` and lists them in `engine/current.json` `players`
+(url, size, SHA-256; the APK with `android-key.json`, Linux with `linux-run-header.sh` and `icon.png`). A missing or
+mismatched template leaves out only its tile; with none, the section does not show. The worker checks each template's
+size and SHA-256 before using it. `node web/test/installers.mjs` compares the four with the Python makers on a
+synthetic disc and synthetic templates.
+
 ## Remembered discs
 
 A returning player builds a new release without giving the four discs again (`js/remember.js`, `js/app.js`

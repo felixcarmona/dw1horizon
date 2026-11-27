@@ -102,6 +102,13 @@ exit 0
 '''
 
 
+def header():
+    """The .run's sh header, its SKIP filled in (the header's own length: the tar.gz starts right after it). The web
+    patcher serves this text beside the Linux template (tools/release_pages.py) and writes the same .run in the browser."""
+    text = HEADER.format(name=NAME, skip=0)
+    return HEADER.format(name=NAME, skip=len(text.encode()))
+
+
 class LinuxRunError(Exception):
     pass
 
@@ -170,13 +177,12 @@ def build(player, cue, out, progress=None):
         sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app'))
         import make_icons
     icon = make_icons.png(256)
-    header = HEADER.format(name=NAME, skip=0)
-    header = HEADER.format(name=NAME, skip=len(header.encode()))
+    head = header()
     seen = set()
     tmp = out + '.new'
     try:
         with open(tmp, 'wb') as raw:
-            raw.write(header.encode())
+            raw.write(head.encode())
             # gzip by hand: tarfile's stream mode takes no compresslevel before Python 3.12
             with gzip.GzipFile(fileobj=raw, mode='wb', compresslevel=LEVEL, mtime=0) as gz, \
                     tarfile.open(fileobj=gz, mode='w|', format=tarfile.GNU_FORMAT) as tar:

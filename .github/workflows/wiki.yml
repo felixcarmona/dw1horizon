@@ -1,10 +1,10 @@
 name: Wiki guides
 on:
   pull_request:
-    paths: ['web/**', 'tools/wiki/**', 'tools/guide/**', '.github/workflows/wiki.yml', '.github/workflows/release.yml']
+    paths: ['web/**', 'tools/wiki/**', 'tools/guide/**', 'tools/release_pages.py', 'tools/release_pages_test.py', 'tools/patcher/apk.py', 'tools/patcher/setup_exe.py', 'tools/patcher/mac_app.py', 'tools/patcher/linux_run.py', '.github/workflows/wiki.yml', '.github/workflows/release.yml']
   push:
     branches: [main]
-    paths: ['web/**', 'tools/wiki/**', 'tools/guide/**', '.github/workflows/wiki.yml', '.github/workflows/release.yml']
+    paths: ['web/**', 'tools/wiki/**', 'tools/guide/**', 'tools/release_pages.py', 'tools/release_pages_test.py', 'tools/patcher/apk.py', 'tools/patcher/setup_exe.py', 'tools/patcher/mac_app.py', 'tools/patcher/linux_run.py', '.github/workflows/wiki.yml', '.github/workflows/release.yml']
 permissions:
   contents: read
 jobs:
@@ -57,4 +57,5 @@ jobs:
           python3 -m unittest discover -s tools/guide -p 'test_*.py'
           python3 tools/release_pages_test.py
           node web/test/i18n.mjs
+          node web/test/installers.mjs
           node web/test/wiki.mjs build/pages-site

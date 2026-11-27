@@ -701,5 +701,20 @@
   "wiki.pdfContents": "Sumário",
   "wiki.pdfSpoilers": "SPOILERS — apêndice",
  "data.recruit.method.263.unreachable": "Esta versão coloca Mushroomon em uma Área de Esporos sem entrada a pé. Atualize para uma versão com a correção do recrutamento de Mushroomon.",
- "data.recruit.when.263.unreachable": "Inacessível jogando normalmente nesta versão; esperar ou levar um item não fará com que apareça."
+ "data.recruit.when.263.unreachable": "Inacessível jogando normalmente nesta versão; esperar ou levar um item não fará com que apareça.",
+ "make.title": "Pronto para jogar",
+ "make.lead": "Ou leve o Horizon Play, nosso player, com o seu disco já dentro: instale e jogue, sem emulador para configurar. Ele é criado aqui no seu navegador a partir do disco que você acabou de criar.",
+ "make.fetch": "Baixando o Horizon Play…",
+ "make.making.apk": "Criando o app Android",
+ "make.making.setup": "Criando o instalador do Windows",
+ "make.making.mac": "Criando o app para Mac",
+ "make.making.linux": "Criando o instalador do Linux",
+ "make.cancel": "Cancelar",
+ "make.download": "Baixar {file} ({mb} MB)",
+ "make.done.apk": "Copie para o celular ou portátil e abra para instalar (o Android pode pedir uma vez para permitir apps dessa origem). O jogo vem dentro, nada para configurar.",
+ "make.done.setup": "Execute em qualquer computador com Windows para instalar o jogo e o Horizon Play. Se o Windows disser que não reconhece o app, escolha Mais informações e depois Executar assim mesmo. Nada para configurar.",
+ "make.done.mac": "Descompacte em um Mac e abra o app. Ele não é assinado pela Apple, então na primeira vez clique nele com o botão direito e escolha Abrir (ou execute xattr -cr nele). O jogo vem dentro.",
+ "make.done.linux": "Em qualquer Linux, execute sh \"{file}\" num terminal. Ele instala para o usuário atual (sem sudo) e coloca o jogo no menu de aplicativos. O jogo vem dentro.",
+ "make.failed": "Não foi possível criar o instalador: {detail}",
+ "make.foot": "Ele contém a sua própria cópia do jogo: não compartilhe. Este navegador guarda só o último criado."
 }

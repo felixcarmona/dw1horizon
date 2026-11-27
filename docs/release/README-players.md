@@ -6,7 +6,8 @@ The release is the "everything" version: every feature of the mod, the story mod
 
 There are three ways to make the disc, all with the same four discs and the same checks:
 
-- the browser builder at [dw1horizon.com](https://dw1horizon.com): nothing to install;
+- the browser builder at [dw1horizon.com](https://dw1horizon.com): nothing to install, and after the build it can
+  also make an Android, Windows, Mac or Linux installer with Horizon Play and your disc inside;
 - the desktop app, Horizon Patcher, for Windows, macOS and Linux: no Python needed (below);
 - the command-line patcher in this package, with Python (from "Bring your own disc" on).
 

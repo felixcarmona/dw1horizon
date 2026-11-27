@@ -152,7 +152,7 @@ def _copy(src, dst, n, progress=None):
             progress(len(b))
 
 
-def _write_zip(template, disc, out, progress=None):
+def _write_zip(template, disc, out, progress=None, date_time=None):
     """Writes the unsigned APK to `out` (a file open for w+b); returns the central directory's offset."""
     central = []
     with open(template, 'rb') as t, zipfile.ZipFile(template) as z:
@@ -180,7 +180,7 @@ def _write_zip(template, disc, out, progress=None):
             if progress:
                 progress(len(b) // 2)
     with open(disc, 'rb') as d:
-        central.append(_entry(out, DISC_ENTRY.encode(), zipfile.ZIP_STORED, crc, size, size, time.localtime()[:6],
+        central.append(_entry(out, DISC_ENTRY.encode(), zipfile.ZIP_STORED, crc, size, size, date_time or time.localtime()[:6],
                               4096, lambda o: _copy(d, o, size, progress and (lambda n: progress(n - n // 2)))))
     cd = out.tell()
     for c in central:
@@ -249,7 +249,7 @@ def sign_v2(f, cd, key, progress=None):
     f.truncate()
 
 
-def build(template, disc, out, key_path=None, progress=None):
+def build(template, disc, out, key_path=None, progress=None, date_time=None):
     """The APK with `disc` inside, at `out`. `progress(n)` is called with byte counts (twice the disc in total)."""
     size = os.path.getsize(disc)
     if size == 0 or size % 2352:
@@ -260,7 +260,7 @@ def build(template, disc, out, key_path=None, progress=None):
     tmp = out + '.part'
     try:
         with open(tmp, 'w+b') as f:
-            cd = _write_zip(template, disc, f, progress)
+            cd = _write_zip(template, disc, f, progress, date_time)
             sign_v2(f, cd, key, progress)
         os.replace(tmp, out)
     finally:
