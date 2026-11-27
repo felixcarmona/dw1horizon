@@ -984,6 +984,21 @@ class MacApp(unittest.TestCase):
                 with self.assertRaisesRegex(mac_app.MacAppError, 'only be made on a Mac'):
                     mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.dmg'))
 
+    @unittest.skipIf(os.name == 'nt', 'a sh stand-in for hdiutil')
+    def test_dmg_compression_moves_the_bar(self):
+        """hdiutil's PERCENT lines carry the bar from the copied disc to the end, not 100% while it compresses."""
+        with tempfile.TemporaryDirectory() as d:
+            fake = Path(d) / 'hdiutil'
+            fake.write_text('#!/bin/sh\necho "$2"\necho PERCENT:-1\necho PERCENT:40.5\necho PERCENT:90\n'
+                            '[ "$3" = fail ] && { echo no room >&2; exit 1; }\nexit 0\n')
+            fake.chmod(0o755)
+            ticks = []
+            with patch.dict(os.environ, PATH=d + os.pathsep + os.environ['PATH']):
+                mac_app.hdiutil(['create', 'x'], 1000, ticks.append)
+                self.assertEqual(ticks, [405, 495, 100])
+                with self.assertRaisesRegex(mac_app.MacAppError, 'hdiutil: -puppetstrings\nno room'):
+                    mac_app.hdiutil(['create', 'fail'], 1000, ticks.append)
+
 
 class LinuxRun(unittest.TestCase):
     """The Linux self-extracting installer (tools/patcher/linux_run.py)."""

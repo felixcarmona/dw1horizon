@@ -108,6 +108,27 @@ def zip_app(app, out, tick=lambda n: None):
                             tick(len(block))
 
 
+def hdiutil(args, size, tick):
+    """Run hdiutil with -puppetstrings: its PERCENT:n lines move the bar through SIZE (compressing takes minutes)."""
+    p = subprocess.Popen(['hdiutil'] + args[:1] + ['-puppetstrings'] + args[1:], stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT, text=True)
+    shown, out = 0, []
+    for line in p.stdout:
+        if line.startswith('PERCENT:'):
+            try:
+                pct = float(line[8:])
+            except ValueError:
+                continue
+            if 0 <= pct <= 100 and int(size * pct / 100) > shown:
+                tick(int(size * pct / 100) - shown)
+                shown = int(size * pct / 100)
+        else:
+            out.append(line)
+    if p.wait():
+        raise MacAppError('hdiutil: ' + (''.join(out).strip() or 'failed'))
+    tick(size - shown)
+
+
 def build(template, cue, out, progress=None):
     """Write OUT: a .dmg (Mac only), a .zip or a bare .app folder, chosen by its name. progress(done, total)."""
     out = os.path.abspath(out)
@@ -117,7 +138,7 @@ def build(template, cue, out, progress=None):
     if kind == '.dmg' and sys.platform != 'darwin':
         raise MacAppError('a .dmg can only be made on a Mac (hdiutil); make a .zip here')
     size = os.path.getsize(setup_exe.read_cue(cue)[1])
-    total = size * (2 if kind == '.zip' else 1)
+    total = size * (1 if kind == '.app' else 2)   # copying the disc in, then zipping or compressing it
     done = [0]
 
     def tick(n):
@@ -140,10 +161,7 @@ def build(template, cue, out, progress=None):
             os.symlink('/Applications', os.path.join(stage, 'Applications'))
             if os.path.exists(tmp):
                 os.remove(tmp)
-            r = subprocess.run(['hdiutil', 'create', '-volname', NAME, '-srcfolder', stage, '-format', 'UDZO', '-ov', tmp],
-                               capture_output=True, text=True)
-            if r.returncode:
-                raise MacAppError('hdiutil: ' + (r.stderr.strip() or r.stdout.strip() or 'failed'))
+            hdiutil(['create', '-volname', NAME, '-srcfolder', stage, '-format', 'UDZO', '-ov', tmp], size, tick)
             if not os.path.exists(tmp) and os.path.exists(tmp + '.dmg'):   # hdiutil adds .dmg when it is missing
                 tmp += '.dmg'
         os.replace(tmp, out)
