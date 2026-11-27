@@ -428,6 +428,11 @@ $PY tools/build-disc.py "$NAME" --from "$O/exe" --relayout "${SEEK[@]}" --derive
   | awk '/^SCN\/.*sectors more than the original/ { print } { last[NR % 3] = $0 } END { for (i = NR - 2; i <= NR; i++) if (i > 0) print last[i % 3] }'
 # (a file that outgrows its sectors, DG.SCN with a long translation: the files after it move and FILE_OFFSET_TABLE is
 # rewritten; docs/mods/dws.md "If DG.SCN grows")
+# the language patches as the disc has them: build-disc.py wrote the sectors of each language's copies into their slot
+# rows (file_table_us.c LANG_SLOT), as it does into FILE_OFFSET_TABLE; the release's checks compare the disc's with these
+if [ "$LANG_ON" = 1 ]; then
+  for f in "$ROOT/build/disc-$NAME/SCN/"LANG??.BIN; do cmp -s "$f" "$O/lang/${f##*/}" || cp "$f" "$O/lang/"; done
+fi
 # the BIOS reads only the root directory's first sector: SYSTEM.CNF must be in it, or the disc does not boot
 $PY - "$ROOT/build/$NAME.bin" <<'PYEOF'
 import struct, sys

@@ -823,6 +823,10 @@ is one more `FILE_OFFSET_TABLE` entry in the executable's data. Patch 0147 gener
 - Patch 0209: a `LANG_FILES` row is the name's FNV-1a hash plus the two copies' places among the new files
   (`FILE_TABLE_NEW_FIRST`, `NUM_NEW_FILES`), 8 bytes, instead of three name pointers and their strings. The generator
   stops the build when two names on the disc share a hash.
+- Language file slot: the languages' copies (about 1,230 rows) are not resident table rows; the table ends with
+  `LANG_SLOT_MAX` rows (the largest language's count) that each `LANGxx.BIN` fills with its language's copies, about
+  8.5 KB less resident. `tools/langpatch.py` makes the slot one run of every language file; `tools/build-disc.py` and
+  `dwpatch.build_disc3` write its rows' sectors there (`isowriter.rewrite_lang_slot`).
 - Patch 0210: `FileEntry` is `{i32 sector, i32 size, char filename[12]}` (no NUL at 12 letters; `fileEntryIs`
   compares) instead of a pointer to an aligned string: 20 bytes an entry instead of 24. The tools that read the table
   out of an executable accept both layouts.

@@ -1188,6 +1188,18 @@ def build_disc3(p, base, holes, out_bin, expect_sha1=None, progress=True):
         n, changed, missing, names = iw.rewrite_file_table(exe, t['offset'], where)
         if n != t['entries']: raise PatchError('the executable\'s sector table is not where the release says.')
         files[t['file']] = bytes(exe)
+        # the language file slot: each language's copies are rows of its LANGxx.BIN, written into the table's last
+        # rows when the language is set (file_table_us.c LANG_SLOT); they get this layout's sectors as the table does
+        if t.get('lang_slot'):
+            for q in t['lang_files']:
+                if not isinstance(files.get(q), (bytes, bytearray)):
+                    raise PatchError('a language file of the release is missing.')
+                data = bytearray(files[q])
+                try:
+                    iw.rewrite_lang_slot(data, tuple(t['lang_slot']), where)
+                except ValueError:
+                    raise PatchError('a language file is not what the release says.')
+                files[q] = bytes(data)
     prog = Progress(f'writing {os.path.basename(out_bin)}', 1) if progress else None
     def tick(done, total):
         if prog: prog.total = total; prog(done)
@@ -1869,7 +1881,7 @@ class Encoder3:
         return ops
 
 
-def table_offset(exe, img_files, map_path=None, offset=None):
+def table_offset(exe, img_files, map_path=None, offset=None, img_read=None):
     """FILE_OFFSET_TABLE's offset in the executable: the build's facts (tools/derive facts: file_offset_table), else
     from the linker map; checked against the image's LBAs."""
     iw = _iw()
@@ -1886,7 +1898,23 @@ def table_offset(exe, img_files, map_path=None, offset=None):
     ents = iw.file_table_entries(exe, t, names=where)
     wrong = [nm for _, sec, size, nm in ents if nm in where and (sec, size) != where[nm]]
     if not ents or wrong: raise SystemExit(f'{map_path}: the table it points to does not match the image ({wrong[:5]})')
-    return dict(file='SLUS_010.32', offset=t, entries=len(ents))
+    table = dict(file='SLUS_010.32', offset=t, entries=len(ents))
+    # the language file slot (file_table_us.c LANG_SLOT): the language patches' slot rows are rewritten for the
+    # player's layout like the table; checked here against the image as the table is
+    slot = iw.lang_slot(exe, open(map_path).read()) if map_path and os.path.exists(map_path) else None
+    langs = {q: img_read(q) for q in img_files if re.fullmatch(r'(.*/)?LANG[A-Z]{2}\.BIN', q)} if img_read else {}
+    if slot and slot[1] and langs:
+        held = {}
+        for q in sorted(langs):
+            data = bytearray(langs[q])
+            rows, changed, names = iw.rewrite_lang_slot(data, slot, where)
+            if changed: raise SystemExit(f'{q}: its language file slot rows do not match the image')
+            if rows: held[q] = rows
+        if held:
+            table.update(lang_slot=list(slot), lang_files=sorted(held))
+    elif langs and not (map_path and os.path.exists(map_path)):
+        raise SystemExit(f'{map_path}: the language patches need the linker map (LANG_SLOT)')
+    return table
 
 
 def audit_ops(ops, D, p):
@@ -2398,7 +2426,7 @@ def cmd_make_release3(a):
                 ff = os.path.join(os.path.dirname(os.path.abspath(target)), os.path.basename(target)[:-4], 'derived',
                                   'exe-facts.json')
                 fo = json.load(open(ff)).get('file_offset_table') if os.path.exists(ff) else None
-                table = table_offset(exe_t, T.files, mapf, fo)
+                table = table_offset(exe_t, T.files, mapf, fo, T.read)
                 enc = Encoder3(usa, mappings, bases_img)
                 files = {}; datas = {}; holes = []; hole_bytes = {}
                 built = local_base

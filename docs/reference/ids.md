@@ -466,8 +466,8 @@ The real limits are the fixed `FAALL` stride and SPU RAM, not the id width ([mem
   compare with `fileEntryIs`) instead of a pointer to a string: 20 bytes per entry instead of 12 plus an aligned
   string.
 - **Language copies** (patch 0209): a `LANG_FILES` row is the name's 32-bit FNV-1a hash and the places of its
-  Spanish copy and its copy with English signs among the new files (`u16 copy[2]`, offsets from
-  `FILE_TABLE_NEW_FIRST`, 0xFFFF = none): 8 bytes per row. The build (`tools/derive`, the plan step) writes the rows and stops the
+  copies' rows in the language file slot (`LANG_SLOT`: the last rows of `FILE_OFFSET_TABLE`, the active language's
+  copies only, written by its `LANGxx.BIN`; 0xFFFF = none): 7 bytes per row. The build (`tools/derive`, the plan step) writes the rows and stops the
   build if two names of the disc share a hash. How the copies are chosen at run time:
   [../mods/language.md](../mods/language.md).
 - **Archives instead of entries**: `DIGI.DAT` (all new species with their models and textures) and `SCRN.DAT` (all

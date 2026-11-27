@@ -38,7 +38,8 @@ def chinese_language_writes(build):
         raise ValueError('language executables have different load addresses')
     for other in symbols[1:]:
         langpatch.check_layout(symbols[0], other)
-    spans = langpatch.all_language_runs(images, addresses[0])[languages.index('zh-hans')]
+    slot = langpatch.lang_slot(symbols[0], images[0], addresses[0])
+    spans = langpatch.all_language_runs(images, addresses[0], force=[slot] if slot else ())[languages.index('zh-hans')]
     langpatch.check_code(symbols[0], spans)
     with tempfile.TemporaryDirectory(prefix='language-provenance-') as tmp:
         path = Path(tmp) / 'LANGZH.BIN'

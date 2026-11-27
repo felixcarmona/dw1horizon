@@ -30,7 +30,7 @@ def source_hashes(tree):
               and p.name not in ('text-bank.json', 'text-bank-pad.json')]
     gen = tree / 'build/us/psx/generated'
     generated_headers = {'file_table_count.h', 'file_table_new.h', 'font_sel.h', 'fps.h',
-                         'lang_base.h', 'lang_build.h', 'lang_files.h', 'partner_mmd_max.h', 'version_text.h'}
+                         'lang_base.h', 'lang_build.h', 'lang_files.h', 'lang_slot.h', 'partner_mmd_max.h', 'version_text.h'}
     paths += [p for p in gen.rglob('*') if p.is_file() and 'text' not in p.relative_to(gen).parts
               and p.name not in generated_headers and not p.name.endswith('.tmp')
               and not (p.name.startswith('undefined_') and p.suffix == '.ld')]

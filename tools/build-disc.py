@@ -238,7 +238,8 @@ def write_python(xml_text, disc, out, map_path=None, added=()):
         exe_path = os.path.join(disc, 'SLUS_010.32')
         exe = bytearray(open(exe_path, 'rb').read())
         planned = table_from_plan(pl)
-        report_table(isowriter.rewrite_file_table(exe, file_table_offset(map_path), planned), added)
+        result = isowriter.rewrite_file_table(exe, file_table_offset(map_path), planned)
+        report_table(result, added, rewrite_lang_files(disc, exe, map_path, planned))
         open(exe_path, 'wb').write(exe)
     pl, _ = isowriter.write(lay, files, out, license=os.path.join(disc, 'license_data.dat'))
     if map_path:
@@ -326,8 +327,28 @@ def file_table_offset(map_path):
     sys.exit(f'{map_path}: no FILE_OFFSET_TABLE')
 
 
-def report_table(result, added=()):
+def rewrite_lang_files(disc, exe, map_path, where):
+    """The language file slot rows of the disc's language patches (SCN/LANG*.BIN, in the folder `disc`) get the
+    sectors and sizes of `where`, as FILE_OFFSET_TABLE does: a language's copies are not in the executable's table but
+    in its LANGxx.BIN, written into the table's last rows when the language is set (file_table_us.c LANG_SLOT).
+    -> the names those rows hold."""
+    folder = os.path.join(disc, 'SCN')
+    files = {f'SCN/{n}': open(os.path.join(folder, n), 'rb').read() for n in sorted(os.listdir(folder))
+             if re.fullmatch(r'LANG[A-Z]{2}\.BIN', n)} if os.path.isdir(folder) else {}
+    before = dict(files)
+    slot, report, names = isowriter.rewrite_lang_patches(files, exe, open(map_path).read(), where)
+    for path, data in files.items():
+        if data != before[path]:
+            open(os.path.join(disc, path), 'wb').write(data)
+    if slot and slot[1]:
+        rows = ', '.join(f'{p.split("/")[-1]} {r}' for p, (r, c) in sorted(report.items()))
+        print(f'LANG_SLOT: {slot[1]} rows at 0x{slot[0]:08X}; {sum(c for _, c in report.values())} updated ({rows})')
+    return names
+
+
+def report_table(result, added=(), slot_names=()):
     n, changed, missing, names = result
+    names = set(names) | set(slot_names)
     lost = [x for x in added if x not in names]
     if lost:
         sys.exit(f'the executable has no FILE_OFFSET_TABLE entry for {", ".join(lost)}: the game would not find '
@@ -353,7 +374,7 @@ def patch_file_table(exe_path, map_path, img_path, added=()):
     where['PSX.EXE'] = where['SLUS_010.32']
     exe = bytearray(open(exe_path, 'rb').read())
     result = isowriter.rewrite_file_table(exe, file_table_offset(map_path), where)
-    report_table(result, added)
+    report_table(result, added, rewrite_lang_files(os.path.dirname(exe_path), exe, map_path, where))
     open(exe_path, 'wb').write(exe)
     return {r['path'].split('/')[-1]: r['lba'] for r in files}
 

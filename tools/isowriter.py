@@ -624,6 +624,95 @@ def rewrite_file_table(exe, t, where):
     return len(entries), changed, missing, {e[3] for e in entries}
 
 
+def lang_slot(exe, map_text, base=0x80090000):
+    """The language file slot of an executable image: (address, entries) from its LANG_SLOT descriptor
+    ({FileEntry *entries; u32 count}, file_table_us.c), or None for an executable without one. The slot is the last
+    rows of FILE_OFFSET_TABLE: the active language's copies, written by its LANGxx.BIN when the language is set."""
+    m = re.search(r'^\s+(0x[0-9a-f]+)\s+LANG_SLOT\s*$', map_text, re.M)
+    if not m:
+        return None
+    at = int(m.group(1), 16) - base
+    address, count = struct.unpack_from('<II', exe, at)
+    if count and not (base + 0x800 <= address and address + 8 * count <= base + len(exe)):
+        raise ValueError(f'LANG_SLOT points outside the executable (0x{address:08X}, {count} entries)')
+    return address, count
+
+
+def lang_patch_runs(patch):
+    """[(file offset of the bytes, RAM address, length)] of a language patch (LANGxx.BIN, b'DWLP'), [] for any other
+    format (the Chinese container keeps its writes inside a checksummed prefix; its slot rows are all empty)."""
+    if patch[:4] != b'DWLP' or len(patch) < 8:
+        return []
+    out, at = [], 8
+    for _ in range(struct.unpack_from('<I', patch, 4)[0]):
+        address, length = struct.unpack_from('<II', patch, at)
+        out.append((at + 8, address, length))
+        at += 8 + (length + 3) // 4 * 4
+    if at != len(patch):
+        raise ValueError('language patch: its runs do not end where the file does')
+    return out
+
+
+def rewrite_lang_slot(patch, slot, where):
+    """Writes {name: (lba, size)} into the language file slot rows a language patch carries (`patch` a bytearray,
+    `slot` (address, entries) of lang_slot()). The rows are FILE_OFFSET_TABLE's packed entries: they get the sector and
+    size the executable's own table would. Returns (rows, changed, names); an empty row (key 0) ends the slot.
+    Raises ValueError when the patch writes slot rows but not the whole slot in one run."""
+    address, count = slot
+    end = address + 8 * count
+    runs = [(off, a, n) for off, a, n in lang_patch_runs(patch) if a < end and address < a + n]
+    if not runs:
+        return 0, 0, set()
+    if len(runs) != 1 or runs[0][1] > address or runs[0][1] + runs[0][2] < end:
+        raise ValueError('language patch: the language file slot is not one whole run (tools/langpatch.py forces it)')
+    off, a, _ = runs[0]
+    keys = {}
+    for name in where:
+        key = filename_hash(name) & 0xFFFFFF
+        if key in keys and keys[key] != name:
+            raise ValueError(f'filename hash collision: {keys[key]} / {name}')
+        keys[key] = name
+    rows = changed = 0
+    names = set()
+    for i in range(count):
+        at = off + address - a + 8 * i
+        key = int.from_bytes(patch[at + 5:at + 8], 'little')
+        if key == 0:
+            break
+        rows += 1
+        name = keys.get(key)
+        if name is None:
+            continue
+        names.add(name)
+        lba, size = where[name]
+        if not 0 <= lba < 1 << 19:
+            raise ValueError(f'{name}: sector exceeds packed file table limits')
+        new = (lba | (file_size_code(size) << 19)).to_bytes(5, 'little')
+        if bytes(patch[at:at + 5]) != new:
+            changed += 1
+            patch[at:at + 5] = new
+    return rows, changed, names
+
+
+def rewrite_lang_patches(files, exe, map_text, where):
+    """rewrite_lang_slot over every language patch of `files` ({disc path: bytes}, SCN/LANG*.BIN), in place.
+    -> ((address, entries) or None, {path: (rows, changed)}, names the slots hold)."""
+    slot = lang_slot(exe, map_text)
+    report, names = {}, set()
+    if not slot or not slot[1]:
+        return slot, report, names
+    for path in sorted(files):
+        base = path.split('/')[-1]
+        if not re.fullmatch(r'LANG[A-Z]{2}\.BIN', base) or not isinstance(files[path], (bytes, bytearray)):
+            continue
+        data = bytearray(files[path])
+        rows, changed, got = rewrite_lang_slot(data, slot, where)
+        files[path] = bytes(data)
+        report[path] = (rows, changed)
+        names |= got
+    return slot, report, names
+
+
 # ---------------------------------------------------------------- reading an image back
 class Image:
     """A raw MODE2/2352 image: its files {disc path: (lba, size on the disc, mixed)} from the ISO 9660 records."""
