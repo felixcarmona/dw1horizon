@@ -499,9 +499,31 @@ static uint16_t bits_at(float x, float y) {
   return bits;
 }
 
+#define MOUSE_FINGER ((SDL_FingerID)-0x4d4f5553)   /* the left mouse button, played as one more finger */
+
 void overlay_event(const SDL_Event *e, int ww, int wh) {
+  SDL_Event as_touch;
+  if ((e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP || e->type == SDL_MOUSEMOTION)
+      && e->button.which != SDL_TOUCH_MOUSEID) {
+    /* a computer: a left click shows the touch pad and presses what is under the cursor, its menu button included */
+    int x, y, held;
+    if (e->type == SDL_MOUSEMOTION) { x = e->motion.x; y = e->motion.y; held = e->motion.state & SDL_BUTTON_LMASK; }
+    else { x = e->button.x; y = e->button.y; held = e->button.button == SDL_BUTTON_LEFT; }
+    if (!held) return;
+    int lw, lh; SDL_Window *w = SDL_GetWindowFromID(e->type == SDL_MOUSEMOTION ? e->motion.windowID : e->button.windowID);
+    if (!w) return;
+    SDL_GetWindowSize(w, &lw, &lh);   /* mouse positions are in window points, the pad in drawable pixels */
+    memset(&as_touch, 0, sizeof as_touch);
+    as_touch.type = e->type == SDL_MOUSEBUTTONDOWN ? SDL_FINGERDOWN : e->type == SDL_MOUSEBUTTONUP ? SDL_FINGERUP
+                  : SDL_FINGERMOTION;
+    as_touch.tfinger.fingerId = MOUSE_FINGER;
+    as_touch.tfinger.x = lw > 0 ? (float)x / lw : 0; as_touch.tfinger.y = lh > 0 ? (float)y / lh : 0;
+    e = &as_touch;
+  }
   switch (e->type) {
   case SDL_FINGERDOWN: case SDL_FINGERMOTION: case SDL_FINGERUP: {
+    /* a Mac trackpad's fingers are where they sit on the trackpad, not on the screen: its clicks come as the mouse */
+    if (e != &as_touch && SDL_GetTouchDeviceType(e->tfinger.touchId) == SDL_TOUCH_DEVICE_INDIRECT_RELATIVE) break;
     if (!menu_open && remap_step < 0) touch_shown = true;
     int free_slot = -1, slot = -1;
     for (int i = 0; i < 10; i++) {

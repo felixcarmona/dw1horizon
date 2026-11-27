@@ -12,7 +12,7 @@ libretro core and boots the patched disc with the free OpenBIOS. Its settings ar
 | BIOS | OpenBIOS (`system/openbios.bin`), no fast-boot patch | no Sony BIOS is needed or shipped |
 | CD | reads 8x, seeks 10x (`CDROM_ReadSpeedup` 4, `CDROM_SeekSpeedup` 10) | loads take about half the time; the core keeps music and movie sound at 1x |
 | Memory card | slot 1, `duckstation_shared_card_1.mcd` in the user's data folder, written by the program each second it changed and when the app goes to the background | survives updates of the app |
-| Screen | a resizable 4:3 window with the mouse cursor shown; F11 / Alt+Enter toggles full screen (`--fullscreen` starts in it); Android: full screen | |
+| Screen | a resizable 4:3 window with the mouse cursor shown (a left click shows the touch pad and presses what is under the cursor; a Mac trackpad's touches are not taps); F11 / Alt+Enter toggles full screen (`--fullscreen` starts in it); Android: full screen | |
 | Pace | the screen's refresh (vsync); near the console's 59.82 Hz the sound is stretched by under half a percent to follow it, steering its queue to 60 ms. A frame the machine was too slow for (heavy loads) is caught up: the next one runs without being shown | no stutter in the music, no missed refreshes |
 
 The program carries no game data. It plays the disc that the patcher builds from the player's own disc.
