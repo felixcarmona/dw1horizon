@@ -157,7 +157,7 @@ static const char *screenshot_path;                    /* --screenshot: write th
 static int run_frames = -1;                            /* --frames N: leave after N frames (tests) */
 static bool fast_start = true;
 static bool force_touch;                                /* --touch: the touch pad from the start */
-static bool first_start, ask_card;
+static bool ask_card;
 static const char *press_script;                       /* --press "frame:button:len,..." (tests) */
 
 #define MAX_OPTIONS 32
@@ -951,7 +951,6 @@ int main(int argc, char **argv) {
     else if (!strcmp(argv[i], "--no-disc")) no_disc = true;               /* the BIOS alone (a smoke test) */
     else if (!strcmp(argv[i], "--touch")) force_touch = true;            /* the touch pad from the start */
     else if (!strcmp(argv[i], "--ask-card")) ask_card = true;           /* (tests) the new install's card question */
-    else if (!strcmp(argv[i], "--first-start")) first_start = true;      /* the first start's question, in tests too */
     else if (!strcmp(argv[i], "--new-version") && i + 1 < argc)   /* (tests) */
       snprintf(test_new_version, sizeof test_new_version, "%s", argv[++i]);
     else if (!strcmp(argv[i], "--suspend-at") && i + 1 < argc) suspend_at = atoi(argv[++i]);   /* (tests) */
@@ -1150,14 +1149,17 @@ int main(int argc, char **argv) {
 
   controls_open_all();
   if (run_frames < 0 && !press_script) new_version_check();   /* (not in tests: no network) */
-  /* the first start asks touch or controller (not in tests); the answer decides whether the touch pad shows */
   /* a new install on Android has no card: it may have a copy from before (HorizonActivity.backupCard) to import */
 #ifdef __ANDROID__
   if (!card_existed && !resumed && run_frames < 0 && !press_script) ask_card = true;
 #endif
-  if (first_start || ask_card || (controls_mode == MODE_UNSET && run_frames < 0 && !press_script))
-    menu_show_first(ask_card);
+  if (ask_card) menu_show_first(true);
+  /* no question about the controls: the keyboard, every controller and the touch pad all work at once. The touch pad
+   * shows from the start on Android when no controller is connected; anywhere else a tap or a click shows it */
   touch_shown = force_touch || controls_mode == MODE_TOUCH;
+#ifdef __ANDROID__
+  if (controls_mode == MODE_UNSET && SDL_NumJoysticks() == 0) touch_shown = true;
+#endif
 
   const Uint32 bytes_per_sec = (Uint32)want.freq * 4;
   /* the screen's refresh near the console's: the sound is stretched to it (audio_push) */
