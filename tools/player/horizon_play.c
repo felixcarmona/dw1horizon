@@ -158,6 +158,7 @@ static int run_frames = -1;                            /* --frames N: leave afte
 static bool fast_start = true;
 static bool force_touch;                                /* --touch: the touch pad from the start */
 static bool ask_card;
+static bool setup_from_menu;                           /* the running button setup came from the menu: it returns there */
 static const char *press_script;                       /* --press "frame:button:len,..." (tests) */
 
 #define MAX_OPTIONS 32
@@ -1183,6 +1184,10 @@ int main(int argc, char **argv) {
     if (paused) { SDL_Delay(50); continue; }
     uint16_t bits = controls_bits() | (uint16_t)scripted_bits(frame);
     bits = controls_frame(bits);
+    if (controls_setup_ended) {   /* a setup from the menu ends on the controller screen, nothing lit */
+      controls_setup_ended = false;
+      if (setup_from_menu && remap_step < 0) { setup_from_menu = false; menu_show_pad(); }
+    }
     if ((controls_menu_asked || overlay_menu_tapped) && !menu_open && remap_step < 0) menu_show();
     /* a joystick SDL does not know, not set up before: its buttons are asked for at once (after the first start's
      * question), since its SELECT and START may not be where the menu expects them */
@@ -1206,7 +1211,10 @@ int main(int argc, char **argv) {
         if (a == MENU_QUIT) quit = true;
         else if (a == MENU_TOUCH) { controls_set_mode(MODE_TOUCH); touch_shown = true; }
         else if (a == MENU_PAD) { controls_set_mode(MODE_PAD); touch_shown = false; }
-        else if (a == MENU_SETUP) controls_setup_start();
+        else if (a == MENU_SETUP) {
+          setup_from_menu = true;
+          if (menu_setup_button >= 0) controls_setup_one(menu_setup_button); else controls_setup_start();
+        }
         else if (a == MENU_SCALE) {   /* the core changes its resolution at once */
           snprintf(scale_text, sizeof scale_text, "%d", menu_scale);
           set_option("swanstation_GPU_ResolutionScale", scale_text);

@@ -297,28 +297,50 @@ static SDL_Scancode new_key[N];
 static Uint32 asked_at;
 #define WAIT_MS 10000
 
+bool remap_one;                /* one button alone (the controller screen), not every button in turn */
+bool controls_setup_ended;     /* a setup just ended, however it ended */
+
 static void ask(int step) { remap_step = step; asked_at = SDL_GetTicks(); }
 
 void controls_setup_start(void) {
   SDL_Log("controls: setup opened");
-  device = 0; armed = false; ask(0);
+  device = 0; armed = false; remap_one = false; ask(0);
 }
 
-static void finish(bool keep) {
-  if (keep) {
-    if (device == 1) memcpy(pad_map, new_pad, sizeof pad_map);
-    if (device == 3) {
-      memcpy(joy_map, new_pad, sizeof joy_map);
+void controls_setup_one(int button) {
+  if (button < 0 || button >= N) return;
+  SDL_Log("controls: setup of one button opened");
+  device = 0; armed = false; remap_one = true; ask(button);
+}
+
+/* button b on input (dev 1 controller, 3 other joystick) or key (dev 2); the button that had it takes b's old one */
+static void put(int dev, int b, int input, SDL_Scancode key) {
+  if (dev == 2) {
+    for (int j = 0; j < N; j++)
+      for (int k = 0; k < 2; k++)
+        if (j != b && key_map[j][k] == key) key_map[j][k] = key_map[b][0];
+    key_map[b][0] = key; key_map[b][1] = 0;
+    return;
+  }
+  int *m = dev == 1 ? pad_map : joy_map;
+  for (int j = 0; j < N; j++) if (j != b && m[j] == input) m[j] = m[b];
+  m[b] = input;
+}
+
+/* keep: how many of the buttons asked for stay set (the first ones; with remap_one, 1 is the one); 0 none */
+static void finish(int keep) {
+  if (keep > 0 && device) {
+    if (remap_one) put(device, remap_step, new_pad[remap_step], new_key[remap_step]);
+    else for (int i = 0; i < keep; i++) put(device, i, new_pad[i], new_key[i]);
+    if (device == 3)
       for (int i = 0; i < 4; i++)   /* the joystick it was set up on is not asked about again */
         if (joys[i]) { SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joys[i]), joy_set_up, sizeof joy_set_up); break; }
-    }
-    if (device == 2) for (int i = 0; i < N; i++) { key_map[i][0] = new_key[i]; key_map[i][1] = 0; }
     save();
-  } else SDL_Log("controls: the setup ended early; the buttons stay as they were");
-  remap_step = -1;
+  } else SDL_Log("controls: the setup ended with nothing set; the buttons stay as they were");
+  remap_step = -1; remap_one = false; controls_setup_ended = true;
 }
 
-void controls_setup_cancel(void) { if (remap_step >= 0) finish(false); }
+void controls_setup_cancel(void) { if (remap_step >= 0) finish(0); }
 
 uint16_t controls_frame(uint16_t bits) {
   const uint16_t both = (1u << RETRO_DEVICE_ID_JOYPAD_SELECT) | (1u << RETRO_DEVICE_ID_JOYPAD_START);
@@ -326,7 +348,7 @@ uint16_t controls_frame(uint16_t bits) {
     if (!armed && !bits) { armed = true; asked_at = SDL_GetTicks(); }
     Uint32 waited = SDL_GetTicks() - asked_at;
     remap_time_left = waited >= WAIT_MS ? 0 : 1 - (float)waited / WAIT_MS;
-    if (waited >= WAIT_MS) finish(false);
+    if (waited >= WAIT_MS) finish(remap_one ? 0 : remap_step);   /* time is up: the buttons set so far stay */
     return 0;
   }
   /* SELECT and START together open the menu at once; neither reaches the game until both are up. One of them alone
@@ -358,11 +380,14 @@ uint16_t controls_frame(uint16_t bits) {
 static void pressed(int dev, int pad_input, SDL_Scancode key) {
   if (remap_step < 0 || !armed) return;
   if (device && dev != device) return;
-  for (int i = 0; i < remap_step; i++)   /* one input, one button */
-    if (dev == 2 ? new_key[i] == key : new_pad[i] == pad_input) return;
+  if (remap_one && dev == 2) return;   /* the controller screen sets the controller (the keyboard has its own) */
+  if (!remap_one)
+    for (int i = 0; i < remap_step; i++)   /* one input, one button */
+      if (dev == 2 ? new_key[i] == key : new_pad[i] == pad_input) return;
   device = dev;
   new_pad[remap_step] = pad_input; new_key[remap_step] = key;
-  if (remap_step + 1 == N) finish(true);
+  if (remap_one) finish(1);
+  else if (remap_step + 1 == N) finish(N);
   else ask(remap_step + 1);
 }
 

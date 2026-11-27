@@ -146,7 +146,10 @@ or a click shows it. Choosing CONTROLLER or KEYBOARD in the menu writes `mode pa
 (the pad's four directions, Cross, Circle, Square, Triangle, L1, R1, L2, R2, SELECT, START): press the key, controller
 button, hat or axis wanted for it. The back arrow at the top left (a click or tap) or Escape stops it and leaves the
 buttons as they were. The first press decides whether the keyboard, the controller or the other joystick is being set;
-one input cannot take two buttons. Nothing pressed for ten seconds leaves everything as it was. The choice goes to
+one input cannot take two buttons. Nothing pressed for ten seconds stops it there, the buttons already pressed kept.
+However it ends, the menu shows the controller with nothing lit, "CHOOSE A BUTTON TO CHANGE IT": an arrow lights a
+button, and confirm (or a click or tap on it) asks for that one alone; an input another button had swaps with it. The
+choice goes to
 `controls.txt` in the saves folder (`pad cross=a`, `key cross=Z`, `joy cross=b2` / `h0.1` / `a1-`: SDL's controller and
 key names, a raw button, hat direction or axis side), which can also be edited by hand. (`tools/player/controls.c`,
 `menu.c`)

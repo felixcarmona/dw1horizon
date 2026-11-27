@@ -694,7 +694,7 @@ static void draw_setup(int ww, int wh) {
   float w = ic >= I_L1 ? 0.24f * s : 0.13f * s, h = ic >= I_L1 ? 0.1f * s : 0.13f * s;
   quad(ic, cx, wh * 0.36f + pw * PAD_RATIO / 2 + 0.06f * s, w, h, 1.2f, 1, ww, wh);
   float gap = 0.05f * s, x0 = cx - gap * (CONTROL_COUNT - 1) / 2;
-  for (int i = 0; i < CONTROL_COUNT; i++) {
+  for (int i = 0; i < CONTROL_COUNT && !remap_one; i++) {   /* (one button alone: no steps) */
     float d = i == remap_step ? 0.035f * s : 0.022f * s;
     quad(I_DOT, x0 + i * gap, wh * 0.8f, d, d, 1, i < remap_step ? 0.9f : i == remap_step ? 1 : 0.3f, ww, wh);
   }

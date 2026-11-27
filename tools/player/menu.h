@@ -13,6 +13,8 @@ extern int menu_scale;                /* MENU_SCALE: the resolution scale chosen
 void menu_set_scales(const int *scales, int n, int now);   /* the resolution's choices, and the one in use */
 void menu_show_first(bool ask_card);  /* the first start: (a memory card from before?) touch, or controller? */
 void menu_show(void);                 /* the menu: continue, controls, memory card, quit */
+void menu_show_pad(void);             /* the controller screen: choose a button to set again, nothing lit */
+extern int menu_setup_button;         /* MENU_SETUP: that button alone, or -1 for every button in turn */
 void menu_show_update(void);          /* a newer release (overlay_set_new_version): download (MENU_UPDATE) or later */
 void menu_back(void);                 /* Back / Escape */
 void menu_event(const SDL_Event *e, int ww, int wh);
