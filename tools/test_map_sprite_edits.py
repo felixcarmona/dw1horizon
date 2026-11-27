@@ -39,7 +39,8 @@ class SpriteEdits(unittest.TestCase):
             order = max(sum((p - vp[i]) * fw[i] for i, p in enumerate(((t % 100 - 50) * 100 + 50, 0, (49 - t // 100) * 100 + 50)))
                         for t, v in enumerate(m.collision) if v == 0x51)
             self.assertGreater(depth, order)          # every order tile is nearer than the counter: no tamer there is behind it
-            self.assertLess(depth, 11000)             # the cooks (about 11070) stay behind it
+            self.assertLess(depth, 11070)             # the cooks (about 11070) stay behind it
+            self.assertTrue(all(m.collision[46 * 100 + tx] == 0x80 for tx in range(49, 56)))   # the back row, under the counter board, is wall
 
 
 if __name__ == '__main__':
