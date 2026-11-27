@@ -31,7 +31,11 @@ The program carries no game data. It plays the disc that the patcher builds from
   v2, standard library only) with a key made on first use and kept in its settings folder (`android-key.json`), so
   the next APK from that computer installs over it and keeps the saves. An APK signed with another key has to replace
   the app; Android then offers to keep its data (`hasFragileUserData`). Saves, logs and options live in
-  `Android/data/com.dw1horizon.play/files/saves`. The template APK alone (`desktop.yml`'s `horizon-play-apk`
+  `Android/data/com.dw1horizon.play/files/saves`. Each time the card is written the app also copies it to
+  `Documents/Digimon World Horizon/Digimon World Horizon.mcd` (MediaStore, no permission on Android 10+; Android 7-9
+  ask once for storage), which an uninstall leaves on the phone. Android 11+ gives a new install no access to files
+  an old one made, so the copy is not read back on its own: a start with no card in the saves folder first offers
+  IMPORT (the file picker, opened at that folder) or NEW GAME, then the touch or controller question. The template APK alone (`desktop.yml`'s `horizon-play-apk`
   artifact) asks once for a patched `.bin` and copies it into the app's folder.
 
 OpenBIOS needs about 940 frames to reach the game's first picture (1800 without the fast CD). Horizon Play runs those
@@ -55,7 +59,8 @@ fetched by CMake at a pinned hash and linked statically.
 
 Test flags: `--windowed`, `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
 `--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option),
-`--touch` (the touch pad from the start), `--first-start` (ask touch or controller again), `--window WxH` (a window
+`--touch` (the touch pad from the start), `--first-start` (ask touch or controller again), `--ask-card` (the new install's IMPORT / NEW GAME
+question), `--window WxH` (a window
 of that size), `--no-fast-start`.
 `HORIZON_PLAY_DEBUG=1` prints the core's log. The saves folder also gets `horizon-play.log` (the core's log, the
 OpenGL version and the speed every 30 seconds) and reads `options.txt` (`KEY=VALUE` lines, core options to override).

@@ -8,7 +8,7 @@
 enum { MENU_NONE, MENU_QUIT, MENU_EXPORT, MENU_IMPORT, MENU_SETUP, MENU_TOUCH, MENU_PAD };
 
 extern bool menu_open;
-void menu_show_first(void);           /* the first start: touch, or controller and keyboard? */
+void menu_show_first(bool ask_card);  /* the first start: (a memory card from before?) touch, or controller? */
 void menu_show(void);                 /* the menu: continue, controls, memory card, quit */
 void menu_back(void);                 /* Back / Escape */
 void menu_event(const SDL_Event *e, int ww, int wh);

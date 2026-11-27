@@ -94,7 +94,7 @@ static Cell cells[I_COUNT] = {
   [I_CHECK] = {0, 576, 160, 160}, [I_FAIL] = {160, 576, 160, 160}, [I_PENCIL] = {320, 576, 160, 160},
   [I_EXPORT] = {480, 576, 160, 160}, [I_IMPORT] = {640, 576, 160, 160}, [I_BACK] = {800, 576, 160, 160},
   [I_DROP] = {0, 736, 160, 160},
-  /* the words (T_): 512 x 56 each from y = 1024, two a row, set in draw_words */
+  /* the words (T_): 512 x 56 each from y = 1024, two a row (a long one 1024), set in draw_words */
 };
 
 #define WORD_SCALE 6   /* one font dot is 6 x 6 atlas pixels: letters 42 high */
@@ -102,7 +102,7 @@ static const struct { int id; const char *s; } words[] = {
   {T_RESUME, "RESUME"}, {T_CONTROLS, "CONTROLS"}, {T_CARD, "MEMORY CARD"}, {T_QUIT, "QUIT"},
   {T_TOUCH, "TOUCH SCREEN"}, {T_CONTROLLER, "CONTROLLER"}, {T_KEEP, "KEEP BUTTONS"}, {T_SET, "SET BUTTONS"},
   {T_EXPORT, "EXPORT"}, {T_IMPORT, "IMPORT"}, {T_DONE, "DONE"}, {T_FAILED, "FAILED"},
-  {T_DROP, "DROP A MEMORY CARD FILE HERE"},
+  {T_DROP, "DROP A MEMORY CARD FILE HERE"}, {T_NEW, "NEW GAME"},
 };
 static float word_w[I_COUNT];   /* the letters' width in atlas pixels */
 
@@ -281,10 +281,13 @@ static void dots(Cell c, const char *s, int scale, int x0, int y0) {
 }
 
 static void draw_words(void) {
+  int x = 0, y = 1024;
   for (size_t i = 0; i < sizeof words / sizeof *words; i++) {
-    int n = (int)strlen(words[i].s), id = words[i].id;
-    Cell c = {(int)(i % 2) * 512, 1024 + (int)(i / 2) * 56, 512, 56};
-    if (n * 6 * WORD_SCALE > 500) c = (Cell){0, 1024 + (int)((i + 1) / 2) * 56, 1024, 56};   /* the long one */
+    int n = (int)strlen(words[i].s), id = words[i].id, w = n * 6 * WORD_SCALE > 500 ? 1024 : 512;
+    if (x + w > AW) { x = 0; y += 56; }   /* a long word takes a whole row */
+    if (y + 56 > AH) { SDL_Log("overlay: no room for the word %s", words[i].s); break; }
+    Cell c = {x, y, w, 56};
+    x += w;
     cells[id] = c;
     word_w[id] = (float)((n * 6 - 1) * WORD_SCALE);
     dots(c, words[i].s, WORD_SCALE, (int)(c.w - word_w[id]) / 2, (c.h - 7 * WORD_SCALE) / 2);

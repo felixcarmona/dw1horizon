@@ -154,7 +154,7 @@ static const char *screenshot_path;                    /* --screenshot: write th
 static int run_frames = -1;                            /* --frames N: leave after N frames (tests) */
 static bool fast_start = true;
 static bool force_touch;                                /* --touch: the touch pad from the start */
-static bool first_start;
+static bool first_start, ask_card;
 static const char *press_script;                       /* --press "frame:button:len,..." (tests) */
 
 #define MAX_OPTIONS 32
@@ -482,12 +482,17 @@ static void handle_events(void) {
  * the background and at exit, so a closed window or an app Android kills keeps the last save. */
 static char card_path[1200];
 static uint8_t card_written[128 * 1024];
+static bool card_existed;   /* the saves folder had a card at start (a new install has none) */
+#ifdef __ANDROID__
+static void android_backup(const char *card);
+#endif
 
 static void card_load(void) {
   uint8_t *data = core.get_memory_data(RETRO_MEMORY_SAVE_RAM);
   size_t size = core.get_memory_size(RETRO_MEMORY_SAVE_RAM);
   if (!data || size != sizeof card_written) return;
   SDL_RWops *f = SDL_RWFromFile(card_path, "rb");
+  card_existed = f != NULL;
   if (f) {
     if (SDL_RWread(f, card_written, 1, size) == size) memcpy(data, card_written, size);
     SDL_RWclose(f);
@@ -505,8 +510,12 @@ static void card_write(bool always) {
   if (!f) { SDL_Log("cannot write %s", tmp); return; }
   bool ok = SDL_RWwrite(f, data, 1, size) == size;
   ok = SDL_RWclose(f) == 0 && ok;
-  if (ok && replace_file(tmp, card_path)) memcpy(card_written, data, size);
-  else SDL_Log("cannot save the memory card %s", card_path);
+  if (ok && replace_file(tmp, card_path)) {
+    memcpy(card_written, data, size);
+#ifdef __ANDROID__
+    android_backup(card_path);   /* the copy in Documents, which an uninstall leaves */
+#endif
+  } else SDL_Log("cannot save the memory card %s", card_path);
 }
 
 static void card_save(void) { card_write(false); }
@@ -554,6 +563,16 @@ static void android_pick(bool export_, const char *card, const char *dest) {
   if (m) (*env)->CallVoidMethod(env, act, m, (jboolean)export_, a, b);
   (*env)->DeleteLocalRef(env, a); (*env)->DeleteLocalRef(env, b);
   (*env)->DeleteLocalRef(env, cls); (*env)->DeleteLocalRef(env, act);
+}
+
+static void android_backup(const char *card) {
+  JNIEnv *env = (JNIEnv *)SDL_AndroidGetJNIEnv();
+  jobject act = (jobject)SDL_AndroidGetActivity();
+  jclass cls = (*env)->GetObjectClass(env, act);
+  jmethodID m = (*env)->GetMethodID(env, cls, "backupCard", "(Ljava/lang/String;)V");
+  jstring a = (*env)->NewStringUTF(env, card);
+  if (m) (*env)->CallVoidMethod(env, act, m, a);
+  (*env)->DeleteLocalRef(env, a); (*env)->DeleteLocalRef(env, cls); (*env)->DeleteLocalRef(env, act);
 }
 
 static int android_pick_result(void) {
@@ -629,6 +648,7 @@ int main(int argc, char **argv) {
     }
     else if (!strcmp(argv[i], "--no-disc")) no_disc = true;               /* the BIOS alone (a smoke test) */
     else if (!strcmp(argv[i], "--touch")) force_touch = true;            /* the touch pad from the start */
+    else if (!strcmp(argv[i], "--ask-card")) ask_card = true;           /* (tests) the new install's card question */
     else if (!strcmp(argv[i], "--first-start")) first_start = true;      /* the first start's question, in tests too */
     else if (!strcmp(argv[i], "--no-fast-start")) fast_start = false;     /* the start at the console's own pace */
     else if (!strcmp(argv[i], "--scale") && i + 1 < argc) scale = atoi(argv[++i]);
@@ -807,7 +827,12 @@ int main(int argc, char **argv) {
 
   controls_open_all();
   /* the first start asks touch or controller (not in tests); the answer decides whether the touch pad shows */
-  if (first_start || (controls_mode == MODE_UNSET && run_frames < 0 && !press_script)) menu_show_first();
+  /* a new install on Android has no card: it may have a copy from before (HorizonActivity.backupCard) to import */
+#ifdef __ANDROID__
+  if (!card_existed && run_frames < 0 && !press_script) ask_card = true;
+#endif
+  if (first_start || ask_card || (controls_mode == MODE_UNSET && run_frames < 0 && !press_script))
+    menu_show_first(ask_card);
   touch_shown = force_touch || controls_mode == MODE_TOUCH;
 
   const Uint32 bytes_per_sec = (Uint32)want.freq * 4;

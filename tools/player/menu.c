@@ -7,8 +7,9 @@
  *                   picker, or a file dropped on the window); the card in use is backed up first
  *   power           quit
  *
- * The first start shows the touch / controller question before the game. The pictures are chosen with a tap or the
- * mouse, or with the pad's arrows and Cross, Circle or START; Triangle goes back.
+ * The first start shows the touch / controller question before the game; on Android a new install with no memory
+ * card first offers to import one (the copy HorizonActivity keeps in Documents) or to start a new game. The pictures
+ * are chosen with a tap or the mouse, or with the pad's arrows and Cross, Circle or START; Triangle goes back.
  */
 #include "menu.h"
 #include "overlay.h"
@@ -18,20 +19,22 @@
 
 bool menu_open;
 
-enum { S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT };
+enum { S_RESTORE, S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT };
 static int screen, focus, result_ok, touched = -3;
 static Uint32 result_at;
 static bool first;            /* the first-start question: no way back, the game waits for an answer */
 static bool fire, fire_back;  /* a tap or click to act on in the next frame */
 static int fire_card;
+static int card_screen;   /* where the memory card's screens return to: S_CARD, or S_RESTORE */
 static uint16_t prev;
 
 typedef struct { int icon, icon2, action, word; } Card;
-enum { A_CONTINUE = 100, A_CONTROLS, A_CARD, A_CHECK };
+enum { A_CONTINUE = 100, A_CONTROLS, A_CARD, A_CHECK, A_NEW };
 static const Card main_cards[] = {{I_PLAY, -1, A_CONTINUE, T_RESUME}, {I_GAMEPAD, I_KEYBOARD, A_CONTROLS, T_CONTROLS},
                                   {I_CARD, -1, A_CARD, T_CARD}, {I_POWER, -1, MENU_QUIT, T_QUIT}};
 static const Card mode_cards[] = {{I_TOUCH, -1, MENU_TOUCH, T_TOUCH}, {I_GAMEPAD, I_KEYBOARD, MENU_PAD, T_CONTROLLER}};
 static const Card check_cards[] = {{I_CHECK, -1, A_CHECK, T_KEEP}, {I_PENCIL, -1, MENU_SETUP, T_SET}};
+static const Card restore_cards[] = {{I_IMPORT, -1, MENU_IMPORT, T_IMPORT}, {I_PLAY, -1, A_NEW, T_NEW}};
 static const Card card_cards[] = {{I_EXPORT, -1, MENU_EXPORT, T_EXPORT}, {I_IMPORT, -1, MENU_IMPORT, T_IMPORT}};
 
 static const Card *cards(int *n) {
@@ -40,19 +43,28 @@ static const Card *cards(int *n) {
   case S_FIRST: *n = 2; return mode_cards;
   case S_PADCHECK: *n = 2; return check_cards;
   case S_CARD: *n = 2; return card_cards;
+  case S_RESTORE: *n = 2; return restore_cards;
   }
   *n = 0; return NULL;
 }
 
 static int header(void) {
-  return screen == S_PADCHECK ? I_GAMEPAD : screen == S_CARD ? I_CARD : -1;
+  return screen == S_PADCHECK ? I_GAMEPAD : screen == S_CARD || screen == S_RESTORE ? I_CARD : -1;
 }
 
-static void go(int s) { screen = s; focus = 0; touched = -3; }
+static void go(int s) { screen = s; focus = 0; touched = -3; if (s == S_RESTORE || s == S_CARD) card_screen = s; }
 
 static void open_at(int s) { menu_open = true; prev = 0xFFFF; fire = fire_back = false; go(s); }
-void menu_show_first(void) { first = true; open_at(S_FIRST); }
-void menu_show(void) { first = false; open_at(S_MAIN); }
+void menu_show_first(bool ask_card) {
+  first = true; open_at(ask_card ? S_RESTORE : S_FIRST);
+}
+/* after the new install's card question: the controls question, unless the player already answered it */
+static void after_restore(void) {
+  card_screen = S_CARD;
+  if (controls_mode == MODE_UNSET) go(S_FIRST);
+  else { menu_open = false; first = false; }
+}
+void menu_show(void) { first = false; card_screen = S_CARD; open_at(S_MAIN); }
 static void close_menu(void) { menu_open = false; first = false; }
 
 void menu_back(void) {
@@ -60,12 +72,12 @@ void menu_back(void) {
   case S_MAIN: close_menu(); break;
   case S_CARD: go(S_MAIN); break;
   case S_PADCHECK: go(first ? S_FIRST : S_MAIN); break;
-  case S_DROP: go(S_CARD); break;
+  case S_DROP: go(card_screen); break;
   }
 }
 
 void menu_result(int r) {
-  if (r < 0) { go(S_CARD); return; }
+  if (r < 0) { go(card_screen); return; }
   result_ok = r > 0; result_at = SDL_GetTicks(); go(S_RESULT);
 }
 
@@ -87,7 +99,7 @@ static void back_rect(int ww, int wh, float *cx, float *cy, float *size) {
   *size = 0.13f * s; *cx = 0.1f * s; *cy = 0.1f * s;
 }
 
-static bool has_back(void) { return screen != S_RESULT && screen != S_WAIT && !(screen == S_FIRST); }
+static bool has_back(void) { return screen != S_RESULT && screen != S_WAIT && screen != S_FIRST && screen != S_RESTORE; }
 
 /* which card is at (x, y): its index, -2 for the back arrow, -1 for none */
 static int hit(float x, float y, int ww, int wh) {
@@ -134,6 +146,7 @@ static int act(int i) {
   case A_CONTROLS: go(S_PADCHECK); return MENU_NONE;
   case A_CARD: go(S_CARD); return MENU_NONE;
   case A_CHECK: close_menu(); return MENU_NONE;
+  case A_NEW: after_restore(); return MENU_NONE;
   case MENU_TOUCH: close_menu(); return MENU_TOUCH;
   case MENU_PAD: go(S_PADCHECK); return MENU_PAD;
   case MENU_SETUP: close_menu(); return MENU_SETUP;
@@ -157,7 +170,11 @@ int menu_frame(uint16_t bits) {
   uint16_t edge = bits & ~prev;
   prev = bits;
   if (screen == S_RESULT) {
-    if (SDL_GetTicks() - result_at > 1300) { if (result_ok) close_menu(); else go(S_CARD); }
+    if (SDL_GetTicks() - result_at > 1300) {
+      if (!result_ok) go(card_screen);
+      else if (card_screen == S_RESTORE) after_restore();
+      else close_menu();
+    }
     return MENU_NONE;
   }
   if (screen == S_WAIT) return MENU_NONE;

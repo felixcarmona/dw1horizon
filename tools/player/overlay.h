@@ -14,7 +14,7 @@ enum { I_TRI, I_CIRCLE, I_CROSS, I_SQUARE, I_UP, I_DOWN, I_LEFT, I_RIGHT, I_DPAD
        I_BACK, I_DROP,
        /* the menu's words, in English, under its pictures */
        T_RESUME, T_CONTROLS, T_CARD, T_QUIT, T_TOUCH, T_CONTROLLER, T_KEEP, T_SET, T_EXPORT, T_IMPORT, T_DONE,
-       T_FAILED, T_DROP, I_COUNT };
+       T_FAILED, T_DROP, T_NEW, I_COUNT };
 
 bool overlay_init(void);
 void overlay_event(const SDL_Event *e, int ww, int wh);
