@@ -1,0 +1,131 @@
+From a7ceeea1830cf3c007a5579f4485669f47002388 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 13:28:09 +0000
+Subject: [PATCH] Smooth motion: snow falls and butterflies fly at every frame
+
+A snowflake is drawn between its last two heights (back at the top it slides in from above); its kinds' drift and fall are
+tables. A butterfly's circle and bob are computed from its frame in 1/4096 of a tick instead of lerp.
+---
+ src/main/butterfly.c | 10 ++++++++--
+ src/main/overworld.c | 32 ++++++++++++--------------------
+ 2 files changed, 20 insertions(+), 22 deletions(-)
+
+diff --git a/src/main/butterfly.c b/src/main/butterfly.c
+index 050e279..6675063 100644
+--- a/src/main/butterfly.c
++++ b/src/main/butterfly.c
+@@ -6,6 +6,8 @@
+ #include <dw/math.h>
+ #include <dw/world_object.h>
+ 
++extern int32_t MOD_RENDER_ALPHA; /* MOD (smooth motion): main.c */
++
+ #define NUM_BUTTERFLIES		2
+ 
+ typedef struct {
+@@ -96,6 +98,7 @@ void renderButterfly(int32_t instanceId)
+ 	DVECTOR screen;
+ 	int32_t angle;
+ 	int32_t depth;
++	int32_t time;
+ 
+ 	butterfly = &BUTTERFLIES[instanceId];
+ 
+@@ -105,11 +108,14 @@ void renderButterfly(int32_t instanceId)
+ 
+ 	translateConditionFXToEntity(butterfly->entity, &pos);
+ 
+-	angle = lerp(0, 0x200, 0, 0x3c, butterfly->frame);
++	/* MOD (smooth motion): the circle (a turn in 60 ticks) and the bob (three) go on between ticks: the frame in
++	 * 1/4096 of a tick, a turn being 512 */
++	time = butterfly->frame * 4096 + MOD_RENDER_ALPHA - 4096;
++	angle = time / 480;
+ 	pos.vx += (_sin(angle) * 150) / 4096;
+ 	pos.vz += (_cos(angle) * 150) / 4096;
+ 
+-	angle = lerp(0, 0x600, 0, 0x3c, butterfly->frame);
++	angle = time / 160;
+ 	pos.vy += ((_sin(angle) * 50) / 4096) - 100;
+ 
+ 	depth = worldPosToScreenPos(&pos, &screen);
+diff --git a/src/main/overworld.c b/src/main/overworld.c
+index 387d5b0..b97fba9 100644
+--- a/src/main/overworld.c
++++ b/src/main/overworld.c
+@@ -519,6 +519,11 @@ void tickMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
+ 	}
+ }
+ 
++/* MOD (smooth motion): each flake kind's drift range and fall per tick, as tables (they pay for the fall's
++ * interpolation in renderMapOverlays) */
++static const uint8_t MOD_SNOW_RANGE[8] = { 6, 2, 4, 6, 6, 2, 2, 2 };
++static const uint8_t MOD_SNOW_FALL[8] = { 3, 1, 10, 3, 3, 1, 1, 0 };
++
+ void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
+                        int16_t screenY)
+ {
+@@ -528,6 +533,7 @@ void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
+ 	ModOverlayDraw *draw;
+ 	GsOT_TAG *org;
+ 	int32_t i;
++	int32_t fall;
+ 
+ 	if (!MAP_LAYER_ENABLED) {
+ 		return;
+@@ -555,6 +561,9 @@ void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
+ 		pos.x = draw->x;
+ 		pos.y = draw->y;
+ 		if (draw->kind == 3) {
++			/* MOD (smooth motion): the flake falls at every frame (back at the top it slides in from above) */
++			fall = MOD_SNOW_FALL[instances->animSprites[0] & 7];
++			pos.y = modTickLerp(pos.y - fall, pos.y);
+ 			buildSnowflakePrim(prim, &pos, obj);
+ 		} else {
+ 			buildMapOverlayPrim(prim, &pos, obj, screenX, screenY,
+@@ -705,32 +714,15 @@ void renderMist(void)
+  * jitter, which is added to x where the flake is drawn. */
+ int8_t tickSnowflake(LocalMapObjectInstance *inst)
+ {
+-	uint8_t randomRange;
+-	uint8_t fallSpeed;
++	int32_t randomRange = MOD_SNOW_RANGE[inst->animSprites[0] & 7];
+ 	int8_t horizontalMovement;
+ 	int8_t chance;
+ 
+-	if ((inst->animSprites[0] == 0) || (inst->animSprites[0] == 3) ||
+-	    (inst->animSprites[0] == 4)) {
+-		randomRange = 6;
+-		fallSpeed = 3;
+-	}
+-	if ((inst->animSprites[0] == 1) || (inst->animSprites[0] == 5) ||
+-	    (inst->animSprites[0] == 6)) {
+-		randomRange = 2;
+-		fallSpeed = 1;
+-	}
+-	if (inst->animSprites[0] == 2) {
+-		randomRange = 4;
+-		fallSpeed = 10;
+-	}
+-
+ 	if ((horizontalMovement = randomLimit(randomRange)) > (randomRange / 2)) {
+ 		horizontalMovement = -(horizontalMovement % (randomRange / 2));
+ 	}
+ 
+-	if ((inst->animSprites[0] == 0) || (inst->animSprites[0] == 3) ||
+-	    (inst->animSprites[0] == 4)) {
++	if (randomRange == 6) { /* kinds 0, 3 and 4 drift */
+ 		if ((CURRENT_FRAME % 3) == 0) {
+ 			inst->x += horizontalMovement;
+ 		}
+@@ -742,7 +734,7 @@ int8_t tickSnowflake(LocalMapObjectInstance *inst)
+ 		}
+ 	}
+ 
+-	inst->y += fallSpeed;
++	inst->y += MOD_SNOW_FALL[inst->animSprites[0] & 7];
+ 	if ((inst->y >= 0x83) && (inst->animSprites[0] != 2)) {
+ 		chance = randomLimit(10);
+ 		if ((chance < 2) && (inst->currentFrame == 0)) {
+-- 
+2.55.0
+

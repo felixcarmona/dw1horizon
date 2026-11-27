@@ -1,0 +1,84 @@
+From 885b21b8e43eff92cceb43072c9483b64e61a7a6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 13:28:09 +0000
+Subject: [PATCH] Smooth motion: damage and healing numbers move at every frame
+
+A number keeps how far it moved this tick in its unused byte; renderEntityText draws it between its last two places.
+---
+ src/main/entity_text.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/src/main/entity_text.c b/src/main/entity_text.c
+index 229787a..c9a7763 100644
+--- a/src/main/entity_text.c
++++ b/src/main/entity_text.c
+@@ -19,7 +19,7 @@ typedef struct {
+ 	uint8_t frameId; /* 0xFF when the entry is free */
+ 	uint8_t color;
+ 	uint8_t icon; /* 0 for none, else an index + 1 in ENTITY_TEXT_ICON_U */
+-	uint8_t unk2;
++	int8_t step; /* MOD (smooth motion): how far y moved this tick (was unused) */
+ } EntityTextDataEntry;
+ 
+ /* The numbers of one fighter, shown one after another. */
+@@ -182,13 +182,15 @@ void lateTickEntityText(int32_t instanceId)
+ 		if (i != 0 && slot->entries[slot->activeList[i - 1]].frameId < 11) {
+ 			break;
+ 		}
++		entry->step = 0;
+ 		if (*frame < 21) {
+ 			/* MOD (healing techniques): a healed amount rises, fast and then slower, where a hit bounces */
+ 			if (entry->icon & ENTITY_TEXT_RISE) {
+-				entry->y -= *frame < 6 ? 3 : *frame < 14 ? 2 : 1;
++				entry->step = *frame < 6 ? -3 : *frame < 14 ? -2 : -1;
+ 			} else {
+-				entry->y += ENTITY_TEXT_Y_OFFSETS[*frame];
++				entry->step = ENTITY_TEXT_Y_OFFSETS[*frame];
+ 			}
++			entry->y += entry->step;
+ 		}
+ 
+ 		/* drawn by renderEntityText on layer 14 - i */
+@@ -242,9 +244,12 @@ void renderEntityText(instanceId)
+ 	DVECTOR screenPos;
+ 	EntityTextDataEntry *entry;
+ 	long i;
++	int32_t y;
+ 
+ 	for (i = 0; i < MOD_ENTITY_TEXT_DRAW_COUNT[instanceId]; i++) {
+ 		entry = &ENTITY_TEXT_DATA[instanceId].entries[MOD_ENTITY_TEXT_DRAW[instanceId][i]];
++		/* MOD (smooth motion): the number moves between its last two ticks' places */
++		y = modTickLerp(entry->y - entry->step, entry->y);
+ 
+ 		/* In battle, the number follows its fighter. */
+ 		if (GAME_STATE == 4) {
+@@ -252,22 +257,22 @@ void renderEntityText(instanceId)
+ 					   0, &screenPos);
+ 			drawEntityText(entry->color, entry->numDigits,
+ 				       screenPos.vx + entry->x,
+-				       screenPos.vy - 8 + entry->y,
++				       screenPos.vy - 8 + y,
+ 				       entry->value, 14 - i);
+ 		} else {
+ 			drawEntityText(entry->color, entry->numDigits,
+-				       entry->x, entry->y,
++				       entry->x, y,
+ 				       entry->value, 14 - i);
+ 		}
+ 
+ 		if ((entry->icon & ~ENTITY_TEXT_RISE) != 0) {
+ 			if (GAME_STATE != 4) {
+-				drawEntityTextIcon(entry->x - 8, entry->y,
++				drawEntityTextIcon(entry->x - 8, y,
+ 						   ENTITY_TEXT_ICON_U[(entry->icon & ~ENTITY_TEXT_RISE) - 1],
+ 						   14 - i);
+ 			} else {
+ 				drawEntityTextIcon(screenPos.vx + entry->x - 8,
+-						   screenPos.vy - 8 + entry->y,
++						   screenPos.vy - 8 + y,
+ 						   ENTITY_TEXT_ICON_U[(entry->icon & ~ENTITY_TEXT_RISE) - 1],
+ 						   14 - i);
+ 			}
+-- 
+2.55.0
+
