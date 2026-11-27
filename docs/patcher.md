@@ -134,14 +134,36 @@ patched disc. The browser runs the same jobs in Pyodide workers (`web/README.md`
 
 ## The desktop app
 
-`tools/patcher/gui.py` is the same apply with a window: Horizon Patcher, built for Windows and macOS by
-`.github/workflows/desktop.yml` and attached to each release as `Horizon-Patcher-Windows.zip` and
-`Horizon-Patcher-macOS.zip` (one universal2 app for Apple silicon and Intel). The workflow then attaches
-`horizon-desktop.json` (their sizes, SHA-256 and signing) and redeploys the site, which offers them from then on
+`tools/patcher/gui.py` is the same apply with a window: Horizon Patcher, built for Windows, macOS and Linux by
+`.github/workflows/desktop.yml` and attached to each release as `Horizon-Patcher-Windows.zip`,
+`Horizon-Patcher-macOS.zip` (one universal2 app for Apple silicon and Intel) and `Horizon-Patcher-Linux-x86_64.tar.gz`
+(a folder with the program, a `.desktop` launcher and the icon; built on Ubuntu 22.04 for its older glibc, with Tk and
+Horizon Play inside, so it needs no python3-tk; the Linux job builds Horizon Play itself, as `player.yml` does, rather
+than wait for that workflow). Unpack it and run `Horizon Patcher`, or the `.desktop` file. The workflow then attaches
+`horizon-desktop.json` (the Windows and macOS zips' sizes, SHA-256 and signing) and redeploys the site, which offers
+those two from then on (the Linux tarball is a release asset the page does not list yet)
 (web/README.md, "The desktop app downloads"). Players need no Python. The players'
 side is in [release/README-players.md](release/README-players.md#the-desktop-app).
-Both apps carry Horizon Play ([player.md](player.md)): after a build, **Play** starts the new disc in it, already
-set up (8 MB, CPU 250 %, upscaled, full screen).
+All three apps carry Horizon Play ([player.md](player.md)), for the installers below.
+
+What the patcher makes is chosen in its **Make** box: five buttons side by side, each with its system's logo
+(`tools/patcher/app/platform-logos/`, Bootstrap Icons, MIT), its system's name and the file type under it:
+**PlayStation** (.bin / .cue, the disc image for emulators and the console), then the installers with that disc
+inside: **Android** (.apk), **Windows** (.exe), **Mac** (.dmg on a Mac, .zip elsewhere) and **Linux** (.run). Each
+button asks for the folder to save in (starting at the last one chosen). Nothing is downloaded before the first press: it fetches
+the release, builds the disc into the cache folder (`disc/` beside the packages, about 900 MB, with `built.json`
+naming the discs and package it came from) and keeps it there. Every press after it, in this run or a later one,
+uses that disc while the discs and the package are the same: PlayStation copies it into the folder, an installer
+button puts it inside the installer it writes there. The patcher does not carry their templates: each is a release asset
+(`Horizon-Play.apk`, `Horizon-Setup.exe`, `Horizon-Play-macOS.zip`, `Horizon-Play-Linux-x86_64.tar.gz`), downloaded
+from the same release as the game package when a button is first used (`desktop.template`), checked against the digest
+GitHub publishes for the asset, and cached by tag in the settings folder (`templates/<tag>/`), so later builds and
+offline runs reuse it. The progress bar shows the download, then the build. With no network and nothing cached, or with
+the asset missing from that release, the stage label says so and the button stays. The templates are not in
+`horizon-checksums.json`. On Linux the **Linux installer (.run)** button reuses the Horizon Play the patcher carries and downloads nothing. A Mac patcher builds the Mac app from its own bundled Horizon Play and writes a `.dmg`; on
+Windows and Linux the button writes `<disc>-Mac.zip` from the downloaded template, which Apple has not signed, so on
+the Mac the first open is right-click then Open. Each output is the player's own disc plus the template, for their
+computers only. Details in [player.md](player.md#a-setup-wizard).
 
 - **Same code path.** The app downloads the release package, checks it, and loads the package's own `dwpatch.py`
   (with its `isowriter.py` and `fontcopy.py`) from the package folder: the apply is the command line's, from the same
@@ -167,20 +189,18 @@ set up (8 MB, CPU 250 %, upscaled, full screen).
   SHA-1; on the next start a disc that moved or changed empties its slot with the reason. Packages are kept in
   `%LOCALAPPDATA%\Horizon Patcher\packages` (macOS: the same folder as the settings; Linux `~/.cache/horizon-patcher`),
   the newest two. `HORIZON_PATCHER_HOME` moves both (tests). `app.log` there has the app's own errors.
-- **The package.** Nothing goes to the network until the player presses Download, "Check for a new release" or
-  Build. Then the app asks GitHub for the latest release of the repository it was built from (`build-info.json`,
+- **The package.** The window has no release box and nothing goes to the network until a make button is pressed.
+  Then the app asks GitHub for the latest release of the repository it was built from (`build-info.json`,
   written by the build from `GITHUB_REPOSITORY`), downloads `horizon-checksums.json` and `horizon-package.tar.gz`,
   checks the archive's SHA-256 against the asset digest GitHub reports, then unpacks it file by file: only regular
   files and folders, no path out of the folder, every file's SHA-256 equal to `horizon-checksums.json` `package`,
-  nothing missing or extra, else nothing is kept. Build downloads a newer release first; offline, the package already
-  there is used. For an already cached tag, Download, Check and Build fetch only the small checksums file
+  nothing missing or extra, else nothing is kept. A newer release is downloaded first; offline, the package already
+  there is used. For an already cached tag, a make button fetches only the small checksums file
   first. The cache records the verified `package` map in `.verified-package.json`; older caches are hashed once
   (excluding generated Python bytecode). An unchanged map avoids downloading the archive. A changed map stages
   and verifies the complete replacement before swapping folders, with rollback if replacement fails and recovery
   on the next install if the app stops between renames. Offline or failed refresh keeps the old package usable
-  and logs the reason in `app.log`. "Use a package file..." takes a `horizon-package.tar.gz` (checked against a
-  `horizon-checksums.json` next to it when there is one, else the package is used as the player gave it: dwpatch
-  still checks the patch and every file it builds). TLS uses the system's certificates; a frozen macOS Python has no
+  and logs the reason in `app.log`. TLS uses the system's certificates; a frozen macOS Python has no
   OpenSSL certificate folder, so the app uses the certifi bundle frozen into it (a build-time dependency only), else
   `/etc/ssl/cert.pem`.
 - **The window.** Every longer text wraps at the width it gets, the window never gets narrower than its buttons
@@ -606,7 +626,7 @@ all archive entries against that map before replacing both release assets. Keep
 the manifest, payload, bundle, engine and output checksums unchanged. A desktop
 app rebuild alone cannot fix this: the app loads the package's reader.
 
-Desktop apps built with cache refresh detect a corrected package map for an already cached tag on Download, Check or Build. Older apps keep their tag cache. Players using those apps can import the corrected
+Desktop apps built with cache refresh detect a corrected package map for an already cached tag when a make button is pressed. Older apps keep their tag cache. Players using those apps can import the corrected
 archive through the app's package-file chooser, with its matching checksums file
 beside it, to bypass that cache. Alternatively, close the app and remove only the
 cached `packages/v0.0.7` directory before downloading again. Until the corrected

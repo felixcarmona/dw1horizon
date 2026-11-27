@@ -1,6 +1,6 @@
 name: Desktop patchers
 
-# The Windows and macOS apps (tools/patcher/gui.py, frozen by tools/patcher/app/build.py), built from source here and
+# The Windows, macOS and Linux apps (tools/patcher/gui.py, frozen by tools/patcher/app/build.py), built from source here and
 # tested headless (gui.py --self-test: the app as Python, spawned workers, dwpatch's derive launch, the window,
 # the latest published package for PRs, the tag's verified package for releases). PRs and manual runs keep artifacts; a release
 # tag (pushed, or given to a manual run) also attaches the zips to that tag's GitHub Release. No disc is used.
@@ -64,8 +64,8 @@ jobs:
           if-no-files-found: error
 
   android:
-    # Horizon Play for Android (tools/player/android/build_apk.py), the template the apps put the built disc into
-    # (tools/patcher/apk.py signs that copy with the player's own key, so this one needs no secret).
+    # Horizon Play for Android (tools/player/android/build_apk.py), the template the patcher downloads from the release
+    # and puts the built disc into (tools/patcher/apk.py signs that copy with the shared key, android-key.json, public on purpose).
     needs: openbios
     runs-on: ubuntu-22.04   # its Android SDK and NDK are preinstalled
     steps:
@@ -91,7 +91,7 @@ jobs:
       - name: A disc put inside it still verifies (a dummy disc of zeros)
         run: |
           head -c $((2352 * 1000)) /dev/zero > "$RUNNER_TEMP/dummy.bin"
-          python3 tools/patcher/apk.py apk/Horizon-Play.apk "$RUNNER_TEMP/dummy.bin" "$RUNNER_TEMP/dummy.apk" --key "$RUNNER_TEMP/key.json"
+          python3 tools/patcher/apk.py apk/Horizon-Play.apk "$RUNNER_TEMP/dummy.bin" "$RUNNER_TEMP/dummy.apk"
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify -v "$RUNNER_TEMP/dummy.apk" | grep -q 'v2 scheme (APK Signature Scheme v2): true'
           "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c -P 16 4 "$RUNNER_TEMP/dummy.apk"
       - uses: actions/upload-artifact@v4
@@ -101,7 +101,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    needs: [openbios, android]
+    needs: openbios
     runs-on: windows-latest
     permissions:
       contents: write   # required to read draft release assets; token only used by the fetch step
@@ -135,20 +135,50 @@ jobs:
         with:
           name: openbios
           path: ${{ runner.temp }}/openbios
-      - uses: actions/download-artifact@v4
-        with:
-          name: horizon-play-apk
-          path: ${{ runner.temp }}/apk
       - name: Build Horizon Play (the program, the SwanStation core, OpenBIOS)
         shell: bash
         run: python tools/player/build.py --out "$RUNNER_TEMP/Horizon Play" --work "$RUNNER_TEMP/player" --openbios "$RUNNER_TEMP/openbios/openbios.bin"
+      - name: Build the setup template (the wizard and Horizon Play, no game; the patcher appends the player's disc)
+        shell: bash
+        run: |
+          # makensis is normally preinstalled on the runner; install it when it is not
+          if ! command -v makensis > /dev/null && [ ! -f "/c/Program Files (x86)/NSIS/makensis.exe" ]; then
+            choco install nsis -y --no-progress
+          fi
+          mkdir setup
+          python tools/player/installer.py --player "$RUNNER_TEMP/Horizon Play" --out setup/Horizon-Setup.exe ${RELEASE_TAG:+--version "$RELEASE_TAG"}
+      - name: A setup made from a dummy disc installs, unpacks the disc byte for byte and uninstalls
+        shell: pwsh
+        run: |
+          $t = $env:RUNNER_TEMP
+          python -c "import sys; open(sys.argv[1] + '/dummy.bin', 'wb').write(bytes(range(251)) * 20000)" $t
+          Set-Content "$t\dummy.cue" 'FILE "dummy.bin" BINARY', '  TRACK 01 MODE2/2352', '    INDEX 01 00:00:00'
+          python tools/patcher/setup_exe.py setup/Horizon-Setup.exe "$t\dummy.cue" "$t\Dummy-Setup.exe"
+          # the bare template must refuse to install (silent: it just quits with an error code)
+          $bare = Start-Process setup/Horizon-Setup.exe -ArgumentList '/S' -Wait -PassThru
+          if ($bare.ExitCode -eq 0) { throw 'the template without a disc installed' }
+          $inst = "$t\hsetup"
+          # /D= must be the last argument and is not quoted
+          $p = Start-Process "$t\Dummy-Setup.exe" -ArgumentList '/S', "/D=$inst" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "setup exit code $($p.ExitCode)" }
+          if ((Get-FileHash "$inst\Digimon World Horizon.bin").Hash -ne (Get-FileHash "$t\dummy.bin").Hash) { throw 'the unpacked disc differs' }
+          $cue = Get-Content "$inst\Digimon World Horizon.cue" -Raw
+          if ($cue -notmatch 'FILE "Digimon World Horizon.bin" BINARY') { throw "wrong cue: $cue" }
+          if (-not (Test-Path "$inst\horizon-play.exe")) { throw 'Horizon Play is not installed' }
+          # the uninstaller copies itself away and returns at once: wait for the folder to go
+          Start-Process "$inst\Uninstall.exe" -ArgumentList '/S' -Wait
+          for ($i = 0; $i -lt 60 -and (Test-Path $inst); $i++) { Start-Sleep 1 }
+          if (Test-Path $inst) { throw 'the uninstaller left the folder' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: horizon-setup-template
+          path: setup/Horizon-Setup.exe
+          if-no-files-found: error
       - name: Build
         shell: bash
         run: |
           python -m pip install --disable-pip-version-check $PYINSTALLER
-          python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"} --player "$RUNNER_TEMP/Horizon Play" \
-            --player-apk "$RUNNER_TEMP/apk/Horizon-Play.apk"
-          test -f "build/desktop/dist/Horizon Patcher/_internal/android/Horizon-Play.apk"
+          python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"} --player "$RUNNER_TEMP/Horizon Play"
           test -f "build/desktop/dist/Horizon Patcher/_internal/player/horizon-play.exe"
           test -f "build/desktop/dist/Horizon Patcher/_internal/player/swanstation_libretro.dll"
           test -f "build/desktop/dist/Horizon Patcher/_internal/player/system/openbios.bin"
@@ -212,7 +242,7 @@ jobs:
           if-no-files-found: error
 
   macos:
-    needs: [openbios, android]
+    needs: openbios
     runs-on: macos-15
     permissions:
       contents: write   # required to read draft release assets; token only used by the fetch step
@@ -267,10 +297,6 @@ jobs:
         with:
           name: openbios
           path: ${{ runner.temp }}/openbios
-      - uses: actions/download-artifact@v4
-        with:
-          name: horizon-play-apk
-          path: ${{ runner.temp }}/apk
       - name: Build Horizon Play (universal2; signed like the app when the owner's identity is there)
         run: |
           P="$RUNNER_TEMP/Horizon Play"
@@ -285,6 +311,31 @@ jobs:
             codesign --force --timestamp --options runtime --entitlements tools/player/entitlements.plist \
               --sign "$SIGN_ID" "$P/Horizon Play.app"
           fi
+          # the template the patcher downloads on other systems to make a Mac app (symlinks, modes and signature kept)
+          mkdir mac
+          ditto -c -k --keepParent "$P/Horizon Play.app" mac/Horizon-Play-macOS.zip
+          python3 - "$P" <<'PY'
+          import os, subprocess, sys
+          sys.path.insert(0, 'tools/patcher')
+          import desktop
+          app = desktop.unzip_app('mac/Horizon-Play-macOS.zip', os.path.join(os.environ['RUNNER_TEMP'], 'unzipped'))
+          if os.environ.get('SIGN_ID'):
+              subprocess.run(['codesign', '--verify', '--deep', '--strict', app], check=True)   # survives the round trip
+          def tree(top):   # unsigned (no certificate here): the symlinks and modes survive the round trip
+              out = {}
+              for folder, dirs, files in os.walk(top):
+                  for n in dirs + files:
+                      path = os.path.join(folder, n)
+                      st = os.lstat(path)
+                      out[os.path.relpath(path, top)] = (st.st_mode, os.readlink(path) if os.path.islink(path) else None)
+              return out
+          assert tree(app) == tree(os.path.join(sys.argv[1], 'Horizon Play.app')), 'the template zip lost symlinks or modes'
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: horizon-play-macos
+          path: mac/Horizon-Play-macOS.zip
+          if-no-files-found: error
       - name: Build
         run: |
           python -m pip install --disable-pip-version-check $PYINSTALLER certifi==2026.10.23
@@ -293,11 +344,29 @@ jobs:
           fi
           python tools/patcher/app/build.py --universal2 ${RELEASE_TAG:+--version "$RELEASE_TAG"} \
             ${SIGN_ID:+--codesign-identity "$SIGN_ID" --entitlements tools/patcher/app/entitlements.plist} \
-            --player "$RUNNER_TEMP/Horizon Play" --player-apk "$RUNNER_TEMP/apk/Horizon-Play.apk"
-          find "build/desktop/dist/Horizon Patcher.app" -name Horizon-Play.apk | grep -q .
+            --player "$RUNNER_TEMP/Horizon Play"
           lipo -archs "build/desktop/dist/Horizon Patcher.app/Contents/MacOS/Horizon Patcher"
           test -x "build/desktop/dist/Horizon Patcher.app/Contents/Helpers/Horizon Play.app/Contents/MacOS/horizon-play"
           codesign --verify --deep --strict "build/desktop/dist/Horizon Patcher.app"
+      - name: A Mac app made from a dummy disc mounts, holds the disc byte for byte and verifies
+        run: |
+          T="$RUNNER_TEMP"
+          python3 -c "import sys; open(sys.argv[1] + '/dummy.bin', 'wb').write(bytes(range(251)) * 20000)" "$T"
+          printf 'FILE "dummy.bin" BINARY\r\n  TRACK 01 MODE2/2352\r\n    INDEX 01 00:00:00\r\n' > "$T/dummy.cue"
+          python3 tools/patcher/mac_app.py "$T/Horizon Play/Horizon Play.app" "$T/dummy.cue" "$T/dummy-Mac.dmg"
+          hdiutil attach "$T/dummy-Mac.dmg" -mountpoint "$T/mnt" -nobrowse -readonly
+          A="$T/mnt/Digimon World Horizon.app"
+          test -L "$T/mnt/Applications"
+          cmp "$A/Contents/Resources/Digimon World Horizon.bin" "$T/dummy.bin"
+          grep -q 'FILE "Digimon World Horizon.bin" BINARY' "$A/Contents/Resources/Digimon World Horizon.cue"
+          grep -q 'Digimon World Horizon' "$A/Contents/Info.plist"
+          codesign --verify --deep --strict "$A"
+          # the app finds the disc beside itself; a window may not open on a runner without a display, so this
+          # launch only reports (the log line is the proof when it does start)
+          mkdir -p "$T/saves"
+          (timeout 60 "$A/Contents/MacOS/horizon-play" --frames 60 --windowed --saves "$T/saves" || true)
+          grep -h "disc beside the program" "$T/saves/horizon-play.log" || echo '::warning::the launch check did not reach the disc line'
+          hdiutil detach "$T/mnt"
       - name: Prepare the tag's verified self-test package
         if: env.RELEASE_TAG != ''
         shell: bash
@@ -360,6 +429,73 @@ jobs:
           path: Horizon-Patcher-macOS.zip
           if-no-files-found: error
 
+  linux:
+    # 22.04: the oldest glibc a GitHub runner still has, so the app runs on older distributions too. Horizon Play is built
+    # here, as player.yml builds it (its own OpenBIOS: this runner has the MIPS compiler), rather than taken from that
+    # workflow: the two cannot wait for each other, and the build takes minutes.
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write   # required to read draft release assets; token only used by the fetch step
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - name: Check out the release tag
+        if: env.RELEASE_TAG != ''
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          git checkout --detach "refs/tags/$RELEASE_TAG"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Build tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cmake ninja-build gcc-mipsel-linux-gnu g++-mipsel-linux-gnu \
+            libgl-dev libegl-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxss-dev \
+            libwayland-dev libxkbcommon-dev libasound2-dev libpulse-dev libudev-dev libdbus-1-dev \
+            libtk8.6 xvfb libgl1-mesa-dri > /dev/null
+      - name: Unit tests
+        working-directory: tools
+        run: xvfb-run -a python -m unittest test_desktop_patcher test_patcher_paths -v
+      - name: Story import identity
+        run: python -m unittest tools.test_dws_imports -v
+      - name: Build Horizon Play (the program, the SwanStation core, OpenBIOS)
+        run: python tools/player/build.py --out "$RUNNER_TEMP/Horizon Play" --work "$RUNNER_TEMP/player"
+      - name: Build
+        run: |
+          python -m pip install --disable-pip-version-check $PYINSTALLER
+          python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"} --player "$RUNNER_TEMP/Horizon Play"
+          D="build/desktop/dist/Horizon Patcher"
+          test -f "$D/_internal/player/horizon-play"
+          test -f "$D/_internal/player/system/openbios.bin"
+          # Tk comes along: a system without python3-tk runs the app
+          ls "$D/_internal" | grep -q '^libtk8' && test -d "$D/_internal/_tk_data" && test -d "$D/_internal/_tcl_data"
+          test -f "$D/Horizon Patcher.desktop" && test -f "$D/horizon-patcher.png"
+      - name: Prepare the tag's verified self-test package
+        if: env.RELEASE_TAG != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: python tools/patcher/app/prepare_selftest.py "$RELEASE_TAG"
+      - name: Self-test the frozen app (a virtual display, no discs)
+        run: |
+          EXE="build/desktop/dist/Horizon Patcher/Horizon Patcher"
+          "$EXE" -c 'import sys; print("child", sys.argv[1:], sys.flags.utf8_mode)' 'a b'
+          if [ -n "$RELEASE_TAG" ]; then PKG=(--package "$PWD/build/desktop-selftest/package"); else PKG=(--download); fi
+          timeout 1200 xvfb-run -a -s '-screen 0 1280x1000x24' "$EXE" --self-test "${PKG[@]}" --gui --report selftest.txt \
+            || { cat selftest.txt || true; exit 1; }
+          cat selftest.txt
+      - name: Tar
+        run: tar -czf Horizon-Patcher-Linux-x86_64.tar.gz -C build/desktop/dist "Horizon Patcher"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Horizon-Patcher-Linux
+          path: Horizon-Patcher-Linux-x86_64.tar.gz
+          if-no-files-found: error
+
   linux-source:
     # Not shipped: the window and the self-test from source, as a developer runs them (python3 tools/patcher/gui.py).
     runs-on: ubuntu-latest
@@ -380,7 +516,7 @@ jobs:
 
   attach:
     # Only for a release tag; pull requests and manual runs without a tag stop at the artifacts above.
-    needs: [windows, macos]
+    needs: [windows, macos, android, linux]
     if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) || (github.event_name == 'workflow_dispatch' && inputs.tag != '')
     runs-on: ubuntu-latest
     permissions:
@@ -404,7 +540,11 @@ jobs:
             gh release view "$RELEASE_TAG" > /dev/null 2>&1 && break
             sleep 20
           done
-          gh release upload "$RELEASE_TAG" apps/Horizon-Patcher-Windows.zip apps/Horizon-Patcher-macOS.zip --clobber
+          # The empty installer templates (no game in them): the patcher downloads them from the release when it makes
+          # an installer. Horizon-Play-Linux-x86_64.tar.gz, the fourth, is attached by player.yml.
+          gh release upload "$RELEASE_TAG" apps/Horizon-Patcher-Windows.zip apps/Horizon-Patcher-macOS.zip \
+            apps/Horizon-Patcher-Linux-x86_64.tar.gz \
+            apps/Horizon-Setup.exe apps/Horizon-Play.apk apps/Horizon-Play-macOS.zip --clobber
       - name: Describe the apps for the site
         # horizon-desktop.json goes up after the zips it describes: release.yml offers the apps on dw1horizon.com only
         # when it finds this file, and checks both zips against it (tools/release_pages.py desktop_apps).

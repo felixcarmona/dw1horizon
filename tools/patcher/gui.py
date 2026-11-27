@@ -107,6 +107,12 @@ def system_language():
     return 'en'
 
 
+# what the make buttons make, in their order: the disc image first, then the installers with it inside
+# (kind, name, file type); a logo each (tools/patcher/app/platform-logos/KIND.png)
+MAKERS = (('disc', 'PlayStation', '.bin / .cue'), ('apk', 'Android', '.apk'), ('setup', 'Windows', '.exe'),
+          ('mac', 'Mac', '.dmg' if sys.platform == 'darwin' else '.zip'), ('linux', 'Linux', '.run'))
+
+
 # ---------------------------------------------------------------- the window
 class App:
     def __init__(self, root, config):
@@ -149,6 +155,7 @@ class App:
         style.configure('Ok.TLabel', foreground='#1f7a3a')
         style.configure('Bad.TLabel', foreground='#b3261e')
         style.configure('Build.TButton', font=self.font_bold, padding=(18, 8))
+        style.configure('Make.TButton', justify='center', padding=(6, 8))
 
     def _build(self):
         tk, ttk, t = self.tk, self.ttk, self.t
@@ -212,39 +219,31 @@ class App:
         self._wrap(ttk.Label(add, text=t('app.formats'), style='Muted.TLabel')).grid(row=0, column=1, sticky='ew',
                                                                                      padx=10)
 
-        pkg = ttk.LabelFrame(outer, text=t('app.package'), padding=(12, 8))
-        pkg.grid(row=2, column=0, sticky='ew', pady=(12, 0))
-        pkg.columnconfigure(0, weight=1)
-        self.pkg_label = self._wrap(ttk.Label(pkg, text='', justify='left'))
-        self.pkg_label.grid(row=0, column=0, columnspan=3, sticky='ew')
-        self.pkg_download = ttk.Button(pkg, text=t('app.download'), command=self._download)
-        self.pkg_download.grid(row=1, column=1, padx=(8, 0), pady=(8, 0))
-        self.pkg_file = ttk.Button(pkg, text=t('app.useFile'), command=self._use_file)
-        self.pkg_file.grid(row=1, column=2, padx=(4, 0), pady=(8, 0))
-
-        out = ttk.LabelFrame(outer, text=t('app.output'), padding=(12, 8))
-        out.grid(row=3, column=0, sticky='ew', pady=(12, 0))
-        out.columnconfigure(0, weight=1)
-        self.out_var = tk.StringVar(value='')
-        ttk.Entry(out, textvariable=self.out_var, state='readonly').grid(row=0, column=0, sticky='ew')
-        self.out_button = ttk.Button(out, text=t('app.browse'), command=self._browse)
-        self.out_button.grid(row=0, column=1, padx=(8, 0))
-
+        # what can be made, each its own button: the disc image, and the installers with that disc inside (the
+        # disc is built first when this session has not built it from the same discs and package). Each asks for the
+        # folder to save in, starting at the last one chosen.
+        make = ttk.LabelFrame(outer, text=t('app.makeAs'), padding=(12, 8))
+        make.grid(row=3, column=0, sticky='ew', pady=(16, 0))
+        make.columnconfigure(tuple(range(len(MAKERS))), weight=1, uniform='makers')
+        self.make_buttons = []
+        for i, (kind, name, ext) in enumerate(MAKERS):
+            b = ttk.Button(make, text=f'{name}\n{ext}', image=getattr(self, 'make_icons', {}).get(kind, ''), compound='top',
+                           style='Make.TButton', command=lambda kind=kind: self._make(kind))
+            b.grid(row=0, column=i, sticky='ew', padx=(0 if i == 0 else 6, 0))
+            self.make_buttons.append(b)
         run = ttk.Frame(outer)
-        run.grid(row=4, column=0, sticky='ew', pady=(16, 0))
-        run.columnconfigure(1, weight=1, minsize=WRAP_LEAST + 24)
-        self.build_button = ttk.Button(run, text=t('patch.button'), style='Build.TButton', command=self._build_disc)
-        self.build_button.grid(row=0, column=0, rowspan=2, sticky='w')
+        run.grid(row=5, column=0, sticky='ew', pady=(8, 0))
+        run.columnconfigure(0, weight=1, minsize=WRAP_LEAST + 24)
         self.why_label = self._wrap(ttk.Label(run, text='', style='Muted.TLabel', justify='left'))
-        self.why_label.grid(row=0, column=1, sticky='ew', padx=12)
+        self.why_label.grid(row=0, column=0, sticky='ew')
         self.progress = ttk.Progressbar(run, maximum=1000, mode='determinate')
-        self.progress.grid(row=1, column=1, sticky='ew', padx=12)
+        self.progress.grid(row=1, column=0, sticky='ew')
         self.stop_button = ttk.Button(run, text=t('app.cancel'), command=self._stop)
-        self.stop_button.grid(row=0, column=2, rowspan=2)
+        self.stop_button.grid(row=0, column=1, rowspan=2, padx=(12, 0))
         self.stage = self._wrap(ttk.Label(outer, text='', justify='left'))
-        self.stage.grid(row=5, column=0, sticky='ew', pady=(8, 0))
+        self.stage.grid(row=6, column=0, sticky='ew', pady=(8, 0))
         self.finish = ttk.Frame(outer)
-        self.finish.grid(row=6, column=0, sticky='w', pady=(8, 0))
+        self.finish.grid(row=7, column=0, sticky='w', pady=(8, 0))
         self._refresh()
         self.root.update_idletasks()
         # The narrowest the window may be: what the buttons and names need with the texts wrapped at their least.
@@ -309,6 +308,16 @@ class App:
             self.root.iconphoto(True, self.icon)
         except Exception:
             self.icon = None
+        self.make_icons = {}
+        try:
+            for kind, _, _ in MAKERS:
+                logo = desktop.resource('tools', 'patcher', 'app', 'platform-logos', kind + '.png')
+                img = self.tk.PhotoImage(file=logo)
+                self.make_icons[kind] = (img, 'disabled', img)      # in colour while disabled too (Tk greys it)
+        except Exception:
+            pass
+        for (kind, _, _), b in zip(MAKERS, getattr(self, 'make_buttons', [])):
+            b.configure(image=self.make_icons.get(kind, ''))
 
     # -- state shown
     def _refresh(self):
@@ -332,31 +341,7 @@ class App:
             choose.state(['!disabled'] if idle else ['disabled'])
             remove.state(['!disabled'] if idle and (r or game in self.notes) else ['disabled'])
         idle = self.busy is None
-        for b in (self.add_button, self.pkg_file, self.out_button):
-            b.state(['!disabled'] if idle else ['disabled'])
-        # the package
-        if self.package:
-            key = 'app.packageFile' if self.package.get('source') == 'file' else 'app.packageReady'
-            text = t(key, version=self.package['version'], date=self.package['date'])
-            if self.package.get('source') == 'file' and not self.package.get('verified'):
-                text += '\n' + t('app.packageUnverified')
-        elif self.latest and (self.latest['assets'].get(desktop.PACKAGE_ASSET) or {}).get('size'):
-            mb = (self.latest['assets'][desktop.PACKAGE_ASSET].get('size') or 0) // 2 ** 20
-            text = t('app.packageNone', version=self.latest['version'], mb=mb)
-        else:
-            text = t('app.packageUnknown')
-        newer = self.latest and (not self.package or desktop.version_key(self.latest['version'])
-                                 > desktop.version_key(self.package['version']))
-        if newer and self.package:
-            text += '\n' + t('app.newer', version=self.latest['version'])
-        if getattr(self, 'latest_error', None) and not self.latest:
-            text += '\n' + t('app.offline', error=self.latest_error)
-        self.pkg_label.configure(text=text)
-        self.pkg_download.configure(text=t('app.download') if (newer or not self.package) else t('app.checkUpdates'))
-        self.pkg_download.state(['!disabled'] if idle else ['disabled'])
-        # the output folder
-        out = self.output_folder()
-        self.out_var.set(out or '')
+        self.add_button.state(['!disabled'] if idle else ['disabled'])
         # build
         missing = [desktop.GAME_NAMES[g] for g in desktop.GAMES if g not in self.slots]
         if self.busy:
@@ -366,7 +351,8 @@ class App:
         else:
             why = t('app.ready')
         self.why_label.configure(text=why)
-        self.build_button.state(['!disabled'] if idle and not missing else ['disabled'])
+        for b in self.make_buttons:
+            b.state(['!disabled'] if idle and not missing else ['disabled'])
         self.stop_button.state(['!disabled'] if self.busy in ('build', 'download', 'check') and not self.cancel.is_set()
                                else ['disabled'])
 
@@ -455,6 +441,8 @@ class App:
     def _on_error(self, e, tb, quiet):
         if quiet:
             self.latest_error = str(getattr(e, 'reason', None) or e)
+            self.progress['value'] = 0               # a start-up download that failed: nothing to show
+            self.stage.configure(text='', style='TLabel')
             self._refresh()
             return
         self.stage.configure(text=self._message(e), style='Bad.TLabel')
@@ -588,22 +576,6 @@ class App:
         self.latest_error = None
         self._refresh()
 
-    def _download(self):
-        if self.latest and (not self.package or desktop.version_key(self.latest['version'])
-                            > desktop.version_key(self.package['version'])):
-            self._spawn(self._job_download, busy='download')
-        else:
-            self._spawn(self._job_latest_checked, busy='download')
-
-    def _job_latest_checked(self):
-        latest = desktop.latest_release()
-        self.events.put(('latest', latest))
-        if not self.package or (self.package.get('source') != 'file'
-                                and desktop.version_key(latest['version']) >= desktop.version_key(self.package['version'])):
-            self._job_download(latest)
-        else:
-            self.events.put(('stage', self.t('app.upToDate'), 'TLabel'))
-
     def _job_download(self, latest=None):
         latest = latest or self.latest
         total = latest['assets'].get(desktop.PACKAGE_ASSET, {}).get('size') or 0
@@ -633,26 +605,19 @@ class App:
         self.progress['value'] = 0
         self._refresh()
 
-    def _use_file(self):
-        from tkinter import filedialog
-        path = filedialog.askopenfilename(parent=self.root, title=self.t('app.choosePackage'),
-                                          filetypes=[(self.t('app.packageFiles'), '*.tar.gz *.tgz'),
-                                                     (self.t('app.allFiles'), '*')])
-        if path:
-            def job():
-                self.events.put(('stage', self.t('app.verifying'), 'TLabel'))
-                info = desktop.install_file(path)
-                self.events.put(('package', dict(info, name=os.path.basename(info['folder']), source='file')))
-            self._spawn(job, busy='download')
-
     # -- output and build
-    def _browse(self):
+    def _ask_folder(self):
+        """The folder to save in, asked at each make button (None: cancelled); remembered for the next time."""
         from tkinter import filedialog
+        start = self.output_folder()
+        if start and not os.path.isdir(start):
+            start = os.path.dirname(start) if os.path.isdir(os.path.dirname(start)) else ''
         path = filedialog.askdirectory(parent=self.root, title=self.t('app.output'),
-                                       initialdir=self.output_folder() or os.path.expanduser('~'))
-        if path:
-            self.config.set('output', path)
-            self._refresh()
+                                       initialdir=start or os.path.expanduser('~'))
+        if not path:
+            return None
+        self.config.set('output', path)
+        return path
 
     def _language(self, _event=None):
         name = self.lang_var.get()
@@ -662,9 +627,14 @@ class App:
         self.t = Strings(code)
         self._build()
 
-    def _build_disc(self):
-        out = self.output_folder()
-        problems = desktop.space_problems(out)
+    def _make(self, kind):
+        """A make button: the disc image, or an installer with the disc inside, saved in the folder the player
+        chooses. Nothing is downloaded before the first press. The disc is built once into the cache folder
+        (desktop.built_disc_dir) and kept: every press after it, for any folder, uses it while the discs and the
+        package are the same."""
+        out = self._ask_folder()
+        if not out:
+            return
         for game, r in list(self.slots.items()):
             why = desktop.file_changed(r)
             if why == 'convert':
@@ -676,6 +646,8 @@ class App:
                 self.config.forget_disc(game)
                 self._refresh()
                 return
+        problems = desktop.space_problems(desktop.cache_dir())
+        problems += [p for p in desktop.space_problems(out) if p not in problems and p[0] == 'app.spaceOutput']
         if problems:
             from tkinter import messagebox
             if not messagebox.askokcancel(self.t('app.title'), '\n\n'.join(self.t(k, **p) for k, p in problems)
@@ -683,11 +655,26 @@ class App:
                 return
         for w in self.finish.winfo_children():
             w.destroy()
-        self._spawn(self._job_build, out, busy='build')
+        self._spawn(self._job_make_any, kind, out, busy='build')
 
-    def _job_build(self, out):
-        """Build pressed: the latest release is asked for (a newer one is downloaded first, a package file the
-        player chose is kept); offline, the package already here is used."""
+    def _job_make_any(self, kind, out):
+        package = self._job_package()
+        key = desktop.disc_key(self.slots, package)
+        disc = desktop.cached_disc(key)
+        if not disc:
+            disc = self._job_build(key, package)
+            if not disc:
+                return                                      # failed or stopped: shown already
+        if kind == 'disc':
+            def copying(done, total):
+                self.events.put(('bar', done / total, self.t('app.copyingDisc', done=done * 100 // total)))
+            self.events.put(('built', desktop.copy_disc(disc, out, copying, self.cancel)))
+        else:
+            self._job_make(kind, disc['cue'], disc['version'], out)
+
+    def _job_package(self):
+        """The package to build with: the latest release is asked for (a newer one is downloaded first, a package
+        file the player chose is kept); offline, the package already here is used."""
         package = self.package
         if not package or package.get('source') != 'file':
             try:
@@ -700,29 +687,43 @@ class App:
             if latest and (not package or desktop.version_key(latest['version'])
                            >= desktop.version_key(package['version'])):
                 package = self._job_download(latest)
+        return package
+
+    def _job_build(self, key, package):
+        """The disc, built into desktop.built_disc_dir() and kept there -> desktop.cached_disc(key), or None when it
+        failed or was stopped (shown)."""
         self.events.put(('stage', self.t('now.start'), 'TLabel'))
         dw = desktop.load_patcher(package['folder'])
         dw.CANCEL = self.cancel
         self.patcher = dw
+        desktop.forget_built_disc()
         try:
-            result = dw.apply_disc(self.slots['us']['image'], desktop.source_disc_args(self.slots), output=out,
-                                   release=package['folder'])
+            result = dw.apply_disc(self.slots['us']['image'], desktop.source_disc_args(self.slots),
+                                   output=desktop.built_disc_dir(), release=package['folder'])
         except BaseException as e:
             kind = 'stopped' if isinstance(e, dw.Stopped) else 'patch' if isinstance(e, dw.PatchError) else 'other'
             if kind == 'other':
                 sys.stderr.write(traceback.format_exc())
             self.events.put(('failed', e, getattr(e, 'log', None), kind))
-            return
+            return None
         finally:
             self.patcher = None
-        self.events.put(('built', result))
+        desktop.keep_built_disc(key, result, package['version'])
+        return desktop.cached_disc(key)
 
-    def _on_built(self, result):
+    def _on_built(self, cue):
         self.progress['value'] = 1000
-        self.stage.configure(text=self.t('app.done', file=os.path.basename(result['cue'])) + '\n' + result['cue'],
-                             style='Ok.TLabel')
-        self.config.set('last_disc', os.path.abspath(result['cue']))
-        self._finish_buttons(os.path.dirname(result['cue']), result.get('log'), result['cue'])
+        self.stage.configure(text=self.t('app.done', file=os.path.basename(cue)) + '\n' + cue, style='Ok.TLabel')
+        self.config.set('last_disc', os.path.abspath(cue))
+        self._finish_buttons(os.path.dirname(cue), None, cue)
+
+    def _on_made(self, path):
+        self.progress['value'] = 1000
+        key = 'app.macZipDone' if path.endswith('.zip') else 'app.{}Done'.format(
+            next(k for k, ext in (('apk', '.apk'), ('setup', '.exe'), ('mac', '.dmg'), ('linux', '.run'))
+                 if path.endswith(ext)))
+        self.stage.configure(text=self.t(key, file=os.path.basename(path)) + '\n' + path, style='Ok.TLabel')
+        self._finish_buttons(os.path.dirname(path), None)
 
     def _on_failed(self, e, log, kind):
         if kind == 'stopped':
@@ -737,27 +738,33 @@ class App:
             self._finish_buttons(None, log)
 
     def _finish_buttons(self, folder, log, cue=None):
+        """Open the folder (and the log after a failure)."""
         ttk = self.ttk
         for w in self.finish.winfo_children():
             w.destroy()
-        if cue and desktop.player_program():
-            ttk.Button(self.finish, text=self.t('app.play'), style='Build.TButton',
-                       command=lambda: desktop.play(cue)).grid(row=0, column=0, padx=(0, 6))
-        if cue and desktop.apk_template():
-            ttk.Button(self.finish, text=self.t('app.makeApk'),
-                       command=lambda: self.busy or self._spawn(self._job_apk, cue, busy='build')).grid(row=0, column=1, padx=(0, 6))
-        if folder:
-            ttk.Button(self.finish, text=self.t('app.openFolder'),
-                       command=lambda: desktop.open_folder(folder)).grid(row=0, column=2, padx=(0, 6))
-        if log and os.path.exists(log):
-            ttk.Button(self.finish, text=self.t('app.openLog'),
-                       command=lambda: desktop.open_folder(log)).grid(row=0, column=3)
+        col = 0
+        for ok, text, cmd, style in (
+                (folder, 'app.openFolder', lambda: desktop.open_folder(folder), 'TButton'),
+                (log and os.path.exists(log), 'app.openLog', lambda: desktop.open_folder(log), 'TButton')):
+            if ok:
+                ttk.Button(self.finish, text=self.t(text), style=style, command=cmd).grid(row=0, column=col, padx=(0, 6))
+                col += 1
 
-    def _job_apk(self, cue):
+    def _job_make(self, kind, cue, version=None, out_dir=None):
+        """An installer with the built disc inside, into out_dir: the template comes from the release of the
+        package it was built with."""
+        names = dict(apk='app.makingApk', setup='app.makingSetup', mac='app.makingMac', linux='app.makingLinux')
+        version = version or (self.package or {}).get('version') or ''
+        tag = 'v' + version.lstrip('v')
+
+        def fetching(done, total):
+            if total:
+                self.events.put(('bar', done / total, self.t('app.fetchingTemplate', name=desktop.TEMPLATES[kind],
+                                                              done=done // 1048576, total=total // 1048576)))
+
         def progress(done, total):
-            self.events.put(('bar', done / total, self.t('app.makingApk', done=done * 100 // total)))
-        out = desktop.make_apk(cue, progress)
-        self.events.put(('stage', self.t('app.apkDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
+            self.events.put(('bar', done / total, self.t(names[kind], done=done * 100 // total)))
+        self.events.put(('made', desktop.make(kind, cue, tag, progress, fetching, self.cancel, out_dir)))
 
     def _stop(self):
         self.cancel.set()

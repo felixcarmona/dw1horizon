@@ -8,6 +8,9 @@
  *   gear            settings: resolution (the core's internal resolution scale, settings.txt)
  *   power           quit
  *
+ * When a newer release is out, a screen says so once at start (NEW VERSION V0.0.11 AT DW1HORIZON.COM) with two
+ * cards: download (the website opens) and later (back to the game).
+ *
  * The first start shows the touch / controller question before the game; on Android a new install with no memory
  * card first offers to import one (the copy HorizonActivity keeps in Documents) or to start a new game. The pictures
  * are chosen with a tap or the mouse, or with the pad's arrows and Cross, Circle or START; Triangle goes back.
@@ -20,7 +23,7 @@
 
 bool menu_open;
 
-enum { S_RESTORE, S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT, S_SETTINGS, S_SCALE, S_TSIZE, S_TALPHA };
+enum { S_RESTORE, S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT, S_SETTINGS, S_SCALE, S_TSIZE, S_TALPHA, S_UPDATE };
 static int screen, focus, result_ok, touched = -3;
 static Uint32 result_at;
 static bool first;            /* the first-start question: no way back, the game waits for an answer */
@@ -50,6 +53,7 @@ int menu_scale;
 static const Card mode_cards[] = {{I_TOUCH, -1, MENU_TOUCH, T_TOUCH}, {I_GAMEPAD, I_KEYBOARD, MENU_PAD, T_CONTROLLER}};
 static const Card check_cards[] = {{I_CHECK, -1, A_CHECK, T_KEEP}, {I_PENCIL, -1, MENU_SETUP, T_SET}};
 static const Card restore_cards[] = {{I_IMPORT, -1, MENU_IMPORT, T_IMPORT}, {I_PLAY, -1, A_NEW, T_NEW}};
+static const Card update_cards[] = {{I_IMPORT, -1, MENU_UPDATE, T_DOWNLOAD}, {I_PLAY, -1, A_CONTINUE, T_LATER}};
 static const Card card_cards[] = {{I_EXPORT, -1, MENU_EXPORT, T_EXPORT}, {I_IMPORT, -1, MENU_IMPORT, T_IMPORT}};
 
 static const Card *cards(int *n) {
@@ -59,6 +63,7 @@ static const Card *cards(int *n) {
   case S_PADCHECK: *n = 2; return check_cards;
   case S_CARD: *n = 2; return card_cards;
   case S_RESTORE: *n = 2; return restore_cards;
+  case S_UPDATE: *n = 2; return update_cards;
   case S_SETTINGS: *n = SDL_GetNumTouchDevices() > 0 || touch_shown ? 3 : 1; return settings_cards;
   case S_TSIZE: *n = 4; return tsize_cards;
   case S_TALPHA: *n = 4; return talpha_cards;
@@ -77,6 +82,9 @@ static int header(void) {
   }
   return -1;
 }
+
+/* the screens with a line of their own at the top instead of a picture */
+static bool has_banner(void) { return screen == S_UPDATE; }
 
 static void go(int s) {
   screen = s; focus = 0; touched = -3;
@@ -109,11 +117,12 @@ static void after_restore(void) {
   else { menu_open = false; first = false; }
 }
 void menu_show(void) { first = false; card_screen = S_CARD; open_at(S_MAIN); }
+void menu_show_update(void) { first = false; card_screen = S_CARD; open_at(S_UPDATE); }
 static void close_menu(void) { menu_open = false; first = false; }
 
 void menu_back(void) {
   switch (screen) {
-  case S_MAIN: close_menu(); break;
+  case S_MAIN: case S_UPDATE: close_menu(); break;
   case S_CARD: case S_SETTINGS: go(S_MAIN); break;
   case S_SCALE: case S_TSIZE: case S_TALPHA: go(S_SETTINGS); break;
   case S_PADCHECK: go(first ? S_FIRST : S_MAIN); break;
@@ -136,7 +145,7 @@ static void card_rect(int i, int n, int ww, int wh, float *cx, float *cy, float 
   float cs = fminf(0.36f * s, (ww - gap * (n + 1)) / n);
   *size = cs;
   *cx = ww / 2.0f + (i - (n - 1) / 2.0f) * (cs + gap);
-  *cy = header() >= 0 ? wh * 0.6f : wh * 0.5f;
+  *cy = header() >= 0 || has_banner() ? wh * 0.6f : wh * 0.5f;
 }
 
 static void back_rect(int ww, int wh, float *cx, float *cy, float *size) {
@@ -200,6 +209,7 @@ static int act(int i) {
   case MENU_PAD: go(S_PADCHECK); return MENU_PAD;
   case MENU_SETUP: close_menu(); return MENU_SETUP;
   case MENU_QUIT: close_menu(); return MENU_QUIT;
+  case MENU_UPDATE: close_menu(); return MENU_UPDATE;
   case MENU_EXPORT:
 #ifdef __ANDROID__
     go(S_WAIT);
@@ -272,6 +282,7 @@ void menu_draw(int ww, int wh) {
     overlay_quad(I_DROP, ww / 2.0f + 0.16f * s, wh * 0.5f, 0.36f * s, 0.36f * s, 1, 1);
     overlay_text(T_DROP, ww / 2.0f, wh * 0.5f + 0.27f * s, 0.04f * s, ww * 0.9f, 1, 0.95f);
   }
+  if (has_banner()) overlay_draw_new_version(ww / 2.0f, wh * 0.24f, fminf(0.04f * s, ww * 0.9f / 33), 1);
   if (header() >= 0) overlay_quad(header(), ww / 2.0f, wh * 0.24f, 0.22f * s, 0.22f * s, 1, 0.85f);
   int n; const Card *c = cards(&n);
   /* the words under the cards: one size for all, the largest that keeps each within its card's width */

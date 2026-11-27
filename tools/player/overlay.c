@@ -116,7 +116,7 @@ static struct { int id; const char *s; } words[] = {
   {T_VERSION, version_word}, {T_BUTTON_SIZE, "BUTTON SIZE"}, {T_OPACITY, "OPACITY"}, {T_SMALL, "SMALL"},
   {T_MEDIUM, "MEDIUM"}, {T_LARGE, "LARGE"}, {T_HUGE, "HUGE"}, {T_FAINT, "FAINT"}, {T_LIGHT, "LIGHT"},
   {T_SOLID, "SOLID"}, {T_FULL, "FULL"}, {T_NEW_VERSION, "NEW VERSION"}, {T_AT_SITE, "AT DW1HORIZON.COM"},
-  {T_DOT, "."}, {T_V, "V"},
+  {T_DOT, "."}, {T_V, "V"}, {T_DOWNLOAD, "DOWNLOAD"}, {T_LATER, "LATER"},
 };
 static float word_w[I_COUNT];   /* the letters' width in atlas pixels */
 
@@ -656,14 +656,12 @@ static void draw_fps(int ww, int wh) {
 }
 
 static char new_version[16];   /* "V0.0.11" */
-static Uint32 new_version_at;
 
 void overlay_set_new_version(const char *tag) {
   int n = 0;
   for (const char *p = tag; *p && n < (int)sizeof new_version - 1; p++)
     if ((*p >= '0' && *p <= '9') || *p == '.' || *p == 'v' || *p == 'V') new_version[n++] = (char)SDL_toupper((unsigned char)*p);
   new_version[n] = 0;
-  new_version_at = SDL_GetTicks();
 }
 
 /* "NEW VERSION V0.0.11 AT DW1HORIZON.COM", centred on (cx, cy), on a dark backing */
@@ -711,11 +709,6 @@ void overlay_draw(int ww, int wh) {
   }
   if (remap_step < 0 && !menu_open) {
     draw_fps(ww, wh);
-    Uint32 t = SDL_GetTicks() - new_version_at;   /* the news of a newer release: 12 seconds over the game */
-    if (new_version[0] && t < 12000) {
-      float s = ww < wh ? (float)ww : (float)wh;
-      overlay_draw_new_version(ww / 2.0f, 0.16f * s, 0.03f * s, t > 11000 ? (12000 - t) / 1000.0f : 1);
-    }
   }
   flush(ww, wh);
 }

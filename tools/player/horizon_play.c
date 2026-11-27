@@ -786,7 +786,160 @@ static void fail(const char *title, const char *msg) {
   SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, msg, window);
 }
 
+/* --unpack SETUP DIR: write the disc appended to the Windows setup (tools/patcher/setup_exe.py) into DIR as
+ * "Digimon World Horizon.bin" and ".cue". The trailer: ... BIN | CUE | bin size u64 | cue size u32 | version u32 |
+ * "HZSETUP1". Through .new files, renamed at the end. SDL_RWops: 64-bit offsets and UTF-8 paths on every system. */
+#define SETUP_NAME "Digimon World Horizon"
+static int unpack_fail(const char *what, const char *path) {
+  fprintf(stderr, "unpack: %s%s%s\n", what, path ? ": " : "", path ? path : "");
+  return 2;
+}
+static bool unpack_copy(SDL_RWops *in, Sint64 from, Sint64 size, const char *path) {
+  SDL_RWops *out = SDL_RWFromFile(path, "wb");
+  static char buf[1 << 20];
+  if (!out) return false;
+  bool ok = SDL_RWseek(in, from, RW_SEEK_SET) == from;
+  while (ok && size > 0) {
+    size_t n = size < (Sint64)sizeof buf ? (size_t)size : sizeof buf;
+    ok = SDL_RWread(in, buf, 1, n) == n && SDL_RWwrite(out, buf, 1, n) == n;
+    size -= (Sint64)n;
+  }
+  return SDL_RWclose(out) == 0 && ok;
+}
+static bool unpack_rename(const char *from, const char *to) {
+#ifdef _WIN32
+  wchar_t a[1024], b[1024];
+  if (!MultiByteToWideChar(CP_UTF8, 0, from, -1, a, 1024) || !MultiByteToWideChar(CP_UTF8, 0, to, -1, b, 1024)) return false;
+  return MoveFileExW(a, b, MOVEFILE_REPLACE_EXISTING) != 0;
+#else
+  return rename(from, to) == 0;
+#endif
+}
+static int unpack_setup(const char *setup, const char *dir) {
+  unsigned char t[24];
+  SDL_RWops *in = SDL_RWFromFile(setup, "rb");
+  if (!in) return unpack_fail("cannot open", setup);
+  Sint64 end = SDL_RWsize(in);
+  if (end < (Sint64)sizeof t || SDL_RWseek(in, end - (Sint64)sizeof t, RW_SEEK_SET) < 0 ||
+      SDL_RWread(in, t, 1, sizeof t) != sizeof t) { SDL_RWclose(in); return unpack_fail("cannot read the end of", setup); }
+  if (memcmp(t + 16, "HZSETUP1", 8)) { SDL_RWclose(in); return unpack_fail("no game inside (not made by the Horizon Patcher)", setup); }
+  Sint64 bin = 0; Uint32 cue = 0, ver = 0;
+  for (int i = 7; i >= 0; i--) bin = (bin << 8) | t[i];
+  for (int i = 11; i >= 8; i--) cue = (cue << 8) | t[i];
+  for (int i = 15; i >= 12; i--) ver = (ver << 8) | t[i];
+  if (ver != 1) { SDL_RWclose(in); return unpack_fail("a setup of a newer kind: update the Horizon Patcher", setup); }
+  if (bin <= 0 || bin + (Sint64)cue + (Sint64)sizeof t > end) { SDL_RWclose(in); return unpack_fail("the setup is damaged (too short)", setup); }
+  char binp[1024], cuep[1024], binn[1040], cuen[1040];
+  const char sep = (strchr(dir, '\\') || strstr(dir, ":")) ? '\\' : '/';
+  snprintf(binp, sizeof binp, "%s%c%s.bin", dir, sep, SETUP_NAME);
+  snprintf(cuep, sizeof cuep, "%s%c%s.cue", dir, sep, SETUP_NAME);
+  snprintf(binn, sizeof binn, "%s.new", binp);
+  snprintf(cuen, sizeof cuen, "%s.new", cuep);
+  Sint64 at = end - (Sint64)sizeof t - (Sint64)cue - bin;
+  bool ok = unpack_copy(in, at, bin, binn) && unpack_copy(in, at + bin, cue, cuen);
+  SDL_RWclose(in);
+  if (!ok) { return unpack_fail("cannot write the disc (disk full?)", binn); }
+  if (!unpack_rename(binn, binp) || !unpack_rename(cuen, cuep)) return unpack_fail("cannot rename into place", binp);
+  return 0;
+}
+
+/* ---- a newer release (docs/player.md) ----
+ * At start a thread asks GitHub's API which release is the latest (as HorizonActivity.checkVersion does) and,
+ * when it is newer than this program, the menu says so once
+ * (menu_show_update). Android asks in Java (HorizonActivity.checkVersion). Offline, or with no repository built in,
+ * nothing shows. */
+static char test_new_version[40];   /* --new-version TAG (tests): as if the check had found it */
+#if !defined(__ANDROID__) && defined(HORIZON_REPOSITORY)
+#ifdef _WIN32
+#include <winhttp.h>
+#endif
+static char latest_tag[40];
+static SDL_atomic_t latest_done;
+
+static void version_key(const char *v, int k[3]) {
+  k[0] = k[1] = k[2] = -1;
+  if (v && (*v == 'v' || *v == 'V')) v++;
+  if (v) sscanf(v, "%d.%d.%d", &k[0], &k[1], &k[2]);
+}
+
+static int latest_thread(void *unused) {
+  (void)unused;
+  char loc[8192] = "";   /* the start of the answer: "tag_name" comes early, before the assets */
+  size_t got = 0;
+#ifdef _WIN32
+  wchar_t path[300]; char p8[300];
+  snprintf(p8, sizeof p8, "/repos/%s/releases/latest", HORIZON_REPOSITORY);
+  MultiByteToWideChar(CP_UTF8, 0, p8, -1, path, 300);
+  HINTERNET ses = WinHttpOpen(L"Horizon Play", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME,
+                              WINHTTP_NO_PROXY_BYPASS, 0);
+  HINTERNET con = ses ? WinHttpConnect(ses, L"api.github.com", INTERNET_DEFAULT_HTTPS_PORT, 0) : NULL;
+  HINTERNET req = con ? WinHttpOpenRequest(con, L"GET", path, NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES,
+                                           WINHTTP_FLAG_SECURE) : NULL;
+  if (req) {
+    WinHttpSetTimeouts(ses, 10000, 10000, 10000, 10000);
+    if (WinHttpSendRequest(req, L"Accept: application/vnd.github+json\r\n", (DWORD)-1L, WINHTTP_NO_REQUEST_DATA, 0, 0, 0)
+        && WinHttpReceiveResponse(req, NULL)) {
+      DWORD n;
+      while (got < sizeof loc - 1 && WinHttpReadData(req, loc + got, (DWORD)(sizeof loc - 1 - got), &n) && n) got += n;
+    }
+  }
+  if (req) WinHttpCloseHandle(req);
+  if (con) WinHttpCloseHandle(con);
+  if (ses) WinHttpCloseHandle(ses);
+#else
+  /* curl is part of macOS and of nearly every Linux; without it there is simply no notice */
+  char cmd[400];
+  snprintf(cmd, sizeof cmd, "curl -s -m 10 -H 'Accept: application/vnd.github+json' "
+           "'https://api.github.com/repos/%s/releases/latest' 2>/dev/null", HORIZON_REPOSITORY);
+  FILE *p = popen(cmd, "r");
+  if (p) {
+    size_t n;
+    while (got < sizeof loc - 1 && (n = fread(loc + got, 1, sizeof loc - 1 - got, p)) > 0) got += n;
+    while (fread(cmd, 1, sizeof cmd, p) > 0) {}   /* the rest, so curl ends by itself */
+    pclose(p);
+  }
+#endif
+  loc[got] = 0;
+  const char *t = strstr(loc, "\"tag_name\"");
+  if (t) t = strchr(t + 10, '"');
+  if (t) {
+    char tag[40]; int n = 0;
+    for (t++; *t && *t != '"' && n < (int)sizeof tag - 1; t++) tag[n++] = *t;
+    tag[n] = 0;
+    int a[3], b[3]; version_key(tag, a); version_key(HORIZON_VERSION, b);
+    bool newer = false;
+    if (a[0] >= 0 && b[0] >= 0 && b[2] >= 0)
+      for (int i = 0; i < 3; i++) if (a[i] != b[i]) { newer = a[i] > b[i]; break; }
+    if (newer) snprintf(latest_tag, sizeof latest_tag, "%s", tag);
+    SDL_Log("latest release: %s (this is %s)", tag, HORIZON_VERSION);
+  }
+  SDL_AtomicSet(&latest_done, 1);
+  return 0;
+}
+#endif
+
+static void new_version_check(void) {
+#if !defined(__ANDROID__) && defined(HORIZON_REPOSITORY)
+  SDL_Thread *t = SDL_CreateThread(latest_thread, "latest", NULL);
+  if (t) SDL_DetachThread(t);
+#endif
+}
+
+/* a newer release's tag, once the check found one */
+static bool new_version_found(char *out, size_t n) {
+  if (test_new_version[0]) { snprintf(out, n, "%s", test_new_version); return true; }
+#ifdef __ANDROID__
+  return android_new_version(out, n);
+#elif defined(HORIZON_REPOSITORY)
+  if (!SDL_AtomicGet(&latest_done) || !latest_tag[0]) return false;
+  snprintf(out, n, "%s", latest_tag); return true;
+#else
+  (void)out; (void)n; return false;
+#endif
+}
+
 int main(int argc, char **argv) {
+  if (argc == 4 && !strcmp(argv[1], "--unpack")) return unpack_setup(argv[2], argv[3]);
   const char *disc = NULL, *core_path = NULL, *sys = NULL, *saves = NULL;
   bool windowed = false, no_disc = false; int scale = 0, force_w = 0, force_h = 0;
   for (int i = 1; i < argc; i++) {
@@ -798,7 +951,8 @@ int main(int argc, char **argv) {
     else if (!strcmp(argv[i], "--touch")) force_touch = true;            /* the touch pad from the start */
     else if (!strcmp(argv[i], "--ask-card")) ask_card = true;           /* (tests) the new install's card question */
     else if (!strcmp(argv[i], "--first-start")) first_start = true;      /* the first start's question, in tests too */
-    else if (!strcmp(argv[i], "--new-version") && i + 1 < argc) overlay_set_new_version(argv[++i]);   /* (tests) */
+    else if (!strcmp(argv[i], "--new-version") && i + 1 < argc)   /* (tests) */
+      snprintf(test_new_version, sizeof test_new_version, "%s", argv[++i]);
     else if (!strcmp(argv[i], "--suspend-at") && i + 1 < argc) suspend_at = atoi(argv[++i]);   /* (tests) */
     else if (!strcmp(argv[i], "--no-fast-start")) fast_start = false;     /* the start at the console's own pace */
     else if (!strcmp(argv[i], "--scale") && i + 1 < argc) scale = atoi(argv[++i]);
@@ -873,7 +1027,11 @@ int main(int argc, char **argv) {
   if (disc) {
     SDL_RWops *f = SDL_RWFromFile(last_file, "wb"); if (f) { SDL_RWwrite(f, disc, 1, strlen(disc)); SDL_RWclose(f); }
   } else if (!no_disc) {
-    SDL_RWops *f = SDL_RWFromFile(last_file, "rb");
+    /* a disc put inside the app (tools/patcher/mac_app.py, linux_run.py) or beside the program: play it first */
+    static char beside[1300]; snprintf(beside, sizeof beside, "%s%s.cue", here, SETUP_NAME);
+    SDL_RWops *b = SDL_RWFromFile(beside, "rb");
+    if (b) { SDL_RWclose(b); disc = beside; SDL_Log("disc beside the program: %s", beside); }
+    SDL_RWops *f = disc ? NULL : SDL_RWFromFile(last_file, "rb");
     if (f) {
       size_t n = SDL_RWread(f, last_disc, 1, sizeof last_disc - 1); SDL_RWclose(f); last_disc[n] = 0;
       SDL_RWops *t = n ? SDL_RWFromFile(last_disc, "rb") : NULL;
@@ -990,6 +1148,7 @@ int main(int argc, char **argv) {
   if (audio_dev) SDL_PauseAudioDevice(audio_dev, 0);
 
   controls_open_all();
+  if (run_frames < 0 && !press_script) new_version_check();   /* (not in tests: no network) */
   /* the first start asks touch or controller (not in tests); the answer decides whether the touch pad shows */
   /* a new install on Android has no card: it may have a copy from before (HorizonActivity.backupCard) to import */
 #ifdef __ANDROID__
@@ -1044,6 +1203,10 @@ int main(int argc, char **argv) {
         }
         else if (a == MENU_TOUCHPAD) settings_save();
         else if (a == MENU_EXPORT || a == MENU_IMPORT) card_action(a);
+        else if (a == MENU_UPDATE) {   /* the website, where the patcher makes the new version from the player's disc */
+          if (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN) SDL_MinimizeWindow(window);
+          SDL_OpenURL("https://dw1horizon.com/");
+        }
         card_poll();
       }
       pad_bits = 0;
@@ -1066,14 +1229,12 @@ int main(int argc, char **argv) {
     core.run();
     frame++;
     if (!booting) game_started = true;
-#ifdef __ANDROID__
-    {   /* a newer release: asked of the Java side every two seconds until it answers (it may never: offline) */
-      static bool told; char tag[32];
-      if (!told && !booting && frame % 120 == 0 && android_new_version(tag, sizeof tag)) {
-        told = true; overlay_set_new_version(tag); SDL_Log("a newer release: %s", tag);
+    {   /* a newer release: asked every two seconds until the check answers (it may never: offline), then said once */
+      static bool told; char tag[40];
+      if (!told && !booting && !menu_open && remap_step < 0 && frame % 120 == 0 && new_version_found(tag, sizeof tag)) {
+        told = true; overlay_set_new_version(tag); SDL_Log("a newer release: %s", tag); menu_show_update();
       }
     }
-#endif
     if (frame == suspend_at) { resume_save(); paused = true; break; }   /* (tests: as if Android ended the app in the background) */
     if (frame % 60 == 0) card_save();
     {   /* the frame rate in the corner: the game's frames in the last second */

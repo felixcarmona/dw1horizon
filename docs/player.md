@@ -21,18 +21,18 @@ The program carries no game data. It plays the disc that the patcher builds from
 
 - **Windows and macOS:** inside the desktop patcher (on Windows with the Visual C++ runtime's three DLLs beside
   `horizon-play.exe`, which the core needs and a clean Windows lacks) (`desktop.yml` builds it and passes `--player` to
-  `tools/patcher/app/build.py`). After a build, and when the app opens again, a **Play** button starts it on the
-  disc (`desktop.play`).
+  `tools/patcher/app/build.py`). The patcher uses it for the installers it makes (no Play button: the player
+  installs the game with one of them, or plays the disc image in an emulator).
 - **Linux:** `Horizon-Play-Linux-x86_64.tar.gz` (`player.yml`), built on Ubuntu 22.04. Run
   `./horizon-play DISC.cue` once. With no argument it opens the last disc it played.
 - **Android:** after a build, the desktop patcher's **Android app (.apk)** button writes `<disc>.apk` next to the disc
-  (`desktop.make_apk`, `tools/patcher/apk.py`). It is Horizon Play for Android (`tools/player/android`, arm64,
+  (`desktop.make`, `tools/patcher/apk.py`; the template is the release asset `Horizon-Play.apk`, downloaded on demand). It is Horizon Play for Android (`tools/player/android`, arm64,
   Android 7+) with the built disc added as `assets/horizon.bin`, stored and page aligned. The player copies it to the
   phone and installs it: the game starts at once, with nothing to choose. The app reads the disc in place, through the
   core's VFS (`--embedded APK OFFSET SIZE`), so the phone keeps one copy. The patcher signs it (APK Signature Scheme
-  v2, standard library only) with a key made on first use and kept in its settings folder (`android-key.json`), so
-  the next APK from that computer installs over it and keeps the saves. An APK signed with another key has to replace
-  the app; Android then offers to keep its data (`hasFragileUserData`). Saves, logs and options live in
+  v2, standard library only) with one shared key, `tools/patcher/android-key.json`, public on purpose: it protects
+  nothing, it only makes every APK, from any computer, install over any other and keep the saves. An APK signed with
+  another key (`apk.py --key`) has to replace the app; Android then offers to keep its data (`hasFragileUserData`). Saves, logs and options live in
   `Android/data/com.dw1horizon.play/files/saves`. Each time the card is written the app also copies it to
   `Documents/Digimon World Horizon/Digimon World Horizon.mcd` (MediaStore, no permission on Android 10+; Android 7-9
   ask once for storage) when it holds a save, which an uninstall leaves on the phone; a new install cannot write over
@@ -53,7 +53,7 @@ python3 tools/player/build.py --out build/player/bundle            # Linux (need
 python tools/player/build.py --openbios openbios.bin --out ...      # Windows / macOS (an OpenBIOS built on Linux)
 python3 tools/player/build.py --universal2 --openbios ... --out ... # macOS, Apple silicon + Intel
 python3 tools/player/android/build_apk.py --out Horizon-Play.apk  # Android template (ANDROID_HOME, NDK, JDK 17; no Gradle)
-python3 tools/patcher/apk.py Horizon-Play.apk DISC.bin OUT.apk --key key.json   # the template with a disc inside
+python3 tools/patcher/apk.py Horizon-Play.apk DISC.bin OUT.apk   # the template with a disc inside
 ```
 
 It checks out SwanStation and OpenBIOS (PCSX-Redux's `nugget`) at the commits pinned in `build.py`. It builds the
@@ -100,12 +100,16 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
 Under the cards the main screen shows the program's version (`tools/version.py`, given to CMake as
 `HORIZON_VERSION` by `build.py` and `build_apk.py`; `DEV` when built by hand).
 
-**A newer release (Android):** at each start the app asks GitHub for the latest release of the repository
-`build_apk.py` wrote into `assets/releases.txt` (`--repository`, else `GITHUB_REPOSITORY`, else the checkout's
-origin; with none it does not ask). When that release's X.Y.Z is higher than the app's own, "NEW VERSION V… AT
-DW1HORIZON.COM" shows over the game for 12 seconds and stays in the menu above the version. Offline or refused, nothing
-shows. This is the app's only use of the network (the `INTERNET` permission). On a computer the patcher, which starts
-the program, already tells of a newer release. `--new-version TAG` shows the notice in tests.
+**A newer release:** at each start the program asks GitHub's API for the latest release of its repository (Android:
+`assets/releases.txt`, written by `build_apk.py`; Windows, macOS and Linux: `HORIZON_REPOSITORY`, given to CMake by
+`build.py`; both take `--repository`, else `GITHUB_REPOSITORY`, else the checkout's origin, and `none` for no check).
+When that release's X.Y.Z is higher than the program's own, a screen says "NEW VERSION V… AT DW1HORIZON.COM" once,
+as soon as the game is past its start and no other screen is open, with two cards: DOWNLOAD opens the website (the
+patcher there makes the new version from the player's disc; a full-screen window is minimised first) and LATER goes
+back to the game. The line also stays in the menu above the version. Offline or refused, nothing shows. This is the
+program's only use of the network: Android in Java (`INTERNET` permission), Windows with WinHTTP, macOS and Linux
+with the system's `curl` (without it, no notice). `--new-version TAG` shows the screen in tests (no check is made
+with `--frames` or `--press`).
 
 **Where the player left off:** Android may end an app it has sent to the background, and the game would lose what
 was played since its last save. So when the app goes to the background the whole machine is written to `resume.state`
@@ -130,6 +134,71 @@ key names, a raw button, hat direction or axis side), which can also be edited b
 SELECT, START and the menu button; several fingers at once, the D-pad in eight directions). It steps aside when a
 controller button or a key is pressed and comes back at the next touch. `--touch` shows it from the start on any
 system. (`tools/player/overlay.c`: drawn at start into one texture, no image files.)
+
+## A setup wizard
+
+A Windows setup program that installs Horizon Play and the game in one go, made the way the Android APK is. CI
+publishes an **empty template** as a release asset, `Horizon-Setup.exe` (`desktop.yml`, artifact
+`horizon-setup-template`): an NSIS wizard and Horizon Play, **no game data**. On the player's own computer the desktop
+patcher downloads it (cached by tag), appends the disc it just built to a copy and writes `<disc>-Setup.exe` next to
+the disc (**Windows installer (.exe)** button, `desktop.make`, `tools/patcher/setup_exe.py`). That file holds the player's disc, so it stays on their computer.
+
+```
+python3 tools/player/installer.py --player "Horizon Play" --out Horizon-Setup.exe        # the template (makensis)
+python3 tools/patcher/setup_exe.py Horizon-Setup.exe DISC.cue DISC-Setup.exe              # the template plus a disc
+```
+
+`installer.py` runs `makensis` from the PATH, from `Program Files (x86)\NSIS` (preinstalled on the Windows runner; the
+workflow installs it with choco if not), or in a Docker `ubuntu:24.04`. `setup_exe.py` (standard library, streamed,
+one `.bin` per disc) copies the template and appends the `.bin`, the cue text (its FILE renamed to
+`Digimon World Horizon.bin`) and a fixed 24-byte trailer: bin size (u64), cue size (u32), format version (u32), the
+magic `HZSETUP1`, little endian. The template is built with `CRCCheck off`: NSIS reads only the data length its first
+header records, so the appended bytes are ignored, but its CRC check covers the whole file and would be the one thing
+to object to them.
+
+The wizard (English or Spanish) installs for the current user, without administrator, into
+`%LOCALAPPDATA%\Programs\Digimon World Horizon`, adds desktop and Start menu shortcuts that open the disc, and an entry
+in Windows' installed apps. NSIS cannot copy 600 MB quickly, so after the player files it runs
+`horizon-play.exe --unpack SETUP DIR` (`unpack_setup` in `horizon_play.c`: reads the trailer, writes the `.bin` and `.cue`
+through `.new` files, renames them; nonzero exit and a message on stderr when the trailer is missing, wrong or a write
+fails), and aborts the install with a message if it fails. A template run with no disc appended says so at the start
+(`.onInit` reads the last 8 bytes for the magic) and quits before installing anything. The last page offers **Play now**.
+The uninstaller removes the install folder with the disc; the saves stay (`%APPDATA%\Horizon\Horizon`). A silent
+`Setup.exe /S /D=DIR` works (the CI check runs it, then `Uninstall.exe /S`). The macOS patcher does not carry the
+template (the macOS job would have to wait for the whole Windows job): make the setup on a Windows computer.
+
+## A Mac app, and a Linux installer
+
+On a Mac, the desktop patcher's **Mac app** button (`desktop.make`, `tools/patcher/mac_app.py`) writes
+`<disc>-Mac.dmg` next to the disc: a disk image with `Digimon World Horizon.app` and an Applications link to drag it
+to (`hdiutil create -format UDZO`). The app is a copy of the Horizon Play .app the patcher carries, with the disc added
+in `Contents/Resources` as `Digimon World Horizon.bin` and `.cue`; Info.plist names it "Digimon World Horizon" and the
+bundle id stays, so both apps share the saves (`SDL_GetPrefPath("Horizon", "Horizon")`, `~/Library/Application
+Support/Horizon/Horizon`, not tied to the bundle). Started with no disc argument, Horizon Play first looks for
+`Digimon World Horizon.cue` beside its core (`SDL_GetBasePath`: the Resources folder in a Mac app, the program's own
+folder elsewhere) and plays it, and only then falls back to `last-disc.txt`. The CLI
+(`python3 tools/patcher/mac_app.py "Horizon Play.app" DISC.cue OUT.zip`) makes a zip that keeps symlinks and execute
+bits; a `.dmg` needs a Mac.
+
+Signing: adding files breaks the bundle's seal, so on a Mac the copy is signed again ad hoc (`codesign --force --deep -s
+-`, with the quarantine mark removed). That replaces the template's Developer ID signature and its notarization: the
+app runs on the Mac that made it, but one copied to another Mac (or made by the CLI elsewhere, which cannot sign at
+all) needs `xattr -cr "Digimon World Horizon.app"` once, or right-click then Open. `desktop.yml`'s macOS job makes a
+dummy-disc dmg, mounts it, compares the bin, runs `codesign --verify` and tries a short launch.
+
+**Linux:** `python3 tools/patcher/linux_run.py Horizon-Play-Linux-x86_64.tar.gz DISC.cue DISC-Linux.run` writes a self
+extracting installer (`tools/patcher/linux_run.py`): a short POSIX sh header and a tar.gz at a recorded byte offset, with
+the Linux player bundle (`player.yml`'s tarball) and the disc as `Digimon World Horizon.bin/.cue`. `./DISC-Linux.run`
+installs without sudo into `${XDG_DATA_HOME:-~/.local/share}/digimon-world-horizon` (`--target DIR` changes it),
+writes `digimon-world-horizon.desktop` in `~/.local/share/applications` with the icon beside the game, copies the
+launcher to the desktop folder when `xdg-user-dir DESKTOP` has one (trusted through `gio` where possible), and leaves
+`uninstall.sh` (`--uninstall` runs it): it removes only what the installer put in the folder and the launchers, and
+keeps the saves (`~/.local/share/Horizon/Horizon`). In a terminal it asks whether to start the game; a double click
+starts it (`--no-start` never does). `player.yml` makes one from a dummy disc, installs it, compares the bin, checks
+that the player finds the disc with no argument, and uninstalls. The desktop patcher has a **Linux installer (.run)**
+button (`desktop.make`) that downloads the release's `Horizon-Play-Linux-x86_64.tar.gz` (attached by `player.yml`) and
+builds it. On Windows and Linux the Mac button writes `<disc>-Mac.zip` from the release's `Horizon-Play-macOS.zip`
+(`ditto --keepParent`); it cannot be signed there, so on the Mac the first open is right-click then Open.
 
 ## Licences
 

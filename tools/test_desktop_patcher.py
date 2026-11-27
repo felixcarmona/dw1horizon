@@ -19,6 +19,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / 'patcher'))
 import discformats  # noqa: E402
 import desktop  # noqa: E402
 import dwpatch as dw  # noqa: E402
+import setup_exe  # noqa: E402
+import mac_app  # noqa: E402
+import linux_run  # noqa: E402
+import plistlib  # noqa: E402
+import stat  # noqa: E402
+import zipfile  # noqa: E402
 
 RAW = 2352
 
@@ -631,67 +637,375 @@ class PbpGuiFlow(unittest.TestCase):
         self.assertEqual(app.notes, {})
 
 
-class HorizonPlay(unittest.TestCase):
-    """The Play button (docs/player.md): shown when the app carries Horizon Play and a disc was built."""
-
-    def test_player_program_found_in_the_app_data(self):
-        with tempfile.TemporaryDirectory() as d:
-            with patch.object(desktop, 'resource', side_effect=lambda *p: os.path.join(d, *p)):
-                self.assertIsNone(desktop.player_program())
-                if sys.platform == 'darwin':
-                    parts = ('player', 'Horizon Play.app', 'Contents', 'MacOS', 'horizon-play')
-                else:
-                    parts = ('player', 'horizon-play.exe' if os.name == 'nt' else 'horizon-play')
-                os.makedirs(os.path.join(d, *parts[:-1]))
-                open(os.path.join(d, *parts), 'wb').close()
-                self.assertEqual(desktop.player_program(), os.path.join(d, *parts))
-
-    def test_play_starts_the_program_on_the_disc(self):
-        with patch.object(desktop, 'player_program', return_value=os.path.join('app', 'player', 'horizon-play')), \
-                patch('subprocess.Popen') as popen:
-            desktop.play('disc.cue')
-        args = popen.call_args[0][0]
-        self.assertEqual(args, [os.path.join('app', 'player', 'horizon-play'), os.path.abspath('disc.cue')])
-        with patch.object(desktop, 'player_program', return_value=None):
-            with self.assertRaises(FileNotFoundError):
-                desktop.play('disc.cue')
-
-    def test_restore_offers_play_for_the_last_disc(self):
+    def test_make_asks_the_folder_then_works_in_the_background(self):
         import gui
-        with tempfile.TemporaryDirectory() as d:
-            cue = os.path.join(d, 'horizon.cue')
-            open(cue, 'w').close()
+        app = gui.App.__new__(gui.App)
+        app.slots, app.package = {}, None
+        app.finish = Mock()
+        app.finish.winfo_children.return_value = []
+        app._spawn = Mock()
+        with patch.object(app, '_ask_folder', return_value=None):           # cancelled: nothing happens
+            app._make('apk')
+        app._spawn.assert_not_called()
+        with tempfile.TemporaryDirectory() as there, patch.object(app, '_ask_folder', return_value=there), \
+                patch.object(desktop, 'space_problems', return_value=[]):
+            app._make('apk')
+        app._spawn.assert_called_once_with(app._job_make_any, 'apk', there, busy='build')
+
+    def test_the_disc_is_built_once_and_kept_for_every_button(self):
+        import gui
+        with tempfile.TemporaryDirectory() as home, tempfile.TemporaryDirectory() as out, \
+                patch.dict(os.environ, HORIZON_PATCHER_HOME=home):
             app = gui.App.__new__(gui.App)
-            app.config = Mock()
-            app.config.get.side_effect = lambda k, default=None: cue if k == 'last_disc' else default
-            app.config.remembered_discs.return_value = {}
-            app.slots, app.notes = {}, {}
-            app._refresh = Mock()
-            app._finish_buttons = Mock()
-            with patch.object(desktop, 'cached_packages', return_value=[]):
-                app._restore()
-            app._finish_buttons.assert_called_once_with(d, None, cue)
+            app.slots = {'us': dict(path='/discs/dw.bin', size=1, mtime_ns=2, image='/discs/dw.bin')}
+            app.events, app.t, app.cancel = Mock(), Mock(return_value='status'), threading.Event()
+            package = dict(folder='pkg', version='1.2.3')
+            app._job_package = Mock(return_value=package)
+            app._job_make = Mock()
+            built = []
 
-
+            def build(key, pkg):
+                desktop.forget_built_disc()
+                d = desktop.built_disc_dir()
+                for name in ('Horizon.cue', 'Horizon.bin'):
+                    with open(os.path.join(d, name), 'wb') as f:
+                        f.write(b'x' * 10)
+                desktop.keep_built_disc(key, dict(cue=os.path.join(d, 'Horizon.cue'), bin=os.path.join(d, 'Horizon.bin')),
+                                        pkg['version'])
+                built.append(1)
+                return desktop.cached_disc(key)
+            app._job_build = Mock(side_effect=build)
+            app._job_make_any('apk', out)                                     # first press: built
+            app._job_make_any('setup', out)                                   # kept
+            app._job_make_any('disc', out)                                    # kept, copied out
+            self.assertEqual(len(built), 1)
+            cue = os.path.join(desktop.built_disc_dir(), 'Horizon.cue')
+            self.assertEqual([c[0][:2] for c in app._job_make.call_args_list], [('apk', cue), ('setup', cue)])
+            self.assertTrue(os.path.isfile(os.path.join(out, 'Horizon.bin')))
+            self.assertTrue(os.path.isfile(os.path.join(out, 'Horizon.cue')))
+            app.slots['us']['mtime_ns'] = 3                                   # a disc changed: built again
+            app._job_make_any('apk', out)
+            self.assertEqual(len(built), 2)
 
 class CacheRefreshFlow(unittest.TestCase):
-    def test_check_and_build_recheck_same_release_but_keep_imported_package(self):
+    def test_make_rechecks_same_release_but_keeps_imported_package(self):
         import gui
         for source in ('release', 'file'):
             app = gui.App.__new__(gui.App)
             app.package = dict(version='9.9.9', source=source, folder='cached')
             app.events = Mock()
-            app.t = Mock(return_value='status')
             app._job_download = Mock(return_value=app.package)
-            latest = dict(version='9.9.9')
-            with patch.object(desktop, 'latest_release', return_value=latest):
-                app._job_latest_checked()
-                self.assertEqual(app._job_download.call_count, int(source == 'release'))
-                app._job_download.reset_mock()
-                with patch.object(desktop, 'load_patcher', side_effect=RuntimeError('stop before applying')):
-                    with self.assertRaisesRegex(RuntimeError, 'stop before applying'):
-                        app._job_build('output')
-                self.assertEqual(app._job_download.call_count, int(source == 'release'))
+            with patch.object(desktop, 'latest_release', return_value=dict(version='9.9.9')):
+                self.assertEqual(app._job_package(), app.package)
+            self.assertEqual(app._job_download.call_count, int(source == 'release'))
+
+
+class SetupExe(unittest.TestCase):
+    """The Windows setup: a template with the player's disc appended (tools/patcher/setup_exe.py)."""
+
+    def make(self, d, cue_text=None, bin_data=b'\x01\x02' * 5000):
+        d = Path(d)
+        (d / 'template.exe').write_bytes(b'MZ' + bytes(range(256)) * 20)
+        (d / 'my disc.bin').write_bytes(bin_data)
+        (d / 'my disc.cue').write_text(cue_text or 'FILE "my disc.bin" BINARY\n  TRACK 01 MODE2/2352\n    INDEX 01 00:00:00\n')
+        return d
+
+    def test_trailer_round_trip(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = self.make(d)
+            out = str(d / 'out.exe')
+            setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), out)
+            data = (d / 'out.exe').read_bytes()
+            template = (d / 'template.exe').read_bytes()
+            binary = (d / 'my disc.bin').read_bytes()
+            size, cue_size, version = setup_exe.read_trailer(out)
+            self.assertEqual((size, version), (len(binary), setup_exe.VERSION))
+            self.assertEqual(data[:len(template)], template)
+            self.assertEqual(data[len(template):len(template) + size], binary)
+            self.assertEqual(data[-8:], b'HZSETUP1')
+            cue = data[len(template) + size:len(data) - setup_exe.TRAILER.size + 0][:cue_size].decode()
+            self.assertIn('FILE "Digimon World Horizon.bin" BINARY', cue)
+            self.assertNotIn('my disc', cue)
+            self.assertEqual(setup_exe.read_trailer(str(d / 'template.exe')), None)   # the bare template: no game
+            self.assertFalse((d / 'out.exe.new').exists())
+
+    def test_progress_reaches_the_total(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = self.make(d)
+            seen = []
+            setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), str(d / 'o.exe'),
+                            lambda done, total: seen.append((done, total)))
+            self.assertEqual(seen[-1][0], seen[-1][1])
+            self.assertEqual(seen, sorted(seen))
+
+    def test_refuses_a_cue_with_no_bin(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = self.make(d)
+            (d / 'my disc.bin').unlink()
+            with self.assertRaisesRegex(setup_exe.SetupError, 'missing'):
+                setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), str(d / 'o.exe'))
+            (d / 'my disc.cue').write_text('REM nothing\n')
+            with self.assertRaisesRegex(setup_exe.SetupError, 'no FILE'):
+                setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), str(d / 'o.exe'))
+            self.assertFalse((d / 'o.exe').exists())
+
+    def test_refuses_several_tracks(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = self.make(d, 'FILE "a.bin" BINARY\nFILE "b.bin" BINARY\n')
+            with self.assertRaisesRegex(setup_exe.SetupError, '2 tracks'):
+                setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), str(d / 'o.exe'))
+
+
+class Templates(unittest.TestCase):
+    """The installer templates are release assets, downloaded once and cached by tag (desktop.template)."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self.tmp.name)
+        patcher = patch.dict(os.environ, HORIZON_PATCHER_HOME=str(self.dir / 'home'))
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.addCleanup(self.tmp.cleanup)
+        self.remote = {'Horizon-Setup.exe': b'MZ template ' * 100, 'Horizon-Play.apk': b'PK apk' * 50}
+        self.downloads = []
+
+    def assets(self, digest=True):
+        out = {}
+        for name, data in self.remote.items():
+            src = self.dir / 'remote' / name
+            src.parent.mkdir(exist_ok=True)
+            src.write_bytes(data)
+            out[name] = dict(url=str(src), size=len(data),
+                             digest='sha256:' + hashlib.sha256(data).hexdigest() if digest else None)
+        return out
+
+    def download(self, url, dest, progress=None, cancel=None, size=None):
+        self.downloads.append(url)
+        Path(dest).write_bytes(Path(url).read_bytes())
+        if progress:
+            progress(size or 1, size or 1)
+        return dest
+
+    def get(self, kind='setup', tag='v9.9.9', **kw):
+        return desktop.template(kind, tag, **kw)
+
+    def test_download_then_cache(self):
+        seen = []
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download):
+            path = self.get(progress=lambda a, b: seen.append((a, b)))
+            self.assertEqual(Path(path).read_bytes(), self.remote['Horizon-Setup.exe'])
+            self.assertEqual(Path(path).parent.name, 'v9.9.9')
+            self.assertTrue(seen)
+            self.get()                                          # a second time: from the cache
+            self.assertEqual(len(self.downloads), 1)
+            self.get('apk')
+            self.assertEqual(len(self.downloads), 2)
+
+    def test_offline_uses_the_cache_or_says_so(self):
+        import urllib.error
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download):
+            self.get()
+        def offline(tag):
+            raise urllib.error.URLError('no network')
+        with patch.object(desktop, 'release_assets', offline), patch.object(desktop, 'download', self.download):
+            self.assertTrue(Path(self.get()).is_file())          # cached: works offline
+            with self.assertRaises(desktop.Problem) as e:        # not cached: a clear error
+                self.get('apk')
+            self.assertEqual(e.exception.key, 'app.templateOffline')
+            self.assertEqual(e.exception.params['name'], 'Horizon-Play.apk')
+        self.assertEqual(len(self.downloads), 1)
+
+    def test_missing_asset(self):
+        with patch.object(desktop, 'release_assets', lambda tag: {}):
+            with self.assertRaises(desktop.Problem) as e:
+                self.get('linux', tag='v0.0.1')
+            self.assertEqual((e.exception.key, e.exception.params['tag']), ('app.templateMissing', 'v0.0.1'))
+
+    def test_wrong_digest_is_refused_and_not_cached(self):
+        assets = self.assets()
+        assets['Horizon-Setup.exe']['digest'] = 'sha256:' + '0' * 64
+        with patch.object(desktop, 'release_assets', lambda tag: assets), patch.object(desktop, 'download', self.download):
+            with self.assertRaises(desktop.Problem) as e:
+                self.get()
+            self.assertEqual(e.exception.key, 'app.packageBad')
+        self.assertFalse(list((self.dir / 'home').rglob('Horizon-Setup.exe*')))
+
+    def test_a_corrected_asset_replaces_the_cache(self):
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download):
+            self.get()
+            self.remote['Horizon-Setup.exe'] = b'MZ corrected ' * 100
+            self.assertEqual(Path(self.get()).read_bytes(), self.remote['Horizon-Setup.exe'])
+        self.assertEqual(len(self.downloads), 2)
+
+    def test_mac_template_is_unzipped_with_symlinks_and_modes(self):
+        app = self.dir / 'src' / 'Horizon Play.app'
+        (app / 'Contents' / 'MacOS').mkdir(parents=True)
+        (app / 'Contents' / 'Resources').mkdir()
+        (app / 'Contents' / 'Info.plist').write_bytes(b'<plist/>')
+        (app / 'Contents' / 'MacOS' / 'horizon-play').write_bytes(b'bin')
+        os.chmod(app / 'Contents' / 'MacOS' / 'horizon-play', 0o755)
+        os.symlink('horizon-play', app / 'Contents' / 'MacOS' / 'alias')
+        zip_path = self.dir / 'remote' / 'Horizon-Play-macOS.zip'
+        zip_path.parent.mkdir(exist_ok=True)
+        import mac_app as m
+        # (the zip writer keeps the folder's own name as the top entry, as `ditto --keepParent` does)
+        m.zip_app(str(app), str(zip_path))
+        self.remote['Horizon-Play-macOS.zip'] = zip_path.read_bytes()
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download), patch.object(desktop, 'mac_app_template', lambda: None):
+            got = Path(self.get('mac'))
+            self.assertEqual(got.name, 'Horizon Play.app')
+            self.assertTrue(os.path.islink(got / 'Contents' / 'MacOS' / 'alias'))
+            self.assertTrue(os.access(got / 'Contents' / 'MacOS' / 'horizon-play', os.X_OK))
+            self.assertEqual(Path(self.get('mac')), got)         # cached: no second download
+        self.assertEqual(len(self.downloads), 1)
+
+    def test_linux_patcher_uses_its_own_player(self):
+        player = self.dir / 'player'
+        player.mkdir()
+        (player / 'horizon-play').write_bytes(b'elf')
+        with patch.object(sys, 'platform', 'linux'), patch.object(
+                desktop, 'player_program', lambda: str(player / 'horizon-play')), patch.object(
+                desktop, 'release_assets', side_effect=AssertionError('no download needed')):
+            self.assertEqual(self.get('linux'), str(player))
+            (self.dir / 'd.bin').write_bytes(b'\x02' * 1000)
+            (self.dir / 'd.cue').write_text('FILE "d.bin" BINARY\n  TRACK 01 MODE2/2352\n')
+            out = desktop.make('linux', str(self.dir / 'd.cue'), 'v9.9.9')
+            self.assertEqual(Path(out).name, 'd-Linux.run')
+
+    def test_make_builds_next_to_the_disc(self):
+        (self.dir / 'my disc.bin').write_bytes(b'\x01' * 4000)
+        (self.dir / 'my disc.cue').write_text('FILE "my disc.bin" BINARY\n  TRACK 01 MODE2/2352\n')
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download):
+            out = desktop.make('setup', str(self.dir / 'my disc.cue'), 'v9.9.9')
+            self.assertEqual(Path(out).name, 'my disc-Setup.exe')
+            self.assertTrue(setup_exe.read_trailer(out))
+            self.remote['Horizon-Setup.exe'] = b'MZ'
+            (self.dir / 'my disc.cue').write_text('REM none\n')
+            with self.assertRaises(desktop.Problem) as e:
+                desktop.make('setup', str(self.dir / 'my disc.cue'), 'v9.9.9')
+            self.assertEqual(e.exception.key, 'app.makeFailed')
+
+
+class MacApp(unittest.TestCase):
+    """The Mac app with the player's disc inside (tools/patcher/mac_app.py)."""
+
+    def make(self, d):
+        d = Path(d)
+        app = d / 'Horizon Play.app'
+        (app / 'Contents' / 'MacOS').mkdir(parents=True)
+        (app / 'Contents' / 'Resources').mkdir()
+        (app / 'Contents' / 'MacOS' / 'horizon-play').write_bytes(b'#!exec')
+        os.chmod(app / 'Contents' / 'MacOS' / 'horizon-play', 0o755)
+        (app / 'Contents' / 'Resources' / 'core.dylib').write_bytes(b'core')
+        os.symlink('core.dylib', app / 'Contents' / 'Resources' / 'link.dylib')
+        (app / 'Contents' / 'Info.plist').write_bytes(plistlib.dumps(
+            {'CFBundleName': 'Horizon Play', 'CFBundleIdentifier': 'com.dw1horizon.play'}))
+        (d / 'my disc.bin').write_bytes(b'\x07\x08' * 20000)
+        (d / 'my disc.cue').write_text('FILE "my disc.bin" BINARY\n  TRACK 01 MODE2/2352\n    INDEX 01 00:00:00\n')
+        return d, app
+
+    def test_app_gets_the_disc_and_the_name(self):
+        with tempfile.TemporaryDirectory() as d:
+            d, app = self.make(d)
+            out = d / 'out.app'
+            mac_app.build(str(app), str(d / 'my disc.cue'), str(out))
+            res = out / 'Contents' / 'Resources'
+            self.assertEqual((res / 'Digimon World Horizon.bin').read_bytes(), (d / 'my disc.bin').read_bytes())
+            self.assertIn('FILE "Digimon World Horizon.bin"', (res / 'Digimon World Horizon.cue').read_text())
+            plist = plistlib.loads((out / 'Contents' / 'Info.plist').read_bytes())
+            self.assertEqual((plist['CFBundleName'], plist['CFBundleDisplayName'], plist['CFBundleIdentifier']),
+                             ('Digimon World Horizon', 'Digimon World Horizon', 'com.dw1horizon.play'))
+            self.assertTrue(os.path.islink(res / 'link.dylib'))
+            self.assertTrue(os.access(out / 'Contents' / 'MacOS' / 'horizon-play', os.X_OK))
+
+    def test_zip_keeps_symlinks_and_exec_bits(self):
+        with tempfile.TemporaryDirectory() as d:
+            d, app = self.make(d)
+            seen = []
+            mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.zip'), lambda a, b: seen.append((a, b)))
+            self.assertEqual(seen[-1][0], seen[-1][1])
+            with zipfile.ZipFile(d / 'o.zip') as z:
+                modes = {i.filename: i.external_attr >> 16 for i in z.infolist()}
+                base = 'Digimon World Horizon.app/Contents/'
+                self.assertTrue(stat.S_ISLNK(modes[base + 'Resources/link.dylib']))
+                self.assertEqual(z.read(base + 'Resources/link.dylib'), b'core.dylib')
+                self.assertTrue(modes[base + 'MacOS/horizon-play'] & 0o100)
+                self.assertEqual(z.read(base + 'Resources/Digimon World Horizon.bin'), (d / 'my disc.bin').read_bytes())
+            self.assertEqual([p.name for p in d.iterdir() if p.name.startswith('.hzmac')], [])
+
+    def test_refuses(self):
+        with tempfile.TemporaryDirectory() as d:
+            d, app = self.make(d)
+            with self.assertRaisesRegex(mac_app.MacAppError, 'Info.plist'):
+                mac_app.build(str(d), str(d / 'my disc.cue'), str(d / 'o.zip'))
+            with self.assertRaisesRegex(mac_app.MacAppError, 'must end'):
+                mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.tar'))
+            (d / 'my disc.bin').unlink()
+            with self.assertRaises(setup_exe.SetupError):
+                mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.zip'))
+            if sys.platform != 'darwin':
+                with self.assertRaisesRegex(mac_app.MacAppError, 'only be made on a Mac'):
+                    mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.dmg'))
+
+
+class LinuxRun(unittest.TestCase):
+    """The Linux self-extracting installer (tools/patcher/linux_run.py)."""
+
+    def make(self, d, as_tarball):
+        d = Path(d)
+        player = d / 'Horizon Play'
+        (player / 'system').mkdir(parents=True)
+        (player / 'horizon-play').write_text('#!/bin/sh\n')
+        os.chmod(player / 'horizon-play', 0o755)
+        (player / 'system' / 'openbios.bin').write_bytes(b'bios')
+        if as_tarball:
+            with tarfile.open(d / 'player.tar.gz', 'w:gz') as t:
+                t.add(player, 'Horizon Play')
+        (d / 'my disc.bin').write_bytes(bytes(range(256)) * 300)
+        (d / 'my disc.cue').write_text('FILE "my disc.bin" BINARY\n  TRACK 01 MODE2/2352\n')
+        return d, str(d / 'player.tar.gz') if as_tarball else str(player)
+
+    @unittest.skipIf(os.name == 'nt', 'a POSIX sh script')
+    def test_round_trip_install_and_uninstall(self):
+        for as_tarball in (True, False):
+            with self.subTest(tarball=as_tarball), tempfile.TemporaryDirectory() as d:
+                d, player = self.make(d, as_tarball)
+                out = str(d / 'disc-Linux.run')
+                seen = []
+                linux_run.build(player, str(d / 'my disc.cue'), out, lambda a, b: seen.append((a, b)))
+                self.assertEqual(seen[-1][0], seen[-1][1])
+                self.assertTrue(os.access(out, os.X_OK))
+                env = dict(os.environ, HOME=str(d / 'home'), XDG_DATA_HOME=str(d / 'data'))
+                inst = d / 'game dir'
+                run = lambda *a: subprocess.run([out, *a], env=env, capture_output=True, text=True)
+                r = run('--target', str(inst), '--no-start')
+                self.assertEqual(r.returncode, 0, r.stderr)
+                self.assertEqual((inst / 'Digimon World Horizon.bin').read_bytes(), (d / 'my disc.bin').read_bytes())
+                self.assertIn('FILE "Digimon World Horizon.bin"', (inst / 'Digimon World Horizon.cue').read_text())
+                self.assertTrue(os.access(inst / 'horizon-play', os.X_OK))
+                self.assertTrue((inst / 'system' / 'openbios.bin').is_file())
+                self.assertTrue((inst / 'icon.png').read_bytes().startswith(b'\x89PNG'))
+                launcher = (d / 'data' / 'applications' / 'digimon-world-horizon.desktop').read_text()
+                self.assertIn(f'Exec="{inst}/horizon-play" "{inst}/Digimon World Horizon.cue"', launcher)
+                (inst / 'keep.txt').write_text('not ours')   # a folder shared with other files stays
+                self.assertEqual(run('--target', str(inst), '--uninstall').returncode, 0)
+                self.assertEqual([p.name for p in inst.iterdir()], ['keep.txt'])
+                self.assertFalse((d / 'data' / 'applications' / 'digimon-world-horizon.desktop').exists())
+
+    def test_refuses_a_bundle_without_the_player(self):
+        with tempfile.TemporaryDirectory() as d:
+            d, player = self.make(d, False)
+            os.remove(Path(player) / 'horizon-play')
+            with self.assertRaisesRegex(linux_run.LinuxRunError, 'no horizon-play'):
+                linux_run.build(player, str(d / 'my disc.cue'), str(d / 'o.run'))
+            self.assertFalse((d / 'o.run').exists())
+            with self.assertRaisesRegex(linux_run.LinuxRunError, 'no Linux'):
+                linux_run.build(str(d / 'missing.tar.gz'), str(d / 'my disc.cue'), str(d / 'o.run'))
 
 
 class Interface(unittest.TestCase):
@@ -787,6 +1101,35 @@ class Strings(unittest.TestCase):
             used |= set(re.findall(r"'(app\.[A-Za-z.]+[A-Za-z])'", (Path(__file__).resolve().parent / 'patcher' / f)
                                    .read_text(encoding='utf-8')))
         self.assertEqual(used - set(table['en']) - {'app.log'}, set())          # (app.log: a file name)
+
+
+class SharedApkKey(unittest.TestCase):
+    """Every APK is signed with the one public key in the repository, so any APK installs over any other."""
+
+    def test_shared_key_is_committed_and_valid(self):
+        import apk
+        self.assertTrue(os.path.isfile(apk.SHARED_KEY))
+        k = apk.load_key(apk.SHARED_KEY)
+        self.assertEqual(pow(pow(12345, k['e'], k['n']), k['d'], k['n']), 12345)
+        self.assertIn(k['n'].to_bytes((k['n'].bit_length() + 7) // 8, 'big'), k['cert'])
+
+    def test_build_defaults_to_the_shared_key(self):
+        import apk
+        seen = []
+        real = apk.load_key
+        apk.load_key = lambda path: seen.append(path) or real(path)
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                disc = os.path.join(d, 'disc.bin')
+                with open(disc, 'wb') as f:
+                    f.write(b'\0' * 2352)
+                try:
+                    apk.build(os.path.join(d, 'missing.apk'), disc, os.path.join(d, 'out.apk'))
+                except OSError:
+                    pass   # no template: only the key choice matters here
+        finally:
+            apk.load_key = real
+        self.assertEqual(seen, [apk.SHARED_KEY])
 
 
 if __name__ == '__main__':

@@ -7,14 +7,14 @@ The release is the "everything" version: every feature of the mod, the story mod
 There are three ways to make the disc, all with the same four discs and the same checks:
 
 - the browser builder at [dw1horizon.com](https://dw1horizon.com): nothing to install;
-- the desktop app, Horizon Patcher, for Windows and macOS: no Python needed (below);
+- the desktop app, Horizon Patcher, for Windows, macOS and Linux: no Python needed (below);
 - the command-line patcher in this package, with Python (from "Bring your own disc" on).
 
 ## The desktop app
 
 1. From [dw1horizon.com](https://dw1horizon.com) ("Prefer an app?", under the browser builder) or the release page
-   on GitHub, download `Horizon-Patcher-Windows.zip` or `Horizon-Patcher-macOS.zip` (one app
-   for Apple silicon and Intel Macs) and unzip it. On Windows keep the whole `Horizon Patcher` folder together and
+   on GitHub, download `Horizon-Patcher-Windows.zip`, `Horizon-Patcher-macOS.zip` (one app
+   for Apple silicon and Intel Macs) or, from the release page, `Horizon-Patcher-Linux-x86_64.tar.gz`, and unpack it. On Windows keep the whole `Horizon Patcher` folder together and
    open `Horizon Patcher.exe` in it.
 2. Add your four discs: "Add discs..." takes several files at once and puts each in its game's place, or use
    "Choose..." next to a game. The `.cue` or the `.bin` both work. The app checks each disc as you add it and
