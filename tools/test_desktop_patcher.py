@@ -863,6 +863,19 @@ class Templates(unittest.TestCase):
             self.assertEqual(Path(self.get('mac')), got)         # cached: no second download
         self.assertEqual(len(self.downloads), 1)
 
+    def test_linux_patcher_uses_its_own_player(self):
+        player = self.dir / 'player'
+        player.mkdir()
+        (player / 'horizon-play').write_bytes(b'elf')
+        with patch.object(sys, 'platform', 'linux'), patch.object(
+                desktop, 'player_program', lambda: str(player / 'horizon-play')), patch.object(
+                desktop, 'release_assets', side_effect=AssertionError('no download needed')):
+            self.assertEqual(self.get('linux'), str(player))
+            (self.dir / 'd.bin').write_bytes(b'\x02' * 1000)
+            (self.dir / 'd.cue').write_text('FILE "d.bin" BINARY\n  TRACK 01 MODE2/2352\n')
+            out = desktop.make('linux', str(self.dir / 'd.cue'), 'v9.9.9')
+            self.assertEqual(Path(out).name, 'd-Linux.run')
+
     def test_make_builds_next_to_the_disc(self):
         (self.dir / 'my disc.bin').write_bytes(b'\x01' * 4000)
         (self.dir / 'my disc.cue').write_text('FILE "my disc.bin" BINARY\n  TRACK 01 MODE2/2352\n')

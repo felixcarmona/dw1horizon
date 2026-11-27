@@ -107,7 +107,7 @@ def spec(work, a, ver):
     hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk', 'setup_exe', 'mac_app', 'linux_run']
     if sys.platform == 'darwin':
         hidden.append('certifi')
-    icon = os.path.join(icons, 'icon.ico' if os.name == 'nt' else 'icon.icns')
+    icon = None if sys.platform.startswith('linux') else os.path.join(icons, 'icon.ico' if os.name == 'nt' else 'icon.icns')
     vfile = os.path.join(work, 'version.txt')
     version_file(vfile, ver)
     mac = sys.platform == 'darwin'
@@ -154,7 +154,27 @@ def main(argv=None):
                    check=True, cwd=work)
     if a.player and sys.platform == 'darwin':
         nest_player(os.path.join(work, 'dist', NAME + '.app'), a)
+    if sys.platform.startswith('linux'):
+        linux_extras(os.path.join(work, 'dist', NAME), os.path.join(work, 'icons'))
     print(os.path.join(work, 'dist'))
+
+
+def linux_extras(folder, icons):
+    """Linux: a launcher and the icon beside the program. A .desktop file wants absolute paths; %k is the launcher's own
+    location, so the Exec line starts the program from wherever the folder was unpacked (the icon is found by its
+    name once the PNG is in a theme folder, or shown by the file manager from the file beside it)."""
+    shutil.copy(os.path.join(icons, 'icon.png'), os.path.join(folder, 'horizon-patcher.png'))
+    with open(os.path.join(folder, NAME + '.desktop'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(f'''[Desktop Entry]
+Type=Application
+Name={PRODUCT}
+Comment=Build Digimon World: Horizon from your own disc
+Exec=sh -c 'cd "$(dirname "$(readlink -f "$1")")" && exec "./{NAME}"' sh %k
+Icon=horizon-patcher
+Terminal=false
+Categories=Game;
+''')
+    os.chmod(os.path.join(folder, NAME + '.desktop'), 0o755)
 
 
 def nest_player(app, a):

@@ -1,6 +1,6 @@
 name: Desktop patchers
 
-# The Windows and macOS apps (tools/patcher/gui.py, frozen by tools/patcher/app/build.py), built from source here and
+# The Windows, macOS and Linux apps (tools/patcher/gui.py, frozen by tools/patcher/app/build.py), built from source here and
 # tested headless (gui.py --self-test: the app as Python, spawned workers, dwpatch's derive launch, the window,
 # the latest published package for PRs, the tag's verified package for releases). PRs and manual runs keep artifacts; a release
 # tag (pushed, or given to a manual run) also attaches the zips to that tag's GitHub Release. No disc is used.
@@ -419,6 +419,73 @@ jobs:
           path: Horizon-Patcher-macOS.zip
           if-no-files-found: error
 
+  linux:
+    # 22.04: the oldest glibc a GitHub runner still has, so the app runs on older distributions too. Horizon Play is built
+    # here, as player.yml builds it (its own OpenBIOS: this runner has the MIPS compiler), rather than taken from that
+    # workflow: the two cannot wait for each other, and the build takes minutes.
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write   # required to read draft release assets; token only used by the fetch step
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - name: Check out the release tag
+        if: env.RELEASE_TAG != ''
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          git checkout --detach "refs/tags/$RELEASE_TAG"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Build tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cmake ninja-build gcc-mipsel-linux-gnu g++-mipsel-linux-gnu \
+            libgl-dev libegl-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxss-dev \
+            libwayland-dev libxkbcommon-dev libasound2-dev libpulse-dev libudev-dev libdbus-1-dev \
+            libtk8.6 xvfb libgl1-mesa-dri > /dev/null
+      - name: Unit tests
+        working-directory: tools
+        run: xvfb-run -a python -m unittest test_desktop_patcher test_patcher_paths -v
+      - name: Story import identity
+        run: python -m unittest tools.test_dws_imports -v
+      - name: Build Horizon Play (the program, the SwanStation core, OpenBIOS)
+        run: python tools/player/build.py --out "$RUNNER_TEMP/Horizon Play" --work "$RUNNER_TEMP/player"
+      - name: Build
+        run: |
+          python -m pip install --disable-pip-version-check $PYINSTALLER
+          python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"} --player "$RUNNER_TEMP/Horizon Play"
+          D="build/desktop/dist/Horizon Patcher"
+          test -f "$D/_internal/player/horizon-play"
+          test -f "$D/_internal/player/system/openbios.bin"
+          # Tk comes along: a system without python3-tk runs the app
+          ls "$D/_internal" | grep -q '^libtk8' && test -d "$D/_internal/_tk_data" && test -d "$D/_internal/_tcl_data"
+          test -f "$D/Horizon Patcher.desktop" && test -f "$D/horizon-patcher.png"
+      - name: Prepare the tag's verified self-test package
+        if: env.RELEASE_TAG != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: python tools/patcher/app/prepare_selftest.py "$RELEASE_TAG"
+      - name: Self-test the frozen app (a virtual display, no discs)
+        run: |
+          EXE="build/desktop/dist/Horizon Patcher/Horizon Patcher"
+          "$EXE" -c 'import sys; print("child", sys.argv[1:], sys.flags.utf8_mode)' 'a b'
+          if [ -n "$RELEASE_TAG" ]; then PKG=(--package "$PWD/build/desktop-selftest/package"); else PKG=(--download); fi
+          timeout 1200 xvfb-run -a -s '-screen 0 1280x1000x24' "$EXE" --self-test "${PKG[@]}" --gui --report selftest.txt \
+            || { cat selftest.txt || true; exit 1; }
+          cat selftest.txt
+      - name: Tar
+        run: tar -czf Horizon-Patcher-Linux-x86_64.tar.gz -C build/desktop/dist "Horizon Patcher"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Horizon-Patcher-Linux
+          path: Horizon-Patcher-Linux-x86_64.tar.gz
+          if-no-files-found: error
+
   linux-source:
     # Not shipped: the window and the self-test from source, as a developer runs them (python3 tools/patcher/gui.py).
     runs-on: ubuntu-latest
@@ -439,7 +506,7 @@ jobs:
 
   attach:
     # Only for a release tag; pull requests and manual runs without a tag stop at the artifacts above.
-    needs: [windows, macos, android]
+    needs: [windows, macos, android, linux]
     if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) || (github.event_name == 'workflow_dispatch' && inputs.tag != '')
     runs-on: ubuntu-latest
     permissions:
@@ -466,6 +533,7 @@ jobs:
           # The empty installer templates (no game in them): the patcher downloads them from the release when it makes
           # an installer. Horizon-Play-Linux-x86_64.tar.gz, the fourth, is attached by player.yml.
           gh release upload "$RELEASE_TAG" apps/Horizon-Patcher-Windows.zip apps/Horizon-Patcher-macOS.zip \
+            apps/Horizon-Patcher-Linux-x86_64.tar.gz \
             apps/Horizon-Setup.exe apps/Horizon-Play.apk apps/Horizon-Play-macOS.zip --clobber
       - name: Describe the apps for the site
         # horizon-desktop.json goes up after the zips it describes: release.yml offers the apps on dw1horizon.com only

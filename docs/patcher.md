@@ -134,13 +134,17 @@ patched disc. The browser runs the same jobs in Pyodide workers (`web/README.md`
 
 ## The desktop app
 
-`tools/patcher/gui.py` is the same apply with a window: Horizon Patcher, built for Windows and macOS by
-`.github/workflows/desktop.yml` and attached to each release as `Horizon-Patcher-Windows.zip` and
-`Horizon-Patcher-macOS.zip` (one universal2 app for Apple silicon and Intel). The workflow then attaches
-`horizon-desktop.json` (their sizes, SHA-256 and signing) and redeploys the site, which offers them from then on
+`tools/patcher/gui.py` is the same apply with a window: Horizon Patcher, built for Windows, macOS and Linux by
+`.github/workflows/desktop.yml` and attached to each release as `Horizon-Patcher-Windows.zip`,
+`Horizon-Patcher-macOS.zip` (one universal2 app for Apple silicon and Intel) and `Horizon-Patcher-Linux-x86_64.tar.gz`
+(a folder with the program, a `.desktop` launcher and the icon; built on Ubuntu 22.04 for its older glibc, with Tk and
+Horizon Play inside, so it needs no python3-tk; the Linux job builds Horizon Play itself, as `player.yml` does, rather
+than wait for that workflow). Unpack it and run `Horizon Patcher`, or the `.desktop` file. The workflow then attaches
+`horizon-desktop.json` (the Windows and macOS zips' sizes, SHA-256 and signing) and redeploys the site, which offers
+those two from then on (the Linux tarball is a release asset the page does not list yet)
 (web/README.md, "The desktop app downloads"). Players need no Python. The players'
 side is in [release/README-players.md](release/README-players.md#the-desktop-app).
-Both apps carry Horizon Play ([player.md](player.md)): after a build, **Play** starts the new disc in it, already
+All three apps carry Horizon Play ([player.md](player.md)): after a build, **Play** starts the new disc in it, already
 set up (8 MB, CPU 250 %, upscaled, full screen).
 
 After a build the finish page offers four installer buttons: **Android app (.apk)**, **Windows installer (.exe)**,
@@ -150,7 +154,7 @@ from the same release as the game package when a button is first used (`desktop.
 GitHub publishes for the asset, and cached by tag in the settings folder (`templates/<tag>/`), so later builds and
 offline runs reuse it. The progress bar shows the download, then the build. With no network and nothing cached, or with
 the asset missing from that release, the stage label says so and the button stays. The templates are not in
-`horizon-checksums.json`. A Mac patcher builds the Mac app from its own bundled Horizon Play and writes a `.dmg`; on
+`horizon-checksums.json`. On Linux the **Linux installer (.run)** button reuses the Horizon Play the patcher carries and downloads nothing. A Mac patcher builds the Mac app from its own bundled Horizon Play and writes a `.dmg`; on
 Windows and Linux the button writes `<disc>-Mac.zip` from the downloaded template, which Apple has not signed, so on
 the Mac the first open is right-click then Open. Each output is the player's own disc plus the template, for their
 computers only. Details in [player.md](player.md#a-setup-wizard).

@@ -826,6 +826,8 @@ def template(kind, tag, progress=None, cancel=None):
     import urllib.error
     if kind == 'mac' and mac_app_template():
         return mac_app_template()     # the bundled Horizon Play: the same thing
+    if kind == 'linux' and sys.platform.startswith('linux') and player_program():
+        return os.path.dirname(player_program())     # the Linux patcher carries the very bundle of the tarball
     name = TEMPLATES[kind]
     folder = os.path.join(templates_root(), re.sub(r'[^A-Za-z0-9._-]', '_', tag))
     dest = os.path.join(folder, name)
