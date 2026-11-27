@@ -1,0 +1,154 @@
+From bb691048ae7874d7b39643f0887b1ed6a750ddee Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 17:53:41 +0000
+Subject: [PATCH] Heap: libgte's rcossin_tbl replaced by a quarter-wave helper
+ on rsin_tbl (16 KB)
+
+RotMatrix, RotMatrixYXZ and RotMatrixZYX read a packed (sin | cos << 16) word from
+rcossin_tbl, a 4096-entry table (16,384 bytes of main-executable data). rsin_tbl, the
+1025-entry quarter wave rsin() and rcos() already use, holds the same values.
+
+mk/version/us.mk assembles libgte from build copies made by tools/gte_quarter.py: each of
+the 18 table reads (three functions, three axes, two sign branches) becomes a call to
+rcsQuarter, same code size at every site, and the table leaves the data. rcsQuarter takes
+a = i & 0x3FF, S = rsin_tbl[a], C = rsin_tbl[1024 - a]; bit 0x400 turns (S, C) into
+(C, -S), bit 0x800 negates both. The three functions are leaves that never use v1, a2 or
+a3, which the helper and the call clobber. The script fails the build unless exactly 18
+reads and one table are replaced and the functions keep those registers free.
+
+Bit-exact: every matrix of the three functions over each axis from -6000 to 6000 and
+8192 random angle triples matched the original code in the emulator.
+---
+ mk/version/us.mk     | 19 ++++++++++
+ tools/gte_quarter.py | 89 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 108 insertions(+)
+ create mode 100644 tools/gte_quarter.py
+
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index 66629c5..a43126a 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -112,6 +112,25 @@ $(BUILD_DIR)/asm/main/psyq/libetc.vwait.s: $(ASM_DIR)/main/psyq/libetc.s
+ 	sed '/^glabel v_wait$$/,/^endlabel v_wait$$/s/C02B0500 \*\/  sll\( *\)\$$a1, \$$a1, 15$$/802C0500 *\/  sll\1$$a1, $$a1, 18/' $< > $@
+ 	test "$$(diff $< $@ | grep -c '^>')" = 1
+ 
++# MOD (heap): libgte without rcossin_tbl (16 KB). RotMatrix, RotMatrixYXZ and RotMatrixZYX read a
++# packed sin/cos word from that 4096-entry table; tools/gte_quarter.py turns each of the 18 reads into
++# a call to rcsQuarter, which builds the same word from rsin_tbl (the quarter wave rsin/rcos already
++# use), and drops the table from the data. Bit-exact for every angle; the build fails unless exactly
++# 18 reads and one table are replaced.
++$(BUILD_DIR)/asm/main/psyq/libgte.s.o: $(BUILD_DIR)/asm/main/psyq/libgte.quarter.s
++	$(assemble)
++
++$(BUILD_DIR)/asm/main/psyq/libgte.quarter.s: $(ASM_DIR)/main/psyq/libgte.s tools/gte_quarter.py
++	@mkdir -p $(dir $@)
++	$(PYTHON) tools/gte_quarter.py text $< $@
++
++$(BUILD_DIR)/asm/main/data/psyq/libgte.data.s.o: $(BUILD_DIR)/asm/main/data/psyq/libgte.quarter.data.s
++	$(assemble)
++
++$(BUILD_DIR)/asm/main/data/psyq/libgte.quarter.data.s: $(ASM_DIR)/main/data/psyq/libgte.data.s tools/gte_quarter.py
++	@mkdir -p $(dir $@)
++	$(PYTHON) tools/gte_quarter.py data $< $@
++
+ MAIN_ASM_EXCLUDE := shop vs
+ 
+ $(eval $(call unit,MAIN,main))
+diff --git a/tools/gte_quarter.py b/tools/gte_quarter.py
+new file mode 100644
+index 0000000..f65b28a
+--- /dev/null
++++ b/tools/gte_quarter.py
+@@ -0,0 +1,89 @@
++#!/usr/bin/env python3
++"""MOD (heap): libgte without rcossin_tbl (16 KB of main-executable data).
++
++RotMatrix, RotMatrixYXZ and RotMatrixZYX read a packed word (sin i & 0xFFFF) | cos i << 16 from rcossin_tbl
++(4096 entries, i = angle & 0xFFF). Each of those reads becomes a call to rcsQuarter, which builds the same word
++from rsin_tbl, the quarter wave rsin()/rcos() already use (its 1025 entries are the table's sin column):
++with a = i & 0x3FF, S = rsin_tbl[a], C = rsin_tbl[1024 - a]; bit 0x400 turns (S, C) into (C, -S), bit 0x800
++negates both. Bit-exact for all 4096 angles. Same code size at every site:
++  sll t8,tX,2 / lui t9 / addu t9,t9,t8 / lw t9   ->   addu a3,ra,zero / jal rcsQuarter / sll t8,tX,2 / addu ra,a3,zero
++(the three functions are leaves and never use v1, a2 or a3, which the helper and the call clobber).
++
++usage: gte_quarter.py text IN OUT | data IN OUT   (fails unless exactly 18 reads / one table are replaced)"""
++import re, sys
++
++FUNCS = ('RotMatrix', 'RotMatrixYXZ', 'RotMatrixZYX')
++
++HELPER = r'''
++/* MOD (heap): rcossin_tbl's word from the quarter wave. In t8 = 4*i (0 <= i < 4096); out
++ * t9 = (sin i & 0xFFFF) | cos i << 16, the removed table's own values. Clobbers v1, a2. */
++glabel rcsQuarter
++    lui   $v1, %hi(rsin_tbl)
++    addiu $v1, $v1, %lo(rsin_tbl)
++    andi  $a2, $t8, 0xFFC
++    srl   $a2, $a2, 1
++    addu  $v1, $v1, $a2
++    lh    $t9, 0x0($v1)
++    subu  $v1, $v1, $a2
++    subu  $v1, $v1, $a2
++    lh    $a2, 0x800($v1)
++    andi  $v1, $t8, 0x1000
++    beqz  $v1, .Lrcs_half
++     andi $v1, $t8, 0x2000
++    xor   $t9, $t9, $a2
++    xor   $a2, $a2, $t9
++    xor   $t9, $t9, $a2
++    subu  $a2, $zero, $a2
++.Lrcs_half:
++    beqz  $v1, .Lrcs_pack
++     sll  $a2, $a2, 16
++    subu  $t9, $zero, $t9
++    subu  $a2, $zero, $a2
++.Lrcs_pack:
++    andi  $t9, $t9, 0xFFFF
++    jr    $ra
++     or   $t9, $t9, $a2
++endlabel rcsQuarter
++'''
++
++SITE = (r'sll\s+\$t8, \$(t\d), 2$', r'lui\s+\$t9, %hi\(rcossin_tbl\)$', r'addu\s+\$t9, \$t9, \$t8$',
++        r'lw\s+\$t9, %lo\(rcossin_tbl\)\(\$t9\)$')
++
++
++def text(src):
++    lines = src.split('\n')
++    out, n, func, i = [], 0, None, 0
++    while i < len(lines):
++        m = re.match(r'glabel (\w+)', lines[i])
++        if m:
++            func = m.group(1)
++        w = lines[i:i + 4]
++        if func in FUNCS and len(w) == 4 and all(re.search(p, l) for p, l in zip(SITE, w)):
++            reg = re.search(SITE[0], w[0]).group(1)
++            out += ['    addu $a3, $ra, $zero', '    jal rcsQuarter', f'     sll $t8, ${reg}, 2', '    addu $ra, $a3, $zero']
++            n += 1
++            i += 4
++            continue
++        out.append(lines[i])
++        i += 1
++    body = '\n'.join(out)
++    for f in FUNCS:
++        fb = re.search(rf'glabel {f}\n(.*?)endlabel {f}', body, re.S).group(1)
++        if re.search(r'\$(v1|a2)\b', fb) or len(re.findall(r'\$a3\b', fb)) != 2 * 6 or re.search(r'\b(jal|jalr)\b(?! rcsQuarter)', fb):
++            raise SystemExit(f'{f}: uses v1/a2/a3 or calls something itself')
++    if n != 18 or 'rcossin_tbl' in body:
++        raise SystemExit(f'expected 18 rcossin_tbl reads, replaced {n}')
++    return body.rstrip('\n') + '\n' + HELPER
++
++
++def data(src):
++    new, k = re.subn(r'\nnonmatching rcossin_tbl\n.*?\nenddlabel_section rcossin_tbl\n', '\n', src, flags=re.S)
++    if k != 1:
++        raise SystemExit('rcossin_tbl not found exactly once')
++    return new
++
++
++if __name__ == '__main__':
++    kind, a, b = sys.argv[1:4]
++    s = open(a).read()
++    open(b, 'w').write(text(s) if kind == 'text' else data(s))
+-- 
+2.55.0
+
