@@ -15,6 +15,7 @@ folder, else in a Docker ubuntu:24.04 container.
 import argparse
 import os
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -43,6 +44,8 @@ VIAddVersionKey "FileVersion" "{version}"
 !define MUI_ICON "icon.ico"
 !define MUI_UNICON "icon.ico"
 !define MUI_ABORTWARNING
+!define MUI_WELCOMEFINISHPAGE_BITMAP "side.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "side.bmp"
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_FUNCTION Play
 !define MUI_FINISHPAGE_RUN_TEXT "Play now"
@@ -123,6 +126,35 @@ def makensis():
     return None
 
 
+def side_bitmap(w=164, h=314):
+    """The welcome and finish pages' left picture (NSIS's own is a blue computer): the icon's sunrise over the
+    horizon, on its sky, as a 24-bit BMP."""
+    cx, cy, r = w / 2, h * 0.62, w * 0.27           # the sun's centre sits on the horizon bar
+    bar0, bar1 = cy + 3, cy + 9
+    rows = []
+    for py in range(h - 1, -1, -1):                  # BMP rows go bottom up
+        row = bytearray()
+        for px in range(w):
+            acc = [0.0, 0.0, 0.0]
+            for sy in (0.25, 0.75):
+                for sx in (0.25, 0.75):
+                    x, y = px + sx, py + sy
+                    if bar0 <= y <= bar1 and w * 0.1 <= x <= w * 0.9:
+                        c = make_icons.BAR
+                    elif y <= cy and (x - cx) ** 2 + (y - cy) ** 2 <= r * r:
+                        c = make_icons.SUN
+                    else:
+                        c = make_icons._sky(y / h)
+                    for i in range(3):
+                        acc[i] += c[i] / 4
+            row += bytes((int(acc[2] + .5), int(acc[1] + .5), int(acc[0] + .5)))
+        row += b'\0' * (-len(row) % 4)
+        rows.append(bytes(row))
+    data = b''.join(rows)
+    return (b'BM' + struct.pack('<IHHI', 54 + len(data), 0, 0, 54)
+            + struct.pack('<IiiHHIIiiII', 40, w, h, 1, 24, 0, len(data), 2835, 2835, 0, 0) + data)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     ap.add_argument('--player', required=True, help='a Windows Horizon Play folder (with horizon-play.exe)')
@@ -144,6 +176,8 @@ def main():
         shutil.copytree(a.player, app)
         with open(os.path.join(work, 'icon.ico'), 'wb') as f:
             f.write(make_icons.ico())
+        with open(os.path.join(work, 'side.bmp'), 'wb') as f:
+            f.write(side_bitmap())
         # the player and the disc (about 700 MB, not in the template) the patcher appends
         kb = sum(os.path.getsize(os.path.join(r, n)) for r, _, ns in os.walk(app) for n in ns) // 1024 + 700 * 1024
         with open(os.path.join(work, 'setup.nsi'), 'w', encoding='utf-8-sig') as f:
