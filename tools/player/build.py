@@ -40,6 +40,18 @@ def checkout(url, commit, where, submodules=False):
     return where
 
 
+def origin_repository():
+    """OWNER/NAME of this checkout's GitHub origin, or None."""
+    import re
+    try:
+        url = subprocess.run(['git', 'remote', 'get-url', 'origin'], cwd=REPO, capture_output=True, text=True,
+                             timeout=10).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return None
+    m = re.search(r'github\.com[:/]([^/]+/[^/]+?)(?:\.git)?$', url)
+    return m.group(1) if m else None
+
+
 def cmake(src, build, jobs, *extra):
     args = ['cmake', '-S', src, '-B', build, '-DCMAKE_BUILD_TYPE=Release', *extra]
     if sys.platform == 'darwin':
@@ -83,6 +95,8 @@ def main():
     ap.add_argument('--skip-core', action='store_true', help='reuse the core already in --out')
     ap.add_argument('--openbios-only', metavar='PATH', help='only build OpenBIOS and copy it to PATH')
     ap.add_argument('--version', help='the version the menu shows (default: tools/version.py)')
+    ap.add_argument('--repository', help='OWNER/NAME whose GitHub releases the program checks for a newer version '
+                    '(default: GITHUB_REPOSITORY, else the checkout\'s origin; none: no check)')
     ap.add_argument('--universal2', action='store_true', help='macOS: Apple silicon and Intel in one bundle')
     a = ap.parse_args()
     work, out = os.path.abspath(a.work), os.path.abspath(a.out)
@@ -100,7 +114,10 @@ def main():
     host_build = os.path.join(work, 'host')
     ver = a.version or subprocess.run([sys.executable, os.path.join(REPO, 'tools', 'version.py'), 'version'],
                                       capture_output=True, text=True).stdout.strip() or '0.0.0'
-    cmake(HERE, host_build, a.jobs, f'-DHORIZON_VERSION={ver.lstrip("v")}',
+    repo = a.repository or os.environ.get('GITHUB_REPOSITORY') or origin_repository()
+    if repo == 'none':
+        repo = ''
+    cmake(HERE, host_build, a.jobs, f'-DHORIZON_VERSION={ver.lstrip("v")}', f'-DHORIZON_REPOSITORY={repo}',
           *(['-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'] if a.universal2 else []))
 
     # the core (one build per architecture for a universal2 bundle: its recompiler is chosen at configure time)

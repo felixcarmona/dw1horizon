@@ -100,12 +100,16 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
 Under the cards the main screen shows the program's version (`tools/version.py`, given to CMake as
 `HORIZON_VERSION` by `build.py` and `build_apk.py`; `DEV` when built by hand).
 
-**A newer release (Android):** at each start the app asks GitHub for the latest release of the repository
-`build_apk.py` wrote into `assets/releases.txt` (`--repository`, else `GITHUB_REPOSITORY`, else the checkout's
-origin; with none it does not ask). When that release's X.Y.Z is higher than the app's own, "NEW VERSION V… AT
-DW1HORIZON.COM" shows over the game for 12 seconds and stays in the menu above the version. Offline or refused, nothing
-shows. This is the app's only use of the network (the `INTERNET` permission). On a computer the patcher, which starts
-the program, already tells of a newer release. `--new-version TAG` shows the notice in tests.
+**A newer release:** at each start the program asks GitHub's API for the latest release of its repository (Android:
+`assets/releases.txt`, written by `build_apk.py`; Windows, macOS and Linux: `HORIZON_REPOSITORY`, given to CMake by
+`build.py`; both take `--repository`, else `GITHUB_REPOSITORY`, else the checkout's origin, and `none` for no check).
+When that release's X.Y.Z is higher than the program's own, a screen says "NEW VERSION V… AT DW1HORIZON.COM" once,
+as soon as the game is past its start and no other screen is open, with two cards: DOWNLOAD opens the website (the
+patcher there makes the new version from the player's disc; a full-screen window is minimised first) and LATER goes
+back to the game. The line also stays in the menu above the version. Offline or refused, nothing shows. This is the
+program's only use of the network: Android in Java (`INTERNET` permission), Windows with WinHTTP, macOS and Linux
+with the system's `curl` (without it, no notice). `--new-version TAG` shows the screen in tests (no check is made
+with `--frames` or `--press`).
 
 **Where the player left off:** Android may end an app it has sent to the background, and the game would lose what
 was played since its last save. So when the app goes to the background the whole machine is written to `resume.state`
