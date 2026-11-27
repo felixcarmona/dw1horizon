@@ -50,7 +50,8 @@ core, OpenBIOS (with `OPENBIOS_SHELL=shell`: the default shell gave a black scre
 fetched by CMake at a pinned hash and linked statically.
 
 Test flags: `--windowed`, `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
-`--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option).
+`--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option),
+`--touch` (the touch pad from the start).
 `HORIZON_PLAY_DEBUG=1` prints the core's log. The saves folder also gets `horizon-play.log` (the core's log, the
 OpenGL version and the speed every 30 seconds) and reads `options.txt` (`KEY=VALUE` lines, core options to override).
 
@@ -58,6 +59,19 @@ OpenGL version and the speed every 30 seconds) and reads `options.txt` (`KEY=VAL
 
 Keyboard: arrows, Z Cross, X Circle, A Square, S Triangle, Q/W L1/R1, E/R L2/R2, Enter Start, Backspace Select.
 Any pad SDL knows is laid out like a PlayStation pad, and the left stick also moves.
+
+**Setting the buttons:** hold SELECT and START together for two seconds. The game waits and the screen shows each
+PlayStation button in turn (the pad's four directions, Cross, Circle, Square, Triangle, L1, R1, L2, R2, SELECT, START):
+press the key or controller button wanted for it. There is no text, so it needs no language. The first press decides
+whether the keyboard or the controller is being set; one input cannot take two buttons. Nothing pressed for ten
+seconds leaves everything as it was. The choice goes to `controls.txt` in the saves folder (`pad cross=a`,
+`key cross=Z`: SDL's controller and key names), which can also be edited by hand. Held together, SELECT and START do
+not reach the game. (`tools/player/controls.c`)
+
+**Touch:** on Android with no controller connected, a touch pad is drawn over the picture (a D-pad, the four face
+buttons, L1/L2/R1/R2, SELECT and START; several fingers at once, the D-pad in eight directions). It steps aside when a
+controller button or a key is pressed and comes back at the next touch. `--touch` shows it from the start on any
+system. (`tools/player/overlay.c`: drawn at start into one texture, no image files.)
 
 ## Licences
 

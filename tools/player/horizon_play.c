@@ -1,5 +1,5 @@
 /* Horizon Play: a small libretro host that runs the patched disc in the SwanStation core with fixed settings
- * (8 MB RAM, CPU at 250 %, GPU upscaling, the free OpenBIOS), full screen, pad and keyboard, no emulator menus.
+ * (8 MB RAM, CPU at 250 %, GPU upscaling, the free OpenBIOS), full screen, pad, keyboard or touch, no emulator menus.
  * docs/player.md describes the bundle and the controls.
  *
  *   horizon-play [--windowed] [--scale N] [--core PATH] [--system DIR] [--saves DIR] DISC.cue
@@ -30,6 +30,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "libretro.h"
+#include "overlay.h"
+#include "controls.h"
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -362,6 +364,7 @@ static void present(bool last) {
     static int checked;
     if (!checked++) { GLenum e = gl.GetError(); if (e) SDL_Log("first frame: GL error 0x%x", e); }
   }
+  overlay_draw(ww, wh);
   if (last && screenshot_path) save_screenshot(screenshot_path);
   SDL_GL_SwapWindow(window);
 }
@@ -400,50 +403,6 @@ static int16_t input_state(unsigned port, unsigned device, unsigned index, unsig
   return 0;
 }
 
-static uint16_t keyboard_bits(void) {
-  const Uint8 *k = SDL_GetKeyboardState(NULL);
-  static const struct { SDL_Scancode sc; int id; } map[] = {
-    {SDL_SCANCODE_UP, RETRO_DEVICE_ID_JOYPAD_UP}, {SDL_SCANCODE_DOWN, RETRO_DEVICE_ID_JOYPAD_DOWN},
-    {SDL_SCANCODE_LEFT, RETRO_DEVICE_ID_JOYPAD_LEFT}, {SDL_SCANCODE_RIGHT, RETRO_DEVICE_ID_JOYPAD_RIGHT},
-    {SDL_SCANCODE_Z, RETRO_DEVICE_ID_JOYPAD_B},        /* Cross */
-    {SDL_SCANCODE_X, RETRO_DEVICE_ID_JOYPAD_A},        /* Circle */
-    {SDL_SCANCODE_A, RETRO_DEVICE_ID_JOYPAD_Y},        /* Square */
-    {SDL_SCANCODE_S, RETRO_DEVICE_ID_JOYPAD_X},        /* Triangle */
-    {SDL_SCANCODE_Q, RETRO_DEVICE_ID_JOYPAD_L}, {SDL_SCANCODE_W, RETRO_DEVICE_ID_JOYPAD_R},
-    {SDL_SCANCODE_E, RETRO_DEVICE_ID_JOYPAD_L2}, {SDL_SCANCODE_R, RETRO_DEVICE_ID_JOYPAD_R2},
-    {SDL_SCANCODE_RETURN, RETRO_DEVICE_ID_JOYPAD_START}, {SDL_SCANCODE_BACKSPACE, RETRO_DEVICE_ID_JOYPAD_SELECT},
-    {SDL_SCANCODE_RSHIFT, RETRO_DEVICE_ID_JOYPAD_SELECT},
-  };
-  uint16_t bits = 0;
-  for (size_t i = 0; i < sizeof map / sizeof *map; i++) if (k[map[i].sc]) bits |= 1u << map[i].id;
-  return bits;
-}
-
-static uint16_t pad_bits_from(SDL_GameController *c) {
-  static const struct { SDL_GameControllerButton b; int id; } map[] = {
-    {SDL_CONTROLLER_BUTTON_A, RETRO_DEVICE_ID_JOYPAD_B},      /* bottom face button = Cross */
-    {SDL_CONTROLLER_BUTTON_B, RETRO_DEVICE_ID_JOYPAD_A},      /* right = Circle */
-    {SDL_CONTROLLER_BUTTON_X, RETRO_DEVICE_ID_JOYPAD_Y},      /* left = Square */
-    {SDL_CONTROLLER_BUTTON_Y, RETRO_DEVICE_ID_JOYPAD_X},      /* top = Triangle */
-    {SDL_CONTROLLER_BUTTON_BACK, RETRO_DEVICE_ID_JOYPAD_SELECT}, {SDL_CONTROLLER_BUTTON_START, RETRO_DEVICE_ID_JOYPAD_START},
-    {SDL_CONTROLLER_BUTTON_LEFTSHOULDER, RETRO_DEVICE_ID_JOYPAD_L}, {SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, RETRO_DEVICE_ID_JOYPAD_R},
-    {SDL_CONTROLLER_BUTTON_LEFTSTICK, RETRO_DEVICE_ID_JOYPAD_L3}, {SDL_CONTROLLER_BUTTON_RIGHTSTICK, RETRO_DEVICE_ID_JOYPAD_R3},
-    {SDL_CONTROLLER_BUTTON_DPAD_UP, RETRO_DEVICE_ID_JOYPAD_UP}, {SDL_CONTROLLER_BUTTON_DPAD_DOWN, RETRO_DEVICE_ID_JOYPAD_DOWN},
-    {SDL_CONTROLLER_BUTTON_DPAD_LEFT, RETRO_DEVICE_ID_JOYPAD_LEFT}, {SDL_CONTROLLER_BUTTON_DPAD_RIGHT, RETRO_DEVICE_ID_JOYPAD_RIGHT},
-  };
-  uint16_t bits = 0;
-  for (size_t i = 0; i < sizeof map / sizeof *map; i++) if (SDL_GameControllerGetButton(c, map[i].b)) bits |= 1u << map[i].id;
-  if (SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 16000) bits |= 1u << RETRO_DEVICE_ID_JOYPAD_L2;
-  if (SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 16000) bits |= 1u << RETRO_DEVICE_ID_JOYPAD_R2;
-  /* the left stick also moves: the game uses the digital pad */
-  int x = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTX), y = SDL_GameControllerGetAxis(c, SDL_CONTROLLER_AXIS_LEFTY);
-  if (x < -16000) bits |= 1u << RETRO_DEVICE_ID_JOYPAD_LEFT;
-  if (x > 16000) bits |= 1u << RETRO_DEVICE_ID_JOYPAD_RIGHT;
-  if (y < -16000) bits |= 1u << RETRO_DEVICE_ID_JOYPAD_UP;
-  if (y > 16000) bits |= 1u << RETRO_DEVICE_ID_JOYPAD_DOWN;
-  return bits;
-}
-
 static int scripted_bits(int frame) {
   if (!press_script) return 0;
   int bits = 0; const char *p = press_script;
@@ -467,6 +426,8 @@ static void card_save(void);
 static void handle_events(void) {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
+    { int ww, wh; SDL_GL_GetDrawableSize(window, &ww, &wh); overlay_event(&e, ww, wh); }
+    controls_event(&e);
     switch (e.type) {
     case SDL_QUIT: quit = true; break;
     case SDL_KEYDOWN:
@@ -546,7 +507,8 @@ int main(int argc, char **argv) {
   bool windowed = false, no_disc = false; int scale = 0;
   for (int i = 1; i < argc; i++) {
     if (!strcmp(argv[i], "--windowed")) windowed = true;
-    else if (!strcmp(argv[i], "--no-disc")) no_disc = true;          /* the BIOS alone (a smoke test) */
+    else if (!strcmp(argv[i], "--no-disc")) no_disc = true;
+    else if (!strcmp(argv[i], "--touch")) touch_shown = true;        /* the touch pad from the start */          /* the BIOS alone (a smoke test) */
     else if (!strcmp(argv[i], "--scale") && i + 1 < argc) scale = atoi(argv[++i]);
     else if (!strcmp(argv[i], "--core") && i + 1 < argc) core_path = argv[++i];
     else if (!strcmp(argv[i], "--system") && i + 1 < argc) sys = argv[++i];
@@ -660,6 +622,7 @@ int main(int argc, char **argv) {
   if (!windowed) SDL_ShowCursor(SDL_DISABLE);
   glctx = SDL_GL_CreateContext(window);
   if (!glctx || !load_gl()) { fail("Horizon", "This computer's graphics do not support OpenGL 3.3."); return 1; }
+  if (!overlay_init()) SDL_Log("no touch pad: its drawing could not be set up");
   SDL_GL_SetSwapInterval(1);
   { typedef const GLubyte *(APIENTRY *p_GetString)(GLenum); p_GetString gs = (p_GetString)SDL_GL_GetProcAddress("glGetString");
     if (gs) SDL_Log("OpenGL: %s / %s", (const char *)gs(GL_VERSION), (const char *)gs(GL_RENDERER)); }
@@ -704,6 +667,7 @@ int main(int argc, char **argv) {
   core.set_controller_port_device(0, RETRO_DEVICE_JOYPAD);
   snprintf(card_path, sizeof card_path, "%s/duckstation_shared_card_1.mcd", save_dir);
   card_load();
+  controls_load(save_dir);
   if (hw_requested) {
     make_fbo(av.geometry.max_width, av.geometry.max_height);
     if (hw.context_reset) hw.context_reset();
@@ -723,9 +687,24 @@ int main(int argc, char **argv) {
   while (!quit) {
     handle_events();
     if (paused) { SDL_Delay(50); continue; }
-    uint16_t bits = keyboard_bits();
-    for (int i = 0; i < 4; i++) if (pads[i]) bits |= pad_bits_from(pads[i]);
+    uint16_t bits = controls_keyboard_bits();
+    for (int i = 0; i < 4; i++) if (pads[i]) bits |= controls_pad_bits(pads[i]);
     bits |= (uint16_t)scripted_bits(frame);
+    bits = controls_frame(bits, bits != 0);
+    if (remap_step >= 0) {   /* the game waits under the setup */
+      pad_bits = 0; frame++;
+      present(run_frames >= 0 && frame >= run_frames);
+      if (run_frames >= 0 && frame >= run_frames) break;
+      continue;
+    }
+#ifdef __ANDROID__
+    if (frame == 30) {   /* a phone with no controller: the touch pad, until a pad or a key is pressed */
+      bool any = false;
+      for (int i = 0; i < 4; i++) if (pads[i]) any = true;
+      if (!any) touch_shown = true;
+    }
+#endif
+    { int ww, wh; SDL_GL_GetDrawableSize(window, &ww, &wh); bits |= overlay_touch_bits(ww, wh); }
     pad_bits = bits;
     core.run();
     frame++;
