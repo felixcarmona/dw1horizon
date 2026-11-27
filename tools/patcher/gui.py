@@ -53,6 +53,68 @@ def short_name(name, most=46):
 
 
 # ---------------------------------------------------------------- strings
+
+HAND = 'pointinghand' if sys.platform == 'darwin' else 'hand2'
+
+
+class MakeTile:
+    """A make button: a flat tile (a label with a border) that answers clicks, hover and the disabled state. A native
+    macOS button keeps its fixed height and leaves a tall logo hanging over its edges; the tile looks the same
+    everywhere."""
+
+    BG, HOVER, PRESS, EDGE, TEXT, OFF = '#ffffff', '#eef0fb', '#dfe3f7', '#c9c6d6', '#1b1a24', '#a3a0b3'
+
+    def __init__(self, parent, text='', image='', compound='top', style=None, command=None):
+        import tkinter as tk
+        self.command, self.disabled, self.inside = command, False, False
+        image = image[0] if isinstance(image, tuple) else image      # a ttk image spec: the label keeps the colours itself
+        self.label = tk.Label(parent, text=text, image=image, compound=compound, justify='center', bg=self.BG,
+                              fg=self.TEXT, padx=6, pady=10, bd=0, highlightthickness=1,
+                              highlightbackground=self.EDGE, highlightcolor=self.EDGE, cursor=HAND)
+        self.label.bind('<Enter>', lambda e: self._paint(inside=True))
+        self.label.bind('<Leave>', lambda e: self._paint(inside=False))
+        self.label.bind('<ButtonPress-1>', lambda e: self._paint(color=self.PRESS))
+        self.label.bind('<ButtonRelease-1>', self._release)
+
+    def _paint(self, inside=None, color=None):
+        if inside is not None:
+            self.inside = inside
+        if self.disabled:
+            self.label.configure(bg=self.BG, fg=self.OFF, cursor='arrow')
+        else:
+            self.label.configure(bg=color or (self.HOVER if self.inside else self.BG), fg=self.TEXT, cursor=HAND)
+
+    def _release(self, event):
+        self._paint()
+        w = event.widget
+        if not self.disabled and 0 <= event.x < w.winfo_width() and 0 <= event.y < w.winfo_height():
+            self.invoke()
+
+    def invoke(self):
+        if not self.disabled and self.command:
+            self.command()
+
+    def grid(self, **kw):
+        self.label.grid(**kw)
+
+    def configure(self, **kw):
+        kw.pop('style', None)
+        if isinstance(kw.get('image'), tuple):
+            kw['image'] = kw['image'][0]
+        self.label.configure(**kw)
+
+    def state(self, flags=None):
+        if flags:
+            for f in flags:
+                if f in ('disabled', '!disabled'):
+                    self.disabled = f == 'disabled'
+            self._paint()
+        return ('disabled',) if self.disabled else ()
+
+    def instate(self, flags):
+        return all(('disabled' in self.state()) != f.startswith('!') for f in flags if f.lstrip('!') == 'disabled')
+
+
 class Strings:
     """web/i18n/<lang>.json (the page's strings: slots, why.*, works.*, release.*, now.*) and the app's own
     (tools/patcher/app/i18n.json); English for anything missing."""
@@ -155,7 +217,6 @@ class App:
         style.configure('Ok.TLabel', foreground='#1f7a3a')
         style.configure('Bad.TLabel', foreground='#b3261e')
         style.configure('Build.TButton', font=self.font_bold, padding=(18, 8))
-        style.configure('Make.TButton', justify='center', padding=(6, 8))
 
     def _build(self):
         tk, ttk, t = self.tk, self.ttk, self.t
@@ -227,8 +288,8 @@ class App:
         make.columnconfigure(tuple(range(len(MAKERS))), weight=1, uniform='makers')
         self.make_buttons = []
         for i, (kind, name, ext) in enumerate(MAKERS):
-            b = ttk.Button(make, text=f'{name}\n{ext}', image=getattr(self, 'make_icons', {}).get(kind, ''), compound='top',
-                           style='Make.TButton', command=lambda kind=kind: self._make(kind))
+            b = MakeTile(make, text=f'{name}\n{ext}', image=getattr(self, 'make_icons', {}).get(kind, ''), compound='top',
+                      command=lambda kind=kind: self._make(kind))
             b.grid(row=0, column=i, sticky='ew', padx=(0 if i == 0 else 6, 0))
             self.make_buttons.append(b)
         run = ttk.Frame(outer)
