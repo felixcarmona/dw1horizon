@@ -675,6 +675,8 @@ class PbpGuiFlow(unittest.TestCase):
         app.slots, app.package = {}, None
         app.finish = Mock()
         app.finish.winfo_children.return_value = []
+        app.result = Mock()
+        app.result.winfo_children.return_value = []
         app._spawn = Mock()
         with patch.object(app, '_ask_folder', return_value=None):           # cancelled: nothing happens
             app._make('apk')
