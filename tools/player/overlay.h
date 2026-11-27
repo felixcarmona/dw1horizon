@@ -11,10 +11,11 @@ extern bool overlay_menu_tapped;    /* the touch pad's menu button was tapped */
 enum { I_TRI, I_CIRCLE, I_CROSS, I_SQUARE, I_UP, I_DOWN, I_LEFT, I_RIGHT, I_DPAD,
        I_L1, I_L2, I_R1, I_R2, I_SELECT, I_START, I_PANEL, I_DOT, I_WHITE, I_MENU,
        I_PLAY, I_GAMEPAD, I_CARD, I_POWER, I_TOUCH, I_KEYBOARD, I_CHECK, I_FAIL, I_PENCIL, I_EXPORT, I_IMPORT,
-       I_BACK, I_DROP,
+       I_BACK, I_DROP, I_GEAR, I_SCREEN,
        /* the menu's words, in English, under its pictures */
        T_RESUME, T_CONTROLS, T_CARD, T_QUIT, T_TOUCH, T_CONTROLLER, T_KEEP, T_SET, T_EXPORT, T_IMPORT, T_DONE,
-       T_FAILED, T_DROP, T_NEW, I_COUNT };
+       T_FAILED, T_DROP, T_NEW, T_SETTINGS, T_RESOLUTION, T_ORIGINAL,
+       T_1X, T_2X, T_3X, T_4X, T_6X, T_8X, T_480P, T_720P, T_960P, T_1440P, T_1920P, I_COUNT };
 
 bool overlay_init(void);
 void overlay_event(const SDL_Event *e, int ww, int wh);

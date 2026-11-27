@@ -5,9 +5,11 @@
 #include <stdint.h>
 
 /* what the menu asks the program to do */
-enum { MENU_NONE, MENU_QUIT, MENU_EXPORT, MENU_IMPORT, MENU_SETUP, MENU_TOUCH, MENU_PAD };
+enum { MENU_NONE, MENU_QUIT, MENU_EXPORT, MENU_IMPORT, MENU_SETUP, MENU_TOUCH, MENU_PAD, MENU_SCALE };
 
 extern bool menu_open;
+extern int menu_scale;                /* MENU_SCALE: the resolution scale chosen */
+void menu_set_scales(const int *scales, int n, int now);   /* the resolution's choices, and the one in use */
 void menu_show_first(bool ask_card);  /* the first start: (a memory card from before?) touch, or controller? */
 void menu_show(void);                 /* the menu: continue, controls, memory card, quit */
 void menu_back(void);                 /* Back / Escape */

@@ -77,7 +77,7 @@ static bool ready;
 
 /* ---- the atlas: 1024 x 1024, premultiplied RGBA ---- */
 #define AW 1024
-#define AH 1536
+#define AH 1792
 static uint8_t *pix;
 
 typedef struct { int x, y, w, h; } Cell;
@@ -93,8 +93,8 @@ static Cell cells[I_COUNT] = {
   [I_POWER] = {480, 416, 160, 160}, [I_TOUCH] = {640, 416, 160, 160}, [I_KEYBOARD] = {800, 416, 160, 160},
   [I_CHECK] = {0, 576, 160, 160}, [I_FAIL] = {160, 576, 160, 160}, [I_PENCIL] = {320, 576, 160, 160},
   [I_EXPORT] = {480, 576, 160, 160}, [I_IMPORT] = {640, 576, 160, 160}, [I_BACK] = {800, 576, 160, 160},
-  [I_DROP] = {0, 736, 160, 160},
-  /* the words (T_): 512 x 56 each from y = 1024, two a row (a long one 1024), set in draw_words */
+  [I_DROP] = {0, 736, 160, 160}, [I_GEAR] = {160, 736, 160, 160}, [I_SCREEN] = {320, 736, 160, 160},
+  /* the words (T_): 256, 512 or 1024 x 56 by their length, in rows from y = 1024, set in draw_words */
 };
 
 #define WORD_SCALE 6   /* one font dot is 6 x 6 atlas pixels: letters 42 high */
@@ -102,7 +102,10 @@ static const struct { int id; const char *s; } words[] = {
   {T_RESUME, "RESUME"}, {T_CONTROLS, "CONTROLS"}, {T_CARD, "MEMORY CARD"}, {T_QUIT, "QUIT"},
   {T_TOUCH, "TOUCH SCREEN"}, {T_CONTROLLER, "CONTROLLER"}, {T_KEEP, "KEEP BUTTONS"}, {T_SET, "SET BUTTONS"},
   {T_EXPORT, "EXPORT"}, {T_IMPORT, "IMPORT"}, {T_DONE, "DONE"}, {T_FAILED, "FAILED"},
-  {T_DROP, "DROP A MEMORY CARD FILE HERE"}, {T_NEW, "NEW GAME"},
+  {T_DROP, "DROP A MEMORY CARD FILE HERE"}, {T_NEW, "NEW GAME"}, {T_SETTINGS, "SETTINGS"},
+  {T_RESOLUTION, "RESOLUTION"}, {T_ORIGINAL, "ORIGINAL"}, {T_1X, "1X"}, {T_2X, "2X"}, {T_3X, "3X"}, {T_4X, "4X"},
+  {T_6X, "6X"}, {T_8X, "8X"}, {T_480P, "480P"}, {T_720P, "720P"}, {T_960P, "960P"}, {T_1440P, "1440P"},
+  {T_1920P, "1920P"},
 };
 static float word_w[I_COUNT];   /* the letters' width in atlas pixels */
 
@@ -185,6 +188,16 @@ static float sd_gamepad(float x, float y, const float *p) {
   return fabsf(fminf(sd_rbox(x, y, body), fminf(sd_disc(x, y, g1), sd_disc(x, y, g2)))) - 4.5f;
 }
 
+/* p: cx cy: a cog, eight teeth round a ring */
+static float sd_gear(float x, float y, const float *p) {
+  float dx = x - p[0], dy = y - p[1], a = atan2f(dy, dx), r = hypotf(dx, dy);
+  float k = fmodf(a + 6.2831853f + 0.3926991f, 0.7853982f) - 0.3926991f;   /* angle from the nearest tooth's middle */
+  float tx = cosf(k) * r, ty = sinf(k) * r;                                /* the point turned onto that tooth */
+  float tooth[] = {58, 0, 12, 11, 3}, ring[] = {0, 0, 47};
+  float body = fminf(sd_disc(tx, ty, ring), sd_rbox(tx, ty, tooth));
+  return fmaxf(body, 20 - r);   /* the hole */
+}
+
 /* strokes of a picture: n segments (x0 y0 x1 y1), all of one width and colour */
 static void strokes(Cell c, const float *v, int n, float w, float r, float gg, float b) {
   for (int i = 0; i < n; i++) {
@@ -224,6 +237,9 @@ static void draw_menu_pictures(void) {
   { Cell c = cells[I_DROP]; float o[] = {80, 100, 64, 44, 8, 8}; paint(c, sd_rbox_line, o, L, L, L, 1);
     float bar[] = {20, 76, 140, 76, 5}; paint(c, sd_seg, bar, L, L, L, 0.6f);
     float v[] = {80, 14, 80, 110, 60, 90, 80, 110, 80, 110, 100, 90}; strokes(c, v, 3, 10, L, L, L); }
+  { Cell c = cells[I_GEAR]; float o[] = {80, 80}; paint(c, sd_gear, o, L, L, L, 1); }
+  { Cell c = cells[I_SCREEN]; float o[] = {80, 70, 64, 44, 8, 9}; paint(c, sd_rbox_line, o, L, L, L, 1);
+    float v[] = {80, 114, 80, 132, 52, 134, 108, 134}; strokes(c, v, 2, 9, L, L, L); }
 }
 
 /* a round button: dark disc, light rim */
@@ -240,7 +256,7 @@ static void arrow(Cell c, float angle) {
   paint(c, sd_poly_fill, pts, 0.92f, 0.92f, 0.95f, 0.95f);
 }
 
-/* 5x7 font: capitals, the digits the labels need and '/' */
+/* 5x7 font: capitals, digits and '/' */
 static const struct { char ch; uint8_t rows[7]; } font[] = {
   {'A', {0x0E, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11}}, {'B', {0x1E, 0x11, 0x11, 0x1E, 0x11, 0x11, 0x1E}},
   {'C', {0x0E, 0x11, 0x10, 0x10, 0x10, 0x11, 0x0E}}, {'D', {0x1E, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1E}},
@@ -255,7 +271,12 @@ static const struct { char ch; uint8_t rows[7]; } font[] = {
   {'U', {0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0E}}, {'V', {0x11, 0x11, 0x11, 0x11, 0x11, 0x0A, 0x04}},
   {'W', {0x11, 0x11, 0x11, 0x15, 0x15, 0x15, 0x0A}}, {'X', {0x11, 0x11, 0x0A, 0x04, 0x0A, 0x11, 0x11}},
   {'Y', {0x11, 0x11, 0x0A, 0x04, 0x04, 0x04, 0x04}}, {'Z', {0x1F, 0x01, 0x02, 0x04, 0x08, 0x10, 0x1F}},
+  {'0', {0x0E, 0x11, 0x13, 0x15, 0x19, 0x11, 0x0E}},
   {'1', {0x04, 0x0C, 0x04, 0x04, 0x04, 0x04, 0x0E}}, {'2', {0x0E, 0x11, 0x01, 0x02, 0x04, 0x08, 0x1F}},
+  {'3', {0x1F, 0x02, 0x04, 0x02, 0x01, 0x11, 0x0E}}, {'4', {0x02, 0x06, 0x0A, 0x12, 0x1F, 0x02, 0x02}},
+  {'5', {0x1F, 0x10, 0x1E, 0x01, 0x01, 0x11, 0x0E}}, {'6', {0x06, 0x08, 0x10, 0x1E, 0x11, 0x11, 0x0E}},
+  {'7', {0x1F, 0x01, 0x02, 0x04, 0x08, 0x08, 0x08}}, {'8', {0x0E, 0x11, 0x11, 0x0E, 0x11, 0x11, 0x0E}},
+  {'9', {0x0E, 0x11, 0x11, 0x0F, 0x01, 0x02, 0x0C}},
   {'/', {0x01, 0x02, 0x02, 0x04, 0x08, 0x08, 0x10}},
 };
 
@@ -283,8 +304,9 @@ static void dots(Cell c, const char *s, int scale, int x0, int y0) {
 static void draw_words(void) {
   int x = 0, y = 1024;
   for (size_t i = 0; i < sizeof words / sizeof *words; i++) {
-    int n = (int)strlen(words[i].s), id = words[i].id, w = n * 6 * WORD_SCALE > 500 ? 1024 : 512;
-    if (x + w > AW) { x = 0; y += 56; }   /* a long word takes a whole row */
+    int n = (int)strlen(words[i].s), id = words[i].id, tw = n * 6 * WORD_SCALE;
+    int w = tw > 500 ? 1024 : tw > 240 ? 512 : 256;
+    if (x + w > AW) { x = 0; y += 56; }   /* a word that does not fit starts the next row */
     if (y + 56 > AH) { SDL_Log("overlay: no room for the word %s", words[i].s); break; }
     Cell c = {x, y, w, 56};
     x += w;

@@ -161,6 +161,7 @@ static const char *press_script;                       /* --press "frame:button:
 static const char *opt_key[MAX_OPTIONS], *opt_val[MAX_OPTIONS];
 static int opt_count;
 static char scale_text[8];
+static bool options_changed;   /* the core reads its options again (the menu's resolution) */
 
 static void set_option(const char *k, const char *v) {
   for (int i = 0; i < opt_count; i++) if (!strcmp(opt_key[i], k)) { opt_val[i] = v; return; }
@@ -269,7 +270,7 @@ static bool environment(unsigned cmd, void *data) {
   case RETRO_ENVIRONMENT_GET_CAN_DUPE: *(bool *)data = true; return true;
   case RETRO_ENVIRONMENT_GET_INPUT_BITMASKS: return true;
   case RETRO_ENVIRONMENT_GET_CORE_OPTIONS_VERSION: *(unsigned *)data = 0; return true;
-  case RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE: *(bool *)data = false; return true;
+  case RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE: *(bool *)data = options_changed; options_changed = false; return true;
   case RETRO_ENVIRONMENT_GET_VARIABLE: {
     struct retro_variable *v = data; v->value = NULL;
     for (int i = 0; i < opt_count; i++) if (!strcmp(opt_key[i], v->key)) { v->value = opt_val[i]; return true; }
@@ -437,6 +438,21 @@ static int scripted_bits(int frame) {
     p += n; if (*p == ',') p++;
   }
   return bits;
+}
+
+/* settings.txt in the saves folder: the menu's settings ("scale N"), kept apart from options.txt (troubleshooting) */
+static int settings_scale(void) {
+  char path[1200]; snprintf(path, sizeof path, "%s/settings.txt", save_dir);
+  int v = 0; char line[128];
+  FILE *f = fopen(path, "r");
+  if (f) { while (fgets(line, sizeof line, f)) sscanf(line, "scale %d", &v); fclose(f); }
+  return v >= 1 && v <= 8 ? v : 0;
+}
+
+static void settings_save_scale(int v) {
+  char path[1200]; snprintf(path, sizeof path, "%s/settings.txt", save_dir);
+  FILE *f = fopen(path, "w");
+  if (f) { fprintf(f, "scale %d\n", v); fclose(f); }
 }
 
 static void toggle_fullscreen(void) {
@@ -782,6 +798,7 @@ int main(int argc, char **argv) {
 #else
   const int max_scale = 8;
 #endif
+  if (!scale) scale = settings_scale();   /* the menu's choice */
   if (!scale) { scale = (disp_h + 239) / 240; if (scale < 2) scale = 2; if (scale > max_scale) scale = max_scale; }
   snprintf(scale_text, sizeof scale_text, "%d", scale);
   static const char *fixed[][2] = {
@@ -798,6 +815,14 @@ int main(int argc, char **argv) {
     bool overridden = false;
     for (int j = 0; j < opt_count; j++) if (!strcmp(opt_key[j], fixed[i][0])) overridden = true;
     if (!overridden) set_option(fixed[i][0], fixed[i][1]);
+  }
+  {
+#ifdef __ANDROID__
+    static const int scales[] = {1, 2, 3, 4};
+#else
+    static const int scales[] = {1, 2, 3, 4, 6, 8};
+#endif
+    menu_set_scales(scales, (int)(sizeof scales / sizeof *scales), scale);
   }
   bool scale_set = false;
   for (int j = 0; j < opt_count; j++) if (!strcmp(opt_key[j], "swanstation_GPU_ResolutionScale")) scale_set = true;
@@ -864,6 +889,12 @@ int main(int argc, char **argv) {
         else if (a == MENU_TOUCH) { controls_set_mode(MODE_TOUCH); touch_shown = true; }
         else if (a == MENU_PAD) { controls_set_mode(MODE_PAD); touch_shown = false; }
         else if (a == MENU_SETUP) controls_setup_start();
+        else if (a == MENU_SCALE) {   /* the core changes its resolution at once */
+          snprintf(scale_text, sizeof scale_text, "%d", menu_scale);
+          set_option("swanstation_GPU_ResolutionScale", scale_text);
+          options_changed = true;
+          settings_save_scale(menu_scale);
+        }
         else if (a == MENU_EXPORT || a == MENU_IMPORT) card_action(a);
         card_poll();
       }

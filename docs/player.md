@@ -8,7 +8,7 @@ libretro core and boots the patched disc with the free OpenBIOS. Its settings ar
 |---|---|---|
 | RAM | 8 MB | extra heap headroom; the game still runs in 2 MB ([real hardware](../README.md)) |
 | CPU | 250 % | smoother play; the title screen's settings panel detects both and hides itself |
-| Renderer | OpenGL (GLES 3 on Android), internal resolution = display height / 240 (2x-8x, Android 2x-4x; `--scale N`) | sharp 3D at full screen |
+| Renderer | OpenGL (GLES 3 on Android), internal resolution = display height / 240 (2x-8x, Android 2x-4x; the menu's settings or `--scale N`) | sharp 3D at full screen |
 | BIOS | OpenBIOS (`system/openbios.bin`), no fast-boot patch | no Sony BIOS is needed or shipped |
 | CD | reads 8x, seeks 10x (`CDROM_ReadSpeedup` 4, `CDROM_SeekSpeedup` 10) | loads take about half the time; the core keeps music and movie sound at 1x |
 | Memory card | slot 1, `duckstation_shared_card_1.mcd` in the user's data folder, written by the program each second it changed and when the app goes to the background | survives updates of the app |
@@ -85,6 +85,10 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
   the saves folder (the card is `duckstation_shared_card_1.mcd`) and import waits for a card file dropped on the
   window. An import takes any raw 128 KB PlayStation card (`.mcd`, `.mcr`, `.srm`...); the card in use is copied first
   to `duckstation_shared_card_1.backup-DATE.mcd` in the saves folder, then the game starts again to read the new one.
+- ⚙ settings. **Resolution**: the 3D's internal resolution, 1X (the console's own, 240 lines) to 4X (8X on a
+  computer). It changes at once and goes to `settings.txt` in the saves folder (`scale N`); with no choice the program
+  takes the screen's height / 240 (2X-4X on Android, 2X-8X on a computer). `--scale N` and `options.txt` still win
+  at start.
 - ⏻ quit.
 
 **The first start** asks touch or controller and keyboard before the game (`--first-start` asks it again). The

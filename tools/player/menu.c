@@ -5,6 +5,7 @@
  *   controls        controller and keyboard: keep the buttons or set them (controls.c)
  *   memory card     export (a file picker on Android, the save folder opened on a computer) or import (a file
  *                   picker, or a file dropped on the window); the card in use is backed up first
+ *   gear            settings: resolution (the core's internal resolution scale, settings.txt)
  *   power           quit
  *
  * The first start shows the touch / controller question before the game; on Android a new install with no memory
@@ -19,7 +20,7 @@
 
 bool menu_open;
 
-enum { S_RESTORE, S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT };
+enum { S_RESTORE, S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT, S_SETTINGS, S_SCALE };
 static int screen, focus, result_ok, touched = -3;
 static Uint32 result_at;
 static bool first;            /* the first-start question: no way back, the game waits for an answer */
@@ -29,9 +30,15 @@ static int card_screen;   /* where the memory card's screens return to: S_CARD, 
 static uint16_t prev;
 
 typedef struct { int icon, icon2, action, word; } Card;
-enum { A_CONTINUE = 100, A_CONTROLS, A_CARD, A_CHECK, A_NEW };
+enum { A_CONTINUE = 100, A_CONTROLS, A_CARD, A_CHECK, A_NEW, A_SETTINGS, A_RESOLUTION, A_SCALE = 200 /* + N */ };
 static const Card main_cards[] = {{I_PLAY, -1, A_CONTINUE, T_RESUME}, {I_GAMEPAD, I_KEYBOARD, A_CONTROLS, T_CONTROLS},
-                                  {I_CARD, -1, A_CARD, T_CARD}, {I_POWER, -1, MENU_QUIT, T_QUIT}};
+                                  {I_CARD, -1, A_CARD, T_CARD}, {I_GEAR, -1, A_SETTINGS, T_SETTINGS},
+                                  {I_POWER, -1, MENU_QUIT, T_QUIT}};
+static const Card settings_cards[] = {{I_SCREEN, -1, A_RESOLUTION, T_RESOLUTION}};
+/* the resolution's choices: the card shows the scale (a word), the word under it the picture's height */
+static Card scale_cards[8];
+static int scale_count, scale_now;
+int menu_scale;
 static const Card mode_cards[] = {{I_TOUCH, -1, MENU_TOUCH, T_TOUCH}, {I_GAMEPAD, I_KEYBOARD, MENU_PAD, T_CONTROLLER}};
 static const Card check_cards[] = {{I_CHECK, -1, A_CHECK, T_KEEP}, {I_PENCIL, -1, MENU_SETUP, T_SET}};
 static const Card restore_cards[] = {{I_IMPORT, -1, MENU_IMPORT, T_IMPORT}, {I_PLAY, -1, A_NEW, T_NEW}};
@@ -39,20 +46,42 @@ static const Card card_cards[] = {{I_EXPORT, -1, MENU_EXPORT, T_EXPORT}, {I_IMPO
 
 static const Card *cards(int *n) {
   switch (screen) {
-  case S_MAIN: *n = 4; return main_cards;
+  case S_MAIN: *n = (int)(sizeof main_cards / sizeof *main_cards); return main_cards;
   case S_FIRST: *n = 2; return mode_cards;
   case S_PADCHECK: *n = 2; return check_cards;
   case S_CARD: *n = 2; return card_cards;
   case S_RESTORE: *n = 2; return restore_cards;
+  case S_SETTINGS: *n = 1; return settings_cards;
+  case S_SCALE: *n = scale_count; return scale_cards;
   }
   *n = 0; return NULL;
 }
 
 static int header(void) {
-  return screen == S_PADCHECK ? I_GAMEPAD : screen == S_CARD || screen == S_RESTORE ? I_CARD : -1;
+  switch (screen) {
+  case S_PADCHECK: return I_GAMEPAD;
+  case S_CARD: case S_RESTORE: return I_CARD;
+  case S_SETTINGS: return I_GEAR;
+  case S_SCALE: return I_SCREEN;
+  }
+  return -1;
 }
 
-static void go(int s) { screen = s; focus = 0; touched = -3; if (s == S_RESTORE || s == S_CARD) card_screen = s; }
+static void go(int s) {
+  screen = s; focus = 0; touched = -3;
+  if (s == S_RESTORE || s == S_CARD) card_screen = s;
+  if (s == S_SCALE) for (int i = 0; i < scale_count; i++) if (scale_cards[i].action == A_SCALE + scale_now) focus = i;
+}
+
+void menu_set_scales(const int *scales, int n, int now) {
+  static const struct { int scale, card, word; } names[] = {
+    {1, T_1X, T_ORIGINAL}, {2, T_2X, T_480P}, {3, T_3X, T_720P}, {4, T_4X, T_960P}, {6, T_6X, T_1440P}, {8, T_8X, T_1920P}};
+  scale_count = 0; scale_now = now;
+  for (int i = 0; i < n && scale_count < 8; i++)
+    for (size_t j = 0; j < sizeof names / sizeof *names; j++)
+      if (names[j].scale == scales[i])
+        scale_cards[scale_count++] = (Card){names[j].card, -1, A_SCALE + scales[i], names[j].word};
+}
 
 static void open_at(int s) { menu_open = true; prev = 0xFFFF; fire = fire_back = false; go(s); }
 void menu_show_first(bool ask_card) {
@@ -70,7 +99,8 @@ static void close_menu(void) { menu_open = false; first = false; }
 void menu_back(void) {
   switch (screen) {
   case S_MAIN: close_menu(); break;
-  case S_CARD: go(S_MAIN); break;
+  case S_CARD: case S_SETTINGS: go(S_MAIN); break;
+  case S_SCALE: go(S_SETTINGS); break;
   case S_PADCHECK: go(first ? S_FIRST : S_MAIN); break;
   case S_DROP: go(card_screen); break;
   }
@@ -147,6 +177,8 @@ static int act(int i) {
   case A_CARD: go(S_CARD); return MENU_NONE;
   case A_CHECK: close_menu(); return MENU_NONE;
   case A_NEW: after_restore(); return MENU_NONE;
+  case A_SETTINGS: go(S_SETTINGS); return MENU_NONE;
+  case A_RESOLUTION: go(S_SCALE); return MENU_NONE;
   case MENU_TOUCH: close_menu(); return MENU_TOUCH;
   case MENU_PAD: go(S_PADCHECK); return MENU_PAD;
   case MENU_SETUP: close_menu(); return MENU_SETUP;
@@ -162,6 +194,9 @@ static int act(int i) {
 #else
     go(S_DROP); return MENU_NONE;
 #endif
+  }
+  if (c[i].action >= A_SCALE) {   /* a resolution: back to the game, to see it */
+    menu_scale = scale_now = c[i].action - A_SCALE; close_menu(); return MENU_SCALE;
   }
   return MENU_NONE;
 }
@@ -232,11 +267,14 @@ void menu_draw(int ww, int wh) {
     overlay_quad(I_PANEL, cx, cy, z, z, 1, on ? 0.8f : 0.5f);
     frame_box(cx, cy, z, z, (on ? 0.012f : 0.006f) * s, on ? 0.95f : 0.35f);
     float bright = on ? 1.1f : 0.8f;
-    if (c[i].icon2 < 0) overlay_quad(c[i].icon, cx, cy, z * 0.7f, z * 0.7f, bright, 1);
+    if (c[i].icon >= T_RESUME) overlay_text(c[i].icon, cx, cy, z * 0.3f, z * 0.8f, bright, 1);   /* a word as the picture */
+    else if (c[i].icon2 < 0) overlay_quad(c[i].icon, cx, cy, z * 0.7f, z * 0.7f, bright, 1);
     else {
       overlay_quad(c[i].icon, cx, cy - z * 0.17f, z * 0.58f, z * 0.58f, bright, 1);
       overlay_quad(c[i].icon2, cx, cy + z * 0.24f, z * 0.46f, z * 0.46f, bright, 1);
     }
+    if (c[i].action == A_SCALE + scale_now)   /* the resolution in use */
+      overlay_quad(I_CHECK, cx + z * 0.36f, cy - z * 0.36f, z * 0.3f, z * 0.3f, 1, 1);
     /* the word under the card */
     overlay_text(c[i].word, cx, cy + size * 0.53f + 0.03f * s + gh / 2, gh, size, on ? 1.1f : 0.8f, 1);
   }
