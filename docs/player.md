@@ -73,14 +73,15 @@ top of the touch pad. The game waits under it. It shows big pictures, each with 
 or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goes back:
 
 - ▶ back to the game.
-- 🎮 touch or controller and keyboard. Choosing the controller asks next: ✔ keep the buttons, or ✎ set them.
+- 🎮⌨️ the controller and keyboard buttons: ✔ keep them, or ✎ set them. (The touch pad needs no choice here: it
+  comes back at any touch.)
 - 💾 the memory card: export or import. On Android both open the system's file picker. On a computer, export opens
   the saves folder (the card is `duckstation_shared_card_1.mcd`) and import waits for a card file dropped on the
   window. An import takes any raw 128 KB PlayStation card (`.mcd`, `.mcr`, `.srm`...); the card in use is copied first
   to `duckstation_shared_card_1.backup-DATE.mcd` in the saves folder, then the game starts again to read the new one.
 - ⏻ quit.
 
-**The first start** asks the same touch / controller question before the game (`--first-start` asks it again). The
+**The first start** asks touch or controller and keyboard before the game (`--first-start` asks it again). The
 answer goes to `controls.txt` (`mode touch` or `mode pad`).
 
 **Setting the buttons** (✎): the game waits and the screen shows each PlayStation button in turn (the pad's four

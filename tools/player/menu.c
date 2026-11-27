@@ -1,8 +1,8 @@
 /* Horizon Play's menu (docs/player.md). SELECT and START together (or the touch pad's menu button) pause the game
- * and show big pictures, no text, so it needs no language:
+ * and show big pictures, each with a word in English under it:
  *
  *   play            back to the game
- *   controller      touch, or controller and keyboard; then keep the buttons or set them (controls.c)
+ *   controls        controller and keyboard: keep the buttons or set them (controls.c)
  *   memory card     export (a file picker on Android, the save folder opened on a computer) or import (a file
  *                   picker, or a file dropped on the window); the card in use is backed up first
  *   power           quit
@@ -18,7 +18,7 @@
 
 bool menu_open;
 
-enum { S_FIRST, S_MAIN, S_MODE, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT };
+enum { S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT };
 static int screen, focus, result_ok, touched = -3;
 static Uint32 result_at;
 static bool first;            /* the first-start question: no way back, the game waits for an answer */
@@ -28,7 +28,7 @@ static uint16_t prev;
 
 typedef struct { int icon, icon2, action, word; } Card;
 enum { A_CONTINUE = 100, A_CONTROLS, A_CARD, A_CHECK };
-static const Card main_cards[] = {{I_PLAY, -1, A_CONTINUE, T_RESUME}, {I_GAMEPAD, -1, A_CONTROLS, T_CONTROLS},
+static const Card main_cards[] = {{I_PLAY, -1, A_CONTINUE, T_RESUME}, {I_GAMEPAD, I_KEYBOARD, A_CONTROLS, T_CONTROLS},
                                   {I_CARD, -1, A_CARD, T_CARD}, {I_POWER, -1, MENU_QUIT, T_QUIT}};
 static const Card mode_cards[] = {{I_TOUCH, -1, MENU_TOUCH, T_TOUCH}, {I_GAMEPAD, I_KEYBOARD, MENU_PAD, T_CONTROLLER}};
 static const Card check_cards[] = {{I_CHECK, -1, A_CHECK, T_KEEP}, {I_PENCIL, -1, MENU_SETUP, T_SET}};
@@ -37,7 +37,7 @@ static const Card card_cards[] = {{I_EXPORT, -1, MENU_EXPORT, T_EXPORT}, {I_IMPO
 static const Card *cards(int *n) {
   switch (screen) {
   case S_MAIN: *n = 4; return main_cards;
-  case S_FIRST: case S_MODE: *n = 2; return mode_cards;
+  case S_FIRST: *n = 2; return mode_cards;
   case S_PADCHECK: *n = 2; return check_cards;
   case S_CARD: *n = 2; return card_cards;
   }
@@ -58,8 +58,8 @@ static void close_menu(void) { menu_open = false; first = false; }
 void menu_back(void) {
   switch (screen) {
   case S_MAIN: close_menu(); break;
-  case S_MODE: case S_CARD: go(S_MAIN); break;
-  case S_PADCHECK: go(first ? S_FIRST : S_MODE); break;
+  case S_CARD: go(S_MAIN); break;
+  case S_PADCHECK: go(first ? S_FIRST : S_MAIN); break;
   case S_DROP: go(S_CARD); break;
   }
 }
@@ -131,7 +131,7 @@ static int act(int i) {
   if (!c || i < 0 || i >= n) return MENU_NONE;
   switch (c[i].action) {
   case A_CONTINUE: close_menu(); return MENU_NONE;
-  case A_CONTROLS: go(S_MODE); return MENU_NONE;
+  case A_CONTROLS: go(S_PADCHECK); return MENU_NONE;
   case A_CARD: go(S_CARD); return MENU_NONE;
   case A_CHECK: close_menu(); return MENU_NONE;
   case MENU_TOUCH: close_menu(); return MENU_TOUCH;
