@@ -918,6 +918,9 @@ def main():
     if '--self-test' in sys.argv[1:]:
         import selftest
         return selftest.main(sys.argv[sys.argv.index('--self-test') + 1:])
+    if sys.argv[1:2] == ['--make']:   # everything from a terminal, no window (make_cli.py)
+        import make_cli
+        return make_cli.main(sys.argv[2:])
     quiet_streams()
     if os.name == 'nt':
         try:
