@@ -71,7 +71,7 @@ In our builds (GCC, [compiler.md](compiler.md)) the executable still starts at 0
 | evolution, ending | `EVL`, `ENDI`, `EAB` at 0x80060000; the evolving model at `EVO_MMD_ADDR` 0x80020000 |
 | battle | the EFE engine from 0x80010000 (16 slots and an effects heap of 0x41000), `BTL_REL` (TIM and TMD prefix, then code) from 0x80052AE0. The background is reread on exit |
 | tournament, VS | `STD_REL` / `VS_REL` from 0x80052AE0 (STD ends at 0x8007D0DC; BTL and VS are kept at or below it by link asserts), arena model at 0x80038000 |
-| title card menus, save machine, sleep save | `MENU_REL` at 0x80052AE0 (patch 0211). Its whole sectors may reach one sector into `OVL_EVL_BASE`: nothing is resident there in the world but ENDI during the game-clear save, and `start_ending` reads ENDI again (patch 0308) |
+| title card menus, save machine, sleep save, care and Player menus, Cheats | `MENU_REL` at `OVL_MENU_BASE` 0x80052000, right above `SAVE_EXT` (patch 0211; its own base since the menu-base patch, 0x80052AE0 before). Its whole sectors may reach one sector into `OVL_EVL_BASE`: nothing is resident there in the world but ENDI during the game-clear save, and `start_ending` reads ENDI again (patch 0308). Room 0x80052000..0x80060800 = 29 sectors; 2026-11-27 MENU 55,232 B, 4,160 B free |
 | always | `TEXTURE_BUFFER` at 0x80088800 (0x7800: temporary TIMs, the card image, script arrays); DOOA/MURD ordering tables at 0x8008C000 and 0x8008E000 |
 
 The top 2 KB, 0x8008F800–0x8008FFFF, are reached by nothing.
@@ -91,7 +91,8 @@ against it.
 | `STACK_MEASURED_MAX` | 0xF78 | deepest measured use; the link asserts the stack is at least 4× this |
 | `MIN_HEAP` | 0x26800 | the link fails if the heap is smaller |
 | `OVL_MOV_BASE` | 0x80010000 | movies |
-| `OVL_BTL_BASE` | 0x80052AE0 | BTL, STD, VS, and the menu overlay |
+| `OVL_BTL_BASE` | 0x80052AE0 | BTL, STD, VS |
+| `OVL_MENU_BASE` | 0x80052000 | the menu overlay (`MENU_REL`) and the card metadata sector `CARD_DATA` (its first sector); `SAVE_EXT` ends exactly here (link assert) |
 | `OVL_KAR_BASE` | 0x80053800 | curling |
 | `OVL_EVL_BASE` | 0x80060000 | EVL, ENDI, EAB |
 | `OVL_FISH_BASE` | 0x80070000 | FISH, DOO2 |
@@ -627,8 +628,10 @@ copy into the game state, and a write is prepared from RAM in the tick that writ
 - at the title (continue, new game's file, the VS mode's card read) the title's TIMs end at 0x8002F000 and the movie
   overlay is dead once `playMovie` returns;
 - it is above every sound bank staged at `GENERAL_BUFFER` (the largest, an ESALL chunk of 124 sectors, ends exactly at
-  0x8004E000; `SB.VHB` at 0x8004D000), the evolution model area and `DOOA_SHARD` (to 0x8004A5C0), and below the battle
-  prefix (0x80052AE0). A battle's EFE heap covers it, but no card operation runs in a battle.
+  0x8004E000; `SB.VHB` at 0x8004D000), the evolution model area and `DOOA_SHARD` (to 0x8004A5C0), and below the menu
+  overlay (`OVL_MENU_BASE` 0x80052000; it ends exactly there, 0 B slack, link assert). A battle's EFE heap covers it, but
+  no card operation runs in a battle. The Cheats menu keeps its lists' sort keys (`LAB_KEYS`, 16 B a row) here while it
+  is open; a static assert keeps them within `SAVE_EXT_MAX`, so they end below MENU too.
 
 Link asserts: `GENERAL_BUFFER_ADDR + SOUND_STAGING_MAX ≤ SAVE_EXT_ADDR` and `EVO_MMD_ADDR + 0x4800 + PARTNER_MMD_MAX ≤
 SAVE_EXT_ADDR`, and the area stays in the world scratch below the battle prefix. `tools/sound.py` refuses a bank chunk
@@ -771,7 +774,7 @@ live in MENU, where all their callers run. No new heap buffer is allocated.
 `main_menu.c` (the title's menus, new game and continue, the card screens, VS registration, the save machine, the
 sleep save and the game-clear save) was 35 KB of code resident through the whole game. Patch 0211 links most of it into
 `MENU_REL.BIN` (overlay id 17, a new file-table name; on the disc in `SCN/`, because the root directory's first sector
-must keep `SYSTEM.CNF`), read at `OVL_BTL_BASE` by `loadMenuOverlay` where a menu opens:
+must keep `SYSTEM.CNF`), read at `OVL_MENU_BASE` (0x80052000, 0x80052AE0 before the menu-base patch) by `loadMenuOverlay` where a menu opens:
 
 | Where | Why the slot is free |
 |---|---|

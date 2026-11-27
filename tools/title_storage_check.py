@@ -18,7 +18,11 @@ def check(path):
     evl = elf.sh[elf.byname['.EVL']]
     menu = elf.sh[elf.byname['.MENU']]
     start, end = (symbols[name][0] for name in ('title_ui_START', 'title_ui_END'))
-    assert menu['size'] <= 55296 - 100, ('MENU spare', 55296 - menu['size'])
+    # MENU is read in whole sectors from its base up to the lowest of ENDI's first sector's end (OVL_EVL_BASE + 0x800)
+    # and the title and Look blocks in EVL (main.ld's asserts): its room is the whole sectors below that
+    ceiling = min([evl['addr'] + 0x800, start] + [symbols[n][0] for n in ('look_ui_START',) if n in symbols])
+    room = (ceiling - menu['addr']) & ~2047
+    assert menu['size'] <= room - 100, ('MENU spare', room - menu['size'])
     read_end = menu['addr'] + ((menu['size'] + 2047) & ~2047)
     assert read_end <= start < end <= evl['addr'] + evl['size']
     assert evl['addr'] + ((evl['size'] + 2047) & ~2047) <= 0x80070000
@@ -66,7 +70,7 @@ def check(path):
     assert references
     offset = evl['off'] + start - evl['addr']
     data = elf.d[offset:offset + end - start]
-    print(f'{path.parent.name}: MENU {menu["size"]} B, spare {55296 - menu["size"]} B; '
+    print(f'{path.parent.name}: MENU {menu["size"]} B at {menu["addr"]:#x}, spare {room - menu["size"]} B of {room // 2048} sectors; '
           f'title {start:#x}..{end:#x}, {references} checked references; '
           f'sha256 {hashlib.sha256(data).hexdigest()}')
     return data
