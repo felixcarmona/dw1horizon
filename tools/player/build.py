@@ -138,6 +138,12 @@ def main():
     os.makedirs(os.path.join(place, 'system'), exist_ok=True)
     if core_lib:
         shutil.copy2(core_lib, os.path.join(place, core_name()))
+    if sys.platform == 'win32':
+        # The core (MSVC) needs the Visual C++ runtime, which a clean Windows lacks: the loader then reports the
+        # core missing. These three files are redistributable; beside the exe they are found first.
+        sys32 = os.path.join(os.environ.get('SystemRoot', r'C:\Windows'), 'System32')
+        for dll in ('msvcp140.dll', 'vcruntime140.dll', 'vcruntime140_1.dll'):
+            shutil.copy2(os.path.join(sys32, dll), os.path.join(place, dll))
     shutil.copy2(bios, os.path.join(place, 'system', 'openbios.bin'))
 
     docs = place if sys.platform == 'darwin' else out   # macOS: inside the app, which is shipped on its own

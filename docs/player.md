@@ -19,7 +19,8 @@ The program carries no game data. It plays the disc that the patcher builds from
 
 ## Where players get it
 
-- **Windows and macOS:** inside the desktop patcher (`desktop.yml` builds it and passes `--player` to
+- **Windows and macOS:** inside the desktop patcher (on Windows with the Visual C++ runtime's three DLLs beside
+  `horizon-play.exe`, which the core needs and a clean Windows lacks) (`desktop.yml` builds it and passes `--player` to
   `tools/patcher/app/build.py`). After a build, and when the app opens again, a **Play** button starts it on the
   disc (`desktop.play`).
 - **Linux:** `Horizon-Play-Linux-x86_64.tar.gz` (`player.yml`), built on Ubuntu 22.04. Run

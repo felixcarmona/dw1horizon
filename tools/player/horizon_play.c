@@ -213,12 +213,13 @@ static void make_fbo(unsigned w, unsigned h) {
 /* A disc inside another file (Android: assets/horizon.bin stored in the APK, docs/player.md). The core reads files
    through libretro's VFS; on Android a path it cannot open locally comes here, and the one path we serve is the track
    named by the cue: it reads the range [embedded_at, embedded_at + embedded_size) of the APK. */
+static int64_t embedded_size;   /* 0 without an embedded disc; also ties a resume snapshot to the disc */
 #ifndef _WIN32
 #include <fcntl.h>
 #include <unistd.h>
 static char embedded_track[1200];
 static const char *embedded_file;
-static int64_t embedded_at, embedded_size;
+static int64_t embedded_at;
 struct retro_vfs_file_handle { int fd; int64_t pos; };
 static const char *RETRO_CALLCONV vfs_get_path(struct retro_vfs_file_handle *h) { (void)h; return embedded_track; }
 static struct retro_vfs_file_handle *RETRO_CALLCONV vfs_open(const char *path, unsigned mode, unsigned hints) {
