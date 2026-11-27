@@ -7,6 +7,7 @@
 #include "controls.h"
 #include "menu.h"
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "libretro.h"
@@ -77,7 +78,7 @@ static bool ready;
 
 /* ---- the atlas: 1024 x 1024, premultiplied RGBA ---- */
 #define AW 1024
-#define AH 1792
+#define AH 2048
 static uint8_t *pix;
 
 typedef struct { int x, y, w, h; } Cell;
@@ -106,6 +107,8 @@ static const struct { int id; const char *s; } words[] = {
   {T_RESOLUTION, "RESOLUTION"}, {T_ORIGINAL, "ORIGINAL"}, {T_1X, "1X"}, {T_2X, "2X"}, {T_3X, "3X"}, {T_4X, "4X"},
   {T_6X, "6X"}, {T_8X, "8X"}, {T_480P, "480P"}, {T_720P, "720P"}, {T_960P, "960P"}, {T_1440P, "1440P"},
   {T_1920P, "1920P"},
+  {T_D0, "0"}, {T_D0 + 1, "1"}, {T_D0 + 2, "2"}, {T_D0 + 3, "3"}, {T_D0 + 4, "4"}, {T_D0 + 5, "5"},
+  {T_D0 + 6, "6"}, {T_D0 + 7, "7"}, {T_D0 + 8, "8"}, {T_D0 + 9, "9"}, {T_FPS, "FPS"},
 };
 static float word_w[I_COUNT];   /* the letters' width in atlas pixels */
 
@@ -622,6 +625,22 @@ void overlay_text(int word, float cx, float cy, float glyph_h, float max_w, floa
   quad(word, cx, cy, cells[word].w * k, cells[word].h * k, bright, alpha, cur_w, cur_h);
 }
 
+int overlay_fps = -1;
+
+/* the frame rate, small, in the top left corner: "60 FPS" */
+static void draw_fps(int ww, int wh) {
+  if (overlay_fps < 0) return;
+  char num[8];
+  int n = snprintf(num, sizeof num, "%d", overlay_fps > 999 ? 999 : overlay_fps);
+  float gh = (ww < wh ? ww : wh) * 0.022f;
+  if (gh < 8) gh = 8;
+  float adv = gh * 6 / 7, pad = gh * 0.5f, x = pad * 1.5f, y = pad * 1.5f + gh / 2;
+  float tw = (n + 4) * adv - adv / 6;   /* the digits, a space and FPS */
+  quad(I_WHITE, x + tw / 2, y, tw + pad * 2, gh + pad * 1.4f, 0, 0.45f, ww, wh);   /* a dark backing */
+  for (int i = 0; i < n; i++) overlay_text(T_D0 + num[i] - '0', x + i * adv + adv / 2 - adv / 12, y, gh, adv * 2, 1, 0.95f);
+  overlay_text(T_FPS, x + (n + 1) * adv + overlay_text_width(T_FPS, gh) / 2, y, gh, adv * 4, 1, 0.95f);
+}
+
 void overlay_draw(int ww, int wh) {
   if (!ready) return;
   cur_w = ww; cur_h = wh;
@@ -647,5 +666,6 @@ void overlay_draw(int ww, int wh) {
       quad(c->icon, c->x, c->y, c->w * grow, c->h * grow, pressed ? 1.6f : 1, pressed ? 1 : a, ww, wh);
     }
   }
+  if (remap_step < 0 && !menu_open) draw_fps(ww, wh);
   flush(ww, wh);
 }

@@ -917,6 +917,12 @@ int main(int argc, char **argv) {
     core.run();
     frame++;
     if (frame % 60 == 0) card_save();
+    {   /* the frame rate in the corner: the game's frames in the last second */
+      static Uint32 fps_since; static int fps_frames; Uint32 now = SDL_GetTicks();
+      if (!fps_since) fps_since = now;
+      fps_frames++;
+      if (now - fps_since >= 1000) { overlay_fps = (int)(fps_frames * 1000.0 / (now - fps_since) + 0.5); fps_since = now; fps_frames = 0; }
+    }
     if (frame % 1800 == 0) {   /* the log notes the speed: a slow device shows here */
       static Uint32 since; Uint32 now = SDL_GetTicks(); int dw, dh; SDL_GL_GetDrawableSize(window, &dw, &dh);
       SDL_Log("frame %d: %.1f fps, picture %ux%u %s, screen %dx%d, scale %s", frame, since ? 1800000.0 / (now - since) : 0.0,
