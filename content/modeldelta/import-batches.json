@@ -710,17 +710,13 @@
       "list": "content/imports/lists/first-10.json",
       "entry": {
         "name": "Imperialdramon",
-        "game": "dw2",
-        "model": "M148IPDR",
-        "level": 6,
-        "element": 0,
-        "donor": 22,
-        "clip_policy": null,
-        "scale": 0.16343
+        "game": "dcb",
+        "model": 181,
+        "level": "mega"
       },
       "level": 6,
       "spec": "content/imports/specs/Imperialdramon.json",
-      "spec_sha256": "12992b4f3938ebff058726597bd4fd11267c18307a3e12beeee27c3d7da6fb6a",
+      "spec_sha256": "a03c41d9bd6280c97ad95da4fd7da6cc66c81c7ade0ef84b428389d21853328f",
       "out": "build/batch"
     },
     {

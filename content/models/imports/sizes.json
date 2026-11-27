@@ -2,6 +2,7 @@
  "_about": "Partner heights as multiples of the tamer's idle height (target) with the per-bone proportions and the uniform factor that reach them; baked after the field overlay by tools/models/species_size.py.",
  "187": {"name": "Stingmon", "target": 1.2, "factor": 0.884},
  "191": {"name": "MetalGarurumon", "target": 1.3, "factor": 0.778, "bones": {"3": 1.1}},
+ "192": {"name": "Imperialdramon", "target": 1.6, "factor": 1.103},
  "194": {"name": "ExVeemon", "target": 1.2, "factor": 0.938},
  "195": {"name": "Flamedramon", "target": 1.3, "factor": 0.943},
  "196": {"name": "Halsemon", "target": 1.0, "factor": 0.886},

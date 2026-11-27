@@ -82,8 +82,63 @@
     ]}
   },
   "192": {
-    "35": {"ticks": null, "ops": []},
-    "36": {"ticks": null, "ops": []}
+    "35": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "turn", "bone": 11, "axis": "y", "deg": 24, "ticks": null},
+      {"op": "turn", "bone": 14, "axis": "y", "deg": -24, "ticks": null},
+      {"op": "turn", "bone": 21, "axis": "z", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 24, "axis": "z", "deg": 20, "ticks": null},
+      {"op": "lift", "bone": 17, "up": 40, "ticks": null},
+      {"op": "turn", "bone": 12, "axis": "y", "deg": 10, "ticks": null},
+      {"op": "turn", "bone": 15, "axis": "y", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 21, "axis": "y", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 24, "axis": "y", "deg": 20, "ticks": null},
+      {"op": "turn", "bone": 11, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 14, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 2, "axis": "x", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 11, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 14, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 12, "axis": "z", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 15, "axis": "z", "deg": 10, "ticks": null},
+      {"op": "turn", "bone": 2, "axis": "x", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 12, "axis": "y", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 15, "axis": "y", "deg": 10, "ticks": null},
+      {"op": "turn", "bone": 2, "axis": "x", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 3, "axis": "x", "deg": -10, "ticks": null},
+      {"op": "turn", "bone": 3, "axis": "x", "deg": -20, "ticks": null},
+      {"op": "turn", "bone": 3, "axis": "z", "deg": -10, "ticks": null},
+      {"op": "offset", "bone": 12, "delta": [0, 10, 0]},
+      {"op": "offset", "bone": 1, "delta": [0, -10, -30]},
+      {"op": "offset", "bone": 3, "delta": [0, 0, -30]},
+      {"op": "offset", "bone": 4, "delta": [0, 0, -15]},
+      {"op": "offset", "bone": 15, "delta": [0, 22, 0]}
+    ]},
+    "36": {"ticks": 13, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "turn", "bone": 2, "axis": "x", "deg": -30.0},
+      {"op": "turn", "bone": 1, "axis": "x", "deg": -10.0},
+      {"op": "turn", "bone": 12, "axis": "x", "deg": 10.0},
+      {"op": "turn", "bone": 11, "axis": "y", "deg": -10.0},
+      {"op": "turn", "bone": 2, "axis": "y", "deg": 10.0},
+      {"op": "turn", "bone": 14, "axis": "y", "deg": -10.0},
+      {"op": "turn", "bone": 14, "axis": "z", "deg": 45.0},
+      {"op": "lift", "bone": 17, "up": 7},
+      {"op": "offset", "bone": 1, "delta": [0, 0, -30]},
+      {"op": "offset", "bone": 21, "delta": [0, 10, 0]},
+      {"op": "offset", "bone": 4, "delta": [0, 0, -20]},
+      {"op": "offset", "bone": 12, "delta": [0, 10, 0]},
+      {"op": "offset", "bone": 3, "delta": [0, 0, -10]}
+    ]},
+    "34": {"ticks": 17, "rig": [0, 0], "body": "scale", "ops": [
+      {"op": "lift", "bone": 17, "up": 21},
+      {"op": "offset", "bone": 11, "delta": [30, 0, 0]},
+      {"op": "offset", "bone": 14, "delta": [-30, 0, 0]},
+      {"op": "offset", "bone": 2, "delta": [0, 0, -20]},
+      {"op": "offset", "bone": 4, "delta": [0, 0, -15]},
+      {"op": "smooth", "bone": 6, "passes": 1},
+      {"op": "smooth", "bone": 7, "passes": 1},
+      {"op": "smooth", "bone": 8, "passes": 1},
+      {"op": "smooth", "bone": 9, "passes": 1},
+      {"op": "smooth", "bone": 10, "passes": 1}
+    ]}
   },
   "196": {
     "35": {"ticks": 17, "ops": [

@@ -625,17 +625,18 @@ run the way `valkyrimon.py` does (legs solved onto his feet, his lean on the
 body), with her own swinging arms (he carries a staff), and the sash ends and
 lowest feathers kept off the ground. Buster Dive is applied after it at build.
 
-Imperialdramon (192) is Digimon World 2's model (M148IPDR; until 2026-11-26 the
-Card Battle's). Its imported walk and run slid the hands and feet, so
-`field_animations/imperialdramon.py` writes the idle, walk, condition walk and
-run again for the new 32-bone rig with `quadruped.py` (a four-beat walk and a
-gallop). Each fore paw has two claw bones that hang from the forearm beside the
-paw bone: they count as the paw for the floor and turn with it (`slave`). The
-paws stand as the rest pose has the right ones, the left ones mirrored
-(`paw_rest`, `mirror_paws`); the knees bend out and forward, the elbows back,
-and a lifted arm's elbow swings out (`swing_pole`) and its forearm blade stays
-pointed ahead (`aim`). The idle keeps World 2's roar with every paw planted. The
-battle clips are World 2's own. The model is sized in `import-sizes.json`.
+Imperialdramon's (192) walk and run swung every limb on its own and slid the
+hands and feet. `field_animations/imperialdramon.py` writes the walk, condition
+walk and run on all fours with `quadruped.py` (a walk with each hand landing
+just before the foot behind it, and a gallop), each hand and foot standing at
+its own turned-out idle angle (per-leg `paw_flat`). The hips sit right behind
+the shoulders: the knees bend out and a lifted arm's elbow swings out past the
+thigh (`swing_pole`), so the legs of a side do not pass through each other. The
+forearm blades always point ahead (`aim`) and the hands swing wide (`wide`), so
+they do not sweep through the head, and the body dips onto each landing in the
+walks and bounds in the run. The idle keeps its crouch and roar with every hand
+and foot planted where it stands at the first tick (the crouch had pushed the
+hind feet into the floor).
 
 Pegasusmon's (200) idle stood on a raised right foreleg and swung the
 hindquarters, and its walk and run crossed and slid the hooves.
