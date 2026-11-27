@@ -5,8 +5,11 @@ nothing to choose. The disc never leaves the player's computer: the patcher writ
 
 The template is Horizon Play's own APK. Its entries are copied as they are (META-INF signatures dropped), the disc is
 added stored and page aligned as assets/horizon.bin (the app reads it in place), and the result is signed with APK
-Signature Scheme v2 (Android 7+). The key is kept in KEY.json (made on first use) so that a later APK from the same
-computer installs over the earlier one and keeps the saves. Standard library only, so it runs in the web patcher too.
+Signature Scheme v2 (Android 7+). Every APK is signed with the project's one shared key (android-key.json beside this
+file, public on purpose), so an APK made on any computer installs over any earlier one and keeps the saves: Android
+only updates an app in place when the new APK has the same key, and otherwise the player has to uninstall, which can
+wipe them. The key guards nothing else: the app holds only the player's own saves. --key KEY.json signs with another
+key (made on first use). Standard library only, so it runs in the web patcher too.
 """
 import argparse
 import hashlib
@@ -17,6 +20,8 @@ import struct
 import sys
 import time
 import zipfile
+
+SHARED_KEY = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'android-key.json')
 
 DISC_ENTRY = 'assets/horizon.bin'
 CHUNK = 1 << 20
@@ -249,7 +254,9 @@ def build(template, disc, out, key_path=None, progress=None):
     size = os.path.getsize(disc)
     if size == 0 or size % 2352:
         raise ValueError(f'{disc} is not a raw disc image (.bin, 2352-byte sectors)')
-    key = load_key(key_path)
+    if not key_path and not os.path.isfile(SHARED_KEY):
+        raise FileNotFoundError(f'{SHARED_KEY}: the shared signing key is missing')
+    key = load_key(key_path or SHARED_KEY)
     tmp = out + '.part'
     try:
         with open(tmp, 'w+b') as f:
@@ -267,7 +274,7 @@ def main(argv=None):
     ap.add_argument('template')
     ap.add_argument('disc')
     ap.add_argument('out')
-    ap.add_argument('--key', help='the signing key file (made if missing; default: a new key each time)')
+    ap.add_argument('--key', help='another signing key file (made if missing; default: the shared android-key.json)')
     a = ap.parse_args(argv)
     build(a.template, a.disc, a.out, a.key)
     print(f'{a.out} ({os.path.getsize(a.out) // (1 << 20)} MB)')

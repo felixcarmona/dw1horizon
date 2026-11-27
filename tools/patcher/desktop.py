@@ -891,7 +891,7 @@ def make(kind, cue, tag, progress=None, fetching=None, cancel=None):
                 done[0] += n
                 if progress:
                     progress(min(done[0], total), total)
-            return apk.build(source, image, base + '.apk', os.path.join(config_dir(), 'android-key.json'), tick)
+            return apk.build(source, image, base + '.apk', None, tick)   # the shared key (apk.SHARED_KEY)
         if kind == 'setup':
             return setup_exe.build(source, cue, base + '-Setup.exe', progress)
         if kind == 'mac':   # a disk image on a Mac; elsewhere a zip (it cannot be signed or mounted here)

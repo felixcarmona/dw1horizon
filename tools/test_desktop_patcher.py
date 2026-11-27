@@ -1103,5 +1103,34 @@ class Strings(unittest.TestCase):
         self.assertEqual(used - set(table['en']) - {'app.log'}, set())          # (app.log: a file name)
 
 
+class SharedApkKey(unittest.TestCase):
+    """Every APK is signed with the one public key in the repository, so any APK installs over any other."""
+
+    def test_shared_key_is_committed_and_valid(self):
+        import apk
+        self.assertTrue(os.path.isfile(apk.SHARED_KEY))
+        k = apk.load_key(apk.SHARED_KEY)
+        self.assertEqual(pow(pow(12345, k['e'], k['n']), k['d'], k['n']), 12345)
+        self.assertIn(k['n'].to_bytes((k['n'].bit_length() + 7) // 8, 'big'), k['cert'])
+
+    def test_build_defaults_to_the_shared_key(self):
+        import apk
+        seen = []
+        real = apk.load_key
+        apk.load_key = lambda path: seen.append(path) or real(path)
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                disc = os.path.join(d, 'disc.bin')
+                with open(disc, 'wb') as f:
+                    f.write(b'\0' * 2352)
+                try:
+                    apk.build(os.path.join(d, 'missing.apk'), disc, os.path.join(d, 'out.apk'))
+                except OSError:
+                    pass   # no template: only the key choice matters here
+        finally:
+            apk.load_key = real
+        self.assertEqual(seen, [apk.SHARED_KEY])
+
+
 if __name__ == '__main__':
     unittest.main()

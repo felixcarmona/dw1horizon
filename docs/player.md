@@ -30,9 +30,9 @@ The program carries no game data. It plays the disc that the patcher builds from
   Android 7+) with the built disc added as `assets/horizon.bin`, stored and page aligned. The player copies it to the
   phone and installs it: the game starts at once, with nothing to choose. The app reads the disc in place, through the
   core's VFS (`--embedded APK OFFSET SIZE`), so the phone keeps one copy. The patcher signs it (APK Signature Scheme
-  v2, standard library only) with a key made on first use and kept in its settings folder (`android-key.json`), so
-  the next APK from that computer installs over it and keeps the saves. An APK signed with another key has to replace
-  the app; Android then offers to keep its data (`hasFragileUserData`). Saves, logs and options live in
+  v2, standard library only) with one shared key, `tools/patcher/android-key.json`, public on purpose: it protects
+  nothing, it only makes every APK, from any computer, install over any other and keep the saves. An APK signed with
+  another key (`apk.py --key`) has to replace the app; Android then offers to keep its data (`hasFragileUserData`). Saves, logs and options live in
   `Android/data/com.dw1horizon.play/files/saves`. Each time the card is written the app also copies it to
   `Documents/Digimon World Horizon/Digimon World Horizon.mcd` (MediaStore, no permission on Android 10+; Android 7-9
   ask once for storage) when it holds a save, which an uninstall leaves on the phone; a new install cannot write over
@@ -53,7 +53,7 @@ python3 tools/player/build.py --out build/player/bundle            # Linux (need
 python tools/player/build.py --openbios openbios.bin --out ...      # Windows / macOS (an OpenBIOS built on Linux)
 python3 tools/player/build.py --universal2 --openbios ... --out ... # macOS, Apple silicon + Intel
 python3 tools/player/android/build_apk.py --out Horizon-Play.apk  # Android template (ANDROID_HOME, NDK, JDK 17; no Gradle)
-python3 tools/patcher/apk.py Horizon-Play.apk DISC.bin OUT.apk --key key.json   # the template with a disc inside
+python3 tools/patcher/apk.py Horizon-Play.apk DISC.bin OUT.apk   # the template with a disc inside
 ```
 
 It checks out SwanStation and OpenBIOS (PCSX-Redux's `nugget`) at the commits pinned in `build.py`. It builds the

@@ -101,7 +101,8 @@ def spec(work, a, ver):
     datas = [(info, 'tools/patcher/app'), (os.path.join(ROOT, 'web', 'i18n'), 'web/i18n'),
              (os.path.join(ROOT, 'web', 'data', 'discs.json'), 'web/data'),
              (os.path.join(APP, 'i18n.json'), 'tools/patcher/app'),
-             (os.path.join(APP, 'make_icons.py'), 'tools/patcher/app')]
+             (os.path.join(APP, 'make_icons.py'), 'tools/patcher/app'),
+             (os.path.join(ROOT, 'tools', 'patcher', 'android-key.json'), '.')]   # apk.SHARED_KEY, beside apk
     if a.player and sys.platform != 'darwin':      # Horizon Play (tools/player/build.py --out DIR); macOS: nest_player
         datas.append((os.path.abspath(a.player), 'player'))
     hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk', 'setup_exe', 'mac_app', 'linux_run']

@@ -65,7 +65,7 @@ jobs:
 
   android:
     # Horizon Play for Android (tools/player/android/build_apk.py), the template the patcher downloads from the release
-    # and puts the built disc into (tools/patcher/apk.py signs that copy with the player's own key: no secret here).
+    # and puts the built disc into (tools/patcher/apk.py signs that copy with the shared key, android-key.json, public on purpose).
     needs: openbios
     runs-on: ubuntu-22.04   # its Android SDK and NDK are preinstalled
     steps:
@@ -91,7 +91,7 @@ jobs:
       - name: A disc put inside it still verifies (a dummy disc of zeros)
         run: |
           head -c $((2352 * 1000)) /dev/zero > "$RUNNER_TEMP/dummy.bin"
-          python3 tools/patcher/apk.py apk/Horizon-Play.apk "$RUNNER_TEMP/dummy.bin" "$RUNNER_TEMP/dummy.apk" --key "$RUNNER_TEMP/key.json"
+          python3 tools/patcher/apk.py apk/Horizon-Play.apk "$RUNNER_TEMP/dummy.bin" "$RUNNER_TEMP/dummy.apk"
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify -v "$RUNNER_TEMP/dummy.apk" | grep -q 'v2 scheme (APK Signature Scheme v2): true'
           "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c -P 16 4 "$RUNNER_TEMP/dummy.apk"
       - uses: actions/upload-artifact@v4
