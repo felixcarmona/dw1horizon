@@ -99,7 +99,11 @@ static Cell cells[I_COUNT] = {
 };
 
 #define WORD_SCALE 6   /* one font dot is 6 x 6 atlas pixels: letters 42 high */
-static const struct { int id; const char *s; } words[] = {
+#ifndef HORIZON_VERSION
+#define HORIZON_VERSION "DEV"   /* build.py and build_apk.py give the release version (tools/version.py) */
+#endif
+static char version_word[40];   /* "V0.0.10", in capitals: the font has no small letters */
+static struct { int id; const char *s; } words[] = {
   {T_RESUME, "RESUME"}, {T_CONTROLS, "CONTROLS"}, {T_CARD, "MEMORY CARD"}, {T_QUIT, "QUIT"},
   {T_TOUCH, "TOUCH SCREEN"}, {T_CONTROLLER, "CONTROLLER"}, {T_KEEP, "KEEP BUTTONS"}, {T_SET, "SET BUTTONS"},
   {T_EXPORT, "EXPORT"}, {T_IMPORT, "IMPORT"}, {T_DONE, "DONE"}, {T_FAILED, "FAILED"},
@@ -109,6 +113,7 @@ static const struct { int id; const char *s; } words[] = {
   {T_1920P, "1920P"},
   {T_D0, "0"}, {T_D0 + 1, "1"}, {T_D0 + 2, "2"}, {T_D0 + 3, "3"}, {T_D0 + 4, "4"}, {T_D0 + 5, "5"},
   {T_D0 + 6, "6"}, {T_D0 + 7, "7"}, {T_D0 + 8, "8"}, {T_D0 + 9, "9"}, {T_FPS, "FPS"},
+  {T_VERSION, version_word},
 };
 static float word_w[I_COUNT];   /* the letters' width in atlas pixels */
 
@@ -259,7 +264,7 @@ static void arrow(Cell c, float angle) {
   paint(c, sd_poly_fill, pts, 0.92f, 0.92f, 0.95f, 0.95f);
 }
 
-/* 5x7 font: capitals, digits and '/' */
+/* 5x7 font: capitals, digits and / . - + */
 static const struct { char ch; uint8_t rows[7]; } font[] = {
   {'A', {0x0E, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11}}, {'B', {0x1E, 0x11, 0x11, 0x1E, 0x11, 0x11, 0x1E}},
   {'C', {0x0E, 0x11, 0x10, 0x10, 0x10, 0x11, 0x0E}}, {'D', {0x1E, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1E}},
@@ -280,7 +285,8 @@ static const struct { char ch; uint8_t rows[7]; } font[] = {
   {'5', {0x1F, 0x10, 0x1E, 0x01, 0x01, 0x11, 0x0E}}, {'6', {0x06, 0x08, 0x10, 0x1E, 0x11, 0x11, 0x0E}},
   {'7', {0x1F, 0x01, 0x02, 0x04, 0x08, 0x08, 0x08}}, {'8', {0x0E, 0x11, 0x11, 0x0E, 0x11, 0x11, 0x0E}},
   {'9', {0x0E, 0x11, 0x11, 0x0F, 0x01, 0x02, 0x0C}},
-  {'/', {0x01, 0x02, 0x02, 0x04, 0x08, 0x08, 0x10}},
+  {'/', {0x01, 0x02, 0x02, 0x04, 0x08, 0x08, 0x10}}, {'.', {0x00, 0x00, 0x00, 0x00, 0x00, 0x0C, 0x0C}},
+  {'-', {0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00}}, {'+', {0x00, 0x04, 0x04, 0x1F, 0x04, 0x04, 0x00}},
 };
 
 static const uint8_t *glyph(char ch) {
@@ -306,6 +312,8 @@ static void dots(Cell c, const char *s, int scale, int x0, int y0) {
 
 static void draw_words(void) {
   int x = 0, y = 1024;
+  snprintf(version_word, sizeof version_word, "V%s", HORIZON_VERSION);
+  for (char *p = version_word; *p; p++) *p = (char)SDL_toupper((unsigned char)*p);
   for (size_t i = 0; i < sizeof words / sizeof *words; i++) {
     int n = (int)strlen(words[i].s), id = words[i].id, tw = n * 6 * WORD_SCALE;
     int w = tw > 500 ? 1024 : tw > 240 ? 512 : 256;

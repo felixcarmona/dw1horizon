@@ -92,7 +92,7 @@ def main():
     ndk_cmake(ndk, sw, os.path.join(work, 'core'), a.jobs)
     core = player_build.find(os.path.join(work, 'core'), {'swanstation_libretro_android.so'})
     host = os.path.join(work, 'host')
-    ndk_cmake(ndk, PLAYER, host, a.jobs)
+    ndk_cmake(ndk, PLAYER, host, a.jobs, f'-DHORIZON_VERSION={ver}')
     libs = {'libmain.so': player_build.find(host, {'libmain.so'}),
             'libSDL2.so': player_build.find(host, {'libSDL2.so'}),
             # the package manager only installs lib*.so; the host dlopens this name

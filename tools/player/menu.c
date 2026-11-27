@@ -278,6 +278,8 @@ void menu_draw(int ww, int wh) {
     /* the word under the card */
     overlay_text(c[i].word, cx, cy + size * 0.53f + 0.03f * s + gh / 2, gh, size, on ? 1.1f : 0.8f, 1);
   }
+  if (screen == S_MAIN)   /* the version, small, at the bottom */
+    overlay_text(T_VERSION, ww / 2.0f, wh - 0.04f * s, 0.022f * s, ww * 0.9f, 0.7f, 0.8f);
   if (has_back()) {
     float cx, cy, size;
     back_rect(ww, wh, &cx, &cy, &size);

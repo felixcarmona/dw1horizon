@@ -94,6 +94,9 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
   at start.
 - ⏻ quit.
 
+Under the cards the main screen shows the program's version (`tools/version.py`, given to CMake as
+`HORIZON_VERSION` by `build.py` and `build_apk.py`; `DEV` when built by hand).
+
 **The first start** asks touch or controller and keyboard before the game (`--first-start` asks it again). The
 answer goes to `controls.txt` (`mode touch` or `mode pad`).
 

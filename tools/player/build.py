@@ -82,6 +82,7 @@ def main():
     ap.add_argument('--jobs', type=int, default=os.cpu_count() or 4)
     ap.add_argument('--skip-core', action='store_true', help='reuse the core already in --out')
     ap.add_argument('--openbios-only', metavar='PATH', help='only build OpenBIOS and copy it to PATH')
+    ap.add_argument('--version', help='the version the menu shows (default: tools/version.py)')
     ap.add_argument('--universal2', action='store_true', help='macOS: Apple silicon and Intel in one bundle')
     a = ap.parse_args()
     work, out = os.path.abspath(a.work), os.path.abspath(a.out)
@@ -97,7 +98,10 @@ def main():
 
     # the host
     host_build = os.path.join(work, 'host')
-    cmake(HERE, host_build, a.jobs, *(['-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'] if a.universal2 else []))
+    ver = a.version or subprocess.run([sys.executable, os.path.join(REPO, 'tools', 'version.py'), 'version'],
+                                      capture_output=True, text=True).stdout.strip() or '0.0.0'
+    cmake(HERE, host_build, a.jobs, f'-DHORIZON_VERSION={ver.lstrip("v")}',
+          *(['-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'] if a.universal2 else []))
 
     # the core (one build per architecture for a universal2 bundle: its recompiler is chosen at configure time)
     core_lib = None

@@ -17,7 +17,7 @@ enum { I_TRI, I_CIRCLE, I_CROSS, I_SQUARE, I_UP, I_DOWN, I_LEFT, I_RIGHT, I_DPAD
        T_RESUME, T_CONTROLS, T_CARD, T_QUIT, T_TOUCH, T_CONTROLLER, T_KEEP, T_SET, T_EXPORT, T_IMPORT, T_DONE,
        T_FAILED, T_DROP, T_NEW, T_SETTINGS, T_RESOLUTION, T_ORIGINAL,
        T_1X, T_2X, T_3X, T_4X, T_6X, T_8X, T_480P, T_720P, T_960P, T_1440P, T_1920P,
-       T_D0, T_FPS = T_D0 + 10, I_COUNT };   /* T_D0 + n: the digit n, for the frame rate */
+       T_D0, T_FPS = T_D0 + 10, T_VERSION, I_COUNT };   /* T_D0 + n: the digit n, for the frame rate */
 
 bool overlay_init(void);
 void overlay_event(const SDL_Event *e, int ww, int wh);
