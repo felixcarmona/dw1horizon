@@ -23,4 +23,6 @@ void overlay_draw(int ww, int wh);
 /* one picture centred at (cx, cy), w x h pixels, for the menu */
 void overlay_quad(int icon, float cx, float cy, float w, float h, float bright, float alpha);
 /* one of the T_ words centred at (cx, cy), its letters glyph_h pixels high, narrowed to max_w if it is wider */
+/* its width in pixels with letters glyph_h high */
+float overlay_text_width(int word, float glyph_h);
 void overlay_text(int word, float cx, float cy, float glyph_h, float max_w, float bright, float alpha);

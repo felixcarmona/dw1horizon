@@ -586,6 +586,10 @@ void overlay_quad(int icon, float cx, float cy, float w, float h, float bright, 
   quad(icon, cx, cy, w, h, bright, alpha, cur_w, cur_h);
 }
 
+float overlay_text_width(int word, float glyph_h) {
+  return word >= T_RESUME && word < I_COUNT ? word_w[word] * glyph_h / (7 * WORD_SCALE) : 0;
+}
+
 void overlay_text(int word, float cx, float cy, float glyph_h, float max_w, float bright, float alpha) {
   if (word < T_RESUME || word >= I_COUNT || !word_w[word]) return;
   float k = glyph_h / (7 * WORD_SCALE);

@@ -199,6 +199,14 @@ void menu_draw(int ww, int wh) {
   }
   if (header() >= 0) overlay_quad(header(), ww / 2.0f, wh * 0.24f, 0.22f * s, 0.22f * s, 1, 0.85f);
   int n; const Card *c = cards(&n);
+  /* the words under the cards: one size for all, the largest that keeps each within its card's width */
+  float gh = 0.036f * s;
+  for (int i = 0; i < n; i++) {
+    float cx, cy, size, w;
+    card_rect(i, n, ww, wh, &cx, &cy, &size);
+    w = overlay_text_width(c[i].word, gh);
+    if (w > size * 0.95f) gh *= size * 0.95f / w;
+  }
   for (int i = 0; i < n; i++) {
     float cx, cy, size;
     card_rect(i, n, ww, wh, &cx, &cy, &size);
@@ -212,9 +220,8 @@ void menu_draw(int ww, int wh) {
       overlay_quad(c[i].icon, cx, cy - z * 0.17f, z * 0.58f, z * 0.58f, bright, 1);
       overlay_quad(c[i].icon2, cx, cy + z * 0.24f, z * 0.46f, z * 0.46f, bright, 1);
     }
-    /* the word under the card, as wide as the card and its gap at most */
-    float gh = 0.036f * s;
-    overlay_text(c[i].word, cx, cy + size * 0.53f + 0.03f * s + gh / 2, gh, size + 0.04f * s, on ? 1.1f : 0.8f, 1);
+    /* the word under the card */
+    overlay_text(c[i].word, cx, cy + size * 0.53f + 0.03f * s + gh / 2, gh, size, on ? 1.1f : 0.8f, 1);
   }
   if (has_back()) {
     float cx, cy, size;
