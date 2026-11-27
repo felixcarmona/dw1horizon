@@ -108,7 +108,7 @@ def system_language():
 
 
 # what the make buttons make, in their order: the disc image first, then the installers with it inside
-# (kind, name, file type); a picture each (tools/patcher/app/platform_icons.py)
+# (kind, name, file type); a logo each (tools/patcher/app/platform-logos/KIND.png)
 MAKERS = (('disc', 'PlayStation', '.bin / .cue'), ('apk', 'Android', '.apk'), ('setup', 'Windows', '.exe'),
           ('mac', 'Mac', '.dmg' if sys.platform == 'darwin' else '.zip'), ('linux', 'Linux', '.run'))
 
@@ -328,9 +328,10 @@ class App:
             self.icon = None
         self.make_icons = {}
         try:
-            import platform_icons
-            for kind in platform_icons.DRAWINGS:
-                self.make_icons[kind] = self.tk.PhotoImage(data=base64.b64encode(platform_icons.png(kind, 40)))
+            for kind, _, _ in MAKERS:
+                logo = desktop.resource('tools', 'patcher', 'app', 'platform-logos', kind + '.png')
+                img = self.tk.PhotoImage(file=logo)
+                self.make_icons[kind] = (img, 'disabled', img)      # in colour while disabled too (Tk greys it)
         except Exception:
             pass
         for (kind, _, _), b in zip(MAKERS, getattr(self, 'make_buttons', [])):
