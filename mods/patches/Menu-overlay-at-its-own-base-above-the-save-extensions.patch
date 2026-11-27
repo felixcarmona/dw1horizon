@@ -1,0 +1,126 @@
+From 4aa73d3b13f2ff12e6ad979f8fb500a5ca57c3cd Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 17:32:42 +0000
+Subject: [PATCH] Menu overlay at its own base above the save extensions
+
+MENU_REL loads at OVL_MENU_BASE 0x80052000, right above the save extension area (which ends there), instead of the
+battle overlays' base 0x80052AE0: 0xAE0 bytes lower, so its whole-sector read may be two sectors longer before it
+reaches ENDI's first sector (4 KB more room for the card menus and the Cheats menu). The card metadata sector
+(CARD_DATA) moves with it and is still MENU's first sector. Nothing in the world uses 0x80052000-0x80052AE0 while a
+menu is open; the save extensions and the Cheats menu's sort keys end below it (link asserts).
+---
+ config/us/main.ld      | 7 ++++++-
+ config/us/overlay.ld   | 3 ++-
+ include/dw/cards.h     | 2 +-
+ include/dw/memmap.h    | 7 ++++---
+ src/main/main_menu.c   | 2 +-
+ src/main/mod_options.c | 2 +-
+ 6 files changed, 15 insertions(+), 8 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index c463a85..58840a2 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1069,7 +1069,7 @@ ASSERT(OVL_READ_END(.MOV) <= OVL_TRN_BASE, "MOV overlay overlaps TRN's slot (TEX
+  * OVL_EVL_BASE except ENDI during the game-clear save (load_ending), whose first sector the last sector of MENU may
+  * overlap: start_ending reads ENDI again. Whole sectors: one more would need that read to be proved again. */
+ ASSERT(OVL_READ_END(.MENU) <= OVL_EVL_BASE + 0x800, "MENU overlay (in whole sectors) reaches past ENDI's first sector")
+-ASSERT(renderCardsView >= OVL_BTL_BASE + 0x800 && modCardTop >= OVL_BTL_BASE + 0x800 && CARD_SPRITE_CLUT >= OVL_BTL_BASE + 0x800,
++ASSERT(renderCardsView >= OVL_MENU_BASE + 0x800 && modCardTop >= OVL_MENU_BASE + 0x800 && CARD_SPRITE_CLUT >= OVL_MENU_BASE + 0x800,
+        "Card metadata sector overlaps the album renderer")
+ ASSERT(title_ui_START >= OVL_READ_END(.MENU), "MENU sector read overwrites the title UI in EVL")
+ ASSERT(title_ui_END <= OVL_END(.EVL), "Title UI is outside EVL")
+@@ -1079,6 +1079,11 @@ ASSERT(TFS_RING_ADDR + TFS_RING_SLOTS * TFS_SLOT_SIZE == TFS_RING_END,
+ ASSERT(TFS_RING_END <= OVL_KAR_BASE, "TFS ring overlaps KAR, which coexists with the curling map")
+ ASSERT(SAVE_EXT_ADDR >= WORLD_SCRATCH_START && SAVE_EXT_ADDR + SAVE_EXT_MAX <= OVL_BTL_BASE,
+        "the save extension area is not in the world scratch below the battle prefix")
++/* MOD (menu overlay base): the card menus keep SAVE_EXT (and the Cheats menu its sort keys) while MENU is loaded, and
++ * the card metadata sector (CARD_DATA, one sector at OVL_MENU_BASE) is read in the world */
++ASSERT(SAVE_EXT_ADDR + SAVE_EXT_MAX <= OVL_MENU_BASE, "the save extension area overlaps the MENU overlay")
++ASSERT(OVL_MENU_BASE <= OVL_BTL_BASE && OVL_MENU_BASE + 0x800 <= WORLD_SCRATCH_END,
++       "the MENU base (card metadata sector) is not in the world scratch")
+ ASSERT(SAVE_EXT_ADDR >= DOOA_SHARD_ADDR + DOOA_SHARD_SIZE, "the save extension area overlaps DOOA_SHARD")
+ /* MOD (save robustness): the evolution model area (0x4800 of texture, then the model) and the sound staging end below it */
+ ASSERT(EVO_MMD_ADDR + 0x4800 + PARTNER_MMD_MAX <= SAVE_EXT_ADDR, "the evolution model area overlaps the save extension area")
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 68b3312..c83b043 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -859,8 +859,9 @@ SECTIONS
+ 	 * the sleep save and the game-clear save), read by loadMenuOverlay where each opens. The functions are named
+ 	 * one by one: one this list does not name (a new one) stays in the executable (main.ld takes the rest of the
+ 	 * file), which is always safe. Its data and bss stay in the executable (they outlive the overlay) unless named below.
++	 * It has its own base, right above SAVE_EXT (memmap.h OVL_MENU_BASE).
+ 	 */
+-	OVERLAY OVL_BTL_BASE : NOCROSSREFS
++	OVERLAY OVL_MENU_BASE : NOCROSSREFS
+ 	{
+ 		.MENU {
+ 			menu_START = .;
+diff --git a/include/dw/cards.h b/include/dw/cards.h
+index 87309fd..e8251e3 100644
+--- a/include/dw/cards.h
++++ b/include/dw/cards.h
+@@ -11,7 +11,7 @@ typedef char CardTableSectorCheck[sizeof(CardData) * NUM_CARDS == 2048 ? 1 : -1]
+ 
+ /* One sector, owned by the album or card shop while no battle is active. */
+ #include <dw/memmap.h>
+-#define CARD_DATA ((CardData *)OVL_BTL_BASE)
++#define CARD_DATA ((CardData *)OVL_MENU_BASE)
+ #define CARD_EXTRA_BYTES ((NUM_CARDS - 66) / 2)
+ #define CARD_NONE 0xffff
+ extern uint8_t MOD_CARD_EXTRA[CARD_EXTRA_BYTES];
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 6dcf2ce..bbebfb4 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -44,6 +44,7 @@
+ /* Overlay bases (config/us/overlay.ld) */
+ #define OVL_MOV_BASE		0x80010000	/* videos */
+ #define OVL_BTL_BASE		0x80052AE0	/* BTL, STD, VS: TIM + TMD prefix, then code */
++#define OVL_MENU_BASE		0x80052000	/* MENU (card menus) and CARD_DATA: right above SAVE_EXT, world scratch */
+ #define OVL_KAR_BASE		0x80053800
+ #define OVL_EVL_BASE		0x80060000	/* EVL, ENDI, EAB */
+ #define OVL_FISH_BASE		0x80070000	/* FISH, DOO2 */
+@@ -90,9 +91,9 @@
+  * the title's TIMs end at 0x8002F000, the world keeps only the TFS ring below WORLD_SCRATCH_START.
+  * It is above every sound bank staged at GENERAL_BUFFER (the largest: an ESALL chunk of 124 sectors,
+  * to 0x8004E000; SB.VHB to 0x8004D000), the evolution model area (EVO_MMD_ADDR, to 0x80048800) and
+- * DOOA_SHARD, and below the battle prefix (0x80052AE0). (A battle's EFE heap covers it: no card
+- * operation runs in a battle.) The Cheats menu also keeps its lists' sort keys here while it is open
+- * (LAB_KEYS, mod_lab_menu.inc); prepareSaveFile clears the extension before it writes one.
++ * DOOA_SHARD, and below the menu overlay (OVL_MENU_BASE, main.ld checks it; it ends exactly there). (A battle's EFE
++ * heap covers it: no card operation runs in a battle.) The Cheats menu also keeps its lists' sort keys here while it
++ * is open (LAB_KEYS, mod_lab_menu.inc); prepareSaveFile clears the extension before it writes one.
+  */
+ /* NPC CD reads are sector-rounded; compact in field scratch, then copy to
+  * the heap. Never retain a pointer here. Drained sound staging may reuse it. */
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index fa53cd8..48fa122 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -5995,7 +5995,7 @@ void renderMenuSelector(MenuHighlight *b)
+ 
+ /*
+  * MOD (menu overlay, docs/mods/memory.md "The menu overlay"): most of this file's code is linked into MENU_REL.BIN at
+- * OVL_BTL_BASE (config/us/main.ld keeps the rest in the executable) and read where a card menu opens: the title
++ * OVL_MENU_BASE (config/us/main.ld keeps the rest in the executable) and read where a card menu opens: the title
+  * (runMainMenu), the sleep save (partner.c), the save machine and the game-clear save (below). Nothing of a battle,
+  * the tournament or VS is loaded then; KAR (0x80053800) is, on the curling screen, so a menu closing in the world
+  * reads it again.
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index ae31346..a3dbb19 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -506,7 +506,7 @@ void modSetLanguage(int32_t lang)
+ 	 * language it had then: read it again, in the new language's copy (modLangFile), or the menus stay in the old one
+ 	 * while the executable's cuts of them (YES_NO_PIECES, YES_NO_CROPS) are already the new one's ("Yes N" / "o").
+ 	 * Every caller runs from MENU_REL (the language picker, OPTIONS, the options read from the card or a save), so
+-	 * that is the overlay at OVL_BTL_BASE. The copies differ only in their strings (tools/langpatch.py overlay checks
++	 * that is the overlay at OVL_MENU_BASE. The copies differ only in their strings (tools/langpatch.py overlay checks
+ 	 * the code), so the code that called this is read again byte for byte; its data are constant but the lab's text
+ 	 * (mod_lab.c), which nothing holds across a language change.
+ 	 */
+-- 
+2.55.0
+

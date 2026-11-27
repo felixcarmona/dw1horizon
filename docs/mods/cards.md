@@ -72,7 +72,7 @@ portraits retain their sheet and CLUTs. A new card shows the same small icon as
 its species' box in the evolution Chart (see "Album icons for new cards" below). The full viewer reads art only when a card is opened or the results
 selection changes.
 
-The metadata sector uses `OVL_BTL_BASE` during card interactions. Native shop-file reads use a different
+The metadata sector uses `OVL_MENU_BASE` (MENU's first sector) during card interactions. Native shop-file reads use a different
 overlay slot, and battles are inactive during the album and shops.
 Entering a card shop or the album loads the table once. Leaving the album for
 another Player tab reloads MENU before any chart callback can run. The existing
