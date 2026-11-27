@@ -14,6 +14,7 @@ installs (no sudo) into ${XDG_DATA_HOME:-~/.local/share}/digimon-world-horizon, 
 what the installer put there and keeps the saves, ~/.local/share/Horizon/Horizon), and offers to start the game when run
 in a terminal (a double click starts it). Standard library only, so it is frozen into the patcher like apk.py.
 """
+import gzip
 import io
 import os
 import sys
@@ -176,7 +177,9 @@ def build(player, cue, out, progress=None):
     try:
         with open(tmp, 'wb') as raw:
             raw.write(header.encode())
-            with tarfile.open(fileobj=raw, mode='w|gz', format=tarfile.GNU_FORMAT, compresslevel=LEVEL) as tar:
+            # gzip by hand: tarfile's stream mode takes no compresslevel before Python 3.12
+            with gzip.GzipFile(fileobj=raw, mode='wb', compresslevel=LEVEL, mtime=0) as gz, \
+                    tarfile.open(fileobj=gz, mode='w|', format=tarfile.GNU_FORMAT) as tar:
                 if from_dir:
                     for folder, dirs, files in os.walk(player):
                         dirs.sort()
