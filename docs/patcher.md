@@ -150,9 +150,11 @@ What the patcher makes is chosen in its **Make** box: five buttons side by side,
 (`tools/patcher/app/platform-logos/`, Bootstrap Icons, MIT), its system's name and the file type under it:
 **PlayStation** (.bin / .cue, the disc image for emulators and the console), then the installers with that disc
 inside: **Android** (.apk), **Windows** (.exe), **Mac** (.dmg on a Mac, .zip elsewhere) and **Linux** (.run). Each
-button asks for the folder to save in (starting at the last one chosen). An installer button uses the disc the patcher
-built last in this session when it came from the same discs and package and is still in that folder; otherwise it
-builds the disc there first (and it stays). The patcher does not carry their templates: each is a release asset
+button asks for the folder to save in (starting at the last one chosen). Nothing is downloaded before the first press: it fetches
+the release, builds the disc into the cache folder (`disc/` beside the packages, about 900 MB, with `built.json`
+naming the discs and package it came from) and keeps it there. Every press after it, in this run or a later one,
+uses that disc while the discs and the package are the same: PlayStation copies it into the folder, an installer
+button puts it inside the installer it writes there. The patcher does not carry their templates: each is a release asset
 (`Horizon-Play.apk`, `Horizon-Setup.exe`, `Horizon-Play-macOS.zip`, `Horizon-Play-Linux-x86_64.tar.gz`), downloaded
 from the same release as the game package when a button is first used (`desktop.template`), checked against the digest
 GitHub publishes for the asset, and cached by tag in the settings folder (`templates/<tag>/`), so later builds and
@@ -187,13 +189,13 @@ computers only. Details in [player.md](player.md#a-setup-wizard).
   SHA-1; on the next start a disc that moved or changed empties its slot with the reason. Packages are kept in
   `%LOCALAPPDATA%\Horizon Patcher\packages` (macOS: the same folder as the settings; Linux `~/.cache/horizon-patcher`),
   the newest two. `HORIZON_PATCHER_HOME` moves both (tests). `app.log` there has the app's own errors.
-- **The package.** The window has no release box: when the app opens it asks, in the background, for the latest
-  release (and a make button asks again before building). The app asks GitHub for the latest release of the repository it was built from (`build-info.json`,
+- **The package.** The window has no release box and nothing goes to the network until a make button is pressed.
+  Then the app asks GitHub for the latest release of the repository it was built from (`build-info.json`,
   written by the build from `GITHUB_REPOSITORY`), downloads `horizon-checksums.json` and `horizon-package.tar.gz`,
   checks the archive's SHA-256 against the asset digest GitHub reports, then unpacks it file by file: only regular
   files and folders, no path out of the folder, every file's SHA-256 equal to `horizon-checksums.json` `package`,
   nothing missing or extra, else nothing is kept. A newer release is downloaded first; offline, the package already
-  there is used. For an already cached tag, the start and the make buttons fetch only the small checksums file
+  there is used. For an already cached tag, a make button fetches only the small checksums file
   first. The cache records the verified `package` map in `.verified-package.json`; older caches are hashed once
   (excluding generated Python bytecode). An unchanged map avoids downloading the archive. A changed map stages
   and verifies the complete replacement before swapping folders, with rollback if replacement fails and recovery
@@ -624,7 +626,7 @@ all archive entries against that map before replacing both release assets. Keep
 the manifest, payload, bundle, engine and output checksums unchanged. A desktop
 app rebuild alone cannot fix this: the app loads the package's reader.
 
-Desktop apps built with cache refresh detect a corrected package map for an already cached tag when the app starts or a make button is pressed. Older apps keep their tag cache. Players using those apps can import the corrected
+Desktop apps built with cache refresh detect a corrected package map for an already cached tag when a make button is pressed. Older apps keep their tag cache. Players using those apps can import the corrected
 archive through the app's package-file chooser, with its matching checksums file
 beside it, to bypass that cache. Alternatively, close the app and remove only the
 cached `packages/v0.0.7` directory before downloading again. Until the corrected

@@ -872,15 +872,17 @@ def template(kind, tag, progress=None, cancel=None):
     return os.path.join(result, [n for n in os.listdir(result) if n.endswith('.app')][0])
 
 
-def make(kind, cue, tag, progress=None, fetching=None, cancel=None):
-    """The installer of `kind` (apk, setup, mac, linux) with the built disc inside, next to the disc -> its path.
-    fetching(done, total) follows the template's download, progress(done, total) the build."""
+def make(kind, cue, tag, progress=None, fetching=None, cancel=None, out_dir=None):
+    """The installer of `kind` (apk, setup, mac, linux) with the built disc inside, in out_dir (default: next to the
+    disc) -> its path. fetching(done, total) follows the template's download, progress(done, total) the build."""
     try:
         from . import apk, setup_exe, mac_app, linux_run
     except ImportError:
         import apk, setup_exe, mac_app, linux_run
     source = template(kind, tag, fetching, cancel)
     base = os.path.splitext(os.path.abspath(cue))[0]
+    if out_dir:
+        base = os.path.join(out_dir, os.path.basename(base))
     try:
         if kind == 'apk':
             image = cue_image(cue)
@@ -899,6 +901,68 @@ def make(kind, cue, tag, progress=None, fetching=None, cancel=None):
         return linux_run.build(source, cue, base + '-Linux.run', progress)
     except (setup_exe.SetupError, mac_app.MacAppError, linux_run.LinuxRunError) as e:
         raise Problem('app.makeFailed', detail=str(e))
+
+
+# ---------------------------------------------------------------- the built disc, kept for the next make button
+def built_disc_dir():
+    """The disc the patcher built last (about 900 MB), kept in the cache folder with what it was built from, so
+    every make button after the first uses it as it is."""
+    return os.path.join(cache_dir(), 'disc')
+
+
+def disc_key(slots, package):
+    """What a built disc depends on: each disc (path, size, modification time) and the package (folder, version)."""
+    return dict(discs=sorted([g, r.get('path'), r.get('size'), r.get('mtime_ns')] for g, r in slots.items()),
+                package=[package.get('folder'), package.get('version')])
+
+
+def cached_disc(key):
+    """{cue, bin, version} of the kept disc when it was built from `key` and its files are all there, else None."""
+    try:
+        with open(os.path.join(built_disc_dir(), 'built.json'), encoding='utf-8') as f:
+            kept = json.load(f)
+    except (OSError, ValueError):
+        return None
+    if kept.get('key') != json.loads(json.dumps(key)):
+        return None
+    files = {k: os.path.join(built_disc_dir(), kept.get(k) or '') for k in ('cue', 'bin')}
+    if not all(os.path.isfile(v) for v in files.values()):
+        return None
+    return dict(files, version=kept.get('version'))
+
+
+def forget_built_disc():
+    """Empties the kept disc's folder (before a new build writes into it)."""
+    shutil.rmtree(built_disc_dir(), ignore_errors=True)
+    os.makedirs(built_disc_dir(), exist_ok=True)
+
+
+def keep_built_disc(key, result, version):
+    """Records the disc just built in built_disc_dir() as built from `key`."""
+    with open(os.path.join(built_disc_dir(), 'built.json'), 'w', encoding='utf-8') as f:
+        json.dump(dict(key=key, version=version, cue=os.path.basename(result['cue']),
+                       bin=os.path.basename(result['bin'])), f)
+
+
+def copy_disc(disc, out_dir, progress=None, cancel=None):
+    """The kept disc's .cue and .bin -> out_dir (the .bin through a .part, renamed when whole) -> the copied .cue."""
+    total = os.path.getsize(disc['bin'])
+    done = 0
+    dest = os.path.join(out_dir, os.path.basename(disc['bin']))
+    with open(disc['bin'], 'rb') as src, open(dest + '.part', 'wb') as out:
+        for chunk in iter(lambda: src.read(1 << 22), b''):
+            if cancel is not None and cancel.is_set():
+                out.close()
+                os.remove(dest + '.part')
+                raise Problem('cancelled')
+            out.write(chunk)
+            done += len(chunk)
+            if progress:
+                progress(done, total)
+    os.replace(dest + '.part', dest)
+    cue = os.path.join(out_dir, os.path.basename(disc['cue']))
+    shutil.copyfile(disc['cue'], cue)
+    return cue
 
 
 def clock(s):

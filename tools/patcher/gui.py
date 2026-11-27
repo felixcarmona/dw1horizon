@@ -127,10 +127,8 @@ class App:
         self.latest = None                # latest_release(), when known
         self.busy = None                  # 'build', 'download', 'check' while a job runs
         self.cancel = threading.Event()
-        self.package_lock = threading.Lock()  # held by the start-up download; a build waits for it
         self.patcher = None
         self.result = None
-        self.built = None                 # (inputs, cue, package version) of the disc this session built last
         self.lang = config.get('language') or system_language()
         self.t = Strings(self.lang)
         self._style()
@@ -387,19 +385,6 @@ class App:
             self._finish_buttons(os.path.dirname(last), None, last)
         if reconvert:
             self._check(reconvert)
-        self._update_package()
-
-    def _update_package(self):
-        """At start, in the background and blocking nothing: the latest release is asked for and downloaded when it
-        is newer than the package here (or there is none). Offline it is quietly skipped: a make button asks again,
-        after waiting for this to end."""
-        def run():
-            with self.package_lock:
-                try:
-                    self._job_latest_checked()
-                except Exception as e:              # noqa: offline or a failed download, only logged
-                    self.events.put(('error', e, traceback.format_exc(), True))
-        threading.Thread(target=run, daemon=True).start()
 
     # -- background work: one job at a time, results through self.events
     def _spawn(self, fn, *args, busy=None, quiet=False):
@@ -591,13 +576,6 @@ class App:
         self.latest_error = None
         self._refresh()
 
-    def _job_latest_checked(self):
-        latest = desktop.latest_release()
-        self.events.put(('latest', latest))
-        if not self.package or (self.package.get('source') != 'file'
-                                and desktop.version_key(latest['version']) >= desktop.version_key(self.package['version'])):
-            self._job_download(latest)
-
     def _job_download(self, latest=None):
         latest = latest or self.latest
         total = latest['assets'].get(desktop.PACKAGE_ASSET, {}).get('size') or 0
@@ -608,7 +586,6 @@ class App:
                                                          done=done // 2 ** 20, total=size // 2 ** 20)))
         info = dict(desktop.install_release(latest, progress, self.cancel), source='release')
         info['name'] = os.path.basename(info['folder'])
-        self.package = info                         # at once: a build waiting on package_lock reads it next
         self.events.put(('package', info))
         return info
 
@@ -651,27 +628,13 @@ class App:
         self._build()
 
     def _make(self, kind):
-        """A make button: the disc image, or an installer with the disc inside. An installer uses the disc this
-        session built last when it came from the same discs and package and is still there; else the disc is built
-        first. The installers are written beside the disc, so the disc is reused only when it is in the folder chosen."""
+        """A make button: the disc image, or an installer with the disc inside, saved in the folder the player
+        chooses. Nothing is downloaded before the first press. The disc is built once into the cache folder
+        (desktop.built_disc_dir) and kept: every press after it, for any folder, uses it while the discs and the
+        package are the same."""
         out = self._ask_folder()
         if not out:
             return
-        if (kind != 'disc' and self.built and self.built[0] == self._inputs() and os.path.isfile(self.built[1])
-                and os.path.samefile(os.path.dirname(self.built[1]), out)):
-            for w in self.finish.winfo_children():
-                w.destroy()
-            self._spawn(self._job_make, kind, self.built[1], self.built[2], busy='build')
-            return
-        self._build_disc(out, None if kind == 'disc' else kind)
-
-    def _inputs(self):
-        """What a built disc depends on: the discs (path, size, time) and the package."""
-        discs = tuple(sorted((g, r.get('path'), r.get('size'), r.get('mtime_ns')) for g, r in self.slots.items()))
-        return discs, (self.package or {}).get('folder')
-
-    def _build_disc(self, out, then=None):
-        problems = desktop.space_problems(out)
         for game, r in list(self.slots.items()):
             why = desktop.file_changed(r)
             if why == 'convert':
@@ -683,6 +646,8 @@ class App:
                 self.config.forget_disc(game)
                 self._refresh()
                 return
+        problems = desktop.space_problems(desktop.cache_dir())
+        problems += [p for p in desktop.space_problems(out) if p not in problems and p[0] == 'app.spaceOutput']
         if problems:
             from tkinter import messagebox
             if not messagebox.askokcancel(self.t('app.title'), '\n\n'.join(self.t(k, **p) for k, p in problems)
@@ -690,20 +655,26 @@ class App:
                 return
         for w in self.finish.winfo_children():
             w.destroy()
-        self._spawn(self._job_build, out, then, busy='build')
+        self._spawn(self._job_make_any, kind, out, busy='build')
 
-    def _job_build(self, out, then=None):
-        """Build pressed: the latest release is asked for (a newer one is downloaded first, a package file the
-        player chose is kept); offline, the package already here is used."""
-        if not self.package_lock.acquire(blocking=False):   # the start-up download is still running: wait for it
-            self.events.put(('stage', self.t('now.start'), 'TLabel'))
-            self.package_lock.acquire()
-        try:
-            self._job_build_locked(out, then)
-        finally:
-            self.package_lock.release()
+    def _job_make_any(self, kind, out):
+        package = self._job_package()
+        key = desktop.disc_key(self.slots, package)
+        disc = desktop.cached_disc(key)
+        if not disc:
+            disc = self._job_build(key, package)
+            if not disc:
+                return                                      # failed or stopped: shown already
+        if kind == 'disc':
+            def copying(done, total):
+                self.events.put(('bar', done / total, self.t('app.copyingDisc', done=done * 100 // total)))
+            self.events.put(('built', desktop.copy_disc(disc, out, copying, self.cancel)))
+        else:
+            self._job_make(kind, disc['cue'], disc['version'], out)
 
-    def _job_build_locked(self, out, then=None):
+    def _job_package(self):
+        """The package to build with: the latest release is asked for (a newer one is downloaded first, a package
+        file the player chose is kept); offline, the package already here is used."""
         package = self.package
         if not package or package.get('source') != 'file':
             try:
@@ -716,32 +687,43 @@ class App:
             if latest and (not package or desktop.version_key(latest['version'])
                            >= desktop.version_key(package['version'])):
                 package = self._job_download(latest)
+        return package
+
+    def _job_build(self, key, package):
+        """The disc, built into desktop.built_disc_dir() and kept there -> desktop.cached_disc(key), or None when it
+        failed or was stopped (shown)."""
         self.events.put(('stage', self.t('now.start'), 'TLabel'))
         dw = desktop.load_patcher(package['folder'])
         dw.CANCEL = self.cancel
         self.patcher = dw
+        desktop.forget_built_disc()
         try:
-            result = dw.apply_disc(self.slots['us']['image'], desktop.source_disc_args(self.slots), output=out,
-                                   release=package['folder'])
+            result = dw.apply_disc(self.slots['us']['image'], desktop.source_disc_args(self.slots),
+                                   output=desktop.built_disc_dir(), release=package['folder'])
         except BaseException as e:
             kind = 'stopped' if isinstance(e, dw.Stopped) else 'patch' if isinstance(e, dw.PatchError) else 'other'
             if kind == 'other':
                 sys.stderr.write(traceback.format_exc())
             self.events.put(('failed', e, getattr(e, 'log', None), kind))
-            return
+            return None
         finally:
             self.patcher = None
-        self.events.put(('built', result, package['version']))
-        if then:   # an installer button: the installer now, from this disc
-            self._job_make(then, result['cue'], package['version'])
+        desktop.keep_built_disc(key, result, package['version'])
+        return desktop.cached_disc(key)
 
-    def _on_built(self, result, version=None):
-        self.built = (self._inputs(), result['cue'], version)
+    def _on_built(self, cue):
         self.progress['value'] = 1000
-        self.stage.configure(text=self.t('app.done', file=os.path.basename(result['cue'])) + '\n' + result['cue'],
-                             style='Ok.TLabel')
-        self.config.set('last_disc', os.path.abspath(result['cue']))
-        self._finish_buttons(os.path.dirname(result['cue']), result.get('log'), result['cue'])
+        self.stage.configure(text=self.t('app.done', file=os.path.basename(cue)) + '\n' + cue, style='Ok.TLabel')
+        self.config.set('last_disc', os.path.abspath(cue))
+        self._finish_buttons(os.path.dirname(cue), None, cue)
+
+    def _on_made(self, path):
+        self.progress['value'] = 1000
+        key = 'app.macZipDone' if path.endswith('.zip') else 'app.{}Done'.format(
+            next(k for k, ext in (('apk', '.apk'), ('setup', '.exe'), ('mac', '.dmg'), ('linux', '.run'))
+                 if path.endswith(ext)))
+        self.stage.configure(text=self.t(key, file=os.path.basename(path)) + '\n' + path, style='Ok.TLabel')
+        self._finish_buttons(os.path.dirname(path), None)
 
     def _on_failed(self, e, log, kind):
         if kind == 'stopped':
@@ -768,9 +750,9 @@ class App:
                 ttk.Button(self.finish, text=self.t(text), style=style, command=cmd).grid(row=0, column=col, padx=(0, 6))
                 col += 1
 
-    def _job_make(self, kind, cue, version=None):
-        """An installer with the built disc inside: the template comes from the release of the package it was
-        built with."""
+    def _job_make(self, kind, cue, version=None, out_dir=None):
+        """An installer with the built disc inside, into out_dir: the template comes from the release of the
+        package it was built with."""
         names = dict(apk='app.makingApk', setup='app.makingSetup', mac='app.makingMac', linux='app.makingLinux')
         version = version or (self.package or {}).get('version') or ''
         tag = 'v' + version.lstrip('v')
@@ -782,9 +764,7 @@ class App:
 
         def progress(done, total):
             self.events.put(('bar', done / total, self.t(names[kind], done=done * 100 // total)))
-        out = desktop.make(kind, cue, tag, progress, fetching, self.cancel)
-        key = 'app.macZipDone' if out.endswith('.zip') else f'app.{kind}Done'
-        self.events.put(('stage', self.t(key, file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
+        self.events.put(('made', desktop.make(kind, cue, tag, progress, fetching, self.cancel, out_dir)))
 
     def _stop(self):
         self.cancel.set()

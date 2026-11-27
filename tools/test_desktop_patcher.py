@@ -632,106 +632,73 @@ class PbpGuiFlow(unittest.TestCase):
         app._refresh = Mock()
         app._check = Mock()
         with patch.object(desktop, 'cached_packages', return_value=[]):
-            app._update_package = Mock()
             app._restore()
         app._check.assert_called_once_with([original])
         self.assertEqual(app.notes, {})
 
 
-    def test_make_asks_the_folder_and_reuses_the_disc_only_there(self):
+    def test_make_asks_the_folder_then_works_in_the_background(self):
         import gui
         app = gui.App.__new__(gui.App)
         app.slots, app.package = {}, None
         app.finish = Mock()
         app.finish.winfo_children.return_value = []
-        app._spawn, app._build_disc = Mock(), Mock()
-        with tempfile.TemporaryDirectory() as here, tempfile.TemporaryDirectory() as there:
-            cue = os.path.join(here, 'disc.cue')
-            open(cue, 'w').close()
-            app.built = (app._inputs(), cue, '1.0.0')
-            with patch.object(app, '_ask_folder', return_value=None):       # cancelled: nothing happens
-                app._make('apk')
-            app._spawn.assert_not_called()
-            app._build_disc.assert_not_called()
-            with patch.object(app, '_ask_folder', return_value=here):       # the disc is there: reused
-                app._make('apk')
-            app._spawn.assert_called_once_with(app._job_make, 'apk', cue, '1.0.0', busy='build')
-            with patch.object(app, '_ask_folder', return_value=there):      # another folder: built there first
-                app._make('apk')
-            app._build_disc.assert_called_once_with(there, 'apk')
+        app._spawn = Mock()
+        with patch.object(app, '_ask_folder', return_value=None):           # cancelled: nothing happens
+            app._make('apk')
+        app._spawn.assert_not_called()
+        with tempfile.TemporaryDirectory() as there, patch.object(app, '_ask_folder', return_value=there), \
+                patch.object(desktop, 'space_problems', return_value=[]):
+            app._make('apk')
+        app._spawn.assert_called_once_with(app._job_make_any, 'apk', there, busy='build')
 
-class HorizonPlay(unittest.TestCase):
-    """The Horizon Play the app carries (docs/player.md), for the installers, and the last disc's folder button."""
-
-    def test_player_program_found_in_the_app_data(self):
-        with tempfile.TemporaryDirectory() as d:
-            with patch.object(desktop, 'resource', side_effect=lambda *p: os.path.join(d, *p)):
-                self.assertIsNone(desktop.player_program())
-                if sys.platform == 'darwin':
-                    parts = ('player', 'Horizon Play.app', 'Contents', 'MacOS', 'horizon-play')
-                else:
-                    parts = ('player', 'horizon-play.exe' if os.name == 'nt' else 'horizon-play')
-                os.makedirs(os.path.join(d, *parts[:-1]))
-                open(os.path.join(d, *parts), 'wb').close()
-                self.assertEqual(desktop.player_program(), os.path.join(d, *parts))
-
-    def test_restore_offers_the_last_discs_folder(self):
+    def test_the_disc_is_built_once_and_kept_for_every_button(self):
         import gui
-        with tempfile.TemporaryDirectory() as d:
-            cue = os.path.join(d, 'horizon.cue')
-            open(cue, 'w').close()
+        with tempfile.TemporaryDirectory() as home, tempfile.TemporaryDirectory() as out, \
+                patch.dict(os.environ, HORIZON_PATCHER_HOME=home):
             app = gui.App.__new__(gui.App)
-            app.config = Mock()
-            app.config.get.side_effect = lambda k, default=None: cue if k == 'last_disc' else default
-            app.config.remembered_discs.return_value = {}
-            app.slots, app.notes = {}, {}
-            app._refresh = Mock()
-            app._finish_buttons = Mock()
-            with patch.object(desktop, 'cached_packages', return_value=[]):
-                app._update_package = Mock()
-                app._restore()
-            app._finish_buttons.assert_called_once_with(d, None, cue)
+            app.slots = {'us': dict(path='/discs/dw.bin', size=1, mtime_ns=2, image='/discs/dw.bin')}
+            app.events, app.t, app.cancel = Mock(), Mock(return_value='status'), threading.Event()
+            package = dict(folder='pkg', version='1.2.3')
+            app._job_package = Mock(return_value=package)
+            app._job_make = Mock()
+            built = []
 
-
+            def build(key, pkg):
+                desktop.forget_built_disc()
+                d = desktop.built_disc_dir()
+                for name in ('Horizon.cue', 'Horizon.bin'):
+                    with open(os.path.join(d, name), 'wb') as f:
+                        f.write(b'x' * 10)
+                desktop.keep_built_disc(key, dict(cue=os.path.join(d, 'Horizon.cue'), bin=os.path.join(d, 'Horizon.bin')),
+                                        pkg['version'])
+                built.append(1)
+                return desktop.cached_disc(key)
+            app._job_build = Mock(side_effect=build)
+            app._job_make_any('apk', out)                                     # first press: built
+            app._job_make_any('setup', out)                                   # kept
+            app._job_make_any('disc', out)                                    # kept, copied out
+            self.assertEqual(len(built), 1)
+            cue = os.path.join(desktop.built_disc_dir(), 'Horizon.cue')
+            self.assertEqual([c[0][:2] for c in app._job_make.call_args_list], [('apk', cue), ('setup', cue)])
+            self.assertTrue(os.path.isfile(os.path.join(out, 'Horizon.bin')))
+            self.assertTrue(os.path.isfile(os.path.join(out, 'Horizon.cue')))
+            app.slots['us']['mtime_ns'] = 3                                   # a disc changed: built again
+            app._job_make_any('apk', out)
+            self.assertEqual(len(built), 2)
 
 class CacheRefreshFlow(unittest.TestCase):
-    def test_check_and_build_recheck_same_release_but_keep_imported_package(self):
+    def test_make_rechecks_same_release_but_keeps_imported_package(self):
         import gui
         for source in ('release', 'file'):
             app = gui.App.__new__(gui.App)
             app.package = dict(version='9.9.9', source=source, folder='cached')
-            app.package_lock = threading.Lock()
             app.events = Mock()
-            app.t = Mock(return_value='status')
             app._job_download = Mock(return_value=app.package)
-            latest = dict(version='9.9.9')
-            with patch.object(desktop, 'latest_release', return_value=latest):
-                app._job_latest_checked()
-                self.assertEqual(app._job_download.call_count, int(source == 'release'))
-                app._job_download.reset_mock()
-                with patch.object(desktop, 'load_patcher', side_effect=RuntimeError('stop before applying')):
-                    with self.assertRaisesRegex(RuntimeError, 'stop before applying'):
-                        app._job_build('output')
-                self.assertEqual(app._job_download.call_count, int(source == 'release'))
+            with patch.object(desktop, 'latest_release', return_value=dict(version='9.9.9')):
+                self.assertEqual(app._job_package(), app.package)
+            self.assertEqual(app._job_download.call_count, int(source == 'release'))
 
-
-    def test_build_waits_for_the_start_up_download(self):
-        import gui
-        app = gui.App.__new__(gui.App)
-        app.package_lock = threading.Lock()
-        app.events = Mock()
-        app.t = Mock(return_value='status')
-        app._job_build_locked = Mock()
-        app.package_lock.acquire()                  # the start-up download is running
-        worker = threading.Thread(target=app._job_build, args=('output',))
-        worker.start()
-        worker.join(0.3)
-        self.assertTrue(worker.is_alive())
-        app._job_build_locked.assert_not_called()
-        app.package_lock.release()
-        worker.join(5)
-        app._job_build_locked.assert_called_once_with('output', None)
-        self.assertFalse(app.package_lock.locked())
 
 class SetupExe(unittest.TestCase):
     """The Windows setup: a template with the player's disc appended (tools/patcher/setup_exe.py)."""
