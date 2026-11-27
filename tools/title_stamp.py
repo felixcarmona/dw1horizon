@@ -13,6 +13,11 @@ bottom. The Japanese titles (a Japanese base disc: tools/basedisc.py jp1, the ka
 the word right under their logo, at these positions: TITLE256 rows 111-122 on the logo's green glow,
 TITLE2 rows 205-213 under the logo at the bottom right. Only pixel indices change: each colour is the nearest of the TIM's own CLUT, so the file keeps its header,
 CLUT and size.
+
+The European TITLE256 (the same file on the five European discs) sets its Press Start Button in narrower letters, 115
+columns, and its language list (English French Spanish Italian German) follows at column 115. Our executable draws the
+USA line, u 0..120 of row 241 (main.c PRESS_START_QUAD), which showed that list's E after "Button": press_start_fit
+moves the European line to the middle of those 121 columns and clears the rest of them.
 """
 import argparse, hashlib, os, struct, sys
 
@@ -40,6 +45,11 @@ PLACES = {'ETCNA/TITLE256.TIM': (10, 158, 153), 'ETCNA/TITLE2.TIM': (7, 233, 228
 # rule: another release's title image (by the SHA-1 of the file as its disc has it) gets its own place
 RELEASE_PLACES = {'f3b60929c58e277def094152586b6bd174ecab4c': (10, 160, 111),     # Japanese TITLE256
                   '93ebd56d3f45b2027677673757a8c3f39fa8319d': (7, 233, 205)}      # Japanese TITLE2
+# the Press Start Button line our executable shows (main.c PRESS_START_QUAD: u, v, w, h), and per release (by the SHA-1
+# of TITLE256 as its disc has it) the width of that release's own line, which starts at u 0 of the same rows
+PRESS_START = (0, 241, 121, 10)
+RELEASE_PRESS_START = {'c0d12ef9a5a689798b0b2965d95e574c525ab904': 115}      # European TITLE256
+CLEAR = 255     # TITLE256's transparent index, around the line
 
 
 def word_pixels(rows):
@@ -94,6 +104,25 @@ def stamp(data, path, disc=None):
     return data
 
 
+def press_start_fit(data):
+    """data (bytearray of a release's own TITLE256 as its disc has it): a narrower Press Start Button line moved to the
+    middle of the columns our executable shows, nothing else in them (the European line is followed by its language
+    list). Any other file: unchanged."""
+    width = RELEASE_PRESS_START.get(hashlib.sha1(data).hexdigest())
+    if width is None:
+        return data
+    p = 8 + struct.unpack_from('<I', data, 8)[0]
+    w, pix = struct.unpack_from('<H', data, p + 8)[0] * 2, p + 12
+    u, v, qw, qh = PRESS_START
+    dx = (qw - width) // 2
+    for y in range(v - 1, v + qh + 1):       # one row more above and under: the line's own empty rows
+        row = pix + y * w + u
+        line = bytes(data[row:row + width])
+        data[row:row + qw] = bytes([CLEAR]) * qw
+        data[row + dx:row + dx + width] = line
+    return data
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('out', nargs='?')
@@ -108,7 +137,10 @@ def main():
     if not a.out:
         ap.error('OUTDIR or --tim')
     for path in PLACES:
-        data = stamp(bytearray(open(os.path.join(a.extracted, path), 'rb').read()), path)
+        data = bytearray(open(os.path.join(a.extracted, path), 'rb').read())
+        if path == 'ETCNA/TITLE256.TIM':
+            data = press_start_fit(data)
+        data = stamp(data, path, disc=open(os.path.join(a.extracted, path), 'rb').read())
         dst = os.path.join(a.out, path)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         open(dst, 'wb').write(data)
