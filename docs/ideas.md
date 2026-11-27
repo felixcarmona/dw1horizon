@@ -192,3 +192,6 @@ against, leave this list.
 | A shorter life for Mega partners, so trying other Digimon does not take so long | ⚖️ 🎭 | Player suggestion (2026-11-24); related to the lifespan proposal with three lengths. |
 | A counter at each gym station showing how many sessions count toward its upgrade | 🛠️ | Player suggestion (2026-11-25). As in the original, ten sessions at a station with a Fresh or In-Training partner raise that station's gains by 20% for good; nothing in the game shows the count. |
 | A Cheats row that keeps the finisher gauge full | 🛠️ | Player suggestion (2026-11-25), for testing finishers; emulator codes written for the original game do not work here. |
+| Whamon's travel menu lists Factorial Town first and the new shore after it, so a wrong pick does not cost two extra loads back to the city | 🛠️ | Player suggestion (2026-11-26). Today the new shore is the first option; it holds one box and some story. |
+| With quick battles on, the tamer runs to his spot while the angry icon shows, and only then FIGHT appears, instead of jumping there | 🛠️ | Player suggestion (2026-11-26), with a video. |
+| Hawkmon appears only after Birdramon is recruited, through a Shellmon news item, and once recruited opens new landing points for Birdramon | 🎭 🆕 | Player suggestion (2026-11-26). |

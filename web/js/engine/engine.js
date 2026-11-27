@@ -134,9 +134,16 @@ async function dropOldEngines(version) {
 
 // Runs fn(true) holding the build lock, fn(false) when another tab holds it (no Web Locks: fn(true)). The page's
 // remembered discs (js/remember.js) copy and delete under it too, so a copy never races a build in any tab.
+// This page's own requests are kept in pageLocks: a build waits for them (the page-load tidy, a remembered copy being
+// deleted) instead of taking them for another tab.
+const pageLocks = new Set();
 export function withLock(fn) {
   if (!navigator.locks) return fn(true);
-  return navigator.locks.request(LOCK, { ifAvailable: true }, (lock) => fn(!!lock));
+  const p = navigator.locks.request(LOCK, { ifAvailable: true }, (lock) => fn(!!lock));
+  const drop = () => pageLocks.delete(p);
+  pageLocks.add(p);
+  p.then(drop, drop);
+  return p;
 }
 
 // When the page loads: the old engines out of the cache; in OPFS only a finished image stays (image.bin with its
@@ -386,6 +393,7 @@ export class Build {
   waitWorker(promise) { return Promise.race([promise, this.aborted]); }
 
   async run() {
+    while (pageLocks.size) await Promise.allSettled([...pageLocks]);   // this page's own storage work first
     const r = await withLock(async (free) => {
       if (!free) {
         this.state.phase = 'error';
