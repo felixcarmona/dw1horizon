@@ -33,7 +33,8 @@ The program carries no game data. It plays the disc that the patcher builds from
   the app; Android then offers to keep its data (`hasFragileUserData`). Saves, logs and options live in
   `Android/data/com.dw1horizon.play/files/saves`. Each time the card is written the app also copies it to
   `Documents/Digimon World Horizon/Digimon World Horizon.mcd` (MediaStore, no permission on Android 10+; Android 7-9
-  ask once for storage), which an uninstall leaves on the phone. Android 11+ gives a new install no access to files
+  ask once for storage) when it holds a save, which an uninstall leaves on the phone; a new install cannot write over
+  the old copy, so its own is `Digimon World Horizon (1).mcd` and so on. Android 11+ gives a new install no access to files
   an old one made, so the copy is not read back on its own: a start with no card in the saves folder first offers
   IMPORT (the file picker, opened at that folder) or NEW GAME, then the touch or controller question. The template APK alone (`desktop.yml`'s `horizon-play-apk`
   artifact) asks once for a patched `.bin` and copies it into the app's folder.
