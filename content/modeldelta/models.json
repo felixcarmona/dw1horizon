@@ -339,26 +339,26 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Imperialdramon.MMD",
-            "sha256": "502acbc863168ce57b21d72d1f7d53ca5b2ee379a1905e973724002702603ea3",
-            "size": 97386
+            "sha256": "5d733b78dedf9f4e730797a24e135858abc634bd6e14ab2f907767f87ce4ad73",
+            "size": 98176
           }
         ],
         "delta": "content/modeldelta/deltas/192-Imperialdramon.MMD.mdelta",
-        "delta_sha256": "cbe32d0f90d8a2925cdceb06fe99c5ebbb4c9ad9ea6b0a0a5248f5c493e69cdd",
-        "sha256": "ac5047dcecb536b92dad0a404be1fc7988c5074ea75a07561b9a0029606cd617",
-        "size": 102368
+        "delta_sha256": "e4bc123caa00b90954130232a2bc37875719bcc12f0e7781aa56db084e9dad31",
+        "sha256": "226729bbab8f280552bcdfaded32740b5d1cf6512de4704131908418be183b53",
+        "size": 112260
       },
       "tim": {
         "sources": [
           {
             "path": "build/batch/Imperialdramon.TIM",
-            "sha256": "fa21e236326087040fb20c5cf4c7d1bf87dd940a81ae249cd2b585a80c3cf4d0",
+            "sha256": "c2ae3d9762790a301180ba4b0212f6068e1e6acaef9e78f6046c1fafe1b9cd2f",
             "size": 18432
           }
         ],
         "delta": "content/modeldelta/deltas/192-Imperialdramon.TIM.mdelta",
-        "delta_sha256": "8f44af5c313ae906efd693cbae59da161bb1c44fa5e0a88863568a51594b0c36",
-        "sha256": "fa21e236326087040fb20c5cf4c7d1bf87dd940a81ae249cd2b585a80c3cf4d0",
+        "delta_sha256": "693df2bfba9c2d8d3172353d0454c5bf4aa28fb8c3f6fa3a8c9475886d814c59",
+        "sha256": "c2ae3d9762790a301180ba4b0212f6068e1e6acaef9e78f6046c1fafe1b9cd2f",
         "size": 18432
       }
     },
