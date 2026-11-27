@@ -98,7 +98,7 @@ against it.
 | `OVL_FISH_BASE` | 0x80070000 | FISH, DOO2 |
 | `OVL_MURD_BASE` | 0x8007C000 | death |
 | `OVL_DOOA_BASE` | 0x80080000 | DOOA |
-| `OVL_SHOP_BASE` | 0x80080800 | DGET (and the unused shop overlay's slot) |
+| `OVL_SHOP_BASE` | 0x80080800 | DGET, SHOP (the shop menus) |
 | `OVL_TRN_BASE` / `OVL_TRN_MAX_END` | 0x80088000 / 0x8008F800 | TRN, TRN2 |
 | `GENERAL_BUFFER_ADDR` | 0x80010000 | `.MAP` then `.TFS`, sound bank staging, EFE base |
 | `DOOA_WORK_OFFSET` | 0x4B000 | DOOA's work area, from `GENERAL_BUFFER` |
@@ -843,8 +843,9 @@ is one more `FILE_OFFSET_TABLE` entry in the executable's data. Patch 0147 gener
   whole load area as BTL, DOO2 and FISH do, as long as the map is reread on exit; code that has to coexist with the
   world only has the world scratch, and only between mode changes. Every executable reference into it must be checked
   with `xref.py check`.
-- **The unused shop slot.** `SHOP_REL.BIN` is still read (to 0x80080800 on shop screens and by script opcode 0x23) but
-  its bytes are never used: the shop code is linked into the executable. The build writes zeros of the same size there.
+- **The shop slot.** `SHOP_REL.BIN` is read to 0x80080800 on shop screens and by script opcode 0x23, as the original
+  did. It holds the shop menus again (about 25 KB moved out of the executable), sealed and checked before use
+  ([executable.md](executable.md) "SHOP_REL.BIN").
 - **Data on demand.** As the game does with `DG.SCN`, the sound banks and the models: a table in a disc file read into
   the heap (`malloc3` + `readFile`) or into `GENERAL_BUFFER` when needed. There is plenty of disc space (`MMM.DAT` is
   27 MB of zeros that are never read).
