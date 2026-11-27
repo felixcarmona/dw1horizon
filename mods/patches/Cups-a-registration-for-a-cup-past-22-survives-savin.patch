@@ -1,0 +1,77 @@
+From d182acc442f9f8a187944f3bc47d1e64843bf64c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 20:42:39 +0000
+Subject: [PATCH] Cups: a registration for a cup past 22 survives saving and
+ loading
+
+The check run at every save and every load cancelled the registration when the registered cup was past the original's
+last (22), which meant no cup in the original game. Every cup added since (23..42: the level, attribute, Field,
+technique-row cups) lost its registration as soon as the player saved or loaded, and Greymon then said the player had
+not entered. The bound is now the number of cups, NUM_CUPS in ids.h, which also sizes the cup names and the calendar's
+new-cup marks.
+---
+ include/dw/ids.h         | 4 ++++
+ src/dget/dget.c          | 2 +-
+ src/main/main.c          | 4 +++-
+ src/main/script_common.c | 2 +-
+ 4 files changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index dbfc3925..00fcc59b 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -186,6 +186,10 @@ typedef uint16_t CardId;
+ /* Cards */
+ #define NUM_CARDS		512	/* CARD_DATA, CARD_SPRITE_CLUT, CARD.ALL */
+ 
++/* Cups (tournaments): the registered one is pstat 3 (PSTAT_TOURNAMENT_ID), 255 = none */
++#define NUM_ORIGINAL_CUPS	23	/* 0..22, 22 the Beetle cup; each has its won trigger, 15 + id */
++#define NUM_CUPS		43	/* MOD (cup rules): TOURNAMENT_NAMES; the cups 23..42 are the new ones */
++
+ /* Trigger ranges used as per-id bitsets (scripts.md, "Free triggers") */
+ /* SET/UNSET_TRIGGER and IF operands for species 112..1023; saved recruit bits. */
+ #define TRIGGER_SPECIES_RECRUITED_BASE 0x8000
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index 7a10146a..647aab8f 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -93,7 +93,7 @@ static void *dget_sbss_order[] = {
+ };
+ 
+ /* MOD (cup rules): Rookie, Champion, Ultimate, Mega; Vaccine, Data, Virus; the eight Fields; Dark, Holy, Aqua; Blade, Gaia */
+-#define NEW_CUP_COUNT	20
++#define NEW_CUP_COUNT	(NUM_CUPS - NUM_ORIGINAL_CUPS)
+ /*
+  * one character each, as the calendar's cells hold (the original's are single letters too): 1..4 the level cups by their
+  * order, V E U Vaccine, Data, Virus, and in small letters the Fields: n d s g e b r j (Nature Spirits, Deep Savers,
+diff --git a/src/main/main.c b/src/main/main.c
+index aabe6bfa..0a983b1a 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4092,7 +4092,9 @@ void recalculatePPandArena(void)
+ 
+ 	recalculateProsperity();
+ 	pp = readPStat(3);
+-	if ((pp < 0) || (pp >= 0x17)) {
++	/* MOD (cup rules): the original's last cup was 22, so a higher id meant no cup; the new cups go up to NUM_CUPS - 1,
++	 * and their registration was cancelled at every save and every load */
++	if ((pp < 0) || (pp >= NUM_CUPS)) {
+ 		if (isTriggerSet(0x25) != 0) {
+ 			unsetTrigger(0x25);
+ 		}
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 62631b90..da51e018 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -474,7 +474,7 @@ int32_t modLoadCardImage(int32_t id, void *buffer)
+ }
+ 
+ /* MOD (cup rules): 43 names, was 23: the cups 23..42 */
+-char *TOURNAMENT_NAMES[43] = {
++char *TOURNAMENT_NAMES[NUM_CUPS] = {
+ 	STR_TOURNAMENT_NAME_GRADE_D,
+ 	STR_TOURNAMENT_NAME_GRADE_C,
+ 	STR_TOURNAMENT_NAME_GRADE_B,
+-- 
+2.55.0
+
