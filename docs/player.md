@@ -131,6 +131,21 @@ SELECT, START and the menu button; several fingers at once, the D-pad in eight d
 controller button or a key is pressed and comes back at the next touch. `--touch` shows it from the start on any
 system. (`tools/player/overlay.c`: drawn at start into one texture, no image files.)
 
+## A setup wizard
+
+`tools/player/installer.py` makes a Windows setup program (NSIS: `makensis`, else in a Docker `ubuntu:24.04`) with a
+Windows Horizon Play folder and a built disc inside, for people who own the game and want it installed in one go:
+
+```
+python3 tools/player/installer.py --player "Horizon Play" --disc DISC.cue --out Setup.exe
+```
+
+The wizard (English or Spanish) installs for the current user, without administrator, into
+`%LOCALAPPDATA%\Programs\Digimon World Horizon`, adds desktop and Start menu shortcuts that open the disc, and an
+entry in Windows' installed apps. Its last page offers **Play now**. Uninstalling leaves the saves
+(`%APPDATA%\Horizon\Horizon`). It is made on a computer from its own disc, never by CI or for a release: the disc is
+the game.
+
 ## Licences
 
 See [THIRD-PARTY.md](../THIRD-PARTY.md). The core is GPL-3.0 and ships as its own library with its source linked in
