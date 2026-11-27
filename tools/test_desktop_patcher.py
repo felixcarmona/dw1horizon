@@ -70,6 +70,38 @@ def pbp(data, stored=False, tag=b'PSISOIMG0000'):
     return header + payload
 
 
+class RealTemp(unittest.TestCase):
+    """macOS: the temporary folder is under /var, a link to /private/var (desktop.use_real_temp)."""
+
+    @unittest.skipIf(os.name == 'nt', 'POSIX links')
+    def test_a_linked_temporary_folder_is_used_by_its_real_path(self):
+        with tempfile.TemporaryDirectory() as d:
+            real = os.path.realpath(d)
+            target = os.path.join(real, 'private', 'var')     # one level deeper than the link, as on macOS
+            os.makedirs(target)
+            os.symlink(target, os.path.join(real, 'var'))
+            linked = os.path.join(real, 'var')
+            saved = os.environ.get('TMPDIR'), tempfile.tempdir
+            try:
+                os.environ['TMPDIR'], tempfile.tempdir = linked, None
+                desktop.use_real_temp()
+                self.assertEqual(os.environ['TMPDIR'], target)
+                work = tempfile.mkdtemp(prefix='dwpatch-')
+                # a derive tool resolves its own path; the build's outputs are taken relative to the work folder
+                made = Path(work).resolve() / 'build' / 'partner-headroom' / '113.MMD'
+                made.parent.mkdir(parents=True)
+                made.write_bytes(b'x')
+                out = os.path.join(work, 'build', 'everything')
+                os.makedirs(out)
+                self.assertEqual(Path(out, os.path.relpath(made, out)).read_bytes(), b'x')
+            finally:
+                if saved[0] is None:
+                    os.environ.pop('TMPDIR', None)
+                else:
+                    os.environ['TMPDIR'] = saved[0]
+                tempfile.tempdir = saved[1]
+
+
 class Images(unittest.TestCase):
     def setUp(self):
         self.td = tempfile.TemporaryDirectory()
@@ -643,6 +675,8 @@ class PbpGuiFlow(unittest.TestCase):
         app.slots, app.package = {}, None
         app.finish = Mock()
         app.finish.winfo_children.return_value = []
+        app.result = Mock()
+        app.result.winfo_children.return_value = []
         app._spawn = Mock()
         with patch.object(app, '_ask_folder', return_value=None):           # cancelled: nothing happens
             app._make('apk')
@@ -951,6 +985,21 @@ class MacApp(unittest.TestCase):
             if sys.platform != 'darwin':
                 with self.assertRaisesRegex(mac_app.MacAppError, 'only be made on a Mac'):
                     mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.dmg'))
+
+    @unittest.skipIf(os.name == 'nt', 'a sh stand-in for hdiutil')
+    def test_dmg_compression_moves_the_bar(self):
+        """hdiutil's PERCENT lines carry the bar from the copied disc to the end, not 100% while it compresses."""
+        with tempfile.TemporaryDirectory() as d:
+            fake = Path(d) / 'hdiutil'
+            fake.write_text('#!/bin/sh\necho "$2"\necho PERCENT:-1\necho PERCENT:40.5\necho PERCENT:90\n'
+                            '[ "$3" = fail ] && { echo no room >&2; exit 1; }\nexit 0\n')
+            fake.chmod(0o755)
+            ticks = []
+            with patch.dict(os.environ, PATH=d + os.pathsep + os.environ['PATH']):
+                mac_app.hdiutil(['create', 'x'], 1000, ticks.append)
+                self.assertEqual(ticks, [405, 495, 100])
+                with self.assertRaisesRegex(mac_app.MacAppError, 'hdiutil: -puppetstrings\nno room'):
+                    mac_app.hdiutil(['create', 'fail'], 1000, ticks.append)
 
 
 class LinuxRun(unittest.TestCase):

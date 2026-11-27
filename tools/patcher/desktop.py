@@ -980,6 +980,19 @@ def clock(s):
 
 
 # ---------------------------------------------------------------- the frozen app as Python
+def use_real_temp():
+    """The temporary folder by its real path, for this process and every one it starts (TMPDIR). On macOS it is under
+    /var, a link to /private/var: a release's derive mixes paths of both names (its own files resolved, the work folder
+    as given) and the relative paths between them point nowhere. Releases up to 0.0.10 make their work folder there."""
+    if os.name == 'nt':
+        return
+    temp = tempfile.gettempdir()
+    real = os.path.realpath(temp)
+    if real != temp:
+        os.environ['TMPDIR'] = real
+        tempfile.tempdir = real
+
+
 def python_shim(argv=None):
     """A frozen app has no python executable: dwpatch starts sys.executable as Python (`-m tools.derive ...` on
     macOS and Linux, `-c GATE tools.derive ...` on Windows, `TOOL.py ...` for the Japanese disc's localize tool).

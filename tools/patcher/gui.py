@@ -24,6 +24,7 @@ if __name__ == '__main__':
     _trace('past freeze_support')
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import desktop as _desktop
+    _desktop.use_real_temp()                             # (before any work folder is made, in every process)
     _code = _desktop.python_shim()
     if _code is not None:
         sys.exit(_code)
@@ -215,6 +216,7 @@ class App:
         style.configure('Bold.TLabel', font=self.font_bold)
         style.configure('Muted.TLabel', foreground='#5b5870', font=self.font_small)
         style.configure('Ok.TLabel', foreground='#1f7a3a')
+        style.configure('OkTitle.TLabel', foreground='#1f7a3a', font=self.font_bold)
         style.configure('Bad.TLabel', foreground='#b3261e')
         style.configure('Build.TButton', font=self.font_bold, padding=(18, 8))
 
@@ -303,8 +305,11 @@ class App:
         self.stop_button.grid(row=0, column=1, rowspan=2, padx=(12, 0))
         self.stage = self._wrap(ttk.Label(outer, text='', justify='left'))
         self.stage.grid(row=6, column=0, sticky='ew', pady=(8, 0))
+        self.result = ttk.Frame(outer)                       # what was made: how to use it, where it is
+        self.result.grid(row=7, column=0, sticky='ew')
+        self.result.columnconfigure(0, weight=1)
         self.finish = ttk.Frame(outer)
-        self.finish.grid(row=7, column=0, sticky='w', pady=(8, 0))
+        self.finish.grid(row=8, column=0, sticky='w', pady=(8, 0))
         self._refresh()
         self.root.update_idletasks()
         # The narrowest the window may be: what the buttons and names need with the texts wrapped at their least.
@@ -714,7 +719,7 @@ class App:
             if not messagebox.askokcancel(self.t('app.title'), '\n\n'.join(self.t(k, **p) for k, p in problems)
                                           + '\n\n' + self.t('app.continueAnyway'), parent=self.root):
                 return
-        for w in self.finish.winfo_children():
+        for w in self.finish.winfo_children() + self.result.winfo_children():
             w.destroy()
         self._spawn(self._job_make_any, kind, out, busy='build')
 
@@ -774,17 +779,32 @@ class App:
 
     def _on_built(self, cue):
         self.progress['value'] = 1000
-        self.stage.configure(text=self.t('app.done', file=os.path.basename(cue)) + '\n' + cue, style='Ok.TLabel')
         self.config.set('last_disc', os.path.abspath(cue))
         self._finish_buttons(os.path.dirname(cue), None, cue)
+        self.stage.configure(text=self.t('app.done', file=os.path.basename(cue)), style='Ok.TLabel')
+        self._show_result('', cue)
 
     def _on_made(self, path):
         self.progress['value'] = 1000
         key = 'app.macZipDone' if path.endswith('.zip') else 'app.{}Done'.format(
             next(k for k, ext in (('apk', '.apk'), ('setup', '.exe'), ('mac', '.dmg'), ('linux', '.run'))
                  if path.endswith(ext)))
-        self.stage.configure(text=self.t(key, file=os.path.basename(path)) + '\n' + path, style='Ok.TLabel')
         self._finish_buttons(os.path.dirname(path), None)
+        # "Mac app ready: {file}. Open it on a Mac...": the title in green, the steps in plain text below it
+        text = self.t(key, file='\0')
+        head, _, rest = text.partition('\0')
+        self.stage.configure(text=head.rstrip(' :：') or os.path.basename(path), style='OkTitle.TLabel')
+        self._show_result(rest.lstrip(' .。'), path)
+
+    def _show_result(self, steps, path):
+        """The steps to use what was made, then where it is (small, muted)."""
+        row = 0
+        if steps:
+            self._wrap(self.ttk.Label(self.result, text=steps, justify='left')).grid(row=row, column=0, sticky='ew',
+                                                                                  pady=(4, 0))
+            row += 1
+        self._wrap(self.ttk.Label(self.result, text=path, style='Muted.TLabel', justify='left')).grid(
+            row=row, column=0, sticky='ew', pady=(4, 0))
 
     def _on_failed(self, e, log, kind):
         if kind == 'stopped':
@@ -801,7 +821,7 @@ class App:
     def _finish_buttons(self, folder, log, cue=None):
         """Open the folder (and the log after a failure)."""
         ttk = self.ttk
-        for w in self.finish.winfo_children():
+        for w in self.finish.winfo_children() + self.result.winfo_children():
             w.destroy()
         col = 0
         for ok, text, cmd, style in (
