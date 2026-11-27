@@ -731,6 +731,54 @@ def open_folder(path):
         subprocess.Popen(['xdg-open', path])
 
 
+def player_program():
+    """The bundled Horizon Play program (docs/player.md), or None when this app was built without it."""
+    if sys.platform == 'darwin' and getattr(sys, 'frozen', False):
+        # the app is nested at Contents/Helpers (tools/patcher/app/build.py), signed on its own
+        path = os.path.join(os.path.dirname(os.path.dirname(sys.executable)), 'Helpers', 'Horizon Play.app',
+                            'Contents', 'MacOS', 'horizon-play')
+    elif sys.platform == 'darwin':
+        path = resource('player', 'Horizon Play.app', 'Contents', 'MacOS', 'horizon-play')
+    else:
+        path = resource('player', 'horizon-play.exe' if os.name == 'nt' else 'horizon-play')
+    return path if os.path.isfile(path) else None
+
+
+def apk_template():
+    """Horizon Play for Android (tools/player/android), or None when this app was built without it."""
+    path = resource('android', 'Horizon-Play.apk')
+    return path if os.path.isfile(path) else None
+
+
+def make_apk(cue, progress=None):
+    """The Android app with the built disc inside (tools/patcher/apk.py), next to the disc: nothing to set up on the
+    phone. Signed with this computer's own key (kept in the settings folder), so a later one installs over it."""
+    try:
+        from . import apk
+    except ImportError:
+        import apk
+    image = cue_image(cue)
+    out = os.path.splitext(os.path.abspath(cue))[0] + '.apk'
+    total = 2 * os.path.getsize(image)   # read once for the zip, once for the signature
+    done = [0]
+
+    def tick(n):
+        done[0] += n
+        if progress:
+            progress(min(done[0], total), total)
+    return apk.build(apk_template(), image, out, os.path.join(config_dir(), 'android-key.json'), tick)
+
+
+def play(cue):
+    """Start Horizon Play on the built disc; it runs on its own (closing the patcher does not stop it)."""
+    import subprocess
+    program = player_program()
+    if not program:
+        raise FileNotFoundError('Horizon Play is not part of this app')
+    kw = dict(creationflags=0x00000008 | 0x00000200) if os.name == 'nt' else dict(start_new_session=True)
+    return subprocess.Popen([program, os.path.abspath(cue)], cwd=os.path.dirname(program), **kw)
+
+
 def clock(s):
     s = int(s + 0.5)
     return f'{s // 3600}:{s // 60 % 60:02d}:{s % 60:02d}' if s >= 3600 else f'{s // 60}:{s % 60:02d}'

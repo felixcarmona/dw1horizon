@@ -16,6 +16,7 @@ import json
 import os
 import pkgutil
 import re
+import shutil
 import subprocess
 import sys
 import warnings
@@ -101,7 +102,11 @@ def spec(work, a, ver):
              (os.path.join(ROOT, 'web', 'data', 'discs.json'), 'web/data'),
              (os.path.join(APP, 'i18n.json'), 'tools/patcher/app'),
              (os.path.join(APP, 'make_icons.py'), 'tools/patcher/app')]
-    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons']
+    if a.player and sys.platform != 'darwin':      # Horizon Play (tools/player/build.py --out DIR); macOS: nest_player
+        datas.append((os.path.abspath(a.player), 'player'))
+    if a.player_apk:   # Horizon Play for Android: the template desktop.make_apk puts the built disc into
+        datas.append((os.path.abspath(a.player_apk), 'android'))
+    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk']
     if sys.platform == 'darwin':
         hidden.append('certifi')
     icon = os.path.join(icons, 'icon.ico' if os.name == 'nt' else 'icon.icns')
@@ -137,6 +142,9 @@ def main(argv=None):
     p.add_argument('--entitlements', help='macOS: the entitlements of the hardened runtime')
     p.add_argument('--repository', help='OWNER/NAME whose releases the app downloads (default: GITHUB_REPOSITORY, '
                    'else the checkout\'s origin)')
+    p.add_argument('--player', help='a Horizon Play folder (tools/player/build.py) to ship inside the app')
+    p.add_argument('--player-apk', help='Horizon Play for Android (tools/player/android/build_apk.py): the app then '
+                                        'also makes an APK with the built disc inside')
     p.add_argument('--out', default=os.path.join(ROOT, 'build', 'desktop'))
     a = p.parse_args(argv)
     ver = (a.version or version()).lstrip('v')
@@ -148,7 +156,32 @@ def main(argv=None):
     subprocess.run([sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean', '--log-level', 'WARN',
                     '--distpath', os.path.join(work, 'dist'), '--workpath', os.path.join(work, 'work'), path],
                    check=True, cwd=work)
+    if a.player and sys.platform == 'darwin':
+        nest_player(os.path.join(work, 'dist', NAME + '.app'), a)
     print(os.path.join(work, 'dist'))
+
+
+def nest_player(app, a):
+    """macOS: Horizon Play.app goes into Contents/Helpers by hand (PyInstaller's data copy mangles a nested bundle
+    into __dot__app symlinks that codesign cannot follow), then the outer app is signed again without --deep so the
+    nested app keeps its own signature (JIT entitlements). With no identity both are signed ad hoc."""
+    src = os.path.join(os.path.abspath(a.player), 'Horizon Play.app')
+    helpers = os.path.join(app, 'Contents', 'Helpers')
+    os.makedirs(helpers, exist_ok=True)
+    dst = os.path.join(helpers, 'Horizon Play.app')
+    if os.path.exists(dst):
+        shutil.rmtree(dst)
+    shutil.copytree(src, dst, symlinks=True)
+    sign = ['codesign', '--force']
+    if a.codesign_identity:
+        outer = sign + ['--timestamp', '--options', 'runtime', '--sign', a.codesign_identity]
+        if a.entitlements:
+            outer += ['--entitlements', a.entitlements]
+    else:
+        for code in (os.path.join(dst, 'Contents', 'Resources', 'swanstation_libretro.dylib'), dst):
+            subprocess.run(sign + ['--sign', '-', code], check=True)
+        outer = sign + ['--sign', '-']
+    subprocess.run(outer + [app], check=True)
 
 
 if __name__ == '__main__':

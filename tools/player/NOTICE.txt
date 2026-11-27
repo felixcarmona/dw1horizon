@@ -1,0 +1,21 @@
+Horizon Play
+
+Plays the Digimon World: Horizon disc that the Horizon patcher builds from your own disc. No game data is included.
+
+Parts and licences (full texts in licenses/):
+- horizon-play: Horizon's own code, MIT. Source: the Horizon repository linked from https://dw1horizon.com (tools/player)
+- swanstation_libretro: the SwanStation emulator core, GPL-3.0.
+  Source: https://github.com/libretro/swanstation (commit 631f0fb31b809e0f889d7c551fe695788e39c1d3)
+- system/openbios.bin: OpenBIOS from PCSX-Redux, MIT.
+  Source: https://github.com/pcsx-redux/nugget (commit c51f16e6ca6eb074be9f6a47de9a797da94701d0, openbios/)
+- SDL2 2.32.10, zlib licence. Source: https://github.com/libsdl-org/SDL
+
+Controls
+  Keyboard: arrows = D-pad, Z = Cross, X = Circle, A = Square, S = Triangle,
+            Q / W = L1 / R1, E / R = L2 / R2, Enter = Start, Backspace = Select,
+            F11 or Alt+Enter = full screen / window.
+  Game pads: any pad SDL knows (Xbox, PlayStation, Switch Pro, ...), laid out like a PlayStation pad.
+
+Saves go to the memory card file in your user folder (duckstation_shared_card_1.mcd, the same format DuckStation uses):
+  Windows: %APPDATA%\Horizon\Horizon\   macOS: ~/Library/Application Support/Horizon/Horizon/
+  Linux: ~/.local/share/Horizon/Horizon/

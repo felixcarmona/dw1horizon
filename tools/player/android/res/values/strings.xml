@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Horizon Play</string>
+    <string name="title">Digimon World: Horizon</string>
+    <string name="play">Play</string>
+    <string name="choose">Choose the disc (.bin)</string>
+    <string name="change">Change the disc</string>
+    <string name="no_disc">Choose the Horizon disc the patcher built: the .bin file. It is copied into this app once.</string>
+    <string name="ready">Disc ready.</string>
+    <string name="copying">Copying the disc…</string>
+    <string name="pick_bin">Choose the .bin file, not the .cue.</string>
+    <string name="not_a_disc">That file is not a PlayStation disc image (.bin, 2352 bytes per sector).</string>
+    <string name="copy_failed">The disc could not be copied: %1$s</string>
+    <string name="saves">Saves: %1$s</string>
+</resources>

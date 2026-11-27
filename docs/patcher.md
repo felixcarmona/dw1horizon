@@ -140,6 +140,8 @@ patched disc. The browser runs the same jobs in Pyodide workers (`web/README.md`
 `horizon-desktop.json` (their sizes, SHA-256 and signing) and redeploys the site, which offers them from then on
 (web/README.md, "The desktop app downloads"). Players need no Python. The players'
 side is in [release/README-players.md](release/README-players.md#the-desktop-app).
+Both apps carry Horizon Play ([player.md](player.md)): after a build, **Play** starts the new disc in it, already
+set up (8 MB, CPU 250 %, upscaled, full screen).
 
 - **Same code path.** The app downloads the release package, checks it, and loads the package's own `dwpatch.py`
   (with its `isowriter.py` and `fontcopy.py`) from the package folder: the apply is the command line's, from the same

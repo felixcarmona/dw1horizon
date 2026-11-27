@@ -11,6 +11,7 @@
 - [building.md](building.md): building the whole disc from source and the four player discs.
 - [derive.md](derive.md): `tools/derive`, the builder of every file made from the game's data.
 - [patcher.md](patcher.md): the release package, the patch format, base discs, what a patch may carry.
+- [player.md](player.md): Horizon Play, the bundled emulator the desktop app starts with Play.
 - [developing.md](developing.md): testing a build: the self-test and unit tests, the emulators and the scripts that
   drive them, story tests, play tests of the patches, trying it on a handheld.
 - [reference/](reference/README.md): how the game works inside (formats, RAM, engine, scripts, combat, the world) and
