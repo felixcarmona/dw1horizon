@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Publication boundary regressions. All payload bytes here are synthetic."""
+import contextlib
 import hashlib
+import io
 import json
 from pathlib import Path
 import sys
@@ -134,15 +136,15 @@ class PublicationTests(unittest.TestCase):
             self.assertEqual(cur['release_tag'], 'v1.2.3')
             self.assertNotIn('desktop', cur)
 
-    def desktop_inputs(self, folder, tag='v1.2.3', **changes):
+    def desktop_inputs(self, folder, tag='v1.2.3', with_linux=False, **changes):
         """horizon-desktop.json and the two zips, as desktop.yml attaches them (synthetic bytes)."""
         folder.mkdir(parents=True, exist_ok=True)
         info = {'tag': tag, 'run': 'https://github.com/owner/repo/actions/runs/123'}
-        for os_name, name in pages.DESKTOP.items():
+        for os_name, name in {**pages.DESKTOP, **(pages.DESKTOP_OPTIONAL if with_linux else {})}.items():
             data = f'synthetic {os_name} app'.encode()
             (folder / name).write_bytes(data)
             info[os_name] = dict(name=name, size=len(data), sha256=pages.digest(data),
-                                 **({'signed': False} if os_name == 'windows' else {'notarized': True}))
+                                 **{'windows': {'signed': False}, 'macos': {'notarized': True}}.get(os_name, {}))
         info.update(changes)
         (folder / 'horizon-desktop.json').write_text(json.dumps(info))
         return info
@@ -158,6 +160,25 @@ class PublicationTests(unittest.TestCase):
             self.assertEqual(apps['windows'], info['windows'])
             self.assertEqual(apps['macos'], info['macos'])
             self.assertEqual(apps['run'], info['run'])
+            self.assertNotIn('linux', apps)   # (the release has none: Windows and macOS alone)
+            # the Linux tarball, when it is listed and matches
+            info = self.desktop_inputs(folder, with_linux=True)
+            apps = pages.desktop_apps(folder, package, 'v1.2.3')
+            self.assertEqual(apps['linux'], info['linux'])
+            self.assertEqual(apps['windows'], info['windows'])
+            # a bad Linux entry drops only Linux, with a warning
+            linux = folder / pages.DESKTOP_OPTIONAL['linux']
+            bad_name = dict(info['linux'], name='other.tar.gz')
+            for what, change in (('another build', lambda: linux.write_bytes(b'another build')),
+                                 ('missing', linux.unlink),
+                                 ('wrong name', lambda: self.desktop_inputs(folder, with_linux=True, **{'linux': bad_name}))):
+                with self.subTest(linux=what), contextlib.redirect_stdout(io.StringIO()) as out:
+                    info = self.desktop_inputs(folder, with_linux=True)
+                    change()
+                    apps = pages.desktop_apps(folder, package, 'v1.2.3')
+                    self.assertEqual(sorted(apps), ['macos', 'run', 'windows'])
+                    self.assertIn('::warning::', out.getvalue())
+            self.desktop_inputs(folder)
             # a package whose dwpatch predates the app's interface: the app would refuse it
             self.assertIsNone(pages.desktop_apps(folder, {'dwpatch.py': b'VERSION = 1\n'}, 'v1.2.3'))
             # another tag's description

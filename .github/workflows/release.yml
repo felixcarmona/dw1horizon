@@ -57,9 +57,13 @@ jobs:
             }
           # The desktop apps (desktop.yml attaches them and horizon-desktop.json last, usually after this run, then
           # starts this workflow again): the page offers them only when they are all here and match.
+          # The Linux tarball is optional (releases up to v0.0.10 have none): a missing one is only not offered.
           gh release download "$RELEASE_TAG" --dir build/pages-input/desktop --pattern horizon-desktop.json \
             && gh release download "$RELEASE_TAG" --dir build/pages-input/desktop \
                  --pattern Horizon-Patcher-Windows.zip --pattern Horizon-Patcher-macOS.zip \
+            && { gh release download "$RELEASE_TAG" --dir build/pages-input/desktop \
+                   --pattern Horizon-Patcher-Linux-x86_64.tar.gz \
+                 || echo '::notice::No Linux desktop app on this release.'; } \
             || { echo '::notice::No desktop apps on this release yet: the page does not offer them.'; rm -rf build/pages-input/desktop; }
       - name: Check the publication boundary
         run: python3 tools/release_pages_test.py

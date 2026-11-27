@@ -84,17 +84,19 @@ The project's site: a static page with no backend. The patcher runs in the visit
 ## The desktop app downloads
 
 "Prefer an app?" (`js/desktop.js`, `#desktop` at the end of the patcher section) offers Horizon Patcher, the desktop
-patcher (docs/patcher.md "The desktop app"), for Windows and macOS. It links to the served release's own assets,
-`https://github.com/<repo>/releases/download/<release_tag>/Horizon-Patcher-<Windows|macOS>.zip` (the repository from
+patcher (docs/patcher.md "The desktop app"), for Windows, macOS and Linux. It links to the served release's own assets,
+`https://github.com/<repo>/releases/download/<release_tag>/Horizon-Patcher-<Windows|macOS>.zip` (Linux:
+`Horizon-Patcher-Linux-x86_64.tar.gz`, offered only when the release has it; otherwise a Linux visitor is pointed to
+the browser builder and dwpatch.py) (the repository from
 the `source-repository` meta), with the release and the size on each button, the first start's SmartScreen and
 Gatekeeper steps per system (collapsed), and "Why it is safe" (built by GitHub Actions from the tag: the build's run,
 the code signing policy, both SHA-256).
 
 It shows only when `engine/current.json` has `desktop`, so it never links to a missing file: `desktop.yml` attaches
-the two zips to the tag's release, then `horizon-desktop.json` (name, size and SHA-256 of each, whether the Windows
+the zips and the tarball to the tag's release, then `horizon-desktop.json` (name, size and SHA-256 of each, whether the Windows
 app is signed and the macOS app notarized, the run's URL), then starts `release.yml` again for that tag when it is the
 latest release or still a draft. `release.yml` downloads the three when they are there and `tools/release_pages.py`
-(`desktop_apps`) writes `desktop` only when both zips match the description and the package's dwpatch has
+(`desktop_apps`) writes `desktop` only when both zips match the description (the Linux tarball is checked too when listed; a bad one drops only Linux, with a warning) and the package's dwpatch has
 `GUI_API = 1` (the app refuses older packages); otherwise the page goes out without it (v0.0.4 and earlier, or the
 first deployment of a release, before the apps are built). The zips are not copied to the site.
 

@@ -547,7 +547,7 @@ jobs:
             apps/Horizon-Setup.exe apps/Horizon-Play.apk apps/Horizon-Play-macOS.zip --clobber
       - name: Describe the apps for the site
         # horizon-desktop.json goes up after the zips it describes: release.yml offers the apps on dw1horizon.com only
-        # when it finds this file, and checks both zips against it (tools/release_pages.py desktop_apps).
+        # when it finds this file, and checks the files against it (tools/release_pages.py desktop_apps).
         run: |
           python3 - <<'PY'
           import hashlib, json, os
@@ -556,7 +556,8 @@ jobs:
               return dict(name=name, size=len(data), sha256=hashlib.sha256(data).hexdigest(), **extra)
           json.dump({'tag': os.environ['RELEASE_TAG'], 'run': os.environ['RUN_URL'],
                      'windows': app('Horizon-Patcher-Windows.zip', signed=False),   # SignPath: not yet
-                     'macos': app('Horizon-Patcher-macOS.zip', notarized=os.environ['NOTARIZED'] == 'true')},
+                     'macos': app('Horizon-Patcher-macOS.zip', notarized=os.environ['NOTARIZED'] == 'true'),
+                     'linux': app('Horizon-Patcher-Linux-x86_64.tar.gz')},
                     open('horizon-desktop.json', 'w'), indent=2)
           PY
           cat horizon-desktop.json
