@@ -95,7 +95,7 @@ static Cell cells[I_COUNT] = {
   [I_CHECK] = {0, 576, 160, 160}, [I_FAIL] = {160, 576, 160, 160}, [I_PENCIL] = {320, 576, 160, 160},
   [I_EXPORT] = {480, 576, 160, 160}, [I_IMPORT] = {640, 576, 160, 160}, [I_BACK] = {800, 576, 160, 160},
   [I_DROP] = {0, 736, 160, 160}, [I_GEAR] = {160, 736, 160, 160}, [I_SCREEN] = {320, 736, 160, 160},
-  /* the words (T_): 256, 512 or 1024 x 56 by their length, in rows from y = 1024, set in draw_words */
+  /* the words (T_): as wide as their letters x 56, packed in rows from y = 1024, set in draw_words */
 };
 
 #define WORD_SCALE 6   /* one font dot is 6 x 6 atlas pixels: letters 42 high */
@@ -115,7 +115,8 @@ static struct { int id; const char *s; } words[] = {
   {T_D0 + 6, "6"}, {T_D0 + 7, "7"}, {T_D0 + 8, "8"}, {T_D0 + 9, "9"}, {T_FPS, "FPS"},
   {T_VERSION, version_word}, {T_BUTTON_SIZE, "BUTTON SIZE"}, {T_OPACITY, "OPACITY"}, {T_SMALL, "SMALL"},
   {T_MEDIUM, "MEDIUM"}, {T_LARGE, "LARGE"}, {T_HUGE, "HUGE"}, {T_FAINT, "FAINT"}, {T_LIGHT, "LIGHT"},
-  {T_SOLID, "SOLID"}, {T_FULL, "FULL"},
+  {T_SOLID, "SOLID"}, {T_FULL, "FULL"}, {T_NEW_VERSION, "NEW VERSION"}, {T_AT_SITE, "AT DW1HORIZON.COM"},
+  {T_DOT, "."}, {T_V, "V"},
 };
 static float word_w[I_COUNT];   /* the letters' width in atlas pixels */
 
@@ -318,7 +319,7 @@ static void draw_words(void) {
   for (char *p = version_word; *p; p++) *p = (char)SDL_toupper((unsigned char)*p);
   for (size_t i = 0; i < sizeof words / sizeof *words; i++) {
     int n = (int)strlen(words[i].s), id = words[i].id, tw = n * 6 * WORD_SCALE;
-    int w = tw > 500 ? 1024 : tw > 240 ? 512 : 256;
+    int w = (tw + 16 + 31) / 32 * 32;   /* the word and a margin, packed in rows */
     if (x + w > AW) { x = 0; y += 56; }   /* a word that does not fit starts the next row */
     if (y + 56 > AH) { SDL_Log("overlay: no room for the word %s", words[i].s); break; }
     Cell c = {x, y, w, 56};
@@ -654,6 +655,35 @@ static void draw_fps(int ww, int wh) {
   overlay_text(T_FPS, x + (n + 1) * adv + overlay_text_width(T_FPS, gh) / 2, y, gh, adv * 4, 1, 0.95f);
 }
 
+static char new_version[16];   /* "V0.0.11" */
+static Uint32 new_version_at;
+
+void overlay_set_new_version(const char *tag) {
+  int n = 0;
+  for (const char *p = tag; *p && n < (int)sizeof new_version - 1; p++)
+    if ((*p >= '0' && *p <= '9') || *p == '.' || *p == 'v' || *p == 'V') new_version[n++] = (char)SDL_toupper((unsigned char)*p);
+  new_version[n] = 0;
+  new_version_at = SDL_GetTicks();
+}
+
+/* "NEW VERSION V0.0.11 AT DW1HORIZON.COM", centred on (cx, cy), on a dark backing */
+void overlay_draw_new_version(float cx, float cy, float gh, float alpha) {
+  if (!new_version[0]) return;
+  float adv = gh * 6 / 7, n = (float)strlen(new_version);
+  float w1 = overlay_text_width(T_NEW_VERSION, gh), w3 = overlay_text_width(T_AT_SITE, gh);
+  float tw = w1 + adv + n * adv - adv / 6 + adv + w3, x = cx - tw / 2, pad = gh * 0.5f;
+  quad(I_WHITE, cx, cy, tw + pad * 2, gh + pad * 1.4f, 0, 0.55f * alpha, cur_w, cur_h);
+  overlay_text(T_NEW_VERSION, x + w1 / 2, cy, gh, w1 * 1.01f, 1.2f, alpha);
+  x += w1 + adv;
+  for (int i = 0; new_version[i]; i++) {
+    char ch = new_version[i];
+    int word = ch == '.' ? T_DOT : ch == 'V' ? T_V : T_D0 + ch - '0';
+    overlay_text(word, x + i * adv + adv / 2 - adv / 12, cy, gh, adv * 2, 1.2f, alpha);
+  }
+  x += n * adv - adv / 6 + adv;
+  overlay_text(T_AT_SITE, x + w3 / 2, cy, gh, w3 * 1.01f, 1, alpha);
+}
+
 void overlay_draw(int ww, int wh) {
   if (!ready) return;
   cur_w = ww; cur_h = wh;
@@ -679,6 +709,13 @@ void overlay_draw(int ww, int wh) {
       quad(c->icon, c->x, c->y, c->w * grow, c->h * grow, pressed ? 1.6f : 1, pressed ? 1 : a, ww, wh);
     }
   }
-  if (remap_step < 0 && !menu_open) draw_fps(ww, wh);
+  if (remap_step < 0 && !menu_open) {
+    draw_fps(ww, wh);
+    Uint32 t = SDL_GetTicks() - new_version_at;   /* the news of a newer release: 12 seconds over the game */
+    if (new_version[0] && t < 12000) {
+      float s = ww < wh ? (float)ww : (float)wh;
+      overlay_draw_new_version(ww / 2.0f, 0.16f * s, 0.03f * s, t > 11000 ? (12000 - t) / 1000.0f : 1);
+    }
+  }
   flush(ww, wh);
 }

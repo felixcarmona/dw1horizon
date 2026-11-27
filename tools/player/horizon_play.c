@@ -701,6 +701,24 @@ static void android_backup(const char *card) {
   (*env)->DeleteLocalRef(env, a); (*env)->DeleteLocalRef(env, cls); (*env)->DeleteLocalRef(env, act);
 }
 
+/* HorizonActivity.newVersion: a newer release's tag, once its check (a thread at start) found one; "" until then */
+static bool android_new_version(char *out, size_t n) {
+  JNIEnv *env = (JNIEnv *)SDL_AndroidGetJNIEnv();
+  jobject act = (jobject)SDL_AndroidGetActivity();
+  jclass cls = (*env)->GetObjectClass(env, act);
+  jfieldID f = (*env)->GetStaticFieldID(env, cls, "newVersion", "Ljava/lang/String;");
+  bool got = false;
+  jstring v = f ? (jstring)(*env)->GetStaticObjectField(env, cls, f) : NULL;
+  if (v) {
+    const char *c = (*env)->GetStringUTFChars(env, v, NULL);
+    if (c) { got = c[0] != 0; snprintf(out, n, "%s", c); (*env)->ReleaseStringUTFChars(env, v, c); }
+    (*env)->DeleteLocalRef(env, v);
+  }
+  if ((*env)->ExceptionCheck(env)) (*env)->ExceptionClear(env);
+  (*env)->DeleteLocalRef(env, cls); (*env)->DeleteLocalRef(env, act);
+  return got;
+}
+
 static int android_pick_result(void) {
   JNIEnv *env = (JNIEnv *)SDL_AndroidGetJNIEnv();
   jobject act = (jobject)SDL_AndroidGetActivity();
@@ -779,6 +797,7 @@ int main(int argc, char **argv) {
     else if (!strcmp(argv[i], "--touch")) force_touch = true;            /* the touch pad from the start */
     else if (!strcmp(argv[i], "--ask-card")) ask_card = true;           /* (tests) the new install's card question */
     else if (!strcmp(argv[i], "--first-start")) first_start = true;      /* the first start's question, in tests too */
+    else if (!strcmp(argv[i], "--new-version") && i + 1 < argc) overlay_set_new_version(argv[++i]);   /* (tests) */
     else if (!strcmp(argv[i], "--suspend-at") && i + 1 < argc) suspend_at = atoi(argv[++i]);   /* (tests) */
     else if (!strcmp(argv[i], "--no-fast-start")) fast_start = false;     /* the start at the console's own pace */
     else if (!strcmp(argv[i], "--scale") && i + 1 < argc) scale = atoi(argv[++i]);
@@ -1046,6 +1065,14 @@ int main(int argc, char **argv) {
     core.run();
     frame++;
     if (!booting) game_started = true;
+#ifdef __ANDROID__
+    {   /* a newer release: asked of the Java side every two seconds until it answers (it may never: offline) */
+      static bool told; char tag[32];
+      if (!told && !booting && frame % 120 == 0 && android_new_version(tag, sizeof tag)) {
+        told = true; overlay_set_new_version(tag); SDL_Log("a newer release: %s", tag);
+      }
+    }
+#endif
     if (frame == suspend_at) { resume_save(); paused = true; break; }   /* (tests: as if Android ended the app in the background) */
     if (frame % 60 == 0) card_save();
     {   /* the frame rate in the corner: the game's frames in the last second */

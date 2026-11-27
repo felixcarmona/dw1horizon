@@ -11,6 +11,8 @@
     <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
     <uses-feature android:name="android.hardware.usb.host" android:required="false" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- HorizonActivity.checkVersion: is there a newer release? -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- before Android 10: the memory card's copy in Documents (HorizonActivity.backupCard) -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
 

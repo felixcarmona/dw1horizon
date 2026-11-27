@@ -15,6 +15,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.OutputStream;
 import org.libsdl.app.SDLActivity;
 
@@ -43,9 +48,61 @@ public class HorizonActivity extends SDLActivity {
     static final String BACKUP_DIR = "Digimon World Horizon", BACKUP_NAME = "Digimon World Horizon.mcd";
     private static final Object backupLock = new Object();
 
+    // ---- a newer release (docs/player.md): the latest release's tag on GitHub, when it is newer than this app; the
+    // menu shows it (horizon_play.c reads this field). The repository is assets/releases.txt, written by build_apk.py.
+    static volatile String newVersion = "";
+
+    private static int[] versionKey(String v) {
+        Matcher m = Pattern.compile("^v?(\\d+)\\.(\\d+)\\.(\\d+)").matcher(v == null ? "" : v);
+        if (!m.find()) return null;
+        return new int[] {Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3))};
+    }
+
+    private void checkVersion() {
+        final String mine;
+        try {
+            mine = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (Exception e) {
+            return;
+        }
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    String repo;
+                    try (Scanner s = new Scanner(getAssets().open("releases.txt"), "UTF-8")) {
+                        repo = s.hasNextLine() ? s.nextLine().trim() : "";
+                    }
+                    if (repo.isEmpty()) return;
+                    HttpURLConnection c = (HttpURLConnection) new URL(
+                        "https://api.github.com/repos/" + repo + "/releases/latest").openConnection();
+                    c.setConnectTimeout(10000); c.setReadTimeout(10000);
+                    c.setRequestProperty("Accept", "application/vnd.github+json");
+                    if (c.getResponseCode() != 200) return;
+                    String body;
+                    try (Scanner s = new Scanner(c.getInputStream(), "UTF-8")) {
+                        body = s.useDelimiter("\\A").hasNext() ? s.next() : "";
+                    }
+                    Matcher m = Pattern.compile("\"tag_name\"\\s*:\\s*\"([^\"]+)\"").matcher(body);
+                    if (!m.find()) return;
+                    int[] a = versionKey(m.group(1)), b = versionKey(mine);
+                    if (a == null || b == null) return;
+                    for (int i = 0; i < 3; i++) {
+                        if (a[i] != b[i]) {
+                            if (a[i] > b[i]) newVersion = m.group(1);
+                            return;
+                        }
+                    }
+                } catch (Exception e) {
+                    // offline, or GitHub refused: no notice
+                }
+            }
+        }).start();
+    }
+
     @Override
     protected void onCreate(Bundle saved) {
         super.onCreate(saved);
+        checkVersion();
         // before Android 10 a file outside the app needs the storage permission: asked once
         if (Build.VERSION.SDK_INT < 29
             && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

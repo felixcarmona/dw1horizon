@@ -7,7 +7,10 @@
 extern bool touch_shown;            /* the touch pad is on screen */
 extern bool overlay_menu_tapped;    /* the touch pad's menu button was tapped */
 extern int overlay_touch_size, overlay_touch_alpha;   /* the touch pad: size and opacity in percent */
-extern int overlay_fps;             /* frames a second, shown small in the top left corner; < 0 hides it */
+extern int overlay_fps;
+/* a newer release ("V0.0.11"), once known: shown for a while over the game, and in the menu */
+void overlay_set_new_version(const char *tag);
+void overlay_draw_new_version(float cx, float cy, float glyph_h, float alpha);             /* frames a second, shown small in the top left corner; < 0 hides it */
 
 /* the pictures, drawn at start into one texture */
 enum { I_TRI, I_CIRCLE, I_CROSS, I_SQUARE, I_UP, I_DOWN, I_LEFT, I_RIGHT, I_DPAD,
@@ -19,7 +22,7 @@ enum { I_TRI, I_CIRCLE, I_CROSS, I_SQUARE, I_UP, I_DOWN, I_LEFT, I_RIGHT, I_DPAD
        T_FAILED, T_DROP, T_NEW, T_SETTINGS, T_RESOLUTION, T_ORIGINAL,
        T_1X, T_2X, T_3X, T_4X, T_6X, T_8X, T_480P, T_720P, T_960P, T_1440P, T_1920P,
        T_D0, T_FPS = T_D0 + 10, T_VERSION, T_BUTTON_SIZE, T_OPACITY, T_SMALL, T_MEDIUM, T_LARGE, T_HUGE,
-       T_FAINT, T_LIGHT, T_SOLID, T_FULL, I_COUNT };   /* T_D0 + n: the digit n, for the frame rate */
+       T_FAINT, T_LIGHT, T_SOLID, T_FULL, T_NEW_VERSION, T_AT_SITE, T_DOT, T_V, I_COUNT };   /* T_D0 + n: the digit n, for the frame rate */
 
 bool overlay_init(void);
 void overlay_event(const SDL_Event *e, int ww, int wh);

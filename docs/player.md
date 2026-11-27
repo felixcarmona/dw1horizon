@@ -99,6 +99,13 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
 Under the cards the main screen shows the program's version (`tools/version.py`, given to CMake as
 `HORIZON_VERSION` by `build.py` and `build_apk.py`; `DEV` when built by hand).
 
+**A newer release (Android):** at each start the app asks GitHub for the latest release of the repository
+`build_apk.py` wrote into `assets/releases.txt` (`--repository`, else `GITHUB_REPOSITORY`, else the checkout's
+origin; with none it does not ask). When that release's X.Y.Z is higher than the app's own, "NEW VERSION V… AT
+DW1HORIZON.COM" shows over the game for 12 seconds and stays in the menu above the version. Offline or refused, nothing
+shows. This is the app's only use of the network (the `INTERNET` permission). On a computer the patcher, which starts
+the program, already tells of a newer release. `--new-version TAG` shows the notice in tests.
+
 **Where the player left off:** Android may end an app it has sent to the background, and the game would lose what
 was played since its last save. So when the app goes to the background the whole machine is written to `resume.state`
 in the saves folder (about 11 MB, through a `.new` file), and a start that finds it goes on from that moment, without

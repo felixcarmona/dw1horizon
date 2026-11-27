@@ -57,6 +57,17 @@ def sdk_paths():
     return ndk, tools, jar
 
 
+def origin_repository():
+    """OWNER/NAME of this checkout's GitHub origin, or None."""
+    try:
+        url = subprocess.run(['git', 'remote', 'get-url', 'origin'], cwd=REPO, capture_output=True, text=True,
+                             timeout=10).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return None
+    m = re.search(r'github\.com[:/]([^/]+/[^/]+?)(?:\.git)?$', url)
+    return m.group(1) if m else None
+
+
 def ndk_cmake(ndk, src, build, jobs, *extra):
     run(['cmake', '-S', src, '-B', build, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release',
          f'-DCMAKE_TOOLCHAIN_FILE={ndk}/build/cmake/android.toolchain.cmake', f'-DANDROID_ABI={ABI}',
@@ -77,6 +88,8 @@ def main():
     ap.add_argument('--work', default=os.path.join(REPO, 'build', 'player', 'android'))
     ap.add_argument('--openbios', help='an OpenBIOS image to use instead of building it')
     ap.add_argument('--version', help='the version name (default: tools/version.py)')
+    ap.add_argument('--repository', help='OWNER/NAME whose GitHub releases the app checks for a newer version '
+                    '(default: GITHUB_REPOSITORY, else the checkout\'s origin; none: no check)')
     ap.add_argument('--jobs', type=int, default=os.cpu_count() or 4)
     a = ap.parse_args()
     ndk, tools, jar = sdk_paths()
@@ -111,6 +124,10 @@ def main():
     os.makedirs(os.path.join(assets, 'licenses'))
     shutil.copy2(bios, os.path.join(assets, 'openbios.bin'))
     shutil.copy2(os.path.join(PLAYER, 'NOTICE.txt'), os.path.join(assets, 'NOTICE.txt'))
+    repo = a.repository or os.environ.get('GITHUB_REPOSITORY') or origin_repository()
+    if repo:   # HorizonActivity.checkVersion: a newer release is shown in the menu
+        with open(os.path.join(assets, 'releases.txt'), 'w') as f:
+            f.write(repo + '\n')
     licences = {'SwanStation-GPL-3.0.txt': os.path.join(sw, 'LICENSE'),
                 'OpenBIOS-MIT.txt': os.path.join(work, 'nugget', 'LICENSE') if not a.openbios else
                 os.path.join(os.path.dirname(os.path.abspath(a.openbios)), 'OpenBIOS-MIT.txt'),
