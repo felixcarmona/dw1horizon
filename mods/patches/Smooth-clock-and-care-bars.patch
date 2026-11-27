@@ -1,4 +1,4 @@
-From 2eeb3067c1c0dea707c4f183fc4376376e90f27e Mon Sep 17 00:00:00 2001
+From 172878ebb762a0e2a12e983e3bf98900847d07fb Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Fri, 27 Nov 2026 13:15:27 +0000
 Subject: [PATCH] Smooth motion: the clock and the care bars slide in and out
@@ -6,7 +6,7 @@ Subject: [PATCH] Smooth motion: the clock and the care bars slide in and out
 
 modTickLerp draws a value that moves once per tick between its value before the tick and after it, at the fraction
 of the tick a render pass shows. The clock's and the care bars' x are kept from before lateTickGameClock's slide;
-renderStatusBars takes the x to draw at (the training overlay passes 75), and the condition ring keeps clear of the
+renderStatusBars takes the bars' left edge (the training overlay passes 95), and the condition ring keeps clear of the
 clock where it is drawn.
 ---
  include/dw/clock.h      |  1 +
@@ -14,9 +14,9 @@ clock where it is drawn.
  src/main/bubble.c       |  2 +-
  src/main/clock.c        | 30 +++++++++++++++++++++---------
  src/main/main.c         |  6 ++++++
- src/main/partner_impl.c | 12 ++++++------
+ src/main/partner_impl.c | 14 +++++++-------
  src/trn/trn_block.h     |  8 ++------
- 7 files changed, 41 insertions(+), 22 deletions(-)
+ 7 files changed, 42 insertions(+), 23 deletions(-)
 
 diff --git a/include/dw/clock.h b/include/dw/clock.h
 index a5f523f..0afe4fd 100644
@@ -58,7 +58,7 @@ index dd2a1b1..cb62cd4 100644
  		 * digital plate. Its HUD origin is fixed at 160, independent of the
  		 * world camera offset. Keep the group beside those visible pixels. */
 diff --git a/src/main/clock.c b/src/main/clock.c
-index c3d01a6..0433bd8 100644
+index c3d01a6..9f0ddf5 100644
 --- a/src/main/clock.c
 +++ b/src/main/clock.c
 @@ -21,7 +21,7 @@ void updateTimeOfDay();
@@ -66,7 +66,7 @@ index c3d01a6..0433bd8 100644
  void addTamerLevel(int32_t chance, int32_t amount);
  void updateBGM();
 -void renderStatusBars(int32_t isGameTimeRunning);
-+void renderStatusBars(int32_t x);
++void renderStatusBars(int32_t x); /* x: the bars' left edge */
  void modStrengthMarks(void); /* btl.c: MOD (danger mark) */
  void tickStatusBarsSlide(int32_t isGameTimeRunning);
  
@@ -143,7 +143,7 @@ index c3d01a6..0433bd8 100644
 +	renderDigitalClock(x + 6, -46);
  
 -	renderStatusBars(IS_GAMETIME_RUNNING);
-+	renderStatusBars(modTickLerp(modSlidePrev[1], STATUS_UI_OFFSET_X));
++	renderStatusBars(modTickLerp(modSlidePrev[1], STATUS_UI_OFFSET_X) + 20);
  	modStrengthMarks();
  }
  
@@ -165,7 +165,7 @@ index ef900a8..8744449 100644
   * (BTL_renderEFEEngine): expected to stay 0 */
  int32_t MOD_FPS_EFE_NO_ROOM;
 diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
-index 2eb98b5..3d24f6a 100644
+index 2eb98b5..7e0d6fc 100644
 --- a/src/main/partner_impl.c
 +++ b/src/main/partner_impl.c
 @@ -479,7 +479,7 @@ void skipHours(int32_t hours);
@@ -186,12 +186,14 @@ index 2eb98b5..3d24f6a 100644
  {
  	int32_t i, value, max, icon, x, y, pixels, clut;
  	for (i = 0; i < 5; i++) {
-@@ -2408,7 +2408,7 @@ static void renderCareHUD(void)
+@@ -2407,8 +2407,8 @@ static void renderCareHUD(void)
+ 			/* Energy remaining; condition thresholds still use raw fatigue. */
  			value = max - PARTNER_PARA.tiredness;
  		}
- 		/* 56 pixels wide (a 30-pixel slot), right edge where the original bars end */
+-		/* 56 pixels wide (a 30-pixel slot), right edge where the original bars end */
 -		x = STATUS_UI_OFFSET_X + 20;
-+		x = x0 + 20;
++		/* 56 pixels wide (a 30-pixel slot), right edge where the original bars end (x0: the slide offset + 20) */
++		x = x0;
  		y = 49 + i * 12;
  		if (value < 0)
  			value = 0;
@@ -211,7 +213,7 @@ index 2eb98b5..3d24f6a 100644
  
  void setImmortalHour(void)
 diff --git a/src/trn/trn_block.h b/src/trn/trn_block.h
-index 289976a..0da1d7c 100644
+index 289976a..37c3d70 100644
 --- a/src/trn/trn_block.h
 +++ b/src/trn/trn_block.h
 @@ -75,15 +75,11 @@ static int32_t TB_box2Y(void)
@@ -219,7 +221,7 @@ index 289976a..0da1d7c 100644
     Render the existing live HUD from the gym object without changing that clock state. */
  extern int16_t STATUS_UI_OFFSET_X;
 -void renderStatusBars(int32_t state);
-+void renderStatusBars(int32_t x); /* x: where the bars are drawn (smooth motion) */
++void renderStatusBars(int32_t x); /* x: the bars' left edge (smooth motion) */
  void TB(renderCareHUD)(int32_t instanceId)
  {
 -	int16_t saved;
@@ -228,7 +230,7 @@ index 289976a..0da1d7c 100644
 -		STATUS_UI_OFFSET_X = 75;
 -		renderStatusBars(1);
 -		STATUS_UI_OFFSET_X = saved;
-+		renderStatusBars(75);
++		renderStatusBars(95);
  	}
  }
  

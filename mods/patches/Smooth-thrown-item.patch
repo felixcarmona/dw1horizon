@@ -1,15 +1,15 @@
-From 73caf5df1f4b7167b4412ee629d7b62e773bc16d Mon Sep 17 00:00:00 2001
+From 89be70d0d56782e500a65d4d1accda6eb57a3805 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Fri, 27 Nov 2026 13:15:27 +0000
 Subject: [PATCH] Smooth motion: a thrown item flies at every frame
 
 The item's place before tickThrownItem's step is kept; renderThrownItem draws it between that and the new one.
 ---
- src/main/main.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ src/main/main.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/src/main/main.c b/src/main/main.c
-index 8744449..efe343b 100644
+index 8744449..aabe6bf 100644
 --- a/src/main/main.c
 +++ b/src/main/main.c
 @@ -6286,6 +6286,9 @@ void initializeInventoryModules(void)
@@ -38,17 +38,18 @@ index 8744449..efe343b 100644
  	if ((TAMER_ENTITY.entity.anim.animId == 6) && (TAMER_ENTITY.entity.anim.animFrame < 7)) {
  		workm = &TAMER_ENTITY.entity.posData[9].posMatrix.workm;
  		TAMER_ITEM.worldItem.spriteLocation.vx = workm->t[0];
-@@ -6355,7 +6360,13 @@ void tickThrownItem(int32_t instanceId)
+@@ -6355,7 +6360,14 @@ void tickThrownItem(int32_t instanceId)
  
  void renderThrownItem(int32_t instanceId)
  {
 -	renderOverworldItem(&TAMER_ITEM.worldItem);
-+	WorldItem item = TAMER_ITEM.worldItem;
++	WorldItem item;
 +
-+	/* MOD (smooth motion): drawn between the last two ticks' places */
-+	item.spriteLocation.vx = modTickLerp(modThrowPrev.vx, item.spriteLocation.vx);
-+	item.spriteLocation.vy = modTickLerp(modThrowPrev.vy, item.spriteLocation.vy);
-+	item.spriteLocation.vz = modTickLerp(modThrowPrev.vz, item.spriteLocation.vz);
++	/* MOD (smooth motion): drawn between the last two ticks' places (the draw reads the place and the type) */
++	item.type = TAMER_ITEM.worldItem.type;
++	item.spriteLocation.vx = modTickLerp(modThrowPrev.vx, TAMER_ITEM.worldItem.spriteLocation.vx);
++	item.spriteLocation.vy = modTickLerp(modThrowPrev.vy, TAMER_ITEM.worldItem.spriteLocation.vy);
++	item.spriteLocation.vz = modTickLerp(modThrowPrev.vz, TAMER_ITEM.worldItem.spriteLocation.vz);
 +	renderOverworldItem(&item);
  }
  

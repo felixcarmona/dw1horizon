@@ -1,14 +1,14 @@
-From 524e18744e731cef086f0fb4d9dd8c44dea6b7b0 Mon Sep 17 00:00:00 2001
+From a7ceeea1830cf3c007a5579f4485669f47002388 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Fri, 27 Nov 2026 13:28:09 +0000
 Subject: [PATCH] Smooth motion: snow falls and butterflies fly at every frame
 
-A snowflake is drawn between its last two heights (not over its wrap to the top); its kinds' drift and fall are
+A snowflake is drawn between its last two heights (back at the top it slides in from above); its kinds' drift and fall are
 tables. A butterfly's circle and bob are computed from its frame in 1/4096 of a tick instead of lerp.
 ---
  src/main/butterfly.c | 10 ++++++++--
- src/main/overworld.c | 34 ++++++++++++++--------------------
- 2 files changed, 22 insertions(+), 22 deletions(-)
+ src/main/overworld.c | 32 ++++++++++++--------------------
+ 2 files changed, 20 insertions(+), 22 deletions(-)
 
 diff --git a/src/main/butterfly.c b/src/main/butterfly.c
 index 050e279..6675063 100644
@@ -49,7 +49,7 @@ index 050e279..6675063 100644
  
  	depth = worldPosToScreenPos(&pos, &screen);
 diff --git a/src/main/overworld.c b/src/main/overworld.c
-index 387d5b0..f2eac40 100644
+index 387d5b0..b97fba9 100644
 --- a/src/main/overworld.c
 +++ b/src/main/overworld.c
 @@ -519,6 +519,11 @@ void tickMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
@@ -72,19 +72,17 @@ index 387d5b0..f2eac40 100644
  
  	if (!MAP_LAYER_ENABLED) {
  		return;
-@@ -555,6 +561,11 @@ void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
+@@ -555,6 +561,9 @@ void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
  		pos.x = draw->x;
  		pos.y = draw->y;
  		if (draw->kind == 3) {
-+			/* MOD (smooth motion): the flake falls at every frame (not over its wrap to the top) */
++			/* MOD (smooth motion): the flake falls at every frame (back at the top it slides in from above) */
 +			fall = MOD_SNOW_FALL[instances->animSprites[0] & 7];
-+			if (pos.y >= fall) {
-+				pos.y = modTickLerp(pos.y - fall, pos.y);
-+			}
++			pos.y = modTickLerp(pos.y - fall, pos.y);
  			buildSnowflakePrim(prim, &pos, obj);
  		} else {
  			buildMapOverlayPrim(prim, &pos, obj, screenX, screenY,
-@@ -705,32 +716,15 @@ void renderMist(void)
+@@ -705,32 +714,15 @@ void renderMist(void)
   * jitter, which is added to x where the flake is drawn. */
  int8_t tickSnowflake(LocalMapObjectInstance *inst)
  {
@@ -119,7 +117,7 @@ index 387d5b0..f2eac40 100644
  		if ((CURRENT_FRAME % 3) == 0) {
  			inst->x += horizontalMovement;
  		}
-@@ -742,7 +736,7 @@ int8_t tickSnowflake(LocalMapObjectInstance *inst)
+@@ -742,7 +734,7 @@ int8_t tickSnowflake(LocalMapObjectInstance *inst)
  		}
  	}
  
