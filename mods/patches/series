@@ -577,3 +577,4 @@ OPTIONS-at-the-title-opens-at-once.patch
 Farm-bubble-bobs-smoothly.patch
 Sound-header-buffers-are-as-big-as-the-real-headers.patch
 Battle-command-icons-for-the-new-technique-rows.patch
+Heap-libgte-rcossin_tbl-replaced-by-a-quarter-wave-helper.patch
