@@ -3,23 +3,11 @@ name: Patch series
 # The C patch series (mods/patches/README.md): the series file, the patch files and index.md agree, and the whole series
 # applies with git am to the pinned decompilation (the public submodule decomp/; no disc data). A pull request is checked
 # as GitHub would merge it, so two branches whose patches touch the same lines fail here before the merge.
+# Every pull request runs it (about 25 s), so `apply` can be a required check: with a path filter, a required check
+# never reports on the pull requests it skips and they wait forever.
 
 on:
   pull_request:
-    paths:
-      - 'mods/patches/**'
-      - 'decomp'
-      - '.gitmodules'
-      - '.gitattributes'
-      - 'tools/patch_series.py'
-      - 'tools/test_patch_series.py'
-      - 'tools/test_technique_coherence.py'
-      - 'content/species/**'
-      - 'content/maps/**'
-      - 'content/battle/**'
-      - 'content/tables/brain-training.json'
-      - 'docs/proposals/technique-coherence.csv'
-      - '.github/workflows/patches.yml'
   push:
     branches: [main]
     paths:
