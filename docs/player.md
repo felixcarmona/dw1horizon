@@ -8,11 +8,12 @@ libretro core and boots the patched disc with the free OpenBIOS. Its settings ar
 |---|---|---|
 | RAM | 8 MB | extra heap headroom; the game still runs in 2 MB ([real hardware](../README.md)) |
 | CPU | 250 % | smoother play; the title screen's settings panel detects both and hides itself |
-| Renderer | OpenGL (GLES 3 on Android), internal resolution = display height / 240 (2x-8x, Android 2x-4x; the menu's settings or `--scale N`) | sharp 3D at full screen |
+| Renderer | OpenGL (GLES 3 on Android), internal resolution = display height / 240 (2x-8x, Android 2x-3x; the menu's settings or `--scale N`) | sharp 3D at full screen |
 | BIOS | OpenBIOS (`system/openbios.bin`), no fast-boot patch | no Sony BIOS is needed or shipped |
 | CD | reads 8x, seeks 10x (`CDROM_ReadSpeedup` 4, `CDROM_SeekSpeedup` 10) | loads take about half the time; the core keeps music and movie sound at 1x |
 | Memory card | slot 1, `duckstation_shared_card_1.mcd` in the user's data folder, written by the program each second it changed and when the app goes to the background | survives updates of the app |
 | Screen | full screen, 4:3, F11 / Alt+Enter toggles | |
+| Pace | the screen's refresh (vsync); near the console's 59.82 Hz the sound is stretched by under half a percent to follow it, steering its queue to 60 ms. A frame the machine was too slow for (heavy loads) is caught up: the next one runs without being shown | no stutter in the music, no missed refreshes |
 
 The program carries no game data. It plays the disc that the patcher builds from the player's own disc.
 
@@ -71,11 +72,12 @@ OpenGL version and the speed every 30 seconds) and reads `options.txt` (`KEY=VAL
 Keyboard: arrows, Z Cross, X Circle, A Square, S Triangle, Q/W L1/R1, E/R L2/R2, Enter Start, Backspace Select.
 Any pad SDL knows is laid out like a PlayStation pad, and the left stick also moves. Any other joystick works too,
 read raw: buttons 0-3 Triangle, Circle, Cross, Square, 4-7 L2, R2, L1, R1, 8-9 SELECT, START, the first hat and the
-first two axes as the D-pad (the button setup below fits it to any other layout). A phone's tilt sensor is not taken
-for a joystick.
+first two axes as the D-pad. The first time such a joystick is connected, the button setup below opens by itself
+(after the first start's question) to fit it to its own layout; once set, `joy device=` in `controls.txt` keeps its
+SDL GUID and it is not asked about again. A phone's tilt sensor is not taken for a joystick.
 
-**The menu:** SELECT and START pressed together, at any moment (neither reaches the game), or the round button at the
-top of the touch pad. The game waits under it. It shows big pictures, each with a word in English under it (a 5x7 font drawn into the overlay's texture); a tap, the mouse
+**The menu:** SELECT and START pressed together, at any moment (neither reaches the game), the round button at the
+top of the touch pad, or on a computer Escape or a right click (F11 or Alt+Enter switch full screen). The game waits under it. It shows big pictures, each with a word in English under it (a 5x7 font drawn into the overlay's texture); a tap, the mouse
 or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goes back:
 
 - ▶ back to the game.
@@ -87,7 +89,8 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
   to `duckstation_shared_card_1.backup-DATE.mcd` in the saves folder, then the game starts again to read the new one.
 - ⚙ settings. **Resolution**: the 3D's internal resolution, 1X (the console's own, 240 lines) to 4X (8X on a
   computer). It changes at once and goes to `settings.txt` in the saves folder (`scale N`); with no choice the program
-  takes the screen's height / 240 (2X-4X on Android, 2X-8X on a computer). `--scale N` and `options.txt` still win
+  takes the screen's height / 240 (2X-3X on Android, 2X-8X on a computer: 4X is too much for some handheld GPUs while
+  the game loads: one tested drops to 41 fps there, 59 at 3X). `--scale N` and `options.txt` still win
   at start.
 - ⏻ quit.
 

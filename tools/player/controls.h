@@ -13,6 +13,7 @@ extern float remap_time_left;                  /* 1 .. 0 */
 enum { MODE_UNSET, MODE_TOUCH, MODE_PAD };
 extern int controls_mode;                      /* what the player said they play with (asked on the first start) */
 extern bool controls_menu_asked;               /* SELECT and START were pressed together */
+extern bool controls_setup_wanted;             /* a joystick not set up before was connected */
 
 void controls_load(const char *save_dir);
 void controls_set_mode(int mode);

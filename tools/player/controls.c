@@ -27,6 +27,8 @@ const int control_ids[N] = {
 
 int controls_mode;
 bool controls_menu_asked;
+bool controls_setup_wanted;
+static char joy_set_up[33];   /* the GUID of the joystick the "joy" buttons were set up on ("joy device=") */
 
 /* a known controller's input: a button (0..), or a trigger as AXIS + its axis */
 #define AXIS 100
@@ -91,6 +93,7 @@ void controls_load(const char *save_dir) {
     if (!strcmp(line, "mode touch")) { controls_mode = MODE_TOUCH; continue; }
     if (!strcmp(line, "mode pad")) { controls_mode = MODE_PAD; continue; }
     if (sscanf(line, "%7s %15[^=]=%63[^\n]", kind, name, value) != 3) continue;
+    if (!strcmp(kind, "joy") && !strcmp(name, "device")) { snprintf(joy_set_up, sizeof joy_set_up, "%.32s", value); continue; }
     int i = 0;
     while (i < N && strcmp(names[i], name)) i++;
     if (i == N) continue;
@@ -122,6 +125,7 @@ static void save(void) {
   for (int i = 0; i < N; i++)
     fprintf(f, "pad %s=%s\n", names[i], pad_map[i] >= AXIS ? SDL_GameControllerGetStringForAxis(pad_map[i] - AXIS)
                                                            : SDL_GameControllerGetStringForButton(pad_map[i]));
+  if (joy_set_up[0]) fprintf(f, "joy device=%s\n", joy_set_up);
   for (int i = 0; i < N; i++) {
     char v[16]; joy_name(joy_map[i], v, sizeof v);
     fprintf(f, "joy %s=%s\n", names[i], v);
@@ -154,7 +158,12 @@ static void add_device(int index) {
     SDL_JoystickID id = SDL_JoystickGetDeviceInstanceID(index);
     for (int i = 0; i < 4; i++) if (joys[i] && SDL_JoystickInstanceID(joys[i]) == id) return;
     for (int i = 0; i < 4; i++)
-      if (!joys[i]) { joys[i] = SDL_JoystickOpen(index); SDL_Log("joystick: %s", SDL_JoystickName(joys[i])); return; }
+      if (!joys[i]) {
+        joys[i] = SDL_JoystickOpen(index); SDL_Log("joystick: %s", SDL_JoystickName(joys[i]));
+        char guid[33]; SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joys[i]), guid, sizeof guid);
+        if (strcmp(guid, joy_set_up)) controls_setup_wanted = true;   /* its buttons are asked for */
+        return;
+      }
   }
 }
 
@@ -254,7 +263,11 @@ void controls_setup_start(void) {
 static void finish(bool keep) {
   if (keep) {
     if (device == 1) memcpy(pad_map, new_pad, sizeof pad_map);
-    if (device == 3) memcpy(joy_map, new_pad, sizeof joy_map);
+    if (device == 3) {
+      memcpy(joy_map, new_pad, sizeof joy_map);
+      for (int i = 0; i < 4; i++)   /* the joystick it was set up on is not asked about again */
+        if (joys[i]) { SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joys[i]), joy_set_up, sizeof joy_set_up); break; }
+    }
     if (device == 2) for (int i = 0; i < N; i++) { key_map[i][0] = new_key[i]; key_map[i][1] = 0; }
     save();
   } else SDL_Log("controls: the setup timed out; the buttons stay as they were");

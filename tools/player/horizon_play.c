@@ -410,11 +410,33 @@ static void save_screenshot(const char *path) {
 }
 
 static bool booting;   /* the black start, run as fast as the machine goes: its sound is dropped */
-static void audio_sample(int16_t l, int16_t r) { int16_t s[2] = {l, r}; if (audio_dev && !booting) SDL_QueueAudio(audio_dev, s, sizeof s); }
-static size_t audio_batch(const int16_t *d, size_t frames) {
-  if (audio_dev && !booting) SDL_QueueAudio(audio_dev, d, (Uint32)(frames * 4));
-  return frames;
+/* The sound follows the screen. With a screen refresh near the console's (60 Hz against 59.82), the loop keeps the
+ * screen's pace (vsync) and the sound is stretched by a fraction of a percent, more or less as the queue sits below or
+ * above its target (dynamic rate control). Waiting on the sound instead made the loop miss a refresh several times a
+ * second. audio_ratio is the output samples per input sample; 1 = not stretched (other refresh rates: the sound sets
+ * the pace, see the main loop). */
+static double audio_ratio = 1, audio_pos = -1;   /* audio_pos: the read position, -1 = the previous batch's last */
+static int16_t audio_last[2];
+static void audio_push(const int16_t *d, size_t frames) {
+  if (!audio_dev || booting || !frames) return;
+  if (audio_ratio == 1) { SDL_QueueAudio(audio_dev, d, (Uint32)(frames * 4)); return; }
+  static int16_t out[2048 * 2];
+  size_t n = 0;
+  double step = 1 / audio_ratio;
+  for (; audio_pos < (double)frames - 1; audio_pos += step) {
+    int i = (int)SDL_floor(audio_pos);
+    float f = (float)(audio_pos - i);
+    const int16_t *a = i < 0 ? audio_last : d + i * 2, *b = d + (i + 1) * 2;
+    out[n * 2] = (int16_t)(a[0] + (b[0] - a[0]) * f);
+    out[n * 2 + 1] = (int16_t)(a[1] + (b[1] - a[1]) * f);
+    if (++n == 2048) { SDL_QueueAudio(audio_dev, out, (Uint32)(n * 4)); n = 0; }
+  }
+  if (n) SDL_QueueAudio(audio_dev, out, (Uint32)(n * 4));
+  audio_pos -= (double)frames;
+  audio_last[0] = d[frames * 2 - 2]; audio_last[1] = d[frames * 2 - 1];
 }
+static void audio_sample(int16_t l, int16_t r) { int16_t s[2] = {l, r}; audio_push(s, 1); }
+static size_t audio_batch(const int16_t *d, size_t frames) { audio_push(d, frames); return frames; }
 
 /* ---- input ---- */
 static void input_poll(void) {}
@@ -476,7 +498,10 @@ static void handle_events(void) {
     case SDL_KEYDOWN:
       if (e.key.keysym.sym == SDLK_F11 || (e.key.keysym.sym == SDLK_RETURN && (e.key.keysym.mod & KMOD_ALT))) toggle_fullscreen();
       else if (e.key.keysym.sym == SDLK_ESCAPE && menu_open) menu_back();
-      else if (e.key.keysym.sym == SDLK_ESCAPE && (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN)) toggle_fullscreen();
+      else if (e.key.keysym.sym == SDLK_ESCAPE && remap_step < 0) controls_menu_asked = true;   /* Escape opens the menu */
+      break;
+    case SDL_MOUSEBUTTONDOWN:   /* so does a right click: a computer always has a way in, whatever its pad */
+      if (e.button.button == SDL_BUTTON_RIGHT && !menu_open && remap_step < 0) controls_menu_asked = true;
       break;
     case SDL_DROPFILE:   /* a memory card dropped on the window, while the menu waits for one */
       if (menu_waiting_drop()) card_import(e.drop.file);
@@ -794,7 +819,9 @@ int main(int argc, char **argv) {
 
   /* fixed settings: the reason this program exists */
 #ifdef __ANDROID__
-  const int max_scale = 4;    /* phone and handheld GPUs */
+  /* phone and handheld GPUs: 4x is too much for some while the game loads (a handheld tested drops to 41 fps there,
+   * 3x keeps 59), so a sharper picture is only the menu's choice */
+  const int max_scale = 3;
 #else
   const int max_scale = 8;
 #endif
@@ -866,6 +893,13 @@ int main(int argc, char **argv) {
   touch_shown = force_touch || controls_mode == MODE_TOUCH;
 
   const Uint32 bytes_per_sec = (Uint32)want.freq * 4;
+  /* the screen's refresh near the console's: the sound is stretched to it (audio_push) */
+  double audio_base = 0;
+  { SDL_DisplayMode m; double fps = av.timing.fps > 0 ? av.timing.fps : 59.82;
+    if (audio_dev && SDL_GetWindowDisplayMode(window, &m) == 0 && m.refresh_rate > 0 && SDL_fabs(m.refresh_rate - fps) < 1.5)
+      audio_base = fps / m.refresh_rate;
+    SDL_Log("sound: %d Hz, %d-sample buffer, %s; screen %d Hz, %s", got.freq, got.samples, SDL_GetCurrentAudioDriver(),
+            SDL_GetWindowDisplayMode(window, &m) == 0 ? m.refresh_rate : 0, audio_base ? "stretched to the screen" : "paced by the sound"); }
   int frame = 0;
   /* the start is black for about 15 seconds (OpenBIOS and the game loading): it runs unpaced and unseen until the
    * game's first picture after OpenBIOS's own screen, so it takes as long as the machine needs, not the console */
@@ -880,6 +914,11 @@ int main(int argc, char **argv) {
     uint16_t bits = controls_bits() | (uint16_t)scripted_bits(frame);
     bits = controls_frame(bits);
     if ((controls_menu_asked || overlay_menu_tapped) && !menu_open && remap_step < 0) menu_show();
+    /* a joystick SDL does not know, not set up before: its buttons are asked for at once (after the first start's
+     * question), since its SELECT and START may not be where the menu expects them */
+    if (controls_setup_wanted && !menu_open && remap_step < 0 && run_frames < 0 && !press_script) {
+      controls_setup_wanted = false; controls_setup_start();
+    }
     controls_menu_asked = overlay_menu_tapped = false;
     if (menu_open || remap_step >= 0) {   /* the game waits under the menu and the button setup */
       if (menu_open) {
@@ -940,11 +979,27 @@ int main(int argc, char **argv) {
         continue;
       }
     }
+    /* Catching up. A slow frame (the game busy while it loads) costs a screen refresh and leaves the sound queue short
+     * by a frame; then the next frame runs without being shown, so the game and its music keep their pace and the
+     * screen holds its picture one refresh longer. The queue counts at its highest over the last three frames: the
+     * sound device takes it in bites of about 23 ms, so a single reading swings that much. */
+    if (audio_dev && run_frames < 0) {
+      static Uint32 q_seen[3]; static int q_at; static bool skipped;
+      q_seen[q_at++ % 3] = SDL_GetQueuedAudioSize(audio_dev);
+      Uint32 top = SDL_max(q_seen[0], SDL_max(q_seen[1], q_seen[2]));
+      if (!skipped && top < bytes_per_sec * 3 / 100) { skipped = true; continue; }
+      skipped = false;
+    }
     present(run_frames >= 0 && frame >= run_frames);
     if (run_frames >= 0 && frame >= run_frames) break;
-    /* the sound sets the pace: never more than about 80 ms queued */
-    if (audio_dev && run_frames < 0)
-      while (SDL_GetQueuedAudioSize(audio_dev) > bytes_per_sec / 12 && !quit) SDL_Delay(1);
+    if (audio_dev && run_frames < 0) {
+      if (audio_base) {   /* stretched: the queue steered towards 60 ms, at most 0.5 % either way */
+        double target = (double)bytes_per_sec * 6 / 100, err = (target - (double)SDL_GetQueuedAudioSize(audio_dev)) / target;
+        audio_ratio = audio_base * (1 + 0.005 * (err > 1 ? 1 : err < -1 ? -1 : err));
+      }
+      /* paced by the sound: never more than about 80 ms queued (stretched: only a guard, 200 ms) */
+      while (SDL_GetQueuedAudioSize(audio_dev) > (audio_base ? bytes_per_sec / 5 : bytes_per_sec / 12) && !quit) SDL_Delay(1);
+    }
   }
 
   card_save();
