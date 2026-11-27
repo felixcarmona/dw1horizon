@@ -422,7 +422,7 @@ void menu_draw(int ww, int wh) {
       for (int j = 0; j < n; j++) lh = fminf(lh, size * 0.84f * lh / fmaxf(overlay_text_width(c[j].icon, lh), 1));
       overlay_text(c[i].icon, cx, cy, lh * k, z * 0.9f, bright, 1);
       if (c[i].action == A_PRESET + controls_key_preset())
-        overlay_quad(I_CHECK, cx + z * 0.5f - zh * 0.08f, cy - zh * 0.5f + zh * 0.08f, zh * 0.42f, zh * 0.42f, 1, 1);
+        overlay_quad(I_CHECK, cx + z * 0.5f - zh * 0.05f, cy - zh * 0.5f + zh * 0.05f, zh * 0.9f, zh * 0.9f, 1, 1);   /* big, on the corner */
       continue;
     }
     if (c[i].icon >= T_RESUME) overlay_text(c[i].icon, cx, cy, z * 0.3f, z * 0.8f, bright, 1);   /* a word as the picture */
