@@ -227,7 +227,7 @@ can represent several strides and are not by themselves excessive.
 | 32 (P4) | 248 MarineAngemon | 1:18 | 22t/2, 20t/2, 18t/2 | Audition SL 12; same cue family as native Vademon |
 | 33 (P4) | 311 Arukenimon | 1:18 | 22t/2, 20t/2, 18t/2 | Audition SL 12; same cue family as native Vademon |
 | 34 (P5) | 182 Kimeramon | 1:13 | 20t/2, 24t/2, 20t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
-| 35 (P5) | 185 Armadillomon | 1:13 | 12t/2, 18t/2, 10t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
+| 35 (P5) | 185 Armadillomon | 1:13 | 12t/2, 18t/2, 10t/2 | Rookie: SL 12 like Agumon; implemented |
 | 36 (P5) | 189 Ankylomon | 1:13 | 48t/6, 28t/2, 20t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
 | 37 (P5) | 190 Angewomon | 1:16, 1:20 | 20t/2, 96t/12, 14t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
 | 38 (P5) | 193 Digmon | 1:13 | 20t/2, 24t/2, 20t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
@@ -275,7 +275,7 @@ can represent several strides and are not by themselves excessive.
 | 80 (P5) | 407 Armageddemon | 1:13 | 24t/2, 24t/2, 20t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
 | 81 (P5) | 408 Suijinmon | 1:13 | 18t/4, 27t/4, 14t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
 | 82 (P5) | 430 Zanbamon | 1:20 | 18t/2, 20t/2, 16t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
-| 83 (P5) | 433 Guilmon | 1:13 | 22t/2, 26t/2, 18t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
+| 83 (P5) | 433 Guilmon | 1:13 | 22t/2, 26t/2, 18t/2 | Rookie: SL 12 like Agumon; implemented |
 | 84 (P5) | 461 Omnimon | 1:13, 1:16 | 20t/2, 24t/2, 12t/2 | Audition SL 12 for lighter bodies; retain deliberate heavy/hoof cues |
 | 85 (P6) | 187 Stingmon | 1:16 | 16t/2, 16t/2, 16t/2 | Audition SL 12 if the Leomon/insect clack does not fit; keep 16 when intentional |
 | 86 (P6) | 194 ExVeemon | 1:16 | 16t/2, 16t/2, 16t/2 | Audition SL 12 if the Leomon/insect clack does not fit; keep 16 when intentional |

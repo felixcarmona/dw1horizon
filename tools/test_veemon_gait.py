@@ -18,14 +18,15 @@ import mmd
 import motionstorage
 from tools.models.field_animations import veemon_gait as gait, quadruped
 
-EXPECTED = 'a19e188c35e85767ab5bac71f6b7d1141520cbc1a3ecbba047866cb8b9777c21'
+EXPECTED = '74535caf4252f260dd989fd8c6b4409b7f3c8a6658b6aaf80cf35314ec01a862'
 NB = 20
-TICKS = {2: 24, 3: 36, 4: 16}
+TICKS = {2: 20, 3: 24, 4: 16}
 IDLE = 96
 SPEED = {2: 16, 3: 11, 4: 38}
 # Triangle-inside counts per clip, the worst tick of each group pair summed over the pairs, on every second tick: the
-# clips before this change measured 202 / 193 / 211 / 200 (arms hanging straight), these must not grow beyond what is measured now.
-PENETRATION = {0: 229, 2: 207, 3: 259, 4: 192}       # (the blinks and the foot roll measure 191 / 204 / 259 / 188)
+# Digimon World 2 mesh's own source clips (its standing idle on every slot) measure 274 / 622 / 840 / 593, these must not grow
+# beyond what is measured now (the chest-head and hip-thigh overlaps are the mesh's own, at rest).
+PENETRATION = {0: 357, 2: 365, 3: 360, 4: 407}
 GROUPS = dict(arm_r=[5, 6, 7], arm_l=[8, 9, 10], leg_r=[14, 15, 16], leg_l=[17, 18, 19], hips=[1], torso=[2],
               head=[3, 4], tail=[11, 12, 13])
 
@@ -191,8 +192,9 @@ class VeemonGait(unittest.TestCase):
 
     def test_feet_roll(self):
         """The foot's toes point up from the ground at touchdown and down at the push-off: its pitch (the lift of the
-        foot's forward axis) swings through a range in every gait (the clips before measured 3 degrees)."""
-        need = {2: 18.0, 3: 12.0, 4: 12.0}
+        foot's forward axis) swings through a range in every gait. Digimon World 2's long clawed foot pitches only a little:
+        a few degrees already dig its toes in or throw the ankle up to the hip."""
+        need = {2: 7.0, 3: 4.0, 4: 5.0}
         for slot, low in need.items():
             fr = self.frames(slot)
             for bone in (16, 19):
@@ -226,26 +228,19 @@ class VeemonGait(unittest.TestCase):
         self.assertGreater(max(closed(plans[3])), max(closed(plans[2])))
 
     def test_shut_eye_covers_the_open_eye(self):
-        """The shut frame holds none of the eye's iris, glint or red rim: it replaces the open eye everywhere."""
+        """Digimon World 2's own eye frames: the block in the model is the open frame, the half-shut frame keeps less of the
+        iris and the shut one none of it (index 9-11), so a blink replaces the open eye everywhere."""
         from tools.models.field_animations import veemon_face as face
-        raw = None
-        for tim in (Path(os.environ.get('VEEMON_MODEL', 'build/imported-model-edit/edit/180-Veemon.MMD')).with_suffix('.TIM'),):
-            if tim.exists():
-                raw = tim.read_bytes()
-        if raw is None:
+        tim = Path(os.environ.get('VEEMON_MODEL', 'build/imported-model-edit/edit/180-Veemon.MMD')).with_suffix('.TIM')
+        if not tim.exists():
             self.skipTest('needs the texture beside the model')
-        if hashlib.sha256(raw).hexdigest() == gait.SOURCE_TIM:
-            raw = gait.texture(raw)
-        t = mmd.Tim4(raw)
+        t = mmd.Tim4(tim.read_bytes())
         eye = face._grab(t, face.EYE_FRAMES[face.OPEN], face.EYE_SIZE)
-        for state in (face.HALF, face.SHUT):
-            frame = face._grab(t, face.EYE_FRAMES[state], face.EYE_SIZE)
-            lit = lambda block: sum(v in (4, 5, 6, 7, 0xb, 0xc) for row in block[:38] for v in row)
-            self.assertLess(lit(frame), lit(eye) * (0.7 if state == face.HALF else 0.05), state)
-        shut = face._grab(t, face.EYE_FRAMES[face.SHUT], face.EYE_SIZE)
-        self.assertEqual(shut[38:], eye[38:])           # the texels below the eye are kept
         self.assertEqual(face._grab(t, face.EYE_AT, face.EYE_SIZE), eye)       # the block in the model is the open eye
-
+        iris = lambda block: sum(v in (9, 10, 11) for row in block for v in row)
+        self.assertGreater(iris(eye), 100)
+        self.assertLess(iris(face._grab(t, face.EYE_FRAMES[face.HALF], face.EYE_SIZE)), iris(eye))
+        self.assertEqual(iris(face._grab(t, face.EYE_FRAMES[face.SHUT], face.EYE_SIZE)), 0)
 
 if __name__ == '__main__':
     unittest.main()

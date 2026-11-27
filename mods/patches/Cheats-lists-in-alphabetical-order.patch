@@ -1,0 +1,308 @@
+From 8c5899084ad297c0d32bcbade9cc1fa26e7612a4 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 11:48:51 +0000
+Subject: [PATCH] Cheats lists in alphabetical order
+
+The Digimon and map lists of the Cheats menu are sorted by the name shown, letters compared as capitals. Each row's
+key is taken once as it is added (a name can be in a DIGI.DAT record read from the disc) and kept in the save
+extension area, which no card operation uses while the menu is open. The techniques list keeps the id order.
+
+The MENU overlay pays for it with smaller code elsewhere in the menu (row heights and view titles as tables, one
+release-wait helper, merged confirm cases): MENU is 32 bytes smaller (0xd7d0) and the resident exe 32 bytes smaller.
+---
+ config/us/overlay.ld      |   7 ++-
+ include/dw/memmap.h       |   3 +-
+ src/main/mod_lab_menu.inc | 127 +++++++++++++++++++++++++-------------
+ 3 files changed, 92 insertions(+), 45 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 1e38dd2..68b3312 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -1024,8 +1024,10 @@ SECTIONS
+              * The roster callbacks and state stay resident, and so does modLabFieldPtr: MENU is full to the sector. */
+             BUILD_DIR/src/main/mod_lab.c.o(.text.modLabFit .text.modLabBound
+                 .text.modLabClamp .text.modLabList .text.modLabPerform
+-                .text.modLabDrawText .text.modLabRowY .text.modLabRender
++                .text.modLabDrawText .text.modLabRender
+                 .text.modLabMenuLoaded* .text.labInt .text.labHash
++                .text.modLabFrames* .text.modLabRelease* .text.modLabPad*
++                .text.modLabAdd* .text.modLabBefore*
+                 .rodata.modLabMenuLoaded*);
+             /* UI-only storage: the anonymous translated-literal pool, immutable
+              * field/home tables and redraw cache. Roster captions, their level
+@@ -1036,7 +1038,8 @@ SECTIONS
+              * the lab's render callback has been removed. */
+             BUILD_DIR/src/main/mod_lab.c.o(.rodata .rodata.LAB_FIELDS
+                 .rodata.LAB_HOME_TEXT .rodata.LAB_NUMBER_LINES .bss.labTextHash .bss.labTextWidth
+-                .rodata.LAB_LOOK_TEXT .rodata.LAB_HAIR_TEXT .rodata.LOOK_PAGE_TEXT);
++                .rodata.LAB_LOOK_TEXT .rodata.LAB_HAIR_TEXT .rodata.LOOK_PAGE_TEXT
++                .rodata.LAB_ROW_Y .rodata.LAB_VIEW_TITLE);
+             . = ALIGN(., 4);
+ 
+ 			LONG(0);
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 6300ac0..6dcf2ce 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -91,7 +91,8 @@
+  * It is above every sound bank staged at GENERAL_BUFFER (the largest: an ESALL chunk of 124 sectors,
+  * to 0x8004E000; SB.VHB to 0x8004D000), the evolution model area (EVO_MMD_ADDR, to 0x80048800) and
+  * DOOA_SHARD, and below the battle prefix (0x80052AE0). (A battle's EFE heap covers it: no card
+- * operation runs in a battle.)
++ * operation runs in a battle.) The Cheats menu also keeps its lists' sort keys here while it is open
++ * (LAB_KEYS, mod_lab_menu.inc); prepareSaveFile clears the extension before it writes one.
+  */
+ /* NPC CD reads are sector-rounded; compact in field scratch, then copy to
+  * the heap. Never retain a pointer here. Drained sound staging may reuse it. */
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index 4713e94..153e106 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -149,9 +149,10 @@ static int32_t modLabBound(int32_t field, int32_t maximum)
+     const LabField *f = &LAB_FIELDS[field];
+     int32_t value = f->care >= 0 ? careGet(f->care + (maximum != 0)) : -1;
+     if (value == -1) value = maximum ? f->max : f->min;
+-    if (maximum && field == 10) value = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap;
+-    if (maximum && field == 18) value = PARTNER_ENTITY.digimonEntity.stats.base.hp;
+-    if (maximum && field == 19) value = PARTNER_ENTITY.digimonEntity.stats.base.mp;
++    if (maximum) {
++        if (field == 10) value = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap;
++        if (field >= 18) value = (&PARTNER_ENTITY.digimonEntity.stats.base.hp)[field - 18];
++    }
+     return value;
+ }
+ 
+@@ -218,23 +219,63 @@ static int32_t modLabNewSpecies(int32_t type)
+     return type >= NUM_PARTNER_DIGIMON || !isVanillaSpecies(type);
+ }
+ 
++/* The bytes of the old fixed-width centering padding of map captions at s: a space, a full-width space or none (0). */
++static __attribute__((noinline)) int32_t modLabPad(const char *s)
++{
++    return *s == ' ' ? 1 : (uint8_t)s[0] == 0x81 && (uint8_t)s[1] == 0x40 ? 2 : 0;
++}
++
++/*
++ * The Digimon and map lists are in alphabetical order. A name can be in a DIGI.DAT record, read from the disc into a
++ * small cache, so each row's sort key is taken once as it is added: its first LAB_KEY - 1 bytes with no padding and
++ * the letters as capitals (not the second byte of a two-byte glyph), by id, in the save extension area, which only a
++ * card operation uses and none runs while the lab is open (memmap.h).
++ */
++#define LAB_KEY 16
++#define LAB_KEYS ((uint8_t (*)[LAB_KEY])SAVE_EXT_ADDR)
++_Static_assert(LAB_KEY * NUM_DIGIMON <= SAVE_EXT_MAX && LAB_KEY * NUM_SCREENS <= SAVE_EXT_MAX, "lab sort keys");
++static __attribute__((noinline)) void modLabAdd(int32_t id)
++{
++    uint8_t *k = LAB_KEYS[id];
++    const uint8_t *s = (uint8_t *)(MOD_LAB_VIEW == LAB_EVOLVE ? DIGIMON_NAME(id) : getScreenCaption(id));
++    uint32_t c;
++    int32_t n, trail = 0;
++    labChoices[labCount++] = id;
++    while ((n = modLabPad((char *)s))) s += n;
++    for (n = 1; n < LAB_KEY && (c = *s++); n++) {
++        if (trail) trail = 0;
++        else if (c >= 0x80) trail = 1;
++        else if (c - 'a' < 26u) c -= 32;
++        *k++ = c;
++    }
++    *k = 0;
++}
++
++/* 1 when a's key comes before b's (byte order); the techniques list adds keys too but is not sorted. */
++static __attribute__((noinline)) int32_t modLabBefore(int32_t a, int32_t b)
++{
++    const uint8_t *x = LAB_KEYS[a], *y = LAB_KEYS[b];
++    while (*x && *x == *y) x++, y++;
++    return *x < *y;
++}
++
+ static void modLabList(int32_t view)
+ {
+-    int32_t i, first, id;
++    int32_t i, j, first, id;
+     labCount = 0;
+     MOD_LAB_VIEW = view;
+     MOD_LAB_CURSOR = labTop = 0;
+     if (view == LAB_MOVES) {
+         /* MOD (cheat techniques): every technique that has a name */
+-        for (i = 0; i < NUM_MOVE_NAMES; i++) if (MOVE_NAMES[i] && MOVE_NAMES[i][0]) labChoices[labCount++] = i;
++        for (i = 0; i < NUM_MOVE_NAMES; i++) if (MOVE_NAMES[i] && MOVE_NAMES[i][0]) modLabAdd(i);
+     } else if (view == LAB_EVOLVE) {
+         for (i = 1; i < NUM_ORIGINAL_DIGIMON; i++) {
+-            if (modRosterIsPartner(i)) labChoices[labCount++] = i;
++            if (modRosterIsPartner(i)) modLabAdd(i);
+         }
+         /* The partner index is ordered by id; no duplicate added native species. */
+         for (i = 0; i < getSpeciesPartnerCount(); i++) {
+             id = getSpeciesPartnerId(i);
+-            if (id >= NUM_ORIGINAL_DIGIMON && modRosterIsPartner(id)) labChoices[labCount++] = id;
++            if (id >= NUM_ORIGINAL_DIGIMON && modRosterIsPartner(id)) modLabAdd(id);
+         }
+     } else {
+         for (i = 0; i < NUM_ORIGINAL_SCREENS; i++) {
+@@ -243,17 +284,23 @@ static void modLabList(int32_t view)
+             if (!e->filename[0]) continue;
+             appendStr(appendStr(filename, e->filename), ".MAP");
+             /* Zero background images is valid (Mount Infinity, 3D rooms). */
+-            if (modFileOnDisc(filename)) labChoices[labCount++] = i;
++            if (modFileOnDisc(filename)) modLabAdd(i);
+         }
+         first = findNewScreen(-1, 1);
+         if (first >= 0) {
+             id = first;
+             do {
+-                labChoices[labCount++] = id;
++                modLabAdd(id);
+                 id = findNewScreen(id, 1);
+             } while (id >= 0 && id != first && labCount < NUM_SCREENS);
+         }
+     }
++    /* Digimon and maps by the name shown (insertion sort: stable, ties keep the id order); techniques by id. */
++    if (view != LAB_MOVES) for (i = 1; i < labCount; i++) {
++        id = labChoices[i];
++        for (j = i; j > 0 && modLabBefore(id, labChoices[j - 1]); j--) labChoices[j] = labChoices[j - 1];
++        labChoices[j] = id;
++    }
+     id = view == LAB_EVOLVE ? PARTNER_ENTITY.digimonEntity.entity.type : view == LAB_MOVES ? 0 : CURRENT_SCREEN;
+     for (i = 0; i < labCount; i++) if (labChoices[i] == id) MOD_LAB_CURSOR = i;
+ }
+@@ -283,12 +330,11 @@ static void modLabTrimLabel(char *s)
+ {
+     char *start = s, *p, *end;
+     int32_t space;
+-    while (*start == ' ' || ((uint8_t)start[0] == 0x81 && (uint8_t)start[1] == 0x40))
+-        start += (uint8_t)*start >= 0x80 ? 2 : 1;
++    while ((space = modLabPad(start))) start += space;
+     if (start != s) memmove(s, start, strlen(start) + 1);
+     end = s;
+     for (p = s; *p; ) {
+-        space = *p == ' ' || ((uint8_t)p[0] == 0x81 && (uint8_t)p[1] == 0x40);
++        space = modLabPad(p);
+         p += (uint8_t)*p >= 0x80 ? 2 : 1;
+         if (!space) end = p;
+     }
+@@ -328,6 +374,9 @@ static void modLabEntry(char *out, int32_t id, int32_t evolution)
+     appendStr(appendStr(out, name), suffix);
+ }
+ 
++/* Each view's title; the number editor and the confirmation take theirs from the row chosen. */
++static char *const LAB_VIEW_TITLE[] = { LAB_STR_TITLE, LAB_STR_PARAMETERS, NULL, LAB_STR_EVOLVE, LAB_STR_TELEPORT, NULL, LAB_STR_LEARN };
++
+ static void modLabDrawText(void)
+ {
+     RECT area;
+@@ -338,10 +387,8 @@ static void modLabDrawText(void)
+     if (MOD_LAB_CURSOR < labTop) labTop = MOD_LAB_CURSOR;
+     if (MOD_LAB_CURSOR >= labTop + visible) labTop = MOD_LAB_CURSOR - visible + 1;
+     memset(lines, 0, sizeof(lines));
+-    appendStr(lines[0], MOD_LAB_VIEW == LAB_HOME ? LAB_STR_TITLE :
+-        MOD_LAB_VIEW == LAB_VALUES ? LAB_STR_PARAMETERS : MOD_LAB_VIEW == LAB_NUMBER ? LAB_FIELDS[labField].name :
+-        MOD_LAB_VIEW == LAB_EVOLVE ? LAB_STR_EVOLVE : MOD_LAB_VIEW == LAB_MAPS ? LAB_STR_TELEPORT : MOD_LAB_VIEW == LAB_MOVES ? LAB_STR_LEARN :
+-        LAB_HOME_TEXT[labPreviousCursor]);
++    appendStr(lines[0], MOD_LAB_VIEW == LAB_NUMBER ? LAB_FIELDS[labField].name :
++        MOD_LAB_VIEW == LAB_CONFIRM ? LAB_HOME_TEXT[labPreviousCursor] : LAB_VIEW_TITLE[MOD_LAB_VIEW]);
+     if (MOD_LAB_VIEW == LAB_NUMBER) {
+         labInt(lines[3], MOD_LAB_VALUE);
+         p = appendStr(lines[5], LAB_STR_RANGE); p = labInt(p, modLabBound(labField, 0));
+@@ -382,19 +429,13 @@ static void modLabDrawText(void)
+     DrawSync(0);
+ }
+ 
+-/* The title, body and controls have their own space, regardless of how many rows a view uses. */
+-static int32_t modLabRowY(int32_t row)
+-{
+-    if (row == 0) return 12;
+-    if (row == 9) return 206;
+-    if (MOD_LAB_VIEW == LAB_NUMBER) {
+-        if (row == 3) return 76;
+-        if (row == 5) return 116;
+-        if (row == 6) return 148;
+-        if (row == 7) return 169;
+-    }
+-    return 44 + (row - 1) * LAB_PITCH;
+-}
++/* The title, body and controls have their own space, regardless of how many rows a view uses; the number editor
++ * spreads its rows around its box. */
++static const uint8_t LAB_ROW_Y[2][LAB_ROWS] = {
++    { 12, 44, 62, 80, 98, 116, 134, 152, 170, 206 },
++    { 12, 44, 62, 76, 98, 116, 148, 169, 170, 206 },
++};
++#define modLabRowY(row) LAB_ROW_Y[MOD_LAB_VIEW == LAB_NUMBER][row]
+ 
+ static void modLabFill(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t order)
+ {
+@@ -438,7 +479,7 @@ static void modLabRender(int32_t instanceId)
+     }
+ }
+ 
+-static void modLabFrames(int32_t frames)
++static __attribute__((noinline)) void modLabFrames(int32_t frames)
+ {
+     while (frames-- > 0) pauseFrame();
+ }
+@@ -474,6 +515,13 @@ void tickMainMenu(void);
+ void renderMainMenu(int32_t);
+ void pollInputMenu(void);
+ 
++/* Wait until confirm and cancel are up, so the next screen does not take the same press. */
++static __attribute__((noinline)) void modLabRelease(void)
++{
++    while (PadRead(1) & (CONFIRM_BUTTON | CANCEL_BUTTON)) VSync(0);
++    pollInputMenu();
++}
++
+ static void modLabCardMenu(int32_t action)
+ {
+     int32_t oldState = MAIN_STATE, oldCard = MEMORY_CARD_ID, oldSlot = MEMORY_CARD_SLOT;
+@@ -481,8 +529,7 @@ static void modLabCardMenu(int32_t action)
+     MOD_LAB_ACTIVE = 1;
+     MOD_CHEATS_CARD_MODE = action; MOD_CHEATS_CARD_DONE = 0;
+     if (action == 1) MAIN_STATE = 1;
+-    while (PadRead(1) & (CONFIRM_BUTTON | CANCEL_BUTTON)) VSync(0);
+-    pollInputMenu();
++    modLabRelease();
+     loadMenuOverlay();
+     SLOT_ACTION_TITLES[action - 1] = action == 1 ? LAB_STR_SAVE_GAME : LAB_STR_LOAD_GAME;
+     SLOT_ACTION_QUESTIONS[action - 1] = action == 1 ? LAB_STR_ASK_SAVE : LAB_STR_ASK_LOAD;
+@@ -499,8 +546,7 @@ static void modLabCardMenu(int32_t action)
+     removeObject(5000, 0);
+     SLOT_ACTION_TITLES[action - 1] = oldTitle; SLOT_ACTION_QUESTIONS[action - 1] = oldQuestion;
+     /* The resident lab entry restores KAR after all MENU code returns. */
+-    while (PadRead(1) & (CONFIRM_BUTTON | CANCEL_BUTTON)) VSync(0);
+-    pollInputMenu();
++    modLabRelease();
+     MAIN_STATE = oldState;
+     if (!MOD_CHEATS_CARD_DONE) { MEMORY_CARD_ID = oldCard; MEMORY_CARD_SLOT = oldSlot; }
+     if (MOD_CHEATS_CARD_DONE == 2) MOD_CHEATS_TRANSITION = 1;
+@@ -568,13 +614,11 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+                     MOD_OPT_SHORTCUTS = !MOD_OPT_SHORTCUTS;
+                     if (MOD_OPT_SHORTCUTS) modLabMessage = LAB_STR_SHORTCUTS_HELP;
+                     break;
+-                case 7: case 9: case 10:
+-                    labPrevious = LAB_HOME; labPreviousCursor = MOD_LAB_CURSOR;
+-                    MOD_LAB_TARGET = MOD_LAB_CURSOR == 7 ? 1 : MOD_LAB_CURSOR == 9 ? 3 : 4;
+-                    MOD_LAB_VIEW = LAB_CONFIRM; break;
+-                case 8:
++                case 7: case 8: case 9: case 10: /* save, load (no question), main menu, old age: targets 1 to 4 */
+                     labPrevious = LAB_HOME; labPreviousCursor = MOD_LAB_CURSOR;
+-                    MOD_LAB_TARGET = 2; done = modLabPerform(); break;
++                    MOD_LAB_TARGET = MOD_LAB_CURSOR - 6;
++                    if (MOD_LAB_TARGET == 2) done = modLabPerform(); else MOD_LAB_VIEW = LAB_CONFIRM;
++                    break;
+                 case 11: modLabList(LAB_MOVES); break;
+                 case 12:
+                     for (step = 0; step < NUM_MOVE_NAMES; step++) if (MOVE_NAMES[step] && MOVE_NAMES[step][0]) learnMove(step);
+@@ -615,8 +659,7 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+     MOD_LAB_ACTIVE = 0;
+     if (labAction == 1 || labAction == 2) modLabCardMenu(labAction);
+     if (labAction == 3) {
+-        while (PadRead(1) & (CONFIRM_BUTTON | CANCEL_BUTTON)) VSync(0);
+-        pollInputMenu(); MOD_CHEATS_TRANSITION = 2;
++        modLabRelease(); MOD_CHEATS_TRANSITION = 2;
+     }
+ }
+ 
+-- 
+2.55.0
+

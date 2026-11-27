@@ -561,3 +561,17 @@ Tamer-looks-a-new-game-asks-the-look-before-the-name.patch
 Resident-challenges-the-daily-challenger-and-the-cha.patch
 Imported-field-transitions-cheaper-smoothing-draws.patch
 Partner-rewind-the-save-machine-gives-the-partner-its-earlier-form-back.patch
+Evolution-cancel-the-next-evolution-after-a-cancel-plays.patch
+Fishing-maps-a-fight-on-a-lake-screen-removes-the-fishing-world.patch
+Field-twins-keep-their-original-s-script-animations.patch
+Menus-keep-their-pace-with-an-overclocked-CPU.patch
+Title-screen-Press-Start-stays-until-START.patch
+Cheats-lists-in-alphabetical-order.patch
+Smooth-clock-and-care-bars.patch
+Smooth-thrown-item.patch
+Smooth-doors-gates-and-lids.patch
+Smooth-snow-and-butterflies.patch
+Smooth-damage-numbers.patch
+Smooth-particle-bursts-and-puffs.patch
+OPTIONS-at-the-title-opens-at-once.patch
+Farm-bubble-bobs-smoothly.patch

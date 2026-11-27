@@ -51,23 +51,33 @@ def _define(text, name):
     return int(m.group(1), 0) if m else None
 
 
-def npc_keep(text):
-    """Capture the compiled animation masks, including story-specific additions."""
+def npc_twins(text):
+    """(original, twin) pairs of npcSpeciesType (mod_species.c)."""
+    m = re.search(r'twins\[\]\[2\] = \{(.*?)\};', text or '', re.S)
+    return [tuple(map(int, pair)) for pair in re.findall(r'\{\s*(\d+),\s*(\d+)\s*\}', m[1])] if m else []
+
+
+def npc_keep(text, twins=()):
+    """Capture the compiled animation masks, including story-specific additions.
+    A field twin keeps its original's slots (compactNpcModel)."""
     if not text:
         return None
-    masks = re.search(r'NPC_ANIM_KEEP_MASKS\[\d+\]\[2\] = \{(.*?)\};', text, re.S)
+    masks = re.search(r'NPC_ANIM_KEEP_MASKS\[\d+\] = \{(.*?)\};', text, re.S)
     index = re.search(r'NPC_ANIM_KEEP_INDEX\[\w+\] = \{(.*?)\};', text, re.S)
     if not masks or not index:
         raise ValueError('cannot read target NPC animation masks')
-    words = [tuple(int(x, 16) for x in pair) for pair in
-             re.findall(r'\{\s*(0x[0-9A-Fa-f]+),\s*(0x[0-9A-Fa-f]+)\s*\}', masks[1])]
+    # one word per mask: slots 32 and up are always kept
+    words = [(int(x, 16), 0xFFFFFFFF) for x in re.findall(r'0x[0-9A-Fa-f]+', masks[1])]
     ids = [int(x) for x in re.findall(r'\b(\d+)\s*,', re.sub(r'/\*.*?\*/', '', index[1], flags=re.S))]
     rows = [[slot for slot in range(64) if words[i][slot // 32] >> (slot % 32) & 1] for i in ids]
-    imported = re.search(r'NPC_ANIM_IMPORT_KEEP\[2\] = \{(.*?)\};', text, re.S)
+    imported = re.search(r'NPC_ANIM_IMPORT_KEEP = (0x[0-9A-Fa-f]+);', text)
     if imported:
-        pair = [int(x, 16) for x in re.findall(r'0x[0-9A-Fa-f]+', imported[1])]
+        pair = [int(imported[1], 16), 0xFFFFFFFF]
         slots = [slot for slot in range(64) if pair[slot // 32] >> (slot % 32) & 1]
         rows.extend([slots[:] for _ in range(1024 - len(rows))])
+    for original, twin in twins:
+        if twin < len(rows):
+            rows[twin] = rows[original][:]
     return rows
 
 
@@ -111,7 +121,7 @@ def capture(w, heap_map=None):
         'sound_staging_max': _define(memmap, 'SOUND_STAGING_MAX'),
         'heap_total': heap,
         'npc_stage_max': _define(memmap, 'NPC_STAGE_MAX') or 0,
-        'npc_anim_keep': npc_keep(_read(w, 'src/main/npc_anim_keep.c')),
+        'npc_anim_keep': npc_keep(_read(w, 'src/main/npc_anim_keep.c'), npc_twins(_read(w, 'src/main/mod_species.c'))),
     }
 
 

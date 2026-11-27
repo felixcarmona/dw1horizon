@@ -681,12 +681,16 @@
       "list": "content/imports/lists/first-10.json",
       "entry": {
         "name": "Angewomon",
-        "game": "dcb",
-        "model": 170
+        "game": "dw2",
+        "model": "M234ANGW",
+        "level": 5,
+        "element": 0,
+        "donor": 36,
+        "scale": 0.1945
       },
       "level": 5,
       "spec": "content/imports/specs/Angewomon.json",
-      "spec_sha256": "ac23104b155571cd7eed52ba0db61aa9146cfa8e41bb18721e76032869d987e7",
+      "spec_sha256": "fb43287e44f9206500154dd677da5b0a8e1d52a43a6b74dc71665d6f789624b8",
       "out": "build/batch"
     },
     {
@@ -1654,15 +1658,19 @@
       "list": "content/imports/lists/sixth-12.json",
       "entry": {
         "name": "Wizardmon",
-        "game": "dcb",
-        "model": 154,
+        "game": "dw2",
+        "model": "M194WIZA",
+        "level": 4,
+        "element": 1,
+        "donor": 9,
+        "scale": 0.193,
         "from": [
           235
         ]
       },
       "level": 4,
       "spec": "content/imports/specs/Wizardmon.json",
-      "spec_sha256": "52da2ad5db18f1c9a01f25033a7253208fa8d767eda94b928e80b2c8c72aaf65",
+      "spec_sha256": "c8eeed7b9cad0afc4a79f4e1fe90c38dbd0782dab853509aeac76bcc059a42f9",
       "out": "build/batch6"
     },
     {
@@ -1750,12 +1758,16 @@
       "list": "content/imports/lists/sixth-12.json",
       "entry": {
         "name": "MarineAngemon",
-        "game": "dcb",
-        "model": 230
+        "game": "dw2",
+        "model": "M216MANG",
+        "level": 5,
+        "element": 5,
+        "donor": 28,
+        "scale": 0.17
       },
       "level": 5,
       "spec": "content/imports/specs/MarineAngemon.json",
-      "spec_sha256": "b1995aa204172a0e6489cab5d952c278f0882483c36c52828eca83519df06770",
+      "spec_sha256": "487f664b7acfa5d3103968679009555df75825a3d57093fc77f469e8ea50e4f7",
       "out": "build/batch6"
     },
     {
@@ -2129,15 +2141,19 @@
       "list": "content/imports/lists/third-12.json",
       "entry": {
         "name": "AeroVeedramon",
-        "game": "dcb",
-        "model": 136,
+        "game": "dw2",
+        "model": "M180ARVR",
+        "level": 5,
+        "element": 5,
+        "donor": 12,
+        "clip_policy": null,
         "from": [
           203
         ]
       },
       "level": 5,
       "spec": "content/imports/specs/AeroVeedramon.json",
-      "spec_sha256": "d514a3f4fc4ae82a1ec2a7b16c976eb6e97546e1a5a7580418b6ab3db6f8c556",
+      "spec_sha256": "1299c443df18062e075a30d61988c9de22c6c2566afc6144d537f73098194925",
       "out": "build/batch3"
     },
     {
@@ -2159,15 +2175,20 @@
       "list": "content/imports/lists/third-12.json",
       "entry": {
         "name": "Magnadramon",
-        "game": "dcb",
-        "model": 186,
+        "game": "dw2",
+        "model": "M235HDRA",
+        "level": 5,
+        "element": 3,
+        "donor": 24,
+        "scale": 0.1806,
+        "clip_policy": null,
         "from": [
           190
         ]
       },
       "level": 5,
       "spec": "content/imports/specs/Magnadramon.json",
-      "spec_sha256": "f6eb1f3391723a3c135bbe1b872021c84f948c6eae8c40e76963791e66d29f53",
+      "spec_sha256": "d8f733b1099ebce6580db54164550b3923f3904ecc1a332c4edd758f800a758e",
       "out": "build/batch3"
     },
     {

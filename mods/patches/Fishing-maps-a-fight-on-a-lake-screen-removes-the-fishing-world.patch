@@ -1,0 +1,48 @@
+From efcb4e65c4d417c465715d0039312869e3af9c77 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 04:18:59 +0000
+Subject: [PATCH] Fishing maps: a fight on a lake screen removes the fishing
+ world before BTL_REL is read
+
+BTL_REL is read over FISH_REL's code. The fishing world object stayed registered, so the next tickObjects jumped into battle data and the fight froze at the start.
+---
+ src/main/fish.c  | 1 -
+ src/main/tamer.c | 3 +++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/fish.c b/src/main/fish.c
+index 106f81cd..67622f78 100644
+--- a/src/main/fish.c
++++ b/src/main/fish.c
+@@ -137,7 +137,6 @@ void checkFishingMap(uint32_t mapId)
+ 			FISH_init();
+ 		}
+ 
+-		getFishingAvailability();
+ 	}
+ 
+ 	startGameTime();
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 697317c4..60d7a969 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -818,6 +818,7 @@ void renderItemPickupTextbox(int32_t instanceId)
+ extern int8_t MOD_TFS_SAME_MAP; /* tfs_stream.c */
+ void modResumeFieldMusic(void); /* sound_async.c */
+ void tfsStreamHoldPrefetch(void); /* tfs_stream.c */
++void deinitializeFishing(void);
+ 
+ int8_t startBattle(int16_t instanceId)
+ {
+@@ -826,6 +827,8 @@ int8_t startBattle(int16_t instanceId)
+ 
+ 	GAME_STATE = 1;
+ 	tfsStreamInvalidate(); /* MOD (memreclaim): the battle reuses the load area */
++	/* MOD (fishing maps): BTL_REL is read over FISH_REL's code; the fishing world object must not outlive it */
++	deinitializeFishing();
+ 	copyVector(&STORED_TAMER_POS, &TAMER_ENTITY.entity.posData->location);
+ 
+ 	unsetCameraFollowPlayer();
+-- 
+2.55.0
+

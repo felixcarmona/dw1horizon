@@ -1,0 +1,13 @@
+{
+  "species": 190,
+  "name": "Angewomon",
+  "generator": "tools/models/field_animations/angewomon.py",
+  "donor": "native Angemon (walk transplant, DONOR sha in the generator)",
+  "source_sha256": "2f283b46d1c1ede4e291fb5da5025b2f53783f86e96099100967412f4dc8653b",
+  "output_sha256": "37c734c2a69c8b9f3f7419ca8262bce433853020862563c8bde8e91d3aa3c27b",
+  "changed_slots": [2, 3, 4],
+  "preceding_provider": {
+    "model": "190-Angewomon.MMD",
+    "aliases_applied": true
+  }
+}

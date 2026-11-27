@@ -3,5 +3,5 @@
 // NPC slot of screen 2 (a Veemon model is 98 KB: on Native Forest, screen 0, it would not
 // fit the heap next to the forest's other Digimon), with the battle stats of its definition ("wild").
 // Needs the species executable: python3 tools/dws.py disc tools/dws/examples/species-180.dws --exe species
-// (and its model: tools/dcb2mmd.py partner content/models/dcb-import/veemon.json build/dcb)
+// (and its model: tools/dw2mmd.py partner content/models/dcb-import/veemon-dw2.json build/dw2)
 place(species("Veemon"), screen: 2, slot: 0);

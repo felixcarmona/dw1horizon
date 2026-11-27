@@ -1,0 +1,49 @@
+From b7d5be102a57ec8f3166a40f631b24010122d913 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 11:52:30 +0000
+Subject: [PATCH] Title screen: Press Start stays until the player presses
+ START, the intro is not shown again
+
+The intro movie plays once when the game starts; then the Press Start title waits for START with no time
+limit. The original left the title after 600 frames (about 10 seconds) and played the intro again, over
+and over.
+
+src/main/main.c runLandingScreen: the frame counter and its limit are gone, the loop only ends with START.
+The intro still plays at boot and after the ending, where the original also returns to it. main_BSS_END
+-16 B.
+---
+ src/main/main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 7532f12..ef900a8 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3713,13 +3713,11 @@ void initializeFramebuffer(void)
+ void runLandingScreen(void)
+ {
+ 	int32_t done;
+-	int32_t timer;
+ #if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+ 	int32_t i;
+ #endif
+ 
+ 	done = 0;
+-	timer = 0x258;
+ #if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+ 	SECRET_CODE = -1;
+ #endif
+@@ -3731,7 +3729,9 @@ void runLandingScreen(void)
+ 	FADE_OUT_CURRENT = 0;
+ 	fadeFromBlack(0x28);
+ 
+-	while (--timer > 0) {
++	/* MOD (title stays): the original went back to the intro movie after 600 frames; the title now
++	   waits for START */
++	for (;;) {
+ 		pollInputMenu();
+ 
+ #if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+-- 
+2.55.0
+

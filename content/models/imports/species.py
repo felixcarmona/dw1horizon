@@ -169,7 +169,6 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'exveemon-field': ('194', 'tools.models.field_animations.gaits', '194-exveemon-field'),
     'flamedramon-field': ('195', 'tools.models.field_animations.gaits', '195-flamedramon-field'),
     'stingmon-field': ('187', 'tools.models.field_animations.secondary_motion', '187-stingmon-field'),
-    'angewomon-field': ('190', 'tools.models.field_animations.celebrations', '190-angewomon-field'),
     'demidevimon-native-flight': ('236', 'tools.models.field_animations.native_binding', '236-demidevimon-native-flight'),
     'paildramon-field': ('199', 'tools.models.field_animations.chibi', '199-paildramon-field'),
     'ankylomon-field': ('189', 'tools.models.field_animations.pace', '189-ankylomon-field'),
@@ -459,6 +458,11 @@ def species_file(out, t, recs=None, names=None, generate=False):
         (generated / f'{t}-partner-headroom-report.json').write_text(json.dumps(headroom, indent=2) + '\n')
         s['model']['file'] = str(model_path)
         s['model'].pop('slot_aliases', None)
+    import mmd
+    turned = mmd.root_turn_slots(final, len(s['model']['skeleton']))
+    if turned:
+        raise ValueError(f'{t}: slots {turned} turn the root bone, which the engine never sets back '
+                         '(native_battle.fold_root_turn)')
     return name, s
 
 

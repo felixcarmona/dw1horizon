@@ -48,7 +48,7 @@ class DiscMetadataTests(unittest.TestCase):
                    for folder, game in [('build/old', 'dcb'), ('build/new', 'dw3')]]
         entries = {'content/modeldelta/models.json': {'models': [model(1, 'build/new'), model(2, 'build/old')]},
                    'content/modeldelta/import-batches.json': {'recipes': recipes},
-                   'content/models/dcb-import/veemon.json': {'dcb': {}},
+                   'content/models/dcb-import/veemon-dw2.json': {'dw2': {}},
                    'content/models/dcb-import/puppetmon.json': {'dcb': {}},
                    'content/models/dcb-import/kimeramon-dw2.json': {'dw2': {}},
                    'content/models/mega/wargreymon-dcb.json': {'dcb': {}}}

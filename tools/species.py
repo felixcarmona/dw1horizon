@@ -1204,7 +1204,9 @@ def legacy_record(s, from_files=False):
         r['flags'] |= FLAG_PARTNER
         r['raise'] = _merge(pb['raise'], p.get('raise'))
         reqs = pb.get('evoReqs') or {k: (-1 if f == 'h' else 0) for k, f in REQ_FIELDS}
-        r['evoReqs'] = _merge(reqs, p.get('evoReqs')); r['evoReqs']['digimon'] = s['id']
+        r['evoReqs'] = _merge(reqs, p.get('evoReqs'))
+        # the bonus Digimon is a parent (the first one it evolves from), never the species itself (validate)
+        r['evoReqs']['digimon'] = (list(p.get('from', [])) + [-1])[0]
         r['evoGains'] = _merge(pb.get('evoGains') or {k: 0 for k, _ in GAIN_FIELDS}, p.get('evoGains'))
         r['evoGains']['targetDigimon'] = s['id']
         frm = list(p.get('from', [])) + [-1] * 5; to = list(p.get('to', [])) + [-1] * 6

@@ -1,7 +1,7 @@
 {
  "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
- "dcb": 170,
- "type": 192,
+ "dw2": "M234ANGW",
+ "type": 190,
  "name": "Angewomon",
  "source": {
   "type": 36,
@@ -15,65 +15,52 @@
   "6": 6,
   "7": 7,
   "8": 8,
-  "9": 9,
-  "14": 19,
-  "19": 10,
-  "21": 23,
-  "22": 22,
-  "23": 16,
-  "24": 2,
-  "25": 11,
-  "26": 12,
-  "27": 1,
-  "28": 24,
-  "29": 15
+  "9": 23,
+  "10": 9,
+  "18": 16,
+  "19": 20,
+  "22": 13,
+  "24": 26,
+  "25": 1,
+  "26": 10,
+  "27": 11,
+  "28": 12,
+  "29": 2,
+  "30": 24,
+  "31": 25
  },
  "hips": [
-  23,
   1,
-  1.036
+  1,
+  0.964
  ],
- "root_scale": 1.036,
+ "root_scale": 0.964,
  "tol": 14,
  "tol_clips": 8,
  "clips": {
   "0x21": {
-   "anim": "anim_00"
+   "anim": "A0"
   },
   "0x28": {
-   "anim": "anim_04",
-   "start": 0,
-   "end": 57,
-   "hips": "entity"
+   "anim": "B0"
   },
   "0x29": {
-   "anim": "anim_04",
-   "start": 0,
-   "end": 57,
-   "hips": "entity",
-   "root_scale": -0.8
+   "anim": "B0"
   },
   "0x2b": {
-   "anim": "anim_05",
-   "start": 0,
-   "end": 58,
-   "hips": "entity",
-   "root_scale": 0.3,
-   "speed": 1.0
+   "anim": "C012",
+   "eyes": "closed"
   },
-  "0x2a": {
-   "anim": "anim_06",
-   "start": 56,
-   "end": 136,
-   "hz": 0.3
+  "0x2c": {
+   "anim": "J0"
   },
   "0x38": {
-   "anim": "anim_03",
-   "start": 137,
-   "end": 233,
-   "speed": 1.49,
+   "anim": "G0",
+   "speed": 0.93,
    "hz": 0.2,
-   "settle": 4
+   "settle": 4,
+   "loop": false,
+   "rise": 208
   }
  },
  "skip": [
@@ -89,5 +76,14 @@
   "0x35",
   "0x36",
   "0x37"
- ]
+ ],
+ "scale": 0.1945,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
 }

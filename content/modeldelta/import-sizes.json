@@ -2,14 +2,6 @@
   "format": 1,
   "files": [
     {
-      "source": "build/batch/Angewomon.MMD",
-      "source_sha256": "2e4653ef8c52ac73422d0e520c6c5a6372be975ab251646b583751b56cb355f7",
-      "bones": 31,
-      "scale": 1.263022262908361,
-      "target": "build/sizes-out/models/Angewomon.MMD",
-      "sha256": "75ad113a2b013e1474ab1e3f48dd5d74f347bfcaf9bb423fab8f4b56a32330da"
-    },
-    {
       "source": "build/batch/MetalGarurumon.MMD",
       "source_sha256": "d3095cff234e7fffc86c518e710f57817945cce073325c63d53d010e819feb7a",
       "bones": 23,
@@ -91,11 +83,11 @@
     },
     {
       "source": "build/batch3/AeroVeedramon.MMD",
-      "source_sha256": "74f1a96702b3e0cb810b9f131128d050ccab306983fe6dcb95933c5de98c7fcc",
-      "bones": 25,
-      "scale": 1.339680839790652,
+      "source_sha256": "b977d123af9388c7a2297cbe5f9a9b6072d5c9085353e47729c3438a8a5e716b",
+      "bones": 23,
+      "scale": 1.2248,
       "target": "build/sizes-out/models/AeroVeedramon.MMD",
-      "sha256": "bbbf886fecf0d6b46fe46d56f4665b7ad4f11761457e4fd6bf808c4bcb6e9d68"
+      "sha256": "2fbf3222887a1219945513689758ba0a053102a671411e1abfd1ae486e8dc85f"
     },
     {
       "source": "build/batch3/Shakkoumon.MMD",
@@ -107,11 +99,11 @@
     },
     {
       "source": "build/batch3/Magnadramon.MMD",
-      "source_sha256": "6f5a00e441697e1741a43c48521c07601b8cad82cdf61c4e4b69341fac036ebe",
+      "source_sha256": "eb31799d133a7f8e669ffcc104c7f57b76f253f1a99a5fd3e45b6db0ae44414c",
       "bones": 30,
       "scale": 1.3074477086405876,
       "target": "build/sizes-out/models/Magnadramon.MMD",
-      "sha256": "76155c49e89059b9eee2a38dd63dcfdc66cba73262a083ab8c4518931e1d1784"
+      "sha256": "87f6262c7dde58250c2315bbe24875b64b6ef1805d100e8ce47955dd98516484"
     },
     {
       "source": "build/batch4/Zudomon.MMD",
@@ -208,14 +200,6 @@
       "scale": 1.35,
       "target": "build/sizes-out/models/Infermon.MMD",
       "sha256": "2cb0f769b360b53b63c5a98e2d61d78cf27fe996069010d36c731110a8ebffe8"
-    },
-    {
-      "source": "build/batch6/MarineAngemon.MMD",
-      "source_sha256": "1349d2fa780b52e650574d990018348e71ad3f513f86dc9a9b98c1258f1770c3",
-      "bones": 26,
-      "scale": 1.3472243202440486,
-      "target": "build/sizes-out/models/MarineAngemon.MMD",
-      "sha256": "a7d95ba71c4e2383b805a882e01ab25cae59d5f3e35a37eaa2099de3af272993"
     },
     {
       "source": "build/batch7/Valkyrimon.MMD",

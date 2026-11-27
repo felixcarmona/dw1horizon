@@ -704,6 +704,23 @@ def simulate(anim, nbones, max_ticks=6000, slot=None):
     return out, info
 
 
+def root_turn_slots(data, nbones):
+    """Slots of an MMD whose program keys a rotation of bone 0. startAnimation poses bones 1 on only and bone 0's
+    rotation is the entity's heading, so such a turn stays behind when the clip is cut short or does not close (no
+    clip of the disc's own models has one)."""
+    m = MMD.parse(data, nbones)
+    turned = set()
+    for slot, index in enumerate(m.anims.table):
+        if index is None:
+            continue
+        for c in m.anims.anims[index].instrs:
+            if c['op'] == 'key' and any(bb['bone'] == 0 and any(bb['vals'].get(ch) for ch in ('rx', 'ry', 'rz'))
+                                        for bb in c['bones']):
+                turned.add(slot)
+                break
+    return sorted(turned)
+
+
 # ---------------------------------------------------------------- minimal PNG
 def png_write(path, w, h, rgba):
     raw = b''.join(b'\0' + bytes(rgba[y * w * 4:(y + 1) * w * 4]) for y in range(h))

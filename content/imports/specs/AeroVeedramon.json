@@ -1,6 +1,6 @@
 {
  "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
- "dcb": 136,
+ "dw2": "M180ARVR",
  "type": 213,
  "name": "AeroVeedramon",
  "source": {
@@ -8,92 +8,74 @@
   "mmd": "extracted/CHDAT/MMD0/MTGR.MMD"
  },
  "map": {
-  "1": 18,
-  "2": 1,
-  "3": 3,
-  "4": 5,
-  "6": 11,
-  "7": 12,
-  "8": 13,
-  "9": 7,
-  "10": 8,
-  "11": 9,
-  "12": 27,
-  "13": 28,
-  "14": 29,
-  "15": 23,
-  "16": 24,
-  "17": 25,
-  "18": 22,
-  "19": 20,
-  "20": 21,
-  "21": 6,
-  "22": 17,
-  "23": 2,
-  "24": 15
+  "1": 2,
+  "2": 6,
+  "4": 4,
+  "5": 10,
+  "6": 7,
+  "7": 8,
+  "8": 15,
+  "9": 17,
+  "10": 11,
+  "12": 12,
+  "13": 18,
+  "14": 27,
+  "15": 28,
+  "16": 29,
+  "17": 23,
+  "18": 24,
+  "19": 25,
+  "20": 19,
+  "21": 21
  },
  "hips": [
   1,
   1,
-  0.818
+  0.802
  ],
- "root_scale": 0.818,
+ "root_scale": 0.802,
  "tol": 10,
  "tol_clips": 6,
  "clips": {
   "0x21": {
-   "anim": "anim_00"
+   "anim": "A0"
   },
   "0x28": {
-   "anim": "anim_04",
-   "start": 0,
-   "end": 65,
-   "hips": "entity"
+   "anim": "B0"
   },
   "0x29": {
-   "anim": "anim_04",
-   "start": 0,
-   "end": 65,
-   "hips": "entity",
-   "root_scale": -0.8
+   "anim": "B0"
   },
   "0x2b": {
-   "anim": "anim_05",
-   "start": 78,
-   "end": 168,
-   "hips": "entity",
-   "root_scale": 0.3,
-   "speed": 1.5
+   "anim": "C012",
+   "eyes": "closed"
   },
-  "0x2a": {
-   "anim": "anim_06",
-   "start": 42,
-   "end": 122,
-   "hz": 0.3
+  "0x2c": {
+   "anim": "J0"
   },
   "0x3c": {
-   "anim": "anim_01",
-   "start": 47,
-   "end": 161,
-   "speed": 1.49,
+   "anim": "G0",
+   "speed": 0.78,
    "hz": 0.2,
-   "settle": 4
+   "settle": 4,
+   "loop": false,
+   "rise": 245
   },
   "0x3b": {
-   "anim": "anim_02",
-   "start": 20,
-   "end": 130,
-   "speed": 1.5,
+   "anim": "I0",
+   "speed": 1.03,
    "hz": 0.2,
-   "settle": 4
+   "settle": 4,
+   "loop": false,
+   "rise": 245
   },
   "0x38": {
-   "anim": "anim_03",
-   "start": 139,
-   "end": 195,
-   "speed": 1.49,
+   "anim": "H0",
+   "speed": 1.6,
    "hz": 0.2,
-   "settle": 4
+   "settle": 4,
+   "loop": false,
+   "rise": 245
   }
  },
  "skip": [
@@ -108,13 +90,11 @@
   "0x31",
   "0x32",
   "0x33",
-  "0x35",
-  "0x36",
   "0x39",
   "0x3a"
  ],
  "layer": {
-  "anim": "anim_00",
+  "anim": "A0",
   "bones": "unmapped",
   "slots": [
    "0x00",
@@ -128,6 +108,14 @@
    "0x22",
    "0x23",
    "0x24"
+  ]
+ },
+ "scale": 0.164687,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C1",
+   "C2"
   ]
  }
 }

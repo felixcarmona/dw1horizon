@@ -586,6 +586,25 @@ def apply_map_collision(m, edits, where):
         m.collision[z * 100 + x] = edit['after']
 
 
+def apply_map_sprites(m, edits, where):
+    """Apply reviewed depth-point edits of a native map's cut-out sprites (x, y, z), refusing stale geometry."""
+    seen = set()
+    for edit in edits:
+        i, field = edit['sprite'], edit['field']
+        if type(i) is not int or not 0 <= i < len(m.sprites) or field not in ('x', 'y', 'z'):
+            raise ValueError(f'{where}: invalid sprite edit {edit}')
+        if (i, field) in seen:
+            raise ValueError(f'{where}: duplicate sprite edit {i}.{field}')
+        seen.add((i, field))
+        if not edit.get('reason') or any(type(edit[k]) is not int for k in ('before', 'after')):
+            raise ValueError(f'{where}: sprite {i}.{field} needs integer values and a review reason')
+        current = m.sprites[i][field]
+        if current not in (edit['before'], edit['after']):
+            raise ValueError(f'{where}: sprite {i}.{field}: expected {edit["before"]}, found {current}')
+    for edit in edits:
+        m.sprites[edit['sprite']][edit['field']] = edit['after']
+
+
 def build_map(name, data, maps=None):
     """The .MAP NAME (its disc bytes `data`) with its Digimon list from content/maps (none without a file). -> bytes"""
     import dwmap
@@ -594,6 +613,7 @@ def build_map(name, data, maps=None):
     m = dwmap.MapFile(data); c = _map_ctx()
     x = maps.get(name)
     apply_map_collision(m, x.get('collision', []) if x else [], name)
+    apply_map_sprites(m, x.get('sprites', []) if x else [], name)
     slots = x['digimon'] if x else []
     for i, o in enumerate(slots):
         if o.get('slot', i) != i: raise SystemExit(f'{x["_path"]}: slot {o.get("slot")} at position {i}: slots are positional '

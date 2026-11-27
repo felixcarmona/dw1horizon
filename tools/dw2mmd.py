@@ -48,6 +48,9 @@ What the conversion does:
   30 fps, resampled to DW1's 20 ticks/s; a looping animation gets its loop-start frame
   appended so the loop closes, and its speed is nudged (< 2 %) so the loop is a whole
   number of ticks.
+- a partner SPEC may renumber the bones (`order`: new DW1 bone k + 1 = the converted bone
+  order[k], so a rig keeps an earlier import's numbering), move bones (`reparent`) and join
+  animations (`concat`) before the clips are retargeted.
 
 Releases: the recipes are made from the USA disc. The disc read is $DW2_DISC (default
 $DW2_ROOT/disc, the USA one); its boot file tells the release. DigimonWorld 2 (Japan) has every
@@ -755,6 +758,8 @@ def concat(model, name, parts):
 def apply_spec_edits(model, spec, log=print):
     if spec.get('hub_roots'):
         hub_roots(model, log)
+    if spec.get('order'):          # new DW1 bone k + 1 = the converted DW1 bone order[k]: a rig numbered as an earlier import's
+        reorder(model, [num(b) - 1 for b in spec['order']])
     for c, p in (spec.get('reparent') or {}).items():
         reparent(model, num(c) - 1, num(p) - 1, log)
     for nm, parts in (spec.get('concat') or {}).items():

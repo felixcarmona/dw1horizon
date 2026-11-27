@@ -1,5 +1,58 @@
 {
   "file": "MAP/MAP15/ROOM05B.MAP",
+  "collision": [
+    {
+      "tile": [49, 46],
+      "before": 81,
+      "after": 128,
+      "reason": "The back row of order tiles touches the counter board: a tamer standing there looked as if walking into it. Rows 47 and 48 keep the order trigger."
+    },
+    {
+      "tile": [50, 46],
+      "before": 81,
+      "after": 128,
+      "reason": "The back row of order tiles touches the counter board: a tamer standing there looked as if walking into it. Rows 47 and 48 keep the order trigger."
+    },
+    {
+      "tile": [51, 46],
+      "before": 81,
+      "after": 128,
+      "reason": "The back row of order tiles touches the counter board: a tamer standing there looked as if walking into it. Rows 47 and 48 keep the order trigger."
+    },
+    {
+      "tile": [52, 46],
+      "before": 81,
+      "after": 128,
+      "reason": "The back row of order tiles touches the counter board: a tamer standing there looked as if walking into it. Rows 47 and 48 keep the order trigger."
+    },
+    {
+      "tile": [53, 46],
+      "before": 81,
+      "after": 128,
+      "reason": "The back row of order tiles touches the counter board: a tamer standing there looked as if walking into it. Rows 47 and 48 keep the order trigger."
+    },
+    {
+      "tile": [54, 46],
+      "before": 81,
+      "after": 128,
+      "reason": "The back row of order tiles touches the counter board: a tamer standing there looked as if walking into it. Rows 47 and 48 keep the order trigger."
+    },
+    {
+      "tile": [55, 46],
+      "before": 81,
+      "after": 128,
+      "reason": "The back row of order tiles touches the counter board: a tamer standing there looked as if walking into it. Rows 47 and 48 keep the order trigger."
+    }
+  ],
+  "sprites": [
+    {
+      "sprite": 0,
+      "field": "z",
+      "before": 538,
+      "after": 1255,
+      "reason": "The counter's depth point (camera depth 10657) lay nearer than the order tiles (up to 10908), so a tamer ordering was drawn behind it with only head or shoes showing; 1255 puts it at about 11000, still nearer than the cooks behind it (about 11070). Both counter edits are needed: the back row of order tiles lay under the counter board."
+    }
+  ],
   "digimon": [
     {
       "slot": 0,

@@ -197,7 +197,7 @@ def load_source(entry, log=print, card_metadata=True, legacy_face_drop=False):
         m = dw2mmd.load(entry['model'], scale=entry.get('scale'), log=log)  # DW1 units; size rules come later
         m.game, m.idle = 'dw2', 'A0'
         m.hub = dw2mmd.hub_roots(m, log)                      # rule: one root (the body), the other pieces hang from it
-        dw2mmd.concat(m, 'C012', ['C0', 'C1', 'C2'])          # the three knock-backs are one fall (0x2b)
+        dw2mmd.concat(m, 'C012', [n for n in ('C0', 'C1', 'C2') if n in m.anims])  # the knock-backs (two or three) are one fall (0x2b)
         meta = {}
     else:
         raise SystemExit(f'{entry["name"]}: unknown game {game}')
@@ -1238,7 +1238,7 @@ def plan(entry, typ, out_dir, ctx, log=print):
     if game == 'dw2':       # what `dw2mmd.py partner` needs to rebuild the same model from this spec
         spec['scale'] = round(m.scale * s, 6)
         spec['hub_roots'] = True
-        spec['concat'] = {'C012': ['C0', 'C1', 'C2']}
+        spec['concat'] = {'C012': [n for n in ('C0', 'C1', 'C2') if n in m.anims]}
     eo, cfx = effect_origins(sh, model_world_dw(m), donor, O.original_type(donor), bmap, moves, k,
                              log=lambda s: rep['rules' if 'dropped' in s else 'hand'].append(s.strip()))
     # evolution source
@@ -1536,7 +1536,8 @@ def load_list(path):
     L = json.load(open(path))
     if 'clip_policy' in L:
         for entry in L['digimon']:
-            entry.setdefault('clip_policy', L['clip_policy'])
+            if entry.get('game', 'dcb') == 'dcb':       # a World 2 entry plays its own clips
+                entry.setdefault('clip_policy', L['clip_policy'])
     L['_path'] = path
     return L
 

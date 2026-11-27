@@ -115,7 +115,7 @@ def species_counts(root=None):
             # a mesh_only recipe is a borrowed mesh (grafted onto the species' own model): it names no source disc
             (helper if r['entry'].get('mesh_only') else by_source).setdefault(path, set()).add(r['entry']['game'])
     # the partner imports: the same specs tools/derive/importers/__init__.py partner() loads
-    partners = {'build/dcb/Veemon': 'content/models/dcb-import/veemon.json',
+    partners = {'build/dw2/Veemon': 'content/models/dcb-import/veemon-dw2.json',
                 'build/dcb/Puppetmon': 'content/models/dcb-import/puppetmon.json',
                 'build/dw2/Kimeramon': 'content/models/dcb-import/kimeramon-dw2.json',
                 'build/models/WarGreymon': 'content/models/mega/wargreymon-dcb.json'}

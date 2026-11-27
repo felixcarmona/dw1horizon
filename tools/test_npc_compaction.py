@@ -10,7 +10,7 @@ import tempfile
 from pathlib import Path
 import membudget as m
 import npcanims as n
-from derive.facts import capture
+from derive.facts import capture, npc_twins
 
 
 def main():
@@ -41,6 +41,11 @@ int SPECIES_COUNT = 1024;
 #define COLD_ANIM_FLAG 0x80000000u
 #define DIGI_PARA(type) DIGIMON_DATA[type]
 void free3(void *p) { abort(); }
+int32_t npcSpeciesType(int32_t type, int32_t reverse) {
+    static const int16_t twins[][2] = {''' + ''.join('{%d, %d}, ' % p for p in npc_twins((work / 'src/main/mod_species.c').read_text())) + r'''{0, 0}};
+    for (int i = 0; twins[i][0]; i++) if (twins[i][reverse != 0] == type) return twins[i][reverse == 0];
+    return type;
+}
 ''' + keep + '\n' + source + r'''
 int main(int argc, char **argv) {
     int type = atoi(argv[1]), bones = atoi(argv[2]), size, result;
@@ -98,7 +103,7 @@ int main(int argc, char **argv) {
                     words = (bones - 1) * (9 if header & 0x8000 else 6)
                     assert header & 0x7fff == 1, (t, slot)
                     assert result[stub + 2:stub + 2 + words * 2] == result[ta + new[0] + 2:ta + new[0] + 2 + words * 2], (t, slot)
-                    assert struct.unpack_from('<H', result, stub + 2 + words * 2)[0] == 0, (t, slot)
+                    assert struct.unpack_from('<2H', result, stub + 2 + words * 2) == (1, 0), (t, slot)
             count += 1
     print(f'PASS: {count} actual models; target C/Python sizes agree, kept TMD/animations identical, ASan/UBSan and guards clean')
 

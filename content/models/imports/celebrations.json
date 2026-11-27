@@ -393,103 +393,6 @@
     ],
     "skeleton_sha256": "c8b73edca683e3514618a02795080cc3f242888c9973aee8436209e6bea336a9"
   },
-  "190": {
-    "source_sha256": "29f7ad7b0f12c90ac0129564b1c779fa042c0451d1545cca1af53fdec893f3b1",
-    "slots": [
-      42
-    ],
-    "pelvis": 23,
-    "chest": 1,
-    "head": 2,
-    "legs": [
-      [
-        24,
-        25,
-        26
-      ],
-      [
-        27,
-        28,
-        29
-      ]
-    ],
-    "locked": [],
-    "lower": [
-      24,
-      25,
-      26,
-      27,
-      28,
-      29
-    ],
-    "secondary": [
-      [
-        [
-          11,
-          12,
-          13,
-          14
-        ],
-        2,
-        2
-      ],
-      [
-        [
-          15,
-          16,
-          17,
-          18
-        ],
-        2,
-        -2
-      ],
-      [
-        [
-          3,
-          4
-        ],
-        0,
-        2
-      ],
-      [
-        [
-          19,
-          20,
-          21,
-          22
-        ],
-        0,
-        1
-      ]
-    ],
-    "delays": {
-      "5": 1.0,
-      "6": 1.8,
-      "7": 2.6,
-      "8": 1.4,
-      "9": 2.2,
-      "10": 3.0,
-      "2": 2.3
-    },
-    "shift": 0.8,
-    "body_gain": 1,
-    "base_generator": "tools.models.field_animations.secondary_motion",
-    "skeleton_sha256": "3291206a5dbc08aeb7ede901978e33139da3c6f13b5c756e6941bb01806888c1",
-    "hanging": [
-      [
-        19,
-        2,
-        -12,
-        1
-      ],
-      [
-        21,
-        2,
-        12,
-        1
-      ]
-    ]
-  },
   "209": {
     "source_sha256": "0ac7f9425aad5ab5d01796c536c9bc29bcecda1c3ff84c3ef556d29786162ed8",
     "slots": [],
@@ -565,74 +468,72 @@
     ]
   },
   "213": {
-    "source_sha256": "537ddcde347903c488812ebf8137fe8772001c78f341d96e634f9d0986ebb8f2",
+    "source_sha256": "858b54c12e598e5f4123aec37a784325dab82ca8fe1b62707f0bfea8ec5f5983",
     "slots": [
       42
     ],
     "pelvis": 1,
-    "chest": 2,
-    "head": 4,
+    "chest": 1,
+    "head": 3,
     "legs": [
       [
-        12,
-        13,
-        14
+        14,
+        15,
+        16
       ],
       [
-        15,
-        16,
-        17
+        17,
+        18,
+        19
       ]
     ],
     "locked": [],
     "lower": [
-      12,
-      13,
       14,
       15,
       16,
-      17
+      17,
+      18,
+      19
     ],
     "secondary": [
       [
         [
-          18,
-          19,
-          20
+          20,
+          21,
+          22
         ],
         1,
         2.5
       ],
       [
         [
-          21,
-          22
+          9
         ],
         2,
         3
       ],
       [
         [
-          23,
-          24
+          8
         ],
         2,
         -3
       ]
     ],
     "delays": {
-      "6": 1.0,
-      "7": 1.8,
-      "8": 2.6,
-      "9": 1.4,
-      "10": 2.2,
-      "11": 3.0,
-      "4": 2.3
+      "10": 1.0,
+      "11": 1.8,
+      "12": 2.6,
+      "5": 1.4,
+      "6": 2.2,
+      "7": 3.0,
+      "3": 2.3
     },
     "shift": 0.8,
     "body_gain": 1,
-    "base_generator": "tools.models.field_animations.pace",
-    "skeleton_sha256": "d7203687becc62c085a7912abb829f28ad16776549dd6f23988286e247d2f8cc"
+    "base_generator": "tools.models.field_animations.aero_veedramon",
+    "skeleton_sha256": "7ca28149f06662ec3971822ea416002cab443b2f4a58cbfaf1b96d9526c69fc5"
   },
   "214": {
     "source_sha256": "664c609dc2da9286716aa5cb75b46d23eafe98aac42149e83f5d5a2e3f13dd46",

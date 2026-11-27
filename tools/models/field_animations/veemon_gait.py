@@ -27,11 +27,16 @@ lean, the arms pumping in big arcs with the forearms driving, the head up, the t
 feet planted) breathes, shifts its weight from foot to foot, looks round with the head tilted, wags the tail in bursts,
 bounces on the spot with its fists up, pumps a fist and stretches both arms, each at its own moment in the loop.
 
-The battle slots 33, 35 and 36 keep the source game's own clips (35 and 36 rebuilt on our rig: content/models/imports/battle-rebuilds.json). The feet roll: the toes lift at touchdown, the heel
-rises at the push-off with the toes still planted, and the toes curl in the swing (the run's roll is the curl only). Veemon blinks:
-`veemon_face.py` stamps the eye frames into spare texels and every clip plays irregular texture-move blinks (a double one in the
-idle, slow heavy lids in the tired walk). Nothing else changes: the mesh and every other program are exact; the texture only gains
-the eye frames (`texture`).
+The battle slots 33, 35 and 36 keep the source game's own clips, rebuilt on our rig (content/models/imports/battle-rebuilds.json: the
+pelvis turned back a little so the body stays within battle QA's posture range, the arms out in the tired battle idle; the same lean back on the techniques that play Gabumon's retargeted clips). The feet roll: the toes lift at touchdown and
+the heel rises a little at the push-off with the toes still planted. Veemon blinks: `veemon_face.py` pastes Digimon World 2's own
+eye frames over the eyes and every clip plays irregular texture-move blinks (a double one in the idle, slow heavy lids in the
+tired walk). Nothing else changes: the mesh, the texture and every other program are exact.
+
+The rig is Digimon World 2's (M145NTVA, renumbered by tools/dw2mmd.py `order` into the bone order above). Its legs are short for
+its body (thigh about 41, shin about 17, the ankle about 30 over the sole of a long clawed foot), so the strides are short and
+quick, the feet hardly pitch (a long foot pitched by a few degrees digs its toes in or throws the ankle up to the hip) and the
+hind `reach` stands each sole's middle under its hip.
 
 `build` is the overlay's generator (`veemon-field` in content/models/imports/species.py). Offline: `python3 -m
 tools.models.field_animations.veemon_gait --source EDIT.MMD --out AFTER.MMD` with EDIT.MMD the imported base model.
@@ -51,8 +56,7 @@ from tools.models.field_animations import veemon_face as face  # noqa: E402
 from tools.models.field_animations.quadruped import mul, tr, rot, set_rot  # noqa: E402
 
 SPECIES = 180
-SOURCE_TIM = '80fef9316ae20ba45cf13a3cb1e5652cd60dd7706bc54c89993332a5932b5469'     # the texture before the eye frames
-SOURCE = 'eb42132f083e9cce2cd487f14f74e013782a364d25e08217d4482e6ee22bafb6'     # the imported base model
+SOURCE = 'd42969d1e0d19e3b8bd3a0ead6d2f9bb3002c3df810c511581cb68e78342c44c'     # the imported base model
 TAU = 2 * math.pi
 DEG = 4096 / 360
 PELVIS, CHEST, HEAD, JAW = 1, 2, 3, 4
@@ -66,24 +70,13 @@ PARENTS = [-1, 0, 1, 2, 3, 2, 5, 6, 2, 8, 9, 1, 11, 12, 1, 14, 15, 1, 17, 18]
 FACE = {
     0: face.blink(9, closed=2) + face.blink(41, closed=1) + face.blink(47, closed=2) + face.blink(78, closed=3),
     2: face.blink(3, closed=2) + face.blink(15, closed=1),
-    3: face.blink(4, closed=3, heavy=True) + face.blink(22, closed=4, heavy=True),
+    3: face.blink(3, closed=3, heavy=True) + face.blink(14, closed=4, heavy=True),
     4: face.blink(5, closed=2),
 }
 
 
 def face_events(slot, total):
     return face.events(FACE[slot], total)
-
-
-def texture(tim):
-    """The texture before this change (SOURCE_TIM) -> the same with the eye frames in their spare texels."""
-    if hashlib.sha256(tim).hexdigest() != SOURCE_TIM:
-        raise ValueError('Veemon needs the texture it had before this change')
-    t = mmd.Tim4(tim)
-    face.stamp(t)
-    out = t.to_bytes()
-    assert len(out) == len(tim)
-    return out
 
 
 ALIASES = {}      # the battle walk and run (35, 36) are the source game's own clips, rebuilt (content/models/imports/battle-rebuilds.json)
@@ -153,9 +146,9 @@ def idle_body(rig, c, ph, pose, hist):
         mine = pumping if side == 'R' else 0.0
         mine_up = pump if side == 'R' else 0.0
         swing = 3.0 * breath * sd + 2.5 * shift * sd - 38 * mine_up - 16 * bell(ph, 0.8, 0.09) - (60 * stretch)
-        out = sd * (-24 - 8 * bell(ph, 0.8, 0.09) - 30 * stretch + 4 * math.sin(TAU * 4 * ph + (0 if sd > 0 else 1.7)))
+        out = sd * (-34 - 8 * bell(ph, 0.8, 0.09) - 30 * stretch + 4 * math.sin(TAU * 4 * ph + (0 if sd > 0 else 1.7)))
         P.put(sh, mul(chest, rot([swing + 2, 0, out - sd * 4])))
-        pose[el][3] = rest[el][3] + round((-30 - 55 * mine_up - 18 * mine - 10 * bell(ph, 0.8, 0.09) + 14 * stretch + 3 * math.sin(TAU * 4 * ph + 1.0 + (0 if sd > 0 else 1.2))) * DEG)
+        pose[el][3] = rest[el][3] + round((-30 - 40 * mine_up - 18 * mine - 10 * bell(ph, 0.8, 0.09) + 14 * stretch + 3 * math.sin(TAU * 4 * ph + 1.0 + (0 if sd > 0 else 1.2))) * DEG)
         pose[hand][3] = rest[hand][3] + round((-16 + 10 * mine * math.sin(TAU * 7 * ph) - 20 * mine_up + 3 * math.sin(TAU * 4 * ph + 2)) * DEG)
     burst = bell(ph, 0.72, 0.16) + 0.6 * bell(ph, 0.9, 0.08)
     for k, b in enumerate(TAIL):
@@ -224,7 +217,7 @@ PROFILE = dict(
     pelvis=PELVIS, chest=None, neck=None, head=HEAD, tail=(), loose=(),
     legs=LEGS, pole_world=True, rest_plane=True, pole={False: [0.1, 0.0, -1.0]}, rest_fix=rest_fix,
     paw_flat={'RH': [0, 0, 0], 'LH': [0, 0, 0]},
-    sole={False: [2, 20, -40]},                            # the middle of the flat foot, on its bottom
+    sole={False: [2, 30, -40]},                            # the middle of the flat foot, on its bottom
     reach={'front': 0, 'hind': -38},
     fold={False: 34}, clear=4,
     speed_range={0: (0, 0), 2: (15, 31), 3: (10, 20), 4: (35, 52)},
@@ -346,17 +339,17 @@ def compose_idle(rig, cfg, frames):
 PROFILE['gaits'] = {
     0: dict(COMMON, kind='idle', name='idle', ticks=96, speed=0, steps=(), lean=0, compose=compose_idle, cycles=1,
             touchdown={'LH': 0.0, 'RH': 0.0}, duty={'LH': 1.0, 'RH': 1.0}, lift={'front': 0, 'hind': 0}, spring=0.8),
-    2: dict(COMMON, name='walk', ticks=12, speed=16, peel={'front': 0, 'hind': 17}, curl={'front': 0, 'hind': 18}, heel=6,
-            touchdown={'LH': 0.0, 'RH': 0.5}, duty={'LH': 0.56, 'RH': 0.56},
+    2: dict(COMMON, name='walk', ticks=10, speed=16, peel={'front': 0, 'hind': 6}, curl={'front': 0, 'hind': 0}, heel=6,
+            touchdown={'LH': 0.0, 'RH': 0.5}, duty={'LH': 0.5, 'RH': 0.5},
             bob=8, bob2=1.4, shift=8, roll=7, hip_yaw=9, hip_roll=5, lean=5, nod=5, look=8, head_roll=7, head_lag=0.14,
             arm=26, arm_lift=-4, arm_out=-40, arm_pump=4, elbow=22, elbow_base=42, wrist=10, tail_yaw=18, tail_roll=5, tail_pitch=6, tail_lag=0.12),
-    3: dict(COMMON, name='tired walk', ticks=18, speed=11, track={'front': 0, 'hind': 6}, peel={'front': 0, 'hind': 6}, curl={'front': 0, 'hind': 12}, heel=5,
-            touchdown={'LH': 0.0, 'RH': 0.5}, duty={'LH': 0.62, 'RH': 0.62}, height=10, lift={'front': 0, 'hind': 18},
-            lean=12, head=9, arm=9, arm_lift=30, arm_out=-52, arm_pump=2, elbow=5, elbow_base=56, wrist=6, bob=3, roll=6, shift=7,
+    3: dict(COMMON, name='tired walk', ticks=12, speed=11, track={'front': 0, 'hind': 6}, peel={'front': 0, 'hind': 3}, curl={'front': 0, 'hind': 0}, heel=5,
+            touchdown={'LH': 0.0, 'RH': 0.5}, duty={'LH': 0.58, 'RH': 0.58}, height=10, lift={'front': 0, 'hind': 18},
+            lean=12, head=9, arm=9, arm_lift=18, arm_out=-52, arm_pump=2, elbow=5, elbow_base=56, wrist=6, bob=3, roll=6, shift=7,
             hip_roll=4, tail_pitch=2, tail_out=-16, tail_yaw=9, tail_lag=0.12, nod=3, look=6, head_roll=6, head_lag=0.14, yawn=1),
-    4: dict(COMMON, name='run', kind='trot', sink=-3, arm_phase=-0.07, heel=0, peel={'front': 0, 'hind': 0}, curl={'front': 0, 'hind': 14}, ticks=8, speed=38,
-            touchdown={'LH': 0.0, 'RH': 0.5}, duty={'LH': 0.3, 'RH': 0.3}, height=20, arc=0.6, clear_ease=0.05, lift={'front': 0, 'hind': 34},
-            bob=11, bob2=1.5, lean=15, head=-8, arm=44, arm_lift=-2, arm_out=-26, arm_pump=6, elbow=24, elbow_base=72, wrist=10, hip_yaw=6, hip_roll=2.5, roll=4.5, shift=4,
+    4: dict(COMMON, name='run', kind='trot', sink=-3, arm_phase=-0.15, heel=0, peel={'front': 0, 'hind': 0}, curl={'front': 0, 'hind': 6}, ticks=8, speed=38,
+            touchdown={'LH': 0.0, 'RH': 0.5}, duty={'LH': 0.25, 'RH': 0.25}, height=20, arc=0.6, clear_ease=0.05, lift={'front': 0, 'hind': 34},
+            bob=11, bob2=1.5, lean=15, head=-8, arm=44, arm_lift=-2, arm_out=-44, arm_pump=6, elbow=24, elbow_base=72, wrist=10, hip_yaw=6, hip_roll=2.5, roll=4.5, shift=4,
             wide={'front': 0, 'hind': 2}, tail_out=14, tail_yaw=14, tail_roll=4, tail_pitch=4, tail_lag=0.1, nod=5, look=5, head_roll=5),
 }
 OTHER = {      # cycle B: what changes from cycle A, as factors on A's numbers or the leg settings
@@ -405,14 +398,10 @@ def main():
     p.add_argument('--source', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--report', type=Path)
-    p.add_argument('--tex', type=Path, help='the texture before the eye frames (edit.py get 180), with --out-tex')
-    p.add_argument('--out-tex', type=Path)
     a = p.parse_args()
     skeleton = json.loads(next((ROOT / 'content/species').glob('180-*.json')).read_text())['model']['skeleton']
     data, report = build(a.source.read_bytes(), skeleton)
     a.out.write_bytes(data)
-    if a.tex:
-        a.out_tex.write_bytes(texture(a.tex.read_bytes()))
     text = json.dumps(report, indent=2, default=str) + '\n'
     if a.report:
         a.report.write_text(text)
