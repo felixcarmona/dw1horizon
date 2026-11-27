@@ -199,3 +199,12 @@ against, leave this list.
 | Hawkmon appears only after Birdramon is recruited, through a Shellmon news item, and once recruited opens new landing points for Birdramon | 🎭 🆕 | Player suggestion (2026-11-26). |
 | Polish the male tamer hairstyles: the quiff and other spiky cuts look broken; add cuts in the style of the anime's boy leads | ✨ 🆕 | Player suggestion (2026-11-27). |
 | The card album shows only the card's number (e.g. "No. 001") when the cursor is on a card; the current position counter reads as "0 cards owned" when no card is under the cursor | 🛠️ | Player suggestion (2026-11-27). |
+| An option to raise the chance of the training bonus hit | ⚖️ | Player suggestion (2026-11-27). |
+| Anime-style outfits for the tamer as arena rewards | 🆕 | Player suggestion (2026-11-27). |
+| A special training that teaches techniques | 🆕 ⚖️ | Player suggestion (2026-11-27). |
+| More quests like Frigimon's | 🆕 | Player suggestion (2026-11-27). |
+| More Mega bosses | 🆕 ⚖️ | Player suggestion (2026-11-27). |
+| Long NPC dialogues split into a menu of topics, like Birdramon's | 🛠️ | Player suggestion (2026-11-27). |
+| Free and Unknown attributes in the type triangle | ⚖️ | Player suggestion (2026-11-27). |
+| Icons in the evolution chart | ✨ | Player suggestion (2026-11-27). |
+| A "no items" warning before every fight where the bag is closed (resident challenges) | 🛠️ | Player question (2026-11-27): nothing tells the player the bag opens empty. |
