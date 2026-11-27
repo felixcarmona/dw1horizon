@@ -62,7 +62,7 @@ fetched by CMake at a pinned hash and linked statically.
 
 Test flags: `--windowed` (the default; kept for old launchers), `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
 `--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option),
-`--touch` (the touch pad from the start), `--first-start` (ask touch or controller again), `--ask-card` (the new install's IMPORT / NEW GAME
+`--touch` (the touch pad from the start), `--first-start` (ask touch, controller or keyboard again), `--ask-card` (the new install's IMPORT / NEW GAME
 question), `--window WxH` (a window
 of that size), `--no-fast-start`.
 `HORIZON_PLAY_DEBUG=1` prints the core's log. The saves folder also gets `horizon-play.log` (the core's log, the
@@ -70,9 +70,18 @@ OpenGL version and the speed every 30 seconds) and reads `options.txt` (`KEY=VAL
 
 ## Controls
 
-Keyboard: arrows, Z Cross, X Circle, A Square, S Triangle, Q/W L1/R1, E/R L2/R2, Enter Start, Backspace Select.
-Any pad SDL knows is laid out like a PlayStation pad, and the left stick also moves. Any other joystick works too,
-read raw: buttons 0-3 Triangle, Circle, Cross, Square, 4-7 L2, R2, L1, R1, 8-9 SELECT, START, the first hat and the
+Keyboard: one of three layouts, chosen on the keyboard screen of the menu (below), or the player's own:
+
+- **RetroArch** (the default): arrows, Z Cross, X Circle, A Square, S Triangle, Q/W L1/R1, E/R L2/R2, Enter START,
+  Backspace or Right Shift SELECT.
+- **DuckStation** (its default keys; its left stick's W/A/S/D move the D-pad here): arrows or W/A/S/D, K Cross,
+  L Circle, J Square, I Triangle, Q/E L1/R1, 1/3 L2/R2, Enter START, Backspace SELECT.
+- **ePSXe**: arrows, Z Cross, X Circle, S Square, D Triangle, W/E L1/R1, Q/R L2/R2, V START, C SELECT.
+
+Any pad SDL knows is laid out like a PlayStation pad and read by position, whatever its labels say: the bottom face
+button is Cross on every pad, a Nintendo-layout one too. The left stick also moves. One Android handheld's built-in
+controller (USB 2022:3001), whose buttons SDL reports swapped, gets its own defaults until `controls.txt` has `pad`
+lines. Any other joystick works too, read raw: buttons 0-3 Triangle, Circle, Cross, Square, 4-7 L2, R2, L1, R1, 8-9 SELECT, START, the first hat and the
 first two axes as the D-pad. The first time such a joystick is connected, the button setup below opens by itself
 (after the first start's question) to fit it to its own layout; once set, `joy device=` in `controls.txt` keeps its
 SDL GUID and it is not asked about again. A phone's tilt sensor is not taken for a joystick.
@@ -82,8 +91,16 @@ top of the touch pad, or on a computer Escape or a right click (F11 or Alt+Enter
 or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goes back:
 
 - ▶ back to the game.
-- 🎮⌨️ the controller and keyboard buttons: ✔ keep them, or ✎ set them. (The touch pad needs no choice here: it
-  comes back at any touch.)
+- 🎮⌨️ the controls: two cards, as at the first start. There is no touch card: a tap anywhere (or a left click on a
+  computer) shows the touch pad.
+  - **CONTROLLER**: ✔ keep its buttons, or ✎ set them (below).
+  - **KEYBOARD**: a drawn PlayStation controller with the key of each of its 14 buttons beside it, and under it the
+    cards RETROARCH, DUCKSTATION, EPSXE and CUSTOM. Moving between the cards shows each layout's keys on the
+    controller; the card of the layout in use has a check mark and is chosen first (CUSTOM when the keys match no
+    layout). Choosing a layout uses it at once and saves it. CUSTOM asks a key for each button in turn, the button lit
+    on the controller and a ten-second bar under it; after that, or at any moment, a click or tap on one button (or
+    the arrows and Cross) asks a key for that one alone. A key already on another button moves to the button being
+    set. Escape and F11 cannot be taken. Escape or the back arrow stops the asking.
 - 💾 the memory card: export or import. On Android both open the system's file picker. On a computer, export opens
   the saves folder (the card is `duckstation_shared_card_1.mcd`) and import waits for a card file dropped on the
   window. An import takes any raw 128 KB PlayStation card (`.mcd`, `.mcr`, `.srm`...); the card in use is copied first
@@ -119,12 +136,14 @@ as soon as it has been loaded, on QUIT and when a memory card is imported, so an
 newer save. Its header ties it to this program's version and this disc's size, and the memory card stays the one on
 file (the snapshot's copy of the card is not used). `--suspend-at N` keeps it at frame N and ends, as Android would.
 
-**The first start** asks touch or controller and keyboard before the game (`--first-start` asks it again). The
-answer goes to `controls.txt` (`mode touch` or `mode pad`).
+**The first start** asks CONTROLLER or KEYBOARD before the game (`--first-start` asks it again), with the
+same screens as the menu's controls. The
+answer goes to `controls.txt` (`mode pad`; an older `mode touch` still starts with the touch pad shown).
 
-**Setting the buttons** (✎): the game waits and the screen shows each PlayStation button in turn (the pad's four
-directions, Cross, Circle, Square, Triangle, L1, R1, L2, R2, SELECT, START): press the key, controller button, hat or
-axis wanted for it. The first press decides whether the keyboard, the controller or the other joystick is being set;
+**Setting the buttons** (✎): the game waits and the drawn PlayStation controller lights each of its buttons in turn
+(the pad's four directions, Cross, Circle, Square, Triangle, L1, R1, L2, R2, SELECT, START): press the key, controller
+button, hat or axis wanted for it. The back arrow at the top left (a click or tap) or Escape stops it and leaves the
+buttons as they were. The first press decides whether the keyboard, the controller or the other joystick is being set;
 one input cannot take two buttons. Nothing pressed for ten seconds leaves everything as it was. The choice goes to
 `controls.txt` in the saves folder (`pad cross=a`, `key cross=Z`, `joy cross=b2` / `h0.1` / `a1-`: SDL's controller and
 key names, a raw button, hat direction or axis side), which can also be edited by hand. (`tools/player/controls.c`,

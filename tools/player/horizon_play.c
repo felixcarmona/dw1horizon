@@ -513,6 +513,7 @@ static void handle_events(void) {
     case SDL_QUIT: quit = true; break;
     case SDL_KEYDOWN:
       if (e.key.keysym.sym == SDLK_F11 || (e.key.keysym.sym == SDLK_RETURN && (e.key.keysym.mod & KMOD_ALT))) toggle_fullscreen();
+      else if (e.key.keysym.sym == SDLK_ESCAPE && remap_step >= 0) controls_setup_cancel();
       else if (e.key.keysym.sym == SDLK_ESCAPE && menu_open) menu_back();
       else if (e.key.keysym.sym == SDLK_ESCAPE && remap_step < 0) controls_menu_asked = true;   /* Escape opens the menu */
       break;
@@ -985,6 +986,7 @@ int main(int argc, char **argv) {
   SDL_SetHint(SDL_HINT_ANDROID_TRAP_BACK_BUTTON, "1");   /* a pad's B must not close the game */
   SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
   SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");   /* a phone's tilt would move the menu and the game */
+  SDL_SetHint(SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS, "0");   /* buttons by position: the bottom one is Cross on a Nintendo-layout pad too */
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) != 0) { fprintf(stderr, "SDL: %s\n", SDL_GetError()); return 1; }
   char *base = SDL_GetBasePath();
   char here[1024]; snprintf(here, sizeof here, "%s", base ? base : "./"); SDL_free(base);
@@ -1188,7 +1190,16 @@ int main(int argc, char **argv) {
     controls_menu_asked = overlay_menu_tapped = false;
     if (menu_open || remap_step >= 0) {   /* the game waits under the menu and the button setup */
       if (menu_open) {
-        int a = menu_frame(bits);
+        /* Enter and the arrows work in the menu whatever the keyboard layout (ePSXe's START is V, DuckStation's
+         * D-pad is WASD) */
+        const Uint8 *k = SDL_GetKeyboardState(NULL);
+        uint16_t menu_bits = bits;
+        if (k[SDL_SCANCODE_RETURN] || k[SDL_SCANCODE_KP_ENTER]) menu_bits |= 1u << RETRO_DEVICE_ID_JOYPAD_START;
+        if (k[SDL_SCANCODE_UP]) menu_bits |= 1u << RETRO_DEVICE_ID_JOYPAD_UP;
+        if (k[SDL_SCANCODE_DOWN]) menu_bits |= 1u << RETRO_DEVICE_ID_JOYPAD_DOWN;
+        if (k[SDL_SCANCODE_LEFT]) menu_bits |= 1u << RETRO_DEVICE_ID_JOYPAD_LEFT;
+        if (k[SDL_SCANCODE_RIGHT]) menu_bits |= 1u << RETRO_DEVICE_ID_JOYPAD_RIGHT;
+        int a = menu_frame(menu_bits);
         if (a != MENU_NONE) SDL_Log("menu: action %d", a);
         if (a == MENU_QUIT) quit = true;
         else if (a == MENU_TOUCH) { controls_set_mode(MODE_TOUCH); touch_shown = true; }
