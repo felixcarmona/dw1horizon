@@ -46,7 +46,10 @@ a small patch, or a file made by a localize tool (Japan: the images with Japanes
 only the USA disc has (the executable, the overlays, the scripts) are never read: the build makes everything it needs
 without them.
 
-European bases keep their own TITLE256/TITLE2 artwork with the HORIZON stamp;
+European bases keep their own TITLE256/TITLE2 artwork with the HORIZON stamp; their
+narrower Press Start Button line is centred in the columns our executable shows, without
+the E of the language list that follows it, and the translated lines take their letters
+from it ([title_stamp.py](../tools/title_stamp.py), `misc/build.py` in tools/localize/textures);
 Japan Rev 1 uses its localized images and retains two hidden sprite sorting
 coordinates. Enemy lists are regenerated from content data. The Japanese output
 therefore intentionally differs by four MAYO00 data bytes from the older

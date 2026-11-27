@@ -1,8 +1,8 @@
 """Builds the Spanish versions of the misc baked-text textures. Run from anywhere:
    .venv/bin/python build.py   -> *.es.idx, *.en.png, *.es.png, rects.json, z_*.png previews"""
-import json, os, sys
+import hashlib, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from tex import Tex, outline, mask, holes
+from tex import EXT, Tex, outline, mask, holes
 OUT = os.path.dirname(os.path.abspath(__file__))
 PT_BR = os.environ.get('LOCALIZE_LANGUAGE') == 'pt-br'
 RECTS = []
@@ -177,10 +177,16 @@ def life():
 
 # ---------------------------------------------------------------- 3. Press Start Button -> Pulsa el botón START (TITLE256.TIM)
 TCH = {'V': 0, 'L': 91, '9': 181, '8': 192, ' ': 255}
-def title_glyphs(en):
+# the letters of the disc's own Press Start Button line (rows 241-250): each one's first and last column. The European
+# TITLE256 (by its SHA-1; the same file on the five European discs) sets the line in narrower letters
+TITLE_LETTERS = dict(P=(0, 6), r=(9, 13), e=(15, 20), s=(23, 27), S=(41, 47), t=(49, 53), a=(55, 60),
+                     B=(79, 85), u=(88, 93), o=(107, 112), n=(115, 120))
+RELEASE_TITLE_LETTERS = {'c0d12ef9a5a689798b0b2965d95e574c525ab904': dict(
+    P=(0, 5), r=(7, 12), e=(14, 19), s=(21, 26), S=(37, 42), t=(44, 49), a=(51, 56),
+    B=(74, 79), u=(81, 86), o=(102, 107), n=(109, 114))}
+def title_glyphs(en, letters=TITLE_LETTERS):
     G = {}
-    for ch, (a, b) in dict(P=(0, 6), r=(9, 13), e=(15, 20), s=(23, 27), S=(41, 47), t=(49, 53), a=(55, 60),
-                           B=(79, 85), u=(88, 93), o=(107, 112), n=(115, 120)).items():
+    for ch, (a, b) in letters.items():
         G[ch] = [[255] * (b - a + 1)] + en.block(a, 241, b - a + 1, 10)   # row 0 = texture row 240 (free)
     def hand(rows):
         rows = rows + [''] * (11 - len(rows)); w = max(len(r) for r in rows)
@@ -195,11 +201,11 @@ def title_glyphs(en):
     G['R'] = hand(['', 'VVVVL  ', 'VV 9VL ', 'VV  LV ', 'VV 9VL ', 'VVVVL  ', 'VV 8VL ', 'VV  LV ', 'VV  9VL', 'VV   VV'])
     return G
 
-def title_compose(G, text, t, x0):
+def title_compose(G, text, t, x0, space=4):
     x = x0; prev = None
     for ch in text:
         if ch == ' ':
-            x += 6 - 2; prev = None; continue
+            x += space; prev = None; continue
         if prev is not None:
             x += 1 if ('t' in (prev, ch) or 'r' in (prev, ch) or prev.isupper() and ch.isupper()) else 2
         g = G[ch]
@@ -210,12 +216,35 @@ def title_compose(G, text, t, x0):
         x += len(g[0]); prev = ch
     return x - x0
 
+
+class _Measure:
+    """a texture that keeps nothing: title_compose on it only measures"""
+    def s(self, x, y, v):
+        pass
+
+
+def title_line(G, text, t):
+    """text drawn in G's letters into t, in the middle of the width it has in the USA letters (the executable's quad
+    for it, main.c PRESS_START_QUAD; a wider line closes its spaces up, down to 2 columns) -> that width"""
+    usa = dict(G, **{ch: [[255] * (b - a + 1)] for ch, (a, b) in TITLE_LETTERS.items()})
+    usa['ó'] = usa['o']
+    W = title_compose(usa, text, _Measure(), 0)
+    space = 4
+    while title_compose(G, text, _Measure(), 0, space) > W and space > 2:
+        space -= 1
+    w = title_compose(G, text, _Measure(), 0, space)
+    if w > W:
+        sys.exit(f'title: {text!r} is {w} columns in this disc\'s letters, wider than its quad ({W})')
+    title_compose(G, text, t, (W - w) // 2, space)
+    return W
+
+
 def title():
     en = Tex('ETCNA/TITLE256.TIM'); es = en.copy(); alt = en.copy()
-    G = title_glyphs(en)
+    G = title_glyphs(en, RELEASE_TITLE_LETTERS.get(hashlib.sha1(open(EXT + 'ETCNA/TITLE256.TIM', 'rb').read()).hexdigest(), TITLE_LETTERS))
     es.fill(0, 240, 320, 256, 255); alt.fill(0, 240, 320, 256, 255)
-    W = title_compose(G, ('Aperte START' if PT_BR else 'Pulsa el botón START'), es, 0)
-    Wa = title_compose(G, 'Pulsa START', alt, 0)
+    W = title_line(G, ('Aperte START' if PT_BR else 'Pulsa el botón START'), es)
+    Wa = title_line(G, 'Pulsa START', alt)
     save('TITLE256.TIM', en, es, 0)
     alt.save_idx(f'{OUT}/TITLE256.TIM.alt-pulsa-start.es.idx')
     cx = -54 + 121 / 2
