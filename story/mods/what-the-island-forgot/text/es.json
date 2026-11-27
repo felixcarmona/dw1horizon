@@ -518,6 +518,7 @@
  "challenge.home": "Hora de volver a la ciudad. ¡Nos vemos allí!",
  "challenge.yes": "Luchemos",
  "challenge.no": "Ahora no",
+ "challenge.noitems": "¡Nada de objetos en este combate! Solo tú y tu compañero.",
  "armadillomon.challenge.intro1": "¡Me has encontrado! Ya no soy el Armadillomon al que venciste en este valle hace tiempo.",
  "armadillomon.challenge.intro2": "He cavado y entrenado cada día desde entonces. Ahora soy mucho más fuerte. ¿Quieres verlo?",
  "armadillomon.challenge.retry": "¿Vuelves a por otra ronda? Hoy no me muevo de aquí. ¿Listo esta vez?",

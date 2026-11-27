@@ -21,6 +21,7 @@ def challenge_monochromon():
             say(t("monochromon.challenge.retry"))
         else:
             say(t("monochromon.challenge.intro1"), t("monochromon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

@@ -518,6 +518,7 @@
  "challenge.home": "C'est l'heure de rentrer en ville. À tout à l'heure !",
  "challenge.yes": "Battons-nous",
  "challenge.no": "Pas maintenant",
+ "challenge.noitems": "Pas d'objets dans ce combat ! Seulement toi et ton partenaire.",
  "armadillomon.challenge.intro1": "Tu m'as trouvé ! Je ne suis plus l'Armadillomon que tu as battu dans cette vallée il y a longtemps.",
  "armadillomon.challenge.intro2": "J'ai creusé et je me suis entraîné chaque jour depuis. Je suis bien plus fort. Tu veux voir ?",
  "armadillomon.challenge.retry": "Tu reviens pour un autre round ? Je ne bouge pas d'ici aujourd'hui. Prêt cette fois ?",

@@ -21,6 +21,7 @@ def challenge_garurumon():
             say(t("garurumon.challenge.retry"))
         else:
             say(t("garurumon.challenge.intro1"), t("garurumon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

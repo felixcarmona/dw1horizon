@@ -21,6 +21,7 @@ def challenge_mojyamon():
             say(t("mojyamon.challenge.retry"))
         else:
             say(t("mojyamon.challenge.intro1"), t("mojyamon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

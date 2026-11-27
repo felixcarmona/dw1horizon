@@ -21,6 +21,7 @@ def challenge_biyomon():
             say(t("biyomon.challenge.retry"))
         else:
             say(t("biyomon.challenge.intro1"), t("biyomon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

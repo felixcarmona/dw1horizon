@@ -48,6 +48,7 @@ def challenge_bearmon():
             say(t("bearmon.challenge.retry"))
         else:
             say(t("bearmon.challenge.intro1"), t("bearmon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             new_challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(2)

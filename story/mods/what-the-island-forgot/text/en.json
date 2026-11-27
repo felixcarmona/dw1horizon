@@ -1027,6 +1027,7 @@
  "challenge.home": "Time to head back to the city. See you there!",
  "challenge.yes": "Let's fight",
  "challenge.no": "Not now",
+ "challenge.noitems": "No items in this fight! Only you and your partner.",
  "armadillomon.challenge.intro1": "You found me! I'm not the Armadillomon you beat in this valley long ago.",
  "armadillomon.challenge.intro2": "I've dug and trained every day since. I'm much stronger now. Want to see?",
  "armadillomon.challenge.retry": "Back for another round? I'm not going anywhere today. Ready this time?",

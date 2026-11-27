@@ -21,6 +21,7 @@ def challenge_drimogemon():
             say(t("drimogemon.challenge.retry"))
         else:
             say(t("drimogemon.challenge.intro1"), t("drimogemon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

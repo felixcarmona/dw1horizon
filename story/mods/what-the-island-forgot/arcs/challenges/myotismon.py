@@ -21,6 +21,7 @@ def challenge_myotismon():
             say(t("myotismon.challenge.retry"))
         else:
             say(t("myotismon.challenge.intro1"), t("myotismon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

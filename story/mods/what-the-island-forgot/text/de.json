@@ -518,6 +518,7 @@
  "challenge.home": "Zeit, zurück in die Stadt zu gehen. Bis gleich!",
  "challenge.yes": "Kämpfen wir",
  "challenge.no": "Jetzt nicht",
+ "challenge.noitems": "Keine Items in diesem Kampf! Nur du und dein Partner.",
  "armadillomon.challenge.intro1": "Du hast mich gefunden! Ich bin nicht mehr das Armadillomon, das du vor langer Zeit in diesem Tal besiegt hast.",
  "armadillomon.challenge.intro2": "Seitdem habe ich jeden Tag gegraben und trainiert. Ich bin viel stärker jetzt. Willst du es sehen?",
  "armadillomon.challenge.retry": "Noch eine Runde? Ich gehe heute nirgendwohin. Bereit diesmal?",

@@ -21,6 +21,7 @@ def challenge_vademon():
             say(t("vademon.challenge.retry"))
         else:
             say(t("vademon.challenge.intro1"), t("vademon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

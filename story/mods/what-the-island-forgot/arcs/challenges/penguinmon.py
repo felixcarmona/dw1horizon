@@ -21,6 +21,7 @@ def challenge_penguinmon():
             say(t("penguinmon.challenge.retry"))
         else:
             say(t("penguinmon.challenge.intro1"), t("penguinmon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

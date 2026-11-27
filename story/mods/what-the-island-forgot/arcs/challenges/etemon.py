@@ -21,6 +21,7 @@ def challenge_etemon():
             say(t("etemon.challenge.retry"))
         else:
             say(t("etemon.challenge.intro1"), t("etemon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

@@ -49,6 +49,7 @@ def challenge_monzaemon():
             say(t("monzaemon.challenge.retry"))
         else:
             say(t("monzaemon.challenge.intro1"), t("monzaemon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

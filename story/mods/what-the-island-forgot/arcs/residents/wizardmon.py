@@ -20,6 +20,7 @@ def challenge_wizardmon():
             say(t("wizardmon.challenge.retry"))
         else:
             say(t("wizardmon.challenge.intro1"), t("wizardmon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             new_challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(2)

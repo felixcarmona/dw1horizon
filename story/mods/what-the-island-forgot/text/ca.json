@@ -518,6 +518,7 @@
  "challenge.home": "És hora de tornar a la ciutat. Ens veiem allà!",
  "challenge.yes": "Lluitem",
  "challenge.no": "Ara no",
+ "challenge.noitems": "Cap objecte en aquest combat! Només tu i el teu company.",
  "armadillomon.challenge.intro1": "M'has trobat! Ja no sóc l'Armadillomon que vas vèncer en aquesta vall fa temps.",
  "armadillomon.challenge.intro2": "He cavat i entrenat cada dia des de llavors. Ara sóc molt més fort. Vols veure-ho?",
  "armadillomon.challenge.retry": "Tornes per una altra ronda? Avui no em moc d'aquí. Preparat aquesta vegada?",

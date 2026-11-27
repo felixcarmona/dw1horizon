@@ -21,6 +21,7 @@ def challenge_greymon():
             say(t("greymon.challenge.retry"))
         else:
             say(t("greymon.challenge.intro1"), t("greymon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

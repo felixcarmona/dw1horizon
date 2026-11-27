@@ -21,6 +21,7 @@ def challenge_vegiemon():
             say(t("vegiemon.challenge.retry"))
         else:
             say(t("vegiemon.challenge.intro1"), t("vegiemon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

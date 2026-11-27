@@ -21,6 +21,7 @@ def challenge_centarumon():
             say(t("centarumon.challenge.retry"))
         else:
             say(t("centarumon.challenge.intro1"), t("centarumon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

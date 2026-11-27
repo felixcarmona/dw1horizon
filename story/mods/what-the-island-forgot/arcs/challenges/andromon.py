@@ -21,6 +21,7 @@ def challenge_andromon():
             say(t("andromon.challenge.retry"))
         else:
             say(t("andromon.challenge.intro1"), t("andromon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)

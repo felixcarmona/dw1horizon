@@ -21,6 +21,7 @@ def challenge_palmon():
             say(t("palmon.challenge.retry"))
         else:
             say(t("palmon.challenge.intro1"), t("palmon.challenge.intro2"))
+        say(t("challenge.noitems"))
         if ask(yes=t("challenge.yes"), no=t("challenge.no")):
             challenge_tried.set()
             pstat(CHALLENGE_ARMED).set(1)
