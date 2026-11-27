@@ -230,18 +230,11 @@ class App:
         self.pkg_file = ttk.Button(pkg, text=t('app.useFile'), command=self._use_file)
         self.pkg_file.grid(row=1, column=2, padx=(4, 0), pady=(8, 0))
 
-        out = ttk.LabelFrame(outer, text=t('app.output'), padding=(12, 8))
-        out.grid(row=3, column=0, sticky='ew', pady=(12, 0))
-        out.columnconfigure(0, weight=1)
-        self.out_var = tk.StringVar(value='')
-        ttk.Entry(out, textvariable=self.out_var, state='readonly').grid(row=0, column=0, sticky='ew')
-        self.out_button = ttk.Button(out, text=t('app.browse'), command=self._browse)
-        self.out_button.grid(row=0, column=1, padx=(8, 0))
-
         # what can be made, each its own button: the disc image, and the installers with that disc inside (the
-        # disc is built first when this session has not built it from the same discs and package)
+        # disc is built first when this session has not built it from the same discs and package). Each asks for the
+        # folder to save in, starting at the last one chosen.
         make = ttk.LabelFrame(outer, text=t('app.makeAs'), padding=(12, 8))
-        make.grid(row=4, column=0, sticky='ew', pady=(16, 0))
+        make.grid(row=3, column=0, sticky='ew', pady=(16, 0))
         make.columnconfigure(tuple(range(len(MAKERS))), weight=1, uniform='makers')
         self.make_buttons = []
         for i, (kind, name, ext) in enumerate(MAKERS):
@@ -359,7 +352,7 @@ class App:
             choose.state(['!disabled'] if idle else ['disabled'])
             remove.state(['!disabled'] if idle and (r or game in self.notes) else ['disabled'])
         idle = self.busy is None
-        for b in (self.add_button, self.pkg_file, self.out_button):
+        for b in (self.add_button, self.pkg_file):
             b.state(['!disabled'] if idle else ['disabled'])
         # the package
         if self.package:
@@ -381,9 +374,6 @@ class App:
         self.pkg_label.configure(text=text)
         self.pkg_download.configure(text=t('app.download') if (newer or not self.package) else t('app.checkUpdates'))
         self.pkg_download.state(['!disabled'] if idle else ['disabled'])
-        # the output folder
-        out = self.output_folder()
-        self.out_var.set(out or '')
         # build
         missing = [desktop.GAME_NAMES[g] for g in desktop.GAMES if g not in self.slots]
         if self.busy:
@@ -674,13 +664,18 @@ class App:
             self._spawn(job, busy='download')
 
     # -- output and build
-    def _browse(self):
+    def _ask_folder(self):
+        """The folder to save in, asked at each make button (None: cancelled); remembered for the next time."""
         from tkinter import filedialog
+        start = self.output_folder()
+        if start and not os.path.isdir(start):
+            start = os.path.dirname(start) if os.path.isdir(os.path.dirname(start)) else ''
         path = filedialog.askdirectory(parent=self.root, title=self.t('app.output'),
-                                       initialdir=self.output_folder() or os.path.expanduser('~'))
-        if path:
-            self.config.set('output', path)
-            self._refresh()
+                                       initialdir=start or os.path.expanduser('~'))
+        if not path:
+            return None
+        self.config.set('output', path)
+        return path
 
     def _language(self, _event=None):
         name = self.lang_var.get()
@@ -693,21 +688,24 @@ class App:
     def _make(self, kind):
         """A make button: the disc image, or an installer with the disc inside. An installer uses the disc this
         session built last when it came from the same discs and package and is still there; else the disc is built
-        first."""
-        if kind != 'disc' and self.built and self.built[0] == self._inputs() and os.path.isfile(self.built[1]):
+        first. The installers are written beside the disc, so the disc is reused only when it is in the folder chosen."""
+        out = self._ask_folder()
+        if not out:
+            return
+        if (kind != 'disc' and self.built and self.built[0] == self._inputs() and os.path.isfile(self.built[1])
+                and os.path.samefile(os.path.dirname(self.built[1]), out)):
             for w in self.finish.winfo_children():
                 w.destroy()
             self._spawn(self._job_make, kind, self.built[1], self.built[2], busy='build')
             return
-        self._build_disc(None if kind == 'disc' else kind)
+        self._build_disc(out, None if kind == 'disc' else kind)
 
     def _inputs(self):
         """What a built disc depends on: the discs (path, size, time) and the package."""
         discs = tuple(sorted((g, r.get('path'), r.get('size'), r.get('mtime_ns')) for g, r in self.slots.items()))
         return discs, (self.package or {}).get('folder')
 
-    def _build_disc(self, then=None):
-        out = self.output_folder()
+    def _build_disc(self, out, then=None):
         problems = desktop.space_problems(out)
         for game, r in list(self.slots.items()):
             why = desktop.file_changed(r)

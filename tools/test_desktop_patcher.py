@@ -637,6 +637,28 @@ class PbpGuiFlow(unittest.TestCase):
         self.assertEqual(app.notes, {})
 
 
+    def test_make_asks_the_folder_and_reuses_the_disc_only_there(self):
+        import gui
+        app = gui.App.__new__(gui.App)
+        app.slots, app.package = {}, None
+        app.finish = Mock()
+        app.finish.winfo_children.return_value = []
+        app._spawn, app._build_disc = Mock(), Mock()
+        with tempfile.TemporaryDirectory() as here, tempfile.TemporaryDirectory() as there:
+            cue = os.path.join(here, 'disc.cue')
+            open(cue, 'w').close()
+            app.built = (app._inputs(), cue, '1.0.0')
+            with patch.object(app, '_ask_folder', return_value=None):       # cancelled: nothing happens
+                app._make('apk')
+            app._spawn.assert_not_called()
+            app._build_disc.assert_not_called()
+            with patch.object(app, '_ask_folder', return_value=here):       # the disc is there: reused
+                app._make('apk')
+            app._spawn.assert_called_once_with(app._job_make, 'apk', cue, '1.0.0', busy='build')
+            with patch.object(app, '_ask_folder', return_value=there):      # another folder: built there first
+                app._make('apk')
+            app._build_disc.assert_called_once_with(there, 'apk')
+
 class HorizonPlay(unittest.TestCase):
     """The Horizon Play the app carries (docs/player.md), for the installers, and the last disc's folder button."""
 

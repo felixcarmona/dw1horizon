@@ -149,10 +149,10 @@ All three apps carry Horizon Play ([player.md](player.md)), for the installers b
 What the patcher makes is chosen in its **Make** box: five buttons side by side, each with its system's logo
 (`tools/patcher/app/platform-logos/`, Bootstrap Icons, MIT), its system's name and the file type under it:
 **PlayStation** (.bin / .cue, the disc image for emulators and the console), then the installers with that disc
-inside: **Android** (.apk), **Windows** (.exe), **Mac** (.dmg on a Mac, .zip elsewhere) and **Linux** (.run). All of
-them write into the **Save in** folder. An installer button uses the disc the patcher built last in this session when
-it came from the same discs and package and is still there; otherwise it builds the disc first (which stays in the
-folder). The patcher does not carry their templates: each is a release asset
+inside: **Android** (.apk), **Windows** (.exe), **Mac** (.dmg on a Mac, .zip elsewhere) and **Linux** (.run). Each
+button asks for the folder to save in (starting at the last one chosen). An installer button uses the disc the patcher
+built last in this session when it came from the same discs and package and is still in that folder; otherwise it
+builds the disc there first (and it stays). The patcher does not carry their templates: each is a release asset
 (`Horizon-Play.apk`, `Horizon-Setup.exe`, `Horizon-Play-macOS.zip`, `Horizon-Play-Linux-x86_64.tar.gz`), downloaded
 from the same release as the game package when a button is first used (`desktop.template`), checked against the digest
 GitHub publishes for the asset, and cached by tag in the settings folder (`templates/<tag>/`), so later builds and
