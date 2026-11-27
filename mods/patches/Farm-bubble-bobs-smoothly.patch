@@ -1,0 +1,38 @@
+From d91e24b3f9ddda849539e7fd6b7c2ad77dfede4a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 12:42:31 +0000
+Subject: [PATCH] The farm bubble bobs smoothly, as the partner's bubbles do
+
+The meat bubble over the farmer moved its bob only once per game tick, so it went up and down in steps, while the
+partner's status bubbles use the same bob between ticks (MOD_RENDER_ALPHA) and move smoothly. The farm bubble now
+uses the partner's expression: the same path, speed and smoothness.
+---
+ src/main/bubble.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index dd2a1b15..789feab2 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -917,7 +917,8 @@ static int32_t ringAnyBubble(void)
+  * twelve layouts (168-179) always talk through NPC slot 6, script 207's section 11; before the city grows, the File
+  * City of a new game (204) has Tanemon in the same slot, and its section 11 keeps the same rule. The test here is: a day has passed since the last harvest (p31), or this is the first visit to Tanemon, who gives Meat
+  * at once; Palmon and Vegiemon have no such first gift. A full stack keeps the bubble, as the harvest is still
+- * there. Nothing is drawn while a script runs: the bubble would hang over the farmer's own dialogue.
++ * there. Nothing is drawn while a script runs: the bubble would hang over the farmer's own dialogue. It bobs as the
++ * partner's bubbles do, between the game's ticks too (MOD_RENDER_ALPHA), so it moves smoothly at 60 frames a second.
+  */
+ #define FARM_FIRST_SCREEN	168
+ #define FARM_LAST_SCREEN	179
+@@ -948,7 +949,7 @@ static void renderFarmBubble(void)
+ 	pos.vx = entity->posData->location.vx;
+ 	pos.vz = entity->posData->location.vz;
+ 	pos.vy = -DIGI_PARA(entity->type).height + 20 - 65 + entity->posData->location.vy +
+-		 ((_sin((MOD_RING_CLOCK % 20) * 204) * 12) >> 12);
++		 ((_sin((((MOD_RING_CLOCK % 20) * 4096 + MOD_RENDER_ALPHA) * 512) / 81920) * 12) >> 12);
+ 	depth = worldPosToScreenPos(&pos, &screen);
+ 	if ((depth <= 0x200) || (depth >= 0x10000)) {
+ 		return;
+-- 
+2.55.0
+

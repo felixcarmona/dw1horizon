@@ -1,0 +1,51 @@
+From 361ec1e03f38e3c1cc070e8703b64d0548f0aae1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 12:39:21 +0000
+Subject: [PATCH] OPTIONS at the title opens at once: the saves' options are
+ read at boot, not again
+
+Opening OPTIONS at the title read every save header on both cards again to show the newest save's options,
+which takes over a second on a card with many saves. The boot already does that read (modBootOptions), so each
+card slot's saves are now read once (MOD_CARDS_READ). A card put in a slot that was empty at boot is still
+read when OPTIONS opens; a card swapped for another in the same slot shows the first card's options until the
+next start. A Continue still applies the options of the save it loads.
+---
+ src/main/main_menu.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index fa53cd8e..b0a07aa4 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -277,6 +277,7 @@ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back fro
+ #define MOD_OPT_SHORTCUTS_BIT 2
+ #define MOD_OPT_FULL_FINISHER_BIT 4 /* the Cheats menu's full finisher gauge */
+ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
++static int32_t MOD_CARDS_READ; /* MOD (options): the card slots whose saves modCardOptions already read */
+ #define MOD_OPT_ROW_CARDS 3
+ #define MOD_OPT_ROW_STORY	4 /* MOD (story): EXTENDED STORY, under NEW CARDS */
+ #define MOD_OPT_ROW_DIFF	5 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
+@@ -4937,6 +4938,7 @@ static int32_t modHeaderSaveNumber(const uint8_t *header)
+  * MOD (options): OPTIONS opened at the title before any change shows the options of the newest save on the cards
+  * (the highest header save number), the ones a Continue of it applies. A card missing, unformatted or unreadable is
+  * skipped without the card error screens.
++ * Each slot's saves are read once (MOD_CARDS_READ): at boot, and at OPTIONS only for a card put in since.
+  */
+ static void modCardOptions(void)
+ {
+@@ -4951,9 +4953,10 @@ static void modCardOptions(void)
+ 	int32_t c;
+ 	int32_t i;
+ 
+-	if (MOD_OPT_TOUCHED) {
+-		return;
++	if (MOD_OPT_TOUCHED || (CONNECTED_CARDS & ~MOD_CARDS_READ & 0x11) == 0) {
++		return; /* read at boot: OPTIONS opens at once, unless a card came in since */
+ 	}
++	MOD_CARDS_READ |= CONNECTED_CARDS;
+ 	bestNumber = -1;
+ 	bestLen = 0;
+ 	for (c = 0; c < 2; c++) {
+-- 
+2.55.0
+
