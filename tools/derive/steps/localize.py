@@ -67,6 +67,7 @@ def build(ctx):
     from tools.localize.tech_rows_art import stamp as tech_rows_stamp
     from tools.field_hud_art import PATH as HUD_PATH, build as field_hud_art
     from tools import care_bubble_art
+    from tools.battle_icon_art import build as battle_icon_art
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):      # (its notes go in the step's log)
         all_lines = []
@@ -79,7 +80,7 @@ def build(ctx):
             status_stamp(data, entry)
             tech_rows_stamp(data, entry)
             if path == HUD_PATH:
-                data = care_bubble_art.build(field_hud_art(data))
+                data = battle_icon_art(care_bubble_art.build(field_hud_art(data)))
             dest = ctx.path(OUT, 'en', path)
             os.makedirs(os.path.dirname(dest), exist_ok=True)
             with open(dest, 'wb') as f:
