@@ -143,16 +143,17 @@ side is in [release/README-players.md](release/README-players.md#the-desktop-app
 Both apps carry Horizon Play ([player.md](player.md)): after a build, **Play** starts the new disc in it, already
 set up (8 MB, CPU 250 %, upscaled, full screen).
 
-The Windows patcher also carries the empty setup template `Horizon-Setup.exe` (`app/build.py --setup-template`, built in
-`desktop.yml` from the Horizon Play it just built; no game data). Its **Windows installer (.exe)** button, shown after a
-build, appends the disc to a copy of it (`desktop.make_setup`, `setup_exe.py`) and writes `<disc>-Setup.exe` next to the
-disc: a wizard that installs Horizon Play and the game for the current user. That file holds the player's own disc, so it
-is for their computers only. Details in [player.md](player.md#a-setup-wizard).
-
-On a Mac the same place has a **Mac app (.dmg)** button: `<disc>-Mac.dmg` with `Digimon World Horizon.app` (the bundled
-Horizon Play with the disc inside, signed again ad hoc, which drops the notarization of the copy; see
-[player.md](player.md#a-mac-app-and-a-linux-installer)). `tools/patcher/linux_run.py` makes a Linux `.run`
-installer the same way (CLI; the button appears when the patcher is built with `--linux-player`).
+After a build the finish page offers four installer buttons: **Android app (.apk)**, **Windows installer (.exe)**,
+**Mac app** and **Linux installer (.run)**. The patcher does not carry their templates: each is a release asset
+(`Horizon-Play.apk`, `Horizon-Setup.exe`, `Horizon-Play-macOS.zip`, `Horizon-Play-Linux-x86_64.tar.gz`), downloaded
+from the same release as the game package when a button is first used (`desktop.template`), checked against the digest
+GitHub publishes for the asset, and cached by tag in the settings folder (`templates/<tag>/`), so later builds and
+offline runs reuse it. The progress bar shows the download, then the build. With no network and nothing cached, or with
+the asset missing from that release, the stage label says so and the button stays. The templates are not in
+`horizon-checksums.json`. A Mac patcher builds the Mac app from its own bundled Horizon Play and writes a `.dmg`; on
+Windows and Linux the button writes `<disc>-Mac.zip` from the downloaded template, which Apple has not signed, so on
+the Mac the first open is right-click then Open. Each output is the player's own disc plus the template, for their
+computers only. Details in [player.md](player.md#a-setup-wizard).
 
 - **Same code path.** The app downloads the release package, checks it, and loads the package's own `dwpatch.py`
   (with its `isowriter.py` and `fontcopy.py`) from the package folder: the apply is the command line's, from the same

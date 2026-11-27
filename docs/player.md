@@ -26,7 +26,7 @@ The program carries no game data. It plays the disc that the patcher builds from
 - **Linux:** `Horizon-Play-Linux-x86_64.tar.gz` (`player.yml`), built on Ubuntu 22.04. Run
   `./horizon-play DISC.cue` once. With no argument it opens the last disc it played.
 - **Android:** after a build, the desktop patcher's **Android app (.apk)** button writes `<disc>.apk` next to the disc
-  (`desktop.make_apk`, `tools/patcher/apk.py`). It is Horizon Play for Android (`tools/player/android`, arm64,
+  (`desktop.make`, `tools/patcher/apk.py`; the template is the release asset `Horizon-Play.apk`, downloaded on demand). It is Horizon Play for Android (`tools/player/android`, arm64,
   Android 7+) with the built disc added as `assets/horizon.bin`, stored and page aligned. The player copies it to the
   phone and installs it: the game starts at once, with nothing to choose. The app reads the disc in place, through the
   core's VFS (`--embedded APK OFFSET SIZE`), so the phone keeps one copy. The patcher signs it (APK Signature Scheme
@@ -134,10 +134,10 @@ system. (`tools/player/overlay.c`: drawn at start into one texture, no image fil
 ## A setup wizard
 
 A Windows setup program that installs Horizon Play and the game in one go, made the way the Android APK is. CI
-publishes an **empty template**, `Horizon-Setup.exe` (`desktop.yml`, artifact `horizon-setup-template`): an NSIS wizard
-and Horizon Play, **no game data**. On the player's own computer the desktop patcher appends the disc it just built to a
-copy of that template and writes `<disc>-Setup.exe` next to the disc (**Windows installer (.exe)** button,
-`desktop.make_setup`, `tools/patcher/setup_exe.py`). That file holds the player's disc, so it stays on their computer.
+publishes an **empty template** as a release asset, `Horizon-Setup.exe` (`desktop.yml`, artifact
+`horizon-setup-template`): an NSIS wizard and Horizon Play, **no game data**. On the player's own computer the desktop
+patcher downloads it (cached by tag), appends the disc it just built to a copy and writes `<disc>-Setup.exe` next to
+the disc (**Windows installer (.exe)** button, `desktop.make`, `tools/patcher/setup_exe.py`). That file holds the player's disc, so it stays on their computer.
 
 ```
 python3 tools/player/installer.py --player "Horizon Play" --out Horizon-Setup.exe        # the template (makensis)
@@ -165,7 +165,7 @@ template (the macOS job would have to wait for the whole Windows job): make the 
 
 ## A Mac app, and a Linux installer
 
-On a Mac, the desktop patcher's **Mac app (.dmg)** button (`desktop.make_mac`, `tools/patcher/mac_app.py`) writes
+On a Mac, the desktop patcher's **Mac app** button (`desktop.make`, `tools/patcher/mac_app.py`) writes
 `<disc>-Mac.dmg` next to the disc: a disk image with `Digimon World Horizon.app` and an Applications link to drag it
 to (`hdiutil create -format UDZO`). The app is a copy of the Horizon Play .app the patcher carries, with the disc added
 in `Contents/Resources` as `Digimon World Horizon.bin` and `.cue`; Info.plist names it "Digimon World Horizon" and the
@@ -192,8 +192,9 @@ launcher to the desktop folder when `xdg-user-dir DESKTOP` has one (trusted thro
 keeps the saves (`~/.local/share/Horizon/Horizon`). In a terminal it asks whether to start the game; a double click
 starts it (`--no-start` never does). `player.yml` makes one from a dummy disc, installs it, compares the bin, checks
 that the player finds the disc with no argument, and uninstalls. The desktop patcher has a **Linux installer (.run)**
-button (`desktop.make_linux`), shown only when it carries the tarball (`app/build.py --linux-player`); no workflow
-passes it yet, because `desktop.yml` would have to build or wait for the whole Linux player: use the command above.
+button (`desktop.make`) that downloads the release's `Horizon-Play-Linux-x86_64.tar.gz` (attached by `player.yml`) and
+builds it. On Windows and Linux the Mac button writes `<disc>-Mac.zip` from the release's `Horizon-Play-macOS.zip`
+(`ditto --keepParent`); it cannot be signed there, so on the Mac the first open is right-click then Open.
 
 ## Licences
 

@@ -64,8 +64,8 @@ jobs:
           if-no-files-found: error
 
   android:
-    # Horizon Play for Android (tools/player/android/build_apk.py), the template the apps put the built disc into
-    # (tools/patcher/apk.py signs that copy with the player's own key, so this one needs no secret).
+    # Horizon Play for Android (tools/player/android/build_apk.py), the template the patcher downloads from the release
+    # and puts the built disc into (tools/patcher/apk.py signs that copy with the player's own key: no secret here).
     needs: openbios
     runs-on: ubuntu-22.04   # its Android SDK and NDK are preinstalled
     steps:
@@ -101,7 +101,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    needs: [openbios, android]
+    needs: openbios
     runs-on: windows-latest
     permissions:
       contents: write   # required to read draft release assets; token only used by the fetch step
@@ -135,10 +135,6 @@ jobs:
         with:
           name: openbios
           path: ${{ runner.temp }}/openbios
-      - uses: actions/download-artifact@v4
-        with:
-          name: horizon-play-apk
-          path: ${{ runner.temp }}/apk
       - name: Build Horizon Play (the program, the SwanStation core, OpenBIOS)
         shell: bash
         run: python tools/player/build.py --out "$RUNNER_TEMP/Horizon Play" --work "$RUNNER_TEMP/player" --openbios "$RUNNER_TEMP/openbios/openbios.bin"
@@ -182,10 +178,7 @@ jobs:
         shell: bash
         run: |
           python -m pip install --disable-pip-version-check $PYINSTALLER
-          python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"} --player "$RUNNER_TEMP/Horizon Play" \
-            --player-apk "$RUNNER_TEMP/apk/Horizon-Play.apk" --setup-template setup/Horizon-Setup.exe
-          test -f "build/desktop/dist/Horizon Patcher/_internal/windows/Horizon-Setup.exe"
-          test -f "build/desktop/dist/Horizon Patcher/_internal/android/Horizon-Play.apk"
+          python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"} --player "$RUNNER_TEMP/Horizon Play"
           test -f "build/desktop/dist/Horizon Patcher/_internal/player/horizon-play.exe"
           test -f "build/desktop/dist/Horizon Patcher/_internal/player/swanstation_libretro.dll"
           test -f "build/desktop/dist/Horizon Patcher/_internal/player/system/openbios.bin"
@@ -249,7 +242,7 @@ jobs:
           if-no-files-found: error
 
   macos:
-    needs: [openbios, android]
+    needs: openbios
     runs-on: macos-15
     permissions:
       contents: write   # required to read draft release assets; token only used by the fetch step
@@ -304,10 +297,6 @@ jobs:
         with:
           name: openbios
           path: ${{ runner.temp }}/openbios
-      - uses: actions/download-artifact@v4
-        with:
-          name: horizon-play-apk
-          path: ${{ runner.temp }}/apk
       - name: Build Horizon Play (universal2; signed like the app when the owner's identity is there)
         run: |
           P="$RUNNER_TEMP/Horizon Play"
@@ -322,6 +311,21 @@ jobs:
             codesign --force --timestamp --options runtime --entitlements tools/player/entitlements.plist \
               --sign "$SIGN_ID" "$P/Horizon Play.app"
           fi
+          # the template the patcher downloads on other systems to make a Mac app (symlinks, modes and signature kept)
+          mkdir mac
+          ditto -c -k --keepParent "$P/Horizon Play.app" mac/Horizon-Play-macOS.zip
+          python3 - "$P" <<'PY'
+          import os, subprocess, sys
+          sys.path.insert(0, 'tools/patcher')
+          import desktop
+          app = desktop.unzip_app('mac/Horizon-Play-macOS.zip', os.path.join(os.environ['RUNNER_TEMP'], 'unzipped'))
+          subprocess.run(['codesign', '--verify', '--deep', '--strict', app], check=True)   # survives the round trip
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: horizon-play-macos
+          path: mac/Horizon-Play-macOS.zip
+          if-no-files-found: error
       - name: Build
         run: |
           python -m pip install --disable-pip-version-check $PYINSTALLER certifi==2026.10.23
@@ -330,8 +334,7 @@ jobs:
           fi
           python tools/patcher/app/build.py --universal2 ${RELEASE_TAG:+--version "$RELEASE_TAG"} \
             ${SIGN_ID:+--codesign-identity "$SIGN_ID" --entitlements tools/patcher/app/entitlements.plist} \
-            --player "$RUNNER_TEMP/Horizon Play" --player-apk "$RUNNER_TEMP/apk/Horizon-Play.apk"
-          find "build/desktop/dist/Horizon Patcher.app" -name Horizon-Play.apk | grep -q .
+            --player "$RUNNER_TEMP/Horizon Play"
           lipo -archs "build/desktop/dist/Horizon Patcher.app/Contents/MacOS/Horizon Patcher"
           test -x "build/desktop/dist/Horizon Patcher.app/Contents/Helpers/Horizon Play.app/Contents/MacOS/horizon-play"
           codesign --verify --deep --strict "build/desktop/dist/Horizon Patcher.app"
@@ -436,7 +439,7 @@ jobs:
 
   attach:
     # Only for a release tag; pull requests and manual runs without a tag stop at the artifacts above.
-    needs: [windows, macos]
+    needs: [windows, macos, android]
     if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) || (github.event_name == 'workflow_dispatch' && inputs.tag != '')
     runs-on: ubuntu-latest
     permissions:
@@ -460,8 +463,10 @@ jobs:
             gh release view "$RELEASE_TAG" > /dev/null 2>&1 && break
             sleep 20
           done
-          # Horizon-Setup.exe is the empty setup template (no game): the patcher carries it, this copy is for the CLI tools
-          gh release upload "$RELEASE_TAG" apps/Horizon-Patcher-Windows.zip apps/Horizon-Patcher-macOS.zip apps/Horizon-Setup.exe --clobber
+          # The empty installer templates (no game in them): the patcher downloads them from the release when it makes
+          # an installer. Horizon-Play-Linux-x86_64.tar.gz, the fourth, is attached by player.yml.
+          gh release upload "$RELEASE_TAG" apps/Horizon-Patcher-Windows.zip apps/Horizon-Patcher-macOS.zip \
+            apps/Horizon-Setup.exe apps/Horizon-Play.apk apps/Horizon-Play-macOS.zip --clobber
       - name: Describe the apps for the site
         # horizon-desktop.json goes up after the zips it describes: release.yml offers the apps on dw1horizon.com only
         # when it finds this file, and checks both zips against it (tools/release_pages.py desktop_apps).

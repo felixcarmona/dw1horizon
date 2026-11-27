@@ -104,12 +104,6 @@ def spec(work, a, ver):
              (os.path.join(APP, 'make_icons.py'), 'tools/patcher/app')]
     if a.player and sys.platform != 'darwin':      # Horizon Play (tools/player/build.py --out DIR); macOS: nest_player
         datas.append((os.path.abspath(a.player), 'player'))
-    if a.player_apk:   # Horizon Play for Android: the template desktop.make_apk puts the built disc into
-        datas.append((os.path.abspath(a.player_apk), 'android'))
-    if a.setup_template:   # the Windows setup template (tools/player/installer.py): desktop.make_setup appends the disc
-        datas.append((os.path.abspath(a.setup_template), 'windows'))
-    if a.linux_player:   # player.yml's Horizon-Play-Linux-x86_64.tar.gz: desktop.make_linux puts the built disc into it
-        datas.append((os.path.abspath(a.linux_player), 'linux'))
     hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk', 'setup_exe', 'mac_app', 'linux_run']
     if sys.platform == 'darwin':
         hidden.append('certifi')
@@ -147,12 +141,6 @@ def main(argv=None):
     p.add_argument('--repository', help='OWNER/NAME whose releases the app downloads (default: GITHUB_REPOSITORY, '
                    'else the checkout\'s origin)')
     p.add_argument('--player', help='a Horizon Play folder (tools/player/build.py) to ship inside the app')
-    p.add_argument('--player-apk', help='Horizon Play for Android (tools/player/android/build_apk.py): the app then '
-                                        'also makes an APK with the built disc inside')
-    p.add_argument('--setup-template', help='Horizon-Setup.exe (tools/player/installer.py): the app then also makes '
-                                            'a Windows setup with the built disc inside')
-    p.add_argument('--linux-player', help='the Linux Horizon Play tarball (player.yml): the app then also makes a '
-                                          'Linux installer (.run) with the built disc inside')
     p.add_argument('--out', default=os.path.join(ROOT, 'build', 'desktop'))
     a = p.parse_args(argv)
     ver = (a.version or version()).lstrip('v')

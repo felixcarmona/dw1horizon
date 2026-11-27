@@ -749,53 +749,33 @@ class App:
                 ttk.Button(self.finish, text=self.t(text), style=style, command=cmd).grid(row=0, column=col, padx=(0, 6))
                 col += 1
         # the installers that put the built disc inside: a second row, so that nothing is cut at the window's width
-        makers = [(self.t(key), job) for ok, key, job in (
-            (desktop.apk_template(), 'app.makeApk', self._job_apk), (desktop.setup_template(), 'app.makeSetup', self._job_setup),
-            (desktop.mac_app_template(), 'app.makeMac', self._job_mac), (desktop.linux_template(), 'app.makeLinux', self._job_linux)) if ok]
+        makers = [(self.t(key), kind) for kind, key in (('apk', 'app.makeApk'), ('setup', 'app.makeSetup'),
+                                                         ('mac', 'app.makeMac'), ('linux', 'app.makeLinux'))]
         if cue and makers:
             row = ttk.Frame(self.finish)
             row.grid(row=1, column=0, columnspan=3, sticky='w', pady=(8, 0))
             ttk.Label(row, text=self.t('app.makeAs')).grid(row=0, column=0, columnspan=2, sticky='w', pady=(0, 4))
-            for i, (text, job) in enumerate(makers):   # two to a row
-                ttk.Button(row, text=text, command=lambda job=job: self.busy or self._spawn(job, cue, busy='build')
+            for i, (text, kind) in enumerate(makers):   # two to a row
+                ttk.Button(row, text=text, command=lambda kind=kind: self.busy or self._spawn(self._job_make, kind, cue, busy='build')
                            ).grid(row=1 + i // 2, column=i % 2, sticky='ew', padx=(0, 6), pady=(0, 4))
             row.columnconfigure((0, 1), uniform='makers')
 
-    def _job_apk(self, cue):
-        def progress(done, total):
-            self.events.put(('bar', done / total, self.t('app.makingApk', done=done * 100 // total)))
-        out = desktop.make_apk(cue, progress)
-        self.events.put(('stage', self.t('app.apkDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
+    def _job_make(self, kind, cue):
+        """An installer with the built disc inside: the template comes from the release of the package in use."""
+        names = dict(apk='app.makingApk', setup='app.makingSetup', mac='app.makingMac', linux='app.makingLinux')
+        version = (self.package or {}).get('version') or ''
+        tag = 'v' + version.lstrip('v')
 
-    def _job_setup(self, cue):
-        def progress(done, total):
-            self.events.put(('bar', done / total, self.t('app.makingSetup', done=done * 100 // total)))
-        try:
-            out = desktop.make_setup(cue, progress)
-        except Exception as e:   # setup_exe.SetupError, or a full disk
-            self.events.put(('stage', str(e), 'Bad.TLabel'))
-            return
-        self.events.put(('stage', self.t('app.setupDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
+        def fetching(done, total):
+            if total:
+                self.events.put(('bar', done / total, self.t('app.fetchingTemplate', name=desktop.TEMPLATES[kind],
+                                                              done=done // 1048576, total=total // 1048576)))
 
-    def _job_mac(self, cue):
         def progress(done, total):
-            self.events.put(('bar', done / total, self.t('app.makingMac', done=done * 100 // total)))
-        try:
-            out = desktop.make_mac(cue, progress)
-        except Exception as e:   # mac_app.MacAppError, or a full disk
-            self.events.put(('stage', str(e), 'Bad.TLabel'))
-            return
-        self.events.put(('stage', self.t('app.macDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
-
-    def _job_linux(self, cue):
-        def progress(done, total):
-            self.events.put(('bar', done / total, self.t('app.makingLinux', done=done * 100 // total)))
-        try:
-            out = desktop.make_linux(cue, progress)
-        except Exception as e:   # linux_run.LinuxRunError, or a full disk
-            self.events.put(('stage', str(e), 'Bad.TLabel'))
-            return
-        self.events.put(('stage', self.t('app.linuxDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
+            self.events.put(('bar', done / total, self.t(names[kind], done=done * 100 // total)))
+        out = desktop.make(kind, cue, tag, progress, fetching, self.cancel)
+        key = 'app.macZipDone' if out.endswith('.zip') else f'app.{kind}Done'
+        self.events.put(('stage', self.t(key, file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
 
     def _stop(self):
         self.cancel.set()

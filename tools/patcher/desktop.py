@@ -744,47 +744,71 @@ def player_program():
     return path if os.path.isfile(path) else None
 
 
-def apk_template():
-    """Horizon Play for Android (tools/player/android), or None when this app was built without it."""
-    path = resource('android', 'Horizon-Play.apk')
-    return path if os.path.isfile(path) else None
+# The installers that put the built disc inside (docs/player.md): their empty templates are release assets, fetched
+# when one is wanted (the Mac one is the bundled Horizon Play on a Mac).
+TEMPLATES = dict(apk='Horizon-Play.apk', setup='Horizon-Setup.exe', mac='Horizon-Play-macOS.zip',
+                 linux='Horizon-Play-Linux-x86_64.tar.gz')
+TEMPLATE_KINDS = tuple(TEMPLATES)
 
 
-def make_apk(cue, progress=None):
-    """The Android app with the built disc inside (tools/patcher/apk.py), next to the disc: nothing to set up on the
-    phone. Signed with this computer's own key (kept in the settings folder), so a later one installs over it."""
+def templates_root():
+    return os.path.join(cache_dir(), 'templates')
+
+
+def release_assets(tag, repo=None):
+    """{name: {url, size, digest}} of the release `tag`: GitHub's API; when it refuses (its limit), the plain
+    download addresses of the templates, which carry no size or digest (TLS and the exact size then decide)."""
+    import urllib.error
+    repo = repo or repository()
     try:
-        from . import apk
-    except ImportError:
-        import apk
-    image = cue_image(cue)
-    out = os.path.splitext(os.path.abspath(cue))[0] + '.apk'
-    total = 2 * os.path.getsize(image)   # read once for the zip, once for the signature
-    done = [0]
-
-    def tick(n):
-        done[0] += n
-        if progress:
-            progress(min(done[0], total), total)
-    return apk.build(apk_template(), image, out, os.path.join(config_dir(), 'android-key.json'), tick)
+        with _open(f'https://api.github.com/repos/{repo}/releases/tags/{tag}', 'application/vnd.github+json') as r:
+            return release_info(json.load(r))['assets']
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return {}
+        if e.code not in (403, 429):
+            raise
+    return {name: dict(url=f'https://github.com/{repo}/releases/download/{tag}/{name}', size=None, digest=None)
+            for name in TEMPLATES.values()}
 
 
-def setup_template():
-    """The Windows setup template, Horizon-Setup.exe with no game in it (tools/player/installer.py), or None when this
-    app was built without it."""
-    path = resource('windows', 'Horizon-Setup.exe')
-    return path if os.path.isfile(path) else None
+def _sha256(path):
+    h = hashlib.sha256()
+    with open(path, 'rb') as f:
+        for b in iter(lambda: f.read(1 << 20), b''):
+            h.update(b)
+    return h.hexdigest()
 
 
-def make_setup(cue, progress=None):
-    """The Windows setup with the built disc appended (tools/patcher/setup_exe.py), next to the disc: it installs
-    Horizon Play and the game in one go."""
-    try:
-        from . import setup_exe
-    except ImportError:
-        import setup_exe
-    out = os.path.splitext(os.path.abspath(cue))[0] + '-Setup.exe'
-    return setup_exe.build(setup_template(), cue, out, progress)
+def unzip_app(archive, dest):
+    """A zip made by `ditto -c -k --keepParent` (or mac_app.zip_app) -> dest, keeping symlinks and execute bits."""
+    import stat
+    import zipfile
+    shutil.rmtree(dest, ignore_errors=True)
+    os.makedirs(dest)
+    with zipfile.ZipFile(archive) as z:
+        for info in z.infolist():
+            name = info.filename.rstrip('/')
+            if not _safe_name(name) or name.startswith('__MACOSX/'):
+                if name.startswith('__MACOSX/'):
+                    continue
+                raise Problem('app.packageBad', detail=f'unsafe name {info.filename}')
+            path = os.path.join(dest, *name.split('/'))
+            mode = info.external_attr >> 16
+            if info.is_dir():
+                os.makedirs(path, exist_ok=True)
+            elif stat.S_ISLNK(mode):
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                os.symlink(z.read(info).decode('utf-8'), path)
+            else:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with z.open(info) as src, open(path, 'wb') as out:
+                    shutil.copyfileobj(src, out)
+                os.chmod(path, (mode & 0o777) or 0o644)
+    apps = [n for n in os.listdir(dest) if n.endswith('.app')]
+    if len(apps) != 1:
+        raise Problem('app.packageBad', detail='the Mac template holds no single .app')
+    return os.path.join(dest, apps[0])
 
 
 def mac_app_template():
@@ -795,30 +819,84 @@ def mac_app_template():
     return os.path.dirname(os.path.dirname(os.path.dirname(program))) if program else None
 
 
-def make_mac(cue, progress=None):
-    """The Mac app with the built disc inside (tools/patcher/mac_app.py), as a disk image next to the disc."""
+def template(kind, tag, progress=None, cancel=None):
+    """The empty template of an installer (`TEMPLATES`) from the release `tag` (the one whose package is in use) ->
+    the file (the .app folder for 'mac'). Cached by tag in the settings folder and checked against the asset's
+    SHA-256 when GitHub gives one (as the package is); the cache is used when offline. progress(done, total)."""
+    import urllib.error
+    if kind == 'mac' and mac_app_template():
+        return mac_app_template()     # the bundled Horizon Play: the same thing
+    name = TEMPLATES[kind]
+    folder = os.path.join(templates_root(), re.sub(r'[^A-Za-z0-9._-]', '_', tag))
+    dest = os.path.join(folder, name)
+    record = dest + '.json'
+    result = os.path.join(folder, 'Horizon Play-app') if kind == 'mac' else dest
     try:
-        from . import mac_app
-    except ImportError:
-        import mac_app
-    out = os.path.splitext(os.path.abspath(cue))[0] + '-Mac.dmg'
-    return mac_app.build(mac_app_template(), cue, out, progress)
-
-
-def linux_template():
-    """The Linux Horizon Play bundle (player.yml's tarball), or None when this app was built without it."""
-    path = resource('linux', 'Horizon-Play-Linux-x86_64.tar.gz')
-    return path if os.path.isfile(path) else None
-
-
-def make_linux(cue, progress=None):
-    """The Linux installer with the built disc inside (tools/patcher/linux_run.py), next to the disc."""
+        assets, failure = release_assets(tag), None
+    except (urllib.error.URLError, OSError) as e:
+        assets, failure = None, e
+    cached = None
     try:
-        from . import linux_run
+        with open(record, encoding='utf-8') as f:
+            cached = json.load(f)
+        if not os.path.isfile(dest) or os.path.getsize(dest) != cached['size']:
+            cached = None
+    except (OSError, ValueError, KeyError):
+        cached = None
+    asset = (assets or {}).get(name)
+    if cached and asset:   # the release may have been corrected since
+        if (asset.get('digest') or '').startswith('sha256:') and asset['digest'][7:] != cached['sha256']:
+            cached = None
+        elif asset.get('size') and asset['size'] != cached['size']:
+            cached = None
+    if not cached:
+        if assets is None:
+            raise Problem('app.templateOffline', name=name, error=getattr(failure, 'reason', None) or failure)
+        if not asset:
+            raise Problem('app.templateMissing', name=name, tag=tag)
+        os.makedirs(folder, exist_ok=True)
+        download(asset['url'], dest, progress, cancel, asset.get('size'))
+        digest = _sha256(dest)
+        if (asset.get('digest') or '').startswith('sha256:') and asset['digest'][7:] != digest:
+            os.remove(dest)
+            raise Problem('app.packageBad', detail='the download is not the release asset (SHA-256)')
+        with open(record, 'w', encoding='utf-8') as f:
+            json.dump(dict(sha256=digest, size=os.path.getsize(dest)), f)
+        shutil.rmtree(result, ignore_errors=True)
+    if kind != 'mac':
+        return dest
+    if not os.path.isdir(result):
+        unzip_app(dest, result)
+    return os.path.join(result, [n for n in os.listdir(result) if n.endswith('.app')][0])
+
+
+def make(kind, cue, tag, progress=None, fetching=None, cancel=None):
+    """The installer of `kind` (apk, setup, mac, linux) with the built disc inside, next to the disc -> its path.
+    fetching(done, total) follows the template's download, progress(done, total) the build."""
+    try:
+        from . import apk, setup_exe, mac_app, linux_run
     except ImportError:
-        import linux_run
-    out = os.path.splitext(os.path.abspath(cue))[0] + '-Linux.run'
-    return linux_run.build(linux_template(), cue, out, progress)
+        import apk, setup_exe, mac_app, linux_run
+    source = template(kind, tag, fetching, cancel)
+    base = os.path.splitext(os.path.abspath(cue))[0]
+    try:
+        if kind == 'apk':
+            image = cue_image(cue)
+            total = 2 * os.path.getsize(image)   # read once for the zip, once for the signature
+            done = [0]
+
+            def tick(n):
+                done[0] += n
+                if progress:
+                    progress(min(done[0], total), total)
+            return apk.build(source, image, base + '.apk', os.path.join(config_dir(), 'android-key.json'), tick)
+        if kind == 'setup':
+            return setup_exe.build(source, cue, base + '-Setup.exe', progress)
+        if kind == 'mac':   # a disk image on a Mac; elsewhere a zip (it cannot be signed or mounted here)
+            return mac_app.build(source, cue, base + ('-Mac.dmg' if sys.platform == 'darwin' else '-Mac.zip'), progress)
+        return linux_run.build(source, cue, base + '-Linux.run', progress)
+    except (setup_exe.SetupError, mac_app.MacAppError, linux_run.LinuxRunError) as e:
+        raise Problem('app.makeFailed', detail=str(e))
 
 
 def play(cue):

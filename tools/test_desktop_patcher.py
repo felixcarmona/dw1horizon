@@ -755,14 +755,127 @@ class SetupExe(unittest.TestCase):
             with self.assertRaisesRegex(setup_exe.SetupError, '2 tracks'):
                 setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), str(d / 'o.exe'))
 
-    def test_desktop_finds_the_template(self):
-        with tempfile.TemporaryDirectory() as d:
-            self.make(d)
-            with patch.object(desktop, 'resource', lambda *a: str(Path(d) / 'template.exe')):
-                self.assertTrue(desktop.setup_template())
-                out = desktop.make_setup(str(Path(d) / 'my disc.cue'))
+
+class Templates(unittest.TestCase):
+    """The installer templates are release assets, downloaded once and cached by tag (desktop.template)."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self.tmp.name)
+        patcher = patch.dict(os.environ, HORIZON_PATCHER_HOME=str(self.dir / 'home'))
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.addCleanup(self.tmp.cleanup)
+        self.remote = {'Horizon-Setup.exe': b'MZ template ' * 100, 'Horizon-Play.apk': b'PK apk' * 50}
+        self.downloads = []
+
+    def assets(self, digest=True):
+        out = {}
+        for name, data in self.remote.items():
+            src = self.dir / 'remote' / name
+            src.parent.mkdir(exist_ok=True)
+            src.write_bytes(data)
+            out[name] = dict(url=str(src), size=len(data),
+                             digest='sha256:' + hashlib.sha256(data).hexdigest() if digest else None)
+        return out
+
+    def download(self, url, dest, progress=None, cancel=None, size=None):
+        self.downloads.append(url)
+        Path(dest).write_bytes(Path(url).read_bytes())
+        if progress:
+            progress(size or 1, size or 1)
+        return dest
+
+    def get(self, kind='setup', tag='v9.9.9', **kw):
+        return desktop.template(kind, tag, **kw)
+
+    def test_download_then_cache(self):
+        seen = []
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download):
+            path = self.get(progress=lambda a, b: seen.append((a, b)))
+            self.assertEqual(Path(path).read_bytes(), self.remote['Horizon-Setup.exe'])
+            self.assertEqual(Path(path).parent.name, 'v9.9.9')
+            self.assertTrue(seen)
+            self.get()                                          # a second time: from the cache
+            self.assertEqual(len(self.downloads), 1)
+            self.get('apk')
+            self.assertEqual(len(self.downloads), 2)
+
+    def test_offline_uses_the_cache_or_says_so(self):
+        import urllib.error
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download):
+            self.get()
+        def offline(tag):
+            raise urllib.error.URLError('no network')
+        with patch.object(desktop, 'release_assets', offline), patch.object(desktop, 'download', self.download):
+            self.assertTrue(Path(self.get()).is_file())          # cached: works offline
+            with self.assertRaises(desktop.Problem) as e:        # not cached: a clear error
+                self.get('apk')
+            self.assertEqual(e.exception.key, 'app.templateOffline')
+            self.assertEqual(e.exception.params['name'], 'Horizon-Play.apk')
+        self.assertEqual(len(self.downloads), 1)
+
+    def test_missing_asset(self):
+        with patch.object(desktop, 'release_assets', lambda tag: {}):
+            with self.assertRaises(desktop.Problem) as e:
+                self.get('linux', tag='v0.0.1')
+            self.assertEqual((e.exception.key, e.exception.params['tag']), ('app.templateMissing', 'v0.0.1'))
+
+    def test_wrong_digest_is_refused_and_not_cached(self):
+        assets = self.assets()
+        assets['Horizon-Setup.exe']['digest'] = 'sha256:' + '0' * 64
+        with patch.object(desktop, 'release_assets', lambda tag: assets), patch.object(desktop, 'download', self.download):
+            with self.assertRaises(desktop.Problem) as e:
+                self.get()
+            self.assertEqual(e.exception.key, 'app.packageBad')
+        self.assertFalse(list((self.dir / 'home').rglob('Horizon-Setup.exe*')))
+
+    def test_a_corrected_asset_replaces_the_cache(self):
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download):
+            self.get()
+            self.remote['Horizon-Setup.exe'] = b'MZ corrected ' * 100
+            self.assertEqual(Path(self.get()).read_bytes(), self.remote['Horizon-Setup.exe'])
+        self.assertEqual(len(self.downloads), 2)
+
+    def test_mac_template_is_unzipped_with_symlinks_and_modes(self):
+        app = self.dir / 'src' / 'Horizon Play.app'
+        (app / 'Contents' / 'MacOS').mkdir(parents=True)
+        (app / 'Contents' / 'Resources').mkdir()
+        (app / 'Contents' / 'Info.plist').write_bytes(b'<plist/>')
+        (app / 'Contents' / 'MacOS' / 'horizon-play').write_bytes(b'bin')
+        os.chmod(app / 'Contents' / 'MacOS' / 'horizon-play', 0o755)
+        os.symlink('horizon-play', app / 'Contents' / 'MacOS' / 'alias')
+        zip_path = self.dir / 'remote' / 'Horizon-Play-macOS.zip'
+        zip_path.parent.mkdir(exist_ok=True)
+        import mac_app as m
+        # (the zip writer keeps the folder's own name as the top entry, as `ditto --keepParent` does)
+        m.zip_app(str(app), str(zip_path))
+        self.remote['Horizon-Play-macOS.zip'] = zip_path.read_bytes()
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download), patch.object(desktop, 'mac_app_template', lambda: None):
+            got = Path(self.get('mac'))
+            self.assertEqual(got.name, 'Horizon Play.app')
+            self.assertTrue(os.path.islink(got / 'Contents' / 'MacOS' / 'alias'))
+            self.assertTrue(os.access(got / 'Contents' / 'MacOS' / 'horizon-play', os.X_OK))
+            self.assertEqual(Path(self.get('mac')), got)         # cached: no second download
+        self.assertEqual(len(self.downloads), 1)
+
+    def test_make_builds_next_to_the_disc(self):
+        (self.dir / 'my disc.bin').write_bytes(b'\x01' * 4000)
+        (self.dir / 'my disc.cue').write_text('FILE "my disc.bin" BINARY\n  TRACK 01 MODE2/2352\n')
+        with patch.object(desktop, 'release_assets', lambda tag: self.assets()), patch.object(
+                desktop, 'download', self.download):
+            out = desktop.make('setup', str(self.dir / 'my disc.cue'), 'v9.9.9')
             self.assertEqual(Path(out).name, 'my disc-Setup.exe')
             self.assertTrue(setup_exe.read_trailer(out))
+            self.remote['Horizon-Setup.exe'] = b'MZ'
+            (self.dir / 'my disc.cue').write_text('REM none\n')
+            with self.assertRaises(desktop.Problem) as e:
+                desktop.make('setup', str(self.dir / 'my disc.cue'), 'v9.9.9')
+            self.assertEqual(e.exception.key, 'app.makeFailed')
 
 
 class MacApp(unittest.TestCase):
