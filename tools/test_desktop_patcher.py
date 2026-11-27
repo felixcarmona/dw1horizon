@@ -70,6 +70,38 @@ def pbp(data, stored=False, tag=b'PSISOIMG0000'):
     return header + payload
 
 
+class RealTemp(unittest.TestCase):
+    """macOS: the temporary folder is under /var, a link to /private/var (desktop.use_real_temp)."""
+
+    @unittest.skipIf(os.name == 'nt', 'POSIX links')
+    def test_a_linked_temporary_folder_is_used_by_its_real_path(self):
+        with tempfile.TemporaryDirectory() as d:
+            real = os.path.realpath(d)
+            target = os.path.join(real, 'private', 'var')     # one level deeper than the link, as on macOS
+            os.makedirs(target)
+            os.symlink(target, os.path.join(real, 'var'))
+            linked = os.path.join(real, 'var')
+            saved = os.environ.get('TMPDIR'), tempfile.tempdir
+            try:
+                os.environ['TMPDIR'], tempfile.tempdir = linked, None
+                desktop.use_real_temp()
+                self.assertEqual(os.environ['TMPDIR'], target)
+                work = tempfile.mkdtemp(prefix='dwpatch-')
+                # a derive tool resolves its own path; the build's outputs are taken relative to the work folder
+                made = Path(work).resolve() / 'build' / 'partner-headroom' / '113.MMD'
+                made.parent.mkdir(parents=True)
+                made.write_bytes(b'x')
+                out = os.path.join(work, 'build', 'everything')
+                os.makedirs(out)
+                self.assertEqual(Path(out, os.path.relpath(made, out)).read_bytes(), b'x')
+            finally:
+                if saved[0] is None:
+                    os.environ.pop('TMPDIR', None)
+                else:
+                    os.environ['TMPDIR'] = saved[0]
+                tempfile.tempdir = saved[1]
+
+
 class Images(unittest.TestCase):
     def setUp(self):
         self.td = tempfile.TemporaryDirectory()

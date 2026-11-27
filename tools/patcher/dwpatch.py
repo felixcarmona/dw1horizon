@@ -1701,7 +1701,9 @@ def cmd_apply3(a, rel, m):
                          'that game, or a newer release of Horizon.')
     say(f'   ok: the clean redump disc of {m["bases"][key]["title"]}.')
     p = read_payload3(read_patch_file(rel, v))
-    work = tempfile.mkdtemp(prefix='dwpatch-')
+    # its real path: on macOS the temporary folder is under /var, a link to /private/var, and tools that resolve their
+    # own paths would meet it under the other name (relative paths between the two then point nowhere)
+    work = os.path.realpath(tempfile.mkdtemp(prefix='dwpatch-'))
     partial = None
     base = None
     try:

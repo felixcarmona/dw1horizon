@@ -24,6 +24,7 @@ if __name__ == '__main__':
     _trace('past freeze_support')
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import desktop as _desktop
+    _desktop.use_real_temp()                             # (before any work folder is made, in every process)
     _code = _desktop.python_shim()
     if _code is not None:
         sys.exit(_code)
