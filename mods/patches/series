@@ -575,3 +575,4 @@ Smooth-damage-numbers.patch
 Smooth-particle-bursts-and-puffs.patch
 OPTIONS-at-the-title-opens-at-once.patch
 Farm-bubble-bobs-smoothly.patch
+Sound-header-buffers-are-as-big-as-the-real-headers.patch

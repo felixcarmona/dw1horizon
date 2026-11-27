@@ -57,16 +57,17 @@ SPU_RATE = 44100
 # Per file: how the chunks are laid out and what the game allows (sound.c, sound_async.c).
 #   stride: fixed chunk size in sectors (chunk = id * stride), 'sector': each chunk starts at the
 #   next sector (ESALL, with MAP_SOUND_PARA), None: one chunk, file not padded.
-#   vhmax: RAM buffer the VAB header is memcpy'd into (VHB_HEADER_*), unchecked.
+#   vhmax: RAM buffer the VAB header is memcpy'd into (VHB_HEADER_*), sized to the measured headers (sound.c,
+#   VHB_HEADER_SIZE); check_chunk and the build refuse a bigger one, the game refuses it at load.
 #   bank / slot: SsVabOpenHeadSticky address (VHB_SOUNDBUFFER_START) and the room up to the next one.
 FILES = {
-    'SS':    dict(stride=None, hdr=3, vhmax=0x1000, bank=0, spu=0x01010, slot=0x0E800 - 0x01010),
-    'SL':    dict(stride=None, hdr=3, vhmax=0x1000, bank=1, spu=0x0E800, slot=0x1B800 - 0x0E800),
-    'FAALL': dict(stride=39,   hdr=4, vhmax=0x2000, bank=2, spu=0x1B800, slot=0x2A000 - 0x1B800),
-    'VLALL': dict(stride=15,   hdr=3, vhmax=0x1000, bank=3, spu=0x2A000, slot=0x31800 - 0x2A000),
-    'VBALL': dict(stride=7,    hdr=3, vhmax=0x1000, bank=4, spu=0x31800, slot=0x2800),
-    'ESALL': dict(stride='sector', hdr=3, vhmax=0x1800, bank=8, spu=0x3B800, slot=0x7B7C0 - 0x3B800),
-    'SB':    dict(stride=None, hdr=3, vhmax=0x1800, bank=8, spu=0x3B800, slot=0x7B7C0 - 0x3B800),
+    'SS':    dict(stride=None, hdr=3, vhmax=0xE20, bank=0, spu=0x01010, slot=0x0E800 - 0x01010),
+    'SL':    dict(stride=None, hdr=3, vhmax=0xE20, bank=1, spu=0x0E800, slot=0x1B800 - 0x0E800),
+    'FAALL': dict(stride=39,   hdr=4, vhmax=0x1C20, bank=2, spu=0x1B800, slot=0x2A000 - 0x1B800),
+    'VLALL': dict(stride=15,   hdr=3, vhmax=0xC20, bank=3, spu=0x2A000, slot=0x31800 - 0x2A000),
+    'VBALL': dict(stride=7,    hdr=3, vhmax=0xC20, bank=4, spu=0x31800, slot=0x2800),
+    'ESALL': dict(stride='sector', hdr=3, vhmax=0x1420, bank=8, spu=0x3B800, slot=0x7B7C0 - 0x3B800),
+    'SB':    dict(stride=None, hdr=3, vhmax=0x1420, bank=8, spu=0x3B800, slot=0x7B7C0 - 0x3B800),
 }
 SEQ_BUFFER_MAX = 0x5800        # SEQ_BUFFER (sound.c), memcpy without a check
 # A chunk (a single-chunk file: all of it) is read in whole sectors into GENERAL_BUFFER (0x80010000) before its upload:
