@@ -769,6 +769,24 @@ def make_apk(cue, progress=None):
     return apk.build(apk_template(), image, out, os.path.join(config_dir(), 'android-key.json'), tick)
 
 
+def setup_template():
+    """The Windows setup template, Horizon-Setup.exe with no game in it (tools/player/installer.py), or None when this
+    app was built without it."""
+    path = resource('windows', 'Horizon-Setup.exe')
+    return path if os.path.isfile(path) else None
+
+
+def make_setup(cue, progress=None):
+    """The Windows setup with the built disc appended (tools/patcher/setup_exe.py), next to the disc: it installs
+    Horizon Play and the game in one go."""
+    try:
+        from . import setup_exe
+    except ImportError:
+        import setup_exe
+    out = os.path.splitext(os.path.abspath(cue))[0] + '-Setup.exe'
+    return setup_exe.build(setup_template(), cue, out, progress)
+
+
 def play(cue):
     """Start Horizon Play on the built disc; it runs on its own (closing the patcher does not stop it)."""
     import subprocess

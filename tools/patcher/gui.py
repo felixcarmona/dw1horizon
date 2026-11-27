@@ -746,18 +746,31 @@ class App:
         if cue and desktop.apk_template():
             ttk.Button(self.finish, text=self.t('app.makeApk'),
                        command=lambda: self.busy or self._spawn(self._job_apk, cue, busy='build')).grid(row=0, column=1, padx=(0, 6))
+        if cue and desktop.setup_template():
+            ttk.Button(self.finish, text=self.t('app.makeSetup'),
+                       command=lambda: self.busy or self._spawn(self._job_setup, cue, busy='build')).grid(row=0, column=2, padx=(0, 6))
         if folder:
             ttk.Button(self.finish, text=self.t('app.openFolder'),
-                       command=lambda: desktop.open_folder(folder)).grid(row=0, column=2, padx=(0, 6))
+                       command=lambda: desktop.open_folder(folder)).grid(row=0, column=3, padx=(0, 6))
         if log and os.path.exists(log):
             ttk.Button(self.finish, text=self.t('app.openLog'),
-                       command=lambda: desktop.open_folder(log)).grid(row=0, column=3)
+                       command=lambda: desktop.open_folder(log)).grid(row=0, column=4)
 
     def _job_apk(self, cue):
         def progress(done, total):
             self.events.put(('bar', done / total, self.t('app.makingApk', done=done * 100 // total)))
         out = desktop.make_apk(cue, progress)
         self.events.put(('stage', self.t('app.apkDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
+
+    def _job_setup(self, cue):
+        def progress(done, total):
+            self.events.put(('bar', done / total, self.t('app.makingSetup', done=done * 100 // total)))
+        try:
+            out = desktop.make_setup(cue, progress)
+        except Exception as e:   # setup_exe.SetupError, or a full disk
+            self.events.put(('stage', str(e), 'Bad.TLabel'))
+            return
+        self.events.put(('stage', self.t('app.setupDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
 
     def _stop(self):
         self.cancel.set()

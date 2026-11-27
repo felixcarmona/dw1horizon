@@ -786,7 +786,65 @@ static void fail(const char *title, const char *msg) {
   SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, msg, window);
 }
 
+/* --unpack SETUP DIR: write the disc appended to the Windows setup (tools/patcher/setup_exe.py) into DIR as
+ * "Digimon World Horizon.bin" and ".cue". The trailer: ... BIN | CUE | bin size u64 | cue size u32 | version u32 |
+ * "HZSETUP1". Through .new files, renamed at the end. SDL_RWops: 64-bit offsets and UTF-8 paths on every system. */
+#define SETUP_NAME "Digimon World Horizon"
+static int unpack_fail(const char *what, const char *path) {
+  fprintf(stderr, "unpack: %s%s%s\n", what, path ? ": " : "", path ? path : "");
+  return 2;
+}
+static bool unpack_copy(SDL_RWops *in, Sint64 from, Sint64 size, const char *path) {
+  SDL_RWops *out = SDL_RWFromFile(path, "wb");
+  static char buf[1 << 20];
+  if (!out) return false;
+  bool ok = SDL_RWseek(in, from, RW_SEEK_SET) == from;
+  while (ok && size > 0) {
+    size_t n = size < (Sint64)sizeof buf ? (size_t)size : sizeof buf;
+    ok = SDL_RWread(in, buf, 1, n) == n && SDL_RWwrite(out, buf, 1, n) == n;
+    size -= (Sint64)n;
+  }
+  return SDL_RWclose(out) == 0 && ok;
+}
+static bool unpack_rename(const char *from, const char *to) {
+#ifdef _WIN32
+  wchar_t a[1024], b[1024];
+  if (!MultiByteToWideChar(CP_UTF8, 0, from, -1, a, 1024) || !MultiByteToWideChar(CP_UTF8, 0, to, -1, b, 1024)) return false;
+  return MoveFileExW(a, b, MOVEFILE_REPLACE_EXISTING) != 0;
+#else
+  return rename(from, to) == 0;
+#endif
+}
+static int unpack_setup(const char *setup, const char *dir) {
+  unsigned char t[24];
+  SDL_RWops *in = SDL_RWFromFile(setup, "rb");
+  if (!in) return unpack_fail("cannot open", setup);
+  Sint64 end = SDL_RWsize(in);
+  if (end < (Sint64)sizeof t || SDL_RWseek(in, end - (Sint64)sizeof t, RW_SEEK_SET) < 0 ||
+      SDL_RWread(in, t, 1, sizeof t) != sizeof t) { SDL_RWclose(in); return unpack_fail("cannot read the end of", setup); }
+  if (memcmp(t + 16, "HZSETUP1", 8)) { SDL_RWclose(in); return unpack_fail("no game inside (not made by the Horizon Patcher)", setup); }
+  Sint64 bin = 0; Uint32 cue = 0, ver = 0;
+  for (int i = 7; i >= 0; i--) bin = (bin << 8) | t[i];
+  for (int i = 11; i >= 8; i--) cue = (cue << 8) | t[i];
+  for (int i = 15; i >= 12; i--) ver = (ver << 8) | t[i];
+  if (ver != 1) { SDL_RWclose(in); return unpack_fail("a setup of a newer kind: update the Horizon Patcher", setup); }
+  if (bin <= 0 || bin + (Sint64)cue + (Sint64)sizeof t > end) { SDL_RWclose(in); return unpack_fail("the setup is damaged (too short)", setup); }
+  char binp[1024], cuep[1024], binn[1040], cuen[1040];
+  const char sep = (strchr(dir, '\\') || strstr(dir, ":")) ? '\\' : '/';
+  snprintf(binp, sizeof binp, "%s%c%s.bin", dir, sep, SETUP_NAME);
+  snprintf(cuep, sizeof cuep, "%s%c%s.cue", dir, sep, SETUP_NAME);
+  snprintf(binn, sizeof binn, "%s.new", binp);
+  snprintf(cuen, sizeof cuen, "%s.new", cuep);
+  Sint64 at = end - (Sint64)sizeof t - (Sint64)cue - bin;
+  bool ok = unpack_copy(in, at, bin, binn) && unpack_copy(in, at + bin, cue, cuen);
+  SDL_RWclose(in);
+  if (!ok) { return unpack_fail("cannot write the disc (disk full?)", binn); }
+  if (!unpack_rename(binn, binp) || !unpack_rename(cuen, cuep)) return unpack_fail("cannot rename into place", binp);
+  return 0;
+}
+
 int main(int argc, char **argv) {
+  if (argc == 4 && !strcmp(argv[1], "--unpack")) return unpack_setup(argv[2], argv[3]);
   const char *disc = NULL, *core_path = NULL, *sys = NULL, *saves = NULL;
   bool windowed = false, no_disc = false; int scale = 0, force_w = 0, force_h = 0;
   for (int i = 1; i < argc; i++) {

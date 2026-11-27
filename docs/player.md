@@ -133,18 +133,35 @@ system. (`tools/player/overlay.c`: drawn at start into one texture, no image fil
 
 ## A setup wizard
 
-`tools/player/installer.py` makes a Windows setup program (NSIS: `makensis`, else in a Docker `ubuntu:24.04`) with a
-Windows Horizon Play folder and a built disc inside, for people who own the game and want it installed in one go:
+A Windows setup program that installs Horizon Play and the game in one go, made the way the Android APK is. CI
+publishes an **empty template**, `Horizon-Setup.exe` (`desktop.yml`, artifact `horizon-setup-template`): an NSIS wizard
+and Horizon Play, **no game data**. On the player's own computer the desktop patcher appends the disc it just built to a
+copy of that template and writes `<disc>-Setup.exe` next to the disc (**Windows installer (.exe)** button,
+`desktop.make_setup`, `tools/patcher/setup_exe.py`). That file holds the player's disc, so it stays on their computer.
 
 ```
-python3 tools/player/installer.py --player "Horizon Play" --disc DISC.cue --out Setup.exe
+python3 tools/player/installer.py --player "Horizon Play" --out Horizon-Setup.exe        # the template (makensis)
+python3 tools/patcher/setup_exe.py Horizon-Setup.exe DISC.cue DISC-Setup.exe              # the template plus a disc
 ```
+
+`installer.py` runs `makensis` from the PATH, from `Program Files (x86)\NSIS` (preinstalled on the Windows runner; the
+workflow installs it with choco if not), or in a Docker `ubuntu:24.04`. `setup_exe.py` (standard library, streamed,
+one `.bin` per disc) copies the template and appends the `.bin`, the cue text (its FILE renamed to
+`Digimon World Horizon.bin`) and a fixed 24-byte trailer: bin size (u64), cue size (u32), format version (u32), the
+magic `HZSETUP1`, little endian. The template is built with `CRCCheck off`: NSIS reads only the data length its first
+header records, so the appended bytes are ignored, but its CRC check covers the whole file and would be the one thing
+to object to them.
 
 The wizard (English or Spanish) installs for the current user, without administrator, into
-`%LOCALAPPDATA%\Programs\Digimon World Horizon`, adds desktop and Start menu shortcuts that open the disc, and an
-entry in Windows' installed apps. Its last page offers **Play now**. Uninstalling leaves the saves
-(`%APPDATA%\Horizon\Horizon`). It is made on a computer from its own disc, never by CI or for a release: the disc is
-the game.
+`%LOCALAPPDATA%\Programs\Digimon World Horizon`, adds desktop and Start menu shortcuts that open the disc, and an entry
+in Windows' installed apps. NSIS cannot copy 600 MB quickly, so after the player files it runs
+`horizon-play.exe --unpack SETUP DIR` (`unpack_setup` in `horizon_play.c`: reads the trailer, writes the `.bin` and `.cue`
+through `.new` files, renames them; nonzero exit and a message on stderr when the trailer is missing, wrong or a write
+fails), and aborts the install with a message if it fails. A template run with no disc appended says so at the start
+(`.onInit` reads the last 8 bytes for the magic) and quits before installing anything. The last page offers **Play now**.
+The uninstaller removes the install folder with the disc; the saves stay (`%APPDATA%\Horizon\Horizon`). A silent
+`Setup.exe /S /D=DIR` works (the CI check runs it, then `Uninstall.exe /S`). The macOS patcher does not carry the
+template (the macOS job would have to wait for the whole Windows job): make the setup on a Windows computer.
 
 ## Licences
 

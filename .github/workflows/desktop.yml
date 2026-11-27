@@ -142,12 +142,49 @@ jobs:
       - name: Build Horizon Play (the program, the SwanStation core, OpenBIOS)
         shell: bash
         run: python tools/player/build.py --out "$RUNNER_TEMP/Horizon Play" --work "$RUNNER_TEMP/player" --openbios "$RUNNER_TEMP/openbios/openbios.bin"
+      - name: Build the setup template (the wizard and Horizon Play, no game; the patcher appends the player's disc)
+        shell: bash
+        run: |
+          # makensis is normally preinstalled on the runner; install it when it is not
+          if ! command -v makensis > /dev/null && [ ! -f "/c/Program Files (x86)/NSIS/makensis.exe" ]; then
+            choco install nsis -y --no-progress
+          fi
+          mkdir setup
+          python tools/player/installer.py --player "$RUNNER_TEMP/Horizon Play" --out setup/Horizon-Setup.exe ${RELEASE_TAG:+--version "$RELEASE_TAG"}
+      - name: A setup made from a dummy disc installs, unpacks the disc byte for byte and uninstalls
+        shell: pwsh
+        run: |
+          $t = $env:RUNNER_TEMP
+          python -c "import sys; open(sys.argv[1] + '/dummy.bin', 'wb').write(bytes(range(251)) * 20000)" $t
+          Set-Content "$t\dummy.cue" 'FILE "dummy.bin" BINARY', '  TRACK 01 MODE2/2352', '    INDEX 01 00:00:00'
+          python tools/patcher/setup_exe.py setup/Horizon-Setup.exe "$t\dummy.cue" "$t\Dummy-Setup.exe"
+          # the bare template must refuse to install (silent: it just quits with an error code)
+          $bare = Start-Process setup/Horizon-Setup.exe -ArgumentList '/S' -Wait -PassThru
+          if ($bare.ExitCode -eq 0) { throw 'the template without a disc installed' }
+          $inst = "$t\hsetup"
+          # /D= must be the last argument and is not quoted
+          $p = Start-Process "$t\Dummy-Setup.exe" -ArgumentList '/S', "/D=$inst" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "setup exit code $($p.ExitCode)" }
+          if ((Get-FileHash "$inst\Digimon World Horizon.bin").Hash -ne (Get-FileHash "$t\dummy.bin").Hash) { throw 'the unpacked disc differs' }
+          $cue = Get-Content "$inst\Digimon World Horizon.cue" -Raw
+          if ($cue -notmatch 'FILE "Digimon World Horizon.bin" BINARY') { throw "wrong cue: $cue" }
+          if (-not (Test-Path "$inst\horizon-play.exe")) { throw 'Horizon Play is not installed' }
+          # the uninstaller copies itself away and returns at once: wait for the folder to go
+          Start-Process "$inst\Uninstall.exe" -ArgumentList '/S' -Wait
+          for ($i = 0; $i -lt 60 -and (Test-Path $inst); $i++) { Start-Sleep 1 }
+          if (Test-Path $inst) { throw 'the uninstaller left the folder' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: horizon-setup-template
+          path: setup/Horizon-Setup.exe
+          if-no-files-found: error
       - name: Build
         shell: bash
         run: |
           python -m pip install --disable-pip-version-check $PYINSTALLER
           python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"} --player "$RUNNER_TEMP/Horizon Play" \
-            --player-apk "$RUNNER_TEMP/apk/Horizon-Play.apk"
+            --player-apk "$RUNNER_TEMP/apk/Horizon-Play.apk" --setup-template setup/Horizon-Setup.exe
+          test -f "build/desktop/dist/Horizon Patcher/_internal/windows/Horizon-Setup.exe"
           test -f "build/desktop/dist/Horizon Patcher/_internal/android/Horizon-Play.apk"
           test -f "build/desktop/dist/Horizon Patcher/_internal/player/horizon-play.exe"
           test -f "build/desktop/dist/Horizon Patcher/_internal/player/swanstation_libretro.dll"
@@ -404,7 +441,8 @@ jobs:
             gh release view "$RELEASE_TAG" > /dev/null 2>&1 && break
             sleep 20
           done
-          gh release upload "$RELEASE_TAG" apps/Horizon-Patcher-Windows.zip apps/Horizon-Patcher-macOS.zip --clobber
+          # Horizon-Setup.exe is the empty setup template (no game): the patcher carries it, this copy is for the CLI tools
+          gh release upload "$RELEASE_TAG" apps/Horizon-Patcher-Windows.zip apps/Horizon-Patcher-macOS.zip apps/Horizon-Setup.exe --clobber
       - name: Describe the apps for the site
         # horizon-desktop.json goes up after the zips it describes: release.yml offers the apps on dw1horizon.com only
         # when it finds this file, and checks both zips against it (tools/release_pages.py desktop_apps).

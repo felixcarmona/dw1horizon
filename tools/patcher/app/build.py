@@ -106,7 +106,9 @@ def spec(work, a, ver):
         datas.append((os.path.abspath(a.player), 'player'))
     if a.player_apk:   # Horizon Play for Android: the template desktop.make_apk puts the built disc into
         datas.append((os.path.abspath(a.player_apk), 'android'))
-    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk']
+    if a.setup_template:   # the Windows setup template (tools/player/installer.py): desktop.make_setup appends the disc
+        datas.append((os.path.abspath(a.setup_template), 'windows'))
+    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk', 'setup_exe']
     if sys.platform == 'darwin':
         hidden.append('certifi')
     icon = os.path.join(icons, 'icon.ico' if os.name == 'nt' else 'icon.icns')
@@ -145,6 +147,8 @@ def main(argv=None):
     p.add_argument('--player', help='a Horizon Play folder (tools/player/build.py) to ship inside the app')
     p.add_argument('--player-apk', help='Horizon Play for Android (tools/player/android/build_apk.py): the app then '
                                         'also makes an APK with the built disc inside')
+    p.add_argument('--setup-template', help='Horizon-Setup.exe (tools/player/installer.py): the app then also makes '
+                                            'a Windows setup with the built disc inside')
     p.add_argument('--out', default=os.path.join(ROOT, 'build', 'desktop'))
     a = p.parse_args(argv)
     ver = (a.version or version()).lstrip('v')

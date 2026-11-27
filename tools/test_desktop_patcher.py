@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / 'patcher'))
 import discformats  # noqa: E402
 import desktop  # noqa: E402
 import dwpatch as dw  # noqa: E402
+import setup_exe  # noqa: E402
 
 RAW = 2352
 
@@ -692,6 +693,71 @@ class CacheRefreshFlow(unittest.TestCase):
                     with self.assertRaisesRegex(RuntimeError, 'stop before applying'):
                         app._job_build('output')
                 self.assertEqual(app._job_download.call_count, int(source == 'release'))
+
+
+class SetupExe(unittest.TestCase):
+    """The Windows setup: a template with the player's disc appended (tools/patcher/setup_exe.py)."""
+
+    def make(self, d, cue_text=None, bin_data=b'\x01\x02' * 5000):
+        d = Path(d)
+        (d / 'template.exe').write_bytes(b'MZ' + bytes(range(256)) * 20)
+        (d / 'my disc.bin').write_bytes(bin_data)
+        (d / 'my disc.cue').write_text(cue_text or 'FILE "my disc.bin" BINARY\n  TRACK 01 MODE2/2352\n    INDEX 01 00:00:00\n')
+        return d
+
+    def test_trailer_round_trip(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = self.make(d)
+            out = str(d / 'out.exe')
+            setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), out)
+            data = (d / 'out.exe').read_bytes()
+            template = (d / 'template.exe').read_bytes()
+            binary = (d / 'my disc.bin').read_bytes()
+            size, cue_size, version = setup_exe.read_trailer(out)
+            self.assertEqual((size, version), (len(binary), setup_exe.VERSION))
+            self.assertEqual(data[:len(template)], template)
+            self.assertEqual(data[len(template):len(template) + size], binary)
+            self.assertEqual(data[-8:], b'HZSETUP1')
+            cue = data[len(template) + size:len(data) - setup_exe.TRAILER.size + 0][:cue_size].decode()
+            self.assertIn('FILE "Digimon World Horizon.bin" BINARY', cue)
+            self.assertNotIn('my disc', cue)
+            self.assertEqual(setup_exe.read_trailer(str(d / 'template.exe')), None)   # the bare template: no game
+            self.assertFalse((d / 'out.exe.new').exists())
+
+    def test_progress_reaches_the_total(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = self.make(d)
+            seen = []
+            setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), str(d / 'o.exe'),
+                            lambda done, total: seen.append((done, total)))
+            self.assertEqual(seen[-1][0], seen[-1][1])
+            self.assertEqual(seen, sorted(seen))
+
+    def test_refuses_a_cue_with_no_bin(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = self.make(d)
+            (d / 'my disc.bin').unlink()
+            with self.assertRaisesRegex(setup_exe.SetupError, 'missing'):
+                setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), str(d / 'o.exe'))
+            (d / 'my disc.cue').write_text('REM nothing\n')
+            with self.assertRaisesRegex(setup_exe.SetupError, 'no FILE'):
+                setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), str(d / 'o.exe'))
+            self.assertFalse((d / 'o.exe').exists())
+
+    def test_refuses_several_tracks(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = self.make(d, 'FILE "a.bin" BINARY\nFILE "b.bin" BINARY\n')
+            with self.assertRaisesRegex(setup_exe.SetupError, '2 tracks'):
+                setup_exe.build(str(d / 'template.exe'), str(d / 'my disc.cue'), str(d / 'o.exe'))
+
+    def test_desktop_finds_the_template(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.make(d)
+            with patch.object(desktop, 'resource', lambda *a: str(Path(d) / 'template.exe')):
+                self.assertTrue(desktop.setup_template())
+                out = desktop.make_setup(str(Path(d) / 'my disc.cue'))
+            self.assertEqual(Path(out).name, 'my disc-Setup.exe')
+            self.assertTrue(setup_exe.read_trailer(out))
 
 
 class Interface(unittest.TestCase):

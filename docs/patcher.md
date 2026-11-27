@@ -143,6 +143,12 @@ side is in [release/README-players.md](release/README-players.md#the-desktop-app
 Both apps carry Horizon Play ([player.md](player.md)): after a build, **Play** starts the new disc in it, already
 set up (8 MB, CPU 250 %, upscaled, full screen).
 
+The Windows patcher also carries the empty setup template `Horizon-Setup.exe` (`app/build.py --setup-template`, built in
+`desktop.yml` from the Horizon Play it just built; no game data). Its **Windows installer (.exe)** button, shown after a
+build, appends the disc to a copy of it (`desktop.make_setup`, `setup_exe.py`) and writes `<disc>-Setup.exe` next to the
+disc: a wizard that installs Horizon Play and the game for the current user. That file holds the player's own disc, so it
+is for their computers only. Details in [player.md](player.md#a-setup-wizard).
+
 - **Same code path.** The app downloads the release package, checks it, and loads the package's own `dwpatch.py`
   (with its `isowriter.py` and `fontcopy.py`) from the package folder: the apply is the command line's, from the same
   release. dwpatch's interface for it (`GUI_API = 1`): `apply_disc(disc, {game: image}, output, release)` runs
