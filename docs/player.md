@@ -91,11 +91,21 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
   computer). It changes at once and goes to `settings.txt` in the saves folder (`scale N`); with no choice the program
   takes the screen's height / 240 (2X-3X on Android, 2X-8X on a computer: 4X is too much for some handheld GPUs while
   the game loads: one tested drops to 41 fps there, 59 at 3X). `--scale N` and `options.txt` still win
-  at start.
+  at start. Where there is a touch screen, two more cards set the touch pad: **Button size** (SMALL 75 %, MEDIUM 100 %,
+  LARGE 115 %, HUGE 130 %; each control keeps its corner) and **Opacity** (FAINT 25 %, LIGHT 50 %, SOLID 75 %, FULL
+  100 %). They go to `settings.txt` too (`touch_size P`, `touch_opacity P`).
 - ⏻ quit.
 
 Under the cards the main screen shows the program's version (`tools/version.py`, given to CMake as
 `HORIZON_VERSION` by `build.py` and `build_apk.py`; `DEV` when built by hand).
+
+**Where the player left off:** Android may end an app it has sent to the background, and the game would lose what
+was played since its last save. So when the app goes to the background the whole machine is written to `resume.state`
+in the saves folder (about 11 MB, through a `.new` file), and a start that finds it goes on from that moment, without
+the start's black screens. The file lives only while the app is away: it is deleted when the app comes back by itself,
+as soon as it has been loaded, on QUIT and when a memory card is imported, so an old moment never comes back over a
+newer save. Its header ties it to this program's version and this disc's size, and the memory card stays the one on
+file (the snapshot's copy of the card is not used). `--suspend-at N` keeps it at frame N and ends, as Android would.
 
 **The first start** asks touch or controller and keyboard before the game (`--first-start` asks it again). The
 answer goes to `controls.txt` (`mode touch` or `mode pad`).

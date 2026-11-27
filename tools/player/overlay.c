@@ -113,7 +113,9 @@ static struct { int id; const char *s; } words[] = {
   {T_1920P, "1920P"},
   {T_D0, "0"}, {T_D0 + 1, "1"}, {T_D0 + 2, "2"}, {T_D0 + 3, "3"}, {T_D0 + 4, "4"}, {T_D0 + 5, "5"},
   {T_D0 + 6, "6"}, {T_D0 + 7, "7"}, {T_D0 + 8, "8"}, {T_D0 + 9, "9"}, {T_FPS, "FPS"},
-  {T_VERSION, version_word},
+  {T_VERSION, version_word}, {T_BUTTON_SIZE, "BUTTON SIZE"}, {T_OPACITY, "OPACITY"}, {T_SMALL, "SMALL"},
+  {T_MEDIUM, "MEDIUM"}, {T_LARGE, "LARGE"}, {T_HUGE, "HUGE"}, {T_FAINT, "FAINT"}, {T_LIGHT, "LIGHT"},
+  {T_SOLID, "SOLID"}, {T_FULL, "FULL"},
 };
 static float word_w[I_COUNT];   /* the letters' width in atlas pixels */
 
@@ -448,10 +450,13 @@ static Control controls[16];
 static int ncontrols;
 static float dpad_x, dpad_y, dpad_r, unit;
 
+int overlay_touch_size = 100, overlay_touch_alpha = 75;
+
 static void layout(int ww, int wh) {
   float s = (float)wh, W = (float)ww;
   if (W < s) s = W;      /* (a portrait window: size by the narrower side) */
   unit = s;
+  s *= overlay_touch_size / 100.0f;   /* the menu's button size: every control keeps its corner */
   float b = 0.16f * s, off = 0.11f * s, fx = W - 0.21f * s, fy = wh - 0.30f * s;
   dpad_x = 0.21f * s; dpad_y = fy; dpad_r = 0.17f * s;
   float pw = 0.19f * s, ph = 0.08f * s;
@@ -656,7 +661,7 @@ void overlay_draw(int ww, int wh) {
   else if (menu_open) menu_draw(ww, wh);
   else if (touch_shown) {
     layout(ww, wh);
-    const float a = 0.75f;
+    const float a = overlay_touch_alpha / 100.0f;
     uint16_t on = touch_now;
     float d = dpad_r * 2;
     static const int dirs[4] = {RETRO_DEVICE_ID_JOYPAD_RIGHT, RETRO_DEVICE_ID_JOYPAD_DOWN, RETRO_DEVICE_ID_JOYPAD_LEFT,

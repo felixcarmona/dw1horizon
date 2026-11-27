@@ -133,6 +133,9 @@ static struct {
   void (*reset)(void);
   void *(*get_memory_data)(unsigned);
   size_t (*get_memory_size)(unsigned);
+  size_t (*serialize_size)(void);              /* (optional) the snapshot kept when Android sends the app away */
+  bool (*serialize)(void *, size_t);
+  bool (*unserialize)(const void *, size_t);
 } core;
 
 /* ---- host state ---- */
@@ -462,19 +465,30 @@ static int scripted_bits(int frame) {
   return bits;
 }
 
-/* settings.txt in the saves folder: the menu's settings ("scale N"), kept apart from options.txt (troubleshooting) */
-static int settings_scale(void) {
+/* settings.txt in the saves folder: the menu's settings ("scale N", "touch_size P", "touch_opacity P"), kept apart
+ * from options.txt (troubleshooting). Each save writes them all. */
+static int settings_scale;   /* 0: none chosen, the screen decides */
+
+static void settings_load(void) {
   char path[1200]; snprintf(path, sizeof path, "%s/settings.txt", save_dir);
-  int v = 0; char line[128];
+  int v; char line[128];
   FILE *f = fopen(path, "r");
-  if (f) { while (fgets(line, sizeof line, f)) sscanf(line, "scale %d", &v); fclose(f); }
-  return v >= 1 && v <= 8 ? v : 0;
+  if (!f) return;
+  while (fgets(line, sizeof line, f)) {
+    if (sscanf(line, "scale %d", &v) == 1 && v >= 1 && v <= 8) settings_scale = v;
+    if (sscanf(line, "touch_size %d", &v) == 1 && v >= 50 && v <= 150) overlay_touch_size = v;
+    if (sscanf(line, "touch_opacity %d", &v) == 1 && v >= 10 && v <= 100) overlay_touch_alpha = v;
+  }
+  fclose(f);
 }
 
-static void settings_save_scale(int v) {
+static void settings_save(void) {
   char path[1200]; snprintf(path, sizeof path, "%s/settings.txt", save_dir);
   FILE *f = fopen(path, "w");
-  if (f) { fprintf(f, "scale %d\n", v); fclose(f); }
+  if (!f) return;
+  if (settings_scale) fprintf(f, "scale %d\n", settings_scale);
+  fprintf(f, "touch_size %d\ntouch_opacity %d\n", overlay_touch_size, overlay_touch_alpha);
+  fclose(f);
 }
 
 static void toggle_fullscreen(void) {
@@ -485,6 +499,8 @@ static void toggle_fullscreen(void) {
 
 static void card_save(void);
 static void card_import(const char *path);
+static void resume_save(void);
+static void resume_drop(void);
 
 static void handle_events(void) {
   SDL_Event e;
@@ -511,9 +527,9 @@ static void handle_events(void) {
       if (e.window.event == SDL_WINDOWEVENT_MINIMIZED) paused = true;
       else if (e.window.event == SDL_WINDOWEVENT_RESTORED || e.window.event == SDL_WINDOWEVENT_SHOWN) paused = false;
       break;
-    case SDL_APP_WILLENTERBACKGROUND: paused = true; card_save(); break;
+    case SDL_APP_WILLENTERBACKGROUND: paused = true; card_save(); resume_save(); break;
     case SDL_APP_TERMINATING: card_save(); break;
-    case SDL_APP_DIDENTERFOREGROUND: paused = false; break;
+    case SDL_APP_DIDENTERFOREGROUND: paused = false; resume_drop(); break;   /* still alive: no need for it */
     }
   }
 }
@@ -598,6 +614,70 @@ static void card_import(const char *path) {
   menu_result(1);
 }
 
+/* ---- where the player left off (Android) ----
+ * Android may end an app it has sent to the background (another app opened, the screen locked a while) and the
+ * game would lose everything since its last save. So when the app goes to the background the whole machine is
+ * written to resume.state in the saves folder, and a start that finds it goes on from there. The file only lives
+ * while the app is away: it is deleted when the app comes back by itself, as soon as it has been loaded, on QUIT and
+ * when a memory card is imported, so an old moment never comes back over a newer save. It is tied to this program
+ * and this disc (its header), and the memory card stays the one on file: the snapshot's copy of it is not used. */
+#ifndef HORIZON_VERSION
+#define HORIZON_VERSION "DEV"
+#endif
+static bool game_started;
+static int suspend_at = -1;   /* --suspend-at N: keep the snapshot at frame N and end, as Android may (tests) */     /* the game is past its start: a snapshot is worth keeping */
+static char resume_path[1200];
+typedef struct { char magic[8], version[40]; int64_t disc_size, state_size; } ResumeHeader;
+
+static void resume_header(ResumeHeader *h, size_t state_size) {
+  memset(h, 0, sizeof *h);
+  memcpy(h->magic, "HPRESUME", 8);
+  snprintf(h->version, sizeof h->version, "%s", HORIZON_VERSION);
+  h->disc_size = embedded_size; h->state_size = (int64_t)state_size;
+}
+
+static void resume_drop(void) { if (resume_path[0]) remove(resume_path); }
+
+static void resume_save(void) {
+  if (!core.serialize || !core.serialize_size || !game_started || booting || !resume_path[0]) return;
+  size_t n = core.serialize_size();
+  void *buf = n ? malloc(n) : NULL;
+  if (!buf || !core.serialize(buf, n)) { SDL_Log("resume: no snapshot"); free(buf); return; }
+  ResumeHeader h; resume_header(&h, n);
+  char tmp[1300]; snprintf(tmp, sizeof tmp, "%s.new", resume_path);
+  SDL_RWops *f = SDL_RWFromFile(tmp, "wb");
+  bool ok = f && SDL_RWwrite(f, &h, sizeof h, 1) == 1 && SDL_RWwrite(f, buf, 1, n) == n;
+  if (f) ok = SDL_RWclose(f) == 0 && ok;
+  free(buf);
+  if (ok && replace_file(tmp, resume_path)) SDL_Log("resume: the game kept (%u KB)", (unsigned)(n / 1024));
+  else { SDL_Log("resume: cannot write %s", resume_path); remove(tmp); }
+}
+
+/* the snapshot from when the app was sent away, if there is one for this program and disc: true if loaded */
+static bool resume_load(void) {
+  if (!core.unserialize || !core.serialize_size) return false;
+  SDL_RWops *f = SDL_RWFromFile(resume_path, "rb");
+  if (!f) return false;
+  ResumeHeader h, want; resume_header(&want, core.serialize_size());
+  bool ok = SDL_RWread(f, &h, sizeof h, 1) == 1 && !memcmp(h.magic, want.magic, 8) && !strcmp(h.version, want.version)
+            && h.disc_size == want.disc_size && h.state_size > 0 && h.state_size <= 64 << 20;
+  void *buf = ok ? malloc((size_t)h.state_size) : NULL;
+  ok = buf && SDL_RWread(f, buf, 1, (size_t)h.state_size) == (size_t)h.state_size;
+  SDL_RWclose(f);
+  resume_drop();
+  if (ok) ok = core.unserialize(buf, (size_t)h.state_size);
+  free(buf);
+  if (!ok) { SDL_Log("resume: %s is not for this game, left out", resume_path); return false; }
+  /* the memory card stays the one on file */
+  uint8_t *data = core.get_memory_data(RETRO_MEMORY_SAVE_RAM);
+  if (data && core.get_memory_size(RETRO_MEMORY_SAVE_RAM) == sizeof card_written && memcmp(data, card_written, sizeof card_written)) {
+    SDL_Log("resume: the snapshot's memory card differs from the file; the file's is kept");
+    memcpy(data, card_written, sizeof card_written);
+  }
+  SDL_Log("resume: the game goes on where it was left");
+  return true;
+}
+
 #ifdef __ANDROID__
 /* HorizonActivity.pickCard opens Android's file picker; cardResult is 1 done, 2 failed, 3 cancelled */
 static void android_pick(bool export_, const char *card, const char *dest) {
@@ -676,6 +756,9 @@ static bool load_core(const char *path) {
   F(set_input_state) F(init) F(deinit) F(get_system_av_info) F(set_controller_port_device) F(load_game)
   F(unload_game) F(run) F(reset) F(get_memory_data) F(get_memory_size)
 #undef F
+  *(void **)&core.serialize_size = SDL_LoadFunction(core.lib, "retro_serialize_size");
+  *(void **)&core.serialize = SDL_LoadFunction(core.lib, "retro_serialize");
+  *(void **)&core.unserialize = SDL_LoadFunction(core.lib, "retro_unserialize");
   return true;
 }
 
@@ -696,6 +779,7 @@ int main(int argc, char **argv) {
     else if (!strcmp(argv[i], "--touch")) force_touch = true;            /* the touch pad from the start */
     else if (!strcmp(argv[i], "--ask-card")) ask_card = true;           /* (tests) the new install's card question */
     else if (!strcmp(argv[i], "--first-start")) first_start = true;      /* the first start's question, in tests too */
+    else if (!strcmp(argv[i], "--suspend-at") && i + 1 < argc) suspend_at = atoi(argv[++i]);   /* (tests) */
     else if (!strcmp(argv[i], "--no-fast-start")) fast_start = false;     /* the start at the console's own pace */
     else if (!strcmp(argv[i], "--scale") && i + 1 < argc) scale = atoi(argv[++i]);
     else if (!strcmp(argv[i], "--core") && i + 1 < argc) core_path = argv[++i];
@@ -825,7 +909,8 @@ int main(int argc, char **argv) {
 #else
   const int max_scale = 8;
 #endif
-  if (!scale) scale = settings_scale();   /* the menu's choice */
+  settings_load();
+  if (!scale) scale = settings_scale;   /* the menu's choice */
   if (!scale) { scale = (disp_h + 239) / 240; if (scale < 2) scale = 2; if (scale > max_scale) scale = max_scale; }
   snprintf(scale_text, sizeof scale_text, "%d", scale);
   static const char *fixed[][2] = {
@@ -875,6 +960,8 @@ int main(int argc, char **argv) {
     make_fbo(av.geometry.max_width, av.geometry.max_height);
     if (hw.context_reset) hw.context_reset();
   }
+  snprintf(resume_path, sizeof resume_path, "%s/resume.state", save_dir);
+  bool resumed = resume_load();   /* (after the context: the snapshot's video memory goes into it) */
 
   SDL_AudioSpec want = {0}, got;
   want.freq = av.timing.sample_rate > 0 ? (int)av.timing.sample_rate : 44100;
@@ -886,7 +973,7 @@ int main(int argc, char **argv) {
   /* the first start asks touch or controller (not in tests); the answer decides whether the touch pad shows */
   /* a new install on Android has no card: it may have a copy from before (HorizonActivity.backupCard) to import */
 #ifdef __ANDROID__
-  if (!card_existed && run_frames < 0 && !press_script) ask_card = true;
+  if (!card_existed && !resumed && run_frames < 0 && !press_script) ask_card = true;
 #endif
   if (first_start || ask_card || (controls_mode == MODE_UNSET && run_frames < 0 && !press_script))
     menu_show_first(ask_card);
@@ -903,7 +990,8 @@ int main(int argc, char **argv) {
   int frame = 0;
   /* the start is black for about 15 seconds (OpenBIOS and the game loading): it runs unpaced and unseen until the
    * game's first picture after OpenBIOS's own screen, so it takes as long as the machine needs, not the console */
-  booting = fast_start && run_frames < 0;
+  booting = fast_start && run_frames < 0 && !resumed;
+  game_started = resumed;
   Uint32 boot_ms = SDL_GetTicks();
   if (booting) SDL_GL_SetSwapInterval(0);
   int boot_frame = 0;
@@ -932,8 +1020,9 @@ int main(int argc, char **argv) {
           snprintf(scale_text, sizeof scale_text, "%d", menu_scale);
           set_option("swanstation_GPU_ResolutionScale", scale_text);
           options_changed = true;
-          settings_save_scale(menu_scale);
+          settings_scale = menu_scale; settings_save();
         }
+        else if (a == MENU_TOUCHPAD) settings_save();
         else if (a == MENU_EXPORT || a == MENU_IMPORT) card_action(a);
         card_poll();
       }
@@ -947,6 +1036,7 @@ int main(int argc, char **argv) {
     }
     if (restart_asked) {   /* a new memory card: the game starts again, fast, to read it */
       restart_asked = false;
+      resume_drop();
       core.reset();
       booting = fast_start; boot_frame = frame; boot_ms = SDL_GetTicks();
       if (booting) SDL_GL_SetSwapInterval(0);
@@ -955,6 +1045,8 @@ int main(int argc, char **argv) {
     pad_bits = bits;
     core.run();
     frame++;
+    if (!booting) game_started = true;
+    if (frame == suspend_at) { resume_save(); paused = true; break; }   /* (tests: as if Android ended the app in the background) */
     if (frame % 60 == 0) card_save();
     {   /* the frame rate in the corner: the game's frames in the last second */
       static Uint32 fps_since; static int fps_frames; Uint32 now = SDL_GetTicks();
@@ -1003,6 +1095,7 @@ int main(int argc, char **argv) {
   }
 
   card_save();
+  if (!paused) resume_drop();   /* QUIT; an end while in the background (Android closing the app) keeps it */
   core.unload_game();
   core.deinit();
   if (audio_dev) SDL_CloseAudioDevice(audio_dev);

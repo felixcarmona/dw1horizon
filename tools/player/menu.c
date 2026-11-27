@@ -20,7 +20,7 @@
 
 bool menu_open;
 
-enum { S_RESTORE, S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT, S_SETTINGS, S_SCALE };
+enum { S_RESTORE, S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT, S_SETTINGS, S_SCALE, S_TSIZE, S_TALPHA };
 static int screen, focus, result_ok, touched = -3;
 static Uint32 result_at;
 static bool first;            /* the first-start question: no way back, the game waits for an answer */
@@ -30,11 +30,19 @@ static int card_screen;   /* where the memory card's screens return to: S_CARD, 
 static uint16_t prev;
 
 typedef struct { int icon, icon2, action, word; } Card;
-enum { A_CONTINUE = 100, A_CONTROLS, A_CARD, A_CHECK, A_NEW, A_SETTINGS, A_RESOLUTION, A_SCALE = 200 /* + N */ };
+enum { A_CONTINUE = 100, A_CONTROLS, A_CARD, A_CHECK, A_NEW, A_SETTINGS, A_RESOLUTION, A_TSIZE, A_TALPHA,
+       A_SCALE = 200 /* + N */, A_SIZE = 300 /* + percent */, A_ALPHA = 500 /* + percent */ };
 static const Card main_cards[] = {{I_PLAY, -1, A_CONTINUE, T_RESUME}, {I_GAMEPAD, I_KEYBOARD, A_CONTROLS, T_CONTROLS},
                                   {I_CARD, -1, A_CARD, T_CARD}, {I_GEAR, -1, A_SETTINGS, T_SETTINGS},
                                   {I_POWER, -1, MENU_QUIT, T_QUIT}};
-static const Card settings_cards[] = {{I_SCREEN, -1, A_RESOLUTION, T_RESOLUTION}};
+/* the touch pad's cards only where there is a touch screen */
+static const Card settings_cards[] = {{I_SCREEN, -1, A_RESOLUTION, T_RESOLUTION}, {I_CROSS, -1, A_TSIZE, T_BUTTON_SIZE},
+                                      {I_CROSS, -1, A_TALPHA, T_OPACITY}};
+/* the touch pad's choices: each card shows a button at that size or opacity */
+static const Card tsize_cards[] = {{I_CROSS, -1, A_SIZE + 75, T_SMALL}, {I_CROSS, -1, A_SIZE + 100, T_MEDIUM},
+                                   {I_CROSS, -1, A_SIZE + 115, T_LARGE}, {I_CROSS, -1, A_SIZE + 130, T_HUGE}};
+static const Card talpha_cards[] = {{I_CROSS, -1, A_ALPHA + 25, T_FAINT}, {I_CROSS, -1, A_ALPHA + 50, T_LIGHT},
+                                    {I_CROSS, -1, A_ALPHA + 75, T_SOLID}, {I_CROSS, -1, A_ALPHA + 100, T_FULL}};
 /* the resolution's choices: the card shows the scale (a word), the word under it the picture's height */
 static Card scale_cards[8];
 static int scale_count, scale_now;
@@ -51,7 +59,9 @@ static const Card *cards(int *n) {
   case S_PADCHECK: *n = 2; return check_cards;
   case S_CARD: *n = 2; return card_cards;
   case S_RESTORE: *n = 2; return restore_cards;
-  case S_SETTINGS: *n = 1; return settings_cards;
+  case S_SETTINGS: *n = SDL_GetNumTouchDevices() > 0 || touch_shown ? 3 : 1; return settings_cards;
+  case S_TSIZE: *n = 4; return tsize_cards;
+  case S_TALPHA: *n = 4; return talpha_cards;
   case S_SCALE: *n = scale_count; return scale_cards;
   }
   *n = 0; return NULL;
@@ -63,6 +73,7 @@ static int header(void) {
   case S_CARD: case S_RESTORE: return I_CARD;
   case S_SETTINGS: return I_GEAR;
   case S_SCALE: return I_SCREEN;
+  case S_TSIZE: case S_TALPHA: return I_TOUCH;
   }
   return -1;
 }
@@ -71,6 +82,10 @@ static void go(int s) {
   screen = s; focus = 0; touched = -3;
   if (s == S_RESTORE || s == S_CARD) card_screen = s;
   if (s == S_SCALE) for (int i = 0; i < scale_count; i++) if (scale_cards[i].action == A_SCALE + scale_now) focus = i;
+  for (int i = 0; i < 4; i++) {
+    if (s == S_TSIZE && tsize_cards[i].action == A_SIZE + overlay_touch_size) focus = i;
+    if (s == S_TALPHA && talpha_cards[i].action == A_ALPHA + overlay_touch_alpha) focus = i;
+  }
 }
 
 void menu_set_scales(const int *scales, int n, int now) {
@@ -100,7 +115,7 @@ void menu_back(void) {
   switch (screen) {
   case S_MAIN: close_menu(); break;
   case S_CARD: case S_SETTINGS: go(S_MAIN); break;
-  case S_SCALE: go(S_SETTINGS); break;
+  case S_SCALE: case S_TSIZE: case S_TALPHA: go(S_SETTINGS); break;
   case S_PADCHECK: go(first ? S_FIRST : S_MAIN); break;
   case S_DROP: go(card_screen); break;
   }
@@ -179,6 +194,8 @@ static int act(int i) {
   case A_NEW: after_restore(); return MENU_NONE;
   case A_SETTINGS: go(S_SETTINGS); return MENU_NONE;
   case A_RESOLUTION: go(S_SCALE); return MENU_NONE;
+  case A_TSIZE: go(S_TSIZE); return MENU_NONE;
+  case A_TALPHA: go(S_TALPHA); return MENU_NONE;
   case MENU_TOUCH: close_menu(); return MENU_TOUCH;
   case MENU_PAD: go(S_PADCHECK); return MENU_PAD;
   case MENU_SETUP: close_menu(); return MENU_SETUP;
@@ -194,6 +211,12 @@ static int act(int i) {
 #else
     go(S_DROP); return MENU_NONE;
 #endif
+  }
+  if (c[i].action >= A_ALPHA) {   /* the touch pad's look: back to the game, to see it */
+    overlay_touch_alpha = c[i].action - A_ALPHA; touch_shown = true; close_menu(); return MENU_TOUCHPAD;
+  }
+  if (c[i].action >= A_SIZE) {
+    overlay_touch_size = c[i].action - A_SIZE; touch_shown = true; close_menu(); return MENU_TOUCHPAD;
   }
   if (c[i].action >= A_SCALE) {   /* a resolution: back to the game, to see it */
     menu_scale = scale_now = c[i].action - A_SCALE; close_menu(); return MENU_SCALE;
@@ -268,12 +291,19 @@ void menu_draw(int ww, int wh) {
     frame_box(cx, cy, z, z, (on ? 0.012f : 0.006f) * s, on ? 0.95f : 0.35f);
     float bright = on ? 1.1f : 0.8f;
     if (c[i].icon >= T_RESUME) overlay_text(c[i].icon, cx, cy, z * 0.3f, z * 0.8f, bright, 1);   /* a word as the picture */
+    else if (c[i].action >= A_ALPHA) overlay_quad(c[i].icon, cx, cy, z * 0.5f, z * 0.5f, 1, (c[i].action - A_ALPHA) / 100.0f);
+    else if (c[i].action >= A_SIZE) {
+      float k = z * 0.5f * (c[i].action - A_SIZE) / 100.0f;
+      overlay_quad(c[i].icon, cx, cy, k, k, bright, overlay_touch_alpha / 100.0f);
+    }
+    else if (c[i].action == A_TALPHA) overlay_quad(c[i].icon, cx, cy, z * 0.6f, z * 0.6f, 1, 0.35f);
     else if (c[i].icon2 < 0) overlay_quad(c[i].icon, cx, cy, z * 0.7f, z * 0.7f, bright, 1);
     else {
       overlay_quad(c[i].icon, cx, cy - z * 0.17f, z * 0.58f, z * 0.58f, bright, 1);
       overlay_quad(c[i].icon2, cx, cy + z * 0.24f, z * 0.46f, z * 0.46f, bright, 1);
     }
-    if (c[i].action == A_SCALE + scale_now)   /* the resolution in use */
+    if (c[i].action == A_SCALE + scale_now || c[i].action == A_SIZE + overlay_touch_size
+        || c[i].action == A_ALPHA + overlay_touch_alpha)   /* the choice in use */
       overlay_quad(I_CHECK, cx + z * 0.36f, cy - z * 0.36f, z * 0.3f, z * 0.3f, 1, 1);
     /* the word under the card */
     overlay_text(c[i].word, cx, cy + size * 0.53f + 0.03f * s + gh / 2, gh, size, on ? 1.1f : 0.8f, 1);
