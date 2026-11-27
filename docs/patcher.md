@@ -140,8 +140,8 @@ patched disc. The browser runs the same jobs in Pyodide workers (`web/README.md`
 (a folder with the program, a `.desktop` launcher and the icon; built on Ubuntu 22.04 for its older glibc, with Tk and
 Horizon Play inside, so it needs no python3-tk; the Linux job builds Horizon Play itself, as `player.yml` does, rather
 than wait for that workflow). Unpack it and run `Horizon Patcher`, or the `.desktop` file. The workflow then attaches
-`horizon-desktop.json` (the Windows and macOS zips' sizes, SHA-256 and signing) and redeploys the site, which offers
-those two from then on (the Linux tarball is a release asset the page does not list yet)
+`horizon-desktop.json` (the three files' sizes, SHA-256 and signing) and redeploys the site, which offers them from
+then on (Windows and macOS are required, Linux is optional: releases up to v0.0.10 have no tarball)
 (web/README.md, "The desktop app downloads"). Players need no Python. The players'
 side is in [release/README-players.md](release/README-players.md#the-desktop-app).
 All three apps carry Horizon Play ([player.md](player.md)), for the installers below.

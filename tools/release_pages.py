@@ -210,14 +210,16 @@ def release_notes(info, entry):
 
 
 DESKTOP = {'windows': 'Horizon-Patcher-Windows.zip', 'macos': 'Horizon-Patcher-macOS.zip'}
+DESKTOP_OPTIONAL = {'linux': 'Horizon-Patcher-Linux-x86_64.tar.gz'}   # older releases have none; not signed
 
 
 def desktop_apps(folder, package, tag):
     """The desktop apps the page may offer (engine/current.json `desktop`), or None.
 
-    desktop.yml attaches the two zips to the tag's release and then horizon-desktop.json (their sizes and SHA-256,
-    whether they are signed); release.yml downloads the three into inputs/desktop/ when they are there. The page links
-    to the release's own assets, so they are offered only when every zip is present and matches, and only when the
+    desktop.yml attaches the zips and the Linux tarball to the tag's release and then horizon-desktop.json (their sizes
+    and SHA-256, whether they are signed); release.yml downloads them into inputs/desktop/ when they are there. The page
+    links to the release's own assets, so they are offered only when every zip is present and matches (the Linux
+    tarball is optional: left out alone, with a warning, when listed but missing or different), and only when the
     package's dwpatch has the interface the app needs (GUI_API: older packages are refused by the app). Anything
     else leaves them out with a warning, never the deployment."""
     path = folder / 'horizon-desktop.json'
@@ -243,6 +245,19 @@ def desktop_apps(folder, package, tag):
             flag = 'signed' if os_name == 'windows' else 'notarized'
             require(isinstance(app.get(flag), bool), f'{os_name}: {flag} must be true or false')
             apps[os_name] = {'name': name, 'size': len(data), 'sha256': app['sha256'], flag: app[flag]}
+        for os_name, name in DESKTOP_OPTIONAL.items():
+            app = info.get(os_name)
+            if app is None:
+                continue
+            try:
+                require(isinstance(app, dict) and app.get('name') == name, f'desktop app for {os_name} must be {name}')
+                require((folder / name).is_file(), f'{name} is not on the release')
+                data = (folder / name).read_bytes()
+                require(app.get('size') == len(data) and app.get('sha256') == digest(data),
+                        f'{name} differs from horizon-desktop.json')
+                apps[os_name] = {'name': name, 'size': len(data), 'sha256': app['sha256']}
+            except (ValueError, AttributeError, TypeError) as e:
+                print(f'::warning::the page does not offer the {os_name} desktop app: {e}')
         return dict(apps, **({'run': run} if run else {}))
     except (ValueError, AttributeError, TypeError) as e:   # (json.JSONDecodeError is a ValueError)
         print(f'::warning::the page does not offer the desktop apps: {e}')

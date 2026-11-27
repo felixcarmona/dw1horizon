@@ -6,7 +6,10 @@
 //   2. Windows visitor: Windows first and highlighted, macOS outlined; the links are the tag's own release assets with
 //      the release and size; the first-start help Windows first; the SHA-256 of both; Linux and phone lines hidden
 //   3. macOS visitor: macOS first; Gatekeeper steps while not notarized, one line once notarized
-//   4. Linux: neither highlighted, the browser builder and dwpatch.py offered
+//   4. Linux visitor, release without the Linux app: neither highlighted, the browser builder and dwpatch.py offered
+//   4b. release with the Linux app: Linux first and highlighted with its own help (extract, run), no dwpatch line, the
+//      other visitors get it last, its SHA-256 listed, lead and phone lines name Linux; a bad `desktop` without
+//      Windows or macOS stays hidden
 //   5. phone: one line that the apps are for computers, no buttons
 //   6. switching the language keeps an open help open and translates the section
 // With SHOTS_DIR, screenshots of the section for the owner: Windows and macOS visitors, phone, English and Spanish,
@@ -29,14 +32,16 @@ const UA = {
   linux: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36',
   phone: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1',
 };
-const app = (name, size, flag, value) => ({ name, size, sha256: name.includes('Windows') ? 'a1'.repeat(32) : 'b2'.repeat(32), [flag]: value });
+const app = (name, size, flag, value) => ({ name, size, sha256: name.includes('Windows') ? 'a1'.repeat(32) : name.includes('Linux') ? 'c3'.repeat(32) : 'b2'.repeat(32),
+  ...(flag ? { [flag]: value } : {}) });
 const release = (desktop) => ({
   version: '0123456789ab', release_version: '0.0.5', release_date: '2026-11-04', commit: 'c'.repeat(40), release_tag: 'v0.0.5',
   ...(desktop ? { desktop } : {}),
 });
-const DESKTOP = (notarized = false) => ({
+const DESKTOP = (notarized = false, linux = false) => ({
   windows: app('Horizon-Patcher-Windows.zip', 24_903_221, 'signed', false),
   macos: app('Horizon-Patcher-macOS.zip', 41_220_118, 'notarized', notarized),
+  ...(linux ? { linux: app('Horizon-Patcher-Linux-x86_64.tar.gz', 52_428_800) } : {}),
   run: 'https://github.com/example/dw1horizon/actions/runs/123',
 });
 
@@ -175,6 +180,38 @@ for (const lang of ['en', 'es']) {
   ok(s.os === 'linux' && s.buttons.length === 2 && s.buttons.every((x) => !x.primary), 'Linux: both offered, neither highlighted');
   ok(s.linux?.includes('README-players.md') && s.linux.includes('dwpatch.py'), 'Linux: the browser builder and dwpatch.py');
   await p.close();
+}
+
+// 4b. Linux app offered
+{
+  const withLinux = release(DESKTOP(false, true));
+  const p = await visit({ os: 'linux', current: withLinux });
+  const s = await state(p);
+  const repo = s.repo;
+  ok(s.buttons.map((x) => x.os).join() === 'linux,windows,macos' && s.buttons[0].primary && !s.buttons[1].primary && !s.buttons[2].primary,
+     'Linux visitor: Linux first and highlighted');
+  ok(s.buttons[0].href === `${repo}/releases/download/v0.0.5/Horizon-Patcher-Linux-x86_64.tar.gz`
+     && s.buttons[0].text === 'Download for Linux v0.0.5 · 50 MB', `Linux button (${s.buttons[0].text})`);
+  ok(s.linux === null, 'Linux visitor: no dwpatch line once the app is offered');
+  ok(s.help.map((x) => x.os).join() === 'linux,windows,macos' && s.help[0].text.includes(strip(en['desktop.linux1'])), 'Linux help first');
+  ok(s.why.includes('c3'.repeat(32)) && s.why.includes('Horizon-Patcher-Linux-x86_64.tar.gz'), 'Linux SHA-256 listed');
+  ok(await p.evaluate(() => document.querySelector('.desktop-lead').textContent) === en['desktop.lead3'], 'lead names Linux');
+  await shot(p, '11-desktop-linux-en.png', { context: true });
+  await shot(p, '12-desktop-linux-en-help.png', { open: true });
+  await p.close();
+  for (const os of ['windows', 'macos']) {
+    const q = await visit({ os, current: withLinux });
+    const t = await state(q);
+    ok(t.buttons.length === 3 && t.buttons[0].os === os && t.buttons[2].os === 'linux' && t.buttons[0].primary && !t.buttons[2].primary,
+       `${os} visitor: own system first, Linux last`);
+    await q.close();
+  }
+  const m = await visit({ os: 'phone', current: withLinux });
+  ok((await m.evaluate(() => document.querySelector('#desktop-phone').textContent)) === en['desktop.phone3'], 'phone line names Linux');
+  await m.close();
+  const q = await visit({ os: 'linux', current: release({ linux: DESKTOP(false, true).linux }) });
+  ok((await state(q)).hidden, 'a Linux app alone (no Windows or macOS): hidden');
+  await q.close();
 }
 
 // 5. phone
