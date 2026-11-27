@@ -23,6 +23,9 @@ uint16_t controls_bits(void);                  /* keyboard + every controller, a
 void controls_event(const SDL_Event *e);
 uint16_t controls_frame(uint16_t bits);        /* once a frame: the bits the game gets */
 void controls_setup_start(void);
+void controls_setup_one(int button);         /* that button alone (its index in control_ids) */
+extern bool remap_one;                        /* the setup asks for one button alone */
+extern bool controls_setup_ended;             /* a setup ended (set by it, cleared by the caller) */
 void controls_setup_cancel(void);              /* the back arrow or Escape: the buttons stay as they were */
 
 /* the keyboard alone (the menu's KEYBOARD screens): a layout, or one key for one button */

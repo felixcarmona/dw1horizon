@@ -97,10 +97,11 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
   - **KEYBOARD**: a drawn PlayStation controller with the key of each of its 14 buttons beside it, and under it the
     cards RETROARCH, DUCKSTATION, EPSXE and CUSTOM. Moving between the cards shows each layout's keys on the
     controller; the card of the layout in use has a check mark and is chosen first (CUSTOM when the keys match no
-    layout). Choosing a layout uses it at once and saves it. CUSTOM asks a key for each button in turn, the button lit
+    layout). Choosing a layout uses it at once and saves it; the screen stays, its tick on the new one (the back arrow leaves). CUSTOM asks a key for each button in turn, the button lit
     on the controller and a ten-second bar under it; after that, or at any moment, a click or tap on one button (or
     the arrows and Cross) asks a key for that one alone. A key already on another button moves to the button being
-    set. Escape and F11 cannot be taken. Escape or the back arrow stops the asking.
+    set. Escape and F11 cannot be taken. Escape or the back arrow stops the asking. When the asking ends (the last
+    button set, or ten seconds with no key) no button stays lit; an arrow lights one again.
 - 💾 the memory card: export or import. On Android both open the system's file picker. On a computer, export opens
   the saves folder (the card is `duckstation_shared_card_1.mcd`) and import waits for a card file dropped on the
   window. An import takes any raw 128 KB PlayStation card (`.mcd`, `.mcr`, `.srm`...); the card in use is copied first
@@ -147,7 +148,10 @@ or a click shows it. Choosing CONTROLLER or KEYBOARD in the menu writes `mode pa
 (the pad's four directions, Cross, Circle, Square, Triangle, L1, R1, L2, R2, SELECT, START): press the key, controller
 button, hat or axis wanted for it. The back arrow at the top left (a click or tap) or Escape stops it and leaves the
 buttons as they were. The first press decides whether the keyboard, the controller or the other joystick is being set;
-one input cannot take two buttons. Nothing pressed for ten seconds leaves everything as it was. The choice goes to
+one input cannot take two buttons. Nothing pressed for ten seconds stops it there, the buttons already pressed kept.
+However it ends, the menu shows the controller with nothing lit, "CHOOSE A BUTTON TO CHANGE IT": an arrow lights a
+button, and confirm (or a click or tap on it) asks for that one alone; an input another button had swaps with it. The
+choice goes to
 `controls.txt` in the saves folder (`pad cross=a`, `key cross=Z`, `joy cross=b2` / `h0.1` / `a1-`: SDL's controller and
 key names, a raw button, hat direction or axis side), which can also be edited by hand. (`tools/player/controls.c`,
 `menu.c`)

@@ -31,7 +31,7 @@
 bool menu_open;
 
 enum { S_RESTORE, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT, S_SETTINGS, S_SCALE, S_TSIZE, S_TALPHA, S_UPDATE,
-       S_CONTROLS, S_LAYOUT, S_KEYS };
+       S_CONTROLS, S_LAYOUT, S_KEYS, S_PADKEYS };
 static int screen, focus, result_ok, touched = -3;
 static Uint32 result_at;
 static bool first;            /* the new install's card question: no way back, the game waits for an answer */
@@ -106,6 +106,7 @@ static bool has_banner(void) { return screen == S_UPDATE; }
 static void go(int s) {
   screen = s; focus = 0; touched = -3;
   if (s == S_RESTORE || s == S_CARD) card_screen = s;
+  if (s == S_PADKEYS) focus = -1;
   if (s == S_LAYOUT) { int p = controls_key_preset(); focus = p >= 0 ? p : 3; }
   if (s == S_SCALE) for (int i = 0; i < scale_count; i++) if (scale_cards[i].action == A_SCALE + scale_now) focus = i;
   for (int i = 0; i < 4; i++) {
@@ -134,6 +135,8 @@ static void after_restore(void) {
   menu_open = false; first = false;
 }
 void menu_show(void) { first = false; card_screen = S_CARD; open_at(S_MAIN); }
+int menu_setup_button = -1;
+void menu_show_pad(void) { first = false; card_screen = S_CARD; open_at(S_PADKEYS); }
 void menu_show_update(void) { first = false; card_screen = S_CARD; open_at(S_UPDATE); }
 static void close_menu(void) { menu_open = false; first = false; }
 
@@ -152,6 +155,7 @@ void menu_back(void) {
     if (capturing) { controls_capture_stop(); capturing = false; prev = 0xFFFF; }
     else go(S_LAYOUT);
     break;
+  case S_PADKEYS: go(S_PADCHECK); focus = 1; break;
   case S_DROP: go(card_screen); break;
   }
 }
@@ -203,7 +207,7 @@ static int hit(float x, float y, int ww, int wh) {
     back_rect(ww, wh, &cx, &cy, &size);
     if (fabsf(x - cx) < size * 0.7f && fabsf(y - cy) < size * 0.7f) return -2;
   }
-  if (screen == S_KEYS) {   /* a button on the controller */
+  if (screen == S_KEYS || screen == S_PADKEYS) {   /* a button on the controller */
     float pw; pad_rect(ww, wh, &cx, &cy, &pw);
     return overlay_pad_hit(cx, cy, pw, x, y);
   }
@@ -257,7 +261,7 @@ static int act(int i) {
   case A_TSIZE: go(S_TSIZE); return MENU_NONE;
   case A_TALPHA: go(S_TALPHA); return MENU_NONE;
   case MENU_TOUCH: close_menu(); return MENU_TOUCH;
-  case MENU_SETUP: close_menu(); return MENU_SETUP;
+  case MENU_SETUP: menu_setup_button = -1; close_menu(); return MENU_SETUP;
   case MENU_QUIT: close_menu(); return MENU_QUIT;
   case MENU_UPDATE: close_menu(); return MENU_UPDATE;
   case MENU_EXPORT:
@@ -272,10 +276,9 @@ static int act(int i) {
     go(S_DROP); return MENU_NONE;
 #endif
   }
-  if (c[i].action >= A_PRESET && c[i].action < A_PRESET + KEY_PRESETS) {   /* a keyboard layout: in use at once */
-    controls_set_keys(key_presets[c[i].action - A_PRESET]);
-    if (first) close_menu(); else { go(S_CONTROLS); focus = 1; }
-    return MENU_NONE;
+  if (c[i].action >= A_PRESET && c[i].action < A_PRESET + KEY_PRESETS) {   /* a keyboard layout: in use at once, */
+    controls_set_keys(key_presets[c[i].action - A_PRESET]);               /* the screen stays (its tick moves); */
+    return MENU_NONE;                                                      /* the back arrow leaves */
   }
   if (c[i].action >= A_ALPHA) {   /* the touch pad's look: back to the game, to see it */
     overlay_touch_alpha = c[i].action - A_ALPHA; touch_shown = true; close_menu(); return MENU_TOUCHPAD;
@@ -302,15 +305,40 @@ static int keys_frame(uint16_t edge) {
     controls_capture_left();   /* (ten seconds end it) */
     if (key_capture >= 0) { focus = asked = key_capture; prev = 0xFFFF; return MENU_NONE; }
     capturing = false; prev = 0xFFFF;   /* the key just pressed is not a menu press */
+    focus = -1;   /* done (or ten seconds without a key): no button stays lit; an arrow lights one again */
     bool timed_out = before >= 0;
     if (!timed_out && capture_chain && asked == CONTROL_COUNT - 1 && first) close_menu();   /* all set: the game */
     return MENU_NONE;
   }
 #define E(b) (edge & (1u << RETRO_DEVICE_ID_JOYPAD_##b))
+  if (focus < 0) {   /* nothing lit: the first arrow lights the first button, confirm waits for it */
+    if (E(LEFT) || E(UP) || E(RIGHT) || E(DOWN)) focus = 0;
+    else if (E(X)) menu_back();
+    return MENU_NONE;
+  }
   if ((E(LEFT) || E(UP)) && focus > 0) focus--;
   if ((E(RIGHT) || E(DOWN)) && focus < CONTROL_COUNT - 1) focus++;
   if (E(B) || E(A) || E(START)) { controls_capture_key(focus, false); capturing = true; capture_chain = false; asked = focus; }
   else if (E(X)) menu_back();
+#undef E
+  return MENU_NONE;
+}
+
+/* the controller screen (after SET BUTTONS): nothing lit until an arrow; confirm, a click or a tap sets that button
+ * alone (the setup, out of the menu, which comes back here) */
+static int set_one(int b) { menu_setup_button = b; close_menu(); return MENU_SETUP; }
+static int padkeys_frame(uint16_t edge) {
+  if (fire) { fire = false; return set_one(fire_card); }
+#define E(b) (edge & (1u << RETRO_DEVICE_ID_JOYPAD_##b))
+  if (focus < 0) {
+    if (E(LEFT) || E(UP) || E(RIGHT) || E(DOWN)) focus = 0;
+    else if (E(X)) menu_back();
+    return MENU_NONE;
+  }
+  if ((E(LEFT) || E(UP)) && focus > 0) focus--;
+  if ((E(RIGHT) || E(DOWN)) && focus < CONTROL_COUNT - 1) focus++;
+  if (E(B) || E(A) || E(START)) return set_one(focus);
+  if (E(X)) menu_back();
 #undef E
   return MENU_NONE;
 }
@@ -329,6 +357,7 @@ int menu_frame(uint16_t bits) {
   if (screen == S_WAIT) return MENU_NONE;
   if (fire_back) { fire_back = false; menu_back(); return MENU_NONE; }
   if (screen == S_KEYS) return keys_frame(edge);
+  if (screen == S_PADKEYS) return padkeys_frame(edge);
   if (fire) { fire = false; return act(fire_card); }
   int n; cards(&n);
 #define E(b) (edge & (1u << RETRO_DEVICE_ID_JOYPAD_##b))
@@ -364,8 +393,12 @@ static void draw_pad_screen(int ww, int wh) {
   const char *labels[CONTROL_COUNT][2];
   for (int i = 0; i < CONTROL_COUNT; i++)
     for (int k = 0; k < 2; k++) { controls_key_label(keys[i][k], text[i][k], sizeof text[i][k]); labels[i][k] = text[i][k]; }
-  int lit = screen == S_KEYS ? (capturing && key_capture >= 0 ? key_capture : focus) : -1;
-  overlay_pad(cx, cy, pw, lit, labels, 1);
+  int lit = screen == S_KEYS ? (capturing && key_capture >= 0 ? key_capture : focus) : screen == S_PADKEYS ? focus : -1;
+  overlay_pad(cx, cy, pw, lit, screen == S_PADKEYS ? NULL : labels, 1);   /* (the controller: no keys beside it) */
+  if (screen == S_PADKEYS) {
+    overlay_string("CHOOSE A BUTTON TO CHANGE IT", ww / 2.0f, hy, gh, ww * 0.9f, 1.1f, 1);
+    return;
+  }
   if (screen != S_KEYS) return;
   char line[64];
   if (capturing && key_capture >= 0) snprintf(line, sizeof line, "PRESS A KEY FOR %s", button_names[key_capture]);
@@ -383,7 +416,7 @@ static void frame_box(float cx, float cy, float w, float h, float t, float alpha
 
 void menu_draw(int ww, int wh) {
   float s = S(ww, wh);
-  bool solid = screen == S_LAYOUT || screen == S_KEYS;
+  bool solid = screen == S_LAYOUT || screen == S_KEYS || screen == S_PADKEYS;
   overlay_quad(I_PANEL, ww / 2.0f, wh / 2.0f, (float)ww, (float)wh, 1, solid ? 0.92f : 0.75f);
   if (screen == S_RESULT) {
     overlay_quad(result_ok ? I_CHECK : I_FAIL, ww / 2.0f, wh * 0.45f, 0.4f * s, 0.4f * s, 1, 1);
@@ -396,7 +429,7 @@ void menu_draw(int ww, int wh) {
     overlay_quad(I_DROP, ww / 2.0f + 0.16f * s, wh * 0.5f, 0.36f * s, 0.36f * s, 1, 1);
     overlay_text(T_DROP, ww / 2.0f, wh * 0.5f + 0.27f * s, 0.04f * s, ww * 0.9f, 1, 0.95f);
   }
-  if (screen == S_LAYOUT || screen == S_KEYS) draw_pad_screen(ww, wh);
+  if (screen == S_LAYOUT || screen == S_KEYS || screen == S_PADKEYS) draw_pad_screen(ww, wh);
   if (has_banner()) overlay_draw_new_version(ww / 2.0f, wh * 0.24f, fminf(0.04f * s, ww * 0.9f / 33), 1);
   if (header() >= 0) overlay_quad(header(), ww / 2.0f, wh * 0.24f, 0.22f * s, 0.22f * s, 1, 0.85f);
   int n; const Card *c = cards(&n);
