@@ -7,6 +7,11 @@
  * joystick (a generic USB pad, an arcade stick) is read by its raw buttons, hats and axes, with the common USB
  * PlayStation adapter's layout until the setup sets it.
  *
+ * The keyboard also has three ready layouts (key_presets: RetroArch, DuckStation, ePSXe), chosen from the menu's
+ * keyboard screen, and a capture of one key for one button (controls_capture_key) for its CUSTOM screen. SDL reports
+ * one Android handheld's built-in controller (USB 2022:3001) with both face pairs and SELECT/START swapped, so it gets
+ * its own defaults while controls.txt has no "pad" lines (handheld_defaults).
+ *
  * Everything is kept in controls.txt in the save folder, one line per button ("pad cross=a", "key cross=Z",
  * "joy cross=b2", "joy up=h0.1", "joy up=a1-"), plus "mode touch" or "mode pad", so it can also be edited by hand.
  */
@@ -37,7 +42,33 @@ static char joy_set_up[33];   /* the GUID of the joystick the "joy" buttons were
 #define HAT 1000
 #define JAXIS 2000
 static int pad_map[N], joy_map[N];
+static bool pad_lines_seen;   /* controls.txt has the controller's buttons (handheld_defaults) */
 static SDL_Scancode key_map[N][2];
+
+/* the keyboard layouts the player can pick (menu.c): RetroArch's (the default), DuckStation's and ePSXe's.
+ * DuckStation binds its D-pad to the arrows and its left stick to W/A/S/D (src/util/input_manager.cpp); here both
+ * move the D-pad. */
+const SDL_Scancode key_presets[KEY_PRESETS][N][2] = {
+  [KEYS_RETROARCH] = {
+    {SDL_SCANCODE_UP}, {SDL_SCANCODE_DOWN}, {SDL_SCANCODE_LEFT}, {SDL_SCANCODE_RIGHT},
+    {SDL_SCANCODE_Z}, {SDL_SCANCODE_X}, {SDL_SCANCODE_A}, {SDL_SCANCODE_S},
+    {SDL_SCANCODE_Q}, {SDL_SCANCODE_W}, {SDL_SCANCODE_E}, {SDL_SCANCODE_R},
+    {SDL_SCANCODE_BACKSPACE, SDL_SCANCODE_RSHIFT}, {SDL_SCANCODE_RETURN},
+  },
+  [KEYS_DUCKSTATION] = {
+    {SDL_SCANCODE_UP, SDL_SCANCODE_W}, {SDL_SCANCODE_DOWN, SDL_SCANCODE_S}, {SDL_SCANCODE_LEFT, SDL_SCANCODE_A},
+    {SDL_SCANCODE_RIGHT, SDL_SCANCODE_D},
+    {SDL_SCANCODE_K}, {SDL_SCANCODE_L}, {SDL_SCANCODE_J}, {SDL_SCANCODE_I},
+    {SDL_SCANCODE_Q}, {SDL_SCANCODE_E}, {SDL_SCANCODE_1}, {SDL_SCANCODE_3},
+    {SDL_SCANCODE_BACKSPACE}, {SDL_SCANCODE_RETURN},
+  },
+  [KEYS_EPSXE] = {   /* ePSXe's own defaults (its docs/ePSXe_en.txt) */
+    {SDL_SCANCODE_UP}, {SDL_SCANCODE_DOWN}, {SDL_SCANCODE_LEFT}, {SDL_SCANCODE_RIGHT},
+    {SDL_SCANCODE_Z}, {SDL_SCANCODE_X}, {SDL_SCANCODE_S}, {SDL_SCANCODE_D},
+    {SDL_SCANCODE_W}, {SDL_SCANCODE_E}, {SDL_SCANCODE_Q}, {SDL_SCANCODE_R},
+    {SDL_SCANCODE_C}, {SDL_SCANCODE_V},
+  },
+};
 
 static void defaults(void) {
   static const int pad[N] = {
@@ -52,15 +83,9 @@ static void defaults(void) {
    * SELECT 8, START 9, the pad on hat 0 (or on axes 0 and 1, which always move too) */
   static const int joy[N] = {HAT + SDL_HAT_UP, HAT + SDL_HAT_DOWN, HAT + SDL_HAT_LEFT, HAT + SDL_HAT_RIGHT,
                              2, 1, 3, 0, 6, 7, 4, 5, 8, 9};
-  static const SDL_Scancode key[N][2] = {
-    {SDL_SCANCODE_UP}, {SDL_SCANCODE_DOWN}, {SDL_SCANCODE_LEFT}, {SDL_SCANCODE_RIGHT},
-    {SDL_SCANCODE_Z}, {SDL_SCANCODE_X}, {SDL_SCANCODE_A}, {SDL_SCANCODE_S},
-    {SDL_SCANCODE_Q}, {SDL_SCANCODE_W}, {SDL_SCANCODE_E}, {SDL_SCANCODE_R},
-    {SDL_SCANCODE_BACKSPACE, SDL_SCANCODE_RSHIFT}, {SDL_SCANCODE_RETURN},
-  };
   memcpy(pad_map, pad, sizeof pad_map);
   memcpy(joy_map, joy, sizeof joy_map);
-  memcpy(key_map, key, sizeof key_map);
+  memcpy(key_map, key_presets[KEYS_RETROARCH], sizeof key_map);
 }
 
 static int joy_parse(const char *v) {
@@ -98,6 +123,7 @@ void controls_load(const char *save_dir) {
     while (i < N && strcmp(names[i], name)) i++;
     if (i == N) continue;
     if (!strcmp(kind, "pad")) {
+      pad_lines_seen = true;
       SDL_GameControllerButton b = SDL_GameControllerGetButtonFromString(value);
       SDL_GameControllerAxis a = SDL_GameControllerGetAxisFromString(value);
       if (b != SDL_CONTROLLER_BUTTON_INVALID) pad_map[i] = b;
@@ -120,6 +146,7 @@ static void save(void) {
   snprintf(tmp, sizeof tmp, "%s.new", path);
   FILE *f = fopen(tmp, "w");
   if (!f) { SDL_Log("controls: cannot write %s", tmp); return; }
+  pad_lines_seen = true;
   fprintf(f, "# Horizon Play's buttons. SELECT and START together in the game open the menu that sets them again.\n");
   if (controls_mode) fprintf(f, "mode %s\n", controls_mode == MODE_TOUCH ? "touch" : "pad");
   for (int i = 0; i < N; i++)
@@ -145,13 +172,30 @@ void controls_set_mode(int mode) { controls_mode = mode; save(); }
 static SDL_GameController *pads[4];
 static SDL_Joystick *joys[4];    /* the joysticks SDL does not know as controllers */
 
+/* an Android handheld's built-in controller (USB 2022:3001) reports its bottom button as SDL's east one, the right as
+ * south, left and top swapped the same way, and SELECT and START swapped: measured on the device.
+ * Its own layout is the start when controls.txt has no "pad" lines yet. */
+static void handheld_defaults(SDL_GameController *c) {
+  if (pad_lines_seen || SDL_GameControllerGetVendor(c) != 0x2022 || SDL_GameControllerGetProduct(c) != 0x3001) return;
+  pad_map[4] = SDL_CONTROLLER_BUTTON_B; pad_map[5] = SDL_CONTROLLER_BUTTON_A;
+  pad_map[6] = SDL_CONTROLLER_BUTTON_Y; pad_map[7] = SDL_CONTROLLER_BUTTON_X;
+  pad_map[12] = SDL_CONTROLLER_BUTTON_START; pad_map[13] = SDL_CONTROLLER_BUTTON_BACK;
+  SDL_Log("controller: USB 2022:3001, the handheld's own layout");
+}
+
 static void add_device(int index) {
   if (SDL_IsGameController(index)) {
     SDL_JoystickID id = SDL_JoystickGetDeviceInstanceID(index);
     for (int i = 0; i < 4; i++)
       if (pads[i] && SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(pads[i])) == id) return;
     for (int i = 0; i < 4; i++)
-      if (!pads[i]) { pads[i] = SDL_GameControllerOpen(index); SDL_Log("controller: %s", SDL_GameControllerName(pads[i])); return; }
+      if (!pads[i]) {
+        pads[i] = SDL_GameControllerOpen(index);
+        if (!pads[i]) return;
+        SDL_Log("controller: %s", SDL_GameControllerName(pads[i]));
+        handheld_defaults(pads[i]);
+        return;
+      }
   } else {
     const char *name = SDL_JoystickNameForIndex(index);
     if (name && SDL_strcasestr(name, "accelerometer")) return;   /* a phone's tilt is not a joystick */
@@ -270,9 +314,11 @@ static void finish(bool keep) {
     }
     if (device == 2) for (int i = 0; i < N; i++) { key_map[i][0] = new_key[i]; key_map[i][1] = 0; }
     save();
-  } else SDL_Log("controls: the setup timed out; the buttons stay as they were");
+  } else SDL_Log("controls: the setup ended early; the buttons stay as they were");
   remap_step = -1;
 }
+
+void controls_setup_cancel(void) { if (remap_step >= 0) finish(false); }
 
 uint16_t controls_frame(uint16_t bits) {
   const uint16_t both = (1u << RETRO_DEVICE_ID_JOYPAD_SELECT) | (1u << RETRO_DEVICE_ID_JOYPAD_START);
@@ -320,6 +366,74 @@ static void pressed(int dev, int pad_input, SDL_Scancode key) {
   else ask(remap_step + 1);
 }
 
+/* ---- the keyboard alone (menu.c): a layout, or one key for one button ---- */
+int key_capture = -1;          /* the button whose key is asked for, or -1 */
+static bool capture_chain;     /* then the next button, up to START */
+static Uint32 capture_at;
+
+void controls_keys(SDL_Scancode out[N][2]) { memcpy(out, key_map, sizeof key_map); }
+
+void controls_set_keys(const SDL_Scancode keys[N][2]) { memcpy(key_map, keys, sizeof key_map); save(); }
+
+int controls_key_preset(void) {
+  for (int p = 0; p < KEY_PRESETS; p++)
+    if (!memcmp(key_presets[p], key_map, sizeof key_map)) return p;
+  return -1;
+}
+
+void controls_capture_key(int button, bool chain) {
+  key_capture = button; capture_chain = chain; capture_at = SDL_GetTicks();
+}
+
+void controls_capture_stop(void) { key_capture = -1; }
+
+float controls_capture_left(void) {
+  if (key_capture < 0) return 0;
+  Uint32 waited = SDL_GetTicks() - capture_at;
+  if (waited >= WAIT_MS) { SDL_Log("controls: no key pressed; the key stays as it was"); key_capture = -1; return 0; }
+  return 1 - (float)waited / WAIT_MS;
+}
+
+/* the key pressed for the button asked: a key another button had is swapped with this button's own */
+static void key_captured(SDL_Scancode sc) {
+  int b = key_capture;
+  for (int i = 0; i < N; i++)
+    for (int k = 0; k < 2; k++)
+      if (i != b && key_map[i][k] == sc) {
+        key_map[i][k] = key_map[b][0];
+        if (!key_map[i][0]) { key_map[i][0] = key_map[i][1]; key_map[i][1] = 0; }
+      }
+  key_map[b][0] = sc; key_map[b][1] = 0;
+  save();
+  if (capture_chain && b + 1 < N) controls_capture_key(b + 1, true);
+  else key_capture = -1;
+}
+
+/* a key's name, short and in capitals, for the controller picture: "Z", "ENTER", "RSHIFT", "KP 1"; the arrow keys
+ * are the characters 1 to 4 (up, down, left, right), which overlay.c draws as arrows */
+void controls_key_label(SDL_Scancode sc, char *out, size_t n) {
+  static const struct { SDL_Scancode sc; const char *s; } short_names[] = {
+    {SDL_SCANCODE_RETURN, "ENTER"}, {SDL_SCANCODE_KP_ENTER, "KP ENTER"}, {SDL_SCANCODE_RSHIFT, "RSHIFT"},
+    {SDL_SCANCODE_LSHIFT, "LSHIFT"}, {SDL_SCANCODE_RCTRL, "RCTRL"}, {SDL_SCANCODE_LCTRL, "LCTRL"},
+    {SDL_SCANCODE_RALT, "RALT"}, {SDL_SCANCODE_LALT, "LALT"}, {SDL_SCANCODE_RGUI, "RGUI"}, {SDL_SCANCODE_LGUI, "LGUI"},
+    {SDL_SCANCODE_BACKSPACE, "BACKSPACE"}, {SDL_SCANCODE_CAPSLOCK, "CAPS"}, {SDL_SCANCODE_PAGEUP, "PGUP"},
+    {SDL_SCANCODE_PAGEDOWN, "PGDN"}, {SDL_SCANCODE_DELETE, "DEL"}, {SDL_SCANCODE_INSERT, "INS"},
+  };
+  out[0] = 0;
+  if (!sc) return;
+  if (sc >= SDL_SCANCODE_RIGHT && sc <= SDL_SCANCODE_UP) {   /* the arrows, drawn as arrows (overlay.c's font) */
+    static const char arrows[4] = {'\x04', '\x03', '\x02', '\x01'};   /* right, left, down, up */
+    snprintf(out, n, "%c", arrows[sc - SDL_SCANCODE_RIGHT]);
+    return;
+  }
+  for (size_t i = 0; i < sizeof short_names / sizeof *short_names; i++)
+    if (short_names[i].sc == sc) { snprintf(out, n, "%s", short_names[i].s); return; }
+  const char *name = SDL_GetScancodeName(sc);
+  if (!strncmp(name, "Keypad ", 7)) { snprintf(out, n, "KP %s", name + 7); }
+  else snprintf(out, n, "%s", name[0] ? name : "?");
+  for (char *p = out; *p; p++) *p = (char)SDL_toupper((unsigned char)*p);
+}
+
 void controls_event(const SDL_Event *e) {
   static bool trigger_down[SDL_CONTROLLER_AXIS_MAX];
   static Uint8 hat_was[4][16];
@@ -335,7 +449,9 @@ void controls_event(const SDL_Event *e) {
     for (int i = 0; i < 4; i++) if (joys[i] && SDL_JoystickInstanceID(joys[i]) == e->jaxis.which) js = i;
   }
   switch (e->type) {
-  case SDL_CONTROLLERBUTTONDOWN: pressed(1, e->cbutton.button, 0); break;
+  case SDL_CONTROLLERBUTTONDOWN:
+    pressed(1, e->cbutton.button, 0);
+    break;
   case SDL_CONTROLLERAXISMOTION:
     if (e->caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT || e->caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERRIGHT) {
       /* down past 16000, up again below 8000: a trigger resting half way does not repeat */
@@ -344,7 +460,9 @@ void controls_event(const SDL_Event *e) {
     }
     if (e->caxis.axis < SDL_CONTROLLER_AXIS_MAX) trigger_down[e->caxis.axis] = e->caxis.value > 8000;
     break;
-  case SDL_JOYBUTTONDOWN: pressed(3, e->jbutton.button, 0); break;
+  case SDL_JOYBUTTONDOWN:
+    pressed(3, e->jbutton.button, 0);
+    break;
   case SDL_JOYHATMOTION:
     if (e->jhat.hat < 16) {
       Uint8 v = e->jhat.value, fresh = v & ~hat_was[js][e->jhat.hat];
@@ -365,7 +483,10 @@ void controls_event(const SDL_Event *e) {
     switch (e->key.keysym.scancode) {   /* the keys the program itself uses, and a phone's own keys */
     case SDL_SCANCODE_AC_BACK: case SDL_SCANCODE_F11: case SDL_SCANCODE_ESCAPE: case SDL_SCANCODE_VOLUMEUP:
     case SDL_SCANCODE_VOLUMEDOWN: case SDL_SCANCODE_MUTE: break;
-    default: if (!e->key.repeat) pressed(2, 0, e->key.keysym.scancode);
+    default:
+      if (e->key.repeat) break;
+      if (key_capture >= 0) key_captured(e->key.keysym.scancode);
+      else pressed(2, 0, e->key.keysym.scancode);
     }
     break;
   }

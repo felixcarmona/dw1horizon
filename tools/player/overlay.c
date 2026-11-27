@@ -1,7 +1,10 @@
 /* Horizon Play's own drawing over the game (docs/player.md): the touch pad, the prompts of the button setup and the
  * pictures of the menu (menu.c). Everything is drawn at start into one texture (shapes from distance functions, a 5x7
- * font), then each frame as quads with one small shader. The core keeps its own GL state cached, so every piece of
- * state touched here is put back as it was. MIT, like the rest of Horizon's code.
+ * font), then each frame as quads with one small shader. The font's glyphs also sit in the texture one by one, for any
+ * uppercase string (overlay_string: key names), and so does the body of a PlayStation controller, drawn with its
+ * buttons and a key label beside each (overlay_pad) on the keyboard screens and the button setup. The core keeps its
+ * own GL state cached, so every piece of state touched here is put back as it was. MIT, like the rest of Horizon's
+ * code.
  */
 #include "overlay.h"
 #include "controls.h"
@@ -76,9 +79,9 @@ static struct {
 static GLuint program, vao, vbo, atlas;
 static bool ready;
 
-/* ---- the atlas: 1024 x 1024, premultiplied RGBA ---- */
+/* ---- the atlas: 1024 x 2560, premultiplied RGBA ---- */
 #define AW 1024
-#define AH 2048
+#define AH 2560
 static uint8_t *pix;
 
 typedef struct { int x, y, w, h; } Cell;
@@ -98,6 +101,7 @@ static Cell cells[I_COUNT] = {
   /* the words (T_): as wide as their letters x 56, packed in rows from y = 1024, set in draw_words */
 };
 
+#define I_PAD_BODY (I_COUNT + 128)
 #define WORD_SCALE 6   /* one font dot is 6 x 6 atlas pixels: letters 42 high */
 #ifndef HORIZON_VERSION
 #define HORIZON_VERSION "DEV"   /* build.py and build_apk.py give the release version (tools/version.py) */
@@ -105,7 +109,7 @@ static Cell cells[I_COUNT] = {
 static char version_word[40];   /* "V0.0.10", in capitals: the font has no small letters */
 static struct { int id; const char *s; } words[] = {
   {T_RESUME, "RESUME"}, {T_CONTROLS, "CONTROLS"}, {T_CARD, "MEMORY CARD"}, {T_QUIT, "QUIT"},
-  {T_TOUCH, "TOUCH SCREEN"}, {T_CONTROLLER, "CONTROLLER"}, {T_KEEP, "KEEP BUTTONS"}, {T_SET, "SET BUTTONS"},
+  {T_TOUCH, "TOUCH"}, {T_CONTROLLER, "CONTROLLER"}, {T_KEEP, "KEEP BUTTONS"}, {T_SET, "SET BUTTONS"},
   {T_EXPORT, "EXPORT"}, {T_IMPORT, "IMPORT"}, {T_DONE, "DONE"}, {T_FAILED, "FAILED"},
   {T_DROP, "DROP A MEMORY CARD FILE HERE"}, {T_NEW, "NEW GAME"}, {T_SETTINGS, "SETTINGS"},
   {T_RESOLUTION, "RESOLUTION"}, {T_ORIGINAL, "ORIGINAL"}, {T_1X, "1X"}, {T_2X, "2X"}, {T_3X, "3X"}, {T_4X, "4X"},
@@ -116,9 +120,12 @@ static struct { int id; const char *s; } words[] = {
   {T_VERSION, version_word}, {T_BUTTON_SIZE, "BUTTON SIZE"}, {T_OPACITY, "OPACITY"}, {T_SMALL, "SMALL"},
   {T_MEDIUM, "MEDIUM"}, {T_LARGE, "LARGE"}, {T_HUGE, "HUGE"}, {T_FAINT, "FAINT"}, {T_LIGHT, "LIGHT"},
   {T_SOLID, "SOLID"}, {T_FULL, "FULL"}, {T_NEW_VERSION, "NEW VERSION"}, {T_AT_SITE, "AT DW1HORIZON.COM"},
-  {T_DOT, "."}, {T_V, "V"}, {T_DOWNLOAD, "DOWNLOAD"}, {T_LATER, "LATER"},
+  {T_DOT, "."}, {T_V, "V"}, {T_DOWNLOAD, "DOWNLOAD"}, {T_LATER, "LATER"}, {T_KEYBOARD, "KEYBOARD"},
+  {T_RETROARCH, "RETROARCH"}, {T_DUCKSTATION, "DUCKSTATION"}, {T_EPSXE, "EPSXE"}, {T_CUSTOM, "CUSTOM"},
 };
 static float word_w[I_COUNT];   /* the letters' width in atlas pixels */
+static Cell glyph_cells[128];   /* each character of the font alone */
+static Cell pad_body;           /* the controller picture's body and grips */
 
 static float clampf(float v, float lo, float hi) { return v < lo ? lo : v > hi ? hi : v; }
 
@@ -267,7 +274,7 @@ static void arrow(Cell c, float angle) {
   paint(c, sd_poly_fill, pts, 0.92f, 0.92f, 0.95f, 0.95f);
 }
 
-/* 5x7 font: capitals, digits and / . - + */
+/* 5x7 font: capitals, digits and a few signs (a key's name can be any of them) */
 static const struct { char ch; uint8_t rows[7]; } font[] = {
   {'A', {0x0E, 0x11, 0x11, 0x1F, 0x11, 0x11, 0x11}}, {'B', {0x1E, 0x11, 0x11, 0x1E, 0x11, 0x11, 0x1E}},
   {'C', {0x0E, 0x11, 0x10, 0x10, 0x10, 0x11, 0x0E}}, {'D', {0x1E, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1E}},
@@ -290,6 +297,14 @@ static const struct { char ch; uint8_t rows[7]; } font[] = {
   {'9', {0x0E, 0x11, 0x11, 0x0F, 0x01, 0x02, 0x0C}},
   {'/', {0x01, 0x02, 0x02, 0x04, 0x08, 0x08, 0x10}}, {'.', {0x00, 0x00, 0x00, 0x00, 0x00, 0x0C, 0x0C}},
   {'-', {0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00}}, {'+', {0x00, 0x04, 0x04, 0x1F, 0x04, 0x04, 0x00}},
+  {',', {0x00, 0x00, 0x00, 0x00, 0x0C, 0x04, 0x08}}, {';', {0x00, 0x0C, 0x0C, 0x00, 0x0C, 0x04, 0x08}},
+  {'\'', {0x0C, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00}}, {'`', {0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00}},
+  {'[', {0x0E, 0x08, 0x08, 0x08, 0x08, 0x08, 0x0E}}, {']', {0x0E, 0x02, 0x02, 0x02, 0x02, 0x02, 0x0E}},
+  {'=', {0x00, 0x00, 0x1F, 0x00, 0x1F, 0x00, 0x00}}, {'\\', {0x10, 0x08, 0x08, 0x04, 0x02, 0x02, 0x01}},
+  {'?', {0x0E, 0x11, 0x01, 0x02, 0x04, 0x00, 0x04}}, {'*', {0x00, 0x04, 0x15, 0x0E, 0x15, 0x04, 0x00}},
+  /* the arrow keys, as arrows (controls_key_label) */
+  {'\x01', {0x04, 0x0E, 0x15, 0x04, 0x04, 0x04, 0x04}}, {'\x02', {0x04, 0x04, 0x04, 0x04, 0x15, 0x0E, 0x04}},
+  {'\x03', {0x00, 0x04, 0x08, 0x1F, 0x08, 0x04, 0x00}}, {'\x04', {0x00, 0x04, 0x02, 0x1F, 0x02, 0x04, 0x00}},
 };
 
 static const uint8_t *glyph(char ch) {
@@ -313,6 +328,24 @@ static void dots(Cell c, const char *s, int scale, int x0, int y0) {
   }
 }
 
+/* the PlayStation controller's body: a wide rounded body and two grips, dark with a light edge, and the two hollows
+ * the pad and the face buttons sit in. In "pad units": the controller picture is drawn from them (overlay_pad). */
+static float sd_psx(float x, float y, const float *p) {
+  (void)p;
+  float body[] = {320, 165, 250, 100, 80};
+  return fminf(sd_rbox(x, y, body), fminf(seg(x, y, 150, 210, 112, 300) - 58, seg(x, y, 490, 210, 528, 300) - 58));
+}
+static float sd_psx_line(float x, float y, const float *p) { return fabsf(sd_psx(x, y, p)) - p[0] / 2; }
+
+static void draw_pad_body(Cell c) {
+  float w[] = {6};
+  paint(c, sd_psx, w, 0.17f, 0.18f, 0.21f, 0.96f);
+  float h1[] = {165, 160, 84}, h2[] = {475, 160, 84}, mid[] = {320, 205, 62, 26, 26};
+  paint(c, sd_disc, h1, 0.1f, 0.1f, 0.12f, 1); paint(c, sd_disc, h2, 0.1f, 0.1f, 0.12f, 1);
+  paint(c, sd_rbox, mid, 0.1f, 0.1f, 0.12f, 0.8f);
+  paint(c, sd_psx_line, w, 0.8f, 0.81f, 0.86f, 1);
+}
+
 static void draw_words(void) {
   int x = 0, y = 1024;
   snprintf(version_word, sizeof version_word, "V%s", HORIZON_VERSION);
@@ -328,6 +361,19 @@ static void draw_words(void) {
     word_w[id] = (float)((n * 6 - 1) * WORD_SCALE);
     dots(c, words[i].s, WORD_SCALE, (int)(c.w - word_w[id]) / 2, (c.h - 7 * WORD_SCALE) / 2);
   }
+  /* then each character alone, for any text (overlay_string) */
+  for (size_t f = 0; f < sizeof font / sizeof *font; f++) {
+    if (x + 48 > AW) { x = 0; y += 56; }
+    Cell c = {x, y, 48, 56};
+    x += 48;
+    glyph_cells[(unsigned char)font[f].ch] = c;
+    char one[2] = {font[f].ch, 0};
+    dots(c, one, WORD_SCALE, (c.w - 4 * 6 - 5 * WORD_SCALE + 4 * 6) / 2, (c.h - 7 * WORD_SCALE) / 2);
+  }
+  /* then the controller's body */
+  pad_body = (Cell){0, y + 56, 640, 370};
+  if (pad_body.y + pad_body.h > AH) SDL_Log("overlay: no room for the controller");
+  else draw_pad_body(pad_body);
 }
 
 static void text(Cell c, const char *s) {
@@ -532,7 +578,12 @@ void overlay_event(const SDL_Event *e, int ww, int wh) {
     }
     if (slot < 0 && e->type == SDL_FINGERDOWN) slot = free_slot;
     if (slot < 0) break;
-    if (e->type == SDL_FINGERDOWN && (menu_open || remap_step >= 0)) break;   /* the menu has its own touch */
+    if (e->type == SDL_FINGERDOWN && remap_step >= 0) {   /* the setup's back arrow: nothing changes */
+      float s = ww < wh ? (float)ww : (float)wh, bx = 0.1f * s, by = 0.1f * s, bs = 0.13f * s;
+      if (fabsf(e->tfinger.x * ww - bx) < bs * 0.7f && fabsf(e->tfinger.y * wh - by) < bs * 0.7f) controls_setup_cancel();
+      break;
+    }
+    if (e->type == SDL_FINGERDOWN && menu_open) break;   /* the menu has its own touch */
     if (e->type == SDL_FINGERDOWN) {   /* the menu button works on the first touch */
       layout(ww, wh);
       Control *m = &controls[ncontrols - 1];
@@ -567,13 +618,14 @@ uint16_t overlay_touch_bits(int ww, int wh) {
 }
 
 /* ---- drawing ---- */
-#define MAX_QUADS 160
+#define MAX_QUADS 1200
 static float verts[MAX_QUADS * 6 * 8];
 static int nverts, cur_w = 1, cur_h = 1;
 
 static void quad(int icon, float cx, float cy, float w, float h, float bright, float alpha, int ww, int wh) {
   if (nverts + 6 > MAX_QUADS * 6) return;
-  Cell c = cells[icon];
+  /* past the pictures and words: a character alone (I_COUNT + its code), or the controller's body */
+  Cell c = icon == I_PAD_BODY ? pad_body : icon >= I_COUNT ? glyph_cells[(icon - I_COUNT) & 127] : cells[icon];
   float x0 = (cx - w / 2) / ww * 2 - 1, x1 = (cx + w / 2) / ww * 2 - 1;
   float y0 = 1 - (cy - h / 2) / wh * 2, y1 = 1 - (cy + h / 2) / wh * 2;
   float u0 = (c.x + 0.5f) / AW, u1 = (c.x + c.w - 0.5f) / AW, v0 = (c.y + 0.5f) / AH, v1 = (c.y + c.h - 0.5f) / AH;
@@ -626,24 +678,21 @@ static void draw_setup(int ww, int wh) {
                                           I_L1, I_R1, I_L2, I_R2, I_SELECT, I_START};
   float s = ww < wh ? (float)ww : (float)wh, cx = ww / 2.0f;
   quad(I_PANEL, cx, wh / 2.0f, (float)ww, (float)wh, 1, 0.8f, ww, wh);
+  /* the controller, with the button asked for lit, and that button big beside it */
+  float pw = fminf(ww * 0.9f, s * 1.15f);
+  overlay_pad(cx, wh * 0.36f, pw, remap_step, NULL, 1);
   int ic = icon[remap_step];
-  if (ic >= I_UP && ic <= I_RIGHT) {   /* a direction: the pad, with that arm lit */
-    static const float ang[4] = {-1.5707963f, 1.5707963f, 3.1415927f, 0};
-    float d = 0.36f * s, a = ang[ic - I_UP];
-    quad(I_DOT, cx + cosf(a) * d * 0.31f, wh * 0.42f + sinf(a) * d * 0.31f, d * 0.3f, d * 0.3f, 1, 0.75f, ww, wh);
-    quad(I_DPAD, cx, wh * 0.42f, d, d, 1, 1, ww, wh);   /* over the light: the arm glows, its arrow stays */
-  } else {
-    float w = ic >= I_L1 ? 0.42f * s : 0.3f * s, h = ic >= I_L1 ? 0.175f * s : 0.3f * s;
-    quad(ic, cx, wh * 0.42f, w, h, 1.2f, 1, ww, wh);
-  }
+  float w = ic >= I_L1 ? 0.24f * s : 0.13f * s, h = ic >= I_L1 ? 0.1f * s : 0.13f * s;
+  quad(ic, cx, wh * 0.36f + pw * PAD_RATIO / 2 + 0.06f * s, w, h, 1.2f, 1, ww, wh);
   float gap = 0.05f * s, x0 = cx - gap * (CONTROL_COUNT - 1) / 2;
   for (int i = 0; i < CONTROL_COUNT; i++) {
     float d = i == remap_step ? 0.035f * s : 0.022f * s;
-    quad(I_DOT, x0 + i * gap, wh * 0.72f, d, d, 1, i < remap_step ? 0.9f : i == remap_step ? 1 : 0.3f, ww, wh);
+    quad(I_DOT, x0 + i * gap, wh * 0.8f, d, d, 1, i < remap_step ? 0.9f : i == remap_step ? 1 : 0.3f, ww, wh);
   }
+  quad(I_BACK, 0.1f * s, 0.1f * s, 0.13f * s, 0.13f * s, 1, 0.8f, ww, wh);   /* as the menu's: leaves it all as it was */
   float bw = gap * (CONTROL_COUNT - 1);
-  quad(I_WHITE, cx, wh * 0.8f, bw, 0.008f * s, 1, 0.15f, ww, wh);
-  quad(I_WHITE, cx - bw / 2 + bw * remap_time_left / 2, wh * 0.8f, bw * remap_time_left, 0.008f * s, 1, 0.7f, ww, wh);
+  quad(I_WHITE, cx, wh * 0.87f, bw, 0.008f * s, 1, 0.15f, ww, wh);
+  quad(I_WHITE, cx - bw / 2 + bw * remap_time_left / 2, wh * 0.87f, bw * remap_time_left, 0.008f * s, 1, 0.7f, ww, wh);
 }
 
 void overlay_quad(int icon, float cx, float cy, float w, float h, float bright, float alpha) {
@@ -659,6 +708,113 @@ void overlay_text(int word, float cx, float cy, float glyph_h, float max_w, floa
   float k = glyph_h / (7 * WORD_SCALE);
   if (word_w[word] * k > max_w) k = max_w / word_w[word];
   quad(word, cx, cy, cells[word].w * k, cells[word].h * k, bright, alpha, cur_w, cur_h);
+}
+
+float overlay_string_width(const char *str, float glyph_h) {
+  int n = (int)strlen(str);
+  return n ? (n * 6 - 1) * glyph_h / 7 : 0;
+}
+
+void overlay_string(const char *str, float cx, float cy, float glyph_h, float max_w, float bright, float alpha) {
+  float tw = overlay_string_width(str, glyph_h);
+  if (tw > max_w && tw > 0) { glyph_h *= max_w / tw; tw = max_w; }
+  float k = glyph_h / (7 * WORD_SCALE), adv = glyph_h * 6 / 7, x = cx - tw / 2 + 5 * glyph_h / 14;
+  for (int i = 0; str[i]; i++, x += adv) {
+    unsigned char ch = (unsigned char)str[i];
+    if (ch >= 128 || !glyph_cells[ch].w) {
+      if (ch == ' ' || !glyph_cells['?'].w) continue;
+      ch = '?';
+    }
+    Cell c = glyph_cells[ch];
+    quad(I_COUNT + ch, x, cy, c.w * k, c.h * k, bright, alpha, cur_w, cur_h);
+  }
+}
+
+/* ---- the PlayStation controller picture ----
+ * In pad units: the body (pad_body) spans x 0..640, y 0..370; the picture with the labels spans x -60..700,
+ * y -62..343 (760 x 405: PAD_RATIO). Each button: its place and size, and where its label goes (al: -1 ends at lx,
+ * 0 centred on it, 1 starts at it) and how wide it may be. */
+static const struct { int icon; float x, y, w, h, lx, ly; int al, av; float lw; } pad_parts[CONTROL_COUNT] = {
+  {I_UP, 165, 114, 46, 46, 165, 87, 0, -1, 120},     {I_DOWN, 165, 206, 46, 46, 165, 234, 0, 1, 120},
+  {I_LEFT, 119, 160, 46, 46, 90, 160, -1, 0, 200},   {I_RIGHT, 211, 160, 46, 46, 240, 160, 1, 0, 76},
+  {I_CROSS, 475, 212, 60, 60, 475, 246, 0, 1, 120},  {I_CIRCLE, 527, 160, 60, 60, 564, 160, 1, 0, 200},
+  {I_SQUARE, 423, 160, 60, 60, 386, 160, -1, 0, 76}, {I_TRI, 475, 108, 60, 60, 475, 75, 0, -1, 120},
+  {I_L1, 165, 12, 110, 46, 104, 12, -1, 0, 220},     {I_R1, 475, 12, 110, 46, 536, 12, 1, 0, 220},
+  {I_L2, 165, -38, 110, 46, 104, -38, -1, 0, 220},   {I_R2, 475, -38, 110, 46, 536, -38, 1, 0, 220},
+  {I_SELECT, 278, 205, 70, 29, 262, 272, 0, 1, 130}, {I_START, 362, 205, 70, 29, 378, 272, 0, 1, 130},
+};
+#define PAD_W 760.0f
+#define PAD_GH 15.0f   /* the labels' letters, in pad units */
+
+static void label_box(const char *const lines[2], float lx, float ly, int al, int av, float lw, float k,
+                      float *bx, float *by, float *bw, float *bh, int *n) {
+  float gh = PAD_GH * k, w = 0;
+  *n = 0;
+  for (int j = 0; j < 2; j++)
+    if (lines[j] && lines[j][0]) { (*n)++; w = fmaxf(w, overlay_string_width(lines[j], gh)); }
+  w = fminf(w, lw * k) + gh * 0.9f;
+  *bw = w; *bh = *n * gh * 1.6f + gh * 0.4f;
+  *bx = lx + al * w / 2; *by = ly + av * *bh / 2;
+}
+
+void overlay_pad(float cx, float cy, float w, int lit, const char *const labels[][2], float alpha) {
+  if (!pad_body.w) return;
+  float k = w / PAD_W;
+#define PX(u) (cx + ((u) - 320) * k)
+#define PY(v) (cy + ((v) - 140.5f) * k)
+  quad(I_PAD_BODY, PX(320), PY(185), 640 * k, 370 * k, 1, alpha, cur_w, cur_h);
+  if (lit >= 0 && lit < CONTROL_COUNT) {   /* a glow under the lit button */
+    float gw = fmaxf(pad_parts[lit].w, pad_parts[lit].h) * 1.9f * k;
+    quad(I_DOT, PX(pad_parts[lit].x), PY(pad_parts[lit].y), gw, lit >= 8 ? gw * 0.7f : gw, 1, 0.8f * alpha, cur_w, cur_h);
+  }
+  quad(I_DPAD, PX(165), PY(160), 150 * k, 150 * k, 1, alpha, cur_w, cur_h);
+  for (int i = 4; i < CONTROL_COUNT; i++)
+    quad(pad_parts[i].icon, PX(pad_parts[i].x), PY(pad_parts[i].y), pad_parts[i].w * k, pad_parts[i].h * k,
+         i == lit ? 1.5f : 1, alpha, cur_w, cur_h);
+  /* SELECT and START: a line down to their labels, between the grips */
+  for (int i = 12; i < 14 && labels; i++) {
+    float top = pad_parts[i].y + pad_parts[i].h / 2, bottom = pad_parts[i].ly;
+    float x = (pad_parts[i].x + pad_parts[i].lx) / 2;
+    quad(I_WHITE, PX(x), PY((top + bottom) / 2), 2.5f * k, (bottom - top) * k, 1, 0.45f * alpha, cur_w, cur_h);
+  }
+  if (!labels) return;
+  float gh = PAD_GH * k;
+  for (int i = 0; i < CONTROL_COUNT; i++) {
+    float bx, by, bw, bh; int n;
+    label_box(labels[i], PX(pad_parts[i].lx), PY(pad_parts[i].ly), pad_parts[i].al, pad_parts[i].av, pad_parts[i].lw, k, &bx, &by, &bw, &bh, &n);
+    if (!n) continue;
+    bool on = i == lit;
+    quad(I_WHITE, bx, by, bw, bh, on ? 0.35f : 0, (on ? 0.95f : 0.7f) * alpha, cur_w, cur_h);
+    float t = fmaxf(1.5f, 2.2f * k);
+    float fa = (on ? 1 : 0.35f) * alpha;
+    quad(I_WHITE, bx, by - bh / 2, bw, t, 1, fa, cur_w, cur_h); quad(I_WHITE, bx, by + bh / 2, bw, t, 1, fa, cur_w, cur_h);
+    quad(I_WHITE, bx - bw / 2, by, t, bh + t, 1, fa, cur_w, cur_h); quad(I_WHITE, bx + bw / 2, by, t, bh + t, 1, fa, cur_w, cur_h);
+    int line = 0;
+    for (int j = 0; j < 2; j++)
+      if (labels[i][j] && labels[i][j][0]) {
+        float ly = by + (line - (n - 1) / 2.0f) * gh * 1.6f;
+        overlay_string(labels[i][j], bx, ly, gh, bw - gh * 0.9f, on ? 1.25f : 1, alpha);
+        line++;
+      }
+  }
+#undef PX
+#undef PY
+}
+
+int overlay_pad_hit(float cx, float cy, float w, float x, float y) {
+  float k = w / PAD_W, u = (x - cx) / k + 320, v = (y - cy) / k + 140.5f;
+  int best = -1; float best_d = 1e9f;
+  for (int i = 0; i < CONTROL_COUNT; i++) {
+    float hw = pad_parts[i].w / 2 + 8, hh = pad_parts[i].h / 2 + 8, dx = fabsf(u - pad_parts[i].x), dy = fabsf(v - pad_parts[i].y);
+    if (dx < hw && dy < hh && dx + dy < best_d) { best = i; best_d = dx + dy; }
+  }
+  if (best >= 0) return best;
+  for (int i = 0; i < CONTROL_COUNT; i++) {   /* or its label's place */
+    float lx = pad_parts[i].lx + pad_parts[i].al * 40;
+    float ly = pad_parts[i].ly + pad_parts[i].av * 18;
+    if (fabsf(u - lx) < 45 && fabsf(v - ly) < 20) return i;
+  }
+  return -1;
 }
 
 int overlay_fps = -1;
