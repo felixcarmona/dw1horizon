@@ -272,10 +272,9 @@ static int act(int i) {
     go(S_DROP); return MENU_NONE;
 #endif
   }
-  if (c[i].action >= A_PRESET && c[i].action < A_PRESET + KEY_PRESETS) {   /* a keyboard layout: in use at once */
-    controls_set_keys(key_presets[c[i].action - A_PRESET]);
-    if (first) close_menu(); else { go(S_CONTROLS); focus = 1; }
-    return MENU_NONE;
+  if (c[i].action >= A_PRESET && c[i].action < A_PRESET + KEY_PRESETS) {   /* a keyboard layout: in use at once, */
+    controls_set_keys(key_presets[c[i].action - A_PRESET]);               /* the screen stays (its tick moves); */
+    return MENU_NONE;                                                      /* the back arrow leaves */
   }
   if (c[i].action >= A_ALPHA) {   /* the touch pad's look: back to the game, to see it */
     overlay_touch_alpha = c[i].action - A_ALPHA; touch_shown = true; close_menu(); return MENU_TOUCHPAD;

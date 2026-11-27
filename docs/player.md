@@ -97,7 +97,7 @@ or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goe
   - **KEYBOARD**: a drawn PlayStation controller with the key of each of its 14 buttons beside it, and under it the
     cards RETROARCH, DUCKSTATION, EPSXE and CUSTOM. Moving between the cards shows each layout's keys on the
     controller; the card of the layout in use has a check mark and is chosen first (CUSTOM when the keys match no
-    layout). Choosing a layout uses it at once and saves it. CUSTOM asks a key for each button in turn, the button lit
+    layout). Choosing a layout uses it at once and saves it; the screen stays, its tick on the new one (the back arrow leaves). CUSTOM asks a key for each button in turn, the button lit
     on the controller and a ten-second bar under it; after that, or at any moment, a click or tap on one button (or
     the arrows and Cross) asks a key for that one alone. A key already on another button moves to the button being
     set. Escape and F11 cannot be taken. Escape or the back arrow stops the asking.
