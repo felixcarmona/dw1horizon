@@ -163,7 +163,7 @@ The uninstaller removes the install folder with the disc; the saves stay (`%APPD
 `Setup.exe /S /D=DIR` works (the CI check runs it, then `Uninstall.exe /S`). The macOS patcher does not carry the
 template (the macOS job would have to wait for the whole Windows job): make the setup on a Windows computer.
 
-## A Mac app and a Linux installer
+## A Mac app, and a Linux installer
 
 On a Mac, the desktop patcher's **Mac app (.dmg)** button (`desktop.make_mac`, `tools/patcher/mac_app.py`) writes
 `<disc>-Mac.dmg` next to the disc: a disk image with `Digimon World Horizon.app` and an Applications link to drag it
@@ -181,6 +181,19 @@ Signing: adding files breaks the bundle's seal, so on a Mac the copy is signed a
 app runs on the Mac that made it, but one copied to another Mac (or made by the CLI elsewhere, which cannot sign at
 all) needs `xattr -cr "Digimon World Horizon.app"` once, or right-click then Open. `desktop.yml`'s macOS job makes a
 dummy-disc dmg, mounts it, compares the bin, runs `codesign --verify` and tries a short launch.
+
+**Linux:** `python3 tools/patcher/linux_run.py Horizon-Play-Linux-x86_64.tar.gz DISC.cue DISC-Linux.run` writes a self
+extracting installer (`tools/patcher/linux_run.py`): a short POSIX sh header and a tar.gz at a recorded byte offset, with
+the Linux player bundle (`player.yml`'s tarball) and the disc as `Digimon World Horizon.bin/.cue`. `./DISC-Linux.run`
+installs without sudo into `${XDG_DATA_HOME:-~/.local/share}/digimon-world-horizon` (`--target DIR` changes it),
+writes `digimon-world-horizon.desktop` in `~/.local/share/applications` with the icon beside the game, copies the
+launcher to the desktop folder when `xdg-user-dir DESKTOP` has one (trusted through `gio` where possible), and leaves
+`uninstall.sh` (`--uninstall` runs it): it removes only what the installer put in the folder and the launchers, and
+keeps the saves (`~/.local/share/Horizon/Horizon`). In a terminal it asks whether to start the game; a double click
+starts it (`--no-start` never does). `player.yml` makes one from a dummy disc, installs it, compares the bin, checks
+that the player finds the disc with no argument, and uninstalls. The desktop patcher has a **Linux installer (.run)**
+button (`desktop.make_linux`), shown only when it carries the tarball (`app/build.py --linux-player`); no workflow
+passes it yet, because `desktop.yml` would have to build or wait for the whole Linux player: use the command above.
 
 ## Licences
 

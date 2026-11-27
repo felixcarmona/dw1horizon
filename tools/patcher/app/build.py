@@ -108,7 +108,9 @@ def spec(work, a, ver):
         datas.append((os.path.abspath(a.player_apk), 'android'))
     if a.setup_template:   # the Windows setup template (tools/player/installer.py): desktop.make_setup appends the disc
         datas.append((os.path.abspath(a.setup_template), 'windows'))
-    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk', 'setup_exe', 'mac_app']
+    if a.linux_player:   # player.yml's Horizon-Play-Linux-x86_64.tar.gz: desktop.make_linux puts the built disc into it
+        datas.append((os.path.abspath(a.linux_player), 'linux'))
+    hidden = stdlib_modules() + ['desktop', 'selftest', 'dwpatch', 'make_icons', 'apk', 'setup_exe', 'mac_app', 'linux_run']
     if sys.platform == 'darwin':
         hidden.append('certifi')
     icon = os.path.join(icons, 'icon.ico' if os.name == 'nt' else 'icon.icns')
@@ -149,6 +151,8 @@ def main(argv=None):
                                         'also makes an APK with the built disc inside')
     p.add_argument('--setup-template', help='Horizon-Setup.exe (tools/player/installer.py): the app then also makes '
                                             'a Windows setup with the built disc inside')
+    p.add_argument('--linux-player', help='the Linux Horizon Play tarball (player.yml): the app then also makes a '
+                                          'Linux installer (.run) with the built disc inside')
     p.add_argument('--out', default=os.path.join(ROOT, 'build', 'desktop'))
     a = p.parse_args(argv)
     ver = (a.version or version()).lstrip('v')

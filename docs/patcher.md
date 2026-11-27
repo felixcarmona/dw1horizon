@@ -151,7 +151,8 @@ is for their computers only. Details in [player.md](player.md#a-setup-wizard).
 
 On a Mac the same place has a **Mac app (.dmg)** button: `<disc>-Mac.dmg` with `Digimon World Horizon.app` (the bundled
 Horizon Play with the disc inside, signed again ad hoc, which drops the notarization of the copy; see
-[player.md](player.md#a-mac-app-and-a-linux-installer)).
+[player.md](player.md#a-mac-app-and-a-linux-installer)). `tools/patcher/linux_run.py` makes a Linux `.run`
+installer the same way (CLI; the button appears when the patcher is built with `--linux-player`).
 
 - **Same code path.** The app downloads the release package, checks it, and loads the package's own `dwpatch.py`
   (with its `isowriter.py` and `fontcopy.py`) from the package folder: the apply is the command line's, from the same

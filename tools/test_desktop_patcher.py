@@ -21,6 +21,7 @@ import desktop  # noqa: E402
 import dwpatch as dw  # noqa: E402
 import setup_exe  # noqa: E402
 import mac_app  # noqa: E402
+import linux_run  # noqa: E402
 import plistlib  # noqa: E402
 import stat  # noqa: E402
 import zipfile  # noqa: E402
@@ -824,6 +825,61 @@ class MacApp(unittest.TestCase):
             if sys.platform != 'darwin':
                 with self.assertRaisesRegex(mac_app.MacAppError, 'only be made on a Mac'):
                     mac_app.build(str(app), str(d / 'my disc.cue'), str(d / 'o.dmg'))
+
+
+class LinuxRun(unittest.TestCase):
+    """The Linux self-extracting installer (tools/patcher/linux_run.py)."""
+
+    def make(self, d, as_tarball):
+        d = Path(d)
+        player = d / 'Horizon Play'
+        (player / 'system').mkdir(parents=True)
+        (player / 'horizon-play').write_text('#!/bin/sh\n')
+        os.chmod(player / 'horizon-play', 0o755)
+        (player / 'system' / 'openbios.bin').write_bytes(b'bios')
+        if as_tarball:
+            with tarfile.open(d / 'player.tar.gz', 'w:gz') as t:
+                t.add(player, 'Horizon Play')
+        (d / 'my disc.bin').write_bytes(bytes(range(256)) * 300)
+        (d / 'my disc.cue').write_text('FILE "my disc.bin" BINARY\n  TRACK 01 MODE2/2352\n')
+        return d, str(d / 'player.tar.gz') if as_tarball else str(player)
+
+    @unittest.skipIf(os.name == 'nt', 'a POSIX sh script')
+    def test_round_trip_install_and_uninstall(self):
+        for as_tarball in (True, False):
+            with self.subTest(tarball=as_tarball), tempfile.TemporaryDirectory() as d:
+                d, player = self.make(d, as_tarball)
+                out = str(d / 'disc-Linux.run')
+                seen = []
+                linux_run.build(player, str(d / 'my disc.cue'), out, lambda a, b: seen.append((a, b)))
+                self.assertEqual(seen[-1][0], seen[-1][1])
+                self.assertTrue(os.access(out, os.X_OK))
+                env = dict(os.environ, HOME=str(d / 'home'), XDG_DATA_HOME=str(d / 'data'))
+                inst = d / 'game dir'
+                run = lambda *a: subprocess.run([out, *a], env=env, capture_output=True, text=True)
+                r = run('--target', str(inst), '--no-start')
+                self.assertEqual(r.returncode, 0, r.stderr)
+                self.assertEqual((inst / 'Digimon World Horizon.bin').read_bytes(), (d / 'my disc.bin').read_bytes())
+                self.assertIn('FILE "Digimon World Horizon.bin"', (inst / 'Digimon World Horizon.cue').read_text())
+                self.assertTrue(os.access(inst / 'horizon-play', os.X_OK))
+                self.assertTrue((inst / 'system' / 'openbios.bin').is_file())
+                self.assertTrue((inst / 'icon.png').read_bytes().startswith(b'\x89PNG'))
+                launcher = (d / 'data' / 'applications' / 'digimon-world-horizon.desktop').read_text()
+                self.assertIn(f'Exec="{inst}/horizon-play" "{inst}/Digimon World Horizon.cue"', launcher)
+                (inst / 'keep.txt').write_text('not ours')   # a folder shared with other files stays
+                self.assertEqual(run('--target', str(inst), '--uninstall').returncode, 0)
+                self.assertEqual([p.name for p in inst.iterdir()], ['keep.txt'])
+                self.assertFalse((d / 'data' / 'applications' / 'digimon-world-horizon.desktop').exists())
+
+    def test_refuses_a_bundle_without_the_player(self):
+        with tempfile.TemporaryDirectory() as d:
+            d, player = self.make(d, False)
+            os.remove(Path(player) / 'horizon-play')
+            with self.assertRaisesRegex(linux_run.LinuxRunError, 'no horizon-play'):
+                linux_run.build(player, str(d / 'my disc.cue'), str(d / 'o.run'))
+            self.assertFalse((d / 'o.run').exists())
+            with self.assertRaisesRegex(linux_run.LinuxRunError, 'no Linux'):
+                linux_run.build(str(d / 'missing.tar.gz'), str(d / 'my disc.cue'), str(d / 'o.run'))
 
 
 class Interface(unittest.TestCase):

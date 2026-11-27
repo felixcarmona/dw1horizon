@@ -805,6 +805,22 @@ def make_mac(cue, progress=None):
     return mac_app.build(mac_app_template(), cue, out, progress)
 
 
+def linux_template():
+    """The Linux Horizon Play bundle (player.yml's tarball), or None when this app was built without it."""
+    path = resource('linux', 'Horizon-Play-Linux-x86_64.tar.gz')
+    return path if os.path.isfile(path) else None
+
+
+def make_linux(cue, progress=None):
+    """The Linux installer with the built disc inside (tools/patcher/linux_run.py), next to the disc."""
+    try:
+        from . import linux_run
+    except ImportError:
+        import linux_run
+    out = os.path.splitext(os.path.abspath(cue))[0] + '-Linux.run'
+    return linux_run.build(linux_template(), cue, out, progress)
+
+
 def play(cue):
     """Start Horizon Play on the built disc; it runs on its own (closing the patcher does not stop it)."""
     import subprocess

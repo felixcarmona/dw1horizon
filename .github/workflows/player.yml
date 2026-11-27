@@ -70,6 +70,25 @@ jobs:
           PY
       - name: Archive
         run: tar -czf Horizon-Play-Linux-x86_64.tar.gz "Horizon Play"
+      - name: A Linux installer made from a dummy disc installs, holds the disc byte for byte and uninstalls
+        run: |
+          T="$RUNNER_TEMP/lr"; mkdir -p "$T/home"
+          python3 -c "import sys; open(sys.argv[1] + '/dummy.bin', 'wb').write(bytes(range(251)) * 20000)" "$T"
+          printf 'FILE "dummy.bin" BINARY\r\n  TRACK 01 MODE2/2352\r\n    INDEX 01 00:00:00\r\n' > "$T/dummy.cue"
+          python3 tools/patcher/linux_run.py Horizon-Play-Linux-x86_64.tar.gz "$T/dummy.cue" "$T/dummy-Linux.run"
+          export HOME="$T/home" XDG_DATA_HOME="$T/home/.local/share"
+          "$T/dummy-Linux.run" --target "$T/game" --no-start
+          cmp "$T/game/Digimon World Horizon.bin" "$T/dummy.bin"
+          grep -q 'FILE "Digimon World Horizon.bin" BINARY' "$T/game/Digimon World Horizon.cue"
+          test -x "$T/game/horizon-play"
+          test -f "$XDG_DATA_HOME/applications/digimon-world-horizon.desktop"
+          # the installed player finds the disc by itself (no argument) and the log says so
+          (cd "$T/game" && LIBGL_ALWAYS_SOFTWARE=1 SDL_AUDIODRIVER=dummy xvfb-run -a -s '-screen 0 1280x960x24' \
+            ./horizon-play --windowed --frames 60 --saves "$T/saves" || true)
+          grep -q 'disc beside the program' "$T/saves/horizon-play.log"
+          "$T/dummy-Linux.run" --target "$T/game" --uninstall
+          test ! -e "$T/game/horizon-play"
+          test ! -e "$XDG_DATA_HOME/applications/digimon-world-horizon.desktop"
       - uses: actions/upload-artifact@v4
         with:
           name: Horizon-Play-Linux

@@ -740,24 +740,26 @@ class App:
         ttk = self.ttk
         for w in self.finish.winfo_children():
             w.destroy()
-        if cue and desktop.player_program():
-            ttk.Button(self.finish, text=self.t('app.play'), style='Build.TButton',
-                       command=lambda: desktop.play(cue)).grid(row=0, column=0, padx=(0, 6))
-        if cue and desktop.apk_template():
-            ttk.Button(self.finish, text=self.t('app.makeApk'),
-                       command=lambda: self.busy or self._spawn(self._job_apk, cue, busy='build')).grid(row=0, column=1, padx=(0, 6))
-        if cue and desktop.setup_template():
-            ttk.Button(self.finish, text=self.t('app.makeSetup'),
-                       command=lambda: self.busy or self._spawn(self._job_setup, cue, busy='build')).grid(row=0, column=2, padx=(0, 6))
-        if cue and desktop.mac_app_template():
-            ttk.Button(self.finish, text=self.t('app.makeMac'),
-                       command=lambda: self.busy or self._spawn(self._job_mac, cue, busy='build')).grid(row=0, column=3, padx=(0, 6))
-        if folder:
-            ttk.Button(self.finish, text=self.t('app.openFolder'),
-                       command=lambda: desktop.open_folder(folder)).grid(row=0, column=4, padx=(0, 6))
-        if log and os.path.exists(log):
-            ttk.Button(self.finish, text=self.t('app.openLog'),
-                       command=lambda: desktop.open_folder(log)).grid(row=0, column=5)
+        col = 0
+        for ok, text, cmd, style in (
+                (cue and desktop.player_program(), 'app.play', lambda: desktop.play(cue), 'Build.TButton'),
+                (folder, 'app.openFolder', lambda: desktop.open_folder(folder), 'TButton'),
+                (log and os.path.exists(log), 'app.openLog', lambda: desktop.open_folder(log), 'TButton')):
+            if ok:
+                ttk.Button(self.finish, text=self.t(text), style=style, command=cmd).grid(row=0, column=col, padx=(0, 6))
+                col += 1
+        # the installers that put the built disc inside: a second row, so that nothing is cut at the window's width
+        makers = [(self.t(key), job) for ok, key, job in (
+            (desktop.apk_template(), 'app.makeApk', self._job_apk), (desktop.setup_template(), 'app.makeSetup', self._job_setup),
+            (desktop.mac_app_template(), 'app.makeMac', self._job_mac), (desktop.linux_template(), 'app.makeLinux', self._job_linux)) if ok]
+        if cue and makers:
+            row = ttk.Frame(self.finish)
+            row.grid(row=1, column=0, columnspan=3, sticky='w', pady=(8, 0))
+            ttk.Label(row, text=self.t('app.makeAs')).grid(row=0, column=0, columnspan=2, sticky='w', pady=(0, 4))
+            for i, (text, job) in enumerate(makers):   # two to a row
+                ttk.Button(row, text=text, command=lambda job=job: self.busy or self._spawn(job, cue, busy='build')
+                           ).grid(row=1 + i // 2, column=i % 2, sticky='ew', padx=(0, 6), pady=(0, 4))
+            row.columnconfigure((0, 1), uniform='makers')
 
     def _job_apk(self, cue):
         def progress(done, total):
@@ -784,6 +786,16 @@ class App:
             self.events.put(('stage', str(e), 'Bad.TLabel'))
             return
         self.events.put(('stage', self.t('app.macDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
+
+    def _job_linux(self, cue):
+        def progress(done, total):
+            self.events.put(('bar', done / total, self.t('app.makingLinux', done=done * 100 // total)))
+        try:
+            out = desktop.make_linux(cue, progress)
+        except Exception as e:   # linux_run.LinuxRunError, or a full disk
+            self.events.put(('stage', str(e), 'Bad.TLabel'))
+            return
+        self.events.put(('stage', self.t('app.linuxDone', file=os.path.basename(out)) + '\n' + out, 'Ok.TLabel'))
 
     def _stop(self):
         self.cancel.set()
