@@ -1,0 +1,301 @@
+From 3b1aa8ae3cef3645889e4d9137b142cb4832313a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 22:25:21 +0000
+Subject: [PATCH] One language's file copies resident: a language file slot
+ written by LANGxx.BIN
+
+The languages' copies of files (LANG_FILES: about 1,230 rows, 172 the most for one language) are no longer resident
+rows of FILE_OFFSET_TABLE. The last LANG_SLOT_MAX rows of the table are the language file slot: each language build
+holds its own copies there, langpatch writes the slot as one run of every LANGxx.BIN, and the disc writer gives its
+rows their sectors in each LANGxx.BIN. modLangFile reads the copies' rows from LANG_SLOT.
+---
+ Makefile                 |  11 ++---
+ include/dw/file_table.h  |   7 ++-
+ src/main/file_table_us.c |  15 ++++--
+ src/main/mod_options.c   |  13 ++---
+ tools/gen_file_table.py  |  12 +++--
+ tools/gen_lang_files.py  | 100 +++++++++++++++++++++++++++------------
+ 6 files changed, 109 insertions(+), 49 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 9db0aa0..82346a0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -78,7 +78,9 @@ $(shell mkdir -p $(GEN_DIR); printf '#define MOD_LANG_BASE MOD_LANG_%s\n' '$(she
+ # MOD (language): the disc files that have a copy per language (docs/mods/language.md), given by tools/build-full.sh:
+ # LANG_FILES="NAME.EXT:ES.EXT:EN.EXT ..." (the Spanish copy, the copy with the map signs in English; - for none). Each
+ # copy is also a NEW_FILES name. Empty by default: no copies, the files as before. A row is the name's hash and the
+-# copies' places among the new files (tools/gen_lang_files.py: 8 bytes, not three names).
++# copies' places in the language file slot (tools/gen_lang_files.py: 7 bytes, not three names). The copies are not
++# resident rows of FILE_OFFSET_TABLE: each language's are the slot's rows (lang_slot.h, src/main/file_table_us.c
++# LANG_SLOT), written with the rest of the language by its LANGxx.BIN.
+ LANG_FILES ?=
+ 
+ # MOD (new files): the disc files with names the original never had (a new screen's .MAP/.TFS, models, textures), one
+@@ -86,11 +88,8 @@ LANG_FILES ?=
+ # tools/build-disc.py --relayout. NEW_FILES="RIFT01.MAP RIFT01.TFS ..." (8.3 upper-case names, given by tools/build-full.sh
+ # from the content); empty by default: the table and the executable as before. About 24 bytes of .data per name.
+ NEW_FILES ?=
+-$(shell mkdir -p $(GEN_DIR); python3 tools/gen_file_table.py $(GEN_DIR)/file_table_new.h --new '$(NEW_FILES)')
+-$(shell mkdir -p $(GEN_DIR); printf '#define NUM_NEW_FILES %s\n' '$(words $(NEW_FILES))' > $(GEN_DIR)/file_table_count.h.tmp; \
+-	cmp -s $(GEN_DIR)/file_table_count.h.tmp $(GEN_DIR)/file_table_count.h && rm $(GEN_DIR)/file_table_count.h.tmp \
+-	|| mv $(GEN_DIR)/file_table_count.h.tmp $(GEN_DIR)/file_table_count.h)
+-$(shell python3 tools/gen_lang_files.py $(GEN_DIR)/lang_files.h --lang '$(LANG_FILES)' --new '$(NEW_FILES)' --table src/main/file_table_us.c >&2)
++$(shell mkdir -p $(GEN_DIR); python3 tools/gen_file_table.py $(GEN_DIR)/file_table_new.h --new '$(NEW_FILES)' --lang '$(LANG_FILES)')
++$(shell python3 tools/gen_lang_files.py $(GEN_DIR)/lang_files.h --lang '$(LANG_FILES)' --new '$(NEW_FILES)' --table src/main/file_table_us.c --slot $(GEN_DIR)/lang_slot.h >&2)
+ 
+ # MOD (version): the release's version the title screen and the title menu show in a corner ("v0.1.0"; the project's
+ # tools/version.py, given by its tools/build-full.sh). Digits, letters and . + - only, at most 31 characters; empty by
+diff --git a/include/dw/file_table.h b/include/dw/file_table.h
+index 1bda877..8643641 100644
+--- a/include/dw/file_table.h
++++ b/include/dw/file_table.h
+@@ -31,6 +31,11 @@ extern FileEntry FILE_OFFSET_TABLE[];
+ int32_t fileEntryIs(FileEntry *entry, char *name);
+ uint32_t fileNameHash(char *name);
+ FileEntry *findFileEntry(char *name);
+-extern const int16_t FILE_TABLE_NEW_FIRST; /* MOD (language): the first of the new files (NEW_FILES) */
++/* MOD (language): the language file slot, the last rows before the table's end (file_table_us.c) */
++typedef struct {
++	FileEntry *entries;
++	uint32_t count;
++} LangSlot;
++extern const LangSlot LANG_SLOT;
+ 
+ #endif
+diff --git a/src/main/file_table_us.c b/src/main/file_table_us.c
+index e8e1cae..8427fac 100644
+--- a/src/main/file_table_us.c
++++ b/src/main/file_table_us.c
+@@ -1,4 +1,5 @@
+ #include <dw/file_table.h>
++#include <dw/lang.h>
+ #include <dw/mod_font.h>
+ 
+ #include <dw/atan_lookup_table.h>
+@@ -853,12 +854,20 @@ FileEntry FILE_OFFSET_TABLE[] = {
+ 	 * entry above, so the original names resolve as before; build-disc.py --relayout writes their sectors.
+ 	 */
+ #include <file_table_new.h>
++	/*
++	 * MOD (language): the language file slot, the active language's copies (LANG_FILES of the Makefile: its files,
++	 * its maps with translated signs), LANG_SLOT_MAX rows, the largest language's count; a smaller language's end
++	 * with empty rows (a zero size, where findFileEntry stops). Built with the build language's rows; every other
++	 * language's LANGxx.BIN writes its own over them when it is set (tools/langpatch.py makes the slot one run,
++	 * the disc writer gives the rows their sectors), so only one language's copies are ever resident.
++	 */
++#define LANG_SLOT_ROWS
++#include <lang_slot.h>
+ 	{ 0x00000000, 0x00000000, 0x000000 }, /* { 0x00000000, 0x00000000, "NULL" } */
+ };
+ 
+-/* MOD (language): the first of the new files' entries (lang_files.h names the copies by their place among them) */
+-#include <file_table_count.h>
+-const int16_t FILE_TABLE_NEW_FIRST = sizeof(FILE_OFFSET_TABLE) / sizeof(FileEntry) - 1 - NUM_NEW_FILES;
++/* MOD (language): where the slot starts (lang_files.h names the copies by their row in it; the tools find it here) */
++const LangSlot LANG_SLOT = { &FILE_OFFSET_TABLE[sizeof(FILE_OFFSET_TABLE) / sizeof(FileEntry) - 1 - LANG_SLOT_MAX], LANG_SLOT_MAX };
+ // clang-format on
+ 
+ #include <dw/sin_lookup_table.h>
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index a3dbb19..b250097 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -347,13 +347,14 @@ int32_t modFileOnDisc(char *name)
+  * MOD (language): a file's copy in the language, and a map background's (.TFS, and the .MAP whose sprites cover a sign)
+  * with its signs translated (the Spanish copy also has them in Spanish; MAP SIGNS ORIGINAL reads the disc's .TFS), from
+  * the table tools/build-full.sh writes (LANG_FILES: the name, its Spanish copy, its copy with English signs); the file
+- * itself when the disc has no such copy. A row is the name's FNV-1a hash and the copies' places among the new files
+- * (tools/gen_lang_files.py, which refuses a hash two names of the disc share): the names are FILE_OFFSET_TABLE's.
++ * itself when the disc has no such copy. A row is the name's FNV-1a hash and the copies' rows in the language file
++ * slot (LANG_SLOT, file_table_us.c: the active language's copies, written with the language), from
++ * tools/gen_lang_files.py, which refuses a hash two names of the disc share.
+  */
+ typedef struct __attribute__((packed)) {
+ 	uint32_t hash : 24;
+ 	uint16_t copy;
+-	uint16_t original; /* Spanish, English signs: a place after FILE_TABLE_NEW_FIRST, 0xFFFF none */
++	uint16_t original; /* Spanish, English signs: a row of LANG_SLOT, 0xFFFF none */
+ } LangFileRow;
+ _Static_assert(sizeof(LangFileRow) == 7, "language routes use seven bytes");
+ 
+@@ -384,14 +385,14 @@ char *modLangFile(char *name)
+ 			return name;
+ 		}
+ 		copy = !MOD_OPT_STORY && row->original != 0xFFFF ? row->original : row->copy;
+-		if (copy == 0xFFFF || (!tfs && MOD_LANG == MOD_LANG_EN)) {
++		if (copy == 0xFFFF || (uint32_t)copy >= LANG_SLOT.count || (!tfs && MOD_LANG == MOD_LANG_EN)) {
+ 			return name;
+ 		}
+-        key = FILE_OFFSET_TABLE[FILE_TABLE_NEW_FIRST + copy].nameHash;
++        key = LANG_SLOT.entries[copy].nameHash;
+         MOD_LANG_NAME[0] = '@';
+         for (digit = 0; digit < 8; digit++) MOD_LANG_NAME[digit+1] = "0123456789ABCDEF"[(key >> (28-digit*4)) & 15];
+         MOD_LANG_NAME[9] = 0;
+-		return FILE_OFFSET_TABLE[FILE_TABLE_NEW_FIRST + copy].sector != 0 ? MOD_LANG_NAME : name;
++		return LANG_SLOT.entries[copy].sector != 0 ? MOD_LANG_NAME : name;
+ 	}
+ 	return name;
+ }
+diff --git a/tools/gen_file_table.py b/tools/gen_file_table.py
+index 87921b7..c58eced 100644
+--- a/tools/gen_file_table.py
++++ b/tools/gen_file_table.py
+@@ -1,7 +1,11 @@
+-"""Compact FileEntry rows; actual sectors and sizes are filled by the disc writer."""
++"""Compact FileEntry rows; actual sectors and sizes are filled by the disc writer.
++
++The languages' copies (--lang, LANG_FILES) are left out: each language's are rows of its language file slot
++(gen_lang_files.py --slot, file_table_us.c LANG_SLOT), written in when the language is set."""
+ import argparse,pathlib
+-from gen_lang_files import fnv1a
+-parser=argparse.ArgumentParser();parser.add_argument('output');parser.add_argument('--new',default='');args=parser.parse_args()
+-text=''.join('{ 0, 0x800, 0x%08X }, /* %s */\n'%(fnv1a(name),name) for name in args.new.split())
++from gen_lang_files import fnv1a, copies
++parser=argparse.ArgumentParser();parser.add_argument('output');parser.add_argument('--new',default='');parser.add_argument('--lang',default='');args=parser.parse_args()
++new=args.new.split();slot=copies(args.lang,new)
++text=''.join('{ 0, 0x800, 0x%08X }, /* %s */\n'%(fnv1a(name),name) for name in new if name not in slot)
+ p=pathlib.Path(args.output)
+ if not p.exists() or p.read_text()!=text:p.write_text(text)
+diff --git a/tools/gen_lang_files.py b/tools/gen_lang_files.py
+index c4e1a7b..59e0020 100644
+--- a/tools/gen_lang_files.py
++++ b/tools/gen_lang_files.py
+@@ -1,16 +1,23 @@
+ #!/usr/bin/env python3
+-"""Generate active-language file routes for modLangFile.
++"""Generate active-language file routes for modLangFile, and the language file slot.
+ 
+ Each language has identical row layout: a 24-bit collision-checked FNV key in
+ a packed three-byte field, a u16 copy index and a u16 original-story index (0xFFFF when absent).
+-LANGxx.BIN patches just the active language's seven-byte rows. All filenames
+-in the original table and NEW_FILES must have distinct nonzero keys.
++The indices are rows of the language file slot (file_table_us.c LANG_SLOT), the last rows of FILE_OFFSET_TABLE:
++each language's copies (its group) are not resident in the table but written there with the rest of the
++language when it is set (LANGxx.BIN; tools/langpatch.py writes the slot as one run, tools/isowriter.py
++rewrite_lang_slot gives its rows their sectors when the disc is laid out). The slot is as long as the
++largest group; a shorter group ends with empty rows. LANGxx.BIN patches just the active language's
++seven-byte route rows and its slot rows. All filenames in the original table and NEW_FILES must have
++distinct nonzero keys.
+ 
+   gen_lang_files.py OUT.h --lang "NAME:ES:EN[:PT:FR:DE:IT:JA:CA] ..."
+-                         --new "NAME ..." --table src/main/file_table_us.c
++                         --new "NAME ..." --table src/main/file_table_us.c [--slot SLOT.h]
+ """
+ import argparse, os, re, sys
+ 
++LANGS = 9   # en es pt-br fr de it ja ca zh-hans (MOD_LANG_*); zh-hans reads its copies from its container
++
+ 
+ def fnv1a(name):
+     h = 0x811C9DC5
+@@ -19,15 +26,51 @@ def fnv1a(name):
+     return h & 0xFFFFFF
+ 
+ 
++def groups(lang, new):
++    """-> (rows, slots): per language, [(key, copy, original)] (copy and original names or None) and the ordered
++    names of its slot (its copies and their original-story copies, '_' for the first letter, when in NEW_FILES)"""
++    new = set(new)
++    rows = [[] for _ in range(LANGS)]
++    slots = [[] for _ in range(LANGS)]
++    for spec in lang.split():
++        parts = spec.split(':')
++        if not 3 <= len(parts) <= 9:
++            sys.exit(f'gen_lang_files: expected NAME:ES:EN[:PT:FR:DE:IT:JA:CA], got {spec}')
++        key = parts[0]
++        copies = parts[1:] + ['-'] * (9 - len(parts))
++        for c in copies:
++            if c != '-' and c not in new:
++                sys.exit(f'gen_lang_files: {c} (a copy of {key}) is not in NEW_FILES')
++        for lang_ in range(LANGS):
++            c = copies[1 if lang_ == 0 else 0 if lang_ == 1 else lang_] if lang_ < 8 else '-'
++            c = None if c == '-' else c
++            o = '_' + c[1:] if c and '_' + c[1:] in new else None
++            for n in (c, o):
++                if n and n not in slots[lang_]:
++                    slots[lang_].append(n)
++            rows[lang_].append((key, c, o))
++    return rows, slots
++
++
++def copies(lang, new):
++    """every name some language's slot holds: none of them is a resident row of FILE_OFFSET_TABLE"""
++    return {n for s in groups(lang, new)[1] for n in s}
++
++
++def write(path, text):
++    if not os.path.exists(path) or open(path).read() != text:
++        open(path, 'w').write(text)
++
++
+ def main():
+     ap = argparse.ArgumentParser()
+     ap.add_argument('out')
+     ap.add_argument('--lang', default='')
+     ap.add_argument('--new', default='')
+     ap.add_argument('--table', required=True)
++    ap.add_argument('--slot', help='the slot rows of each language build and LANG_SLOT_MAX (file_table_us.c)')
+     a = ap.parse_args()
+     new = a.new.split()
+-    where = {n: i for i, n in enumerate(new)}
+     names = set(re.findall(r'"([A-Z0-9_]+\.[A-Z0-9_]+)"', open(a.table).read())) | set(new)
+     hashes = {}
+     for n in names:
+@@ -35,30 +78,29 @@ def main():
+     for value, group in hashes.items():
+         if value == 0 or len(group) > 1:
+             sys.exit(f'gen_lang_files: ambiguous filename hash {value:08X}: {sorted(group)}')
+-    rows = [[] for _ in range(9)]
+-    for spec in a.lang.split():
+-        parts = spec.split(':')
+-        if not 3 <= len(parts) <= 9:
+-            sys.exit(f'gen_lang_files: expected NAME:ES:EN[:PT:FR:DE:IT:JA:CA], got {spec}')
+-        key = parts[0]
+-        copies = parts[1:] + ['-'] * (9 - len(parts))
+-        if len(hashes.get(fnv1a(key), ())) > 1:
+-            sys.exit(f'gen_lang_files: {key} shares its hash with {sorted(hashes[fnv1a(key)] - {key})}')
+-        idx = []
+-        for c in copies:
+-            if c == '-':
+-                idx.append(0xFFFF)
+-            elif c in where:
+-                idx.append(where[c])
+-            else:
+-                sys.exit(f'gen_lang_files: {c} (a copy of {key}) is not in NEW_FILES')
+-        original = [where.get('_' + c[1:], 0xFFFF) if c != '-' else 0xFFFF for c in copies]
+-        for lang in range(9):
+-            col = 1 if lang == 0 else 0 if lang == 1 else lang
+-            rows[lang].append('{ 0x%08X, %d, %d }, /* %s */' % (fnv1a(key), idx[col] if lang < 8 else 0xFFFF, original[col] if lang < 8 else 0xFFFF, key))
+-    text = ''.join('#if MOD_LANG_BUILD == %d\n%s#endif\n' % (lang, ''.join(r + '\n' for r in table)) for lang, table in enumerate(rows))
+-    if not os.path.exists(a.out) or open(a.out).read() != text:
+-        open(a.out, 'w').write(text)
++    rows, slots = groups(a.lang, new)
++    for row in rows[0]:
++        if len(hashes.get(fnv1a(row[0]), ())) > 1:
++            sys.exit(f'gen_lang_files: {row[0]} shares its hash with {sorted(hashes[fnv1a(row[0])] - {row[0]})}')
++    if slots[8]:
++        sys.exit('gen_lang_files: zh-hans has slot rows: its LANGZH.BIN container cannot have them rewritten')
++    out = []
++    for lang, table in enumerate(rows):
++        place = {n: i for i, n in enumerate(slots[lang])}
++        out.append('#if MOD_LANG_BUILD == %d\n%s#endif\n' % (lang, ''.join(
++            '{ 0x%08X, %d, %d }, /* %s */\n' % (fnv1a(key), place.get(c, 0xFFFF), place.get(o, 0xFFFF), key)
++            for key, c, o in table)))
++    write(a.out, ''.join(out))
++    if a.slot:
++        most = max(len(s) for s in slots)
++        text = ('#define LANG_SLOT_MAX %d\n#ifdef LANG_SLOT_ROWS\n#ifndef MOD_LANG_BUILD\n'
++                '#error "the slot rows need MOD_LANG_BUILD (dw/lang.h)"\n#endif\n' % most)
++        for lang, slot in enumerate(slots):
++            text += '#if MOD_LANG_BUILD == %d\n' % lang
++            text += ''.join('\t{ 0, 0x800, 0x%06X }, /* %s */\n' % (fnv1a(n), n) for n in slot)
++            text += '\t{ 0, 0, 0 },\n' * (most - len(slot))
++            text += '#endif\n'
++        write(a.slot, text + '#endif\n')
+ 
+ 
+ if __name__ == '__main__':
+-- 
+2.55.0
+

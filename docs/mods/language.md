@@ -50,6 +50,10 @@ breaks between glyphs and preserves references without inserting word spaces.
 
 The sector table uses hashed names with a version marker and collision checks,
 keeping eight languages within the original 2 MB PlayStation memory budget.
+Only the active language's file copies (its translated maps and signs) are rows of
+the table: the table's last rows are a language file slot that each `LANGxx.BIN`
+writes along with the language's strings, and the disc writers (`tools/build-disc.py`,
+the patchers' `build_disc3`) give those rows their sectors inside every `LANGxx.BIN`.
 The font's compressed storage preserves glyph pixels and widths.
 
 ## Fonts and checks

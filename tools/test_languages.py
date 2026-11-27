@@ -253,6 +253,50 @@ class Languages(unittest.TestCase):
         self.assertEqual({name:(sector,size) for _,sector,size,name in entries},where)
         self.assertEqual(struct.unpack_from('<III',data), (0x48465744,0x00010001,0))
 
+    def test_language_file_slot_is_one_run_with_each_layouts_sectors(self):
+        from tools import isowriter
+        from tools.langpatch import lang_slot
+        base, slot = 0x80090000, 0x80090818
+        row = lambda name: ((0x800 << 19).to_bytes(5, 'little')
+                            + (isowriter.filename_hash(name) & 0xFFFFFF).to_bytes(3, 'little'))
+        groups = [['LE001.TFS'], ['LC001.TFS', '_C001.TFS'], []]   # English, Spanish, an empty slot (Chinese)
+        images = []
+        for group in groups:
+            image = bytearray(0x800 + 48)
+            struct.pack_into('<II', image, 0x828, slot, 2)          # the LANG_SLOT descriptor
+            for i, name in enumerate(group):
+                image[0x818 + 8 * i:0x820 + 8 * i] = row(name)
+            images.append(bytes(image))
+        self.assertEqual(lang_slot({'LANG_SLOT': (base + 0x828,)}, images[0], base), (slot, 16))
+        names = [n for g in groups for n in g]
+        targets = all_language_runs(images, base, force=[(slot, 16)])
+        for layout in range(2):                                     # the USA disc's layout, another base's
+            where = {name: (300 + 7 * layout + i, 5000 + 64 * i) for i, name in enumerate(names)}
+            with tempfile.TemporaryDirectory() as tmp:
+                for target, spans in zip(groups, targets):
+                    path = pathlib.Path(tmp) / 'LANG.BIN'
+                    write_patch(spans, path)
+                    patch = bytearray(path.read_bytes())
+                    got = isowriter.rewrite_lang_slot(patch, (slot, 2), where)
+                    self.assertEqual(got, (len(target), len(target), set(target)))
+                    for source in images:                           # from any language
+                        ram = bytearray(source)
+                        for at, address, length in isowriter.lang_patch_runs(patch):
+                            ram[address - base:address - base + length] = patch[at:at + length]
+                        for i in range(2):
+                            packed = int.from_bytes(ram[0x818 + 8 * i:0x820 + 8 * i], 'little')
+                            want = 0                                # findFileEntry stops at a zero size
+                            if i < len(target):
+                                lba, size = where[target[i]]
+                                want = (lba | isowriter.file_size_code(size) << 19
+                                        | (isowriter.filename_hash(target[i]) & 0xFFFFFF) << 40)
+                            self.assertEqual(packed, want)
+        with tempfile.TemporaryDirectory() as tmp:                  # a slot split over two runs is refused
+            path = pathlib.Path(tmp) / 'LANG.BIN'
+            write_patch([(slot, row('LC001.TFS')[:6]), (slot + 8, row('_C001.TFS'))], path)
+            with self.assertRaises(ValueError):
+                isowriter.rewrite_lang_slot(bytearray(path.read_bytes()), (slot, 2), where)
+
     def test_new_languages_cover_spanish_and_preserve_runtime_references(self):
         sources = list((ROOT / 'text/es/dialogue').glob('*.json'))
         sources += [ROOT / 'text/es.json']

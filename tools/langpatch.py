@@ -131,11 +131,26 @@ def write_patch(spans, out):
     return len(body)
 
 
-def all_language_runs(images, base, gap=8):
+def lang_slot(symbols, image, base):
+    """(address, bytes) of the language file slot (file_table_us.c LANG_SLOT: {FileEntry *entries; u32 count}), the
+    last rows of FILE_OFFSET_TABLE that hold the active language's copies, or None in an executable without one"""
+    if 'LANG_SLOT' not in symbols:
+        return None
+    at = symbols['LANG_SLOT'][0] - base
+    address, count = struct.unpack_from('<II', image, at)
+    if count and not (base <= address and address + 8 * count <= base + len(image)):
+        raise ValueError(f'LANG_SLOT points outside the executable (0x{address:08X}, {count} rows)')
+    return (address, 8 * count) if count else None
+
+
+def all_language_runs(images, base, gap=8, force=()):
     """Target spans over the UNION of all differences, for arbitrary A -> B switches.
 
     A byte equal in English and Spanish can still differ in Portuguese. Every target
     must write it back; pairwise patches relative to English would leave it stale.
+    force: (address, length) spans every target writes whole even where the images agree: the language file slot,
+    whose sectors and sizes are the same placeholder in every build and are written after the disc is laid out
+    (tools/isowriter.py rewrite_lang_slot needs the slot as one run).
     """
     if not images or any(len(im) != len(images[0]) for im in images):
         raise ValueError('language executable images must have the same size')
@@ -144,6 +159,10 @@ def all_language_runs(images, base, gap=8):
     for i, byte in enumerate(reference):
         if any(im[i] != byte for im in images[1:]):
             changed[i] ^= 0xFF
+    for address, length in force:
+        for i in range(address - base, address - base + length):
+            if changed[i] == reference[i]:
+                changed[i] ^= 0xFF
     spans = runs(reference, changed, base, gap)
     return [[(addr, im[addr - base:addr - base + len(data)]) for addr, data in spans] for im in images]
 
@@ -168,7 +187,10 @@ def multi(specs, out):
         sys.exit('need at least two language images with the same load address')
     for syms in symbols[1:]:
         check_layout(symbols[0], syms)
-    targets = all_language_runs(images, bases[0])
+    slot = lang_slot(symbols[0], images[0], bases[0])
+    if any(lang_slot(syms, im, bases[0]) != slot for syms, im in zip(symbols[1:], images[1:])):
+        sys.exit('the language builds disagree on LANG_SLOT')
+    targets = all_language_runs(images, bases[0], force=[slot] if slot else ())
     os.makedirs(out, exist_ok=True)
     for lang, spans in zip(langs, targets):
         check_code(symbols[0], spans)
