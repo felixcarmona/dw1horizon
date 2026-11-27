@@ -1,0 +1,37 @@
+From 9abe07eec1536d458832557d69aca254929f2cf2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 21:32:28 +0000
+Subject: [PATCH] The evolution requirements popup reads a maximum of 0 as 0,
+ not 0+
+
+---
+ src/main/game_menu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 9b872eff..4aea3f05 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -5936,7 +5936,8 @@ static __attribute__((noinline)) void chartCardBuild(int32_t target)
+ 	if (!isMaxCM && r.care <= 0) {
+ 		chartCardLine(CHART_TEXT_MISTAKES_ANY, CHART_NO_VALUE, 1, 1, 0, NULL);
+ 	} else {
+-		chartRange(a, CHART_TEXT_MISTAKES, isMaxCM ? 0 : r.care, r.care);
++		/* a maximum of 0 reads "0", not "0+": drop the '+' */
++		chartRange(a, CHART_TEXT_MISTAKES, isMaxCM ? 0 : r.care, r.care)[(isMaxCM && r.care == 0) ? -1 : 0] = 0;
+ 		chartCardLine(a, PARTNER_PARA.careMistakes, met & EVO_MET_CARE, 1, 0, NULL);
+ 	}
+ 
+@@ -6005,7 +6006,8 @@ static __attribute__((noinline)) void chartCardBuild(int32_t target)
+ 			chartCardLine(a, HAPPINESS_SHOWN(PARTNER_PARA.happiness), PARTNER_PARA.happiness >= r.happiness, 0, 8, NULL);
+ 		}
+ 		if (r.battles != -1) {
+-			chartRange(a, CHART_TEXT_BATTLES, isMaxBattles ? 0 : r.battles, r.battles);
++			/* a maximum of 0 reads "0", not "0+": drop the '+' */
++			chartRange(a, CHART_TEXT_BATTLES, isMaxBattles ? 0 : r.battles, r.battles)[(isMaxBattles && r.battles == 0) ? -1 : 0] = 0;
+ 			chartCardLine(a, PARTNER_PARA.battles,
+ 			              isMaxBattles ? PARTNER_PARA.battles <= r.battles : PARTNER_PARA.battles >= r.battles, 0, 8,
+ 			              NULL);
+-- 
+2.55.0
+
