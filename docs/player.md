@@ -62,7 +62,7 @@ fetched by CMake at a pinned hash and linked statically.
 
 Test flags: `--windowed` (the default; kept for old launchers), `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
 `--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option),
-`--touch` (the touch pad from the start), `--first-start` (ask touch, controller or keyboard again), `--ask-card` (the new install's IMPORT / NEW GAME
+`--touch` (the touch pad from the start), `--ask-card` (the new install's IMPORT / NEW GAME
 question), `--window WxH` (a window
 of that size), `--no-fast-start`.
 `HORIZON_PLAY_DEBUG=1` prints the core's log. The saves folder also gets `horizon-play.log` (the core's log, the
@@ -83,7 +83,7 @@ button is Cross on every pad, a Nintendo-layout one too. The left stick also mov
 controller (USB 2022:3001), whose buttons SDL reports swapped, gets its own defaults until `controls.txt` has `pad`
 lines. Any other joystick works too, read raw: buttons 0-3 Triangle, Circle, Cross, Square, 4-7 L2, R2, L1, R1, 8-9 SELECT, START, the first hat and the
 first two axes as the D-pad. The first time such a joystick is connected, the button setup below opens by itself
-(after the first start's question) to fit it to its own layout; once set, `joy device=` in `controls.txt` keeps its
+to fit it to its own layout; once set, `joy device=` in `controls.txt` keeps its
 SDL GUID and it is not asked about again. A phone's tilt sensor is not taken for a joystick.
 
 **The menu:** SELECT and START pressed together, at any moment (neither reaches the game), the round button at the
@@ -91,7 +91,7 @@ top of the touch pad, or on a computer Escape or a right click (F11 or Alt+Enter
 or the pad's arrows with Cross, Circle or START choose, Triangle (or Escape) goes back:
 
 - ▶ back to the game.
-- 🎮⌨️ the controls: two cards, as at the first start. There is no touch card: a tap anywhere (or a left click on a
+- 🎮⌨️ the controls: two cards. There is no touch card: a tap anywhere (or a left click on a
   computer) shows the touch pad.
   - **CONTROLLER**: ✔ keep its buttons, or ✎ set them (below).
   - **KEYBOARD**: a drawn PlayStation controller with the key of each of its 14 buttons beside it, and under it the
@@ -136,9 +136,10 @@ as soon as it has been loaded, on QUIT and when a memory card is imported, so an
 newer save. Its header ties it to this program's version and this disc's size, and the memory card stays the one on
 file (the snapshot's copy of the card is not used). `--suspend-at N` keeps it at frame N and ends, as Android would.
 
-**The first start** asks CONTROLLER or KEYBOARD before the game (`--first-start` asks it again), with the
-same screens as the menu's controls. The
-answer goes to `controls.txt` (`mode pad`; an older `mode touch` still starts with the touch pad shown).
+**The first start** asks nothing about the controls: the keyboard (RetroArch's keys), every controller and the touch
+pad all work at once. On Android the touch pad shows from the start when no controller is connected; elsewhere a tap
+or a click shows it. Choosing CONTROLLER or KEYBOARD in the menu writes `mode pad` to `controls.txt` (an older
+`mode touch` still starts with the touch pad shown).
 
 **Setting the buttons** (✎): the game waits and the drawn PlayStation controller lights each of its buttons in turn
 (the pad's four directions, Cross, Circle, Square, Triangle, L1, R1, L2, R2, SELECT, START): press the key, controller

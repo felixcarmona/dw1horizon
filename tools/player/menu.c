@@ -2,7 +2,7 @@
  * and show big pictures, each with a word in English under it:
  *
  *   play            back to the game
- *   controls        controller or keyboard (as the first start asks; a tap or a click anywhere shows the touch pad):
+ *   controls        controller or keyboard (a tap or a click anywhere shows the touch pad):
  *                     controller  keep the buttons or set them (controls.c)
  *                     keyboard    a PlayStation controller drawn with each button's key, and the layouts RETROARCH,
  *                                 DUCKSTATION, EPSXE (the picture shows the focused one's keys) and CUSTOM: each
@@ -16,7 +16,7 @@
  * When a newer release is out, a screen says so once at start (NEW VERSION V0.0.11 AT DW1HORIZON.COM) with two
  * cards: download (the website opens) and later (back to the game).
  *
- * The first start shows the touch / controller / keyboard question before the game; on Android a new install with no memory
+ * Nothing is asked about the controls before the game. On Android a new install with no memory
  * card first offers to import one (the copy HorizonActivity keeps in Documents) or to start a new game. The pictures
  * are chosen with a tap or the mouse, or with the pad's arrows and Cross, Circle or START; Triangle goes back.
  */
@@ -30,11 +30,11 @@
 
 bool menu_open;
 
-enum { S_RESTORE, S_FIRST, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT, S_SETTINGS, S_SCALE, S_TSIZE, S_TALPHA, S_UPDATE,
+enum { S_RESTORE, S_MAIN, S_PADCHECK, S_CARD, S_WAIT, S_DROP, S_RESULT, S_SETTINGS, S_SCALE, S_TSIZE, S_TALPHA, S_UPDATE,
        S_CONTROLS, S_LAYOUT, S_KEYS };
 static int screen, focus, result_ok, touched = -3;
 static Uint32 result_at;
-static bool first;            /* the first-start question: no way back, the game waits for an answer */
+static bool first;            /* the new install's card question: no way back, the game waits for an answer */
 static bool fire, fire_back;  /* a tap or click to act on in the next frame */
 static int fire_card;
 static int card_screen;   /* where the memory card's screens return to: S_CARD, or S_RESTORE */
@@ -75,7 +75,7 @@ static const Card card_cards[] = {{I_EXPORT, -1, MENU_EXPORT, T_EXPORT}, {I_IMPO
 static const Card *cards(int *n) {
   switch (screen) {
   case S_MAIN: *n = (int)(sizeof main_cards / sizeof *main_cards); return main_cards;
-  case S_FIRST: case S_CONTROLS: *n = 2; return mode_cards;
+  case S_CONTROLS: *n = 2; return mode_cards;
   case S_LAYOUT: *n = 4; return layout_cards;
   case S_PADCHECK: *n = 2; return check_cards;
   case S_CARD: *n = 2; return card_cards;
@@ -126,13 +126,12 @@ void menu_set_scales(const int *scales, int n, int now) {
 
 static void open_at(int s) { menu_open = true; prev = 0xFFFF; fire = fire_back = false; go(s); }
 void menu_show_first(bool ask_card) {
-  first = true; open_at(ask_card ? S_RESTORE : S_FIRST);
+  first = true; open_at(ask_card ? S_RESTORE : S_CONTROLS);
 }
-/* after the new install's card question: the controls question, unless the player already answered it */
+/* after the new install's card question: the game */
 static void after_restore(void) {
   card_screen = S_CARD;
-  if (controls_mode == MODE_UNSET) go(S_FIRST);
-  else { menu_open = false; first = false; }
+  menu_open = false; first = false;
 }
 void menu_show(void) { first = false; card_screen = S_CARD; open_at(S_MAIN); }
 void menu_show_update(void) { first = false; card_screen = S_CARD; open_at(S_UPDATE); }
@@ -146,7 +145,7 @@ void menu_back(void) {
   case S_CONTROLS: go(S_MAIN); break;
   case S_PADCHECK: case S_LAYOUT: {   /* back to the card that was chosen */
     int card = screen == S_LAYOUT ? 1 : 0;
-    go(first ? S_FIRST : S_CONTROLS); focus = card;
+    go(S_CONTROLS); focus = card;
     break;
   }
   case S_KEYS:   /* a key being asked for: not any more; else back to the layouts */
@@ -195,7 +194,7 @@ static void back_rect(int ww, int wh, float *cx, float *cy, float *size) {
   *size = 0.13f * s; *cx = 0.1f * s; *cy = 0.1f * s;
 }
 
-static bool has_back(void) { return screen != S_RESULT && screen != S_WAIT && screen != S_FIRST && screen != S_RESTORE; }
+static bool has_back(void) { return screen != S_RESULT && screen != S_WAIT && screen != S_RESTORE; }
 
 /* which card is at (x, y): its index, -2 for the back arrow, -1 for none */
 static int hit(float x, float y, int ww, int wh) {
@@ -384,7 +383,7 @@ static void frame_box(float cx, float cy, float w, float h, float t, float alpha
 
 void menu_draw(int ww, int wh) {
   float s = S(ww, wh);
-  bool solid = screen == S_FIRST || screen == S_LAYOUT || screen == S_KEYS;
+  bool solid = screen == S_LAYOUT || screen == S_KEYS;
   overlay_quad(I_PANEL, ww / 2.0f, wh / 2.0f, (float)ww, (float)wh, 1, solid ? 0.92f : 0.75f);
   if (screen == S_RESULT) {
     overlay_quad(result_ok ? I_CHECK : I_FAIL, ww / 2.0f, wh * 0.45f, 0.4f * s, 0.4f * s, 1, 1);
