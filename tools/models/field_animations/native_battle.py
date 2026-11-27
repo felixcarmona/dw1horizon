@@ -10,7 +10,10 @@ donor rig with it, tick by tick:
   length); a bone carrying several source pieces takes their weighted mean (weights: the pieces' spread about the
   joint), riders (native_binding `riders`) are bones of their own and follow their lead piece;
 - the bones above the body that carry nothing turn with the source's body bone, the body joint follows the source's
-  body joint (scaled by the ratio of the two hip heights), the root keeps the source's turn and travel;
+  body joint (scaled by the ratio of the two hip heights), the root keeps the source's travel; the source root's turn
+  goes to the root's children (`fold_root_turn`): the engine never resets the root's rotation (startAnimation poses
+  bones 1 on, and the root's rotation is the entity's heading), so a turn keyed on it stays behind whenever a clip is
+  cut short or does not close (DemiDevimon's guard, which the defense gym restarts mid-clip, pitched it into the floor);
 - every other bone keeps its rest rotation; translations are the bound rig's, scale channels its rest ones;
 - the clip is retimed to the length the slot has in the bound model (technique effects are timed to it) as
   tools/models/battle_restore.py retimes: idles repeat whole cycles, movements and one-shot clips are resampled.
@@ -249,6 +252,37 @@ def retarget(frames, ctx):
         root = pose[0]
         sample[0] = list(rest[0][0:3]) + [int(v) for v in root[3:6]] + [int(round(v)) for v in root[6:9]]
         out.append(sample)
+    return fold_root_turn(out, rig)
+
+
+def fold_root_turn(samples, rig):
+    """`samples` with the root's rotation held at its first tick's and every later change of it carried by the
+    root's children instead (their rotation turned by it, their joint moved with it), so the pose looks the same and no
+    rotation of the root is keyed: the engine plays the root's rotation as a change of the entity's own heading and
+    never sets it back."""
+    first = [int(v) for v in samples[0][0][3:6]] if samples else []
+    if all([int(v) for v in pose[0][3:6]] == first for pose in samples):
+        return samples
+    children = [b for b in range(1, len(rig)) if rig[b][1] == 0]
+    prev = {b: None for b in children}
+    out = []
+    for pose in samples:
+        pose = [list(bone) for bone in pose]
+        turn = [int(v) - f for v, f in zip(pose[0][3:6], first)]
+        pose[0][3:6] = first
+        if any(turn):
+            T = mmd.rot_matrix(*turn)
+            scale = [s/4096 for s in pose[0][0:3]]
+            for b in children:
+                e = mmd.matrix_euler(_mul(T, mmd.rot_matrix(*pose[b][3:6])), prev=prev[b] or pose[b][3:6])
+                prev[b] = e
+                pose[b][3:6] = [int(round(v)) for v in e]
+                moved = _apply(T, [t*s for t, s in zip(pose[b][6:9], scale)])
+                pose[b][6:9] = [int(round(m/s)) if s else int(t) for m, s, t in zip(moved, scale, pose[b][6:9])]
+        else:
+            for b in children:
+                prev[b] = pose[b][3:6]
+        out.append(pose)
     return out
 
 
