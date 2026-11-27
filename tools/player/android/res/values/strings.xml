@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Horizon Play</string>
+    <string name="app_name">Digimon World Horizon</string>
     <string name="title">Digimon World: Horizon</string>
     <string name="play">Play</string>
     <string name="choose">Choose the disc (.bin)</string>

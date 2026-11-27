@@ -27,7 +27,8 @@ The program carries no game data. It plays the disc that the patcher builds from
   `./horizon-play DISC.cue` once. With no argument it opens the last disc it played.
 - **Android:** after a build, the desktop patcher's **Android app (.apk)** button writes `<disc>.apk` next to the disc
   (`desktop.make`, `tools/patcher/apk.py`; the template is the release asset `Horizon-Play.apk`, downloaded on demand). It is Horizon Play for Android (`tools/player/android`, arm64,
-  Android 7+) with the built disc added as `assets/horizon.bin`, stored and page aligned. The player copies it to the
+  Android 7+; on the home screen "Digimon World Horizon", as the Mac app and the Windows shortcuts) with the built disc
+  added as `assets/horizon.bin`, stored and page aligned. The player copies it to the
   phone and installs it: the game starts at once, with nothing to choose. The app reads the disc in place, through the
   core's VFS (`--embedded APK OFFSET SIZE`), so the phone keeps one copy. The patcher signs it (APK Signature Scheme
   v2, standard library only) with one shared key, `tools/patcher/android-key.json`, public on purpose: it protects
