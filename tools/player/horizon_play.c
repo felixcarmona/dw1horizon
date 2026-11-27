@@ -32,6 +32,11 @@
 #include "libretro.h"
 #include "overlay.h"
 #include "controls.h"
+#include "menu.h"
+#include <time.h>
+#ifdef __ANDROID__
+#include <jni.h>
+#endif
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -125,6 +130,7 @@ static struct {
   bool (*load_game)(const struct retro_game_info *);
   void (*unload_game)(void);
   void (*run)(void);
+  void (*reset)(void);
   void *(*get_memory_data)(unsigned);
   size_t (*get_memory_size)(unsigned);
 } core;
@@ -147,6 +153,8 @@ static bool quit, paused;
 static const char *screenshot_path;                    /* --screenshot: write the last frame and leave */
 static int run_frames = -1;                            /* --frames N: leave after N frames (tests) */
 static bool fast_start = true;
+static bool force_touch;                                /* --touch: the touch pad from the start */
+static bool first_start;
 static const char *press_script;                       /* --press "frame:button:len,..." (tests) */
 
 #define MAX_OPTIONS 32
@@ -408,8 +416,6 @@ static size_t audio_batch(const int16_t *d, size_t frames) {
 }
 
 /* ---- input ---- */
-static SDL_GameController *pads[4];
-
 static void input_poll(void) {}
 static int16_t input_state(unsigned port, unsigned device, unsigned index, unsigned id) {
   (void)index;
@@ -440,26 +446,25 @@ static void toggle_fullscreen(void) {
 }
 
 static void card_save(void);
+static void card_import(const char *path);
 
 static void handle_events(void) {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
-    { int ww, wh; SDL_GL_GetDrawableSize(window, &ww, &wh); overlay_event(&e, ww, wh); }
+    int ww, wh; SDL_GL_GetDrawableSize(window, &ww, &wh);
+    overlay_event(&e, ww, wh);
+    if (menu_open) menu_event(&e, ww, wh);
     controls_event(&e);
     switch (e.type) {
     case SDL_QUIT: quit = true; break;
     case SDL_KEYDOWN:
       if (e.key.keysym.sym == SDLK_F11 || (e.key.keysym.sym == SDLK_RETURN && (e.key.keysym.mod & KMOD_ALT))) toggle_fullscreen();
+      else if (e.key.keysym.sym == SDLK_ESCAPE && menu_open) menu_back();
       else if (e.key.keysym.sym == SDLK_ESCAPE && (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN)) toggle_fullscreen();
       break;
-    case SDL_CONTROLLERDEVICEADDED:
-      for (int i = 0; i < 4; i++) if (!pads[i]) { pads[i] = SDL_GameControllerOpen(e.cdevice.which); break; }
-      break;
-    case SDL_CONTROLLERDEVICEREMOVED:
-      for (int i = 0; i < 4; i++)
-        if (pads[i] && SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(pads[i])) == e.cdevice.which) {
-          SDL_GameControllerClose(pads[i]); pads[i] = NULL;
-        }
+    case SDL_DROPFILE:   /* a memory card dropped on the window, while the menu waits for one */
+      if (menu_waiting_drop()) card_import(e.drop.file);
+      SDL_free(e.drop.file);
       break;
     case SDL_WINDOWEVENT:
       if (e.window.event == SDL_WINDOWEVENT_MINIMIZED) paused = true;
@@ -504,13 +509,105 @@ static void card_save(void) {
   else SDL_Log("cannot save the memory card %s", card_path);
 }
 
+/* ---- the menu's memory card export and import ---- */
+static bool restart_asked;   /* an imported card: the game starts again to read it */
+
+/* a card from another file: a raw 128 KB PlayStation memory card (.mcd, .mcr, .srm...). The card in use is copied
+ * next to it first (duckstation_shared_card_1.backup-DATE.mcd), then the game starts again to read the new one. */
+static void card_import(const char *path) {
+  uint8_t *data = core.get_memory_data(RETRO_MEMORY_SAVE_RAM);
+  size_t size = core.get_memory_size(RETRO_MEMORY_SAVE_RAM);
+  static uint8_t in[128 * 1024 + 1];
+  size_t got = 0;
+  SDL_RWops *f = SDL_RWFromFile(path, "rb");
+  if (f) { got = SDL_RWread(f, in, 1, sizeof in); SDL_RWclose(f); }
+  if (!data || size != sizeof card_written || got != size || in[0] != 'M' || in[1] != 'C') {
+    SDL_Log("import: %s is not a 128 KB PlayStation memory card", path);
+    menu_result(0);
+    return;
+  }
+  char backup[1300], stamp[32];
+  time_t now = time(NULL);
+  strftime(stamp, sizeof stamp, "%Y%m%d-%H%M%S", localtime(&now));
+  snprintf(backup, sizeof backup, "%s/duckstation_shared_card_1.backup-%s.mcd", save_dir, stamp);
+  SDL_RWops *b = SDL_RWFromFile(backup, "wb");
+  bool ok = b && SDL_RWwrite(b, data, 1, size) == size;
+  if (b) ok = SDL_RWclose(b) == 0 && ok;
+  if (!ok) { SDL_Log("import: cannot write the backup %s", backup); menu_result(0); return; }
+  memcpy(data, in, size);
+  card_save();
+  SDL_Log("import: %s is the memory card now; the old one is in %s", path, backup);
+  restart_asked = true;
+  menu_result(1);
+}
+
+#ifdef __ANDROID__
+/* HorizonActivity.pickCard opens Android's file picker; cardResult is 1 done, 2 failed, 3 cancelled */
+static void android_pick(bool export_, const char *card, const char *dest) {
+  JNIEnv *env = (JNIEnv *)SDL_AndroidGetJNIEnv();
+  jobject act = (jobject)SDL_AndroidGetActivity();
+  jclass cls = (*env)->GetObjectClass(env, act);
+  jmethodID m = (*env)->GetMethodID(env, cls, "pickCard", "(ZLjava/lang/String;Ljava/lang/String;)V");
+  jstring a = (*env)->NewStringUTF(env, card), b = (*env)->NewStringUTF(env, dest);
+  if (m) (*env)->CallVoidMethod(env, act, m, (jboolean)export_, a, b);
+  (*env)->DeleteLocalRef(env, a); (*env)->DeleteLocalRef(env, b);
+  (*env)->DeleteLocalRef(env, cls); (*env)->DeleteLocalRef(env, act);
+}
+
+static int android_pick_result(void) {
+  JNIEnv *env = (JNIEnv *)SDL_AndroidGetJNIEnv();
+  jobject act = (jobject)SDL_AndroidGetActivity();
+  jclass cls = (*env)->GetObjectClass(env, act);
+  jfieldID f = (*env)->GetStaticFieldID(env, cls, "cardResult", "I");
+  int r = f ? (*env)->GetStaticIntField(env, cls, f) : 2;
+  (*env)->DeleteLocalRef(env, cls); (*env)->DeleteLocalRef(env, act);
+  return r;
+}
+#endif
+
+static int card_waiting;   /* (Android) the picker is open: MENU_EXPORT or MENU_IMPORT */
+
+static void card_action(int action) {
+  char import_path[1300];
+  snprintf(import_path, sizeof import_path, "%s/import.mcd", save_dir);
+  card_save();
+#ifdef __ANDROID__
+  android_pick(action == MENU_EXPORT, card_path, import_path);
+  card_waiting = action;
+#else
+  (void)import_path;
+  if (action == MENU_EXPORT) {   /* the save folder, opened in the file manager: the card is the .mcd file there */
+    char url[1300];
+    snprintf(url, sizeof url, "file:///%s", save_dir[0] == '/' ? save_dir + 1 : save_dir);
+    menu_result(SDL_OpenURL(url) == 0 ? 1 : 0);
+  }
+#endif
+}
+
+static void card_poll(void) {
+#ifdef __ANDROID__
+  if (!card_waiting) return;
+  int r = android_pick_result();
+  if (!r) return;
+  int action = card_waiting;
+  card_waiting = 0;
+  if (r == 3) { menu_result(-1); return; }
+  if (r != 1) { menu_result(0); return; }
+  if (action == MENU_EXPORT) { menu_result(1); return; }
+  char import_path[1300];
+  snprintf(import_path, sizeof import_path, "%s/import.mcd", save_dir);
+  card_import(import_path);
+  remove(import_path);
+#endif
+}
+
 static bool load_core(const char *path) {
   core.lib = SDL_LoadObject(path);
   if (!core.lib) { SDL_Log("cannot load the core %s: %s", path, SDL_GetError()); return false; }
 #define F(n) if (!(*(void **)&core.n = SDL_LoadFunction(core.lib, "retro_" #n))) { SDL_Log("core lacks retro_%s", #n); return false; }
   F(set_environment) F(set_video_refresh) F(set_audio_sample) F(set_audio_sample_batch) F(set_input_poll)
   F(set_input_state) F(init) F(deinit) F(get_system_av_info) F(set_controller_port_device) F(load_game)
-  F(unload_game) F(run) F(get_memory_data) F(get_memory_size)
+  F(unload_game) F(run) F(reset) F(get_memory_data) F(get_memory_size)
 #undef F
   return true;
 }
@@ -529,7 +626,8 @@ int main(int argc, char **argv) {
       windowed = sscanf(argv[++i], "%dx%d", &force_w, &force_h) == 2;
     }
     else if (!strcmp(argv[i], "--no-disc")) no_disc = true;               /* the BIOS alone (a smoke test) */
-    else if (!strcmp(argv[i], "--touch")) touch_shown = true;             /* the touch pad from the start */
+    else if (!strcmp(argv[i], "--touch")) force_touch = true;            /* the touch pad from the start */
+    else if (!strcmp(argv[i], "--first-start")) first_start = true;      /* the first start's question, in tests too */
     else if (!strcmp(argv[i], "--no-fast-start")) fast_start = false;     /* the start at the console's own pace */
     else if (!strcmp(argv[i], "--scale") && i + 1 < argc) scale = atoi(argv[++i]);
     else if (!strcmp(argv[i], "--core") && i + 1 < argc) core_path = argv[++i];
@@ -704,8 +802,10 @@ int main(int argc, char **argv) {
   audio_dev = SDL_OpenAudioDevice(NULL, 0, &want, &got, 0);
   if (audio_dev) SDL_PauseAudioDevice(audio_dev, 0);
 
-  for (int i = 0; i < SDL_NumJoysticks(); i++)
-    if (SDL_IsGameController(i)) for (int p = 0; p < 4; p++) if (!pads[p]) { pads[p] = SDL_GameControllerOpen(i); break; }
+  controls_open_all();
+  /* the first start asks touch or controller (not in tests); the answer decides whether the touch pad shows */
+  if (first_start || (controls_mode == MODE_UNSET && run_frames < 0 && !press_script)) menu_show_first();
+  touch_shown = force_touch || controls_mode == MODE_TOUCH;
 
   const Uint32 bytes_per_sec = (Uint32)want.freq * 4;
   int frame = 0;
@@ -714,36 +814,37 @@ int main(int argc, char **argv) {
   booting = fast_start && run_frames < 0;
   Uint32 boot_ms = SDL_GetTicks();
   if (booting) SDL_GL_SetSwapInterval(0);
+  int boot_frame = 0;
   while (!quit) {
     handle_events();
     if (paused) { SDL_Delay(50); continue; }
-    uint16_t bits = controls_keyboard_bits();
-    for (int i = 0; i < 4; i++) if (pads[i]) bits |= controls_pad_bits(pads[i]);
-    bits |= (uint16_t)scripted_bits(frame);
-    bits = controls_frame(bits, bits != 0);
-    if (remap_step >= 0) {   /* the game waits under the setup */
-      pad_bits = 0; frame++;
-      if (booting) {
-      if ((frame >= 400 && frame % 4 == 0 && picture_lit()) || frame >= 3000) {
-        booting = false;
-        SDL_GL_SetSwapInterval(1);
-        SDL_Log("started: the first picture at frame %d, after %u ms", frame, SDL_GetTicks() - boot_ms);
-      } else {
-        if (frame % 20 == 0) present(false);   /* the window stays alive (and the touch pad drawn) */
-        continue;
+    uint16_t bits = controls_bits() | (uint16_t)scripted_bits(frame);
+    bits = controls_frame(bits);
+    if ((controls_menu_asked || overlay_menu_tapped) && !menu_open && remap_step < 0) menu_show();
+    controls_menu_asked = overlay_menu_tapped = false;
+    if (menu_open || remap_step >= 0) {   /* the game waits under the menu and the button setup */
+      if (menu_open) {
+        int a = menu_frame(bits);
+        if (a == MENU_QUIT) quit = true;
+        else if (a == MENU_TOUCH) { controls_set_mode(MODE_TOUCH); touch_shown = true; }
+        else if (a == MENU_PAD) { controls_set_mode(MODE_PAD); touch_shown = false; }
+        else if (a == MENU_SETUP) controls_setup_start();
+        else if (a == MENU_EXPORT || a == MENU_IMPORT) card_action(a);
+        card_poll();
       }
-    }
-    present(run_frames >= 0 && frame >= run_frames);
+      pad_bits = 0;
+      if (run_frames >= 0) frame++;   /* (tests: the scripted presses go on) */
+      present(run_frames >= 0 && frame >= run_frames);
       if (run_frames >= 0 && frame >= run_frames) break;
+      if (booting) SDL_Delay(15);   /* (no vsync while booting) */
       continue;
     }
-#ifdef __ANDROID__
-    if (frame == 30) {   /* a phone with no controller: the touch pad, until a pad or a key is pressed */
-      bool any = false;
-      for (int i = 0; i < 4; i++) if (pads[i]) any = true;
-      if (!any) touch_shown = true;
+    if (restart_asked) {   /* a new memory card: the game starts again, fast, to read it */
+      restart_asked = false;
+      core.reset();
+      booting = fast_start; boot_frame = frame; boot_ms = SDL_GetTicks();
+      if (booting) SDL_GL_SetSwapInterval(0);
     }
-#endif
     { int ww, wh; SDL_GL_GetDrawableSize(window, &ww, &wh); bits |= overlay_touch_bits(ww, wh); }
     pad_bits = bits;
     core.run();
@@ -756,12 +857,13 @@ int main(int argc, char **argv) {
       since = now;
     }
     if (booting) {
-      if ((frame >= 400 && frame % 4 == 0 && picture_lit()) || frame >= 3000) {
+      int f = frame - boot_frame;
+      if ((f >= 400 && f % 4 == 0 && picture_lit()) || f >= 3000) {
         booting = false;
         SDL_GL_SetSwapInterval(1);
-        SDL_Log("started: the first picture at frame %d, after %u ms", frame, SDL_GetTicks() - boot_ms);
+        SDL_Log("started: the first picture at frame %d, after %u ms", f, SDL_GetTicks() - boot_ms);
       } else {
-        if (frame % 20 == 0) present(false);   /* the window stays alive (and the touch pad drawn) */
+        if (f % 20 == 0) present(false);   /* the window stays alive (and the touch pad drawn) */
         continue;
       }
     }

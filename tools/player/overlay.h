@@ -1,13 +1,21 @@
-/* Horizon Play's drawing over the game: the touch pad (overlay.c). */
-#ifndef HORIZON_OVERLAY_H
-#define HORIZON_OVERLAY_H
+/* Horizon Play's own drawing over the game: the touch pad, the button setup and the menu (overlay.c, menu.c). */
+#pragma once
 #include <SDL.h>
 #include <stdbool.h>
 #include <stdint.h>
 
-extern bool touch_shown;                       /* the touch pad is on screen */
-bool overlay_init(void);                       /* after the GL context is made; false: no overlay */
+extern bool touch_shown;            /* the touch pad is on screen */
+extern bool overlay_menu_tapped;    /* the touch pad's menu button was tapped */
+
+/* the pictures, drawn at start into one texture */
+enum { I_TRI, I_CIRCLE, I_CROSS, I_SQUARE, I_UP, I_DOWN, I_LEFT, I_RIGHT, I_DPAD,
+       I_L1, I_L2, I_R1, I_R2, I_SELECT, I_START, I_PANEL, I_DOT, I_WHITE, I_MENU,
+       I_PLAY, I_GAMEPAD, I_CARD, I_POWER, I_TOUCH, I_KEYBOARD, I_CHECK, I_FAIL, I_PENCIL, I_EXPORT, I_IMPORT,
+       I_BACK, I_DROP, I_COUNT };
+
+bool overlay_init(void);
 void overlay_event(const SDL_Event *e, int ww, int wh);
-uint16_t overlay_touch_bits(int ww, int wh);   /* libretro joypad bits the fingers hold now */
-void overlay_draw(int ww, int wh);             /* over the picture, before the swap */
-#endif
+uint16_t overlay_touch_bits(int ww, int wh);
+void overlay_draw(int ww, int wh);
+/* one picture centred at (cx, cy), w x h pixels, for the menu */
+void overlay_quad(int icon, float cx, float cy, float w, float h, float bright, float alpha);

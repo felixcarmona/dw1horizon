@@ -1,10 +1,11 @@
-/* Horizon Play's own drawing over the game (docs/player.md): the touch pad for phones with no controller, and the
- * prompts of the button setup. Everything is drawn at start into one texture (shapes from distance functions, a 5x7
+/* Horizon Play's own drawing over the game (docs/player.md): the touch pad, the prompts of the button setup and the
+ * pictures of the menu (menu.c). Everything is drawn at start into one texture (shapes from distance functions, a 5x7
  * font), then each frame as quads with one small shader. The core keeps its own GL state cached, so every piece of
  * state touched here is put back as it was. MIT, like the rest of Horizon's code.
  */
 #include "overlay.h"
 #include "controls.h"
+#include "menu.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -80,15 +81,19 @@ static bool ready;
 static uint8_t *pix;
 
 typedef struct { int x, y, w, h; } Cell;
-enum { I_TRI, I_CIRCLE, I_CROSS, I_SQUARE, I_UP, I_DOWN, I_LEFT, I_RIGHT, I_DPAD,
-       I_L1, I_L2, I_R1, I_R2, I_SELECT, I_START, I_PANEL, I_DOT, I_WHITE, I_COUNT };
 static Cell cells[I_COUNT] = {
   [I_TRI] = {0, 0, 128, 128}, [I_CIRCLE] = {128, 0, 128, 128}, [I_CROSS] = {256, 0, 128, 128},
   [I_SQUARE] = {384, 0, 128, 128}, [I_UP] = {0, 128, 128, 128}, [I_DOWN] = {128, 128, 128, 128},
   [I_LEFT] = {256, 128, 128, 128}, [I_RIGHT] = {384, 128, 128, 128}, [I_DPAD] = {512, 0, 256, 256},
   [I_L1] = {0, 256, 192, 80}, [I_L2] = {192, 256, 192, 80}, [I_R1] = {384, 256, 192, 80}, [I_R2] = {576, 256, 192, 80},
   [I_SELECT] = {0, 336, 192, 80}, [I_START] = {192, 336, 192, 80}, [I_PANEL] = {768, 0, 64, 64},
-  [I_DOT] = {832, 0, 32, 32}, [I_WHITE] = {872, 8, 16, 16},
+  [I_DOT] = {832, 0, 32, 32}, [I_WHITE] = {872, 8, 16, 16}, [I_MENU] = {768, 96, 128, 128},
+  /* the menu's pictures, 160 x 160 */
+  [I_PLAY] = {0, 416, 160, 160}, [I_GAMEPAD] = {160, 416, 160, 160}, [I_CARD] = {320, 416, 160, 160},
+  [I_POWER] = {480, 416, 160, 160}, [I_TOUCH] = {640, 416, 160, 160}, [I_KEYBOARD] = {800, 416, 160, 160},
+  [I_CHECK] = {0, 576, 160, 160}, [I_FAIL] = {160, 576, 160, 160}, [I_PENCIL] = {320, 576, 160, 160},
+  [I_EXPORT] = {480, 576, 160, 160}, [I_IMPORT] = {640, 576, 160, 160}, [I_BACK] = {800, 576, 160, 160},
+  [I_DROP] = {0, 736, 160, 160},
 };
 
 static float clampf(float v, float lo, float hi) { return v < lo ? lo : v > hi ? hi : v; }
@@ -154,6 +159,62 @@ static float sd_poly_fill(float x, float y, const float *p) {
 }
 /* p: x0 y0 x1 y1 width: one stroke */
 static float sd_seg(float x, float y, const float *p) { return seg(x, y, p[0], p[1], p[2], p[3]) - p[4] / 2; }
+/* p: cx cy r width, the gap's middle angle and half width (radians): a ring with an opening */
+static float sd_arc(float x, float y, const float *p) {
+  float d = atan2f(y - p[1], x - p[0]) - p[4];
+  while (d > 3.1415927f) d -= 6.2831853f;
+  while (d < -3.1415927f) d += 6.2831853f;
+  if (fabsf(d) > p[5]) return fabsf(hypotf(x - p[0], y - p[1]) - p[2]) - p[3] / 2;
+  float e1 = p[4] + p[5], e2 = p[4] - p[5];
+  return fminf(hypotf(x - p[0] - cosf(e1) * p[2], y - p[1] - sinf(e1) * p[2]),
+               hypotf(x - p[0] - cosf(e2) * p[2], y - p[1] - sinf(e2) * p[2])) - p[3] / 2;
+}
+/* p: cx cy: a controller's outline (a body and two grips) */
+static float sd_gamepad(float x, float y, const float *p) {
+  float body[] = {p[0], p[1], 62, 28, 26}, g1[] = {p[0] - 42, p[1] + 20, 22}, g2[] = {p[0] + 42, p[1] + 20, 22};
+  return fabsf(fminf(sd_rbox(x, y, body), fminf(sd_disc(x, y, g1), sd_disc(x, y, g2)))) - 4.5f;
+}
+
+/* strokes of a picture: n segments (x0 y0 x1 y1), all of one width and colour */
+static void strokes(Cell c, const float *v, int n, float w, float r, float gg, float b) {
+  for (int i = 0; i < n; i++) {
+    float s[] = {v[4 * i], v[4 * i + 1], v[4 * i + 2], v[4 * i + 3], w};
+    paint(c, sd_seg, s, r, gg, b, 1);
+  }
+}
+
+static void draw_menu_pictures(void) {
+  const float L = 0.95f;   /* the pictures are near white: the menu tints them */
+  { Cell c = cells[I_PLAY]; float t[] = {3, 56, 38, 56, 122, 124, 80}; paint(c, sd_poly_fill, t, L, L, L, 1); }
+  { Cell c = cells[I_GAMEPAD]; float o[] = {80, 76}; paint(c, sd_gamepad, o, L, L, L, 1);
+    float x[] = {50, 74, 14, 5, 2}; paint(c, sd_cross, x, L, L, L, 1);
+    float b[][3] = {{110, 63, 6}, {110, 85, 6}, {99, 74, 6}, {121, 74, 6}};
+    for (int i = 0; i < 4; i++) paint(c, sd_disc, b[i], L, L, L, 1); }
+  { Cell c = cells[I_CARD]; float o[] = {80, 80, 44, 60, 9, 9}; paint(c, sd_rbox_line, o, L, L, L, 1);
+    float lab[] = {80, 62, 26, 20, 4, 5}; paint(c, sd_rbox_line, lab, L, L, L, 1);
+    for (int i = 0; i < 5; i++) { float s[] = {58 + i * 11.0f, 108, 58 + i * 11.0f, 124, 5}; paint(c, sd_seg, s, L, L, L, 1); } }
+  { Cell c = cells[I_POWER]; float a[] = {80, 88, 42, 11, -1.5707963f, 0.62f}; paint(c, sd_arc, a, L, L, L, 1);
+    float s[] = {80, 28, 80, 80, 11}; paint(c, sd_seg, s, L, L, L, 1); }
+  { Cell c = cells[I_TOUCH]; float o[] = {80, 80, 38, 64, 11, 9}; paint(c, sd_rbox_line, o, L, L, L, 1);
+    float sp[] = {70, 30, 90, 30, 5}; paint(c, sd_seg, sp, L, L, L, 1);
+    float d[] = {80, 82, 10}, r[] = {80, 82, 22, 4}; paint(c, sd_disc, d, L, L, L, 1); paint(c, sd_ring, r, L, L, L, 0.7f); }
+  { Cell c = cells[I_KEYBOARD]; float o[] = {80, 80, 68, 38, 8, 8}; paint(c, sd_rbox_line, o, L, L, L, 1);
+    for (int row = 0; row < 2; row++)
+      for (int k = 0; k < 7; k++) { float b[] = {35 + k * 15.0f, 62 + row * 16.0f, 5, 5, 1.5f}; paint(c, sd_rbox, b, L, L, L, 1); }
+    float sp[] = {80, 98, 30, 5, 2}; paint(c, sd_rbox, sp, L, L, L, 1); }
+  { float v[] = {40, 84, 68, 112, 68, 112, 122, 50}; strokes(cells[I_CHECK], v, 2, 16, 0.45f, 0.95f, 0.55f); }
+  { float v[] = {46, 46, 114, 114, 114, 46, 46, 114}; strokes(cells[I_FAIL], v, 2, 16, 1, 0.45f, 0.45f); }
+  { Cell c = cells[I_PENCIL]; float s[] = {62, 98, 116, 44, 24}; paint(c, sd_seg, s, L, L, L, 1);
+    float t[] = {3, 46.5f, 96.5f, 63.5f, 113.5f, 38, 122}; paint(c, sd_poly_fill, t, L, L, L, 1); }
+  { float v[] = {36, 92, 36, 124, 36, 124, 124, 124, 124, 124, 124, 92, 80, 104, 80, 30, 56, 54, 80, 30, 80, 30, 104, 54};
+    strokes(cells[I_EXPORT], v, 6, 10, L, L, L); }
+  { float v[] = {36, 92, 36, 124, 36, 124, 124, 124, 124, 124, 124, 92, 80, 26, 80, 102, 56, 78, 80, 102, 80, 102, 104, 78};
+    strokes(cells[I_IMPORT], v, 6, 10, L, L, L); }
+  { float v[] = {120, 80, 42, 80, 70, 52, 42, 80, 42, 80, 70, 108}; strokes(cells[I_BACK], v, 3, 12, L, L, L); }
+  { Cell c = cells[I_DROP]; float o[] = {80, 100, 64, 44, 8, 8}; paint(c, sd_rbox_line, o, L, L, L, 1);
+    float bar[] = {20, 76, 140, 76, 5}; paint(c, sd_seg, bar, L, L, L, 0.6f);
+    float v[] = {80, 14, 80, 110, 60, 90, 80, 110, 80, 110, 100, 90}; strokes(c, v, 3, 10, L, L, L); }
+}
 
 /* a round button: dark disc, light rim */
 static void button_base(Cell c) {
@@ -231,6 +292,9 @@ static void draw_atlas(void) {
   { Cell c = cells[I_PANEL]; float b[] = {32, 32, 32, 32, 0}; paint(c, sd_rbox, b, 0, 0, 0, 1); }
   { Cell c = cells[I_DOT]; float d[] = {16, 16, 12}; paint(c, sd_disc, d, 1, 1, 1, 1); }
   { Cell c = cells[I_WHITE]; float b[] = {8, 8, 8, 8, 0}; paint(c, sd_rbox, b, 1, 1, 1, 1); }
+  { Cell c = cells[I_MENU]; button_base(c);
+    for (int i = 0; i < 3; i++) { float s[] = {44, 46 + i * 18.0f, 84, 46 + i * 18.0f, 7}; paint(c, sd_seg, s, 0.92f, 0.92f, 0.95f, 0.95f); } }
+  draw_menu_pictures();
 }
 
 /* ---- setup ---- */
@@ -295,7 +359,7 @@ bool overlay_init(void) {
 }
 
 /* ---- the touch pad ---- */
-bool touch_shown;
+bool touch_shown, overlay_menu_tapped;
 static struct { SDL_FingerID id; float x, y; bool down; } fingers[10];
 static uint16_t touch_now;
 
@@ -320,6 +384,7 @@ static void layout(int ww, int wh) {
     {I_R1, RETRO_DEVICE_ID_JOYPAD_R, W - 0.03f * s - pw / 2, 0.14f * s + ph / 2, pw, ph},
     {I_SELECT, RETRO_DEVICE_ID_JOYPAD_SELECT, W / 2 - 0.12f * s, wh - 0.06f * s, pw * 0.85f, ph * 0.85f},
     {I_START, RETRO_DEVICE_ID_JOYPAD_START, W / 2 + 0.12f * s, wh - 0.06f * s, pw * 0.85f, ph * 0.85f},
+    {I_MENU, -1, W / 2, 0.07f * s, 0.1f * s, 0.1f * s},   /* Horizon Play's menu */
   };
   ncontrols = (int)(sizeof c / sizeof *c);
   memcpy(controls, c, sizeof c);
@@ -344,14 +409,14 @@ static uint16_t bits_at(float x, float y) {
     float reach = c->icon <= I_SQUARE ? 0.02f * unit : 0.025f * unit;
     if (e <= reach && hypotf(x - c->x, y - c->y) < best_d) { best = i; best_d = hypotf(x - c->x, y - c->y); }
   }
-  if (best >= 0) bits |= 1u << controls[best].id;
+  if (best >= 0 && controls[best].id >= 0) bits |= 1u << controls[best].id;
   return bits;
 }
 
 void overlay_event(const SDL_Event *e, int ww, int wh) {
   switch (e->type) {
   case SDL_FINGERDOWN: case SDL_FINGERMOTION: case SDL_FINGERUP: {
-    touch_shown = true;
+    if (!menu_open && remap_step < 0) touch_shown = true;
     int free_slot = -1, slot = -1;
     for (int i = 0; i < 10; i++) {
       if (fingers[i].down && fingers[i].id == e->tfinger.fingerId) slot = i;
@@ -359,12 +424,20 @@ void overlay_event(const SDL_Event *e, int ww, int wh) {
     }
     if (slot < 0 && e->type == SDL_FINGERDOWN) slot = free_slot;
     if (slot < 0) break;
+    if (e->type == SDL_FINGERDOWN && (menu_open || remap_step >= 0)) break;   /* the menu has its own touch */
+    if (e->type == SDL_FINGERDOWN) {   /* the menu button works on the first touch */
+      layout(ww, wh);
+      Control *m = &controls[ncontrols - 1];
+      if (fabsf(e->tfinger.x * ww - m->x) < m->w * 0.7f && fabsf(e->tfinger.y * wh - m->y) < m->h * 0.7f && touch_shown) {
+        overlay_menu_tapped = true; break;
+      }
+    }
     fingers[slot].id = e->tfinger.fingerId;
     fingers[slot].x = e->tfinger.x * ww; fingers[slot].y = e->tfinger.y * wh;
     fingers[slot].down = e->type != SDL_FINGERUP;
     break;
   }
-  case SDL_CONTROLLERBUTTONDOWN: case SDL_KEYDOWN:   /* a pad or keyboard in use: the touch pad steps aside */
+  case SDL_CONTROLLERBUTTONDOWN: case SDL_JOYBUTTONDOWN: case SDL_KEYDOWN:   /* a pad or keyboard in use: the touch pad steps aside */
     if (e->type == SDL_KEYDOWN)   /* a phone's own keys are not a keyboard */
       switch (e->key.keysym.scancode) {
       case SDL_SCANCODE_AC_BACK: case SDL_SCANCODE_VOLUMEUP: case SDL_SCANCODE_VOLUMEDOWN: case SDL_SCANCODE_MUTE:
@@ -386,11 +459,12 @@ uint16_t overlay_touch_bits(int ww, int wh) {
 }
 
 /* ---- drawing ---- */
-static float verts[64 * 6 * 8];
-static int nverts;
+#define MAX_QUADS 160
+static float verts[MAX_QUADS * 6 * 8];
+static int nverts, cur_w = 1, cur_h = 1;
 
 static void quad(int icon, float cx, float cy, float w, float h, float bright, float alpha, int ww, int wh) {
-  if (nverts + 6 > 64 * 6) return;
+  if (nverts + 6 > MAX_QUADS * 6) return;
   Cell c = cells[icon];
   float x0 = (cx - w / 2) / ww * 2 - 1, x1 = (cx + w / 2) / ww * 2 - 1;
   float y0 = 1 - (cy - h / 2) / wh * 2, y1 = 1 - (cy + h / 2) / wh * 2;
@@ -464,9 +538,15 @@ static void draw_setup(int ww, int wh) {
   quad(I_WHITE, cx - bw / 2 + bw * remap_time_left / 2, wh * 0.8f, bw * remap_time_left, 0.008f * s, 1, 0.7f, ww, wh);
 }
 
+void overlay_quad(int icon, float cx, float cy, float w, float h, float bright, float alpha) {
+  quad(icon, cx, cy, w, h, bright, alpha, cur_w, cur_h);
+}
+
 void overlay_draw(int ww, int wh) {
   if (!ready) return;
+  cur_w = ww; cur_h = wh;
   if (remap_step >= 0) draw_setup(ww, wh);
+  else if (menu_open) menu_draw(ww, wh);
   else if (touch_shown) {
     layout(ww, wh);
     const float a = 0.75f;
