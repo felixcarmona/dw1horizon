@@ -1,6 +1,6 @@
 {
  "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
- "dcb": 230,
+ "dw2": "M216MANG",
  "type": 248,
  "name": "MarineAngemon",
  "source": {
@@ -8,85 +8,67 @@
   "mmd": "extracted/CHDAT/MMD0/VEDA.MMD"
  },
  "map": {
-  "1": 1,
-  "2": 7,
-  "3": 5,
-  "4": 11,
-  "5": 10,
-  "7": 13,
-  "8": 14,
-  "16": 8,
-  "18": 12,
-  "20": 15,
-  "21": 3,
-  "25": 4
+  "1": 6,
+  "2": 4,
+  "3": 1,
+  "4": 15,
+  "5": 3,
+  "13": 7,
+  "14": 10,
+  "16": 11,
+  "17": 14,
+  "18": 13,
+  "19": 8,
+  "21": 12
  },
  "hips": [
   1,
   1,
-  0.878
+  0.869
  ],
- "root_scale": 0.878,
- "tol": 12,
- "tol_clips": 8,
+ "root_scale": 0.869,
+ "tol": 10,
+ "tol_clips": 6,
  "clips": {
   "0x21": {
-   "anim": "anim_00"
+   "anim": "A0"
   },
   "0x28": {
-   "anim": "anim_04",
-   "start": 0,
-   "end": 60,
-   "hips": "entity"
+   "anim": "B0"
   },
   "0x29": {
-   "anim": "anim_04",
-   "start": 0,
-   "end": 60,
-   "hips": "entity",
-   "root_scale": -0.8
+   "anim": "B0"
   },
   "0x2b": {
-   "anim": "anim_05",
-   "start": 0,
-   "end": 67,
-   "hips": "entity",
-   "root_scale": 0.3,
-   "speed": 1.12
+   "anim": "C012",
+   "eyes": "closed"
   },
-  "0x2a": {
-   "anim": "anim_06",
-   "start": 75,
-   "end": 155,
-   "hz": 0.3,
-   "rise": 175
+  "0x2c": {
+   "anim": "J0"
   },
   "0x39": {
-   "anim": "anim_03",
-   "start": 36,
-   "end": 128,
-   "speed": 1.5,
+   "anim": "H0",
+   "speed": 1.06,
    "hz": 0.2,
    "settle": 4,
-   "rise": 175
+   "loop": false,
+   "rise": 173
   },
   "0x38": {
-   "anim": "anim_02",
-   "start": 120,
-   "end": 230,
-   "speed": 1.5,
+   "anim": "G0",
+   "speed": 0.8,
    "hz": 0.2,
    "settle": 4,
-   "rise": 175
+   "loop": false,
+   "rise": 173
   },
   "0x35": {
-   "anim": "anim_01",
-   "start": 175,
-   "end": 244,
-   "speed": 1.48,
+   "anim": "F0",
+   "speed": 1.18,
    "hz": 0.2,
    "settle": 4,
-   "rise": 175
+   "loop": false,
+   "rise": 173
   }
  },
  "skip": [
@@ -98,9 +80,33 @@
   "0x2e",
   "0x2f",
   "0x30",
-  "0x32",
-  "0x33",
   "0x36",
   "0x37"
- ]
+ ],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.17,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
 }

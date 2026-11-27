@@ -4,18 +4,18 @@
   "rebased": 17,
   "files": [
     {
-      "path": "build/dcb/Veemon.MMD",
-      "sha": "60b54f3da2e99f2805060cbd040f954e63e87d701570dbe06d298579033236c2",
-      "size": 98742,
-      "actual": "60b54f3da2e99f2805060cbd040f954e63e87d701570dbe06d298579033236c2",
-      "actual_size": 98742,
+      "path": "build/dw2/Veemon.MMD",
+      "sha": "e8f2e565401987c99862bd3a9473c50346581f5c97cb3ff67422d27c1a178094",
+      "size": 95118,
+      "actual": "e8f2e565401987c99862bd3a9473c50346581f5c97cb3ff67422d27c1a178094",
+      "actual_size": 95118,
       "status": "equal"
     },
     {
-      "path": "build/dcb/Veemon.TIM",
-      "sha": "80fef9316ae20ba45cf13a3cb1e5652cd60dd7706bc54c89993332a5932b5469",
+      "path": "build/dw2/Veemon.TIM",
+      "sha": "d830ad2275ce5d8bef2208e9dc01a7906846dfd2daaad545192c62b17b258700",
       "size": 18432,
-      "actual": "80fef9316ae20ba45cf13a3cb1e5652cd60dd7706bc54c89993332a5932b5469",
+      "actual": "d830ad2275ce5d8bef2208e9dc01a7906846dfd2daaad545192c62b17b258700",
       "actual_size": 18432,
       "status": "equal"
     },
@@ -148,18 +148,18 @@
       "status": "equal"
     },
     {
-      "path": "build/sizes-out/models/Angewomon.MMD",
-      "sha": "75ad113a2b013e1474ab1e3f48dd5d74f347bfcaf9bb423fab8f4b56a32330da",
-      "size": 97854,
-      "actual": "75ad113a2b013e1474ab1e3f48dd5d74f347bfcaf9bb423fab8f4b56a32330da",
-      "actual_size": 97854,
+      "path": "build/batch/Angewomon.MMD",
+      "sha": "4652747e0cdb599fcac7b4815710a027f9a0de7bf38c8386420b21bb25d2e4a5",
+      "size": 98506,
+      "actual": "4652747e0cdb599fcac7b4815710a027f9a0de7bf38c8386420b21bb25d2e4a5",
+      "actual_size": 98506,
       "status": "equal"
     },
     {
       "path": "build/batch/Angewomon.TIM",
-      "sha": "d0ef52f6ade9b99f020ec2f7221dd382bc8487b8622163eb1ec7771c86690b6c",
+      "sha": "dbb60a645f666f8fb2750a276984d57cf468dd9e3aac59016fc45d4c372d228b",
       "size": 18432,
-      "actual": "d0ef52f6ade9b99f020ec2f7221dd382bc8487b8622163eb1ec7771c86690b6c",
+      "actual": "dbb60a645f666f8fb2750a276984d57cf468dd9e3aac59016fc45d4c372d228b",
       "actual_size": 18432,
       "status": "equal"
     },
@@ -181,17 +181,17 @@
     },
     {
       "path": "build/sizes-out/models/Imperialdramon.MMD",
-      "sha": "e9596e6df273746757f068f7b82d4ae5bd4c175807362ced632d3e569c8285bd",
-      "size": 98176,
-      "actual": "e9596e6df273746757f068f7b82d4ae5bd4c175807362ced632d3e569c8285bd",
-      "actual_size": 98176,
+      "sha": "502acbc863168ce57b21d72d1f7d53ca5b2ee379a1905e973724002702603ea3",
+      "size": 97386,
+      "actual": "502acbc863168ce57b21d72d1f7d53ca5b2ee379a1905e973724002702603ea3",
+      "actual_size": 97386,
       "status": "equal"
     },
     {
       "path": "build/batch/Imperialdramon.TIM",
-      "sha": "c2ae3d9762790a301180ba4b0212f6068e1e6acaef9e78f6046c1fafe1b9cd2f",
+      "sha": "fa21e236326087040fb20c5cf4c7d1bf87dd940a81ae249cd2b585a80c3cf4d0",
       "size": 18432,
-      "actual": "c2ae3d9762790a301180ba4b0212f6068e1e6acaef9e78f6046c1fafe1b9cd2f",
+      "actual": "fa21e236326087040fb20c5cf4c7d1bf87dd940a81ae249cd2b585a80c3cf4d0",
       "actual_size": 18432,
       "status": "equal"
     },
@@ -509,17 +509,17 @@
     },
     {
       "path": "build/sizes-out/models/AeroVeedramon.MMD",
-      "sha": "bbbf886fecf0d6b46fe46d56f4665b7ad4f11761457e4fd6bf808c4bcb6e9d68",
-      "size": 96664,
-      "actual": "bbbf886fecf0d6b46fe46d56f4665b7ad4f11761457e4fd6bf808c4bcb6e9d68",
-      "actual_size": 96664,
+      "sha": "2fbf3222887a1219945513689758ba0a053102a671411e1abfd1ae486e8dc85f",
+      "size": 84862,
+      "actual": "2fbf3222887a1219945513689758ba0a053102a671411e1abfd1ae486e8dc85f",
+      "actual_size": 84862,
       "status": "equal"
     },
     {
       "path": "build/batch3/AeroVeedramon.TIM",
-      "sha": "3db55918adae70bc301a981ea6af05463a848f637add1b3e1a5474bebc943fa1",
+      "sha": "a93f8db7004d4cd28f3a9baafd061479dab90db29bd2b65e84b50e23dbc48742",
       "size": 18432,
-      "actual": "3db55918adae70bc301a981ea6af05463a848f637add1b3e1a5474bebc943fa1",
+      "actual": "a93f8db7004d4cd28f3a9baafd061479dab90db29bd2b65e84b50e23dbc48742",
       "actual_size": 18432,
       "status": "equal"
     },
@@ -549,9 +549,9 @@
     },
     {
       "path": "build/batch3/Magnadramon.TIM",
-      "sha": "61f32f13ad704e3a62c2776d8df6e94d629dca39b483e8f35b0663e31e9d1e00",
+      "sha": "3ebcddb49744dda129b31797a9ae5c5c848af764ef2d48f3d8acdd8bea907c6b",
       "size": 18432,
-      "actual": "61f32f13ad704e3a62c2776d8df6e94d629dca39b483e8f35b0663e31e9d1e00",
+      "actual": "3ebcddb49744dda129b31797a9ae5c5c848af764ef2d48f3d8acdd8bea907c6b",
       "actual_size": 18432,
       "status": "equal"
     },
@@ -973,17 +973,17 @@
     },
     {
       "path": "build/batch6/Wizardmon.MMD",
-      "sha": "ea75dd448118244bd05367eb5b3ae73c2b9404b7791ee5da54a493481dfddbdf",
-      "size": 98840,
-      "actual": "ea75dd448118244bd05367eb5b3ae73c2b9404b7791ee5da54a493481dfddbdf",
-      "actual_size": 98840,
+      "sha": "63216cf8d342e7c03f88aee6bd1e370f3dfa1612d2fdf1475c8b69fcab114013",
+      "size": 96514,
+      "actual": "63216cf8d342e7c03f88aee6bd1e370f3dfa1612d2fdf1475c8b69fcab114013",
+      "actual_size": 96514,
       "status": "equal"
     },
     {
       "path": "build/batch6/Wizardmon.TIM",
-      "sha": "1e69bdccb8b1c0ce38a1b06803b61743c6139e54d6f40a403cb4cc94680c4598",
+      "sha": "7336a5d0de797747c7164b7e6f088a09758d7e480aa8180eb7989225d966bd35",
       "size": 18432,
-      "actual": "1e69bdccb8b1c0ce38a1b06803b61743c6139e54d6f40a403cb4cc94680c4598",
+      "actual": "7336a5d0de797747c7164b7e6f088a09758d7e480aa8180eb7989225d966bd35",
       "actual_size": 18432,
       "status": "equal"
     },
@@ -1093,25 +1093,17 @@
     },
     {
       "path": "build/batch6/MarineAngemon.MMD",
-      "sha": "1349d2fa780b52e650574d990018348e71ad3f513f86dc9a9b98c1258f1770c3",
-      "size": 93832,
-      "actual": "1349d2fa780b52e650574d990018348e71ad3f513f86dc9a9b98c1258f1770c3",
-      "actual_size": 93832,
-      "status": "equal"
-    },
-    {
-      "path": "build/sizes-out/models/MarineAngemon.MMD",
-      "sha": "a7d95ba71c4e2383b805a882e01ab25cae59d5f3e35a37eaa2099de3af272993",
-      "size": 93832,
-      "actual": "a7d95ba71c4e2383b805a882e01ab25cae59d5f3e35a37eaa2099de3af272993",
-      "actual_size": 93832,
+      "sha": "71ad44ab9240c1ac9a54a4919e0fce483ad34491ba5eaba601010132a002fc97",
+      "size": 98250,
+      "actual": "71ad44ab9240c1ac9a54a4919e0fce483ad34491ba5eaba601010132a002fc97",
+      "actual_size": 98250,
       "status": "equal"
     },
     {
       "path": "build/batch6/MarineAngemon.TIM",
-      "sha": "fbbd8843e728d0acc7ee20fd7124b4793a42972b9e09c55eada03295665a7741",
+      "sha": "e29ec788910fdd0635148e30f0753cc214e6e197079ff2067120aa532933eaeb",
       "size": 18432,
-      "actual": "fbbd8843e728d0acc7ee20fd7124b4793a42972b9e09c55eada03295665a7741",
+      "actual": "e29ec788910fdd0635148e30f0753cc214e6e197079ff2067120aa532933eaeb",
       "actual_size": 18432,
       "status": "equal"
     },

@@ -1,22 +1,24 @@
 """Magnadramon's field idle, walk and run as three different flights.
 
-The import gave the idle (slots 0 and 1), the walk (2), the condition walk (3) and the run (4) one and the same 89-tick
-wave of its wing blades, body and tail; only the distance the root travelled differed, so the three read as one pose.
-This overlay writes those five slots again on top of the reviewed steady glide (every other slot, the mesh and the
-rig stay). The three pairs of wing blades beat from a folded rest along the back, each blade a little behind the
-one before it, so a beat runs along the wing:
+The Digimon World 2 model has native field clips of a walker (16 to 26 ticks, planted feet, footstep sounds); the field
+hover pass lifts the whole figure, so a walking dragon would paddle in the air. This overlay writes the five field slots
+(idle 0 and 1, walk 2, condition walk 3, run 4) again as flights, every other slot, the mesh and the rig staying as the
+import made them. The three pairs of blades along the back (28/29 behind the shoulders, 13/14 and 16/17 on the
+hindquarters) beat from a folded rest, each pair a little behind the one before it, so a beat runs back along the body:
 
-- Every clip opens the jaw (bone 5) after each wing downstroke, quickly, and eases it closed more slowly (20 to 28
-  degrees; the idle also yawns once per loop, 35); the head lifts a little with the mouth. The run adds a quick pant (5).
+- Every clip opens the jaw (bone 5) after each beat and eases it closed more slowly (20 to 28 degrees; the idle also
+  yawns once per loop, 35); the head lifts a little with the mouth. The run adds a quick pant (5).
 - Idle: a hover in place. Two slow, wide beats in the 88 ticks, the body rising on every beat, the head and the
   tail trailing behind with a lag, the arms and legs hanging and swaying.
-- Walk (and the tired condition walk, lower and slower): a cruise. The body leans forward, the wings beat three
-  times per loop, the tail streams back with a travelling wave, the legs trail behind.
-- Run: a faster flight. Leaning further, the wings beat four times per loop and fold closer in between, the tail is
-  stretched out, the arms and legs swept back.
+- Walk (58 ticks) and the tired condition walk (44, lower and slower): a cruise. The body leans forward, the blades
+  beat, the tail streams back with a travelling wave, the legs trail behind.
+- Run (44 ticks): a faster flight. Leaning further, the blades fold closer in between, the tail is stretched out, the
+  arms and legs swept back.
 
-Each clip repeats its pose cycle exactly (the last tick equals the first). Tick counts, the root travel (the field
-speed) of the earlier clips are kept.
+Every turn is about a world axis (x across, y down, z back), so the figure does not depend on how the bones are
+oriented. Each clip repeats its pose cycle exactly (the last tick equals the first). The distance per tick (the field
+speed) is the one the species always had; the loops are shorter than before so the five clips fit the resident
+animation buffer (100,352 B). The footstep sounds of the walker are left out, the texture-move events (the eyes) stay.
 """
 import copy
 import hashlib
@@ -27,29 +29,34 @@ import mmd
 import motioncyclelayer
 import motionstorage
 from motiondiscidentity import changed_programs
-from tools.models.field_animations import gliding
 
 SPECIES = 215
 NB = 30
 DEG = 4096 / 360
 SLOTS = (0, 1, 2, 3, 4)
-# wing blades (right, left) from the inner pair outwards: folded and fully open z angle, 1/4096 turns
-WINGS = ((12, 974, -85), (13, -981, 134), (15, 889, -238), (16, -879, 198), (18, 776, -249), (19, -695, 225))
+# the DW2 import with the species' slot aliases: the one source this overlay was reviewed on
+SOURCE = '46b4edf8b1063f1aba3366f9da7afc345f2e041955157131e69e46d535b46c15'
+# blades along the back, (right, left), from the shoulders to the hindquarters
+BLADES = ((28, 29), (13, 14), (16, 17))
+BLADE_OPEN = 70   # degrees a blade rolls outwards from its folded rest at full beat
 ARMS = ((6, 7, 8), (9, 10, 11))
-LEGS = ((24, 25, 26), (27, 28, 29))
+LEGS = ((22, 23, 24), (25, 26, 27))
 HEAD_LIFT = .22   # degrees the head lifts per degree of open jaw
-JAW_SIGN = 1      # the jaw (bone 5) opens with a positive pitch
-SPINE = (1, 2, 3, 4)
-TAIL = (20, 21, 22, 23)
+REAR = (12, 15, 18)  # the body behind the shoulders
+TAIL = (19, 20, 21)
+# ticks per loop and root travel per loop (the field speed of the species: 31.7, 31.0 and 62 units a tick)
+TICKS = {'idle': 88, 'walk': 58, 'tired': 44, 'run': 44}
+TRAVEL = {'idle': 0, 'walk': -1840, 'tired': -1364, 'run': -2728}
+TOL = 2
 
 CLIPS = {
-    'idle': dict(n=88, beats=2, centre=.50, swing=.45, bob=24, lean=0, head=0, tail=0, tail_wave=7, arm=0, arm_swing=4,
+    'idle': dict(beats=2, centre=.50, swing=.45, bob=24, lean=0, head=0, tail=0, tail_wave=7, arm=0, arm_swing=4,
                  leg=0, leg_swing=3, surge=0, jaw=20, pant=0, yawn=35),
-    'walk': dict(n=None, beats=3, centre=.38, swing=.30, bob=17, lean=9, head=-6, tail=2, tail_wave=8, arm=14,
+    'walk': dict(beats=2, centre=.38, swing=.30, bob=17, lean=9, head=-6, tail=2, tail_wave=8, arm=14,
                  arm_swing=5, leg=14, leg_swing=4, surge=.08, jaw=28, pant=0, yawn=0),
-    'tired': dict(n=None, beats=2, centre=.28, swing=.22, bob=11, lean=4, head=-3, tail=0, tail_wave=6, arm=7,
+    'tired': dict(beats=1, centre=.28, swing=.22, bob=11, lean=4, head=-3, tail=0, tail_wave=6, arm=7,
                   arm_swing=3, leg=7, leg_swing=3, surge=.06, jaw=20, pant=0, yawn=0),
-    'run': dict(n=None, beats=4, centre=.30, swing=.27, bob=14, lean=20, head=-13, tail=12, tail_wave=6, arm=30,
+    'run': dict(beats=2, centre=.30, swing=.27, bob=14, lean=20, head=-13, tail=12, tail_wave=6, arm=30,
                 arm_swing=4, leg=32, leg_swing=3, surge=.07, jaw=28, pant=5, yawn=0),
 }
 CLIP_OF_SLOT = {0: 'idle', 1: 'idle', 2: 'walk', 3: 'tired', 4: 'run'}
@@ -117,34 +124,36 @@ def bite(u):
 
 
 def pose_at(rig, rest, root, c, t, n):  # noqa: C901
-    """The pose of clip c at tick t of n; root is the earlier clip's root pose with the travel."""
+    """The pose of clip c at tick t of n; root is the root pose with the travel."""
     p = c['beats'] * t / n
     q = t / n
     pose = copy.deepcopy(rest)
     pose[0] = list(root)
-    # wings: each blade between folded (0) and open (1), a beat behind the inner one
-    for k, (bone, fold, opened) in enumerate(WINGS):
-        g = c['centre'] + c['swing'] * wave(p, .09 * (k // 2) + .015 * (k % 2))
-        pose[bone][5] = round(fold + (opened - fold) * g)
-    # the body rises with the wings' downstroke and breathes slowly
+    # the body rises with the beat's downstroke and breathes slowly; it leans (nose down) into the flight
     pose[1][7] = round(rest[1][7] - c['bob'] * (.5 + .5 * wave(p, .30)) - .25 * c['bob'] * swing(q))
-    pose[1][3] = round(rest[1][3] + DEG * (c['lean'] + (1 + .05 * c['lean']) * swing(p, .1)))
-    pose[2][3] = round(rest[2][3] + DEG * 2 * swing(p, .18))
-    pose[3][3] = round(rest[3][3] + DEG * (.5 * c['head'] + 1.5 * swing(p, .26)))
-    pose[4][3] = round(rest[4][3] + DEG * (.5 * c['head'] + 2.5 * swing(p, .34)))
-    # the jaw: opens quickly after every wing downstroke, eases closed more slowly and rests shut a moment; the idle
-    # adds one long yawn per loop on top of its breaths and the run a quicker, smaller pant. The head lifts with the
-    # mouth and drops as it closes, the neck following a little later.
+    rig.turn(pose, 1, x=c['lean'] + (1 + .05 * c['lean']) * swing(p, .1))
+    rig.turn(pose, 2, x=2 * swing(p, .18))
+    rig.turn(pose, 3, x=.5 * c['head'] + 1.5 * swing(p, .26))
+    rig.turn(pose, 4, x=.5 * c['head'] + 2.5 * swing(p, .34))
+    # the jaw: opens quickly after every beat, eases closed more slowly and rests shut a moment; the idle adds one long
+    # yawn per loop on top of its breaths and the run a quicker, smaller pant. The head lifts with the mouth.
     mouth = c['jaw'] * bite((p - .30) % 1.) + c['pant'] * (.5 + .5 * swing(2 * p, .1))
     if c['yawn']:
         mouth = max(mouth, c['yawn'] * span(q, .06, .18, .40, .58))
-    pose[5][3] = round(rest[5][3] + JAW_SIGN * DEG * mouth)
-    pose[4][3] -= round(DEG * HEAD_LIFT * mouth)
-    pose[3][3] -= round(DEG * .5 * HEAD_LIFT * mouth)
-    pose[2][3] += round(DEG * 1.2 * swing(p, .30))
-    # the tail trails the body: a wave running down it
+    rig.turn(pose, 5, x=mouth)
+    rig.turn(pose, 4, x=-HEAD_LIFT * mouth)
+    rig.turn(pose, 3, x=-.5 * HEAD_LIFT * mouth)
+    rig.turn(pose, 2, x=1.2 * swing(p, .30))
+    # the hindquarters and the tail trail the body: a wave running back along them
+    for k, bone in enumerate(REAR):
+        rig.turn(pose, bone, x=-.6 * c['tail_wave'] * swing(p, .10 + .08 * k) - c['tail'] / 8)
     for k, bone in enumerate(TAIL):
-        pose[bone][3] = round(rest[bone][3] + DEG * (c['tail'] / 4 + c['tail_wave'] * (k + 1) / 4 * swing(p, .16 + .10 * k)))
+        rig.turn(pose, bone, x=-c['tail'] / 4 + c['tail_wave'] * (k + 1) / 4 * swing(p, .16 + .10 * k))
+    # the blades beat from the folded rest, each pair a little behind the one before it
+    for k, (right, left) in enumerate(BLADES):
+        g = c['centre'] + c['swing'] * wave(p, .09 * k)
+        rig.turn(pose, right, z=BLADE_OPEN * g * (1 + .05 * k))
+        rig.turn(pose, left, z=-BLADE_OPEN * g * (1 + .05 * k))
     # arms and legs hang or trail behind with the lean, following the beat a little later
     for k, (a, b, h) in enumerate(ARMS):
         off = .05 * k
@@ -159,16 +168,15 @@ def pose_at(rig, rest, root, c, t, n):  # noqa: C901
     return pose
 
 
-def root_at(frames, c, t, n):
-    """The root pose at tick t: the travel spread evenly (a mild surge on every wing beat); distance and ticks are the
-    earlier clip's. The idle stays where it is."""
-    root = list(frames[0][0])
-    if c['n'] is not None:
+def root_at(rest_root, kind, c, t, n):
+    """The root pose at tick t: the travel spread evenly (a mild surge on every beat). The idle stays where it is."""
+    root = list(rest_root)
+    total = TRAVEL[kind]
+    if not total:
         return root
     beats, a, phase = c['beats'], c['surge'], .30
     u, k = t / n, 2 * math.pi
-    total = frames[-1][0][8] - frames[0][0][8]
-    root[8] = frames[0][0][8] + total * (u + a / (k * beats) * (math.sin(k * (beats * u - phase)) + math.sin(k * phase)))
+    root[8] = rest_root[8] + total * (u + a / (k * beats) * (math.sin(k * (beats * u - phase)) + math.sin(k * phase)))
     return root
 
 
@@ -178,19 +186,20 @@ def author(model, skeleton):
     old = mmd.MMD.parse(model, NB)
     old.type = SPECIES
     rest = [list(v) for v in animsheet.slot_frames(old, NB, 0)[0][0]]
+    rest[0] = [4096] * 3 + [0] * 6
     result = copy.deepcopy(old)
     streams, checks = {}, []
     for slot in (0, 2, 3, 4):
-        c = CLIPS[CLIP_OF_SLOT[slot]]
-        frames, loop, events = animsheet.slot_frames(old, NB, slot)
-        assert loop == 0, (slot, loop)
-        n = c['n'] or len(frames) - 1
+        kind = CLIP_OF_SLOT[slot]
+        c = CLIPS[kind]
+        events = [e for e in animsheet.slot_frames(old, NB, slot)[2] if e[1] != 'sound']
         rig = Rig(old, skeleton)
-        out = [pose_at(rig, rest, root_at(frames, c, t, n), c, t, n) for t in range(n + 1)]
+        n = TICKS[kind]
+        out = [pose_at(rig, rest, root_at(rest[0], kind, c, t, n), c, t, n) for t in range(n + 1)]
         out = [[[round(x) for x in v] for v in pose] for pose in out]
         mmd.close_loop(out, 0)
         streams[slot] = len(result.anims.anims)
-        result.anims.anims.append(mmd.encode_anim(out, NB, 0, list(events), tol=1))
+        result.anims.anims.append(mmd.encode_anim(out, NB, 0, list(events), tol=TOL))
     streams[1] = streams[0]
     for slot in SLOTS:
         result.anims.table[slot] = streams[slot]
@@ -212,6 +221,9 @@ def author(model, skeleton):
 
 
 def build(data, skeleton):
-    result, proof = gliding.build(data, skeleton)
-    output, extra = author(result, skeleton)
-    return output, dict(proof, field_flight=extra, output_sha256=hashlib.sha256(output).hexdigest())
+    digest = hashlib.sha256(data).hexdigest()
+    if digest != SOURCE:
+        raise ValueError('Magnadramon flight requires the reviewed Digimon World 2 import')
+    output, extra = author(data, skeleton)
+    return output, dict(species=SPECIES, source_sha256=digest, field_flight=extra,
+                        output_sha256=hashlib.sha256(output).hexdigest())

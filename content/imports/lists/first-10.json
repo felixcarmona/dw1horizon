@@ -40,8 +40,12 @@
   },
   {
    "name": "Angewomon",
-   "game": "dcb",
-   "model": 170
+   "game": "dw2",
+   "model": "M234ANGW",
+   "level": 5,
+   "element": 0,
+   "donor": 36,
+   "scale": 0.1945
   },
   {
    "name": "MetalGarurumon",
@@ -51,9 +55,13 @@
   },
   {
    "name": "Imperialdramon",
-   "game": "dcb",
-   "model": 181,
-   "level": "mega"
+   "game": "dw2",
+   "model": "M148IPDR",
+   "level": 6,
+   "element": 0,
+   "donor": 22,
+   "clip_policy": null,
+   "scale": 0.16343
   }
  ]
 }

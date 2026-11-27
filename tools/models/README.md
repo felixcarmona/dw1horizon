@@ -457,16 +457,10 @@ through `edit.py put`, so no later field generator can restore the larger size.
 across all clips, including the hammer, with the before/after models supplied
 as `ZUDOMON_BEFORE` and `ZUDOMON_AFTER`.
 
-Angewomon keeps the original mesh, rig and acting, with the existing field
-celebrations baked before a uniform 0.74 resize of mesh vertices and animation
-translations. Its helmet height is close to native Angemon at a shared world
-scale. World 2 and World 3 mesh trials on Angemon and Myotismon did not improve
-the posture and wing silhouette, so their bindings are excluded. The model
-provider uses the resized delta directly.
-
-`PYTHONPATH=tools python3 -m unittest tools.test_angewomon_size` checks the
-reviewed before/after files under `build/angewomon-redo/`; override them with
-`ANGEWOMON_BEFORE` and `ANGEWOMON_AFTER` for reconstructed inputs.
+Angewomon (190) is Digimon World 2's model (M234ANGW; until 2026-11-26 the Card Battle's). The importer scale (0.1945)
+gives it the height the old resized model had (the former sizes step and 0.74 resize are folded into it), so no
+resize record remains. Its victory clip is the World 2 clip retargeted by the importer; the old Card Battle celebration
+bake (tied to that rig) is gone.
 
 The six-species [creature motion review](../../docs/reference/reviewed-creature-motion.md)
 records native-donor field/care changes, uniform sizes, sound donors and replay
@@ -607,12 +601,13 @@ vertically: the body bone keeps one height, the lowest mesh point stays within a
 turn about the vertical axis, roll a little and stroke the flippers. Resident animation storage 47 556 of 100 352 B.
 Check with `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_dolphmon_gaits` (needs `edit.py get 238`).
 
-Magnadramon (215) had the idle, walk, condition walk and run as one 89-tick wave of the wing blades, body and tail
-that only the root travelled through. `field_animations/magnadramon_flight.py` runs after its steady glide and writes
-those five slots again: a hover with two slow, wide wing beats, a forward-leaning cruise with three beats per loop
-and a streamlined, faster run with four, a beat running from the inner blade pair to the outer, the tail and the limbs
-following the body a beat later. Ticks, distance per loop and the other slots are kept. Check with
-`tools/models/edit.py get 215` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_magnadramon_flight`.
+Magnadramon (215) uses Digimon World 2's model (M235HDRA), whose own field clips are a walker's (planted feet,
+footsteps). `field_animations/magnadramon_flight.py` writes the idle, walk, condition walk and run slots again as
+flights on its 30-bone rig: a hover with two slow, wide wing beats, a forward-leaning cruise (58 ticks), a lower
+tired cruise (44) and a streamlined, faster run (44), a beat running from the shoulder blade pair back to the
+hindquarters, the tail and the limbs following the body a beat later. The loops are shorter than the Card Battle
+model's 88 ticks so the five clips fit the resident animation buffer; the distance per tick is the old one. Check
+with `tools/models/edit.py get 215` and `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_magnadramon_flight`.
 Armadillomon (185) held its head level or lowered in the field idle, walk and
 run, so the shell's front rim covered the brow. `field_animations/armadillomon_head.py`
 adds one constant lift to the head joint in those clips (and the condition walk),
@@ -624,24 +619,23 @@ trot from `quadruped.py`; its paws are bound sole-backwards, so the profile's
 `paw_flat` gives their flat standing rotation, and `tail_up` carries the club
 tail clear of the ground. The 73-frame idle and walk stay as they were.
 
-Angewomon's (190) walk and run slid the feet without the legs carrying them.
-`field_animations/angewomon.py` takes native Angemon's walk, condition walk and
+Angewomon's (190) walk and run (the World 2 walk floats, its feet lift about 94 units) are
+`field_animations/angewomon.py`, which takes native Angemon's walk, condition walk and
 run the way `valkyrimon.py` does (legs solved onto his feet, his lean on the
 body), with her own swinging arms (he carries a staff), and the sash ends and
 lowest feathers kept off the ground. Buster Dive is applied after it at build.
 
-Imperialdramon's (192) walk and run swung every limb on its own and slid the
-hands and feet. `field_animations/imperialdramon.py` writes the walk, condition
-walk and run on all fours with `quadruped.py` (a walk with each hand landing
-just before the foot behind it, and a gallop), each hand and foot standing at
-its own turned-out idle angle (per-leg `paw_flat`). The hips sit right behind
-the shoulders: the knees bend out and a lifted arm's elbow swings out past the
-thigh (`swing_pole`), so the legs of a side do not pass through each other. The
-forearm blades always point ahead (`aim`) and the hands swing wide (`wide`), so
-they do not sweep through the head, and the body dips onto each landing in the
-walks and bounds in the run. The idle keeps its crouch and roar with every hand
-and foot planted where it stands at the first tick (the crouch had pushed the
-hind feet into the floor).
+Imperialdramon (192) is Digimon World 2's model (M148IPDR; until 2026-11-26 the
+Card Battle's). Its imported walk and run slid the hands and feet, so
+`field_animations/imperialdramon.py` writes the idle, walk, condition walk and
+run again for the new 32-bone rig with `quadruped.py` (a four-beat walk and a
+gallop). Each fore paw has two claw bones that hang from the forearm beside the
+paw bone: they count as the paw for the floor and turn with it (`slave`). The
+paws stand as the rest pose has the right ones, the left ones mirrored
+(`paw_rest`, `mirror_paws`); the knees bend out and forward, the elbows back,
+and a lifted arm's elbow swings out (`swing_pole`) and its forearm blade stays
+pointed ahead (`aim`). The idle keeps World 2's roar with every paw planted. The
+battle clips are World 2's own. The model is sized in `import-sizes.json`.
 
 Pegasusmon's (200) idle stood on a raised right foreleg and swung the
 hindquarters, and its walk and run crossed and slid the hooves.
@@ -882,8 +876,10 @@ drives the arms and has both boots in the air between steps.
 
 Wizardmon (241) is bound to native Angemon (`native_binding.py`, recipe 241) and plays
 Angemon's own idle, walk, condition walk and run, root travel included (21.25, 16.25 and
-37.5 units a tick). Its source stands turned 45 degrees side-on, so the recipe turns the
-whole source forward first (`source_yaw`); the staff is turned from its source direction
+37.5 units a tick). Its source is Digimon World 2's model (M194WIZA; until 2026-11-26 the Card Battle's, which
+stands turned 45 degrees side-on): the recipe's `bind_pose` gives every bone the pose the Card Battle recipe was
+reviewed in, matched piece by piece onto the same mesh, and `source_joints` keeps the Card Battle model's joints as the
+points the pieces are anchored and aimed from, since World 2's bones pivot elsewhere; the staff is turned from its source direction
 onto a held-out direction clear of the hat brim and thighs (`swing`) and rides Angemon's
 staff hand, bone 9; the free glove is turned 70 degrees about the forearm (`roll`) so its
 palm faces the body, not forward. Angemon's hips are set 22 units further apart
@@ -894,7 +890,9 @@ binding: in the field clips it holds the upper arms further out from the body
 (`ARMS_OUT`), and in every program it replaces the wing beat on those three bones with
 followers that take part of the head's (cape top, hair) or chest's (cape hem) turn a
 few ticks late and trail back with the root's speed, which wraps around each endless loop (`closed`) so the
-loop ends on the pose it began from and the cape and hair do not creep further with every pass. Techniques and
+loop ends on the pose it began from and the cape and hair do not creep further with every pass. The battle clips of
+`battle_originals` are World 2's own (the idle's loop seam closed with `seam`, the two hit clips at 25 ticks).
+Techniques and
 the training clip (57, Angemon's 46) are Angemon's; the record's effect points and
 condition bubble are carried onto the new bones (`species_patch`).
 
@@ -1384,7 +1382,7 @@ little outward. `python3 -m tools.models.field_animations.raidenmon_gait --sourc
 before the change), then `edit.py put 336 AFTER.MMD`. Test: `tools.test_raidenmon_gait` (`RAIDENMON_MODEL`).
 
 
-Veemon (180): `field_animations/veemon_gait.py` is the generator of the `veemon-field` overlay (content/models/imports/species.py). It rewrites the idle (slots 0 and 33), walk (2, 35), tired walk (3) and run (4, 36) with `quadruped.py` legs and a body hook that moves hips, chest, head, jaw, arms and a three-segment tail from one phase, two eased cycles per clip and a second-order spring on the loose parts. Walk 12 ticks at 16 units, tired walk 18 at 11, run 8 at 38, idle 96; resident buffer 98,706 of 100,352 bytes. The feet roll (the toes lift at touchdown, the heel rises at the push-off with the toes planted, the toes curl in the swing: the walk's foot pitch swings through 23 degrees, the tired walk's 15, the run's 14). Veemon blinks: `field_animations/veemon_face.py` stamps two eye frames (half shut, shut) and a copy of the open eye into spare texels (x 200-255, y 36-115) and every clip carries texture-move events over the eye block (x 20-47, y 0-39, palette row 7; the same block is drawn on both sides of the face), irregular and with a double blink in the idle, heavier and longer lids in the tired walk. The texture is part of the change (`edit.py put 180 MMD TIM`). Offline: `python3 -m tools.models.field_animations.veemon_gait --source BASE.MMD --out AFTER.MMD [--tex BEFORE.TIM --out-tex AFTER.TIM]`; `tools/test_veemon_gait.py` covers it (VEEMON_MODEL names the imported base).
+Veemon (180): `field_animations/veemon_gait.py` is the generator of the `veemon-field` overlay (content/models/imports/species.py). It rewrites the idle (slots 0 and 33), walk (2, 35), tired walk (3) and run (4, 36) of the Digimon World 2 model (M145NTVA, `content/models/dcb-import/veemon-dw2.json`) with `quadruped.py` legs and a body hook that moves hips, chest, head, jaw, arms and a three-segment tail from one phase, two eased cycles per clip and a second-order spring on the loose parts. Walk 10 ticks at 16 units, tired walk 12 at 11, run 8 at 38, idle 96; resident buffer 88,346 of 100,352 bytes. DW2's legs are short on a long foot, so the strides are short and the feet roll gently (the toes lift at touchdown, the heel rises at the push-off with the toes planted: the walk's foot pitch swings through 8-10 degrees, the tired walk's 5-7, the run's 6); longer strides or a bigger curl throw the ankle out of reach and the knee solve flips. Veemon blinks with DW2's own eye frames: `field_animations/veemon_face.py` pastes the open, half shut or shut frame (x 0-107, y 36-71) over the eye block (x 12-47, y 0-35) with texture-move events, irregular and with a double blink in the idle, heavier and longer lids in the tired walk; nothing is drawn into the texture. Offline: `python3 -m tools.models.field_animations.veemon_gait --source BASE.MMD --out AFTER.MMD`; `tools/test_veemon_gait.py` covers it (VEEMON_MODEL names the imported base).
 
 Bearmon (353): `field_animations/bearmon_gait.py` is an offline model delta for the idle (slots 0 and 33), walk, tired walk and run (slots 2, 3, 4). It builds them with `quadruped.py` plus a body hook that moves the whole body from one gait phase: hips
 against chest, chest roll and shift over the stance foot, hands against the legs on their sides, head, jaw and tail on springs,

@@ -770,7 +770,7 @@ def run_one(sid,games,folder,from_dir=None,images=True):
         source_path = sizes[source_path]
     recipe = next((r for r in recipes if f'{r["out"]}/{r["entry"]["name"]}.MMD' == source_path),None)
     if recipe is None:
-        paths = {180:'veemon',181:'puppetmon',182:'kimeramon-dw2',373:'wargreymon-dcb'}
+        paths = {180:'veemon-dw2',181:'puppetmon',182:'kimeramon-dw2',373:'wargreymon-dcb'}
         location = 'content/models/mega' if sid == 373 else 'content/models/dcb-import'
         spec = edit.load(ROOT/location/(paths[sid]+'.json'))
         entry = dict(name=row['name'],game='dw2' if 'dw2' in spec else 'dcb',model=spec.get('dw2',spec.get('dcb')))

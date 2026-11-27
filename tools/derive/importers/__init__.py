@@ -152,7 +152,7 @@ class Provider:
         import dcb2mmd
         import dw2mmd
         import mmdport
-        paths = {'build/dcb/Veemon': 'content/models/dcb-import/veemon.json',
+        paths = {'build/dw2/Veemon': 'content/models/dcb-import/veemon-dw2.json',
                  'build/dcb/Puppetmon': 'content/models/dcb-import/puppetmon.json',
                  'build/dw2/Kimeramon': 'content/models/dcb-import/kimeramon-dw2.json',
                  'build/models/WarGreymon': 'content/models/mega/wargreymon-dcb.json'}

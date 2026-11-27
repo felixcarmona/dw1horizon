@@ -4,8 +4,12 @@
  "digimon": [
   {
    "name": "Wizardmon",
-   "game": "dcb",
-   "model": 154,
+   "game": "dw2",
+   "model": "M194WIZA",
+   "level": 4,
+   "element": 1,
+   "donor": 9,
+   "scale": 0.193,
    "from": [
     235
    ]
@@ -51,8 +55,12 @@
   },
   {
    "name": "MarineAngemon",
-   "game": "dcb",
-   "model": 230
+   "game": "dw2",
+   "model": "M216MANG",
+   "level": 5,
+   "element": 5,
+   "donor": 28,
+   "scale": 0.17
   },
   {
    "name": "Quetzalmon",

@@ -583,6 +583,9 @@ def make_room(model, nbones, idx, keep=(), _reuse_sources=True):
                 taken[spot[1] + r] |= m << spot[0]
         if len(moves) != len(ks):
             continue
+        if any(not (0 <= u + dx < 256 and 0 <= v + dy < 256)       # a corner outside its island's rasterised texels
+               for k, (dx, dy, _) in moves.items() for i in islands[k] for u, v in faces[i][1]):  # can leave the page
+            continue
         out, new = bytearray(model), bytearray(idx)
         for k, (dx, dy, dil) in moves.items():
             for x, y in dil:
