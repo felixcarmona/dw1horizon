@@ -57,4 +57,5 @@ jobs:
           python3 -m unittest discover -s tools/guide -p 'test_*.py'
           python3 tools/release_pages_test.py
           node web/test/i18n.mjs
+          node web/test/installers.mjs
           node web/test/wiki.mjs build/pages-site

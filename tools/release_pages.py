@@ -12,6 +12,7 @@ from pathlib import Path, PurePosixPath
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 
 import release
@@ -264,6 +265,76 @@ def desktop_apps(folder, package, tag):
         return None
 
 
+# The empty installers (Horizon Play with no game in it) the page puts the player's disc into, as the desktop patcher
+# does (tools/patcher/desktop.py TEMPLATES): desktop.yml attaches the first three to the release, player.yml the Linux
+# one. The browser cannot read GitHub's release downloads (no CORS), so the site serves copies of them.
+PLAYERS = {'apk': 'Horizon-Play.apk', 'setup': 'Horizon-Setup.exe', 'mac': 'Horizon-Play-macOS.zip',
+           'linux': 'Horizon-Play-Linux-x86_64.tar.gz'}
+PLAYER_MAGIC = {'apk': b'PK\x03\x04', 'setup': b'MZ', 'mac': b'PK\x03\x04', 'linux': b'\x1f\x8b'}
+
+
+def players(folder, out, tag):
+    """The installer templates the page may offer (engine/current.json `players`), or None; written to out/players/TAG/.
+
+    release.yml downloads the templates the release has into inputs/players/, with assets.json (GitHub's list of the
+    release's assets: name, size, digest). A template is offered when it is listed there and matches its size and
+    SHA-256 (the check the desktop patcher makes before it uses one); any other is left out with a warning, never the
+    deployment. Beside them, what the browser needs to make the same files the desktop makes: the APK's signing key
+    (tools/patcher/android-key.json, the one every APK is signed with), the Linux .run's header (linux_run.header())
+    and the icon the .run installs (make_icons.png(256)). URLs are relative to the site's root."""
+    if not folder.is_dir():
+        return None
+    try:
+        assets = {a['name']: a for a in json.loads((folder / 'assets.json').read_text())}
+    except (OSError, ValueError, TypeError, KeyError) as e:
+        print(f'::warning::the page does not offer the installers: no list of the release assets ({e})')
+        return None
+    base = PurePosixPath('players', tag)
+    found = {}
+    for kind, name in PLAYERS.items():
+        path = folder / name
+        if not path.is_file():
+            continue
+        try:
+            data = path.read_bytes()
+            asset = assets.get(name) or {}
+            require(asset.get('size') == len(data), f'{name} differs from the release asset (size)')
+            given = asset.get('digest') or ''
+            require(not given or given == 'sha256:' + digest(data), f'{name} differs from the release asset (SHA-256)')
+            require(data.startswith(PLAYER_MAGIC[kind]), f'{name} is not what it should be')
+            require(len(data) < 100 * 1024 * 1024, f'{name} is too large for the site')
+            found[kind] = (name, data)
+        except ValueError as e:
+            print(f'::warning::the page does not offer the {kind} installer: {e}')
+    if not found:
+        return None
+    files, result = {}, {}
+    for kind, (name, data) in found.items():
+        files[name] = data
+        result[kind] = {'name': name, 'url': str(base / name), 'size': len(data), 'sha256': digest(data)}
+    if 'apk' in result:
+        key = (ROOT / 'tools/patcher/android-key.json').read_bytes()
+        require(set(json.loads(key)) >= {'n', 'e', 'd', 'cert'}, 'android-key.json is not a signing key')
+        files['android-key.json'] = key
+        result['apk']['key'] = str(base / 'android-key.json')
+    if 'linux' in result:
+        sys.path.insert(0, str(ROOT / 'tools/patcher'))
+        sys.path.insert(1, str(ROOT / 'tools/patcher/app'))
+        try:
+            import linux_run
+            import make_icons
+        finally:
+            del sys.path[:2]
+        files['linux-run-header.sh'] = linux_run.header().encode()
+        files['icon.png'] = make_icons.png(256)
+        result['linux'].update(header=str(base / 'linux-run-header.sh'), icon=str(base / 'icon.png'))
+    for name, data in files.items():
+        p = out / base / name
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(data)
+    return result
+
+
 def build(a):
     info = release.identity(a.tag)
     entry = changelog_entry(info['version'])
@@ -284,6 +355,9 @@ def build(a):
     desktop = desktop_apps(a.inputs / 'desktop', package, a.tag)
     if desktop:
         cur['desktop'] = desktop
+    installers = players(a.inputs / 'players', a.out, a.tag)
+    if installers:
+        cur['players'] = installers
     (a.out / 'engine/current.json').write_text(json.dumps(cur) + '\n')
     total = sum(p.stat().st_size for p in a.out.rglob('*') if p.is_file())
     require(total < LIMIT, 'site exceeds Pages budget')

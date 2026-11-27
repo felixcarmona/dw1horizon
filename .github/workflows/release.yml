@@ -65,6 +65,17 @@ jobs:
                    --pattern Horizon-Patcher-Linux-x86_64.tar.gz \
                  || echo '::notice::No Linux desktop app on this release.'; } \
             || { echo '::notice::No desktop apps on this release yet: the page does not offer them.'; rm -rf build/pages-input/desktop; }
+          # The empty installers the page puts the player's disc into (desktop.yml attaches three, player.yml the Linux
+          # one), with GitHub's list of the release's assets (sizes and SHA-256): the page offers those that are here and
+          # match it (tools/release_pages.py players). The browser cannot read release downloads, so the site serves them.
+          mkdir -p build/pages-input/players
+          gh api "repos/$GH_REPO/releases?per_page=30" \
+            --jq "[.[] | select(.tag_name == \"$RELEASE_TAG\") | .assets[] | {name, size, digest}]" \
+            > build/pages-input/players/assets.json || echo '[]' > build/pages-input/players/assets.json
+          for name in Horizon-Play.apk Horizon-Setup.exe Horizon-Play-macOS.zip Horizon-Play-Linux-x86_64.tar.gz; do
+            gh release download "$RELEASE_TAG" --dir build/pages-input/players --pattern "$name" \
+              || echo "::notice::No $name on this release: the page does not offer that installer."
+          done
       - name: Check the publication boundary
         run: python3 tools/release_pages_test.py
       - name: Validate identity and integrity; build the static site

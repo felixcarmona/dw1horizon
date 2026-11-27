@@ -2,7 +2,7 @@ import { conversionSession } from './convert-storage.js';
 import { setupChangelog, renderChangelog } from './changelog.js';
 import { renderFeatureList } from './features.js';
 import { setupMaps, labels as mapLabels } from './maps.js';
-import { setupDesktop, renderDesktop, hasDesktop, visitorOS } from './desktop.js';
+import { setupDesktop, renderDesktop, hasDesktop, visitorOS, ICON as OS_ICON } from './desktop.js';
 import { inspect, checkFiles, partOf } from './disc.js';
 import { i18n, LANGS, NAMES, tag, guess } from './i18n.js';
 import { FLAGS } from './flags.js';
@@ -991,7 +991,8 @@ function renderWarning(ready) {
 }
 
 async function patch() {
-  if (building || !patchState()[1]) return;
+  if (building || make.worker || !patchState()[1]) return;
+  resetMake();
   const persistence = store.persist();              // Start in the click; await before the engine rechecks quota.
   keep.paused = true;                                // (the build needs the lock a copy holds: copied again after)
   keep.waiting = false;
@@ -1134,6 +1135,180 @@ function renderBuild() {
                                     { sha1: st.result.sha1, n: st.result.holes, base: st.base ? st.base.title : '' });
   }
   $('#build-stop').hidden = !busy;
+  renderMake();
+}
+
+// ---------------------------------------------------------------- installers
+//
+// After the build, the same Make choices as the desktop patcher (tools/patcher/gui.py MAKERS): Horizon Play with the
+// disc inside for Android, Windows, Mac and Linux, made here (js/installer-worker.js, js/installers.js) and written to
+// OPFS beside the disc; the disc never leaves the browser. The empty Horizon Play of each system is a release asset
+// the site serves (engine/current.json `players`, tools/release_pages.py players): a release without one has no tile.
+// One at a time, under the build lock (no build or copy of a remembered disc meanwhile); the last one made is kept
+// until the page is left (tidyStorage) or another is made.
+const MAKERS = [['apk', 'Android', '.apk', 'android'], ['setup', 'Windows', '.exe', 'windows'],
+                ['mac', 'Mac', '.zip', 'macos'], ['linux', 'Linux', '.run', 'linux']];
+const MADE_NAME = { apk: '.apk', setup: '-Setup.exe', mac: '-Mac.zip', linux: '-Linux.run' };
+const MAKE_ICON = {
+  // Android's robot head (drawn here); the others are js/desktop.js's
+  android: 'M7.2 4.3 5.8 1.9a.5.5 0 0 1 .87-.5l1.43 2.47A9.9 9.9 0 0 1 12 3.1c1.4 0 2.72.28 3.9.77L17.33 1.4a.5.5 0 0 1 .87.5l-1.4 2.4C19.6 5.88 21.5 8.7 21.75 12H2.25C2.5 8.7 4.4 5.88 7.2 4.3zM7.5 9.1a1.15 1.15 0 1 0 0-2.3 1.15 1.15 0 0 0 0 2.3zm9 0a1.15 1.15 0 1 0 0-2.3 1.15 1.15 0 0 0 0 2.3zM2.25 13.6h19.5v6.9a1.5 1.5 0 0 1-1.5 1.5H3.75a1.5 1.5 0 0 1-1.5-1.5z',
+};
+let players = null;                 // engine/current.json `players` (urls relative to the site's root)
+currentRelease.then((cur) => { players = cur?.players || null; renderMake(); }).catch(() => {});
+const make = { kind: null, result: null, progress: 0, phase: null, worker: null, stop: null, file: null, url: null,
+               error: null, crc: null };
+const madeName = (kind) => `${last?.result?.name || 'Digimon World Horizon'}${MADE_NAME[kind]}`;
+const siteUrl = (rel) => new URL(`../${rel}`, import.meta.url).href;
+
+function makeTile([kind, name, ext, os]) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('fill', 'currentColor');
+  svg.setAttribute('class', `make-icon make-icon-${os}`);
+  const path = document.createElementNS(NS, 'path');
+  path.setAttribute('d', MAKE_ICON[os] || OS_ICON[os]);
+  svg.append(path);
+  const b = el('button', { type: 'button', className: 'make-tile' }, svg,
+               el('span', { className: 'make-name', textContent: name }), el('small', { textContent: ext }));
+  b.dataset.kind = kind;
+  b.addEventListener('click', () => makeInstaller(kind));
+  return b;
+}
+
+function renderMake() {
+  const box = $('#make');
+  if (!box) return;
+  const r = last?.phase === 'done' ? last.result : null;
+  const kinds = MAKERS.filter(([kind]) => players?.[kind]);
+  box.hidden = !r || !kinds.length || !!missingSupport();
+  if (box.hidden) return;
+  if (make.result && make.result !== r) resetMake();          // (a new disc: what was made from the last one is gone)
+  const t = i18n.t;
+  const tiles = $('#make-tiles');
+  if (tiles.dataset.kinds !== kinds.map((k) => k[0]).join()) {
+    tiles.replaceChildren(...kinds.map(makeTile));
+    tiles.dataset.kinds = kinds.map((k) => k[0]).join();
+  }
+  for (const b of tiles.children) {
+    b.disabled = !!make.worker;
+    b.setAttribute('aria-pressed', String(make.kind === b.dataset.kind));
+  }
+  const running = !!make.worker;
+  $('#make-run').hidden = !running;
+  if (running) {
+    const pct = Math.floor(100 * make.progress);
+    $('#make-phase').textContent = make.phase === 'fetch' ? t('make.fetch') : t(`make.making.${make.kind}`);
+    $('#make-pct').textContent = `${pct} %`;
+    $('#make-progress').style.setProperty('--f', String(make.progress));
+    $('#make-progress').setAttribute('aria-valuenow', String(pct));
+  }
+  const done = $('#make-done');
+  done.hidden = running || !make.file;
+  if (make.file) {
+    const a = $('#make-dl');
+    a.textContent = t('make.download', { file: make.file.name, mb: mb(make.file.size) });
+    Object.assign(a, { href: make.url, download: make.file.name });
+    $('#make-note').textContent = t(`make.done.${make.kind}`, { file: make.file.name });
+  }
+  const err = $('#make-error');
+  err.hidden = !make.error;
+  if (make.error) {
+    const e = make.error;
+    err.replaceChildren(el('p', { textContent: e.key === 'engine.otherTab' ? t(e.key) : t('make.failed', { detail: e.detail }) }),
+                        ...(e.key === 'engine.otherTab' ? [] : [fixList(e.kind, e.bytes)]));
+  }
+}
+
+function resetMake() {
+  if (make.worker) stopMake();
+  if (make.url) URL.revokeObjectURL(make.url);
+  Object.assign(make, { kind: null, result: null, progress: 0, phase: null, file: null, url: null, error: null, crc: null });
+}
+
+// The installer of `kind` from the disc just built. The storage check before it is the build's (a quota or blocked
+// storage stops it here; an estimate that looks low does not, as for the build); a full disk while it writes is said
+// with the same fixes.
+async function makeInstaller(kind) {
+  const r = last?.phase === 'done' ? last.result : null;
+  const p = players?.[kind];
+  if (!r || !p || make.worker || building) return;
+  if (make.result !== r) resetMake();
+  if (make.url) URL.revokeObjectURL(make.url);
+  Object.assign(make, { kind, result: r, progress: 0, phase: 'fetch', file: null, url: null, error: null });
+  const need = r.bin.size + p.size + 64 * 2 ** 20;
+  make.worker = 'starting';
+  let cancelled = false;
+  make.stop = () => { cancelled = true; };            // (Cancel before the worker starts)
+  renderMake();
+  keep.paused = true;                                   // (a remembered disc's copy would race it for the room)
+  keep.waiting = false;
+  await stopCopy();
+  try {
+    await withLock(async (free) => {
+      if (!free) { make.error = { key: 'engine.otherTab' }; return; }
+      const room = await checkRoom(need, TEST && Number(new URLSearchParams(location.search).get('room')) || undefined);
+      if (room.reason === 'quota' || room.reason === 'blocked') {
+        make.error = { detail: room.msg || room.reason, kind: room.reason === 'quota' ? 'storage' : 'blocked', bytes: need };
+        return;
+      }
+      if (!cancelled) await runMaker(kind, r, p, need);
+    });
+  } catch (e) {
+    make.error = { detail: String(e?.message || e), kind: null, bytes: need };
+  } finally {
+    make.worker = null;
+    make.stop = null;
+    keep.paused = false;
+    renderMake();
+    pumpCopies();
+  }
+}
+
+function runMaker(kind, r, p, need) {
+  return new Promise((resolve) => {
+    const w = new Worker(new URL('./installer-worker.js', import.meta.url), { type: 'module' });
+    let over = false;
+    const finish = async (error, remove = !!error) => {
+      if (over) return;
+      over = true;
+      w.terminate();
+      if (error) make.error = error;
+      if (remove) await removeInstallers();          // (still under the lock)
+      resolve();
+    };
+    make.worker = w;
+    make.stop = () => finish(null, true);
+    w.onmessage = ({ data: m }) => {
+      if (m.error) { finish({ detail: m.error, kind: m.kind, bytes: need }); return; }
+      if (m.done) {
+        make.file = m.done;
+        make.url = URL.createObjectURL(m.done.slice(0, m.done.size, kind === 'apk' ? 'application/vnd.android.package-archive' : 'application/octet-stream'));
+        if (m.crc != null) make.crc = m.crc;
+        finish(null);
+        return;
+      }
+      make.progress = m.progress;
+      make.phase = m.phase;
+      renderMake();
+    };
+    w.onerror = (e) => { e.preventDefault(); finish({ detail: e.message || 'the worker did not start', kind: null, bytes: need }); };
+    const abs = (u) => u && siteUrl(u);
+    w.postMessage({ kind, image: r.bin, file: madeName(kind), crc: make.crc,
+                    template: { url: abs(p.url), size: p.size, sha256: p.sha256 },
+                    key: abs(p.key), header: abs(p.header), icon: abs(p.icon) });
+  });
+}
+
+function stopMake() {
+  if (make.stop) make.stop();
+}
+
+// What an installer left in OPFS (horizon-build/installers/): a stopped or failed one, or the last one made.
+async function removeInstallers() {
+  try {
+    const root = await (await navigator.storage.getDirectory()).getDirectoryHandle('horizon-build');
+    await root.removeEntry('installers', { recursive: true });
+  } catch { /* none, or still being closed: tidyStorage takes it next time */ }
 }
 
 // ---------------------------------------------------------------- features
@@ -1182,6 +1357,7 @@ async function start() {
   $('#audit-link').closest('p').hidden = !LINKS.github;
   $('#patch-button').addEventListener('click', patch);
   $('#build-stop').addEventListener('click', () => { if (building) building.cancel(); });
+  $('#make-stop').addEventListener('click', stopMake);
   // one button, both files: the .bin now, the .cue just after (the browser may ask once to allow several downloads)
   $('#dl-all').addEventListener('click', (e) => {
     e.preventDefault();

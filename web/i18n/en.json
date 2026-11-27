@@ -701,5 +701,20 @@
   "wiki.pdfContents": "Contents",
   "wiki.pdfSpoilers": "SPOILERS — appendix",
  "data.recruit.method.263.unreachable": "This version places Mushroomon in an unused Spore Area with no walking entrance. Update to a version containing the Mushroomon recruitment fix.",
- "data.recruit.when.263.unreachable": "Unreachable by normal play in this version; waiting or bringing an item will not make it appear."
+ "data.recruit.when.263.unreachable": "Unreachable by normal play in this version; waiting or bringing an item will not make it appear.",
+ "make.title": "Ready to play",
+ "make.lead": "Or get Horizon Play, our player, with your disc already inside: install it and play, with no emulator to set up. It is made here in your browser from the disc you just built.",
+ "make.fetch": "Getting Horizon Play…",
+ "make.making.apk": "Making the Android app",
+ "make.making.setup": "Making the Windows installer",
+ "make.making.mac": "Making the Mac app",
+ "make.making.linux": "Making the Linux installer",
+ "make.cancel": "Cancel",
+ "make.download": "Download {file} ({mb} MB)",
+ "make.done.apk": "Copy it to the phone or handheld and open it to install it (Android may ask once to allow apps from that source). The game is inside, nothing to set up.",
+ "make.done.setup": "Run it on any Windows computer to install the game and Horizon Play. If Windows says it does not know the app, choose More info, then Run anyway. Nothing to set up.",
+ "make.done.mac": "Unzip it on a Mac and open the app. It is not signed by Apple, so the first time right-click it and choose Open (or run xattr -cr on it). The game is inside.",
+ "make.done.linux": "On any Linux computer, run sh \"{file}\" in a terminal. It installs for the current user (no sudo) and adds the game to the applications menu. The game is inside.",
+ "make.failed": "The installer could not be made: {detail}",
+ "make.foot": "It holds your own copy of the game: keep it to yourself. This browser keeps only the last one made."
 }

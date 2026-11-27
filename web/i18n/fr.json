@@ -701,5 +701,20 @@
   "wiki.pdfContents": "Sommaire",
   "wiki.pdfSpoilers": "SPOILERS — annexe",
  "data.recruit.method.263.unreachable": "Cette version place Mushroomon dans une Zone des spores sans accès à pied. Installez une version contenant la correction de son recrutement.",
- "data.recruit.when.263.unreachable": "Inaccessible en jouant normalement dans cette version ; attendre ou apporter un objet ne le fera pas apparaître."
+ "data.recruit.when.263.unreachable": "Inaccessible en jouant normalement dans cette version ; attendre ou apporter un objet ne le fera pas apparaître.",
+ "make.title": "Prêt à jouer",
+ "make.lead": "Ou prenez Horizon Play, notre lecteur, avec votre disque déjà dedans : installez-le et jouez, sans émulateur à régler. Il est créé ici, dans votre navigateur, à partir du disque que vous venez de créer.",
+ "make.fetch": "Téléchargement de Horizon Play…",
+ "make.making.apk": "Création de l'appli Android",
+ "make.making.setup": "Création de l'installateur Windows",
+ "make.making.mac": "Création de l'appli Mac",
+ "make.making.linux": "Création de l'installateur Linux",
+ "make.cancel": "Annuler",
+ "make.download": "Télécharger {file} ({mb} Mo)",
+ "make.done.apk": "Copiez-la sur le téléphone ou la console portable et ouvrez-la pour l'installer (Android peut demander une fois d'autoriser les applis de cette source). Le jeu est dedans, rien à régler.",
+ "make.done.setup": "Lancez-le sur n'importe quel ordinateur Windows pour installer le jeu et Horizon Play. Si Windows dit ne pas connaître l'appli, choisissez Informations complémentaires, puis Exécuter quand même. Rien à régler.",
+ "make.done.mac": "Décompressez-le sur un Mac et ouvrez l'appli. Elle n'est pas signée par Apple : la première fois, faites un clic droit dessus et choisissez Ouvrir (ou lancez xattr -cr dessus). Le jeu est dedans.",
+ "make.done.linux": "Sur n'importe quel Linux, lancez sh \"{file}\" dans un terminal. Il s'installe pour l'utilisateur actuel (sans sudo) et ajoute le jeu au menu des applications. Le jeu est dedans.",
+ "make.failed": "L'installateur n'a pas pu être créé : {detail}",
+ "make.foot": "Il contient votre propre copie du jeu : gardez-la pour vous. Ce navigateur ne garde que le dernier créé."
 }

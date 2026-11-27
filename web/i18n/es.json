@@ -701,5 +701,20 @@
   "wiki.pdfContents": "Índice",
   "wiki.pdfSpoilers": "SPOILERS — apéndice",
  "data.recruit.method.263.unreachable": "Esta versión sitúa a Mushroomon en una Zona de Esporas sin entrada a pie. Actualiza a una versión que incluya la corrección de su reclutamiento.",
- "data.recruit.when.263.unreachable": "Inaccesible jugando con normalidad en esta versión; esperar o llevar un objeto no hará que aparezca."
+ "data.recruit.when.263.unreachable": "Inaccesible jugando con normalidad en esta versión; esperar o llevar un objeto no hará que aparezca.",
+ "make.title": "Listo para jugar",
+ "make.lead": "O llévate Horizon Play, nuestro reproductor, con tu disco ya dentro: instálalo y juega, sin emulador que configurar. Se crea aquí, en tu navegador, a partir del disco que acabas de crear.",
+ "make.fetch": "Descargando Horizon Play…",
+ "make.making.apk": "Creando la app de Android",
+ "make.making.setup": "Creando el instalador de Windows",
+ "make.making.mac": "Creando la app de Mac",
+ "make.making.linux": "Creando el instalador de Linux",
+ "make.cancel": "Cancelar",
+ "make.download": "Descargar {file} ({mb} MB)",
+ "make.done.apk": "Cópiala al móvil o la consola portátil y ábrela para instalarla (puede que Android pida una vez permiso para instalar apps de ese origen). Lleva el juego dentro, no hay nada que configurar.",
+ "make.done.setup": "Ejecútalo en cualquier ordenador con Windows para instalar el juego y Horizon Play. Si Windows dice que no conoce la app, elige Más información y luego Ejecutar de todas formas. No hay nada que configurar.",
+ "make.done.mac": "Descomprímelo en un Mac y abre la app. No está firmada por Apple, así que la primera vez haz clic derecho sobre ella y elige Abrir (o ejecuta xattr -cr sobre ella). El juego va dentro.",
+ "make.done.linux": "En cualquier Linux, ejecuta sh \"{file}\" en un terminal. Se instala para el usuario actual (sin sudo) y añade el juego al menú de aplicaciones. El juego va dentro.",
+ "make.failed": "No se pudo crear el instalador: {detail}",
+ "make.foot": "Lleva tu propia copia del juego: no la compartas. Este navegador guarda solo el último que hayas creado."
 }

@@ -701,5 +701,20 @@
   "wiki.pdfContents": "Indice",
   "wiki.pdfSpoilers": "SPOILER — appendice",
  "data.recruit.method.263.unreachable": "Questa versione colloca Mushroomon in una Zona delle Spore inutilizzata senza accesso a piedi. Aggiorna a una versione con la correzione del suo reclutamento.",
- "data.recruit.when.263.unreachable": "Inaccessibile giocando normalmente in questa versione; aspettare o portare un oggetto non lo farà apparire."
+ "data.recruit.when.263.unreachable": "Inaccessibile giocando normalmente in questa versione; aspettare o portare un oggetto non lo farà apparire.",
+ "make.title": "Pronto per giocare",
+ "make.lead": "Oppure prendi Horizon Play, il nostro lettore, con il tuo disco già dentro: installalo e gioca, senza emulatori da configurare. Viene creato qui nel tuo browser dal disco che hai appena creato.",
+ "make.fetch": "Download di Horizon Play…",
+ "make.making.apk": "Creazione dell'app Android",
+ "make.making.setup": "Creazione dell'installatore Windows",
+ "make.making.mac": "Creazione dell'app per Mac",
+ "make.making.linux": "Creazione dell'installatore Linux",
+ "make.cancel": "Annulla",
+ "make.download": "Scarica {file} ({mb} MB)",
+ "make.done.apk": "Copiala sul telefono o sulla console portatile e aprila per installarla (Android può chiedere una volta di consentire le app da quella fonte). Il gioco è dentro, niente da configurare.",
+ "make.done.setup": "Eseguilo su qualsiasi computer Windows per installare il gioco e Horizon Play. Se Windows dice di non riconoscere l'app, scegli Ulteriori informazioni e poi Esegui comunque. Niente da configurare.",
+ "make.done.mac": "Decomprimilo su un Mac e apri l'app. Non è firmata da Apple: la prima volta fai clic destro sull'app e scegli Apri (oppure esegui xattr -cr su di essa). Il gioco è dentro.",
+ "make.done.linux": "Su qualsiasi Linux, esegui sh \"{file}\" in un terminale. Si installa per l'utente corrente (senza sudo) e aggiunge il gioco al menu delle applicazioni. Il gioco è dentro.",
+ "make.failed": "Non è stato possibile creare l'installatore: {detail}",
+ "make.foot": "Contiene la tua copia personale del gioco: tienila per te. Questo browser conserva solo l'ultimo creato."
 }

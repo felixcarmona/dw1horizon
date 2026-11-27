@@ -701,5 +701,20 @@
   "wiki.pdfContents": "Índex",
   "wiki.pdfSpoilers": "ESPÒILERS — apèndix",
  "data.recruit.method.263.unreachable": "Aquesta versió situa Mushroomon en una Zona d’Espores sense entrada a peu. Actualitza a una versió que inclogui la correcció del seu reclutament.",
- "data.recruit.when.263.unreachable": "Inaccessible jugant amb normalitat en aquesta versió; esperar o dur un objecte no farà que aparegui."
+ "data.recruit.when.263.unreachable": "Inaccessible jugant amb normalitat en aquesta versió; esperar o dur un objecte no farà que aparegui.",
+ "make.title": "A punt per jugar",
+ "make.lead": "O endú-te Horizon Play, el nostre reproductor, amb el teu disc ja a dins: instal·la'l i juga, sense cap emulador per configurar. Es crea aquí, al teu navegador, a partir del disc que acabes de crear.",
+ "make.fetch": "Baixant Horizon Play…",
+ "make.making.apk": "Creant l'app d'Android",
+ "make.making.setup": "Creant l'instal·lador de Windows",
+ "make.making.mac": "Creant l'app de Mac",
+ "make.making.linux": "Creant l'instal·lador de Linux",
+ "make.cancel": "Cancel·la",
+ "make.download": "Baixa {file} ({mb} MB)",
+ "make.done.apk": "Copia-la al mòbil o a la consola portàtil i obre-la per instal·lar-la (potser Android et demanarà un cop que permetis apps d'aquest origen). Porta el joc a dins, no cal configurar res.",
+ "make.done.setup": "Executa'l en qualsevol ordinador amb Windows per instal·lar el joc i Horizon Play. Si Windows diu que no coneix l'app, tria Més informació i després Executa igualment. No cal configurar res.",
+ "make.done.mac": "Descomprimeix-lo en un Mac i obre l'app. No està signada per Apple, així que la primera vegada fes-hi clic dret i tria Obre (o executa-hi xattr -cr). El joc va a dins.",
+ "make.done.linux": "En qualsevol Linux, executa sh \"{file}\" en un terminal. S'instal·la per a l'usuari actual (sense sudo) i afegeix el joc al menú d'aplicacions. El joc va a dins.",
+ "make.failed": "No s'ha pogut crear l'instal·lador: {detail}",
+ "make.foot": "Porta la teva pròpia còpia del joc: no la comparteixis. Aquest navegador només guarda l'últim que hagis creat."
 }

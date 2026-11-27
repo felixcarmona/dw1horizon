@@ -163,7 +163,8 @@ the asset missing from that release, the stage label says so and the button stay
 `horizon-checksums.json`. On Linux the **Linux installer (.run)** button reuses the Horizon Play the patcher carries and downloads nothing. A Mac patcher builds the Mac app from its own bundled Horizon Play and writes a `.dmg`; on
 Windows and Linux the button writes `<disc>-Mac.zip` from the downloaded template, which Apple has not signed, so on
 the Mac the first open is right-click then Open. Each output is the player's own disc plus the template, for their
-computers only. Details in [player.md](player.md#a-setup-wizard).
+computers only. Details in [player.md](player.md#a-setup-wizard). The browser builder makes the same four after its build
+(web/README.md, "Installers with the disc inside").
 
 - **Same code path.** The app downloads the release package, checks it, and loads the package's own `dwpatch.py`
   (with its `isowriter.py` and `fontcopy.py`) from the package folder: the apply is the command line's, from the same
