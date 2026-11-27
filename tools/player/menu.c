@@ -174,6 +174,7 @@ void menu_event(const SDL_Event *e, int ww, int wh) {
   float x, y; bool down;
   switch (e->type) {
   case SDL_FINGERDOWN: case SDL_FINGERUP:
+    if (SDL_GetTouchDeviceType(e->tfinger.touchId) == SDL_TOUCH_DEVICE_INDIRECT_RELATIVE) return;   /* (a trackpad) */
     x = e->tfinger.x * ww; y = e->tfinger.y * wh; down = e->type == SDL_FINGERDOWN; break;
   case SDL_MOUSEBUTTONDOWN: case SDL_MOUSEBUTTONUP: {
     if (e->button.which == SDL_TOUCH_MOUSEID || e->button.button != SDL_BUTTON_LEFT) return;

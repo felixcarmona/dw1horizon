@@ -1,8 +1,8 @@
 /* Horizon Play: a small libretro host that runs the patched disc in the SwanStation core with fixed settings
- * (8 MB RAM, CPU at 250 %, GPU upscaling, the free OpenBIOS), full screen, pad, keyboard or touch, no emulator menus.
+ * (8 MB RAM, CPU at 250 %, GPU upscaling, the free OpenBIOS), in a window or full screen, pad, keyboard or touch, no emulator menus.
  * docs/player.md describes the bundle and the controls.
  *
- *   horizon-play [--windowed] [--scale N] [--core PATH] [--system DIR] [--saves DIR] DISC.cue
+ *   horizon-play [--fullscreen] [--scale N] [--core PATH] [--system DIR] [--saves DIR] DISC.cue
  *
  * SDL2 and OpenGL (desktop 3.3 core, or OpenGL ES 3 on Android). MIT, like the rest of Horizon's code; the core it
  * loads is GPL-3 and ships as its own library next to this program.
@@ -495,7 +495,6 @@ static void settings_save(void) {
 static void toggle_fullscreen(void) {
   bool full = SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN;
   SDL_SetWindowFullscreen(window, full ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
-  SDL_ShowCursor(full ? SDL_ENABLE : SDL_DISABLE);
 }
 
 static void card_save(void);
@@ -941,11 +940,12 @@ static bool new_version_found(char *out, size_t n) {
 int main(int argc, char **argv) {
   if (argc == 4 && !strcmp(argv[1], "--unpack")) return unpack_setup(argv[2], argv[3]);
   const char *disc = NULL, *core_path = NULL, *sys = NULL, *saves = NULL;
-  bool windowed = false, no_disc = false; int scale = 0, force_w = 0, force_h = 0;
+  bool windowed = true, no_disc = false; int scale = 0, force_w = 0, force_h = 0;
   for (int i = 1; i < argc; i++) {
-    if (!strcmp(argv[i], "--windowed")) windowed = true;
+    if (!strcmp(argv[i], "--windowed")) windowed = true;                  /* (the default: a window) */
+    else if (!strcmp(argv[i], "--fullscreen")) windowed = false;
     else if (!strcmp(argv[i], "--window") && i + 1 < argc) {   /* --window WxH: a window of that size (tests) */
-      windowed = sscanf(argv[++i], "%dx%d", &force_w, &force_h) == 2;
+      if (sscanf(argv[++i], "%dx%d", &force_w, &force_h) != 2) force_w = force_h = 0;
     }
     else if (!strcmp(argv[i], "--no-disc")) no_disc = true;               /* the BIOS alone (a smoke test) */
     else if (!strcmp(argv[i], "--touch")) force_touch = true;            /* the touch pad from the start */
@@ -1044,7 +1044,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  /* the window: full screen on the desktop's mode unless --windowed */
+  /* a resizable window (F11 or Alt+Enter: full screen), or the whole screen with --fullscreen; the cursor stays */
   SDL_DisplayMode dm = {0, 1440, 1080, 0, NULL}; int disp_h = 1080;
   if (SDL_GetDesktopDisplayMode(0, &dm) == 0) disp_h = dm.h < dm.w ? dm.h : dm.w;   /* a phone may report portrait */
 #ifdef HORIZON_GLES
@@ -1071,7 +1071,6 @@ int main(int argc, char **argv) {
 #endif
   window = SDL_CreateWindow("Digimon World: Horizon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, win_w, win_h, flags);
   if (!window) { fail("Horizon", SDL_GetError()); return 1; }
-  if (!windowed) SDL_ShowCursor(SDL_DISABLE);
   glctx = SDL_GL_CreateContext(window);
   if (!glctx || !load_gl()) { fail("Horizon", "This computer's graphics do not support OpenGL 3.3."); return 1; }
   if (!overlay_init()) SDL_Log("no touch pad: its drawing could not be set up");

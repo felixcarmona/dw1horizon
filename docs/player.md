@@ -12,7 +12,7 @@ libretro core and boots the patched disc with the free OpenBIOS. Its settings ar
 | BIOS | OpenBIOS (`system/openbios.bin`), no fast-boot patch | no Sony BIOS is needed or shipped |
 | CD | reads 8x, seeks 10x (`CDROM_ReadSpeedup` 4, `CDROM_SeekSpeedup` 10) | loads take about half the time; the core keeps music and movie sound at 1x |
 | Memory card | slot 1, `duckstation_shared_card_1.mcd` in the user's data folder, written by the program each second it changed and when the app goes to the background | survives updates of the app |
-| Screen | full screen, 4:3, F11 / Alt+Enter toggles | |
+| Screen | a resizable 4:3 window with the mouse cursor shown (a left click shows the touch pad and presses what is under the cursor; a Mac trackpad's touches are not taps); F11 / Alt+Enter toggles full screen (`--fullscreen` starts in it); Android: full screen | |
 | Pace | the screen's refresh (vsync); near the console's 59.82 Hz the sound is stretched by under half a percent to follow it, steering its queue to 60 ms. A frame the machine was too slow for (heavy loads) is caught up: the next one runs without being shown | no stutter in the music, no missed refreshes |
 
 The program carries no game data. It plays the disc that the patcher builds from the player's own disc.
@@ -60,7 +60,7 @@ It checks out SwanStation and OpenBIOS (PCSX-Redux's `nugget`) at the commits pi
 core, OpenBIOS (with `OPENBIOS_SHELL=shell`: the default shell gave a black screen) and the program, with SDL2
 fetched by CMake at a pinned hash and linked statically.
 
-Test flags: `--windowed`, `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
+Test flags: `--windowed` (the default; kept for old launchers), `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
 `--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option),
 `--touch` (the touch pad from the start), `--first-start` (ask touch or controller again), `--ask-card` (the new install's IMPORT / NEW GAME
 question), `--window WxH` (a window
