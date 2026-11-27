@@ -221,8 +221,8 @@ S=$O/sound
 MH_ALL=$O/MAPHEAD.SCN; [ -f "$O/with-new-screens/MAPHEAD.SCN" ] && MH_ALL=$O/with-new-screens/MAPHEAD.SCN
 $PY tools/sound.py spu-budget --vhb-dir "$S" --maphead "$MH_ALL" | tail -3   # the built MAPHEAD (the new screens' too): its screens' music
 for f in "$S"/*.VHB; do   # the staged size of every chunk of the disc's banks (the others are the original's, within it)
-  $PY tools/sound.py check "$f" | grep -q 'staging buffer' && { $PY tools/sound.py check "$f" | grep 'staging buffer'; exit 1; }
-done; echo "sound staging: every chunk within SOUND_STAGING_MAX $SOUND_STAGING_MAX"
+  $PY tools/sound.py check "$f" | grep -qE 'staging buffer|VAB header' && { $PY tools/sound.py check "$f" | grep -E 'staging buffer|VAB header'; exit 1; }
+done; echo "sound staging: every chunk within SOUND_STAGING_MAX $SOUND_STAGING_MAX, every VAB header within its VHB_HEADER buffer"
 # The screens >= 255 (patch 0146, tools/screens.py; derive's screens step): every screen file with such an id in
 # content/screens and the SCREEN_CONTENT folders (dir:dir) becomes a record of SCRN.DAT with its MAPHEAD section, which
 # leaves MAPHEAD.SCN (the executable reads it from the disc when the screen is entered).

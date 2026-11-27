@@ -1,0 +1,52 @@
+From 8106aba96dfb0ac825c504e3c0194fe3e11c2d17 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 17:31:46 +0000
+Subject: [PATCH] Sound header buffers are as big as the real headers
+
+---
+ src/main/sound.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/src/main/sound.c b/src/main/sound.c
+index b52c445..80507ce 100644
+--- a/src/main/sound.c
++++ b/src/main/sound.c
+@@ -19,15 +19,17 @@ typedef struct {
+ 	VagAtr tones[][VAB_TONES_PER_PROGRAM];
+ } VhbFile;
+ 
+-uint8_t VHB_HEADER_SS[0x1000];
+-uint8_t VHB_HEADER_SL[0x1000];
+-uint8_t VHB_HEADER_FAALL[0x2000];
+-uint8_t VHB_HEADER_VLALL[0x1000];
+-uint8_t VHB_HEADER_VBALL_0[0x1000];
+-uint8_t VHB_HEADER_VBALL_1[0x1000];
+-uint8_t VHB_HEADER_VBALL_2[0x1000];
+-uint8_t VHB_HEADER_VBALL_3[0x1000];
+-uint8_t VHB_HEADER_ESALL_SB[0x1800];
++/* sized to the real VAB headers (0xA20 + 0x200 per program); tools/sound.py FILES vhmax holds the same numbers and
++ * refuses a bigger bank at build time, loadVab refuses it at run time */
++uint8_t VHB_HEADER_SS[0xE20];
++uint8_t VHB_HEADER_SL[0xE20];
++uint8_t VHB_HEADER_FAALL[0x1C20];
++uint8_t VHB_HEADER_VLALL[0xC20];
++uint8_t VHB_HEADER_VBALL_0[0xC20];
++uint8_t VHB_HEADER_VBALL_1[0xC20];
++uint8_t VHB_HEADER_VBALL_2[0xC20];
++uint8_t VHB_HEADER_VBALL_3[0xC20];
++uint8_t VHB_HEADER_ESALL_SB[0x1420];
+ 
+ void *VHB_HEADER_ADDR[NUM_SOUND_BUFFERS] = {
+ 	VHB_HEADER_SS,
+@@ -365,7 +367,7 @@ static unsigned long SPU_HOME[NUM_SOUND_BUFFERS] = {
+ 
+ /* size of each VHB_HEADER_* buffer: a VAB header must fit (was unchecked) */
+ static uint16_t VHB_HEADER_SIZE[NUM_SOUND_BUFFERS] = {
+-	0x1000, 0x1000, 0x2000, 0x1000, 0x1000, 0x1000, 0x1000, 0x1000, 0x1800, 0,
++	0xE20, 0xE20, 0x1C20, 0xC20, 0xC20, 0xC20, 0xC20, 0xC20, 0x1420, 0,
+ };
+ 
+ char SEQ_TABLE[SS_SEQ_TABSIZ];
+-- 
+2.55.0
+
