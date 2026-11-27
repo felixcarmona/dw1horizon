@@ -10,10 +10,11 @@ donor rig with it, tick by tick:
   length); a bone carrying several source pieces takes their weighted mean (weights: the pieces' spread about the
   joint), riders (native_binding `riders`) are bones of their own and follow their lead piece;
 - the bones above the body that carry nothing turn with the source's body bone, the body joint follows the source's
-  body joint (scaled by the ratio of the two hip heights), the root keeps the source's travel; the source root's turn
-  goes to the root's children (`fold_root_turn`): the engine never resets the root's rotation (startAnimation poses
-  bones 1 on, and the root's rotation is the entity's heading), so a turn keyed on it stays behind whenever a clip is
-  cut short or does not close (DemiDevimon's guard, which the defense gym restarts mid-clip, pitched it into the floor);
+  body joint (scaled by the ratio of the two hip heights), the root keeps the source's travel; a turn of the root
+  (the source's or a repair's) goes to the root's children (`fold_root_turn`): the engine never resets the root's
+  rotation (startAnimation poses bones 1 on, and the root's rotation is the entity's heading), so a turn keyed on it
+  stays behind whenever a clip is cut short or does not close (DemiDevimon's guard, which the defense gym restarts
+  mid-clip, pitched it a little further each time until it lay in the floor);
 - every other bone keeps its rest rotation; translations are the bound rig's, scale channels its rest ones;
 - the clip is retimed to the length the slot has in the bound model (technique effects are timed to it) as
   tools/models/battle_restore.py retimes: idles repeat whole cycles, movements and one-shot clips are resampled.
@@ -328,6 +329,7 @@ def apply(output, ctx, slots, keep_events=(), repairs=None, ticks=None, share=No
         if repairs and str(slot) in repairs:
             samples = clip_repair.apply_ops(samples, [p for _, p in rig], repairs[str(slot)])
             events = repaired_events(events, len(frames), repairs[str(slot)])
+            samples = fold_root_turn(samples, rig)          # a repair that turns bone 0 (the whole body)
         anim = mmd.encode_anim(samples, nb, 0 if loop == 0 else None, events, tol=ctx.get('tol', 1), repeats=tile > 1)
         model.anims.table[slot] = len(model.anims.anims)
         model.anims.anims.append(anim)

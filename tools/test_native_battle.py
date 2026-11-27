@@ -27,6 +27,23 @@ class NativeBattle(unittest.TestCase):
             for x, y in zip(ra, rb):
                 self.assertAlmostEqual(x, y, places=places)
 
+    def test_a_root_turn_goes_to_the_roots_children(self):
+        # the engine never sets bone 0's rotation back, so no clip may key it; the pose must look the same
+        import mmd
+        rig = [(None, -1), (None, 0), (None, 1)]
+        samples = [[[4096] * 3 + [0, 0, 0] + [0, 0, 0],
+                    [4096] * 3 + [40, 0, 0] + [0, -100, 30],
+                    [4096] * 3 + [0, 0, 0] + [0, -50, 0]] for _ in range(3)]
+        samples[1][0][3:6] = [-150, 60, 0]
+        out = native_battle.fold_root_turn(samples, rig)
+        self.assertEqual({tuple(p[0][3:6]) for p in out}, {(0, 0, 0)})
+        self.assertEqual(out[0], samples[0])
+        self.assertEqual(out[1][2], samples[1][2])          # a grandchild keeps its local pose
+        R = native_battle._mul(mmd.rot_matrix(-150, 60, 0), mmd.rot_matrix(40, 0, 0))
+        self.close(mmd.rot_matrix(*out[1][1][3:6]), R, places=2)
+        for got, want in zip(out[1][1][6:9], native_battle._apply(mmd.rot_matrix(-150, 60, 0), [0, -100, 30])):
+            self.assertLessEqual(abs(got - want), 1)
+
     def test_polar_drops_the_stretch(self):
         r = _rz(0.7)
         stretched = [[v * k for v, k in zip(row, (2.0, 0.5, 1.3))] for row in r]
