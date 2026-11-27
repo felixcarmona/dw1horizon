@@ -90,11 +90,14 @@ def zip_app(app, out, tick=lambda n: None):
                 elif stat.S_ISDIR(st.st_mode):
                     info = zipfile.ZipInfo(arc + '/')
                     info.create_system = 3
-                    info.external_attr = ((st.st_mode & 0xFFFF) << 16) | 0x10
+                    info.external_attr = (((stat.S_IFDIR | 0o755) if os.name == 'nt' else st.st_mode & 0xFFFF) << 16) | 0x10
                     z.writestr(info, b'')
                 else:
                     info = zipfile.ZipInfo.from_file(path, arc)
                     info.create_system = 3
+                    if os.name == 'nt':   # Windows keeps no execute bits: the program and its libraries get them back
+                        runs = '/Contents/MacOS/' in arc or arc.endswith(('.dylib', '.so'))
+                        info.external_attr = (stat.S_IFREG | (0o755 if runs else 0o644)) << 16
                     info.compress_type = zipfile.ZIP_DEFLATED
                     with open(path, 'rb') as src, z.open(info, 'w', force_zip64=True) as dst:
                         while True:

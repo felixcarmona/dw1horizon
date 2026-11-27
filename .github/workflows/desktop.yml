@@ -319,7 +319,17 @@ jobs:
           sys.path.insert(0, 'tools/patcher')
           import desktop
           app = desktop.unzip_app('mac/Horizon-Play-macOS.zip', os.path.join(os.environ['RUNNER_TEMP'], 'unzipped'))
-          subprocess.run(['codesign', '--verify', '--deep', '--strict', app], check=True)   # survives the round trip
+          if os.environ.get('SIGN_ID'):
+              subprocess.run(['codesign', '--verify', '--deep', '--strict', app], check=True)   # survives the round trip
+          def tree(top):   # unsigned (no certificate here): the symlinks and modes survive the round trip
+              out = {}
+              for folder, dirs, files in os.walk(top):
+                  for n in dirs + files:
+                      path = os.path.join(folder, n)
+                      st = os.lstat(path)
+                      out[os.path.relpath(path, top)] = (st.st_mode, os.readlink(path) if os.path.islink(path) else None)
+              return out
+          assert tree(app) == tree(os.path.join(sys.argv[1], 'Horizon Play.app')), 'the template zip lost symlinks or modes'
           PY
       - uses: actions/upload-artifact@v4
         with:

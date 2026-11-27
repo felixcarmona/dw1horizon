@@ -72,7 +72,7 @@ jobs:
         run: tar -czf Horizon-Play-Linux-x86_64.tar.gz "Horizon Play"
       - name: A Linux installer made from a dummy disc installs, holds the disc byte for byte and uninstalls
         run: |
-          T="$RUNNER_TEMP/lr"; mkdir -p "$T/home"
+          T="$RUNNER_TEMP/lr"; mkdir -p "$T/home" "$T/saves"
           python3 -c "import sys; open(sys.argv[1] + '/dummy.bin', 'wb').write(bytes(range(251)) * 20000)" "$T"
           printf 'FILE "dummy.bin" BINARY\r\n  TRACK 01 MODE2/2352\r\n    INDEX 01 00:00:00\r\n' > "$T/dummy.cue"
           python3 tools/patcher/linux_run.py Horizon-Play-Linux-x86_64.tar.gz "$T/dummy.cue" "$T/dummy-Linux.run"

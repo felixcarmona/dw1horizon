@@ -382,17 +382,26 @@ def source_disc_args(slots):
 
 # ---------------------------------------------------------------- the network
 def ssl_context():
-    """TLS that verifies: the system's certificates; a frozen macOS app has no OpenSSL certificate folder, so the
-    bundled certifi (build time only) or the system's /etc/ssl/cert.pem."""
+    """TLS that verifies: the system's certificates. A frozen app's OpenSSL may look in a folder this system lacks
+    (macOS has none, Linux distributions differ), so then the bundled certifi (build time only) or the system's
+    own bundle file."""
     ctx = ssl.create_default_context()
     if ctx.cert_store_stats().get('x509_ca', 0) == 0:
         try:
             import certifi
             ctx.load_verify_locations(certifi.where())
         except (ImportError, OSError):
-            if os.path.exists('/etc/ssl/cert.pem'):
-                ctx.load_verify_locations('/etc/ssl/cert.pem')
+            for bundle in SYSTEM_CA_BUNDLES:
+                if os.path.exists(bundle):
+                    ctx.load_verify_locations(bundle)
+                    break
     return ctx
+
+
+SYSTEM_CA_BUNDLES = ('/etc/ssl/cert.pem',                     # macOS, Alpine, Arch
+                     '/etc/ssl/certs/ca-certificates.crt',    # Debian, Ubuntu, Gentoo
+                     '/etc/pki/tls/certs/ca-bundle.crt',      # Fedora, RHEL
+                     '/etc/ssl/ca-bundle.pem')                # openSUSE
 
 
 def _open(url, accept=None, timeout=30):
