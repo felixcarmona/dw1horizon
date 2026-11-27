@@ -1,0 +1,48 @@
+From db232b9f6ef1ac9adc69b7c91826be930e7cd7cd Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 11:52:20 +0000
+Subject: [PATCH] Menus keep their pace with an overclocked CPU: a D-pad
+ tap moves the cursor one row
+
+With the emulated CPU overclocked (the standalone player and the title settings panel use 250%), every
+menu loop ran about twice per video frame, so the menu repeat (15 frames) fired after about 7 and a
+normal tap moved the cursor two or three rows.
+
+Psy-Q libetc's VSync(0) waits in v_wait for Vcount to pass the next vertical blank, but gives up after
+(timeout << 15) turns of its loop, prints "VSync: timeout" and returns early. At 250% the 32768 turns end
+before the blank comes. mk/version/us.mk assembles libetc from a build copy of the generated assembly
+whose v_wait shifts by 18 instead of 15 (eight times as many turns, still a few frames on the original
+console); the build fails if that line is not found exactly once. Same code size, same behaviour on a
+timeout. main_BSS_END unchanged.
+---
+ mk/version/us.mk | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index a5a4f60..66629c5 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -98,6 +98,20 @@ PSYQ_PLAIN_CODE := libapi libgte libmcrd
+ $(BUILD_DIR)/asm/main/data/psyq/%.s.o $(PSYQ_PLAIN_CODE:%=$(BUILD_DIR)/asm/main/psyq/%.s.o): \
+ 	ASFLAGS += -Wa,--defsym,PLAIN_SECTIONS=1
+ 
++# MOD (VSync timeout): libetc's v_wait gives up waiting for the next vertical blank after
++# (timeout << 15) turns of its loop. A console or emulator running the CPU faster than the
++# original (an overclock) turns the loop faster and gives up before the blank comes, so every
++# VSync(0) returns early and menu loops run about twice per frame. The library is assembled
++# from a copy whose v_wait shifts by 18 (eight times as many turns); nothing else changes and
++# the code keeps its size. The check fails the build if the line is not there exactly once.
++$(BUILD_DIR)/asm/main/psyq/libetc.s.o: $(BUILD_DIR)/asm/main/psyq/libetc.vwait.s
++	$(assemble)
++
++$(BUILD_DIR)/asm/main/psyq/libetc.vwait.s: $(ASM_DIR)/main/psyq/libetc.s
++	@mkdir -p $(dir $@)
++	sed '/^glabel v_wait$$/,/^endlabel v_wait$$/s/C02B0500 \*\/  sll\( *\)\$$a1, \$$a1, 15$$/802C0500 *\/  sll\1$$a1, $$a1, 18/' $< > $@
++	test "$$(diff $< $@ | grep -c '^>')" = 1
++
+ MAIN_ASM_EXCLUDE := shop vs
+ 
+ $(eval $(call unit,MAIN,main))
+-- 
+2.55.0
+
