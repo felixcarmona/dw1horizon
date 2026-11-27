@@ -365,7 +365,12 @@ void overlay_event(const SDL_Event *e, int ww, int wh) {
     break;
   }
   case SDL_CONTROLLERBUTTONDOWN: case SDL_KEYDOWN:   /* a pad or keyboard in use: the touch pad steps aside */
-    if (e->type == SDL_KEYDOWN && e->key.keysym.scancode == SDL_SCANCODE_AC_BACK) break;
+    if (e->type == SDL_KEYDOWN)   /* a phone's own keys are not a keyboard */
+      switch (e->key.keysym.scancode) {
+      case SDL_SCANCODE_AC_BACK: case SDL_SCANCODE_VOLUMEUP: case SDL_SCANCODE_VOLUMEDOWN: case SDL_SCANCODE_MUTE:
+      case SDL_SCANCODE_AUDIOMUTE: return;
+      default: break;
+      }
     touch_shown = false;
     memset(fingers, 0, sizeof fingers);
     break;
@@ -440,8 +445,15 @@ static void draw_setup(int ww, int wh) {
   float s = ww < wh ? (float)ww : (float)wh, cx = ww / 2.0f;
   quad(I_PANEL, cx, wh / 2.0f, (float)ww, (float)wh, 1, 0.8f, ww, wh);
   int ic = icon[remap_step];
-  float w = ic >= I_L1 ? 0.42f * s : 0.3f * s, h = ic >= I_L1 ? 0.175f * s : 0.3f * s;
-  quad(ic, cx, wh * 0.42f, w, h, 1.2f, 1, ww, wh);
+  if (ic >= I_UP && ic <= I_RIGHT) {   /* a direction: the pad, with that arm lit */
+    static const float ang[4] = {-1.5707963f, 1.5707963f, 3.1415927f, 0};
+    float d = 0.36f * s, a = ang[ic - I_UP];
+    quad(I_DOT, cx + cosf(a) * d * 0.31f, wh * 0.42f + sinf(a) * d * 0.31f, d * 0.3f, d * 0.3f, 1, 0.75f, ww, wh);
+    quad(I_DPAD, cx, wh * 0.42f, d, d, 1, 1, ww, wh);   /* over the light: the arm glows, its arrow stays */
+  } else {
+    float w = ic >= I_L1 ? 0.42f * s : 0.3f * s, h = ic >= I_L1 ? 0.175f * s : 0.3f * s;
+    quad(ic, cx, wh * 0.42f, w, h, 1.2f, 1, ww, wh);
+  }
   float gap = 0.05f * s, x0 = cx - gap * (CONTROL_COUNT - 1) / 2;
   for (int i = 0; i < CONTROL_COUNT; i++) {
     float d = i == remap_step ? 0.035f * s : 0.022f * s;
@@ -460,14 +472,14 @@ void overlay_draw(int ww, int wh) {
     const float a = 0.75f;
     uint16_t on = touch_now;
     float d = dpad_r * 2;
-    quad(I_DPAD, dpad_x, dpad_y, d, d, 1, a, ww, wh);
     static const int dirs[4] = {RETRO_DEVICE_ID_JOYPAD_RIGHT, RETRO_DEVICE_ID_JOYPAD_DOWN, RETRO_DEVICE_ID_JOYPAD_LEFT,
                                 RETRO_DEVICE_ID_JOYPAD_UP};
     for (int k = 0; k < 4; k++)   /* a lit dot on a pressed arm */
       if (on & (1u << dirs[k])) {
         float ang = k * 1.5707963f;
-        quad(I_DOT, dpad_x + cosf(ang) * d * 0.31f, dpad_y + sinf(ang) * d * 0.31f, d * 0.2f, d * 0.2f, 1, 0.6f, ww, wh);
+        quad(I_DOT, dpad_x + cosf(ang) * d * 0.31f, dpad_y + sinf(ang) * d * 0.31f, d * 0.3f, d * 0.3f, 1, 0.6f, ww, wh);
       }
+    quad(I_DPAD, dpad_x, dpad_y, d, d, 1, a, ww, wh);   /* over the lit arms */
     for (int i = 0; i < ncontrols; i++) {
       Control *c = &controls[i];
       bool pressed = on & (1u << c->id);

@@ -51,7 +51,7 @@ fetched by CMake at a pinned hash and linked statically.
 
 Test flags: `--windowed`, `--frames N` (stop after N frames), `--press "frame:button:len,..."` (libretro joypad ids),
 `--screenshot FILE.ppm`, `--no-disc` (boot the BIOS alone), `--set KEY=VALUE` (override a core option),
-`--touch` (the touch pad from the start).
+`--touch` (the touch pad from the start), `--window WxH` (a window of that size).
 `HORIZON_PLAY_DEBUG=1` prints the core's log. The saves folder also gets `horizon-play.log` (the core's log, the
 OpenGL version and the speed every 30 seconds) and reads `options.txt` (`KEY=VALUE` lines, core options to override).
 

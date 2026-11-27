@@ -504,9 +504,12 @@ static void fail(const char *title, const char *msg) {
 
 int main(int argc, char **argv) {
   const char *disc = NULL, *core_path = NULL, *sys = NULL, *saves = NULL;
-  bool windowed = false, no_disc = false; int scale = 0;
+  bool windowed = false, no_disc = false; int scale = 0, force_w = 0, force_h = 0;
   for (int i = 1; i < argc; i++) {
     if (!strcmp(argv[i], "--windowed")) windowed = true;
+    else if (!strcmp(argv[i], "--window") && i + 1 < argc) {   /* --window WxH: a window of that size (tests) */
+      windowed = sscanf(argv[++i], "%dx%d", &force_w, &force_h) == 2;
+    }
     else if (!strcmp(argv[i], "--no-disc")) no_disc = true;
     else if (!strcmp(argv[i], "--touch")) touch_shown = true;        /* the touch pad from the start */          /* the BIOS alone (a smoke test) */
     else if (!strcmp(argv[i], "--scale") && i + 1 < argc) scale = atoi(argv[++i]);
@@ -616,6 +619,7 @@ int main(int argc, char **argv) {
   win_w = dm.w > dm.h ? dm.w : dm.h; win_h = dm.w > dm.h ? dm.h : dm.w;
 #else
   if (!windowed) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+  if (force_w > 0 && force_h > 0) { win_w = force_w; win_h = force_h; }
 #endif
   window = SDL_CreateWindow("Digimon World: Horizon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, win_w, win_h, flags);
   if (!window) { fail("Horizon", SDL_GetError()); return 1; }

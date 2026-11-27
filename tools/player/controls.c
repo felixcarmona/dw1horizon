@@ -189,8 +189,11 @@ void controls_event(const SDL_Event *e) {
     }
     break;
   case SDL_KEYDOWN:
-    if (!e->key.repeat && e->key.keysym.scancode != SDL_SCANCODE_AC_BACK && e->key.keysym.scancode != SDL_SCANCODE_F11)
-      pressed(2, 0, e->key.keysym.scancode);
+    switch (e->key.keysym.scancode) {   /* the keys the program itself uses, and a phone's own keys */
+    case SDL_SCANCODE_AC_BACK: case SDL_SCANCODE_F11: case SDL_SCANCODE_ESCAPE: case SDL_SCANCODE_VOLUMEUP:
+    case SDL_SCANCODE_VOLUMEDOWN: case SDL_SCANCODE_MUTE: break;
+    default: if (!e->key.repeat) pressed(2, 0, e->key.keysym.scancode);
+    }
     break;
   }
 }
