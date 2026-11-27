@@ -147,7 +147,7 @@ side is in [release/README-players.md](release/README-players.md#the-desktop-app
 All three apps carry Horizon Play ([player.md](player.md)), for the installers below.
 
 What the patcher makes is chosen in its **Make** box: five buttons side by side, each with its system's logo
-(`tools/patcher/app/platform-logos/`, Font Awesome's brand icons, CC BY 4.0), its system's name and the file type under it:
+(`tools/patcher/app/platform-logos/`, Bootstrap Icons, MIT), its system's name and the file type under it:
 **PlayStation** (.bin / .cue, the disc image for emulators and the console), then the installers with that disc
 inside: **Android** (.apk), **Windows** (.exe), **Mac** (.dmg on a Mac, .zip elsewhere) and **Linux** (.run). All of
 them write into the **Save in** folder. An installer button uses the disc the patcher built last in this session when
