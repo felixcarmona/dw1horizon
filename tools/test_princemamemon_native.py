@@ -59,6 +59,9 @@ class PrinceMamemonNative(unittest.TestCase):
     def test_every_program_below_the_techniques_is_mamemons_with_scaled_translations(self):
         scale = self.recipe['scale']
         restored = set(self.recipe.get('battle_originals', {}).get('slots', []))
+        restored |= set(self.recipe.get('authored_finishes', []))
+        for slot, row in self.recipe['pace'].items():      # retimed to native partner speeds (test_gait_is_retimed_to_native_speeds)
+            restored |= {int(slot), *row.get('alias', ())}
         for slot, index in enumerate(self.native.anims.table[:46]):
             if index is None or slot in restored:      # the source's own clip (test_battle_originals)
                 continue
@@ -84,12 +87,12 @@ class PrinceMamemonNative(unittest.TestCase):
                 self.assertIsNotNone(self.model.anims.table[slot])
         self.assertEqual({0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 19, 21, 22, 24, 25, 27, 33, 34, 35, 36, 37, 40, 41, 42, 43, 44}
                          - {s for s, i in enumerate(self.model.anims.table) if i is not None}, set())
-        for slot in (0, 2, 3, 4):
+        for slot in (0,):
             with self.subTest(slot=slot):
                 before, loop, _ = animsheet.slot_frames(self.native, BONES, slot)
                 after, new_loop, _ = animsheet.slot_frames(self.model, BONES, slot)
                 self.assertEqual((len(after), new_loop), (len(before), loop))
-        self.assertEqual([len(animsheet.slot_frames(self.model, BONES, s)[0]) for s in (0, 2, 3, 4)], [17, 15, 19, 15])
+        self.assertEqual([len(animsheet.slot_frames(self.model, BONES, s)[0]) for s in (0, 2, 3, 4)], [17, 28, 41, 23])
 
     def test_techniques_play_mamemons_clips_of_their_kind(self):
         moves = self.record['techniques']
@@ -195,7 +198,7 @@ class PrinceMamemonNative(unittest.TestCase):
         made = self.proof['battle_originals']
         self.assertEqual(sorted(int(s) for s in made), [33, 40, 41, 44])
         self.assertEqual((made[33]['frames'], made[33]['cycles']), (40, 1))
-        self.assertEqual(motionstorage.require(self.data, BONES)['resident_bytes'], 73316)
+        self.assertEqual(motionstorage.require(self.data, BONES)['resident_bytes'], 71012)
 
     def test_loops_close(self):
         for slot in (0, 2, 3, 4):
@@ -214,8 +217,11 @@ class PrinceMamemonNative(unittest.TestCase):
         for slot in (2, 3, 4):
             frames = animsheet.slot_frames(self.native, BONES, slot)[0]
             native[slot] = abs(frames[-1][0][8] - frames[0][0][8])/(len(frames) - 1)
-        for slot in (2, 3, 4):
-            self.assertAlmostEqual(speed[slot], native[slot]*self.recipe['scale'], delta=1)
+        for slot in (2, 3, 4):      # the clips' own travel per tick, before the size bake (x0.888)
+            self.assertAlmostEqual(speed[slot], self.recipe['pace'][str(slot)]['speed'], delta=1)
+            self.assertLess(speed[slot]*0.888, 1.0*native[slot]*self.recipe['scale'])
+        # native partners walk 15-31 and run 35-52 units a tick; the tamer walks 20 and runs 50
+        self.assertTrue(15 <= speed[2]*0.888 <= 31 and 35 <= speed[4]*0.888 <= 52, speed)
         self.assertLess(speed[3], speed[2])
         self.assertLess(speed[2], speed[4])
 

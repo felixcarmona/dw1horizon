@@ -4225,6 +4225,7 @@
     "skeleton_sha256": "bdca7b462a535a08323782f91cc126b32575fa4ad884770b915e4a52fe659b73",
     "donor_sha256": "729e03271c9f3c68d7e597b8a478db2f7b9293f0cc6b69855aa1f31c9caf174f",
     "scale": 2.2,
+    "pace": {"2": {"from": 2, "ticks": 27, "speed": 27, "slip": [1000, 1000], "ground": true, "alias": [35]}, "3": {"from": 3, "ticks": 40, "speed": 18, "slip": [1000, 1000], "ground": true}, "4": {"from": 4, "ticks": 22, "speed": 53, "slip": [1000, 1000], "ground": true, "alias": [36]}},
     "mesh_scale": 1.0,
     "bind_slot": 0,
     "map": {
