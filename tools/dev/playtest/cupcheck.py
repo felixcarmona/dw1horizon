@@ -6,7 +6,8 @@ The game must be in the Arena Lobby (screen 208) with control and the DGET overl
   EMU_PORT=38068 tools/dev/playtest/cupcheck.py 3 326 183 210 250     (types; each is poked into the partner)
 For every cup it calls tournamentCheckEligible and tournamentCheckFair and compares them with the cup lists of
 the arena script (DG.SCN entry 213, section 10): an original is in the list or not; a species is in a list that
-holds nine originals of its level (a Mega counts as 5) or the original it borrows its techniques from.
+holds nine originals of its level (a Mega counts as 5) or the original it borrows its techniques from (in an
+over-level list, only when that original is of its level).
 """
 
 from pathlib import Path as _DevPath
@@ -42,9 +43,9 @@ def expect(t):
     level=min(new[t]['para']['level'],5); base=new[t]['originalType'] if 'originalType' in new[t] else new[t].get('base')
     el=[];fa=[]
     for c in range(23):
-        for out,l in ((el,cups[c][1]),(fa,cups[c][0])):
-            n=len(l)
-            out.append(int(sum(1 for x in l if lev[x]==level)>=9 or base in l))
+        for out,l,over in ((el,cups[c][1],False),(fa,cups[c][0],True)):
+            # in an over-level list the donor counts only at the species' own level
+            out.append(int(sum(1 for x in l if lev[x]==level)>=9 or base in l and (not over or min(lev[base],5)==level)))
     return el,fa
 test=[int(x) for x in sys.argv[1:]]
 for t in test:

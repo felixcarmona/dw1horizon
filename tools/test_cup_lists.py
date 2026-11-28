@@ -6,7 +6,8 @@ eligible list, rivals). Four scripts carry their own copy (the Arena Lobby's, Be
 registration reads the copy of the script loaded at the time, so the copies must agree. Each `data(...)` block ends at its
 own 0xFF; 254 ends a list early. Registration (`cupListHasType`, dget.c) matches an executable original only by its
 id; a record original or a DIGI.DAT species takes the place of the originals of its level (nine or more of them in
-the list, a Mega counting as an Ultimate) or of the original it borrows its effects from.
+the list, a Mega counting as an Ultimate) or of the original it borrows its effects from; in an over-level list that
+original counts only at the species' own level.
 
 A list that begins with 253 states a rule instead (include/dw/cup_rules.h): `253, kind, value`, then the ids that enter
 whatever the rule says. Kind 0 is the list and nothing else (the Version cups: the twelve Digimon of that V-Pet), 1 a
@@ -64,7 +65,7 @@ class CupLists(unittest.TestCase):
     def level(self, t):
         return LEVELS.get(self.species[t]['level'], 0) if t in self.species else 0
 
-    def holds(self, lst, t):
+    def holds(self, lst, t, over=False):
         s = self.species[t]
         if lst[:1] == [RULE_MARK]:
             kind, value, ids = lst[1], lst[2], lst[3:]
@@ -74,7 +75,9 @@ class CupLists(unittest.TestCase):
         if t < S.NUM_ORIGINAL and not S.is_record_original(s):
             return t in lst
         level = min(self.level(t), 5)
-        return sum(self.level(x) == level for x in lst) >= 9 or s.get('effects_like', t) in lst
+        donor = s.get('effects_like', t)
+        return (sum(self.level(x) == level for x in lst) >= 9
+                or donor in lst and (not over or min(self.level(donor), 5) == level))
 
     def entrants(self, cup):
         eligible = self.lists[CUPS.index(cup)][1]
@@ -99,6 +102,25 @@ class CupLists(unittest.TestCase):
     def test_machinedramon_enters_the_metalic_cup(self):
         machinedramon = next(t for t, s in self.species.items() if s['name'] == 'Machinedramon')
         self.assertTrue(self.holds(self.lists[CUPS.index('Metalic')][1], machinedramon))
+
+    def test_no_rookie_or_champion_is_over_level_in_d_or_c(self):
+        # Snimon (a Champion) borrows SkullGreymon's techniques: entering Grade C must not cost a tamer level.
+        for cup in ('D', 'C'):
+            over = self.lists[CUPS.index(cup)][0]
+            flagged = [s['name'] for t, s in self.species.items()
+                       if 'partner' in s and 3 <= self.level(t) <= 4 and self.holds(over, t, over=True)]
+            self.assertEqual(flagged, [], cup)
+        snimon = next(t for t, s in self.species.items() if s['name'] == 'Snimon')
+        self.assertFalse(self.holds(self.lists[CUPS.index('C')][0], snimon, over=True))
+
+    def test_new_ultimates_and_megas_stay_over_level_in_d_and_c(self):
+        # the species matched by level (an executable original is matched only by its id, as in the original)
+        for cup in ('D', 'C'):
+            over = self.lists[CUPS.index(cup)][0]
+            missed = [s['name'] for t, s in self.species.items()
+                      if 'partner' in s and self.level(t) >= 5 and (t >= S.NUM_ORIGINAL or S.is_record_original(s))
+                      and not self.holds(over, t, over=True)]
+            self.assertEqual(missed, [], cup)
 
     def test_raisable_originals_are_over_level_where_ultimates_are(self):
         # D and C mark Ultimates as over-level; an Ultimate or Mega executable original is marked like them.

@@ -1,0 +1,64 @@
+From de50c2cfc01daec603b6a19245646292e5173b76 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 28 Nov 2026 08:55:30 +0000
+Subject: [PATCH] Cup over-level lists: a technique donor of another level does
+ not make a species over-level
+
+---
+ src/dget/dget.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index 647aab8..0a780fa 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -366,7 +366,9 @@ void initTournamentInfo(int32_t arg)
+  * MOD (portraits): a cup lists original species by type; a species of DIGI.DAT is in no list. It takes the
+  * place of the originals of its level (a Mega counts as an Ultimate): a list with nine or more originals of its
+  * level (an open cup, or the over-level list of the lowest cups) holds it; a themed cup (twelve species of
+- * every kind) holds it only when the list holds the original it borrows its techniques from.
++ * every kind) holds it only when the list holds the original it borrows its techniques from. In an over-level
++ * list that original counts only when it is of the species' own level: a Champion that borrows an Ultimate's
++ * techniques is not over the level of a cup for Champions.
+  */
+ #define CUP_OPEN_LEVEL_COUNT	9
+ 
+@@ -398,7 +400,7 @@ static uint32_t partnerCupTag(int32_t type)
+ 	return CUP_TAG;
+ }
+ 
+-static int32_t cupListHasType(uint8_t *typePtr, DigimonId partnerType)
++static int32_t cupListHasType(uint8_t *typePtr, DigimonId partnerType, int32_t overLevel)
+ {
+ 	int32_t sameLevel;
+ 	int32_t level;
+@@ -436,7 +438,7 @@ static int32_t cupListHasType(uint8_t *typePtr, DigimonId partnerType)
+ 		if (DIGI_PARA(type).level == level) {
+ 			sameLevel++;
+ 		}
+-		if (type == other) {
++		if (type == other && (!overLevel || (DIGI_PARA(type).level > 5 ? 5 : DIGI_PARA(type).level) == level)) {
+ 			hasOther = 1;
+ 		}
+ 	}
+@@ -450,7 +452,7 @@ int32_t tournamentCheckFair(uint8_t value)
+ 
+ 	jumpTable = getCupDataJumpTable(10, value);
+ 	typePtr = getCupDataJumpTableEntry(jumpTable, 2) + 2;
+-	return cupListHasType(typePtr, PARTNER_ENTITY.digimonEntity.entity.type);
++	return cupListHasType(typePtr, PARTNER_ENTITY.digimonEntity.entity.type, 1);
+ }
+ 
+ int32_t isTournamentEnabled(uint8_t tournament)
+@@ -539,7 +541,7 @@ int32_t tournamentCheckEligible(uint8_t tournament)
+ 
+ 	jumpTable = getCupDataJumpTable(10, tournament);
+ 	typePtr = getCupDataJumpTableEntry(jumpTable, 3) + 2;
+-	return cupListHasType(typePtr, PARTNER_ENTITY.digimonEntity.entity.type);
++	return cupListHasType(typePtr, PARTNER_ENTITY.digimonEntity.entity.type, 0);
+ }
+ 
+ void renderTournamentTextbox(void)
+-- 
+2.55.0
+

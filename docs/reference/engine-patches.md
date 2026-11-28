@@ -218,6 +218,8 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
   stats depend on the cup and level only (`STD_initializeOpponent`). For registration (`tournamentCheckEligible`,
   `tournamentCheckFair`, `dget.c`) a new species takes the place of the originals of its level: a list with nine or more
   originals of that level holds it, a themed cup holds it only when it holds the original it borrows techniques from.
+  In an over-level list (`tournamentCheckFair`) that original counts only at the species' own level (a Mega counts as
+  an Ultimate): Snimon, a Champion that borrows SkullGreymon's techniques, is not over-level in Grade D or C.
   An executable original (id below 180, not a record original) is matched only by its id, so the raisable ones
   (WaruMonzaemon, Meteormon, Machinedramon, Analogman, Jijimon, ShogunGekomon, KingSukamon) are written into the grade
   cups' lists of the story/base scripts, and Machinedramon into the Metalic Cup's (`tools/test_cup_lists.py`).
