@@ -373,6 +373,8 @@ static bool picture_lit(void) {
 }
 
 static void save_screenshot(const char *path);
+static bool booting;   /* the black start, run as fast as the machine goes: its sound and its pictures are dropped */
+
 static void present(bool last) {
   int ww, wh; SDL_GL_GetDrawableSize(window, &ww, &wh);
   /* the core leaves its own state behind: scissor and masks clip a clear and a blit */
@@ -381,7 +383,7 @@ static void present(bool last) {
   gl.BindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
   gl.Viewport(0, 0, ww, wh);
   gl.ClearColor(0, 0, 0, 1); gl.Clear(GL_COLOR_BUFFER_BIT);
-  if (have_frame && frame_w && frame_h) {
+  if (have_frame && frame_w && frame_h && !booting) {   /* (the BIOS's own start, its cube, is never shown) */
     float aspect = av.geometry.aspect_ratio > 0 ? av.geometry.aspect_ratio : (float)frame_w / frame_h;
     int dw = ww, dh = (int)(ww / aspect + 0.5f);
     if (dh > wh) { dh = wh; dw = (int)(wh * aspect + 0.5f); }
@@ -414,7 +416,6 @@ static void save_screenshot(const char *path) {
   free(px);
 }
 
-static bool booting;   /* the black start, run as fast as the machine goes: its sound is dropped */
 /* The sound follows the screen. With a screen refresh near the console's (60 Hz against 59.82), the loop keeps the
  * screen's pace (vsync) and the sound is stretched by a fraction of a percent, more or less as the queue sits below or
  * above its target (dynamic rate control). Waiting on the sound instead made the loop miss a refresh several times a
