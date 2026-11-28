@@ -1,4 +1,5 @@
 """Difference records must not turn an absent table into approved source data."""
+import struct
 import json
 import hashlib
 import io
@@ -198,6 +199,30 @@ class DeltaAuditTests(unittest.TestCase):
             self.assertEqual(maps['SLUS_010.32'][0]['value'], 0x12345678)
             self.assertEqual(maps['SLUS_010.32'][1]['offset'], 0x200)
             self.assertEqual(maps['SCN/ESBTL.BIN'][0]['offset'], 0x120)
+
+    def test_overlay_seal_word_and_overlapping_string_section(self):
+        words = [0x11111111, 0x22222222, 0x33333333]
+        seed = delta_audit.OVERLAY_SEAL_SEED
+        for w in words:
+            seed = (((seed << 1) | (seed >> 31)) + w) & 0xFFFFFFFF
+        body = struct.pack('<3I', *words)
+        self.assertTrue(delta_audit.is_overlay_seal(body + struct.pack('<I', seed), 12))
+        self.assertFalse(delta_audit.is_overlay_seal(body + struct.pack('<I', seed ^ 1), 12))
+        self.assertFalse(delta_audit.is_overlay_seal(body + struct.pack('<I', seed) + b'\0\0\0\0', 12))
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); (root / 'exe').mkdir()
+            (root / 'exe/SLUS_010.32.elf.map').write_text(
+                '.main 0x80090000 0x1000\n'
+                ' .rodata        0x80090100 0x31 build/us/psx/gcc/src/shop/script_menu.c.o\n'
+                ' .rodata.setupNameSelectorBox.str1.4\n'
+                '                0x80090131 0x11 build/us/psx/gcc/src/shop/script_menu.c.o\n'
+                ' .rodata.NAMING_PAGE_LABELS\n'
+                '                0x80090134 0xc build/us/psx/gcc/src/shop/script_menu.c.o\n'
+                ' .rodata.CONDENSED_GLYPH_DATA\n'
+                '                0x80090140 0x270 build/us/psx/gcc/src/main/font.c.o\n')
+            rows = {r['section']: r for r in delta_audit.sections(root, {'LANG_OVL': []})['SLUS_010.32']}
+            self.assertEqual(rows['.rodata.setupNameSelectorBox.str1.4']['length'], 3)
+            self.assertEqual(rows['.rodata.NAMING_PAGE_LABELS']['length'], 0xc)
 
     def test_unavailable_encoded_data_blocks_even_with_no_literals(self):
         with tempfile.TemporaryDirectory() as temp, patch.object(literal_gate, 'scan_chunks', return_value=[]):
