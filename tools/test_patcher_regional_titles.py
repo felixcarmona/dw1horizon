@@ -58,6 +58,20 @@ class RegionalTitles(unittest.TestCase):
         data = title_tim({(x, 245): 0 for x in range(0, 121)})
         self.assertEqual(title_stamp.press_start_fit(bytearray(data)), data)
 
+    def test_press_start_colours_are_looked_up_in_the_discs_own_palette(self):
+        # the Japanese TITLE256 has the USA colours in another order: white at 71, clear at 8 (the Press Start line our
+        # recipes draw in other languages was green with a grey box there)
+        usa = title_tim({})
+        struct.pack_into('<4H', usa, 20, *[title_stamp.USA_COLOURS[i] for i in (0, 91, 181, 192)])
+        struct.pack_into('<H', usa, 20 + 2 * 255, title_stamp.USA_COLOURS[255])
+        self.assertEqual([title_stamp.disc_index(usa, i) for i in (0, 255)], [0, 255])
+        jp = title_tim({})
+        for i, v in zip((71, 220, 214, 228, 8), (0x7FFF, 0x56B5, 0x2529, 0x2108, 0x8000)):
+            struct.pack_into('<H', jp, 20 + 2 * i, v)
+        self.assertEqual([title_stamp.disc_index(jp, i) for i in (0, 91, 181, 192, 255)], [71, 220, 214, 228, 8])
+        with self.assertRaises(SystemExit):
+            title_stamp.disc_index(title_tim({}), 0)     # a palette without the colour
+
 
 if __name__ == '__main__':
     unittest.main()
