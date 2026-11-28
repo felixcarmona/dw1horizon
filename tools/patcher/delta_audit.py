@@ -47,6 +47,19 @@ def chinese_language_writes(build):
         return path.read_bytes()
 
 
+OVERLAY_SEAL_SEED = 0x53484F50  # 'SHOP', as decomp tools/overlay_seal.py
+
+
+def is_overlay_seal(target, offset):
+    """True when the word at `offset` is the last word of `target` and is the rotating sum of every word before it."""
+    if offset + 4 != len(target) or offset % 4 or offset < 4:
+        return False
+    s = OVERLAY_SEAL_SEED
+    for (w,) in struct.iter_unpack('<I', bytes(target[:offset])):
+        s = (((s << 1) | (s >> 31)) + w) & 0xFFFFFFFF
+    return struct.unpack_from('<I', target, offset)[0] == s
+
+
 def sections(build, plan):
     build = Path(build)
     paths = {'SLUS_010.32': ('en', 'SLUS_010.32')}
@@ -86,6 +99,12 @@ def sections(build, plan):
                                  source=obj.split('/gcc/')[-1][:-2]))
                 if lang == 'en' and output.endswith('_REL.BIN'):
                     paths.setdefault(output, ('en', output))
+        # A merged string section (.str1.N) is listed with its whole size at an address that the objects after it
+        # overlap (the next object's data starts inside it): it ends where the next row begins.
+        rows.sort(key=lambda r: (r['output'], r['offset']))
+        for row, nxt in zip(rows, rows[1:]):
+            if '.str1.' in row['section'] and nxt['output'] == row['output'] and row['offset'] < nxt['offset'] < row['offset'] + row['length']:
+                row['length'] = nxt['offset'] - row['offset']
         # Assembly data maps contain whole library sections. Sized ELF labels
         # supply smaller natural recipe objects without dropping coarse audit
         # coverage or treating unnamed gaps as generated data.
@@ -313,6 +332,11 @@ def inspect(payload, build, bases, secondary, plan=None):
                     # object data. Bind the expression's evaluated value to the
                     # reconstructed bytes; edited/stale maps cannot clear them.
                     category = 'a' if target[row['offset']:row['offset'] + 4] == struct.pack('<I', row['value']) else 'd'
+                    if category == 'd' and row['value'] == 0 and is_overlay_seal(target, row['offset']):
+                        # The sealed overlay's last word is the linker's empty word with the rotating sum
+                        # of every word before it written in (tools/overlay_seal.py of the decomp): the
+                        # reconstructed bytes carry their own proof.
+                        category = 'a'
                 elif row['section'] == '.unmapped':
                     category = 'd' if any(target[row['offset']:row['offset'] + row['length']]) else 'a'
                 elif row['section'].startswith('.text'):
