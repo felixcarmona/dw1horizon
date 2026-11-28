@@ -3879,9 +3879,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/310-Assaultmon.MMD.mdelta",
-        "delta_sha256": "dc437ab035fc18b14cb319944a7925a83dd4fb39604eca67d4b02cd82e80d580",
-        "sha256": "3ef5510dae8cf31f2d027631aaa6513606248b70027abd351f774e5bc634fade",
-        "size": 100184
+        "delta_sha256": "d23cec85eb018acdab944fadcfc1d1713238d7dd5b70cf9367e26860fc695d1e",
+        "sha256": "ca5250417bee9073408306d077f054205637470072f19fecb399b8fa730b594e",
+        "size": 100584
       },
       "tim": {
         "sources": [
