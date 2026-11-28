@@ -7114,7 +7114,7 @@
     "species": 310,
     "donor": 36,
     "model": "CHDAT/MMD1/CENT.MMD",
-    "source_sha256": "5792652f20b3c29d2ef6ab24329c4c4961f6484c9de8bf77167f396f78b20ca2",
+    "source_sha256": "3ef5510dae8cf31f2d027631aaa6513606248b70027abd351f774e5bc634fade",
     "skeleton_sha256": "f98e2db55c015d16fc66aad1d933c543bb09c2a00b3a8ea7768beddcfcfc0033",
     "donor_sha256": "5f688acabd435fd61f9eb9a2b8d29d3549499eaedd703e4e3cc5fbab2b6deb42",
     "chibi": {
