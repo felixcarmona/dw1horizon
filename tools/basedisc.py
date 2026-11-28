@@ -25,7 +25,7 @@ differs, file by file of the USA dump, is one of:
   needs-usa  no counterpart: code and scripts the patched disc replaces with ours (the executable, the overlays,
              SCN/DG.SCN, SCN/MAPHEAD.SCN, SYSTEM.CNF). The build no longer reads them (2026-10-25: the tables are
              committed, the story is story/base, the disc layout tools/disc-layout.xml, SYSTEM.CNF written, SHOP_REL.BIN
-             zeros), so `prepare`'s tree is a complete base: the full disc built from the Spanish one differs from the
+             built), so `prepare`'s tree is a complete base: the full disc built from the Spanish one differs from the
              USA-based one only in regional title artwork, MOVIE/OP1.STR, OP2.STR and their FILE_OFFSET_TABLE entries.
 
   basedisc.py make RELEASE DUMP          DUMP: the release dumped with dumpsxiso (tools/extract.sh does it for the USA

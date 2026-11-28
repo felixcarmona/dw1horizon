@@ -343,13 +343,14 @@ if [ -f "$O/DIGI.DAT" ] && [ -f "$O/with-new-screens/MAPHEAD.SCN" ]; then
     --map "$W/build/us/psx/gcc/SLUS_010.32.elf.map" --archive "$O/DIGI.DAT" \
     --facts "$O/derived/exe-facts.json" --json "$O/story-heap.json" | tee "$O/story-heap.txt"
 fi
-# SHOP_REL.BIN: the original's shop overlay, whose code the executable has (mk/version/us.mk: src/shop linked into main).
-# checkShopMap and loadShopLibrary still read the file to OVL_SHOP_BASE (0x80080800) on the shop screens, and nothing
-# runs or reads those bytes: the executable reaches that window only through DOOA's and DGET's symbols, after loading
-# those overlays (tools/xref.py check). rule: the disc carries zeros of the size FILE_OFFSET_TABLE gives it (0x7E10:
-# the same sectors), not the base disc's overlay
-SHOP_SIZE=$(( $(sed -n 's/.*{ 0x[0-9a-fA-F]*, \(0x[0-9a-fA-F]*\), "SHOP_REL.BIN" }.*/\1/p' "$W/src/main/file_table_us.c") ))
-shop_placeholder() { [ -f "$1/SHOP_REL.BIN" ] || head -c "$SHOP_SIZE" /dev/zero > "$1/SHOP_REL.BIN"; }
+# SHOP_REL.BIN: the shops, the naming box, the card packs, the item keeper, the jukebox, the Birdramon transport and the
+# new-game questions (decomp config/us/overlay.ld .SHOP), read to OVL_SHOP_BASE (0x80080800) by checkShopMap and
+# loadShopLibrary. The game checks its seal (the last word, tools/overlay_seal.py in the tree) before it runs it and reads
+# it again when the slot holds anything else; a missing or unsealed copy would be read again at every shop. rule: every
+# copy on the disc is the tree's sealed overlay, the same bytes in every language
+shop_check() { [ -f "$1/SHOP_REL.BIN" ] || { echo "$1/SHOP_REL.BIN: missing (the tree has no .SHOP overlay)"; exit 1; }
+  $PY "$W/tools/overlay_seal.py" check "$1/SHOP_REL.BIN" || exit 1
+  [ "$1" = "$O/exe" ] || cmp -s "$1/SHOP_REL.BIN" "$O/exe/SHOP_REL.BIN" || { echo "$1/SHOP_REL.BIN: differs from $O/exe's"; exit 1; }; }
 # MOV_REL.BIN: the STR player is ~2 KB of code; the rest of its image is the player's buffers, which the original link
 # stored in the file with whatever the build machine's memory held (decomp src/mov/mov_bss_us.c: 253 KB of non-zero
 # residue on the USA disc, a different one on every release). Each is written before it is read: MOV_ENV by
@@ -385,7 +386,7 @@ step "balance tables -> $O/exe"
 # (the balance maps, the wild Digimon of content/maps, are derive's balance step: they need no executable)
 rm -rf "$O/exe"
 $PY tools/balance.py build --exe-dir "$W/build/us/psx/gcc" -o "$O/exe" --no-maps | tee "$O/balance.log"
-shop_placeholder "$O/exe"; mov_zero_buffers "$O/exe"
+shop_check "$O/exe"; mov_zero_buffers "$O/exe"
 if [ "$LANG_ON" = 1 ]; then
   step "language patches and overlays"
   for lang in $LANG_LIST; do
@@ -393,7 +394,7 @@ if [ "$LANG_ON" = 1 ]; then
     dst=$O/exe-$lang
     rm -rf "$dst"
     $PY tools/balance.py build --exe-dir "$tree/build/us/psx/gcc" -o "$dst" --no-maps > "$O/balance-$lang.log"
-    shop_placeholder "$dst"; mov_zero_buffers "$dst"
+    shop_check "$dst"; mov_zero_buffers "$dst"
   done
   # Every target patch contains all bytes that ANY language changes. A pairwise diff from
   # English alone cannot restore a byte that Spanish and English share after Portuguese.

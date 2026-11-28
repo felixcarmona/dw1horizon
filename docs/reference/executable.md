@@ -81,7 +81,7 @@ file names) without complete compilation units; the decompilation's symbol files
 | `DOOA_REL.BIN` | 9 | `0x80080000` | 0x4894 | 0x2FD4 | 39 | partner death and reincarnation cutscene |
 | `TRN_REL.BIN` | 10 | `0x80088800` | 0x6718 | 0x478 | 69 | training: Green Gym, Gear Savanna, Misty Trees ([minigames.md](minigames.md#training-trn-and-trn2)) |
 | `DGET_REL.BIN` | 11 | `0x80080800` | 0x148C | 0x28 | 20 | tournament calendar and registration screen |
-| `SHOP_REL.BIN` | 11 | `0x80080800` | 0x7820 | 0x5AC | 105 | shop routines; in the USA build the same code is linked into `SLUS` (see below) |
+| `SHOP_REL.BIN` | 11 | `0x80080800` | 0x7820 | 0x5AC | 105 | shop routines; ours is a sealed overlay again (see below) |
 | `TRN2_REL.BIN` | 12 | `0x80088800` | 0x50F0 | 0x38C | 61 | training: Beetle Land, Ice Sanctuary, Trash Mountain |
 | `MURD_REL.BIN` | 13 | `0x8007C000` | 0x1708 | 0x1214 | 19 | partner death effect (loads `ETCHI\LIFE.TIM`) |
 | `ENDI_REL.BIN` | 14 | `0x80060000` | 0xD58 | 0x798 | 22 | the tamer dissolving in the ending |
@@ -93,8 +93,14 @@ followed by a 5-object TMD (at 0xD20); the `MWo1` header is at file offset `0x41
 finisher aura, confusion, stun and buff models ([combat.md](combat.md#source-files)).
 
 **`SHOP_REL.BIN`**: in the USA executable the shop code (`decomp/src/shop/script_menu.c`) is linked into `SLUS`
-itself (`config/us/main.yaml`); `checkShopMap` still loads the file on the 8 maps of `SHOP_MAPS`
-([items-and-menus.md](items-and-menus.md)). In the JP and EU builds it is a real overlay.
+itself, and `checkShopMap` loads the file for nothing on the 8 maps of `SHOP_MAPS` ([items-and-menus.md](items-and-menus.md)).
+In the JP and EU builds it is a real overlay, and in ours too (`config/us/overlay.ld` `.SHOP`): every function of
+`script_menu.c` but the amount box (`openShop`, resident, uses it) is in the file, read on the shop maps, on 216 (the
+card machine) and by script routine 0x23. Other overlays share the slot (DGET on the arenas, DOOA at a death, STD in a
+tournament, MOV), so the file's last word is a seal (`tools/overlay_seal.py`, written at build time) and
+`modShopOverlayEnsure` checks it before routines 1, 2, 8 (recycling), 9, 10, 11, 14 and 32 and the new-game scene run
+code from the slot: it reads the file again (blocking) when the seal does not match, and counts it in
+`MOD_SHOP_RELOADS`.
 
 How each overlay gets loaded: `BTL` by `loadBattleData`, `STD` by `startTournament`, `VS` by the main menu,
 `FISH`/`KAR` on entering their maps, `TRN`/`TRN2` by `loadTrainingLibrary` on the gym maps, `EAB`/`ENDI` by script
