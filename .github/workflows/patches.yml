@@ -19,6 +19,8 @@ on:
       - 'tools/test_patch_series.py'
       - 'tools/test_technique_coherence.py'
       - 'tools/test_lang_slot_verify.py'
+      - 'tools/test_scale_lock.py'
+      - 'tools/models/scale_lock.py'
       - 'content/species/**'
       - 'content/maps/**'
       - 'content/battle/**'
@@ -51,5 +53,6 @@ jobs:
           python3 tools/test_patch_series.py
           python3 tools/test_technique_coherence.py
           python3 tools/test_lang_slot_verify.py
+          python3 tools/test_scale_lock.py
       - name: Apply the whole series to the pinned decompilation
         run: python3 tools/patch_series.py check --apply

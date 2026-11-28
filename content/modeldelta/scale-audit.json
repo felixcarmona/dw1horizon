@@ -1,0 +1,13 @@
+{
+  "note": "tools/models/scale_lock.py species: a clip that starts at another body size than the walk (more than 5%) fails the build, unless one of the clips of the native model the motion comes from starts at that size (the original game's own squash and stretch). Natives are compared with their own model on the disc; motion_from names the native a new species copies its motion from.",
+  "motion_from": {
+    "470": {"native": 15, "why": "Pabumon: Punimon's clips"},
+    "471": {"native": 2, "why": "Pichimon: Koromon's clips"},
+    "472": {"native": 1, "why": "YukimiBotamon: Botamon's clips"},
+    "473": {"native": 1, "why": "Nyokimon: Botamon's clips"},
+    "474": {"native": 2, "why": "Motimon: Koromon's clips"},
+    "475": {"native": 2, "why": "Bukamon: Koromon's clips"},
+    "476": {"native": 30, "why": "Nyaromon: Tokomon's clips"},
+    "477": {"native": 44, "why": "Yokomon: Tanemon's clips"}
+  }
+}
