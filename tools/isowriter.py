@@ -694,6 +694,61 @@ def rewrite_lang_slot(patch, slot, where):
     return rows, changed, names
 
 
+def verify_lang_slots(slot, lang_files, where):
+    """Reads the language file slot rows every language patch of `lang_files` ({name: bytes}) carries and checks each
+    against `where` {file name: (lba, size)}, the layout of the disc they are written to: the row's key must name a
+    file of that disc and its sector and size must be that file's. Strict where rewrite_lang_slot is lenient (it skips
+    a key it cannot find). Returns {name: rows}; raises ValueError naming the first wrong row."""
+    address, count = slot
+    keys = {}
+    for name in where:
+        keys[filename_hash(name) & 0xFFFFFF] = name
+    out = {}
+    for path in sorted(lang_files):
+        patch = lang_files[path]
+        runs = [(off, a, n) for off, a, n in lang_patch_runs(patch) if a < address + 8 * count and address < a + n]
+        if not runs:
+            out[path] = 0
+            continue
+        off, a, n = runs[0]
+        if len(runs) != 1 or a > address or a + n < address + 8 * count:
+            raise ValueError(f'{path}: its language file slot is not one whole run')
+        rows = 0
+        for i in range(count):
+            at = off + address - a + 8 * i
+            key = int.from_bytes(patch[at + 5:at + 8], 'little')
+            if key == 0:
+                break
+            name = keys.get(key)
+            if name is None:
+                raise ValueError(f'{path}: slot row {i} names a file the disc does not have (key {key:06X})')
+            lba, size = where[name]
+            want = (lba | (file_size_code(size) << 19)).to_bytes(5, 'little')
+            if bytes(patch[at:at + 5]) != want:
+                raise ValueError(f'{path}: slot row {i} ({name}) does not hold this disc\'s sector and size ({lba}, {size})')
+            rows += 1
+        out[path] = rows
+    return out
+
+
+def verify_image_lang_slots(image_path, table):
+    """The written image read back: its executable's file table and every language patch's slot rows resolve to the
+    files the image's own directory has (`table` the release's table record: file, offset, entries, lang_slot,
+    lang_files). Raises ValueError. Returns {language file: rows}."""
+    img = Image(image_path)
+    try:
+        where = {q.split('/')[-1]: (lba, n) for q, (lba, n, xa) in img.files.items() if not xa}
+        exe = img.read(table['file'])
+        where['PSX.EXE'] = where[table['file'].split('/')[-1]]
+        wrong = [nm for _, sec, size, nm in file_table_entries(exe, table['offset'], names=where)
+                 if nm in where and (sec, size) != where[nm]]
+        if wrong:
+            raise ValueError(f'the file table does not match the image directory ({wrong[:5]})')
+        return verify_lang_slots(tuple(table['lang_slot']), {q: img.read(q) for q in table['lang_files']}, where)
+    finally:
+        img.f.close()
+
+
 def rewrite_lang_patches(files, exe, map_text, where):
     """rewrite_lang_slot over every language patch of `files` ({disc path: bytes}, SCN/LANG*.BIN), in place.
     -> ((address, entries) or None, {path: (rows, changed)}, names the slots hold)."""

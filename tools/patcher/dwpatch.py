@@ -1097,6 +1097,13 @@ def apply_binary_delta(entry, base_key, read_source, blob, *, tool_root=None):
     return bytes(out)
 
 
+def where_written(pl, t):
+    """{file name: (lba, size)} of the plan a disc was written with, PSX.EXE included."""
+    where = {q.split('/')[-1]: v for q, v in pl.lba.items()}
+    where['PSX.EXE'] = where[t['file'].split('/')[-1]]
+    return where
+
+
 def build_disc3(p, base, holes, out_bin, expect_sha1=None, progress=True):
     """Lays the patched disc out from the payload `p` on BaseDisc `base` with the locally built holes {id: bytes}.
     Returns (SHA-1, Plan)."""
@@ -1205,6 +1212,17 @@ def build_disc3(p, base, holes, out_bin, expect_sha1=None, progress=True):
         if prog: prog.total = total; prog(done)
     pl, sha = iw.write(lay, files, out_bin, license=lic, cue=False, progress=tick)
     if prog: prog.end()
+    if t and t.get('lang_slot'):
+        # Whatever the release says, the disc just written must itself be consistent: every language file's slot rows
+        # name files of THIS disc with THIS disc's sectors and sizes (a wrong row breaks the game on a language
+        # switch, only on the disc it is wrong for). A stream cannot be read back: the plan the writer used stands in.
+        try:
+            iw.verify_lang_slots(tuple(t['lang_slot']), {q: files[q] for q in t['lang_files']}, where_written(pl, t))
+            if isinstance(out_bin, str):
+                iw.verify_image_lang_slots(out_bin, t)
+        except (ValueError, KeyError, OSError) as e:
+            if isinstance(out_bin, str) and os.path.exists(out_bin): os.remove(out_bin)
+            raise PatchError(f'the language files of the patched disc do not match its layout ({e}). Nothing was written.')
     if expect_sha1 and sha != expect_sha1:
         os.remove(out_bin)
         raise PatchError(f'the patched disc does not match the release (SHA-1 {sha}, expected {expect_sha1}). '
