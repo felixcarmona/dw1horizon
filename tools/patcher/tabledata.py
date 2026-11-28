@@ -100,6 +100,11 @@ def authored_recipe(obj, data, tool_root=None, words=()):
                             kind='semantic', fields=[[140, 14]], generator='versus_mode', params=[english])
     elif name == 'TYPE_FACTORS' and obj['source'] == 'src/main/item.c':
         choices = [('type_factors', [])]
+    elif ((name, obj['source']) in (('BTL_SPECIAL_ICON_UVS', 'src/btl/battle_hud.c'),
+                                    ('VS_SPECIAL_ICON_UVS', 'src/vs/vs_main.c'),
+                                    ('STD_SPECIAL_ICON_UVS', 'src/std/std_main.c'))
+            and len(data) == 24):
+        choices = [('battle_element_icons', [])]
     elif name == 'TOURNAMENT_SCHEDULE' and obj['source'] == 'src/main/script_common.c' and len(data) == 180:
         choices = [('tournament_schedule', [])]
     elif (name == 'TRN_D_8008F14C' and obj['source'] == 'src/trn/trn_reward.c'
