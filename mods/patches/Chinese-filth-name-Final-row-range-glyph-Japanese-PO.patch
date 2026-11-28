@@ -1,0 +1,58 @@
+From 0defc3b8917c582dcac4f554c29264b66227fea3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 28 Nov 2026 13:44:34 +0000
+Subject: [PATCH] Chinese filth name, Final row range glyph, Japanese POWER
+ word
+
+The Chinese filth name has a cell of its own (it shared the one the menu's item word is drawn over). The Final row read
+the range glyph from the European strip's cell even in a US-layout SYSTEM_W, where that cell is another label's (a
+stray colon in every language but English, whose cell is blank), and drew one for a range of 0: it reads the strip of
+its version as the list's rows do, and only for a range. Japanese POWER is the two-kanji word. The crops come from
+tools/localize/systemw.py crop_tables (ZH_FILTH_CELL).
+---
+ src/main/game_menu.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index fccd65d5..65f07321 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -1141,7 +1141,7 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[NUM_ELEMENTS] = {
+ 	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x007b, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0056, 0x0098 },
+ 	{ 0xffc1, 0x0000, 0x0012, 0x000a, 0x0068, 0x0098 },
+-	{ 0xffbd, 0x0000, 0x0016, 0x000a, 0x003c, 0x00e0 },
++	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x00b0, 0x0097 },
+ 	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x0009, 0x00a9 },
+ 	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x002b, 0x00a9 },
+ 	{ 0xffbf, 0x0000, 0x0010, 0x000a, 0x004d, 0x00a9 },
+@@ -1225,7 +1225,7 @@ IconRect MOVES_SELECTED_LABELS[5] = {
+ 
+ #elif MOD_LANG_BUILD == MOD_LANG_JA
+ 	{ 0xff75, 0xfffa, 0x0040, 0x000c, 0x0060, 0x00d4 },
+-	{ 0xff75, 0x0019, 0x0022, 0x000c, 0x0080, 0x00ee },
++	{ 0xff75, 0x0019, 0x001f, 0x000c, 0x0080, 0x00ee },
+ 	{ 0xff74, 0x002e, 0x000b, 0x0007, 0x0074, 0x00a2 },
+ 	{ 0xff75, 0x003b, 0x001f, 0x000c, 0x00a0, 0x00d4 },
+ 	{ 0xff75, 0x004c, 0x001b, 0x000c, 0x00c2, 0x00ee },
+@@ -4130,8 +4130,15 @@ void renderDigimonMovesView(void)
+ 			renderString(3, TECH_TITLE_CROPS[1].x, -0xf, TECH_TITLE_CROPS[1].w, 0xc, TECH_TITLE_CROPS[1].u, 0x48, 5, 1);
+ 			renderString(0, -0x7c, 1, FINISHER_NAME_WIDTH, 0xc, 0, 0x3c, 5, 1);
+ 			renderNumber(0, 0x10, 0, 3, finisher->power, 5);
+-			renderString(0, 0x65, 1, 0xc, 0xc,
+-			             (finisher->range - 1) * 0xc + 0x48, 0x6c, 5, 1);
++			if (finisher->range != 0) { /* MOD: the glyph strip of this version, as the list's rows read it (the EU strip's cell in a US-layout SYSTEM_W is another label's) */
++#if !VERSION_IS(US)
++				renderString(0, 0x65, 1, 0xc, 0xc,
++				             (finisher->range - 1) * 0xc + 0x48, 0x6c, 5, 1);
++#else
++				renderString(0, 0x65, 1, 0xc, 0xc,
++				             (finisher->range - 1) * 0x24, 0x78, 5, 1);
++#endif
++			}
+ 			if (finisher->status != 0) {
+ 				renderRectPolyFT4(0x7d, 0, 0xc, 0xc,
+ 				                  (finisher->status - 1) * 0xc, 0x8c, 5,
+-- 
+2.55.0
+

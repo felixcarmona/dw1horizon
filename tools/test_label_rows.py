@@ -30,8 +30,7 @@ HEADER = [('MOVES_VIEW_TECHSET_TEXT', i, en) for i, en in enumerate(('POWER', 'R
 PANEL = [('MOVES_SELECTED_LABELS', i, en) for i, en in enumerate(('TECH. DATA', 'POWER', 'MP', 'RANG', 'SPEC'))]
 ELEMENTS = [('MOVES_VIEW_ELEMENT_NAMES', i, en) for i, en in enumerate(
     ('FIRE', 'BATTLE', 'AIR', 'NATURE', 'ICE', 'MECH', 'FILTH', 'DARK', 'LIGHT', 'WATER', 'WEAPON', 'EARTH'))]
-# a separate bug, not a line: the Chinese menu word 道具 is drawn over the Chinese filth name's cell
-KNOWN = {('zh-hans', 'elements', 'FILTH')}
+KNOWN = set()
 
 
 def decomp():
@@ -139,6 +138,38 @@ class LabelRows(unittest.TestCase):
                 L.build(d + '/out', EXTRACTED, scratch=d + '/scratch', language=language)
                 cls.tims[language] = texture(os.path.join(d, 'out', language, 'ETCDAT', 'SYSTEM_W.TIM'))
         cls.lines = {language: lines(cls.source, cls.tims, language) for language in CODES}
+
+    def test_japanese_power_is_the_two_kanji_word(self):
+        """威力 heads the technique page's POWER column and the panel's row (the kana word was wider than its room)"""
+        from tools.localize.catalog import word
+        self.assertEqual(word('POTENCIA', 'ja'), '威力')
+
+    def test_the_final_row_draws_a_range_glyph_only_for_a_range(self):
+        """A finisher without a range (0) reads the cell before the strip's first: a stray glyph. The list rows guard it
+        the same way. (The glyph's cell is the version's strip, as the list's: see the next test)"""
+        import re
+        for name in ('mv', 'finisher'):
+            draws = [m.start() for m in re.finditer(re.escape(name + '->range - 1'), self.source)]
+            self.assertTrue(draws, name)
+            for at in draws:
+                self.assertIn(name + '->range != 0', self.source[max(0, at - 700):at], name)
+
+    def test_the_final_row_reads_the_same_glyph_strip_as_the_list_rows(self):
+        """the European strip's cell (0x48, 0x6c) in a US-layout SYSTEM_W is another label's: a colon beside the range"""
+        import re
+        strips = lambda name: [' '.join(x.split()) for x in re.findall(
+            re.escape(name + '->range - 1') + r'\)([^;]*);', self.source)]
+        self.assertEqual(strips('finisher'), strips('mv'))
+
+    def test_the_chinese_menu_words_cover_no_element_name(self):
+        """the Chinese item word's cell (CHINESE_MENU_CELLS) is drawn over any label crop sharing its pixels"""
+        from tools.localize.fi_info import overlaps
+        from tools.localize.systemw import CHINESE_MENU_CELLS, CHINESE_MENU_SIZE
+        names = table(self.source, 'MOVES_VIEW_ELEMENT_NAMES', 'zh-hans')
+        for _, u, v in CHINESE_MENU_CELLS.values():
+            for i, crop in enumerate(names):
+                with self.subTest(menu=(u, v), element=i):
+                    self.assertFalse(overlaps((u, v, *CHINESE_MENU_SIZE), (crop[4], crop[5] - 128, crop[2], crop[3])))
 
     def test_every_label_stands_on_the_english_line(self):
         english = self.lines['en']
