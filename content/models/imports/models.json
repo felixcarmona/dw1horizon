@@ -135,7 +135,7 @@
  "316": {"model": "316-Sakuyamon.MMD", "aliases_applied": true},
  "317": {"model": "317-Fujinmon.MMD", "aliases_applied": true, "technique_timing": {"Megaton Punch": {"source": "Power Crane", "source_sha256": "d65e2437c0a82df2c05601ca06f16ad33bc438a56e1db41a4d1de4451d958405", "samples": [[0, 0], [11, 44], [14, 47], [60, 60]]}}},
  "318": {"model": "318-Gallantmon.MMD", "aliases_applied": true},
- "319": {"model": "319-Pharaohmon.MMD", "aliases_applied": true, "field_overlay": "pharaohmon-chibi", "technique_timing": {"Megaton Punch": {"source": "Megaton Punch", "source_sha256": "770c35c28508f0688f973f26c8347daa7c9ce3559d29a6202035b92e8f238911", "samples": [[0, 0], [11, 33], [14, 36], [60, 60]]}}},
+ "319": {"model": "319-Pharaohmon.MMD", "aliases_applied": true, "field_overlay": "pharaohmon-chibi", "technique_timing": {"Megaton Punch": {"source": "Megaton Punch", "source_sha256": "86835e99e6f4dffe9522291786c2d1807130ba99986cb1d3b4c5366ce2546efb", "samples": [[0, 0], [11, 33], [14, 36], [60, 60]]}}},
  "320": {"model": "320-Growlmon.MMD", "aliases_applied": true},
  "321": {"model": "321-Knightmon.MMD", "aliases_applied": true, "field_overlay": "knightmon-chibi", "technique_aliases": {"Megaton Punch": "Pulse Laser", "Giant Cleave": "Megaton Punch"}},
  "322": {"model": "322-Kyukimon.MMD", "field_overlay": "kyukimon-chibi", "technique_aliases": {"War Stance": "Static Elect", "Giant Cleave": "Megaton Punch"}},
