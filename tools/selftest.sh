@@ -88,6 +88,7 @@ run buster-dive-tests $PY -m unittest tools.test_buster_dive
 run finisher-balance-tests $PY -m unittest tools.test_finisher_balance
 run unique-finisher-tests $PY -m unittest tools.test_unique_finishers
 run patch-series-tests $PY tools/test_patch_series.py
+run lang-slot-verify-tests $PY tools/test_lang_slot_verify.py
 if [ -f "$PATCHED/src/main/main_menu.c" ]; then
     run training-bonus-host $PY tools/dev/playtest/training_bonus_host.py "$PATCHED"
     run save-capacity $PY tools/dev/saves/capacity.py "$PATCHED"
