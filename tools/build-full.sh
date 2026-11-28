@@ -345,7 +345,7 @@ if [ -f "$O/DIGI.DAT" ] && [ -f "$O/with-new-screens/MAPHEAD.SCN" ]; then
 fi
 # SHOP_REL.BIN: the shops, the naming box, the card packs, the item keeper, the jukebox, the Birdramon transport and the
 # new-game questions (decomp config/us/overlay.ld .SHOP), read to OVL_SHOP_BASE (0x80080800) by checkShopMap and
-# loadShopLibrary. The game checks its seal (the last word, tools/overlay_seal.py in the tree) before it runs it and reads
+# loadShopLibrary. The game checks its seal (the last word, decomp/tools/overlay_seal.py in the tree) before it runs it and reads
 # it again when the slot holds anything else; a missing or unsealed copy would be read again at every shop. rule: every
 # copy on the disc is the tree's sealed overlay, the same bytes in every language
 shop_check() { [ -f "$1/SHOP_REL.BIN" ] || { echo "$1/SHOP_REL.BIN: missing (the tree has no .SHOP overlay)"; exit 1; }

@@ -1439,7 +1439,7 @@ ticks (a slow one when tired), the idle has four, a stride one. The pelvis gets 
 peak, walk / tired / run: pelvis height 19 -> 22 / 18 -> 20 / 20 -> 23, side sway 16 -> 24 / 16 -> 20 / 8 -> 16, hip roll 15 -> 22 / 16 -> 20
 / 18 -> 23, head roll 3.4 -> 7 / 2.7 -> 6.3 / 4.3 -> 4.8 degrees. The knee turns up to 4 times its median per-tick step in the walk (3 before):
 the hop's price within the narrow pelvis-height window the legs can reach.
-MarineAngemon 248 (`tools/models/field_animations/marine_angemon.py`, test
+MarineAngemon 248 (its old generator script, test
 `tools.test_marineangemon_gait`) held every bone still in all four field slots
 and only the root travelled, so the fairy slid along. The generator authors
 four different loops on its own rig, with no donor motion stored: a 48-tick

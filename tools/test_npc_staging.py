@@ -74,7 +74,7 @@ class NpcStaging(unittest.TestCase):
         m.TARGET_FACTS = {'npc_anim_keep': [[0] for _ in range(180)]}
         with patch.object(m, 'model_data', return_value=data), \
              patch.dict(m.DIGI, {105: {'bone_count': 2}}):
-            self.assertEqual(npcanims.trimmed_size(105), 48)
+            self.assertEqual(npcanims.trimmed_size(105), 50)  # was 48 before the stub got an empty key at frame 1 (+2 B)
 
     def test_peak_covers_placements_before_later_model_load(self):
         # Earlier instances may already exist when the next full model loads.

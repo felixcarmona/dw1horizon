@@ -176,7 +176,7 @@ class ModelProvider(unittest.TestCase):
         selected['251'] = model.OVERLAYS['solarmon-steady-hover']
         # Baked deltas retain their effective field generator as authoring provenance.
         for path in [*Path('content/modeldelta/scale-locks').glob('*.json'),
-                     *Path('content/modeldelta/resizes').glob('*.json')]:
+                     *Path('content/modeldelta').glob('resizes/*.json')]:
             proof = json.loads(path.read_text())
             sid = str(proof['species'])
             self.assertTrue(records[sid]['aliases_applied'])

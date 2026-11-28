@@ -47,7 +47,7 @@ def chinese_language_writes(build):
         return path.read_bytes()
 
 
-OVERLAY_SEAL_SEED = 0x53484F50  # 'SHOP', as decomp tools/overlay_seal.py
+OVERLAY_SEAL_SEED = 0x53484F50  # 'SHOP', as decomp/tools/overlay_seal.py
 
 
 def is_overlay_seal(target, offset):
@@ -334,7 +334,7 @@ def inspect(payload, build, bases, secondary, plan=None):
                     category = 'a' if target[row['offset']:row['offset'] + 4] == struct.pack('<I', row['value']) else 'd'
                     if category == 'd' and row['value'] == 0 and is_overlay_seal(target, row['offset']):
                         # The sealed overlay's last word is the linker's empty word with the rotating sum
-                        # of every word before it written in (tools/overlay_seal.py of the decomp): the
+                        # of every word before it written in (decomp/tools/overlay_seal.py): the
                         # reconstructed bytes carry their own proof.
                         category = 'a'
                 elif row['section'] == '.unmapped':

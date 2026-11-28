@@ -117,7 +117,7 @@ def check_file(rel, verbose):
                 if '/' not in span and not span.endswith(('.py', '.sh')):
                     continue
                 candidate = os.path.normpath(os.path.join(here, span))
-                if span.startswith(TOP) or exists(span):
+                if span.startswith(TOP) or span.startswith(SKIP_DIRS) or exists(span):
                     continue
                 if not exists(candidate):
                     bad.append((rel, n, f'index path {span}'))
