@@ -54,6 +54,21 @@ class Header(unittest.TestCase):
             self.assertIn(f'+\t\tTECH_ROW_SET_ICON(prim, {prefix}_SPECIAL_ICON_UVS, eff);', patch)
         self.assertEqual(patch.count('+\t\t\tTECH_ROW_BLINK_ICON(prim);'), 3)
 
+    def test_patcher_rebuilds_the_tables_from_the_same_cells(self):
+        # the three twelve-row tables travel as a player-side recipe (tools/patcher/tabledata.py), not as delta
+        # data: with eight rows of the original and the rest rewritten, no disc witnesses them
+        import sys
+        sys.path.insert(0, str(ROOT / 'tools/patcher'))
+        import fontcopy
+        import tabledata
+        data = bytes(v for cell in ORIGINAL_UVS + art.uvs() for v in cell)
+        self.assertEqual(fontcopy.semantic_table('battle_element_icons', []), data)
+        for name, source in (('BTL', 'src/btl/battle_hud.c'), ('VS', 'src/vs/vs_main.c'), ('STD', 'src/std/std_main.c')):
+            obj = dict(offset=0, length=24, section=f'.data.{name}_SPECIAL_ICON_UVS', source=source)
+            self.assertEqual(tabledata.authored_recipe(obj, data)['generator'], 'battle_element_icons')
+            self.assertIsNone(tabledata.authored_recipe(obj, bytes(24)))
+            self.assertIsNone(tabledata.authored_recipe(dict(obj, source='src/btl/other.c'), data))
+
 
 class Atlas(unittest.TestCase):
     @classmethod
