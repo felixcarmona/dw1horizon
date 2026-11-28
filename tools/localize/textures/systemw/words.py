@@ -26,7 +26,10 @@ def shadow(rows,ink,sh,bg):
                 if y+1<H and x+1<W and rows[y+1][x+1]!='#': out[y+1][x+1]=sh
     return out
 def r_stat(word,lead=0,h=12,top=2):
-    rows=compose(STAT,word); rows=pad(rows,lead,top,1,h-top-len(rows))
+    rows=compose(STAT,word)
+    # (the '.' glyph is 8 rows tall: the blank row it adds above the 7-row letters would lower the word)
+    while len(rows)>7 and '#' not in rows[0]: rows=rows[1:]
+    rows=pad(rows,lead,top,1,h-top-len(rows))
     return shadow(rows,14,13,15)
 DIAG='#'
 def r_tag(word,font=None):

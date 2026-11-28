@@ -231,7 +231,8 @@ K: #.#/##./#../##./#.#
 U: #.#/#.#/#.#/#.#/x#x
 Z: ###/..#/.#./#../###
 '''))
-TSA_SPECIAL['É'] = ['..#', '...'] + TSA_SPECIAL['E']
+# (the status row's cells have one row above the letters: the accent goes on the letter's top row, as in SMALL_COMPACT)
+TSA_SPECIAL['É'] = '..#/##./#../##./###'.split('/')
 STAT.update(F('''
 G: .##./#..#/#.../#.##/#..#/#..#/.##.
 K: #..#/#.#./##../##../#.#./#..#/#..#
