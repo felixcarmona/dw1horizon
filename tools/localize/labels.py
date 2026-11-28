@@ -185,10 +185,7 @@ def apply(files, language, work):
         draw(path,(139,8,31,9),push,10,0,1,entry)
         draw(path,(0,29,46,15),finish,12,0,10,entry,lambda y: 11 if y >= 12 else 14 if y >= 10 else 12)
     draw('ETCHI/LIFE.TIM',(48,0,64,24),('VIE','LEBEN','VITA','のこり','VIDA','生命')[col],7,0,8)
-    from tools.title_stamp import disc_index    # (the Japanese disc's TITLE256 has its colours in another order)
-    title = files[language, 'ETCNA/TITLE256.TIM']
-    draw('ETCNA/TITLE256.TIM',(0,240,129,11),('Appuyez sur START','START drücken','Premi START','START をおして','Prem START','按START键')[col],
-         disc_index(title, 0), disc_index(title, 255), disc_index(title, 91))
+    # (the title's Press Start line is the misc recipe's, in the disc's own letters: tools/localize/title_letters.py)
     draw('STDDAT/STDTIM.BIN',(0,8,144,24),('TEMPS ÉCOULÉ!','ZEIT UM!','TEMPO!','じかんぎれ!','TEMPS!','时间到！')[col],1,0,15,2)
     draw('STDDAT/TAISEN2.TIM',(48,0,79,14),('MODE VS','VS-MODUS','MODO VS','VS モード','MODE VS','对战模式')[col],1,15,14)
     draw('STDDAT/TAISEN_F.TIM',(120,0,124,13),('MODE COMBAT','KAMPFMODUS','MODO LOTTA','バトルモード','MODE COMBAT','战斗模式')[col],5,15,1)
