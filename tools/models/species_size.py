@@ -1,7 +1,7 @@
 """Partner sizes: per-bone proportions and one uniform size, baked after the field overlay.
 
 content/models/imports/sizes.json names, per imported species, an optional
-`bones` map (bone -> factor), a `width` map (bone -> factor on that bone's own mesh, x only) and a uniform `factor`. A bone factor scales the
+`bones` map (bone -> factor), a `width` map (bone -> factor on that bone's own mesh, x only or [kx, ky, kz]), a `squash` list (part of a bone's mesh shortened along one axis) and a uniform `factor`. A bone factor scales the
 bone's whole subtree, like a pose scale would: its vertices and the offsets of
 its descendants in every animation (battle and field), so a child that should
 keep its size takes the inverse factor. Lowered or raised feet are put back on
@@ -119,11 +119,32 @@ def widen(data, skeleton, width):
     return model.build()
 
 
+def squash(data, skeleton, cuts):
+    """Shorten part of a bone's own mesh along one axis (`axis` 0-2) by `k` around `pivot`: the vertices listed in `verts`
+    (numbers inside the bone's mesh), or those on the far side of `below`; animations and the other bones stay as they are."""
+    model = mmd.MMD.parse(data, len(skeleton))
+    tmd = model.tmd
+    for cut in cuts:
+        ob = tmd.objects[skeleton[cut['bone']][0]]
+        axis, k, pivot = cut['axis'], float(cut['k']), float(cut['pivot'])
+        for n, i in enumerate(range(ob.vert_start, ob.vert_start + ob.nvert)):
+            v = list(tmd.verts[i])
+            if 'verts' in cut and n not in cut['verts']:
+                continue
+            if 'below' in cut and not v[axis] < cut['below']:
+                continue
+            v[axis] = _clamp(round(pivot + (v[axis] - pivot) * k), 'vertex')
+            tmd.verts[i] = tuple(v)
+    return model.build()
+
+
 def apply(data, skeleton, sid, row):
     """(model, proof): the bone proportions and uniform factor of manifest row `row` baked into model `data`."""
     nb = len(skeleton)
     mmd.exe().add_type(int(sid), skeleton)
     before = sizes_tools.extent(sizes_tools.posed_points(mmd.MMD.parse(data, nb), skeleton))
+    if row.get('squash'):
+        data = squash(data, skeleton, row['squash'])
     bones = {int(b): float(k) for b, k in row.get('bones', {}).items()}
     cum, lift = [1.0] * nb, 0
     if bones:
