@@ -1,7 +1,7 @@
 """Partner sizes: per-bone proportions and one uniform size, baked after the field overlay.
 
 content/models/imports/sizes.json names, per imported species, an optional
-`bones` map (bone -> factor) and a uniform `factor`. A bone factor scales the
+`bones` map (bone -> factor), a `width` map (bone -> factor on that bone's own mesh, x only) and a uniform `factor`. A bone factor scales the
 bone's whole subtree, like a pose scale would: its vertices and the offsets of
 its descendants in every animation (battle and field), so a child that should
 keep its size takes the inverse factor. Lowered or raised feet are put back on
@@ -105,6 +105,19 @@ def bake_bones(data, skeleton, bones):
     return model.build(), cum, lift
 
 
+def widen(data, skeleton, width):
+    """Widen the mesh of each listed bone (bone -> factor on its own vertices' x): animations, offsets and the
+    other bones stay as they are, so no clip changes."""
+    model = mmd.MMD.parse(data, len(skeleton))
+    tmd = model.tmd
+    for b, k in width.items():
+        ob = tmd.objects[skeleton[b][0]]
+        for i in range(ob.vert_start, ob.vert_start + ob.nvert):
+            x, y, z, p = tmd.verts[i]
+            tmd.verts[i] = (_clamp(x * k, 'vertex'), y, z, p)
+    return model.build()
+
+
 def apply(data, skeleton, sid, row):
     """(model, proof): the bone proportions and uniform factor of manifest row `row` baked into model `data`."""
     nb = len(skeleton)
@@ -114,6 +127,9 @@ def apply(data, skeleton, sid, row):
     cum, lift = [1.0] * nb, 0
     if bones:
         data, cum, lift = bake_bones(data, skeleton, bones)
+    width = {int(b): float(k) for b, k in row.get('width', {}).items()}
+    if width:
+        data = widen(data, skeleton, width)
     factor = float(row['factor'])
     paced = True
     if factor != 1.0:
@@ -126,7 +142,7 @@ def apply(data, skeleton, sid, row):
             paced = False
             data = resize_tools.resize(data, nb, factor)
     after = sizes_tools.extent(sizes_tools.posed_points(mmd.MMD.parse(data, nb), skeleton))
-    proof = dict(applied=True, factor=factor, bones={str(b): k for b, k in sorted(bones.items())},
+    proof = dict(applied=True, factor=factor, bones={str(b): k for b, k in sorted(bones.items())}, width={str(b): k for b, k in sorted(width.items())},
                  paced=paced, ground_lift=lift, height_before=round(before[0]), height_after=round(after[0]),
                  point_scale=[round(c * factor, 6) for c in cum])
     return data, proof

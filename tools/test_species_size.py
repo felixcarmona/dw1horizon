@@ -36,6 +36,8 @@ class SpeciesSize(unittest.TestCase):
             self.assertIn('target', row)
             for bone, k in row.get('bones', {}).items():
                 self.assertTrue(int(bone) > 0 and 0.5 < k < 2.0, sid)
+            for bone, k in row.get('width', {}).items():
+                self.assertTrue(int(bone) > 0 and 0.5 < k < 2.0, sid)
 
 
 if __name__ == '__main__':
