@@ -244,6 +244,97 @@ def battle_banner(language):
                 positions=points + [points[-1]] * (155 - len(points)))
 
 
+def line_of(rows, blank, least=2):
+    """-> the row a word's letters stand on: the lowest with `least` pixels of ink (any value not in blank) at least, so
+    an accent above or a Q's tail below does not move it (Japanese and Chinese: 1, their lowest ink)"""
+    inked = [y for y, row in enumerate(rows) if sum(c not in blank for c in row) >= least]
+    return inked[-1] if inked else max(y for y, row in enumerate(rows) if any(c not in blank for c in row))
+
+
+def blank(background):
+    """-> the values of a rendered SYSTEM_W word that are not its letters: the background and the outline or shadow
+    (the tag palette's 0 and 1, elsewhere 15 and 13)"""
+    return (0, 1) if background == 0 else (15, 13)
+
+
+def trimmed(cell, background):
+    """-> the cell without its rows of background only, above and below the word"""
+    rows = [y for y, row in enumerate(cell) if any(c != background for c in row)]
+    return cell[rows[0]:rows[-1] + 1]
+
+
+def rendered(item, text, rect, language=''):
+    """-> (cell in palette indices, background, bottom-aligned) in the Spanish SYSTEM_W font of the item's kind"""
+    from tools.localize.systemw import PANEL_CELLS, PANEL_LABEL_ROOM, PANEL_LABEL_GAP
+    F, Wd = systemw_fonts()
+    en, rh = item['en'], rect[3]
+    # the panel's labels end before its arrows: a wider word takes the compact, then the narrow letters
+    room = min(rect[2], PANEL_LABEL_ROOM - PANEL_LABEL_GAP) if (en, item['es']) in PANEL_CELLS else rect[2]
+
+    def first(*tries):
+        sizes = []
+        for make in tries:
+            try:
+                cell = make()
+            except KeyError as missing:
+                sizes.append(f'no {missing}')
+                continue
+            if len(cell) <= rh and len(cell[0]) <= room:
+                return cell
+            sizes.append(f'{len(cell[0])}x{len(cell)}')
+        raise LabelOverflow(f'{language}: SYSTEM_W {rect}: {text!r} is {", ".join(sizes)}')
+
+    def small(font):
+        rows = Wd.pad(Wd.compose(font, text), 1, 1, 1, 1)
+        ol = Wd.outline(rows, '#')
+        return [[1 if c == '#' else 12 if c == 'c' else 13 if ol[y][x] else 15 for x, c in enumerate(r)]
+                for y, r in enumerate(rows)]
+
+    def tsa(font, main, acc):
+        rows = Wd.compose(font, text)
+        return [[0] * len(rows[0])] + [[main if c == '#' else acc if c == 'x' else 0 for c in r] for r in rows] + \
+            [[0] * len(rows[0])] * (rh - 1 - len(rows))
+
+    if en in ('NAME', 'DIGI', 'WEIGHT', 'AGE'):
+        narrow_compact = dict(F.TAG_NARROW, **{k: F.TAG_COMPACT[k] for k in 'ÂÀÈ'})
+        return first(*(lambda f=f: Wd.r_tag(text, f) for f in (F.TAG, F.TAG_COMPACT, F.TAG_NARROW, narrow_compact))), 0, False
+    if en in ('TYPE', 'ACTIVE', 'SPECIAL'):
+        font, main, acc = dict(TYPE=(F.TSA, 12, 13), ACTIVE=(F.TSA_ACTIVE, 8, 9), SPECIAL=(F.TSA_SPECIAL, 6, 7))[en]
+        return first(lambda: tsa(font, main, acc)), 0, False
+    if en in ('HAPPINESS', 'SPEED', 'SPEED (alternative)', 'BRAINS'):
+        return first(lambda: Wd.r_stat(text, h=rh)), 15, False
+    if en in ELEMENTS:
+        return first(lambda: Wd.r_elem(text, h=rh)), 15, False
+    return first(lambda: small(F.SMALL), lambda: small(F.SMALL_COMPACT), lambda: small(F.SMALL_NARROW)), 15, rh < 12
+
+
+def stand_row(item, rect):
+    """-> the row of the cell a label's letters stand on: a technique cell's TECH_LINE (the crop tables put it on
+    the English labels' line), else the row a plain word of the kind stands on drawn as the Spanish ones are (each
+    language's crop puts the cell where the Spanish one is)"""
+    from tools.localize.systemw import TECH_CELLS, TECH_LINE
+    if (item['en'], item['es']) in TECH_CELLS:
+        return TECH_LINE
+    cell, background, bottom = rendered(item, 'EE', rect)
+    return (rect[3] - len(cell) if bottom else (rect[3] - len(cell)) // 2) + line_of(cell, blank(background))
+
+
+def lift(item, text, rect, language):
+    """-> the rows a Japanese or Chinese label's crop goes up by (systemw.py crop_tables) when its word, drawn in font B
+    at the top of its cell, stands lower than stand_row: the cell has no room above for its taller letters"""
+    if language not in ('ja', 'zh-hans') or kind(item['en']) == 'gold':
+        return 0
+    for pad in (2, 1, 0):   # as apply's fit() picks font B's bitmap
+        try:
+            bitmap = mask(text, rect[2] - pad, rect[3] - pad)
+            break
+        except LabelOverflow:
+            continue
+    else:
+        return 0
+    return max(0, line_of(bitmap, (False, 0), 1) - stand_row(item, rect))
+
+
 def apply(files, language, work):
     if language not in LANGUAGES:
         return
@@ -253,6 +344,7 @@ def apply(files, language, work):
             if code == 'en' and path.startswith('STDDAT/GRADE/'):
                 files.setdefault((language,path),bytearray(data))
     col = LANGUAGES.index(language)
+    least = 1 if language in ('ja', 'zh-hans') else 2   # line_of: Japanese and Chinese stand on their lowest ink
     grids = {}
 
     def grid(path, entry=0):
@@ -298,9 +390,10 @@ def apply(files, language, work):
         raise problem
 
     def draw(path, rect, text, ink, background, shadow=None, entry=0, gradient=None, preserve=False, padding=2,
-             fonts=(None,), bottom=False):
+             fonts=(None,), bottom=False, line=None, align=0):
         """the word in the first of fonts (None = font B; else (pixel font, gap)) whose letters fit the cell at their
-        own size, centred (bottom: on the cell's last row, its shadow included); a label in OPEN keeps its old look"""
+        own size, centred (bottom: on the cell's last row, its shadow included; line: standing on that row of the cell
+        as near as the cell allows; align -1: at the cell's left edge); a label in OPEN keeps its old look"""
         u, v, rw, rh = rect
         try:
             for i, font in enumerate(fonts):
@@ -316,9 +409,11 @@ def apply(files, language, work):
             bitmap, bottom = _legacy_scaled(text, rw - padding, rh - padding, preserve), False
         w, px = clear(path, rect, background, entry)
         bh, bw = len(bitmap), len(bitmap[0])
-        x0, y0 = u + (rw-bw)//2, v + (rh-bh)//2
+        x0, y0 = u + (rw-bw)*(align+1)//2, v + (rh-bh)//2
         if bottom:
             y0 = max(v, v + rh - bh - (shadow is not None))
+        if line is not None:
+            y0 = max(v, min(v + line - line_of(bitmap, (False, 0), least), v + rh - bh - (shadow is not None)))
         points = {(x0+x, y0+y) for y, row in enumerate(bitmap) for x, on in enumerate(row) if on}
         if shadow is not None:
             for x, y in points:
@@ -327,21 +422,22 @@ def apply(files, language, work):
         for x, y in points:
             px[y*w+x] = gradient(y-v) if gradient else ink
 
-    def paste(path, rect, cell, background, entry=0, bottom=False, align=0):
-        """a word already rendered in its palette indices (SYSTEM_W's renderers), centred in the cell (align -1: at its
-        left edge, 1: at its right edge)"""
+    def paste(path, rect, cell, background, entry=0, line=0, align=0):
+        """a word already rendered in its palette indices (SYSTEM_W's renderers), its letters standing on the cell's
+        row line (align 0: centred, -1: at the cell's left edge, 1: at its right edge)"""
         u, v, rw, rh = rect
+        cell = trimmed(cell, background)
         ch, cw = len(cell), len(cell[0])
-        if ch > rh or cw > rw:
-            raise LabelOverflow(f'{language}: {path} {rect}: {cw}x{ch}')
+        x0, y0 = u + (rw-cw)*(align+1)//2, v + line - line_of(cell, blank(background))
+        if y0 < v or y0 + ch > v + rh or cw > rw:
+            raise LabelOverflow(f'{language}: {path} {rect}: {cw}x{ch} standing on row {line}')
         w, px = clear(path, rect, background, entry)
-        x0, y0 = u + (rw-cw)*(align+1)//2, v + (rh-ch if bottom else (rh-ch)//2)
         for y, row in enumerate(cell):
             px[(y0+y)*w+x0:(y0+y)*w+x0+cw] = row
 
     # Gold, tag, stat, element and header labels: retain each existing palette.
     from tools.localize.systemw import relocated_rect, check_care_button_cells, TECH_CELLS, PANEL_CELLS, PANEL_LABEL_ROOM, \
-        PANEL_LABEL_GAP
+        PANEL_LABEL_GAP, TECH_LINE
 
     items = json.load(open(os.path.join(work, 'systemw', 'rects.json')))
     check_care_button_cells(items)
@@ -349,48 +445,6 @@ def apply(files, language, work):
     check_cells(items)
     elements = ELEMENTS
     F, Wd = systemw_fonts()
-
-    def rendered(item, text, rect):
-        """-> (cell in palette indices, background, bottom-aligned) in the Spanish SYSTEM_W font of the item's kind"""
-        en, rh = item['en'], rect[3]
-        # the panel's labels end before its arrows: a wider word takes the compact, then the narrow letters
-        room = min(rect[2], PANEL_LABEL_ROOM - PANEL_LABEL_GAP) if (en, item['es']) in PANEL_CELLS else rect[2]
-
-        def first(*tries):
-            sizes = []
-            for make in tries:
-                try:
-                    cell = make()
-                except KeyError as missing:
-                    sizes.append(f'no {missing}')
-                    continue
-                if len(cell) <= rh and len(cell[0]) <= room:
-                    return cell
-                sizes.append(f'{len(cell[0])}x{len(cell)}')
-            raise LabelOverflow(f'{language}: SYSTEM_W {rect}: {text!r} is {", ".join(sizes)}')
-
-        def small(font):
-            rows = Wd.pad(Wd.compose(font, text), 1, 1, 1, 1)
-            ol = Wd.outline(rows, '#')
-            return [[1 if c == '#' else 12 if c == 'c' else 13 if ol[y][x] else 15 for x, c in enumerate(r)]
-                    for y, r in enumerate(rows)]
-
-        def tsa(font, main, acc):
-            rows = Wd.compose(font, text)
-            return [[0] * len(rows[0])] + [[main if c == '#' else acc if c == 'x' else 0 for c in r] for r in rows] + \
-                [[0] * len(rows[0])] * (rh - 1 - len(rows))
-
-        if en in ('NAME', 'DIGI', 'WEIGHT', 'AGE'):
-            narrow_compact = dict(F.TAG_NARROW, **{k: F.TAG_COMPACT[k] for k in 'ÂÀÈ'})
-            return first(*(lambda f=f: Wd.r_tag(text, f) for f in (F.TAG, F.TAG_COMPACT, F.TAG_NARROW, narrow_compact))), 0, False
-        if en in ('TYPE', 'ACTIVE', 'SPECIAL'):
-            font, main, acc = dict(TYPE=(F.TSA, 12, 13), ACTIVE=(F.TSA_ACTIVE, 8, 9), SPECIAL=(F.TSA_SPECIAL, 6, 7))[en]
-            return first(lambda: tsa(font, main, acc)), 0, False
-        if en in ('HAPPINESS', 'SPEED', 'SPEED (alternative)', 'BRAINS'):
-            return first(lambda: Wd.r_stat(text, h=rh)), 15, False
-        if en in elements:
-            return first(lambda: Wd.r_elem(text, h=rh)), 15, False
-        return first(lambda: small(F.SMALL), lambda: small(F.SMALL_COMPACT), lambda: small(F.SMALL_NARROW)), 15, rh < 12
 
     labelled = [(item, word(item['es'], language), relocated_rect(item, language) or [item[k] for k in ('u','v','w','h')])
                 for item in items if item['es'] in UI]
@@ -400,22 +454,24 @@ def apply(files, language, work):
         ink, bg, sh = (1, None, 8) if clut == 8 else (2, 0, 1) if clut == 9 else (14, 15, 13) if item['en'] in ('HAPPINESS', 'SPEED', 'SPEED (alternative)', 'BRAINS') else (10, 15, 13) if item['en'] in elements else (1, 15, 13)
         for path, entry in [('ETCDAT/SYSTEM_W.TIM',0), ('ETCDAT/ETCTIM.BIN',8)]:
             if kind(item['en']) in in_b:
-                draw(path, rect, text, ink, bg, sh, entry, preserve=True)
+                draw(path, rect, text, ink, bg, sh, entry, preserve=True,
+                     line=None if kind(item['en']) == 'gold' else stand_row(item, rect),
+                     align=-1 if (item['en'], item['es']) in TECH_CELLS else 0)
             elif item['en'] in ('PROFILE', 'CONDITION', 'PARAMETER'):
                 fonts = [(F.GOLD5, 1), (F.GOLD4, 1)] if item['en'] != 'PARAMETER' else [(F.GOLD4, 1)]
                 draw(path, rect, text, ink, bg, sh, entry, fonts=fonts)
             else:
                 try:
-                    cell, background, bottom = rendered(item, text, rect)
+                    cell, background, _ = rendered(item, text, rect, language)
                 except LabelOverflow:
                     if (language, text, tuple(rect)) not in OPEN:
                         raise
-                    draw(path, rect, text, ink, bg, sh, entry, preserve=True)
+                    draw(path, rect, text, ink, bg, sh, entry, preserve=True, line=stand_row(item, rect))
                     continue
                 # the game draws an element name with the cell's right edge against the grid, and a technique panel
                 # label from the cell's left edge (the panel's arrow starts PANEL_LABEL_ROOM further right)
                 align = 1 if kind(item['en']) == 'element' else -1 if (item['en'], item['es']) in TECH_CELLS else 0
-                paste(path, rect, cell, background, entry, bottom, align)
+                paste(path, rect, cell, background, entry, stand_row(item, rect), align)
 
     # Triangle-menu cells; the unchanged DIGIMON label uses the disc's lettering.
     from tools.localize.fi_info import CELLS, SHARED_SIZES, check_cells

@@ -57,6 +57,12 @@ TECH_CELLS = {
     ('TECH. DATA', 'DATOS TÉC.'): (96, 84, 64, 12),
     ('RANG', 'ALCANCE'): (160, 84, 38, 12),
 }
+# the row of a technique cell its word's letters stand on (accents and font B's nine rows above it, its shadow and
+# outline below), and the lines the English labels stand on: the Techset header's (the Final row's is 67 lower, as
+# renderDigimonMovesView draws it at the header's y + 0x43) and the panel's title and rows (MP's is the original's)
+TECH_LINE = 9
+TECH_HEADER_LINE = -71
+TECH_PANEL_LINES = (3, 34, None, 68, 85)
 # the technique panel's room for a label: from its x (-0x8c) to the arrow's (-0x6c, as in Spanish)
 PANEL_LABEL_ROOM = 0x8c - 0x6c
 # its labels end this many columns before the arrow (outlines included), so the two never touch
@@ -109,6 +115,9 @@ def crop_tables(source, metadata):
             meta = metadata['pt-br' if lang == 'pt-br' else 'es']
             rr = [r.copy() for r in rows]
 
+            def m_es(en, es=None):
+                return next(x for x in meta if x['en'] == en and (es is None or x['es'] == es))['es']
+
             def put(i, en, es=None, shifted=False):
                 m = next(x for x in meta if x['en'] == en and (es is None or x['es'] == es))
                 rect = relocated_rect(m, lang) if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans') else None
@@ -116,15 +125,26 @@ def crop_tables(source, metadata):
                 rr[i][2:] = [w, h, u, v + (128 if shifted else 0)]
                 return w
 
+            def lifted(i, en, y):
+                # a Japanese or Chinese word taller than its cell leaves room for above the line goes up with its crop
+                from tools.localize.labels import lift
+                m = next(x for x in meta if x['en'] == en)
+                rect = relocated_rect(m, lang) or [m[k] for k in ('u', 'v', 'w', 'h')]
+                rr[i][1] = (y - lift(m, word(m['es'], lang), rect, lang)) & 65535
+
             if name == 'STATS_VIEW_ELEMENTS':
                 for i, en in [(0, 'PROFILE'), (1, 'CONDITION'), (2, 'PARAMETER'),
                               (3, 'NAME'), (4, 'DIGI'), (5, 'WEIGHT'), (6, 'AGE'),
                               (7, 'TYPE'), (8, 'SPECIAL'), (9, 'ACTIVE'),
                               (17, 'HAPPINESS'), (18, 'SPEED'), (19, 'BRAINS')]:
                     put(i, en)
+                    lifted(i, en, rows[i][1] - (rows[i][1] >> 15 << 16))
             elif name == 'MOVES_VIEW_ELEMENT_NAMES' and lang in ('ja', 'zh-hans'):
-                # Japanese and Chinese draw their names in font B, centred: their crops were measured on those words
-                rr = existing[macro]
+                # Japanese and Chinese draw their names in font B: their crops were measured on those words (at y 0)
+                rr = [r.copy() for r in existing[macro]]
+                for i, en in enumerate(('FIRE', 'BATTLE', 'AIR', 'NATURE', 'ICE', 'MECH', 'FILTH',
+                                        'DARK', 'LIGHT', 'WATER', 'WEAPON', 'EARTH')):
+                    lifted(i, en, 0)
             elif name == 'MOVES_VIEW_ELEMENT_NAMES':
                 # labels.py draws a name at its cell's right edge: the cell's right edge goes against the grid
                 for i, en in enumerate(('FIRE', 'BATTLE', 'AIR', 'NATURE', 'ICE', 'MECH', 'FILTH',
@@ -144,20 +164,22 @@ def crop_tables(source, metadata):
                 for i, en, es in [(0, 'POWER', None), (1, 'RANG', 'ALC.'), (2, 'SPEC', None)]:
                     put(i, en, es)
                     if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
-                        rr[i][0], rr[i][1] = [14, 82, 112][i], (-80) & 65535
+                        rr[i][0], rr[i][1] = [14, 82, 112][i], (TECH_HEADER_LINE - TECH_LINE) & 65535
             else:
                 for i, en, es in [(0, 'TECH. DATA', None), (1, 'POWER', None),
                                   (2, 'MP', None), (3, 'RANG', 'ALCANCE'), (4, 'SPEC', None)]:
                     put(i, en, es, shifted=True)
-                    if lang in ('fr', 'de', 'it', 'ca'):
-                        # The word sits at its cell's left edge and the crop stops where the arrow starts (as in
-                        # Spanish); MP, the original 7-row cell, on its arrow's middle row as the 12-row cells' words.
+                    if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans') and i != 2:
+                        # The word sits at its cell's left edge, standing on the English label's line, and the crop
+                        # stops where the arrow starts (as in Spanish); MP keeps the original cell, row and arrow.
                         if i in (1, 3, 4):
-                            rr[i][2] = min(rr[i][2], PANEL_LABEL_ROOM)
-                        rr[i][1] = [-6, 27, 46, 61, 78][i] & 65535
-                    elif lang in ('ja', 'zh-hans'):
-                        # Absolute coordinates: regeneration is idempotent.
-                        rr[i][1] = [-6, 27, 44, 61, 78][i] & 65535
+                            # (a Japanese word wider than that, いりょく, keeps the columns it needs)
+                            from tools.localize.labels import native
+                            wide = len(native(word(m_es(en, es), lang))[0]) if lang in ('ja', 'zh-hans') else 0
+                            rr[i][2] = min(rr[i][2], max(PANEL_LABEL_ROOM, wide))
+                        rr[i][1] = (TECH_PANEL_LINES[i] - TECH_LINE) & 65535
+                    elif lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
+                        rr[i][1] = 46   # absolute coordinates: regeneration is idempotent
             variants.append(('#if' if not variants else '#elif') +
                             ' MOD_LANG_BUILD == MOD_LANG_' + macro + '\n' +
                             ''.join('\t{ ' + ', '.join('0x%04x' % x for x in r) + ' },\n' for r in rr))
