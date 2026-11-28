@@ -1,0 +1,55 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 28 Nov 2026 04:10:59 +0000
+Subject: [PATCH] Bracket: a participant without a projectile icon no longer
+ freezes the cup
+
+The bracket's projectile both draws and ends a match: its hit test ran after the draw, which returned early for a
+participant whose projectile icon is 0. Such a participant (Cherrymon, Meteormon, Goblimon, Myotismon and the other
+enemy-only originals and the new species that borrow from them, now drawn into the Field and level cups) never hit
+its rival, and the bracket waited forever. Such a participant throws icon 1 now.
+---
+ src/std/std_main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 976a2dc8..473fa91a 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -3166,17 +3166,20 @@ static void STD_preparePortraits(void)
+ 	}
+ }
+ 
+-/* MOD (portraits): the projectile icon (1..16) of a participant, 0 for none; a species outside the tables
+- * throws the one of the original it borrows its techniques from */
++/* MOD (portraits): the projectile icon (1..16) of a participant; a species outside the tables throws the one of the
++ * original it borrows its techniques from. Never 0: the projectile is what ends a bracket match (its hit test runs where
++ * it is drawn), so a participant with no icon of its own (Cherrymon, Meteormon, an enemy-only original) throws icon 1. */
+ static int32_t STD_projectileIcon(int16_t id)
+ {
+ 	int32_t type;
++	int32_t icon;
+ 
+ 	type = PARTICIPANT_TYPES[id];
+ 	if (type >= STD_TABLE_TYPES) {
+ 		type = getOriginalType(type);
+ 	}
+-	return (uint32_t)type < STD_TABLE_TYPES ? STD_BRACKET_PROJECTILE_ICONS[type] : 0;
++	icon = (uint32_t)type < STD_TABLE_TYPES ? STD_BRACKET_PROJECTILE_ICONS[type] : 0;
++	return icon != 0 ? icon : 1;
+ }
+ 
+ void STD_renderBracketDigimon(int16_t id)
+@@ -3502,9 +3505,6 @@ void STD_renderBracketProjectile(int16_t id)
+ 	int32_t icon;
+ 
+ 	icon = STD_projectileIcon(id); /* MOD (portraits) */
+-	if (icon == 0) {
+-		return;
+-	}
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	SetPolyFT4(prim);
+ 	setRGB0(prim, 0x80, 0x80, 0x80);
+-- 
+2.55.0
+
