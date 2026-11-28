@@ -554,6 +554,20 @@ static uint16_t bits_at(float x, float y) {
   return bits;
 }
 
+static Uint32 mouse_at;
+static bool mouse_seen, cursor_hidden;
+#define MOUSE_SHOW_MS 2000
+#define MOUSE_FADE_MS 500
+
+/* how much of the menu button a moved mouse shows (1 for MOUSE_SHOW_MS, then fading out), and the cursor with it */
+static float mouse_shown(void) {
+  Uint32 idle = mouse_seen ? SDL_GetTicks() - mouse_at : MOUSE_SHOW_MS + MOUSE_FADE_MS;
+  bool hide = idle >= MOUSE_SHOW_MS + MOUSE_FADE_MS && !menu_open && remap_step < 0;
+  if (hide != cursor_hidden) { cursor_hidden = hide; SDL_ShowCursor(hide ? SDL_DISABLE : SDL_ENABLE); }
+  if (idle <= MOUSE_SHOW_MS) return 1;
+  return idle >= MOUSE_SHOW_MS + MOUSE_FADE_MS ? 0 : 1 - (float)(idle - MOUSE_SHOW_MS) / MOUSE_FADE_MS;
+}
+
 #define MOUSE_FINGER ((SDL_FingerID)-0x4d4f5553)   /* the left mouse button, played as one more finger */
 
 void overlay_event(const SDL_Event *e, int ww, int wh) {
@@ -564,6 +578,7 @@ void overlay_event(const SDL_Event *e, int ww, int wh) {
     int x, y, held;
     if (e->type == SDL_MOUSEMOTION) { x = e->motion.x; y = e->motion.y; held = e->motion.state & SDL_BUTTON_LMASK; }
     else { x = e->button.x; y = e->button.y; held = e->button.button == SDL_BUTTON_LEFT; }
+    mouse_at = SDL_GetTicks(); mouse_seen = true;   /* a moved mouse shows the cursor and the menu button a moment */
     if (!held) return;
     int lw, lh; SDL_Window *w = SDL_GetWindowFromID(e->type == SDL_MOUSEMOTION ? e->motion.windowID : e->button.windowID);
     if (!w) return;
@@ -893,6 +908,12 @@ void overlay_draw(int ww, int wh) {
       float grow = pressed ? 0.92f : 1;
       quad(c->icon, c->x, c->y, c->w * grow, c->h * grow, pressed ? 1.6f : 1, pressed ? 1 : a, ww, wh);
     }
+  }
+  float shown = mouse_shown();
+  if (remap_step < 0 && !menu_open && !touch_shown && shown > 0) {   /* the menu button alone, where the touch pad has it */
+    layout(ww, wh);
+    Control *m = &controls[ncontrols - 1];
+    quad(m->icon, m->x, m->y, m->w, m->h, 1, overlay_touch_alpha / 100.0f * shown, ww, wh);
   }
   if (remap_step < 0 && !menu_open) {
     draw_fps(ww, wh);
