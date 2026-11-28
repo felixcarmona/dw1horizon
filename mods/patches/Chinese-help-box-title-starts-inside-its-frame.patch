@@ -1,0 +1,27 @@
+From 947c9632d3101f8be8c7a1ae7eed41569ad2d5a4 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 28 Nov 2026 15:07:14 +0000
+Subject: [PATCH] The Chinese help box title starts inside its frame
+
+The change-techs grid's help box holds from x -138 to -87 and a word starts at its crop's first pixel; the Chinese title
+was at -149, so the first glyph stuck out of the frame's left edge. It starts where the help word below it does.
+---
+ src/main/game_menu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 65f07321..13d4f0b3 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -1592,7 +1592,7 @@ LabelCrop TECH_GRID_TITLE_CROP = {
+ #elif MOD_LANG_BUILD == MOD_LANG_CA
+ 	-0x80, 0x3c, 0x40,
+ #elif MOD_LANG_BUILD != MOD_LANG_EN
+-	-0x95, 0x3c, 0x40,
++	-0x81, 0x3c, 0x40,
+ #else
+ 	-0x87, 0x3c, 0x30,
+ #endif
+-- 
+2.55.0
+

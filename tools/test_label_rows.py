@@ -161,6 +161,18 @@ class LabelRows(unittest.TestCase):
             re.escape(name + '->range - 1') + r'\)([^;]*);', self.source)]
         self.assertEqual(strips('finisher'), strips('mv'))
 
+    def test_the_help_box_words_start_inside_the_box(self):
+        """The change-techs grid's help box holds from x -138 to -87; a word starts at its crop's first pixel, so a crop
+        starting left of the box leaves a fragment of the word outside its frame (Chinese's title was at -149)"""
+        import re
+        for name in ('TECH_GRID_TITLE_CROP', 'TECH_HELP_CROP'):
+            body = re.search(r'LabelCrop ' + name + r' = \{(.*?)\n\};', self.source, re.S).group(1)
+            starts = [int(x, 16) for x in re.findall(r'-0x([0-9a-f]+),', body)]
+            self.assertTrue(starts, name)
+            for start in starts:
+                with self.subTest(crop=name, x=-start):
+                    self.assertGreaterEqual(-start, -138)
+
     def test_the_chinese_menu_words_cover_no_element_name(self):
         """the Chinese item word's cell (CHINESE_MENU_CELLS) is drawn over any label crop sharing its pixels"""
         from tools.localize.fi_info import overlaps
