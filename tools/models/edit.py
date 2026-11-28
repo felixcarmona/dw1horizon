@@ -703,6 +703,12 @@ def cmd_repin(a):
         post = sha256(after_base(chibi['base_generator'], new_input)) if chibi.get('base_generator') else new
         repin_chibi(chibi_rows, sid, old, new, post)
         texts[CHIBI_ROWS] = json.dumps(chibi_rows, indent=2) + '\n'
+    elif (active_overlay and str(sid) in native_rows and native_rows[str(sid)].get('chibi')
+          and chibi_rows.get(str(sid), {}).get('applied_by') == 'native_binding'
+          and not chibi_rows[str(sid)].get('base_generator')):
+        # the row is the binding's last stage and reads the binding's own input: it moves with the binding's pin
+        repin_chibi(chibi_rows, sid, old, new, new)
+        texts[CHIBI_ROWS] = json.dumps(chibi_rows, indent=2) + '\n'
     celebrations = None if retired else repin_celebration(CELEBRATION_ROWS.read_text(), sid, old, new)
     if celebrations is not None:
         texts[CELEBRATION_ROWS] = celebrations

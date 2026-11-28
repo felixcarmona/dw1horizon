@@ -117,15 +117,25 @@ def main():
     parser.add_argument('--from',dest='from_dir',type=Path)
     parser.add_argument('--objects',type=int,nargs='+',required=True)
     parser.add_argument('--out',type=Path,required=True)
+    parser.add_argument('--max-packet-growth',type=int,default=1024,
+                        help='bytes of draw packets the restored faces may add (52 per primitive; default 1024)')
     args = parser.parse_args()
     row, = edit.rows(edit.load(edit.MODELS),[str(args.species)])
-    recipe = next(r for r in edit.load(edit.BASE/'import-batches.json')['recipes'] if r['entry']['name'] == row['name'])
+    # The importer recipe is the one behind the delta source (through any size recipe): species renamed
+    # after import (Armormon -> Assaultmon) keep the source game's name there.
+    source_path = row['mmd']['sources'][0]['path']
+    sizes = {r['target']:r['source'] for r in edit.load(edit.SIZES)['files']}
+    while source_path in sizes:
+        source_path = sizes[source_path]
+    recipe = next(r for r in edit.load(edit.BASE/'import-batches.json')['recipes']
+                  if f'{r["out"]}/{r["entry"]["name"]}.MMD' == source_path)
     data,tim,_ = edit.build(SimpleNamespace(games_dir=args.games,from_dir=args.from_dir),row)
     with edit.importing(args.games):
         source,_ = import_batch.load_source(dict(recipe['entry'],no_drop=True,meshfix=False,rigfix=False),
                                            log=lambda *a:None,card_metadata=False)
     record = edit.load(next((edit.ROOT/'content/species').glob(f'{args.species}-*.json')))
-    result,report = restore(source,data,tim,len(record['model']['skeleton']),args.objects)
+    result,report = restore(source,data,tim,len(record['model']['skeleton']),args.objects,
+                            args.max_packet_growth)
     args.out.parent.mkdir(parents=True,exist_ok=True)
     args.out.write_bytes(result)
     args.out.with_suffix('.json').write_text(json.dumps(report,indent=2)+'\n')
