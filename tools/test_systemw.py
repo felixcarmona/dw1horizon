@@ -1,7 +1,6 @@
 """Raster regressions: small labels retain strokes and use unused atlas space."""
 from pathlib import Path
 import unittest
-from unittest.mock import patch
 from tools.localize import labels
 from tools.localize.systemw import relocated_rect
 
@@ -17,15 +16,6 @@ class RasterLabels(unittest.TestCase):
         for u, v, w, h in (*CARE_BUTTON_RECTS, *CARE_BUTTON_GUARD_RECTS, CARE_BUTTON_CLUT_RECT):
             with self.subTest(rect=(u, v, w, h)), self.assertRaises(ValueError):
                 check_care_button_cells([dict(en='fixture', es='fixture', u=u, v=v, w=w, h=h)])
-
-    def test_minification_keeps_a_stroke_on_an_unsampled_source_row(self):
-        # A faint five-row stem surrounds a one-row horizontal bar. Nearest
-        # neighbor at height two misses the bar; area coverage preserves it.
-        glyph = ['#...', '####', '#...', '#...', '#...'] + ['....'] * 6
-        with patch.object(labels, 'glyphs', return_value={'X': glyph}):
-            old = labels.mask('X', 4, 2)
-            new = labels.mask('X', 4, 2, preserve=True)
-        self.assertGreater(sum(map(sum, new)), sum(map(sum, old)))
 
     @unittest.skipUnless(Path('extracted/ETCDAT/SYSTEM_W.TIM').exists(), 'needs the source disc texture')
     def test_atlas_cells_are_transparent_in_the_source_texture(self):
@@ -46,7 +36,7 @@ class RasterLabels(unittest.TestCase):
             expected = [[not (font[c][y+1] & (0x8000 >> x)) for c in text for x in range(12)] for y in range(12)]
             occupied = [y for y, row in enumerate(expected) if any(row)]
             expected = expected[occupied[0]:occupied[-1]+1]
-            self.assertEqual(labels.mask(text, *CHINESE_MENU_SIZE, preserve=True), expected, text)
+            self.assertEqual(labels.mask(text, *CHINESE_MENU_SIZE), expected, text)
             # renderRectPolyFT4 drops the atlas-edge blank column at U256.
             # The native glyph strokes all lie before it.
             drawn_width = min(CHINESE_MENU_SIZE[0], 255-u)

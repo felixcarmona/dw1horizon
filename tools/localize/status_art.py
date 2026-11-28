@@ -56,7 +56,7 @@ def tag(language, battles=False):
                    for x in range(width)] for y in range(8)]
     elif language == 'zh-hans':
         from tools.localize.labels import mask
-        bitmap = mask(text, 34, 8, preserve=True)
+        bitmap = mask(text, 34, 8)
     else:
         rows = font.compose(font.TAG_STATUS, text)
         bitmap = [[c == '#' for c in row] for row in rows]
