@@ -150,7 +150,11 @@ OPEN = {
     ('ja', 'タイプ', (0, 56, 25, 8)): 'font B 28x9',
     ('ja', 'かつどう', (50, 56, 25, 8)): 'font B 39x9',
     ('ja', 'とくい', (144, 72, 29, 8)): 'font B 28x9',
-    ('ja', 'はんい', (166, 110, 28, 12)): 'font B 30x9',
+    ('ja', 'いりょく', (128, 110, 34, 12)): 'font B 37x9',
+    ('ja', 'はんい', (166, 110, 20, 12)): 'font B 30x9',
+    ('ja', 'こうか', (194, 110, 27, 12)): 'font B 28x9',
+    ('ja', 'すばやさ', (212, 70, 35, 12)): '39 px wide in font B',
+    ('ja', 'かしこさ', (212, 82, 35, 12)): '37 px wide in font B',
     ('ja', 'どうぐ', (0, 34, 25, 7)): 'font B 29x9',
     ('ja', 'ねだん', (25, 34, 23, 7)): 'font B 30x9',
     ('ja', 'ばん', (48, 34, 10, 7)): 'font B 20x9',
@@ -171,7 +175,6 @@ OPEN = {
     ('ja', 'ねる', (160, 39, 32, 7)): 'font B 20x9',
     ('ja', 'つる', (160, 55, 32, 7)): 'font B 20x9',
     ('ja', 'バトル', (0, 248, 51, 8)): 'font B 29x9',
-    ('ca', 'INTEL·LECTE', (212, 82, 37, 12)): '42 px wide in the stat font',
     ('ca', 'OBJECTE', (0, 34, 25, 7)): '29 px wide in the header font',
     ('ca', 'NÚM.', (48, 34, 10, 7)): 'no Ú in the header font; font B 24x9',
     ('ca', 'QUANT.', (102, 41, 20, 7)): '24 px wide in the header font',
@@ -335,6 +338,61 @@ def lift(item, text, rect, language):
     return max(0, line_of(bitmap, (False, 0), 1) - stand_row(item, rect))
 
 
+def fit_b(text, rect, padding=2):
+    """-> the word's font B bitmap at its own size for the cell: with `padding` spare pixels where it has the room,
+    fewer (down to none) where it has not; LabelOverflow when it does not fit"""
+    for pad in range(padding, -1, -1):
+        try:
+            return mask(text, rect[2] - pad, rect[3] - pad)
+        except LabelOverflow as error:
+            problem = error
+    raise problem
+
+
+def aligned(item, font_b=False):
+    """-> where apply places a label in its cell: -1 at its left edge (the technique cells and the stat names, whose
+    crops put the letters where the English ones start), 1 at its right edge (an element name in the Spanish fonts:
+    the game draws it with the cell's right edge against the grid), 0 centred"""
+    from tools.localize.systemw import TECH_CELLS
+    if (item['en'], item['es']) in TECH_CELLS or kind(item['en']) == 'stat':
+        return -1
+    return 1 if kind(item['en']) == 'element' and not font_b else 0
+
+
+def columns(items, item, language):
+    """-> (first, last): the columns of a left-aligned label's letters (outline and shadow left out) from its cell's
+    left edge, as the language's SYSTEM_W has them. Spanish and Portuguese (textures/systemw/build.py): the word fills
+    its rect, the small font with one outline column on each side, the stat font with its shadow on the right only.
+    The others as apply draws them: font B, else the kind's Spanish font."""
+    from tools.localize.systemw import relocated_rect
+    if language not in LANGUAGES:
+        return (0 if kind(item['en']) == 'stat' else 1), item['w'] - 2
+    def rect_of(x):
+        return relocated_rect(x, language) or [x[k] for k in ('u', 'v', 'w', 'h')]
+    labelled = [(x, word(x['es'], language), rect_of(x)) for x in items if x['es'] in UI]
+    text, rect = word(item['es'], language), rect_of(item)
+    def font_b():
+        try:
+            bitmap = fit_b(text, rect)
+        except LabelOverflow:
+            if (language, text, tuple(rect)) not in OPEN:
+                raise
+            bitmap = _legacy_scaled(text, rect[2] - 2, rect[3] - 2, True)   # as apply's draw() falls back
+        return [x for x in range(len(bitmap[0])) if any(row[x] for row in bitmap)]
+    if kind(item['en']) in font_b_kinds(labelled, language):
+        inked = font_b()
+    else:
+        try:
+            cell, background, _ = rendered(item, text, rect, language)
+        except LabelOverflow:
+            if (language, text, tuple(rect)) not in OPEN:
+                raise
+            inked = font_b()    # (apply draws a word in OPEN that the Spanish font cannot fit in font B)
+        else:
+            inked = [x for x in range(len(cell[0])) if any(row[x] not in blank(background) for row in cell)]
+    return inked[0], inked[-1]
+
+
 def apply(files, language, work):
     if language not in LANGUAGES:
         return
@@ -382,12 +440,7 @@ def apply(files, language, work):
             if len(bitmap) + room > rh or len(bitmap[0]) + room > rw:
                 raise LabelOverflow(f'{text!r} is {len(bitmap[0])}x{len(bitmap)} (+{room} shadow), the cell {rw}x{rh}')
             return bitmap
-        for pad in range(padding, -1, -1):
-            try:
-                return mask(text, rw - pad, rh - pad)
-            except LabelOverflow as error:
-                problem = error
-        raise problem
+        return fit_b(text, rect, padding)
 
     def draw(path, rect, text, ink, background, shadow=None, entry=0, gradient=None, preserve=False, padding=2,
              fonts=(None,), bottom=False, line=None, align=0):
@@ -456,7 +509,7 @@ def apply(files, language, work):
             if kind(item['en']) in in_b:
                 draw(path, rect, text, ink, bg, sh, entry, preserve=True,
                      line=None if kind(item['en']) == 'gold' else stand_row(item, rect),
-                     align=-1 if (item['en'], item['es']) in TECH_CELLS else 0)
+                     align=aligned(item, font_b=True))
             elif item['en'] in ('PROFILE', 'CONDITION', 'PARAMETER'):
                 fonts = [(F.GOLD5, 1), (F.GOLD4, 1)] if item['en'] != 'PARAMETER' else [(F.GOLD4, 1)]
                 draw(path, rect, text, ink, bg, sh, entry, fonts=fonts)
@@ -466,12 +519,10 @@ def apply(files, language, work):
                 except LabelOverflow:
                     if (language, text, tuple(rect)) not in OPEN:
                         raise
-                    draw(path, rect, text, ink, bg, sh, entry, preserve=True, line=stand_row(item, rect))
+                    draw(path, rect, text, ink, bg, sh, entry, preserve=True, line=stand_row(item, rect),
+                         align=aligned(item, font_b=True))
                     continue
-                # the game draws an element name with the cell's right edge against the grid, and a technique panel
-                # label from the cell's left edge (the panel's arrow starts PANEL_LABEL_ROOM further right)
-                align = 1 if kind(item['en']) == 'element' else -1 if (item['en'], item['es']) in TECH_CELLS else 0
-                paste(path, rect, cell, background, entry, stand_row(item, rect), align)
+                paste(path, rect, cell, background, entry, stand_row(item, rect), aligned(item))
 
     # Triangle-menu cells; the unchanged DIGIMON label uses the disc's lettering.
     from tools.localize.fi_info import CELLS, SHARED_SIZES, check_cells

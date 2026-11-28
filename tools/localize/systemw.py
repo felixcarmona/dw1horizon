@@ -39,6 +39,7 @@ def check_chinese_menu_cells():
 
 from tools.localize.tech_rows_art import other_cell
 from tools.localize.catalog import word
+from tools.localize.labels import columns
 
 
 # French, German, Italian and Catalan element names, in the element-name font: the original row (x 0..124, the last
@@ -57,6 +58,19 @@ TECH_CELLS = {
     ('TECH. DATA', 'DATOS TÉC.'): (96, 84, 64, 12),
     ('RANG', 'ALCANCE'): (160, 84, 38, 12),
 }
+# the stat names' cells of the languages drawn by labels.py: as wide as the Spanish ones were before the Spanish words
+# were shortened (textures/systemw/build.py ES_WORDS), so that every language keeps its room
+STAT_CELLS = {
+    ('HAPPINESS', 'FELICIDAD'): (212, 58, 36, 12), ('SPEED', 'VELOCIDAD'): (212, 70, 39, 12),
+    ('BRAINS', 'INTELECTO'): (212, 82, 37, 12),
+}
+# Japanese cells narrowed to the room its words have where the English ones start (STAT_LEFT, TECH_HEADER_LEFT): their
+# font B words do not fit at their own size and are drawn narrower (labels.py OPEN), as the Chinese ones are
+JA_CELLS = {
+    ('SPEED', 'VELOCIDAD'): (212, 70, 35, 12), ('BRAINS', 'INTELECTO'): (212, 82, 35, 12),
+    ('POWER', 'POTENCIA'): (128, 110, 34, 12), ('RANG', 'ALC.'): (166, 110, 20, 12),
+    ('SPEC', 'EFECTO'): (194, 110, 27, 12),
+}
 # the row of a technique cell its word's letters stand on (accents and font B's nine rows above it, its shadow and
 # outline below), and the lines the English labels stand on: the Techset header's (the Final row's is 67 lower, as
 # renderDigimonMovesView draws it at the header's y + 0x43) and the panel's title and rows (MP's is the original's)
@@ -68,10 +82,54 @@ PANEL_LABEL_ROOM = 0x8c - 0x6c
 # its labels end this many columns before the arrow (outlines included), so the two never touch
 PANEL_LABEL_GAP = 1
 PANEL_CELLS = (('POWER', 'POTENCIA'), ('RANG', 'ALCANCE'), ('SPEC', 'EFECTO'))
+# where a list's labels start (screen x from the centre, as the crop tables count it; letters only, without outline or
+# shadow), in every translated language: the stat names where the native words of their list start (36 on screen for
+# Tired, 185 for Off. and Def., the same gap after the icon: the original's HAPPINESS, SPEED and BRAINS, drawn in a
+# smaller font, start three columns nearer their icons), the technique panel's labels where the English ones start,
+# and each Techset header (MP included) over the first pixel of its value column below it, as measured on screen:
+# the power's digits (17), the dots before the MP cost (54), the range (95) and the effect icon (118). A word ends
+# before its bar (the care row's where the English word is cut, the parameters' two columns before the bar's inset,
+# the shadow between), a header TECH_HEADER_GAP columns before the next header's letters (two clear columns between
+# their outlines) and the last one before the frame (146); a word that would run further is shortened or drawn
+# narrower (textures/systemw/build.py ES_WORDS, catalog.py, JA_CELLS), never moved
+STAT_LEFT = {'HAPPINESS': -124, 'SPEED': -1, 'BRAINS': -1}
+STAT_END = {'HAPPINESS': -88, 'SPEED': 32, 'BRAINS': 32}
+PANEL_LEFT = -139
+TECH_HEADER_LEFT = (17, 95, 118)    # POWER, RANG, SPEC
+TECH_MP_LEFT = 54
+TECH_MP = (0x44, 69, 77)            # the original MP header's crop x and its letters' columns (English keeps them)
+TECH_HEADER_GAP = 5
+TECH_HEADER_END = 143
+
+
+def s16(x):
+    return x - 65536 if x >= 32768 else x
+
+
+def stat_left(en, span):
+    """-> the x of a stat name's letters, given their (first, last) columns: the list's; ValueError past the bar"""
+    first, last = span
+    if STAT_LEFT[en] + last - first > STAT_END[en]:
+        raise ValueError(f'{en}: the letters {span} run past the bar ({STAT_END[en]}) from {STAT_LEFT[en]}')
+    return STAT_LEFT[en]
+
+
+def header_lefts(spans):
+    """-> the x of each Techset header's letters (POWER, RANG, SPEC), given each one's (first, last) columns: the
+    header's column's; ValueError where a word would come nearer the next header than TECH_HEADER_GAP, or the frame"""
+    ends = (TECH_MP_LEFT - TECH_HEADER_GAP, TECH_HEADER_LEFT[2] - TECH_HEADER_GAP, TECH_HEADER_END)
+    for left, end, (first, last), name in zip(TECH_HEADER_LEFT, ends, spans, ('POWER', 'RANG', 'SPEC')):
+        if left + last - first > end:
+            raise ValueError(f'the Techset header {name} {(first, last)} runs past {end} from {left}')
+    return TECH_HEADER_LEFT
 
 
 def relocated_rect(item, language=None):
     key = item['en'], item['es']
+    if language == 'ja' and key in JA_CELLS:
+        return JA_CELLS[key]
+    if language in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans') and key in STAT_CELLS:
+        return STAT_CELLS[key]
     if language in ('fr', 'de', 'it', 'ca') and key in LATIN_ELEMENT_CELLS:
         return LATIN_ELEMENT_CELLS[key]
     return other_cell(key, language) or TECH_CELLS.get(key)
@@ -138,6 +196,10 @@ def crop_tables(source, metadata):
                               (7, 'TYPE'), (8, 'SPECIAL'), (9, 'ACTIVE'),
                               (17, 'HAPPINESS'), (18, 'SPEED'), (19, 'BRAINS')]:
                     put(i, en)
+                    if en in STAT_LEFT:
+                        # left-aligned in its cell (labels.py): the letters start where the English ones do
+                        span = columns(meta, next(x for x in meta if x['en'] == en), lang)
+                        rr[i][0] = (stat_left(en, span) - span[0]) & 65535
                     lifted(i, en, rows[i][1] - (rows[i][1] >> 15 << 16))
             elif name == 'MOVES_VIEW_ELEMENT_NAMES' and lang in ('ja', 'zh-hans'):
                 # Japanese and Chinese draw their names in font B: their crops were measured on those words (at y 0)
@@ -161,14 +223,24 @@ def crop_tables(source, metadata):
                     rr[i][0] = (-45 - rr[i][2]) & 65535
                     rr[i][1] = 1 if rr[i][3] == 8 else 0    # posY: a name with no blank row on top goes a line lower
             elif name == 'MOVES_VIEW_TECHSET_TEXT':
-                for i, en, es in [(0, 'POWER', None), (1, 'RANG', 'ALC.'), (2, 'SPEC', None)]:
+                headers = [(0, 'POWER', None), (1, 'RANG', 'ALC.'), (2, 'SPEC', None)]
+                spans = [columns(meta, next(x for x in meta if x['en'] == en and (es is None or x['es'] == es)), lang)
+                         for _, en, es in headers]
+                for (i, en, es), left, (first, _) in zip(headers, header_lefts(spans), spans):
                     put(i, en, es)
+                    rr[i][0] = (left - first) & 65535
                     if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
-                        rr[i][0], rr[i][1] = [14, 82, 112][i], (TECH_HEADER_LINE - TECH_LINE) & 65535
+                        rr[i][1] = (TECH_HEADER_LINE - TECH_LINE) & 65535
+                rr[3][0] = TECH_MP_LEFT - (TECH_MP[1] - TECH_MP[0])     # the original MP, over its column too
             else:
                 for i, en, es in [(0, 'TECH. DATA', None), (1, 'POWER', None),
                                   (2, 'MP', None), (3, 'RANG', 'ALCANCE'), (4, 'SPEC', None)]:
                     put(i, en, es, shifted=True)
+                    if i != 2:
+                        # the letters start where the English ones do (font B has no outline column on the left)
+                        first, _ = columns(meta, next(x for x in meta if x['en'] == en and
+                                                      (es is None or x['es'] == es)), lang)
+                        rr[i][0] = (PANEL_LEFT - first) & 65535
                     if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans') and i != 2:
                         # The word sits at its cell's left edge, standing on the English label's line, and the crop
                         # stops where the arrow starts (as in Spanish); MP keeps the original cell, row and arrow.
@@ -176,7 +248,7 @@ def crop_tables(source, metadata):
                             # (a Japanese word wider than that, いりょく, keeps the columns it needs)
                             from tools.localize.labels import native
                             wide = len(native(word(m_es(en, es), lang))[0]) if lang in ('ja', 'zh-hans') else 0
-                            rr[i][2] = min(rr[i][2], max(PANEL_LABEL_ROOM, wide))
+                            rr[i][2] = min(rr[i][2], max(PANEL_LABEL_ROOM - (s16(rr[i][0]) + 0x8c), wide))
                         rr[i][1] = (TECH_PANEL_LINES[i] - TECH_LINE) & 65535
                     elif lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
                         rr[i][1] = 46   # absolute coordinates: regeneration is idempotent

@@ -5,9 +5,11 @@ from pathlib import Path as _ImagePath
 _image_sys.path.insert(0, str(next(p for p in _ImagePath(__file__).resolve().parents if (p / 'tools').is_dir())))
 import json, copy, os
 from tex import *; from words import *
-PT_WORDS = {'AGUA': 'ÁGUA', 'NOMBRE': 'NOME', 'ESPECIE': 'DIGI', 'EDAD': 'DIAS', 'ACTIVO': 'ATIVO', 'FELICIDAD': 'FELICID.', 'VELOCIDAD': 'VELOCID.', 'INTELECTO': 'INTELECTO', 'RAPIDEZ': 'RAPIDEZ', 'POTENCIA': 'POT.', 'ALCANCE': 'ALCANCE', 'EFECTO': 'EFEITO', 'DATOS TÉC.': 'DADOS TÉC.', 'OBJETO': 'ITEM', 'PRECIO': 'VALOR', 'TÍTULO': 'TÍTULO', 'PUNTOS': 'PONTOS', 'CANT.': 'QTD.', 'FUEGO': 'FOGO', 'AIRE': 'AR', 'TIERRA': 'TERRA', 'HIELO': 'GELO', 'MUGRE': 'SUJO', 'NATURA': 'NATUREZA'}
+PT_WORDS = {'AGUA': 'ÁGUA', 'NOMBRE': 'NOME', 'ESPECIE': 'DIGI', 'EDAD': 'DIAS', 'ACTIVO': 'ATIVO', 'FELICIDAD': 'FELICID.', 'VELOCIDAD': 'VELOCID.', 'INTELECTO': 'INTELEC.', 'RAPIDEZ': 'RAPIDEZ', 'POTENCIA': 'POT.', 'ALCANCE': 'ALCANCE', 'EFECTO': 'EFEITO', 'DATOS TÉC.': 'DADOS TÉC.', 'OBJETO': 'ITEM', 'PRECIO': 'VALOR', 'TÍTULO': 'TÍTULO', 'PUNTOS': 'PONTOS', 'CANT.': 'QTD.', 'FUEGO': 'FOGO', 'AIRE': 'AR', 'TIERRA': 'TERRA', 'HIELO': 'GELO', 'MUGRE': 'SUJO', 'NATURA': 'NATUREZA'}
+# the stat names that would not fit between where their list starts and their bars (tools/localize/systemw.py STAT_LEFT)
+ES_WORDS = {'VELOCIDAD': 'VELOCID.', 'INTELECTO': 'INTELEC.'}
 def tr(word):
-    return PT_WORDS.get(word, word) if os.environ.get('LOCALIZE_LANGUAGE') == 'pt-br' else word
+    return (PT_WORDS if os.environ.get('LOCALIZE_LANGUAGE') == 'pt-br' else ES_WORDS).get(word, word)
 EN=grid(); ES=copy.deepcopy(EN)
 def fill(u,v,w,h,val):
     for y in range(h):
