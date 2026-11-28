@@ -116,7 +116,7 @@ def pair_triangles(bone, max_angle=89):
         for indices in [(0, 1, 2)] + ([(1, 3, 2)] if len(p['verts']) == 4 else []):
             face = copy.deepcopy(p)
             for field in ('verts', 'norms', 'uvs'):
-                face[field] = [p[field][i] for i in indices]
+                face[field] = [p[field][i] for i in indices] if p[field] is not None else None
             face['parent_prim'] = pi
             triangles.append(face)
 
@@ -135,10 +135,13 @@ def pair_triangles(bone, max_angle=89):
         for j in range(i):
             q = triangles[j]
             common = set(p['verts']) & set(q['verts'])
-            if len(common) != 2 or (p['row'], p.get('semi')) != (q['row'], q.get('semi')):
+            if (len(common) != 2 or len(set(p['verts'])) < 3 or len(set(q['verts'])) < 3
+                    or (p['row'], p.get('semi'), p.get('color')) != (q['row'], q.get('semi'), q.get('color'))
+                    or (p['uvs'] is None) != (q['uvs'] is None) or (p['norms'] is None) != (q['norms'] is None)):
                 continue
-            if any(p['uvs'][p['verts'].index(v)] != q['uvs'][q['verts'].index(v)] or
-                   bone['norms'][p['norms'][p['verts'].index(v)]] != bone['norms'][q['norms'][q['verts'].index(v)]]
+            if any((p['uvs'] is not None and p['uvs'][p['verts'].index(v)] != q['uvs'][q['verts'].index(v)]) or
+                   (p['norms'] is not None and bone['norms'][p['norms'][p['verts'].index(v)]]
+                    != bone['norms'][q['norms'][q['verts'].index(v)]])
                    for v in common):
                 continue
             same = p['parent_prim'] == q['parent_prim']
@@ -168,7 +171,7 @@ def pair_triangles(bone, max_angle=89):
         a, b, c, d = orders[j, i]
         face = copy.deepcopy(p)
         for field in ('verts', 'norms', 'uvs'):
-            face[field] = [p[field][a], p[field][b], p[field][c], q[field][d]]
+            face[field] = [p[field][a], p[field][b], p[field][c], q[field][d]] if p[field] is not None else None
         out.append(face)
         used.update((i, j))
     bone['prims'] = out + [p for i, p in enumerate(triangles) if i not in used]

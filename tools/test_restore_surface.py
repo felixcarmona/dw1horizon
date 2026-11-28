@@ -6,7 +6,8 @@ import unittest
 sys.path[:0] = [str(Path(__file__).resolve().parents[1]/'tools'),str(Path(__file__).resolve().parents[1])]
 import mmd
 import mmdport
-from tools.models.restore_surface import restore
+from tools.models.restore_surface import face, pool_mapping, restore
+import numpy as np
 
 try:
     import networkx
@@ -50,3 +51,20 @@ class RestoreSurface(unittest.TestCase):
         before.tmd.objects[0].nvert -= 1
         with self.assertRaisesRegex(ValueError,'vertex pool differs'):
             restore(source,before.build(),tim,2,[0])
+
+    def test_compacted_pool_maps_survivors_and_appends_dropped(self):
+        rng = np.random.default_rng(1)
+        x = rng.integers(-500,500,(30,3)).astype(float)
+        for drop in ([7],[2,3,19,20,21,28]):   # exhaustive search, then the ordered alignment
+            keep = [i for i in range(30) if i not in drop]
+            y = x[keep]*.97+(1,2,3)
+            mapping,fit = pool_mapping(x,y,3)
+            self.assertEqual([mapping[i] for i in keep],list(range(len(keep))))
+            self.assertEqual(sorted(mapping[i] for i in drop),list(range(len(keep),30)))
+            self.assertTrue(np.allclose(np.column_stack([x,np.ones(30)])@fit,x*.97+(1,2,3)))
+
+    def test_unlit_and_untextured_faces_keep_their_kind(self):
+        unlit = face(dict(verts=[0,1,2],norms=[],uv=[(0,0),(4,0),(0,4)],cba=489<<6,colors=[(9,8,7,0x25)]))
+        self.assertEqual((unlit['norms'],unlit['row'],unlit['color']),(None,1,(9,8,7)))
+        flat = face(dict(verts=[0,1,2],norms=[0,0,0],uv=[],cba=0,colors=[(1,2,3,0x30)]))
+        self.assertEqual((flat['uvs'],flat['row'],flat['color']),(None,None,(1,2,3)))
