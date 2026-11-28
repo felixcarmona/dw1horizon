@@ -3759,9 +3759,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/306-GrapLeomon.MMD.mdelta",
-        "delta_sha256": "4ed0133554686c6ad060c5c589af89d862b33a9c84f44baa841a3cde74074832",
-        "sha256": "76ccae06f39d613b4685f0251600f78a060a8a9f82d210a40d7461fc966ec810",
-        "size": 114770
+        "delta_sha256": "3fbce2b556216e2cf3807b9847460089e01a5ab4e8676f1dfa1cb2dc444fb627",
+        "sha256": "e47cde1993377673ea1926829aa9d00f37a9d1192a7e7d060496e81be009b74d",
+        "size": 116058
       },
       "tim": {
         "sources": [
@@ -4059,9 +4059,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/316-Sakuyamon.MMD.mdelta",
-        "delta_sha256": "7c4f156be57f490bc1893f3c4dcf4cf6aaf70ec1e100772be10fd4a9e5ca3411",
-        "sha256": "a06759cb3d0d2e88d6d0a327e791689b7c8b5678295e491ad1f42490a7019488",
-        "size": 104076
+        "delta_sha256": "f24e54a5332fa7be3e551f7eb07183a9a6feadd9c68b088089d4394814eb1ab1",
+        "sha256": "06b951ebfac770078b59a745de61575006df2737b5a61620412b0f5439f40cf1",
+        "size": 106296
       },
       "tim": {
         "sources": [
@@ -4119,9 +4119,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/318-Gallantmon.MMD.mdelta",
-        "delta_sha256": "3e8c61e2b32718d3e96c058acb8828e79e8e125362d37d9f37805ef610a0dc71",
-        "sha256": "d3daec11e80231515df18b3b5e9c7ddac90f98af16dfa42c6bebdf76ac2a2f31",
-        "size": 126706
+        "delta_sha256": "85acd96357c131d348950da423380611520d536959392e390a035d863b26cdb2",
+        "sha256": "d8d08a270670ee7c2469d99b4b782e4c6fcd3f07c3bdf68eb2a40705f6f3109a",
+        "size": 128566
       },
       "tim": {
         "sources": [
@@ -4334,9 +4334,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/325-Musyamon.MMD.mdelta",
-        "delta_sha256": "7c85a4ba12bad364f56b9f76e5324882ebf84d3cfc28c364674fdd2f0a6f4852",
-        "sha256": "c5ce4e6947e9eb31d7180a96c5c64552034fdfc0c71cf154335e2574c7aab587",
-        "size": 102748
+        "delta_sha256": "dfea8e71fa89004550bd3999bc5372e834dae86a1794b2f95e004d7bc49536b4",
+        "sha256": "be9fbfa51e59b2c1c966d697a7fed950ca42d6838d1a75d0e4123e951c338336",
+        "size": 103216
       },
       "tim": {
         "sources": [
@@ -5264,9 +5264,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/460-Garudamon.MMD.mdelta",
-        "delta_sha256": "68b85646517c501fb815d69811b62abf120fb290a74a3d5999b906a268ac6c57",
-        "sha256": "6afecbf39fdde53b85ccdf0b9eb1534f9fb73b420219992a9fdb1adda6c4f5a7",
-        "size": 89780
+        "delta_sha256": "c812c1f72d53b89048a52c540b7371b93f0adf4b61a21c073cdc04b3a8975c91",
+        "sha256": "6cb5851facaba38744d253ffadf1c3a8b9ae0210cf7a0d5126dd588d094fd597",
+        "size": 90648
       },
       "tim": {
         "sources": [
