@@ -178,3 +178,25 @@ their original indices, preserving saved equipped moves and the finisher slot. E
 discharge and stationary program clips are remapped together, preserving their
 timing and events. The Battle specialty and its punches, kicks and charge moves
 are removed. Power Crane also gives way to the ranged and program moves.
+
+## Every species, every build
+
+The import audit above missed record originals: Brachiomon (126, a Card Battle
+model) drew its battle idle and several techniques at 54% of its walk, and
+Roachmon (332) showed in its stunned battle idle a second claw that every other
+clip scales to zero, poking through its fist. `tools/models/scale_lock.py species
+--content build/<name>/species` now checks every species with a model (imports,
+record originals, natives and the hand-made babies), and the derive species check
+runs it on each build.
+
+It measures the body scale: each bone's scale multiplied down the skeleton and
+averaged over the mesh's vertices, over every decoded tick. A slot whose first
+pose is more than 5% from the walk's is a size jump the moment the game switches
+to it. Scale animated inside a clip (a technique that grows the Digimon) is not a
+jump; the battle-originals rule keeps those. A start size that one of the
+original game's own clips has is not reported either: a native is compared with
+its model on the player's disc (only when the mesh is that model's), and a new
+species with copied motion names its native in `content/modeldelta/scale-audit.json`.
+The original game's own cases are babies' squashes, Shellmon and MoriShellmon in
+their shells (21%), Drimogemon's squash, Tentomon's training poses, Bakemon and
+Soulmon's float and Seadramon's coil.

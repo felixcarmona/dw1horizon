@@ -63,6 +63,88 @@ def measure(model, skeleton, threshold=THRESHOLD):
                 animated=[r for r in clips if r['channels']], across_slots=between)
 
 
+JUMP = 0.05
+
+
+def body_scales(model, skeleton):
+    """{slot: (first, low, high)} of each occupied slot's body scale: the bone scales multiplied down the skeleton and
+    averaged over the mesh's vertices (1.0 = unscaled), over every decoded tick. A clip whose first pose differs from
+    the walk's draws the Digimon at another size the moment the game switches to it."""
+    nb = len(skeleton)
+    weights = [len(model.tmd.obj_verts(obj)) if obj >= 0 else 0 for obj, _ in skeleton]
+    total = sum(weights) or 1
+
+    def size(pose):
+        accumulated, s = [1.0] * nb, 0.0
+        for b, (_, parent) in enumerate(skeleton):
+            accumulated[b] = sum(pose[b][:3]) / 12288 * (accumulated[parent] if parent >= 0 else 1.0)
+            s += weights[b] * accumulated[b]
+        return s / total
+    out, cache = {}, {}
+    for slot, index in enumerate(model.anims.table):
+        if index is None:
+            continue
+        if index not in cache:
+            player, values = mmd.AnimPlayer(model.anims.anims[index], nb, slot), []
+            while player.tick(stop_at_infinite_loop=True):
+                values.append(size(player.pose))
+                if len(values) > 65536:
+                    raise ValueError(f'slot {slot}: audit exceeds 65536 decoded ticks')
+            cache[index] = (round(values[0], 3), round(min(values), 3), round(max(values), 3)) if values else None
+        if cache[index]:
+            out[slot] = cache[index]
+    return out
+
+
+def scale_jumps(model, skeleton, original=None, threshold=JUMP, reference_slot=2):
+    """Slots that start at another body size than the walk (more than `threshold` apart). `original`: the body scales
+    of the native model the species' motion comes from (the player's disc); a start size one of its clips has is the
+    original game's own (a baby's squash, Shellmon hiding in its shell) and is not reported."""
+    scales = body_scales(model, skeleton)
+    if reference_slot not in scales:
+        return []
+    reference = scales[reference_slot][0]
+    own = {round(v[0], 2) for v in (original or {}).values()}
+    return [dict(slot=s, scale=v[0], walk=reference) for s, v in scales.items()
+            if abs(v[0] - reference) > threshold * reference and round(v[0], 2) not in own]
+
+
+def _vertex_counts(model):
+    return [len(model.tmd.obj_verts(o)) for o in range(len(model.tmd.objects))]
+
+
+def audit_species(content, allowed):
+    """scale_jumps of every species record with a model in a derive build's species folder. A native's motion is
+    compared with its own model on the disc (only when the mesh is that model's: a record original made from another
+    game has its own rig); content/modeldelta/scale-audit.json names the native whose motion a new species copies."""
+    import species
+    tables = json.loads((ROOT / 'content/tables/skeletons.json').read_text())
+    motion_from = {int(k): v['native'] for k, v in allowed.get('motion_from', {}).items()}
+    rows = []
+    for path in sorted(Path(content).glob('*.json'), key=lambda p: int(p.name.split('-')[0])):
+        record = json.loads(path.read_text())
+        record['_path'] = str(path)
+        model = record.get('model')
+        if not model or not (model.get('skeleton') or model.get('bones')):
+            continue
+        source = model.get('from', record['id'])
+        skeleton = model.get('skeleton') or tables['skeletons'][tables['species'][source]]
+        shipped = mmd.MMD.parse(species.species_model(record)[0], len(skeleton))
+        native = motion_from.get(record['id'], source if source < 180 else None)
+        original = None
+        if native is not None:
+            disc = species.originals().model_path(native)
+            try:
+                rig = tables['skeletons'][tables['species'][native]]
+                theirs = mmd.MMD.parse(Path(disc).read_bytes(), len(rig))
+                if record['id'] in motion_from or _vertex_counts(theirs) == _vertex_counts(shipped):
+                    original = body_scales(theirs, rig)
+            except Exception:
+                original = None
+        rows.append(dict(id=record['id'], name=record['name'], jumps=scale_jumps(shipped, skeleton, original)))
+    return rows
+
+
 def supporting_parts(model, skeleton):
     """Use reviewed anatomical groups when present, else walking contact pieces.
 
@@ -185,13 +267,29 @@ def main():
     inputs.add_argument('--from', dest='derived', type=Path, help='derive output with imported-species records')
     audit.add_argument('--out', type=Path, required=True)
     audit.add_argument('--threshold', type=float, default=THRESHOLD)
+    jumps = sub.add_parser('species', help='every species of a derive build: no clip may start at another body size '
+                           'than the walk (the derive species check runs it)')
+    jumps.add_argument('--content', type=Path, required=True, help="a derive build's species folder")
+    jumps.add_argument('--out', type=Path)
     bake = sub.add_parser('bake')
     bake.add_argument('model', type=Path)
     bake.add_argument('record', type=Path)
     bake.add_argument('out', type=Path)
     bake.add_argument('--feet', type=int, nargs='+')
     args = parser.parse_args()
-    if args.command == 'audit':
+    if args.command == 'species':
+        allowed = json.loads((ROOT / 'content/modeldelta/scale-audit.json').read_text())
+        rows = audit_species(args.content, allowed)
+        if args.out:
+            args.out.write_text(json.dumps(rows, indent=1) + '\n')
+        bad = [r for r in rows if r['jumps']]
+        for r in bad:
+            print(f"{r['id']} {r['name']}: " + ', '.join(f"slot {j['slot']} at {j['scale']:.3f} (walk {j['walk']:.3f})"
+                                                       for j in r['jumps']), file=sys.stderr)
+        print(f'{len(rows)} species; {len(bad)} change size between clips (more than {JUMP:.0%} from the walk)')
+        if bad:
+            sys.exit(1)
+    elif args.command == 'audit':
         rows = []
         folder = args.derived / 'imported-species' if args.derived else args.models
         expected = {r['id'] for r in json.loads((ROOT / 'content/modeldelta/models.json').read_text())['models']}

@@ -342,6 +342,10 @@ def check(ctx):
     ctx.run('tools/species.py', ['--content', ctx.path('species'), 'flat-audit', ctx.path('DIGI.DAT'), ctx.path('ALLTIM.TIM')],
             env=env)
     ctx.run('tools/scriptclips.py', [ctx.path('DIGI.DAT'), '--content', ctx.path('species'), '--out', ctx.path('derived', 'script-clips.json')])
+    # No species may change size between clips (Brachiomon's battle idle was drawn at 54%; Roachmon's stunned idle showed
+    # a claw every other clip hides).
+    ctx.run('tools/models/scale_lock.py', ['species', '--content', ctx.path('species'),
+                                           '--out', ctx.path('derived', 'species-scales.json')])
 
 
 # ------------------------------------------------------------------ the pins

@@ -4,7 +4,7 @@ from pathlib import Path
 import unittest
 sys.path[:0] = [str(Path(__file__).resolve().parents[1]), str(Path(__file__).resolve().parent)]
 import mmd
-from tools.models.scale_lock import measure
+from tools.models.scale_lock import body_scales, measure, scale_jumps
 
 
 def clip(scale=4096, momentum=0):
@@ -51,6 +51,48 @@ class ScaleAudit(unittest.TestCase):
     def test_large_feet_use_relative_threshold(self):
         r = measure(model(clip(scale=10240, momentum=40)), [[-1, -1], [0, 0]])
         self.assertFalse(r['across_slots'])
+
+
+class Mesh:
+    """Two objects of ten vertices each."""
+    objects = [0, 1]
+
+    def obj_verts(self, obj):
+        return [0] * 10
+
+
+def species_model(*clips):
+    m = model(*clips)
+    m.tmd = Mesh()
+    return m
+
+
+RIG = [[0, -1], [1, 0]]
+
+
+class SpeciesScaleJumps(unittest.TestCase):
+    def test_a_clip_drawn_at_another_size_is_reported(self):
+        # Slots 0-2 share the walk at full size; slot 3 starts at 54% (Brachiomon's battle idle).
+        jumps = scale_jumps(species_model(clip(), clip(scale=2211)), RIG)
+        self.assertEqual([j['slot'] for j in jumps], [3])
+        self.assertAlmostEqual(jumps[0]['walk'], 1.0)
+
+    def test_same_size_clips_pass(self):
+        self.assertEqual(scale_jumps(species_model(clip(), clip(), clip()), RIG), [])
+
+    def test_scale_animated_inside_a_clip_is_not_a_jump(self):
+        # A technique that grows the Digimon from its own size is drawn; it does not start at another size.
+        self.assertEqual(scale_jumps(species_model(clip(), clip(momentum=200)), RIG), [])
+
+    def test_a_start_size_of_the_original_game_is_allowed(self):
+        shipped = species_model(clip(), clip(scale=2211))
+        original = body_scales(species_model(clip(), clip(scale=2211)), RIG)  # the disc model has the same clip
+        self.assertEqual(scale_jumps(shipped, RIG, original), [])
+
+    def test_no_walk_no_report(self):
+        m = species_model(clip(), clip(scale=2211))
+        m.anims.table[2] = None
+        self.assertEqual(scale_jumps(m, RIG), [])
 
 
 if __name__ == '__main__':
