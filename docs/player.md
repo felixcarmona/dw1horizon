@@ -43,7 +43,7 @@ The program carries no game data. It plays the disc that the patcher builds from
   artifact) asks once for a patched `.bin` and copies it into the app's folder.
 
 OpenBIOS needs about 940 frames to reach the game's first picture (1800 without the fast CD). Horizon Play runs those
-frames as fast as the machine can, with no sound and the screen refreshed now and then, and returns to normal speed at
+frames as fast as the machine can, with no sound and a black screen (the BIOS's own start, its cube, is not shown), and returns to normal speed at
 the first lit picture after frame 400 (frame 3000 at the latest): about 3 seconds on a PC, 8-9 on a mid-range Android
 handheld. `--no-fast-start` boots at normal speed.
 
