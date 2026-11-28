@@ -500,6 +500,15 @@ def semantic_table(kind, params, tool_root=None):
         if len(rows) != 30 or any(len(row) != 6 for row in rows):
             raise ValueError('the tournament schedule has thirty rows of six cups')
         return bytes(value for row in rows for value in row)
+    if kind == 'battle_element_icons':
+        if params:
+            raise ValueError('the battle element icons take no supplied bytes')
+        # BTL_, VS_ and STD_SPECIAL_ICON_UVS: the texture-page (u, v) of each element's command icon in BTLCOMND.
+        # Elements 0..6 sit side by side on row 0xd0, 32 texels apart (each with its blink tile 16 texels right);
+        # Darkness to Earth (7..11) are the cells tools/battle_icon_art.py draws (TECH_ROW_BATTLE_ICON_UVS).
+        cells = [(32 * element, 0xd0) for element in range(7)]
+        cells += [(223, 0xdb), (200, 0xee), (83, 0xf0), (115, 0xf0), (232, 0xee)]
+        return bytes(value for cell in cells for value in cell)
     if kind == 'brain_techniques':
         count, = params
         if type(count) is not int or not 1 <= count <= len(ELEMENTS):

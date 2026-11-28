@@ -56,8 +56,8 @@ four mixed-sector movies). `tools/isolist.py` lists the same from an image (with
 
 The overlays are plain files in the root, read whole into fixed RAM addresses: their header, sizes, load addresses
 and roles are in [executable.md](executable.md#overlays-_relbin). Three of them (`BTL`, `STD`, `VS`) carry a TIM and a
-TMD before their code. `SHOP_REL.BIN` is on the USA disc and is still loaded on the shop maps, although the USA
-executable already contains its code.
+TMD before their code. `SHOP_REL.BIN` is loaded on the shop maps; the USA executable already contains its code, so ours
+moved it back into the file.
 
 ### Map files
 

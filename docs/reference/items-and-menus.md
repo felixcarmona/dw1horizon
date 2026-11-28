@@ -73,7 +73,7 @@ change this page. Opening it refreshes prosperity using the save's rule.
 | `src/main/game_menu.c` | triangle menu, Digimon screens (status, techniques) and Player screens (player, evolution chart, medals, cards, City) |
 | `src/main/script_common.c` | normal shop (`openShop`), buy/sell lists, amount box, single-card shop, item loss on death (`handleItemLoss`), daily restock (`dailyPStatTrigger`), tables `CARD_DATA`, `CARD_PRICES`, `SHOP_MAPS`, `RECYCLABLE_ITEMS`, `BIRDRA_TRANSPORT_TARGETS`, medals and album (`hasMedal`, `hasDigimonRaised`) |
 | `src/main/script_interp.c` | script ops for items/cards/money (`0x23`, `0x28-0x2B`, `0x2F-0x33`, `0x74`), `getCardAmount`/`setCardAmount`, dispatch of the shop routines (`:345-382`) |
-| `src/shop/script_menu.c` | recycling, card packs and card shop, merit shop, item keeper, jukebox, Birdramon, Mojyamon trades, name box and new game dialogue. In USA it is in `SLUS` itself (`config/us/main.yaml:131`), although `SHOP_REL.BIN` is still on the disc and `checkShopMap` (`script_common.c:2978`) loads it in the 8 maps of `SHOP_MAPS` |
+| `src/shop/script_menu.c` | recycling, card packs and card shop, merit shop, item keeper, jukebox, Birdramon, Mojyamon trades, name box and new game dialogue. In USA it is in `SLUS` itself (`config/us/main.yaml:131`), although `SHOP_REL.BIN` is still on the disc and `checkShopMap` (`script_common.c:2978`) loads it in the 8 maps of `SHOP_MAPS`; ours moved it back into `SHOP_REL.BIN` (`config/us/overlay.ld` `.SHOP`) |
 | `src/dooa/dooa.c` (`DOOA_REL.BIN`, base `0x80080000`) | death and reincarnation cutscene: model dissolving into fragments (`DOOA_tickDissolve`), iris, camera, rebirth (`DOOA_tickRebirth`, `REINCARNATE_BABY_TYPE[4]`) |
 | `src/doo2/doo2.c` (`DOO2_REL.BIN`, base `0x80070000`) | DOOA helpers (fragments, CLUT, wireframe model) and the egg choice box (`DOO2_openEggBox`, 4 eggs, script routine `0x1d`) |
 | `src/dget/dget.c` (`DGET_REL.BIN`, base `0x80080800`) | arena tournament calendar and registration (`initTournamentSchedule`, `isTournamentEnabled`, `tournamentCheckEligible`); loaded in `ARENA_MAPS` 208/223 (`checkArenaMap`) |
@@ -490,8 +490,8 @@ text is only drawn when the box opens (`drawInventoryText`, `game_menu.c:1967`).
   Metalbanana), yet the real game starts with 10 slots and few items: the intro script is expected to trim it with
   `0x23` (`SET_INVENTORY_SIZE`) and `0x29`. If only `size` changed, slots 10–29 would stay occupied and reappear when the
   inventory grows.
-- `SHOP_REL.BIN` is loaded by `checkShopMap` on the shop maps even though the USA executable already contains its
-  code.
+- `SHOP_REL.BIN` is loaded by `checkShopMap` on the shop maps; the USA executable contains its code, ours has it in the
+  overlay again (sealed, [executable.md](executable.md) "SHOP_REL.BIN").
 - Which trigger each shop sets for `0x180+id` (and whether talking to the shopkeeper rewrites it) is in the map
   scripts.
 - `Electo ring` points to species 0 (`EVOLUTION_ITEM_TARGET[12]`): depending on that entry's level it is refused or

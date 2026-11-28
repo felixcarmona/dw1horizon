@@ -1,0 +1,325 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 27 Nov 2026 22:28:23 +0000
+Subject: [PATCH] Heap: the shop menus move to the SHOP overlay, sealed and
+ checked before use
+
+---
+ config/us/main.ld        |  2 +
+ config/us/overlay.ld     | 89 ++++++++++++++++++++++++++++++++++++++++
+ include/dw/script.h      |  1 +
+ mk/platform/psx.mk       |  6 +++
+ mk/version/us.mk         |  2 +
+ src/main/main.c          |  2 +
+ src/main/script_common.c | 34 ++++++++++++++-
+ src/main/script_interp.c |  6 +++
+ tools/overlay_seal.py    | 46 +++++++++++++++++++++
+ 9 files changed, 187 insertions(+), 1 deletion(-)
+ create mode 100644 tools/overlay_seal.py
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 58840a2d..c4ef8b2a 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1054,6 +1054,8 @@ ASSERT(OVL_READ_END(.DOO2) <= LOAD_AREA_END, "DOO2 overlay overflows the load ar
+ ASSERT(OVL_READ_END(.MURD) <= OVL_OT_0_ADDR, "MURD overlay overlaps its ordering table")
+ ASSERT(OVL_READ_END(.DOOA) <= OVL_OT_0_ADDR, "DOOA overlay overlaps its ordering tables")
+ ASSERT(OVL_READ_END(.DGET) <= LOAD_AREA_END, "DGET overlay overflows the load area")
++/* MOD (shop overlay): read on the shop screens, where TRN never is; its whole sectors stay below TRN's slot and TEXTURE_BUFFER */
++ASSERT(OVL_READ_END(.SHOP) <= OVL_TRN_BASE, "SHOP overlay (in whole sectors) overlaps TRN's slot")
+ ASSERT(OVL_READ_END(.TRN) <= OVL_TRN_MAX_END, "TRN overlay is larger than the original's slot")
+ ASSERT(OVL_READ_END(.TRN2) <= OVL_TRN_MAX_END, "TRN2 overlay is larger than the original's slot")
+ /*
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index c83b0436..5a635e4c 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -140,6 +140,95 @@ SECTIONS
+             . = ALIGN(., 4);
+ 
+ 		}
++
++		/*
++		 * MOD (shop overlay, docs/reference/memory.md "The shop overlay"): the code of the script menus (shops,
++		 * naming, card packs, item keeper, jukebox, Birdramon transport, the new game's questions), read as the
++		 * original game read SHOP_REL.BIN: on the shop screens (checkShopMap) and by routine 0x23. The amount box
++		 * stays resident (openShop asks with it). modShopOverlayEnsure (script_common.c) checks the seal before
++		 * every routine that runs this code and reads the file again when something else wrote the slot.
++		 */
++		.SHOP {
++			shop_START = .;
++			BUILD_DIR/src/shop/script_menu.c.o(
++				.text.renderPackResults
++				.text.tickPackResults
++				.text.renderCardMenu
++				.text.renderJukeboxMenu
++				.text.renderBirdraTransportMenu
++				.text.renderMojyaTradeMenu
++				.text.namingLabelCells
++				.text.tickBirdraTransportMenu
++				.text.tickJukeboxMenu
++				.text.initializeNamingBuffer
++				.text.hasAnyCardToBuy
++				.text.shopFillSellCardList
++				.text.fillRecycleShopItemList
++				.text.openRecycleShop
++				.text.rollCard
++				.text.createCardMenu
++				.text.openBuyCardMenu
++				.text.openSellCardMenu
++				.text.shopFillMeritItemList
++				.text.openMeritShop
++				.text.itemKeeperFillItemList
++				.text.jukeboxFillTitleList
++				.text.createJukeboxMenu
++				.text.openJukebox
++				.text.birdraFillTargetList
++				.text.createBirdraTransportMenu
++				.text.tickBirdraTransport
++				.text.mojyaTradeFillItemList
++				.text.setMojyaItemTradedTrigger
++				.text.updateKeeperTextbox
++				.text.createItemKeepWindow
++				.text.tickItemKeeper
++				.text.keeperScrollLeftToItem
++				.text.keeperScrollRightToItem
++				.text.keeperMoveOne
++				.text.keeperMoveTen
++				.text.keeperMoveStack
++				.text.tickItemKeeperWindow
++				.text.renderKeeperBox
++				.text.renderKeeperBoxLeft
++				.text.renderKeeperBoxRight
++				.text.updateMojyaTradeStrings
++				.text.createMojyaTradeMenu
++				.text.openMojyamonShop
++				.text.tickMojyaTradeMenu
++				.text.setupNewGameDialogueBox
++				.text.showNewGameDialogue
++				.text.showNewGameSelection
++				.text.fillNamingMenuStrings
++				.text.setupNameSelectorBox
++				.text.updateNamingPreview
++				.text.setupNameDisplayBox
++				.text.newGameStateMachine
++				.text.namingDeleteLast
++				.text.terminateNamingBuffer
++				.text.namingSelectionLeft
++				.text.namingSelectionRight
++				.text.namingSelectionUp
++				.text.namingSelectionDown
++				.text.tickNamingBox
++				.text.renderSelectionBox
++				.text.renderNamingBox
++				.text.renderNamingUnderscore
++				.text.renderNameDisplayBox
++				.text.rollCardPack
++				.text.createMeritCardTradeDialogue
++				.text.tickCardMenu
++			);
++			. = ALIGN(., 4);
++			BUILD_DIR/src/shop/script_menu.c.o(.rodata.openRecycleShop .rodata.openMeritShop
++				.rodata.tickBirdraTransport .rodata.tickItemKeeper .rodata.openMojyamonShop
++				.rodata.newGameStateMachine);
++			. = ALIGN(., 4);
++			/* the seal: the rotating sum of every word above (tools/overlay_seal.py, mk/platform/psx.mk) */
++			shop_SEAL = .;
++			LONG(0);
++			shop_END = .;
++		}
+ 	}
+ 
+ 	OVERLAY OVL_FISH_BASE : NOCROSSREFS
+diff --git a/include/dw/script.h b/include/dw/script.h
+index a43c3e89..d34372cf 100644
+--- a/include/dw/script.h
++++ b/include/dw/script.h
+@@ -369,6 +369,7 @@ void playShopSoundOnlyInSavannah(void);
+ void setDialogueOwner(int32_t owner);
+ void createMonochromonMoodBubble(void);
+ void loadShopLibrary(void);
++void modShopOverlayEnsure(void); /* MOD (shop overlay), script_common.c */
+ void initializeTextbox(void);
+ void closeAllTextboxes(void);
+ void triggerBoxCloseFlag(int32_t boxId);
+diff --git a/mk/platform/psx.mk b/mk/platform/psx.mk
+index 6864a53b..e1d50a3c 100644
+--- a/mk/platform/psx.mk
++++ b/mk/platform/psx.mk
+@@ -51,6 +51,12 @@ $(BUILD_DIR)/%_REL.BIN: $(ELF) $(CPPLDSCRIPT)
+ 	@mkdir -p $(dir $@)
+ 	$(OBJCOPY) -j $(@:$(BUILD_DIR)/%_REL.BIN=.%) -O binary $< $@
+ 
++# MOD (shop overlay): the game checks SHOP_REL.BIN's seal before it runs it (tools/overlay_seal.py)
++$(BUILD_DIR)/SHOP_REL.BIN: $(ELF) $(CPPLDSCRIPT) tools/overlay_seal.py
++	@mkdir -p $(dir $@)
++	$(OBJCOPY) -j .SHOP -O binary $< $@
++	$(PYTHON) tools/overlay_seal.py seal $@
++
+ $(ELF): $(OBJ) $(CPPLDSCRIPT) $(UNDEFINED_SYMS)
+ 	@mkdir -p $(dir $@)
+ 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index a43126a8..c2d921dc 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -143,6 +143,8 @@ SHOP_C_SRC := \
+ 	src/shop/script_menu.c
+ 
+ $(eval $(call unit,SHOP,shop))
++# MOD (shop overlay): its code is linked into .SHOP (config/us/overlay.ld), read where the original read SHOP_REL.BIN
++OVERLAY += SHOP
+ 
+ BTL_C_SRC := \
+ 	src/btl/battle_effect.c \
+diff --git a/src/main/main.c b/src/main/main.c
+index 0a983b1a..098199d8 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -101,6 +101,7 @@ uint16_t MAIN_func_800F19B0(int32_t param_1, int32_t param_2);
+ 
+ void renderMainMenuBackground(void);
+ void checkShopMap(int32_t mapId);
++void modShopOverlayEnsure(void); /* MOD (shop overlay), script_common.c */
+ uint32_t playSound(int32_t vabId, int32_t val);
+ void tickMainMenu(void);
+ void renderMainMenu(void);
+@@ -3861,6 +3862,7 @@ void newGameScene(void)
+ 
+ 	done = 0;
+ 	checkShopMap(0xda);
++	modShopOverlayEnsure(); /* MOD (shop overlay): the naming box and the questions run from the SHOP slot */
+ 	initializeNamingBuffer(0);
+ 	initializeTextbox();
+ 	fadeFromBlack(0x14);
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index da51e018..1457ed3f 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -3273,7 +3273,8 @@ void checkShopMap(mapId)
+ 			return;
+ 		}
+ 	}
+-	if (getScreenFlags(mapId) & SCREEN_FLAG_SHOP) { /* MOD (screens beyond 255): a new screen's record */
++	/* MOD (shop overlay): 216's item shop jumps to the card machine (routine 14), which runs from the SHOP slot */
++	if (mapId == 0xd8 || (getScreenFlags(mapId) & SCREEN_FLAG_SHOP)) { /* MOD (screens beyond 255): a new screen's record */
+ 		loadDynamicLibrary(SHOP_REL, &local, 0, 0, 0);
+ 	}
+ }
+@@ -3283,6 +3284,37 @@ void loadShopLibrary(void)
+ 	loadDynamicLibrary(SHOP_REL, (uint8_t *)&TRN_LOADING_COMPLETE, 1, 0, 0);
+ }
+ 
++/* MOD (shop overlay): the shops, the naming box, the card packs, the item keeper, the jukebox, the Birdramon
++   transport and the new-game questions live in SHOP_REL.BIN (overlay.ld), which the game reads into its slot on
++   entering a shop screen (checkShopMap) and at the naming scene (routine 0x23, newGameScene). Other overlays share
++   the slot (DGET, DOOA, STD, MOV), so before a routine runs code from it this checks the slot's seal, the overlay's
++   last word written at build time (tools/overlay_seal.py), and reads the overlay again when the slot holds anything
++   else. MOD_SHOP_RELOADS counts those reads: on a normal path it stays 0. */
++extern uint32_t shop_START[];
++extern uint32_t shop_SEAL[];
++int32_t isFileReadQueueIdle(void); /* file_queue.c */
++void _tickFileReadQueue(int32_t instanceId); /* file_queue.c */
++int32_t MOD_SHOP_RELOADS = 0;
++
++void modShopOverlayEnsure(void)
++{
++	uint32_t *w;
++	uint32_t sum;
++	uint8_t done;
++
++	while (!isFileReadQueueIdle()) {
++		_tickFileReadQueue(0);
++	}
++	sum = 0x53484F50; /* 'SHOP' */
++	for (w = shop_START; w < shop_SEAL; w++) {
++		sum = ((sum << 1) | (sum >> 31)) + *w;
++	}
++	if (sum != *shop_SEAL) {
++		MOD_SHOP_RELOADS++;
++		loadDynamicLibrary(SHOP_REL, &done, 0, 0, 0);
++	}
++}
++
+ // clang-format off
+ void checkArenaMap(mapId)
+ 	int16_t mapId;
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 50c24d9d..6afd07b5 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -1653,6 +1653,11 @@ void scriptInstruction64to7E(op)
+ 		case 0x0e:
+ 		case 0x12:
+ 		case 0x2f:
++			/* MOD (shop overlay): these routines run code from the SHOP slot (script_common.c) */
++			if (byteArg1 == 0x01 || byteArg1 == 0x02 || byteArg1 == 0x09 || byteArg1 == 0x0a || byteArg1 == 0x0b ||
++			    byteArg1 == 0x0e || (byteArg1 == 0x08 && isTriggerSet(TRIGGER_3))) {
++				modShopOverlayEnsure();
++			}
+ 			ACTIVE_INSTRUCTION = SCRIPT_OP_CALL_ROUTINE;
+ 			SCRIPT_STATE_2 = 0;
+ 			SCRIPT_TEXTBOX_MODE = 0;
+@@ -1774,6 +1779,7 @@ void scriptInstruction64to7E(op)
+ 			writePStat(0xf4, SHOP_VARIABLE & 0xff);
+ 			break;
+ 		case 0x20:
++			modShopOverlayEnsure(); /* MOD (shop overlay) */
+ 			initializeNamingBuffer(readPStat(0xfe));
+ 			longjmp(SCRIPT_JMP_BUF, 2);
+ 		case 0x21:
+diff --git a/tools/overlay_seal.py b/tools/overlay_seal.py
+new file mode 100644
+index 00000000..58b3facc
+--- /dev/null
++++ b/tools/overlay_seal.py
+@@ -0,0 +1,46 @@
++#!/usr/bin/env python3
++"""MOD (shop overlay): seal an overlay image, or check a sealed one.
++
++The last word of a sealed overlay is the rotating sum of every word before it (sum = rotl(sum, 1) + word, from SEED).
++The game checks it before it runs the code (modShopOverlayEnsure, src/main/script_common.c), so a slot that holds
++anything else (zeros, another overlay, a torn read) is read again instead of run.
++
++    overlay_seal.py seal FILE        write the seal into FILE's last word
++    overlay_seal.py check FILE...    exit 1 unless every FILE is sealed
++"""
++import struct, sys
++
++SEED = 0x53484F50  # 'SHOP'
++
++
++def checksum(data):
++    s = SEED
++    for (w,) in struct.iter_unpack('<I', data):
++        s = (((s << 1) | (s >> 31)) + w) & 0xFFFFFFFF
++    return s
++
++
++def sealed(data):
++    return len(data) >= 8 and len(data) % 4 == 0 and checksum(data[:-4]) == struct.unpack_from('<I', data, len(data) - 4)[0]
++
++
++def main(argv):
++    if len(argv) >= 3 and argv[1] == 'seal' and len(argv) == 3:
++        data = bytearray(open(argv[2], 'rb').read())
++        if len(data) < 8 or len(data) % 4:
++            sys.exit(f'{argv[2]}: {len(data)} bytes, not a word-aligned overlay')
++        if data[-4:] != b'\0\0\0\0':
++            sys.exit(f'{argv[2]}: the last word is not the linker\'s empty seal')
++        struct.pack_into('<I', data, len(data) - 4, checksum(bytes(data[:-4])))
++        open(argv[2], 'wb').write(data)
++        return 0
++    if len(argv) >= 3 and argv[1] == 'check':
++        bad = [p for p in argv[2:] if not sealed(open(p, 'rb').read())]
++        for p in bad:
++            print(f'{p}: not a sealed overlay', file=sys.stderr)
++        return 1 if bad else 0
++    sys.exit(__doc__)
++
++
++if __name__ == '__main__':
++    sys.exit(main(sys.argv))
+-- 
+2.55.0
+

@@ -176,72 +176,9 @@ def life():
 
 
 # ---------------------------------------------------------------- 3. Press Start Button -> Pulsa el botón START (TITLE256.TIM)
-TCH = {'V': 0, 'L': 91, '9': 181, '8': 192, ' ': 255}      # the USA and European TITLE256's palette indices
-def disc_tch(disc):
-    """TCH in the palette indices of this disc's own TITLE256 (the Japanese disc has the same colours in another order)"""
-    from tools.title_stamp import disc_index
-    return {c: disc_index(disc, i) for c, i in TCH.items()}
-# the letters of the disc's own Press Start Button line (rows 241-250): each one's first and last column. The European
-# TITLE256 (by its SHA-1; the same file on the five European discs) sets the line in narrower letters
-TITLE_LETTERS = dict(P=(0, 6), r=(9, 13), e=(15, 20), s=(23, 27), S=(41, 47), t=(49, 53), a=(55, 60),
-                     B=(79, 85), u=(88, 93), o=(107, 112), n=(115, 120))
-RELEASE_TITLE_LETTERS = {'c0d12ef9a5a689798b0b2965d95e574c525ab904': dict(
-    P=(0, 5), r=(7, 12), e=(14, 19), s=(21, 26), S=(37, 42), t=(44, 49), a=(51, 56),
-    B=(74, 79), u=(81, 86), o=(102, 107), n=(109, 114))}
-def title_glyphs(en, letters=TITLE_LETTERS, tch=TCH):
-    clear = tch[' ']
-    G = {}
-    for ch, (a, b) in letters.items():
-        G[ch] = [[clear] * (b - a + 1)] + en.block(a, 241, b - a + 1, 10)   # row 0 = texture row 240 (free)
-    def hand(rows):
-        rows = rows + [''] * (11 - len(rows)); w = max(len(r) for r in rows)
-        return [[tch[c] for c in r.ljust(w)] for r in rows]
-    G['l'] = hand(['', 'VV'] + ['VV'] * 8)
-    G['b'] = hand(['', 'VV', 'VV', 'VVVVL', 'VV  VL', 'VV  VV', 'VV  VV', 'VV  VV', 'VV  VL', 'VVVVL'])
-    G['ó'] = [r[:] for r in G['o']]
-    G['ó'][0] = [tch[c] for c in '   LV ']; G['ó'][1] = [tch[c] for c in '  LV  ']
-    G['p'] = hand(['', '', '', 'VVVVL', 'VV  VV', 'VV  VV', 'VVVVL', 'VV', 'VV', 'VV'])
-    G['T'] = hand(['', 'VVVVVV'] + ['  VV  '] * 8)
-    G['A'] = hand(['', '  9VV9  ', '  LVVL  ', ' 9VLLV9 ', ' LV  VL ', ' VL  LV ', '9VVVVVV9', 'LV    VL', 'VL    LV', 'VV    VV'])
-    G['R'] = hand(['', 'VVVVL  ', 'VV 9VL ', 'VV  LV ', 'VV 9VL ', 'VVVVL  ', 'VV 8VL ', 'VV  LV ', 'VV  9VL', 'VV   VV'])
-    return G
-
-def title_compose(G, text, t, x0, space=4, clear=255):
-    x = x0; prev = None
-    for ch in text:
-        if ch == ' ':
-            x += space; prev = None; continue
-        if prev is not None:
-            x += 1 if ('t' in (prev, ch) or 'r' in (prev, ch) or prev.isupper() and ch.isupper()) else 2
-        g = G[ch]
-        for j, row in enumerate(g):
-            for i, v in enumerate(row):
-                if v != clear:
-                    t.s(x + i, 240 + j, v)
-        x += len(g[0]); prev = ch
-    return x - x0
-
-
-class _Measure:
-    """a texture that keeps nothing: title_compose on it only measures"""
-    def s(self, x, y, v):
-        pass
-
-
-def title_line(G, text, t, clear=255):
-    """text drawn in G's letters into t, in the middle of the width it has in the USA letters (the executable's quad
-    for it, main.c PRESS_START_QUAD; a wider line closes its spaces up, down to 2 columns) -> that width"""
-    usa = dict(G, **{ch: [[clear] * (b - a + 1)] for ch, (a, b) in TITLE_LETTERS.items()})
-    usa['ó'] = usa['o']
-    W = title_compose(usa, text, _Measure(), 0, clear=clear)
-    space = 4
-    while title_compose(G, text, _Measure(), 0, space, clear) > W and space > 2:
-        space -= 1
-    w = title_compose(G, text, _Measure(), 0, space, clear)
-    if w > W:
-        sys.exit(f'title: {text!r} is {w} columns in this disc\'s letters, wider than its quad ({W})')
-    title_compose(G, text, t, (W - w) // 2, space, clear)
-    return W
+# the line's letters, its layout and each language's text: tools/localize/title_letters.py
+from tools.localize.title_letters import (TCH, TITLE_LETTERS, RELEASE_TITLE_LETTERS, TEXTS, QUAD, disc_tch,
+                                          title_glyphs, title_compose, title_line)
 
 
 def title():
@@ -250,7 +187,8 @@ def title():
     tch = disc_tch(disc); clear = tch[' ']
     G = title_glyphs(en, RELEASE_TITLE_LETTERS.get(hashlib.sha1(disc).hexdigest(), TITLE_LETTERS), tch)
     es.fill(0, 240, 320, 256, clear); alt.fill(0, 240, 320, 256, clear)
-    W = title_line(G, ('Aperte START' if PT_BR else 'Pulsa el botón START'), es, clear)
+    language = os.environ.get('LOCALIZE_LANGUAGE') or 'es'
+    W = title_line(G, TEXTS[language], es, clear, None if language in ('es', 'pt-br') else QUAD)
     Wa = title_line(G, 'Pulsa START', alt, clear)
     save('TITLE256.TIM', en, es, 0)
     alt.save_idx(f'{OUT}/TITLE256.TIM.alt-pulsa-start.es.idx')
