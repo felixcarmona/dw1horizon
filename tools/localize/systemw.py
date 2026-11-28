@@ -38,17 +38,37 @@ def check_chinese_menu_cells():
 
 
 from tools.localize.tech_rows_art import other_cell
+from tools.localize.catalog import word
+
+
+# French, German, Italian and Catalan element names, in the element-name font: the original row (x 0..124, the last
+# two columns free) cut again so that the longest of the four languages' names fits each cell (MECHA, MECCA 22 px,
+# COMBAT 26), and the filth row's cell widened over the free columns up to the weapon row's name (BRUTÍCIA 28)
+LATIN_ELEMENT_CELLS = {
+    ('FIRE', 'FUEGO'): (0, 24, 20, 10), ('BATTLE', 'COMBATE'): (20, 24, 26, 10), ('AIR', 'AIRE'): (46, 24, 16, 10),
+    ('EARTH', 'TIERRA'): (62, 24, 20, 10), ('ICE', 'HIELO'): (82, 24, 20, 10), ('MECH', 'MECA'): (102, 24, 22, 10),
+    ('FILTH', 'MUGRE'): (60, 96, 30, 10),
+}
+# the technique panel and header cells
+TECH_CELLS = {
+    ('POWER', 'POTENCIA'): (128, 110, 38, 12),
+    ('RANG', 'ALC.'): (166, 110, 28, 12),
+    ('SPEC', 'EFECTO'): (194, 110, 34, 12),
+    ('TECH. DATA', 'DATOS TÉC.'): (96, 84, 64, 12),
+    ('RANG', 'ALCANCE'): (160, 84, 38, 12),
+}
+# the technique panel's room for a label: from its x (-0x8c) to the arrow's (-0x6c, as in Spanish)
+PANEL_LABEL_ROOM = 0x8c - 0x6c
+# its labels end this many columns before the arrow (outlines included), so the two never touch
+PANEL_LABEL_GAP = 1
+PANEL_CELLS = (('POWER', 'POTENCIA'), ('RANG', 'ALCANCE'), ('SPEC', 'EFECTO'))
 
 
 def relocated_rect(item, language=None):
     key = item['en'], item['es']
-    return other_cell(key, language) or {
-        ('POWER', 'POTENCIA'): (128, 110, 38, 12),
-        ('RANG', 'ALC.'): (166, 110, 28, 12),
-        ('SPEC', 'EFECTO'): (194, 110, 34, 12),
-        ('TECH. DATA', 'DATOS TÉC.'): (96, 84, 64, 12),
-        ('RANG', 'ALCANCE'): (160, 84, 38, 12),
-    }.get(key)
+    if language in ('fr', 'de', 'it', 'ca') and key in LATIN_ELEMENT_CELLS:
+        return LATIN_ELEMENT_CELLS[key]
+    return other_cell(key, language) or TECH_CELLS.get(key)
 
 
 def check_care_button_cells(items):
@@ -80,6 +100,9 @@ def crop_tables(source, metadata):
         first = re.split(r'#elif|#else', source[a:b])[0]
         rows = [[int(x, 16) for x in re.findall(r'0x([a-fA-F0-9]+)', line)]
                 for line in first.splitlines()[1:] if '{' in line]
+        existing = {m.group(1): [[int(x, 16) for x in re.findall(r'0x([a-fA-F0-9]+)', line)]
+                                 for line in m.group(2).splitlines() if '{' in line]
+                    for m in re.finditer(r'MOD_LANG_BUILD == MOD_LANG_(\w+)\n(.*?)(?=#elif|$)', source[a:b], re.S)}
         variants = []
         for lang, macro in [('es', 'ES'), ('pt-br', 'PT_BR'), ('fr', 'FR'),
                             ('de', 'DE'), ('it', 'IT'), ('ja', 'JA'), ('ca', 'CA'), ('zh-hans', 'ZH')]:
@@ -99,10 +122,23 @@ def crop_tables(source, metadata):
                               (7, 'TYPE'), (8, 'SPECIAL'), (9, 'ACTIVE'),
                               (17, 'HAPPINESS'), (18, 'SPEED'), (19, 'BRAINS')]:
                     put(i, en)
+            elif name == 'MOVES_VIEW_ELEMENT_NAMES' and lang in ('ja', 'zh-hans'):
+                # Japanese and Chinese draw their names in font B, centred: their crops were measured on those words
+                rr = existing[macro]
             elif name == 'MOVES_VIEW_ELEMENT_NAMES':
+                # labels.py draws a name at its cell's right edge: the cell's right edge goes against the grid
                 for i, en in enumerate(('FIRE', 'BATTLE', 'AIR', 'NATURE', 'ICE', 'MECH', 'FILTH',
                                         'DARK', 'LIGHT', 'WATER', 'WEAPON', 'EARTH')):
-                    rr[i][0] = (-45 - put(i, en, shifted=True)) & 65535
+                    put(i, en, shifted=True)
+                    if lang in ('fr', 'de', 'it', 'ca'):
+                        # cropped to the letters (labels.py draws the name at its cell's right edge), so the right
+                        # column can centre a name as it centres the originals
+                        from tools.localize.labels import element_width
+                        m = next(x for x in meta if x['en'] == en)
+                        ink = element_width(word(m['es'], lang))
+                        rr[i][4] += rr[i][2] - ink
+                        rr[i][2] = ink
+                    rr[i][0] = (-45 - rr[i][2]) & 65535
                     rr[i][1] = 1 if rr[i][3] == 8 else 0    # posY: a name with no blank row on top goes a line lower
             elif name == 'MOVES_VIEW_TECHSET_TEXT':
                 for i, en, es in [(0, 'POWER', None), (1, 'RANG', 'ALC.'), (2, 'SPEC', None)]:
@@ -113,7 +149,13 @@ def crop_tables(source, metadata):
                 for i, en, es in [(0, 'TECH. DATA', None), (1, 'POWER', None),
                                   (2, 'MP', None), (3, 'RANG', 'ALCANCE'), (4, 'SPEC', None)]:
                     put(i, en, es, shifted=True)
-                    if lang in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
+                    if lang in ('fr', 'de', 'it', 'ca'):
+                        # The word sits at its cell's left edge and the crop stops where the arrow starts (as in
+                        # Spanish); MP, the original 7-row cell, on its arrow's middle row as the 12-row cells' words.
+                        if i in (1, 3, 4):
+                            rr[i][2] = min(rr[i][2], PANEL_LABEL_ROOM)
+                        rr[i][1] = [-6, 27, 46, 61, 78][i] & 65535
+                    elif lang in ('ja', 'zh-hans'):
                         # Absolute coordinates: regeneration is idempotent.
                         rr[i][1] = [-6, 27, 44, 61, 78][i] & 65535
             variants.append(('#if' if not variants else '#elif') +

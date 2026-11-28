@@ -83,6 +83,98 @@ class LabelScale(unittest.TestCase):
                     L.build(d + '/out', EXTRACTED, scratch=d + '/scratch', language=language)
                 self.assertEqual(used, {text for lang, text, _ in labels.OPEN if lang == language})
 
+    def test_every_label_of_a_kind_takes_font_b_only_if_all_of_them_fit_it(self):
+        # one word too big for font B sends its whole kind to the SYSTEM_W font, so labels seen together share one
+        # style (KRAFT in font B beside EFFEKT in the small header font ran into the technique page's values)
+        fits = {'KRAFT': True, 'EFFEKT': False, 'TEMPO': True, 'FREUDE': True, 'NAME': True}
+        labelled = [({'en': en}, text, (0, 0, 40, 12)) for en, text in
+                    (('POWER', 'KRAFT'), ('EFFECT', 'EFFEKT'), ('SPEED', 'TEMPO'), ('HAPPINESS', 'FREUDE'),
+                     ('NAME', 'NAME'))]
+        with patch.object(labels, 'fits_b', lambda text, rect, padding=2: fits[text]):
+            self.assertEqual(labels.font_b_kinds(labelled, 'de'), {'stat', 'tag'})
+            self.assertEqual(labels.font_b_kinds(labelled, 'es'), {'small', 'stat', 'tag'})
+        self.assertEqual([labels.kind(item['en']) for item, _, _ in labelled], ['small', 'small', 'stat', 'stat', 'tag'])
+
+    @unittest.skipUnless(os.path.isdir(EXTRACTED), 'needs the extracted disc')
+    def test_the_technique_page_labels_sit_where_their_crops_expect_them(self):
+        # font B's nine rows plus its shadow reach the Final row's value under the header; the small header font is
+        # five rows (seven with a capital's accent) plus its outline. The panel draws its labels from the cell's left
+        # edge and end a column before the arrow; the element names are cropped to their letters at the cell's right edge
+        # (tools/localize/systemw.py crop_tables): a name drawn elsewhere in its cell is cut or stands out
+        from tools.localize import build as L
+        from tools.localize.build import tim_entries
+        from tools.localize.systemw import LATIN_ELEMENT_CELLS, PANEL_CELLS, PANEL_LABEL_GAP, PANEL_LABEL_ROOM, TECH_CELLS
+        from tools.localize.tech_rows_art import OTHER_CELLS, WIDE_CELLS
+        names = {**LATIN_ELEMENT_CELLS, **OTHER_CELLS, **WIDE_CELLS}
+        panel = [TECH_CELLS[key] for key in PANEL_CELLS]
+        os.makedirs(os.path.join(ROOT, 'build'), exist_ok=True)
+        for language in labels.LATIN:
+            with tempfile.TemporaryDirectory(dir=os.path.join(ROOT, 'build')) as d, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                L.build(d + '/out', EXTRACTED, scratch=d + '/scratch', language=language)
+                data = open(os.path.join(d, 'out', language, 'ETCDAT', 'SYSTEM_W.TIM'), 'rb').read()
+            start, _, w, h = tim_entries(data)[0]
+            px = [v for b in data[start:start + w * h // 2] for v in (b & 15, b >> 4)]
+
+            def ink(rect):
+                u, v, cw, ch = rect
+                rows = [px[(v + y) * w + u:(v + y) * w + u + cw] for y in range(ch)]
+                background = max(set(sum(rows, [])), key=sum(rows, []).count)
+                columns = [x for x in range(cw) if any(row[x] != background for row in rows)]
+                return sum(any(c != background for c in row) for row in rows), columns[0], columns[-1] + 1
+            for rect in TECH_CELLS.values():
+                with self.subTest(language=language, cell=rect):
+                    painted, left, right = ink(rect)
+                    self.assertLessEqual(painted, 9)
+                    self.assertEqual(left, 0)
+                    if rect in panel:
+                        self.assertLessEqual(right, PANEL_LABEL_ROOM - PANEL_LABEL_GAP)
+            for (en, es), rect in names.items():
+                with self.subTest(language=language, name=word(es, language)):
+                    fonts, words = labels.systemw_fonts()
+                    rows = words.compose(fonts.ELEM, word(es, language), gap=0)
+                    drawn = [x for x in range(len(rows[0])) if any(row[x] != '.' for row in rows)]
+                    at = rect[2] - labels.element_width(word(es, language))
+                    self.assertEqual(ink(rect)[1:], (at + drawn[0], at + drawn[-1] + 1))
+
+def _font_module(name, path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(name, os.path.join(ROOT, path))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+# the letters the German, French, Italian and Catalan words added to the label fonts
+ADDED = {
+    'systemw': {'SMALL': 'WÈoKXZ', 'TAG': 'Y.', 'TAG_NARROW': 'PODS', 'TSA': 'UKZ', 'TSA_ACTIVE': 'KZ',
+                'TSA_SPECIAL': 'KZ', 'STAT': 'GKMU·À!', 'ELEM': 'QÉÈÍ', 'SMALL_COMPACT': 'ÉÀ',
+                'TAG_COMPACT': 'ÂÀÈ'},
+    'pixfont': {'LABEL6': '.Ü', 'LABEL6_COMPACT': 'ÉÊ', 'BUBBLE7': 'KYZÜ'},
+}
+
+
+class AddedLetters(unittest.TestCase):
+    def test_every_added_letter_reads_as_itself(self):
+        # a K drawn with an H's straight right side made EFFEKT read EFFENT
+        modules = {'systemw': _font_module('label_fonts', 'tools/localize/textures/systemw/fonts.py'),
+                   'pixfont': _font_module('label_pixfont', 'tools/localize/textures/fi-info/pixfont.py')}
+        tone = {'#': 2, 'c': 1, 'x': 1}
+
+        def distance(a, b, weight):
+            if len(a) != len(b) or any(len(r) != len(q) for r, q in zip(a, b)):
+                return 99
+            return sum(abs(weight(p) - weight(q)) for r, s in zip(a, b) for p, q in zip(r, s))
+        for module, fonts in ADDED.items():
+            for name, letters in fonts.items():
+                font = getattr(modules[module], name)
+                for letter in letters:
+                    for other, glyph in font.items():
+                        if other == letter:
+                            continue
+                        with self.subTest(font=name, letter=letter, other=other):
+                            self.assertGreaterEqual(distance(font[letter], glyph, lambda c: tone.get(c, 0)), 2)
+                            self.assertGreaterEqual(distance(font[letter], glyph, lambda c: c in tone), 1)
 
 if __name__ == '__main__':
     unittest.main()
