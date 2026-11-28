@@ -106,15 +106,16 @@ def bake_bones(data, skeleton, bones):
 
 
 def widen(data, skeleton, width):
-    """Widen the mesh of each listed bone (bone -> factor on its own vertices' x): animations, offsets and the
-    other bones stay as they are, so no clip changes."""
+    """Widen the mesh of each listed bone (bone -> factor on its own vertices' x, or [kx, ky, kz] per axis):
+    animations, offsets and the other bones stay as they are, so no clip changes."""
     model = mmd.MMD.parse(data, len(skeleton))
     tmd = model.tmd
     for b, k in width.items():
+        kx, ky, kz = k if isinstance(k, (list, tuple)) else (k, 1.0, 1.0)
         ob = tmd.objects[skeleton[b][0]]
         for i in range(ob.vert_start, ob.vert_start + ob.nvert):
             x, y, z, p = tmd.verts[i]
-            tmd.verts[i] = (_clamp(x * k, 'vertex'), y, z, p)
+            tmd.verts[i] = (_clamp(x * kx, 'vertex'), _clamp(y * ky, 'vertex'), _clamp(z * kz, 'vertex'), p)
     return model.build()
 
 
@@ -127,7 +128,7 @@ def apply(data, skeleton, sid, row):
     cum, lift = [1.0] * nb, 0
     if bones:
         data, cum, lift = bake_bones(data, skeleton, bones)
-    width = {int(b): float(k) for b, k in row.get('width', {}).items()}
+    width = {int(b): ([float(c) for c in k] if isinstance(k, list) else float(k)) for b, k in row.get('width', {}).items()}
     if width:
         data = widen(data, skeleton, width)
     factor = float(row['factor'])
