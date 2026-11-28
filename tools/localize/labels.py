@@ -136,6 +136,10 @@ def pixfont():
 # rows); tools/test_label_scale.py fails on any other label that would need resampling.
 # (language, text, (u, v, w, h)) -> how big the word is.
 OPEN = {
+    # the second SPEED cell, which the status tag mostly covers
+    ('it', 'VELOCITÀ', (110, 72, 31, 12)): '33 px wide in the stat font',
+    ('ca', 'RAPIDESA', (110, 72, 31, 12)): '36 px wide in the stat font',
+    ('ja', 'すばやさ', (110, 72, 31, 12)): '39 px wide in font B',
     ('fr', 'GLACE', (86, 24, 18, 10)): '20 px wide in the element-name font',
     ('fr', 'CRASSE', (60, 96, 22, 10)): '24 px wide in the element-name font',
     ('de', 'ALTER', (209, 48, 20, 10)): '23 px wide in the tag font',
@@ -340,7 +344,7 @@ def apply(files, language, work):
         if en in ('TYPE', 'ACTIVE', 'SPECIAL'):
             font, main, acc = dict(TYPE=(F.TSA, 12, 13), ACTIVE=(F.TSA_ACTIVE, 8, 9), SPECIAL=(F.TSA_SPECIAL, 6, 7))[en]
             return first(lambda: tsa(font, main, acc)), 0, False
-        if en in ('HAPPINESS', 'SPEED', 'BRAINS'):
+        if en in ('HAPPINESS', 'SPEED', 'SPEED (alternative)', 'BRAINS'):
             return first(lambda: Wd.r_stat(text, h=rh)), 15, False
         if en in elements:
             return first(lambda: Wd.r_elem(text, h=rh)), 15, False
@@ -353,22 +357,17 @@ def apply(files, language, work):
         except LabelOverflow:
             return False
 
-    # Each group of labels seen together takes one font: font B where every word of the group fits its cell at its own
-    # size (as before), else (French, German, Italian, Catalan) the Spanish SYSTEM_W font of its kind.
-    groups = dict(gold=('PROFILE', 'CONDITION', 'PARAMETER'),
-                  tech=('POWER', 'RANG', 'SPEC', 'TECH. DATA'))
+    # A word that fits font B at its own size keeps it (as before); otherwise (French, German, Italian, Catalan) it takes
+    # the Spanish SYSTEM_W font of its kind.
     labelled = [(item, word(item['es'], language), relocated_rect(item, language) or [item[k] for k in ('u','v','w','h')])
-                for item in items if item['es'] in UI and item['en'] != 'SPEED (alternative)']
-    in_b = {name: all(fits_b(item, text, rect) for item, text, rect in labelled if item['en'] in members)
-            for name, members in groups.items()}
+                for item in items if item['es'] in UI]
     for item, text, rect in labelled:
         clut = item['clut_row']
-        ink, bg, sh = (1, None, 8) if clut == 8 else (2, 0, 1) if clut == 9 else (14, 15, 13) if item['en'] in ('HAPPINESS', 'SPEED', 'BRAINS') else (10, 15, 13) if item['en'] in elements else (1, 15, 13)
-        group = next((name for name, members in groups.items() if item['en'] in members), None)
+        ink, bg, sh = (1, None, 8) if clut == 8 else (2, 0, 1) if clut == 9 else (14, 15, 13) if item['en'] in ('HAPPINESS', 'SPEED', 'SPEED (alternative)', 'BRAINS') else (10, 15, 13) if item['en'] in elements else (1, 15, 13)
         for path, entry in [('ETCDAT/SYSTEM_W.TIM',0), ('ETCDAT/ETCTIM.BIN',8)]:
-            if not latin or (group and in_b[group]):
+            if not latin or fits_b(item, text, rect):
                 draw(path, rect, text, ink, bg, sh, entry, preserve=True)
-            elif group == 'gold':
+            elif item['en'] in ('PROFILE', 'CONDITION', 'PARAMETER'):
                 fonts = [(F.GOLD5, 1), (F.GOLD4, 1)] if item['en'] != 'PARAMETER' else [(F.GOLD4, 1)]
                 draw(path, rect, text, ink, bg, sh, entry, fonts=fonts)
             else:
