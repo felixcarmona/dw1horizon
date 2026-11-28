@@ -37,7 +37,7 @@ class SpeciesSize(unittest.TestCase):
             for bone, k in row.get('bones', {}).items():
                 self.assertTrue(int(bone) > 0 and 0.5 < k < 2.0, sid)
             for bone, k in row.get('width', {}).items():
-                self.assertTrue(int(bone) > 0 and 0.5 < k < 2.0, sid)
+                self.assertTrue(int(bone) > 0 and all(0.5 < c < 2.0 for c in (k if isinstance(k, list) else [k])), sid)
 
 
 if __name__ == '__main__':
