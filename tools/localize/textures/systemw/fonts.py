@@ -207,10 +207,10 @@ TAG_NOMBRE=dict(TAG,N='#..#/##.#/##.#/#.##/#.##/#..#/#..#/#..#'.split('/'))
 # header's (TAG_COMPACT, SMALL_COMPACT below) put the accent on the body's first row, as Á is in ELEM.
 for _font in (SMALL,):
     _font.update(F('''
-K: #.#/#.#/##c/#.#/#.#
+K: #.#/##./#../##./#.#
 W: #...#/#...#/#.#.#/##c##/#...#
-X: #.#/#.#/c#c/#.#/#.#
-Z: ###/..#/c#c/#../###
+X: #.#/#.#/.#./#.#/#.#
+Z: ###/..#/.#./#../###
 È: #../.../###/#../###/#../###
 o: .../.../c#c/#.#/c#c
 '''))
@@ -227,9 +227,9 @@ S: .##/#../#../.#./..#/..#/..#/##.
 '''))
 for _font in (TSA, TSA_SPECIAL, TSA_ACTIVE):
     _font.update(F('''
-K: #.#/#.#/##x/#.#/#.#
+K: #.#/##./#../##./#.#
 U: #.#/#.#/#.#/#.#/x#x
-Z: ###/..#/x#x/#../###
+Z: ###/..#/.#./#../###
 '''))
 TSA_SPECIAL['É'] = ['..#', '...'] + TSA_SPECIAL['E']
 STAT.update(F('''

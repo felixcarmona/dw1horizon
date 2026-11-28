@@ -187,6 +187,46 @@ OPEN = {
 }
 
 
+ELEMENTS = {'FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH', 'DARK', 'LIGHT', 'WATER', 'WEAPON', 'NATURE'}
+
+
+def kind(en):
+    """-> the SYSTEM_W font family of a label (by its English name). Labels of one kind are seen together (the gold
+    headers, the status tags, TYPE/ACTIVE/SPECIAL, the stat names, the element names, the small headers of the
+    technique page and the shops) and are drawn in one style."""
+    if en in ('PROFILE', 'CONDITION', 'PARAMETER'):
+        return 'gold'
+    if en in ('NAME', 'DIGI', 'WEIGHT', 'AGE'):
+        return 'tag'
+    if en in ('TYPE', 'ACTIVE', 'SPECIAL'):
+        return 'tsa'
+    if en in ('HAPPINESS', 'SPEED', 'SPEED (alternative)', 'BRAINS'):
+        return 'stat'
+    if en in ELEMENTS:
+        return 'element'
+    return 'small'
+
+
+def fits_b(text, rect, padding=2):
+    """True when the word fits font B at its own size in the cell, with `padding` pixels to spare"""
+    try:
+        mask(text, rect[2] - padding, rect[3] - padding)
+        return True
+    except LabelOverflow:
+        return False
+
+
+def font_b_kinds(labelled, language):
+    """-> the kinds (kind()) of SYSTEM_W labels [(item, text, rect)] drawn in font B. A word that fits font B at its own
+    size keeps it (as before) unless another label of its kind does not: then (French, German, Italian, Catalan) every
+    label of that kind takes the Spanish SYSTEM_W font of the kind, so labels seen together have one style (font B's
+    nine rows beside the small font's five also ran into the technique page's values)."""
+    kinds = {kind(item['en']) for item, _, _ in labelled}
+    if language not in LATIN:
+        return kinds
+    return kinds - {kind(item['en']) for item, text, rect in labelled if not fits_b(text, rect)}
+
+
 def battle_banner(language):
     """the battle-start banner: one 8x12 block per pixel of the word at its own size (French, German, Italian,
     Catalan: SYSTEM_W's 7-row stat letters; else font B), rows centred on the old seven rows' middle (y -12)"""
@@ -306,9 +346,8 @@ def apply(files, language, work):
     check_care_button_cells(items)
     from tools.localize.status_art import check_cells
     check_cells(items)
-    elements = {'FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH', 'DARK', 'LIGHT', 'WATER', 'WEAPON', 'NATURE'}
+    elements = ELEMENTS
     F, Wd = systemw_fonts()
-    latin = language in LATIN
 
     def rendered(item, text, rect):
         """-> (cell in palette indices, background, bottom-aligned) in the Spanish SYSTEM_W font of the item's kind"""
@@ -350,22 +389,14 @@ def apply(files, language, work):
             return first(lambda: Wd.r_elem(text, h=rh)), 15, False
         return first(lambda: small(F.SMALL), lambda: small(F.SMALL_COMPACT)), 15, rh < 12
 
-    def fits_b(item, text, rect, padding=2):
-        try:
-            mask(text, rect[2] - padding, rect[3] - padding)
-            return True
-        except LabelOverflow:
-            return False
-
-    # A word that fits font B at its own size keeps it (as before); otherwise (French, German, Italian, Catalan) it takes
-    # the Spanish SYSTEM_W font of its kind.
     labelled = [(item, word(item['es'], language), relocated_rect(item, language) or [item[k] for k in ('u','v','w','h')])
                 for item in items if item['es'] in UI]
+    in_b = font_b_kinds(labelled, language)
     for item, text, rect in labelled:
         clut = item['clut_row']
         ink, bg, sh = (1, None, 8) if clut == 8 else (2, 0, 1) if clut == 9 else (14, 15, 13) if item['en'] in ('HAPPINESS', 'SPEED', 'SPEED (alternative)', 'BRAINS') else (10, 15, 13) if item['en'] in elements else (1, 15, 13)
         for path, entry in [('ETCDAT/SYSTEM_W.TIM',0), ('ETCDAT/ETCTIM.BIN',8)]:
-            if not latin or fits_b(item, text, rect):
+            if kind(item['en']) in in_b:
                 draw(path, rect, text, ink, bg, sh, entry, preserve=True)
             elif item['en'] in ('PROFILE', 'CONDITION', 'PARAMETER'):
                 fonts = [(F.GOLD5, 1), (F.GOLD4, 1)] if item['en'] != 'PARAMETER' else [(F.GOLD4, 1)]

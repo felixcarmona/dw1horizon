@@ -83,6 +83,78 @@ class LabelScale(unittest.TestCase):
                     L.build(d + '/out', EXTRACTED, scratch=d + '/scratch', language=language)
                 self.assertEqual(used, {text for lang, text, _ in labels.OPEN if lang == language})
 
+    def test_every_label_of_a_kind_takes_font_b_only_if_all_of_them_fit_it(self):
+        # one word too big for font B sends its whole kind to the SYSTEM_W font, so labels seen together share one
+        # style (KRAFT in font B beside EFFEKT in the small header font ran into the technique page's values)
+        fits = {'KRAFT': True, 'EFFEKT': False, 'TEMPO': True, 'FREUDE': True, 'NAME': True}
+        labelled = [({'en': en}, text, (0, 0, 40, 12)) for en, text in
+                    (('POWER', 'KRAFT'), ('EFFECT', 'EFFEKT'), ('SPEED', 'TEMPO'), ('HAPPINESS', 'FREUDE'),
+                     ('NAME', 'NAME'))]
+        with patch.object(labels, 'fits_b', lambda text, rect, padding=2: fits[text]):
+            self.assertEqual(labels.font_b_kinds(labelled, 'de'), {'stat', 'tag'})
+            self.assertEqual(labels.font_b_kinds(labelled, 'es'), {'small', 'stat', 'tag'})
+        self.assertEqual([labels.kind(item['en']) for item, _, _ in labelled], ['small', 'small', 'stat', 'stat', 'tag'])
+
+    @unittest.skipUnless(os.path.isdir(EXTRACTED), 'needs the extracted disc')
+    def test_the_technique_page_headers_stay_inside_the_small_header_height(self):
+        # font B's nine rows plus its shadow reach the Final row's value under the header; the small header font is
+        # five rows (seven with a capital's accent) plus its outline
+        from tools.localize import build as L
+        from tools.localize.build import tim_entries
+        cells = [(128, 110, 38, 12), (166, 110, 28, 12), (194, 110, 34, 12), (96, 84, 64, 12)]
+        os.makedirs(os.path.join(ROOT, 'build'), exist_ok=True)
+        for language in labels.LATIN:
+            with self.subTest(language=language):
+                with tempfile.TemporaryDirectory(dir=os.path.join(ROOT, 'build')) as d, \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    L.build(d + '/out', EXTRACTED, scratch=d + '/scratch', language=language)
+                    data = open(os.path.join(d, 'out', language, 'ETCDAT', 'SYSTEM_W.TIM'), 'rb').read()
+                start, _, w, h = tim_entries(data)[0]
+                px = [v for b in data[start:start + w * h // 2] for v in (b & 15, b >> 4)]
+                for u, v, cw, ch in cells:
+                    rows = [px[(v + y) * w + u:(v + y) * w + u + cw] for y in range(ch)]
+                    background = max(set(sum(rows, [])), key=sum(rows, []).count)
+                    painted = sum(any(c != background for c in row) for row in rows)
+                    self.assertLessEqual(painted, 9, (u, v, cw, ch))
+
+def _font_module(name, path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(name, os.path.join(ROOT, path))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+# the letters the German, French, Italian and Catalan words added to the label fonts
+ADDED = {
+    'systemw': {'SMALL': 'WÈoKXZ', 'TAG': 'Y.', 'TAG_NARROW': 'PODS', 'TSA': 'UKZ', 'TSA_ACTIVE': 'KZ',
+                'TSA_SPECIAL': 'KZ', 'STAT': 'GKMU·À!', 'ELEM': 'QÉÈÍ', 'SMALL_COMPACT': 'ÉÀ',
+                'TAG_COMPACT': 'ÂÀÈ'},
+    'pixfont': {'LABEL6': '.Ü', 'LABEL6_COMPACT': 'ÉÊ', 'BUBBLE7': 'KYZÜ'},
+}
+
+
+class AddedLetters(unittest.TestCase):
+    def test_every_added_letter_reads_as_itself(self):
+        # a K drawn with an H's straight right side made EFFEKT read EFFENT
+        modules = {'systemw': _font_module('label_fonts', 'tools/localize/textures/systemw/fonts.py'),
+                   'pixfont': _font_module('label_pixfont', 'tools/localize/textures/fi-info/pixfont.py')}
+        tone = {'#': 2, 'c': 1, 'x': 1}
+
+        def distance(a, b, weight):
+            if len(a) != len(b) or any(len(r) != len(q) for r, q in zip(a, b)):
+                return 99
+            return sum(abs(weight(p) - weight(q)) for r, s in zip(a, b) for p, q in zip(r, s))
+        for module, fonts in ADDED.items():
+            for name, letters in fonts.items():
+                font = getattr(modules[module], name)
+                for letter in letters:
+                    for other, glyph in font.items():
+                        if other == letter:
+                            continue
+                        with self.subTest(font=name, letter=letter, other=other):
+                            self.assertGreaterEqual(distance(font[letter], glyph, lambda c: tone.get(c, 0)), 2)
+                            self.assertGreaterEqual(distance(font[letter], glyph, lambda c: c in tone), 1)
 
 if __name__ == '__main__':
     unittest.main()
