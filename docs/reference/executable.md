@@ -97,7 +97,7 @@ itself, and `checkShopMap` loads the file for nothing on the 8 maps of `SHOP_MAP
 In the JP and EU builds it is a real overlay, and in ours too (`config/us/overlay.ld` `.SHOP`): every function of
 `script_menu.c` but the amount box (`openShop`, resident, uses it) is in the file, read on the shop maps, on 216 (the
 card machine) and by script routine 0x23. Other overlays share the slot (DGET on the arenas, DOOA at a death, STD in a
-tournament, MOV), so the file's last word is a seal (`tools/overlay_seal.py`, written at build time) and
+tournament, MOV), so the file's last word is a seal (`decomp/tools/overlay_seal.py`, written at build time) and
 `modShopOverlayEnsure` checks it before routines 1, 2, 8 (recycling), 9, 10, 11, 14 and 32 and the new-game scene run
 code from the slot: it reads the file again (blocking) when the seal does not match, and counts it in
 `MOD_SHOP_RELOADS`.

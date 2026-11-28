@@ -26,6 +26,7 @@ prefix=r'''
 #define RING_BADGE_H 12
 #define RING_BADGE_TICKS 4
 static int32_t DRAWING_OFFSET_X=160,DRAWING_OFFSET_Y=120,CLOCK_OFFSET_X=-220;
+static int32_t modClockX(void){return CLOCK_OFFSET_X;}
 static int ITEM_SCOLD_FLAG=1;
 static int modScoldAvailable(int flag){return flag==1;}
 static int32_t VIEWPORT_DISTANCE=4096,MOD_RING_BADGE,MOD_RING_STEPS,MOD_RING_SHOWN[5];

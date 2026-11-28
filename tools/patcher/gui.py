@@ -171,7 +171,7 @@ def system_language():
 
 
 # what the make buttons make, in their order: the disc image first, then the installers with it inside
-# (kind, name, file type); a logo each (tools/patcher/app/platform-logos/KIND.png)
+# (kind, name, file type); a logo each (tools/patcher/app/platform-logos/<kind>.png)
 MAKERS = (('disc', 'PlayStation', '.bin / .cue'), ('apk', 'Android', '.apk'), ('setup', 'Windows', '.exe'),
           ('mac', 'Mac', '.dmg' if sys.platform == 'darwin' else '.zip'), ('linux', 'Linux', '.run'))
 
