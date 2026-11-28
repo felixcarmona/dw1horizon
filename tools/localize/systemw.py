@@ -124,8 +124,14 @@ def header_lefts(spans):
     return TECH_HEADER_LEFT
 
 
+# Chinese draws the menu word 道具 over (56, 95, 24, 13), the cell the filth name had: the name has a cell of its own
+ZH_FILTH_CELL = (176, 23, 16, 10)
+
+
 def relocated_rect(item, language=None):
     key = item['en'], item['es']
+    if language == 'zh-hans' and key == ('FILTH', 'MUGRE'):
+        return ZH_FILTH_CELL
     if language == 'ja' and key in JA_CELLS:
         return JA_CELLS[key]
     if language in ('fr', 'de', 'it', 'ja', 'ca', 'zh-hans') and key in STAT_CELLS:
@@ -207,6 +213,10 @@ def crop_tables(source, metadata):
                 for i, en in enumerate(('FIRE', 'BATTLE', 'AIR', 'NATURE', 'ICE', 'MECH', 'FILTH',
                                         'DARK', 'LIGHT', 'WATER', 'WEAPON', 'EARTH')):
                     lifted(i, en, 0)
+                if lang == 'zh-hans':
+                    # the filth name's own cell (ZH_FILTH_CELL), 16 wide at the earth name's x
+                    put(6, 'FILTH', shifted=True)
+                    rr[6][0] = rr[3][0]
             elif name == 'MOVES_VIEW_ELEMENT_NAMES':
                 # labels.py draws a name at its cell's right edge: the cell's right edge goes against the grid
                 for i, en in enumerate(('FIRE', 'BATTLE', 'AIR', 'NATURE', 'ICE', 'MECH', 'FILTH',
@@ -245,7 +255,7 @@ def crop_tables(source, metadata):
                         # The word sits at its cell's left edge, standing on the English label's line, and the crop
                         # stops where the arrow starts (as in Spanish); MP keeps the original cell, row and arrow.
                         if i in (1, 3, 4):
-                            # (a Japanese word wider than that, いりょく, keeps the columns it needs)
+                            # (a Japanese or Chinese word wider than that keeps the columns it needs)
                             from tools.localize.labels import native
                             wide = len(native(word(m_es(en, es), lang))[0]) if lang in ('ja', 'zh-hans') else 0
                             rr[i][2] = min(rr[i][2], max(PANEL_LABEL_ROOM - (s16(rr[i][0]) + 0x8c), wide))

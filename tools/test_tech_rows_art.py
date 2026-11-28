@@ -6,7 +6,7 @@ from tools.localize.build import tim_entries
 from tools.localize.fi_info import overlaps
 from tools.localize.status_art import TAG_RECT, BATTLES_RECT, ICON_RECT
 from tools.localize.systemw import (CARE_BUTTON_RECTS, CARE_BUTTON_GUARD_RECTS, CARE_BUTTON_CLUT_RECT,
-                                    CHINESE_MENU_CELLS, CHINESE_MENU_SIZE)
+                                    CHINESE_MENU_CELLS, CHINESE_MENU_SIZE, ZH_FILTH_CELL)
 from tools.localize import tech_rows_art as art
 
 
@@ -41,7 +41,7 @@ class TechRowsArt(unittest.TestCase):
         for i, rect in enumerate(mine):
             self.assertFalse(any(overlaps(rect, other) for other in taken + mine[:i]), rect)
         # Chinese has its menu words in the corner the other languages use, and its own cells for what came last
-        theirs = cells('zh-hans') + list(art.ZH_CELLS.values())
+        theirs = cells('zh-hans') + list(art.ZH_CELLS.values()) + [ZH_FILTH_CELL]
         for i, rect in enumerate(theirs):
             self.assertFalse(any(overlaps(rect, other) for other in taken + chinese + theirs[:i]), rect)
         # the English names sit where only a Spanish-layout label goes, which the English texture does not have

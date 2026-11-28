@@ -72,7 +72,7 @@ UI = {
  'ESPECIAL': ('SPÉCIAL', 'SPEZIAL', 'SPECIALE', 'とくい'),
  'FELICIDAD': ('BONHEUR', 'FREUDE', 'FELICITÀ', 'きげん'), 'VELOCIDAD': ('VITESSE', 'TEMPO', 'VELOCITÀ', 'すばやさ'),
  'INTELECTO': ('ESPRIT', 'KLUGHEIT', 'INGEGNO', 'かしこさ'), 'RAPIDEZ': ('VITESSE', 'TEMPO', 'VELOCITÀ', 'すばやさ'),
- 'POTENCIA': ('FORCE', 'KRAFT', 'POTENZA', 'いりょく'), 'ALC.': ('PORT.', 'REICH.', 'RAG.', 'はんい'),
+ 'POTENCIA': ('FORCE', 'KRAFT', 'POTENZA', '威力'), 'ALC.': ('PORT.', 'REICH.', 'RAG.', 'はんい'),
  'ALCANCE': ('PORTÉE', 'REICHW.', 'RAGGIO', 'はんい'), 'EFECTO': ('EFFET', 'EFFEKT', 'EFF.', 'こうか'),
  'DATOS TÉC.': ('TECH.', 'TECHNIK', 'TECNICA', 'わざ'), 'OBJETO': ('OBJET', 'ITEM', 'OGGETTO', 'どうぐ'),
  'PRECIO': ('PRIX', 'PREIS', 'PREZZO', 'ねだん'), 'TÍTULO': ('TITRE', 'TITEL', 'TITOLO', 'なまえ'),
