@@ -199,3 +199,63 @@ def compose(font,text,gap=1,space=None):
     return [''.join(r) for r in out]
 # NOMBRE uses a 4-wide N (NEW) so the tag keeps 3 px from the panel frame and 2 px from the field box
 TAG_NOMBRE=dict(TAG,N='#..#/##.#/##.#/#.##/#.##/#..#/#..#/#..#'.split('/'))
+
+# ---- the letters the other translations (French, German, Italian, Catalan) need: all NEW, in each font's style. ----
+# tools/localize/labels.py sets those languages' SYSTEM_W words in these fonts at their native size (never scaled).
+# An accented capital is the letter under a one-pixel accent and a blank row, as É is above. Where a cell has no rows
+# for that, the letter's body is shorter: an element name's keeps the blank row (a five-row body), a tag's and a shop
+# header's (TAG_COMPACT, SMALL_COMPACT below) put the accent on the body's first row, as Á is in ELEM.
+for _font in (SMALL,):
+    _font.update(F('''
+K: #.#/#.#/##c/#.#/#.#
+W: #...#/#...#/#.#.#/##c##/#...#
+X: #.#/#.#/c#c/#.#/#.#
+Z: ###/..#/c#c/#../###
+È: #../.../###/#../###/#../###
+o: .../.../c#c/#.#/c#c
+'''))
+TAG.update(F('''
+Y: #.#/#.#/#.#/#.#/.#./.#./.#./.#.
+.: ./././././././#
+'''))
+# narrower letters for a word too wide for its 20-pixel tag with the four-pixel ones (as NOMBRE's N)
+TAG_NARROW = dict(TAG, **F('''
+P: ##./#.#/#.#/#.#/##./#../#../#..
+O: .#./#.#/#.#/#.#/#.#/#.#/#.#/.#.
+D: ##./#.#/#.#/#.#/#.#/#.#/#.#/##.
+S: .##/#../#../.#./..#/..#/..#/##.
+'''))
+for _font in (TSA, TSA_SPECIAL, TSA_ACTIVE):
+    _font.update(F('''
+K: #.#/#.#/##x/#.#/#.#
+U: #.#/#.#/#.#/#.#/x#x
+Z: ###/..#/x#x/#../###
+'''))
+TSA_SPECIAL['É'] = ['..#', '...'] + TSA_SPECIAL['E']
+STAT.update(F('''
+G: .##./#..#/#.../#.##/#..#/#..#/.##.
+K: #..#/#.#./##../##../#.#./#..#/#..#
+M: #...#/##.##/#.#.#/#...#/#...#/#...#/#...#
+U: #..#/#..#/#..#/#..#/#..#/#..#/.##.
+·: ./././#/./././.
+'''))
+STAT['À'] = ['.#..', '....'] + STAT['A']
+ELEM.update(F('''
+Q: .#../#.#./#d#d/#d#d/#d#d/#d#d/.##d/..d#
+É: ..#./..../###./#ddd/##d./#dd./###./.ddd
+È: #.../..../###./#ddd/##d./#dd./###./.ddd
+Í: .#/../#./#d/#d/#d/#d/.d
+'''))
+# the accented capitals for a cell with no spare rows (a shop header's seven, a tag's ten): accent on the letter's top row
+SMALL_COMPACT = dict(SMALL, **F('''
+É: ..#/##./#../##./###
+À: #../.../c#c/###/#.#
+'''))
+TAG_COMPACT = dict(TAG, **F('''
+Â: .##./#..#/..../.##./#..#/####/#..#/#..#
+À: .#../..#./.##./#..#/#..#/####/#..#/#..#
+È: #../.#./###/#../###/#../#../###
+'''))
+STAT.update(F('''
+!: #/#/#/#/#/./#
+'''))

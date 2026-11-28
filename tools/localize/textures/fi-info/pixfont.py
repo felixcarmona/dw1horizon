@@ -81,3 +81,22 @@ def stamp(grid,mask,x0,y0,ink,shadow=None,shadow_off=(1,1)):
     for y in range(H):
         for x in range(W):
             if mask[y][x]: grid(x0+x,y0+y,ink)
+
+# ---- the letters the other translations (French, German, Italian, Catalan) need: all NEW, in each font's style. ----
+# tools/localize/labels.py sets those languages' triangle-menu words in LABEL6 and the battle's ○PUSH in BUBBLE7, at
+# their native size (never scaled). An accented capital is the letter under the accent and a blank row (two rows more,
+# as fi-info/build.py's Ñ); LABEL6_COMPACT has the ones for a seven-row cell, the accent on the letter's top row.
+LABEL6.update(F('''
+.: ./././././#
+'''))
+LABEL6['Ü'] = ['#.#', '...'] + LABEL6['U']
+LABEL6_COMPACT = dict(LABEL6, **F('''
+É: ..#/##./#../##./#../###
+Ê: .#./#.#/###/#../##./###
+'''))
+BUBBLE7.update(F('''
+K: #..#/#.#./##../##../#.#./#..#/#..#
+Y: #.#/#.#/#.#/.#./.#./.#./.#.
+Z: ###/..#/..#/.#./#../#../###
+'''))
+BUBBLE7['Ü'] = ['#.#', '...'] + BUBBLE7['U'][2:]   # seven rows: ○PUSH's cell has no room above the letters

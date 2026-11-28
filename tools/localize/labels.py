@@ -11,6 +11,7 @@ import os
 from tools.localize.catalog import LANGUAGES, UI, word
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+LATIN = ('fr', 'de', 'it', 'ca')
 BATTLE = dict(fr='COMBAT!', de='KAMPF!', it='LOTTA!', ja='バトル!', ca='COMBAT!', **{'zh-hans':'战斗！'})
 
 
@@ -24,7 +25,13 @@ def glyphs():
     return table
 
 
-def mask(text, maxw, maxh, preserve=False):
+class LabelOverflow(ValueError):
+    """A label's letters at their own size do not fit its cell (labels are never scaled)."""
+
+
+def native(text, maxh=11):
+    """-> the label's letters in font B (Chinese: the 8x8 UI font for a cell under 12 rows, else the 12-row one) at
+    their own size, empty rows above and below cropped"""
     chinese = any('\u3400' <= char <= '\u9fff' for char in text)
     if chinese:
         from tools.chinese import read_json
@@ -50,6 +57,36 @@ def mask(text, maxw, maxh, preserve=False):
     occupied = [y for y, row in enumerate(rows) if any(row)]
     if occupied:
         rows = rows[occupied[0]:occupied[-1] + 1]
+    return rows
+
+
+def mask(text, maxw, maxh):
+    """-> the label's bitmap at its own size; LabelOverflow when it is wider than maxw or taller than maxh"""
+    rows = native(text, maxh)
+    if len(rows) > maxh or len(rows[0]) > maxw:
+        raise LabelOverflow(f'{text!r} is {len(rows[0])}x{len(rows)}, the room is {maxw}x{maxh}')
+    return rows
+
+
+def compose(font, text, gap=1):
+    """-> a committed pixel font's word (tools/localize/textures/*: '#' ink), bottom-aligned, as a bitmap"""
+    missing = sorted({c for c in text if c not in font})
+    if missing:
+        raise LabelOverflow(f'{text!r}: no {"".join(missing)} in this font')
+    glyphs_ = [font[c] for c in text]
+    h = max(len(g) for g in glyphs_)
+    rows = [[] for _ in range(h)]
+    for i, g in enumerate(glyphs_):
+        w = max(len(r) for r in g)
+        for y in range(h):
+            r = g[y - (h - len(g))] if y >= h - len(g) else ''
+            rows[y].extend(c == '#' for c in r.ljust(w + (gap if i < len(text) - 1 else 0), '.'))
+    return rows
+
+
+def _legacy_scaled(text, maxw, maxh, preserve=False):
+    """The old fit-by-resampling, kept only for the labels in OPEN (whose letters do not fit at their own size)."""
+    rows = native(text, maxh)
     h, w = len(rows), len(rows[0])
     height = min(h, maxh)
     width = min(maxw, max(1, round(w * height / h)))
@@ -61,10 +98,103 @@ def mask(text, maxw, maxh, preserve=False):
     return [[rows[min(h - 1, y * h // height)][min(w - 1, x * w // width)] for x in range(width)] for y in range(height)]
 
 
+def _load(name, path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@lru_cache(None)
+def systemw_fonts():
+    """-> (fonts, words): SYSTEM_W's label fonts and their renderers (tools/localize/textures/systemw)"""
+    import sys
+    base = os.path.join(ROOT, 'tools/localize/textures/systemw')
+    fonts = _load('labels_systemw_fonts', os.path.join(base, 'fonts.py'))
+    saved = sys.modules.get('fonts')
+    sys.modules['fonts'] = fonts
+    try:
+        words = _load('labels_systemw_words', os.path.join(base, 'words.py'))
+    finally:
+        if saved is None:
+            del sys.modules['fonts']
+        else:
+            sys.modules['fonts'] = saved
+    return fonts, words
+
+
+@lru_cache(None)
+def pixfont():
+    """-> FI_INFO's 3x6 / 3x7 fonts (tools/localize/textures/fi-info/pixfont.py)"""
+    return _load('labels_fiinfo_pixfont', os.path.join(ROOT, 'tools/localize/textures/fi-info/pixfont.py'))
+
+
+# Labels whose words do not fit their cell at the letters' own size in any committed font. They keep the look they had
+# (font B resampled into the cell) until they get a bigger cell (relocated_rect in tools/localize/systemw.py gives a
+# language its own), a shorter word, or letters drawn for that size (Japanese has no kana smaller than font B's nine
+# rows); tools/test_label_scale.py fails on any other label that would need resampling.
+# (language, text, (u, v, w, h)) -> how big the word is.
+OPEN = {
+    ('fr', 'GLACE', (86, 24, 18, 10)): '20 px wide in the element-name font',
+    ('fr', 'CRASSE', (60, 96, 22, 10)): '24 px wide in the element-name font',
+    ('de', 'ALTER', (209, 48, 20, 10)): '23 px wide in the tag font',
+    ('de', 'NR.', (48, 34, 10, 7)): '12 px wide in the header font',
+    ('de', 'LUFT', (50, 24, 14, 10)): '16 px wide in the element-name font',
+    ('de', 'MECHA', (104, 24, 18, 10)): '22 px wide in the element-name font',
+    ('it', 'OGGETTO', (0, 34, 25, 7)): '31 px wide in the header font',
+    ('it', 'PREZZO', (25, 34, 23, 7)): '25 px wide in the header font',
+    ('it', 'MECCA', (104, 24, 18, 10)): '22 px wide in the element-name font',
+    ('it', 'SPORCO', (60, 96, 22, 10)): '24 px wide in the element-name font',
+    ('ja', 'プロフィール', (0, 75, 53, 11)): 'font B 55x9',
+    ('ja', 'しゅるい', (159, 48, 30, 10)): 'font B 38x9',
+    ('ja', 'おもさ', (189, 48, 20, 10)): 'font B 28x9',
+    ('ja', 'タイプ', (0, 56, 25, 8)): 'font B 28x9',
+    ('ja', 'かつどう', (50, 56, 25, 8)): 'font B 39x9',
+    ('ja', 'とくい', (144, 72, 29, 8)): 'font B 28x9',
+    ('ja', 'はんい', (166, 110, 28, 12)): 'font B 30x9',
+    ('ja', 'どうぐ', (0, 34, 25, 7)): 'font B 29x9',
+    ('ja', 'ねだん', (25, 34, 23, 7)): 'font B 30x9',
+    ('ja', 'ばん', (48, 34, 10, 7)): 'font B 20x9',
+    ('ja', 'なまえ', (120, 96, 23, 9)): 'font B 30x9',
+    ('ja', 'ばしょ', (58, 34, 22, 7)): 'font B 28x9',
+    ('ja', 'てん', (80, 34, 26, 7)): 'font B 20x9',
+    ('ja', 'かず', (102, 41, 20, 7)): 'font B 20x9',
+    ('ja', 'ほのお', (0, 24, 20, 10)): 'font B 30x9',
+    ('ja', 'かくとう', (20, 24, 30, 10)): 'font B 37x9',
+    ('ja', 'くうき', (50, 24, 14, 10)): 'font B 28x9',
+    ('ja', 'だいち', (64, 24, 22, 10)): 'font B 29x9',
+    ('ja', 'こおり', (86, 24, 18, 10)): 'font B 28x9',
+    ('ja', 'きかい', (104, 24, 18, 10)): 'font B 30x9',
+    ('ja', 'よごれ', (60, 96, 22, 10)): 'font B 29x9',
+    ('ja', 'どうぐ', (128, 48, 32, 7)): 'font B 29x9',
+    ('ja', 'ひと', (160, 32, 32, 7)): 'font B 19x9',
+    ('ja', 'ほめる', (128, 55, 32, 7)): 'font B 30x9',
+    ('ja', 'ねる', (160, 39, 32, 7)): 'font B 20x9',
+    ('ja', 'つる', (160, 55, 32, 7)): 'font B 20x9',
+    ('ja', 'バトル', (0, 248, 51, 8)): 'font B 29x9',
+    ('ca', 'INTEL·LECTE', (212, 82, 37, 12)): '42 px wide in the stat font',
+    ('ca', 'OBJECTE', (0, 34, 25, 7)): '29 px wide in the header font',
+    ('ca', 'NÚM.', (48, 34, 10, 7)): 'no Ú in the header font; font B 24x9',
+    ('ca', 'QUANT.', (102, 41, 20, 7)): '24 px wide in the header font',
+    ('ca', 'BRUTÍCIA', (60, 96, 22, 10)): '28 px wide in the element-name font',
+    ('zh-hans', '编号', (48, 34, 10, 7)): 'UI font 16x7',
+    ('zh-hans', '空气', (50, 24, 14, 10)): 'UI font 16x7',
+}
+
+
 def battle_banner(language):
-    rows = mask(BATTLE[language], 36, 7)
+    """the battle-start banner: one 8x12 block per pixel of the word at its own size (French, German, Italian,
+    Catalan: SYSTEM_W's 7-row stat letters; else font B), rows centred on the old seven rows' middle (y -12)"""
+    if language in LATIN:
+        rows = compose(systemw_fonts()[0].STAT, BATTLE[language])
+    else:
+        rows = native(BATTLE[language], 7)
     width = len(rows[0])
-    points = [[-(width * 8) // 2 + x * 8, -48 + y * 12] for y, row in enumerate(rows) for x, ink in enumerate(row) if ink]
+    if width > 36:
+        raise LabelOverflow(f'{language}: battle banner {BATTLE[language]!r} is {width} blocks wide (36 at most)')
+    top = -12 - (len(rows) - 1) * 12 // 2
+    points = [[-(width * 8) // 2 + x * 8, top + y * 12] for y, row in enumerate(rows) for x, ink in enumerate(row) if ink]
     if not points or len(points) > 155:
         raise ValueError(f'{language}: battle banner has {len(points)} blocks')
     return dict(text=BATTLE[language], blocks_drawn=len(points), entries=155,
@@ -97,7 +227,7 @@ def apply(files, language, work):
             grids[key] = w, h, px
         return grids[key]
 
-    def draw(path, rect, text, ink, background, shadow=None, entry=0, gradient=None, preserve=False, padding=2):
+    def clear(path, rect, background, entry):
         w, h, px = grid(path, entry)
         u, v, rw, rh = rect
         if not (0 <= u < u + rw <= w and 0 <= v < v + rh <= h):
@@ -105,9 +235,47 @@ def apply(files, language, work):
         bands = [Counter(px[(v+y)*w+u:(v+y)*w+u+rw]).most_common(1)[0][0] for y in range(rh)] if background is None else [background] * rh
         for y in range(rh):
             px[(v+y)*w+u:(v+y)*w+u+rw] = [bands[y]] * rw
-        bitmap = mask(text, rw - padding, rh - padding, preserve=preserve)
+        return w, px
+
+    def fit(text, rect, padding, shadow, font=None, gap=1):
+        """-> the word's bitmap at its own size for the cell (font B, else the given pixel font), or LabelOverflow.
+        Font B keeps its padding where it has the room, and gives it up (down to the drop shadow) where it has not."""
+        _, _, rw, rh = rect
+        if font is not None:
+            bitmap = compose(font, text, gap)
+            room = 1 if shadow is not None else 0
+            if len(bitmap) + room > rh or len(bitmap[0]) + room > rw:
+                raise LabelOverflow(f'{text!r} is {len(bitmap[0])}x{len(bitmap)} (+{room} shadow), the cell {rw}x{rh}')
+            return bitmap
+        for pad in range(padding, -1, -1):
+            try:
+                return mask(text, rw - pad, rh - pad)
+            except LabelOverflow as error:
+                problem = error
+        raise problem
+
+    def draw(path, rect, text, ink, background, shadow=None, entry=0, gradient=None, preserve=False, padding=2,
+             fonts=(None,), bottom=False):
+        """the word in the first of fonts (None = font B; else (pixel font, gap)) whose letters fit the cell at their
+        own size, centred (bottom: on the cell's last row, its shadow included); a label in OPEN keeps its old look"""
+        u, v, rw, rh = rect
+        try:
+            for i, font in enumerate(fonts):
+                try:
+                    bitmap = fit(text, rect, padding, shadow, *(font or (None,)))
+                    break
+                except LabelOverflow:
+                    if i == len(fonts) - 1:
+                        raise
+        except LabelOverflow as error:
+            if (language, text, tuple(rect)) not in OPEN:
+                raise LabelOverflow(f'{language}: {path} {rect}: {error}') from None
+            bitmap, bottom = _legacy_scaled(text, rw - padding, rh - padding, preserve), False
+        w, px = clear(path, rect, background, entry)
         bh, bw = len(bitmap), len(bitmap[0])
         x0, y0 = u + (rw-bw)//2, v + (rh-bh)//2
+        if bottom:
+            y0 = max(v, v + rh - bh - (shadow is not None))
         points = {(x0+x, y0+y) for y, row in enumerate(bitmap) for x, on in enumerate(row) if on}
         if shadow is not None:
             for x, y in points:
@@ -115,6 +283,17 @@ def apply(files, language, work):
                     px[(y+1)*w+x+1] = shadow
         for x, y in points:
             px[y*w+x] = gradient(y-v) if gradient else ink
+
+    def paste(path, rect, cell, background, entry=0, bottom=False):
+        """a word already rendered in its palette indices (SYSTEM_W's renderers), centred in the cell"""
+        u, v, rw, rh = rect
+        ch, cw = len(cell), len(cell[0])
+        if ch > rh or cw > rw:
+            raise LabelOverflow(f'{language}: {path} {rect}: {cw}x{ch}')
+        w, px = clear(path, rect, background, entry)
+        x0, y0 = u + (rw-cw)//2, v + (rh-ch if bottom else (rh-ch)//2)
+        for y, row in enumerate(cell):
+            px[(y0+y)*w+x0:(y0+y)*w+x0+cw] = row
 
     # Gold, tag, stat, element and header labels: retain each existing palette.
     from tools.localize.systemw import relocated_rect, check_care_button_cells
@@ -124,21 +303,90 @@ def apply(files, language, work):
     from tools.localize.status_art import check_cells
     check_cells(items)
     elements = {'FIRE', 'BATTLE', 'AIR', 'EARTH', 'ICE', 'MECH', 'FILTH', 'DARK', 'LIGHT', 'WATER', 'WEAPON', 'NATURE'}
-    for item in items:
-        if item['es'] not in UI:
-            continue
-        text = word(item['es'], language)
+    F, Wd = systemw_fonts()
+    latin = language in LATIN
+
+    def rendered(item, text, rect):
+        """-> (cell in palette indices, background, bottom-aligned) in the Spanish SYSTEM_W font of the item's kind"""
+        en, rh = item['en'], rect[3]
+
+        def first(*tries):
+            sizes = []
+            for make in tries:
+                try:
+                    cell = make()
+                except KeyError as missing:
+                    sizes.append(f'no {missing}')
+                    continue
+                if len(cell) <= rh and len(cell[0]) <= rect[2]:
+                    return cell
+                sizes.append(f'{len(cell[0])}x{len(cell)}')
+            raise LabelOverflow(f'{language}: SYSTEM_W {rect}: {text!r} is {", ".join(sizes)}')
+
+        def small(font):
+            rows = Wd.pad(Wd.compose(font, text), 1, 1, 1, 1)
+            ol = Wd.outline(rows, '#')
+            return [[1 if c == '#' else 12 if c == 'c' else 13 if ol[y][x] else 15 for x, c in enumerate(r)]
+                    for y, r in enumerate(rows)]
+
+        def tsa(font, main, acc):
+            rows = Wd.compose(font, text)
+            return [[0] * len(rows[0])] + [[main if c == '#' else acc if c == 'x' else 0 for c in r] for r in rows] + \
+                [[0] * len(rows[0])] * (rh - 1 - len(rows))
+
+        if en in ('NAME', 'DIGI', 'WEIGHT', 'AGE'):
+            narrow_compact = dict(F.TAG_NARROW, **{k: F.TAG_COMPACT[k] for k in 'ÂÀÈ'})
+            return first(*(lambda f=f: Wd.r_tag(text, f) for f in (F.TAG, F.TAG_COMPACT, F.TAG_NARROW, narrow_compact))), 0, False
+        if en in ('TYPE', 'ACTIVE', 'SPECIAL'):
+            font, main, acc = dict(TYPE=(F.TSA, 12, 13), ACTIVE=(F.TSA_ACTIVE, 8, 9), SPECIAL=(F.TSA_SPECIAL, 6, 7))[en]
+            return first(lambda: tsa(font, main, acc)), 0, False
+        if en in ('HAPPINESS', 'SPEED', 'BRAINS'):
+            return first(lambda: Wd.r_stat(text, h=rh)), 15, False
+        if en in elements:
+            return first(lambda: Wd.r_elem(text, h=rh)), 15, False
+        return first(lambda: small(F.SMALL), lambda: small(F.SMALL_COMPACT)), 15, rh < 12
+
+    def fits_b(item, text, rect, padding=2):
+        try:
+            mask(text, rect[2] - padding, rect[3] - padding)
+            return True
+        except LabelOverflow:
+            return False
+
+    # Each group of labels seen together takes one font: font B where every word of the group fits its cell at its own
+    # size (as before), else (French, German, Italian, Catalan) the Spanish SYSTEM_W font of its kind.
+    groups = dict(gold=('PROFILE', 'CONDITION', 'PARAMETER'),
+                  tech=('POWER', 'RANG', 'SPEC', 'TECH. DATA'))
+    labelled = [(item, word(item['es'], language), relocated_rect(item, language) or [item[k] for k in ('u','v','w','h')])
+                for item in items if item['es'] in UI and item['en'] != 'SPEED (alternative)']
+    in_b = {name: all(fits_b(item, text, rect) for item, text, rect in labelled if item['en'] in members)
+            for name, members in groups.items()}
+    for item, text, rect in labelled:
         clut = item['clut_row']
-        ink, bg, sh = (1, None, 8) if clut == 8 else (2, 0, 1) if clut == 9 else (14, 15, 13) if item['en'] in ('HAPPINESS', 'SPEED', 'BRAINS', 'SPEED (alternative)') else (10, 15, 13) if item['en'] in elements else (1, 15, 13)
-        rect = relocated_rect(item, language) or [item[k] for k in ('u','v','w','h')]
+        ink, bg, sh = (1, None, 8) if clut == 8 else (2, 0, 1) if clut == 9 else (14, 15, 13) if item['en'] in ('HAPPINESS', 'SPEED', 'BRAINS') else (10, 15, 13) if item['en'] in elements else (1, 15, 13)
+        group = next((name for name, members in groups.items() if item['en'] in members), None)
         for path, entry in [('ETCDAT/SYSTEM_W.TIM',0), ('ETCDAT/ETCTIM.BIN',8)]:
-            draw(path, rect, text, ink, bg, sh, entry, preserve=True)
+            if not latin or (group and in_b[group]):
+                draw(path, rect, text, ink, bg, sh, entry, preserve=True)
+            elif group == 'gold':
+                fonts = [(F.GOLD5, 1), (F.GOLD4, 1)] if item['en'] != 'PARAMETER' else [(F.GOLD4, 1)]
+                draw(path, rect, text, ink, bg, sh, entry, fonts=fonts)
+            else:
+                try:
+                    cell, background, bottom = rendered(item, text, rect)
+                except LabelOverflow:
+                    if (language, text, tuple(rect)) not in OPEN:
+                        raise
+                    draw(path, rect, text, ink, bg, sh, entry, preserve=True)
+                    continue
+                paste(path, rect, cell, background, entry, bottom)
 
     # Triangle-menu cells; the unchanged DIGIMON label uses the disc's lettering.
     from tools.localize.fi_info import CELLS, SHARED_SIZES, check_cells
     # These dimensions are the shared non-English GameMenuLabel rows printed by
     # fi-info/build.py. Include the shadow and the nine-row REÑIR sprite.
     sizes = SHARED_SIZES
+    pf = pixfont()
     check_cells([(u, v, *sizes[e]) for e, (_, u, v) in CELLS.items()])
     if language == 'zh-hans':
         from tools.localize.systemw import CHINESE_MENU_CELLS, CHINESE_MENU_SIZE, check_chinese_menu_cells
@@ -151,8 +399,10 @@ def apply(files, language, work):
         for e, (text, u, v) in CELLS.items():
             width, height = sizes[e]
             for path, entry in [('ETCDAT/FI_INFO.TIM', 0), ('ETCDAT/ETCTIM.BIN', 4)]:
+                # the Spanish labels' 3x6 letters, on the cell's baseline as REÑIR's are
                 draw(path, (u, v, width, height), word(text, language), 15, 0, 1,
-                     entry, preserve=True, padding=1)
+                     entry, preserve=True, padding=1, bottom=language in LATIN,
+                     fonts=[(pf.LABEL6, 1), (pf.LABEL6_COMPACT, 1)] if language in LATIN else (None,))
 
     if language == 'zh-hans':
         from tools.localize.chinese_catalog import SMALL
@@ -182,7 +432,8 @@ def apply(files, language, work):
     push = ('APPUYEZ','DRÜCKEN','PREMI','おす','PREM','按下')[col]
     finish = ('FINI!','FINALE!','FINALE!','ひっさつ!','FINAL!','必杀！')[col]
     for path, entry in [('ETCDAT/BI_IN.TIM',0), ('ETCDAT/ETCTIM.BIN',0)]:
-        draw(path,(139,8,31,9),push,10,0,1,entry)
+        draw(path,(139,8,31,9),push,10,0,1,entry,bottom=language in LATIN,
+             fonts=[(pf.BUBBLE7,1)] if language in LATIN else (None,))
         draw(path,(0,29,46,15),finish,12,0,10,entry,lambda y: 11 if y >= 12 else 14 if y >= 10 else 12)
     draw('ETCHI/LIFE.TIM',(48,0,64,24),('VIE','LEBEN','VITA','のこり','VIDA','生命')[col],7,0,8)
     # (the title's Press Start line is the misc recipe's, in the disc's own letters: tools/localize/title_letters.py)
@@ -190,7 +441,8 @@ def apply(files, language, work):
     draw('STDDAT/TAISEN2.TIM',(48,0,79,14),('MODE VS','VS-MODUS','MODO VS','VS モード','MODE VS','对战模式')[col],1,15,14)
     draw('STDDAT/TAISEN_F.TIM',(120,0,124,13),('MODE COMBAT','KAMPFMODUS','MODO LOTTA','バトルモード','MODE COMBAT','战斗模式')[col],5,15,1)
     draw('STDDAT/TAISEN_F.TIM',(120,14,124,13),('CHOISIR UNE ARÈNE','ARENA WÄHLEN','SCEGLI ARENA','ステージせんたく','TRIA ESCENARI','选择场地')[col],5,15,1)
-    draw('STDDAT/TAISEN_F.TIM',(0,248,51,8),('COMBAT','KAMPF','LOTTA','バトル','COMBAT','战斗')[col],3,0,1)
+    draw('STDDAT/TAISEN_F.TIM',(0,248,51,8),('COMBAT','KAMPF','LOTTA','バトル','COMBAT','战斗')[col],3,0,1,
+         bottom=language in LATIN, fonts=[(F.STAT,1)] if language in LATIN else (None,))
     if language == 'zh-hans':
         from tools.localize.chinese_catalog import SMALL, VS_ARENAS
         # The mode sprites sample the three baked captions above their numerals.
@@ -220,7 +472,7 @@ def apply(files, language, work):
             for x in (8,w-9):
                 for y in range(4,h-4):px[y*w+x]=blue
             title = CAPTIONS[2]+name[-1] if name.startswith('GRADE') else ''.join(CUPS[name][:2])
-            bitmap = mask(title, (w-24)//3, 12,preserve=True)
+            bitmap = mask(title, (w-24)//3, 12)
             bw,bh = len(bitmap[0]),len(bitmap)
             left,top=(w-bw*3)//2,22
             for y,row in enumerate(bitmap):
