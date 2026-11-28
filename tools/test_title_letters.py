@@ -1,4 +1,6 @@
 """The title screen's translated Press Start line: the disc's own letters and hand-drawn ones at their native size."""
+import contextlib
+import io
 import os
 import re
 import shutil
@@ -40,6 +42,10 @@ class TitleLetters(unittest.TestCase):
                     self.assertIn(ch, G, (language, ch))
                     self.assertEqual(len(G[ch]), 11, (language, ch))       # rows 240-250, never scaled to fit
                     self.assertEqual({len(row) for row in G[ch]}, {len(G[ch][0])}, ch)
+
+    def test_every_translation_has_a_line(self):
+        from tools.languages import CODES
+        self.assertEqual(set(T.TEXTS), set(CODES) - {'en'})
 
     def test_hand_drawn_letters_use_only_the_lines_colours(self):
         for ch, rows in T.HAND.items():
@@ -103,6 +109,31 @@ class TitleLetters(unittest.TestCase):
             T.title_line(G, T.TEXTS[language], want, tch[' '], T.QUAD)
             got = {(x, y): out[y * w + x] for y in range(240, 251) for x in range(T.QUAD) if out[y * w + x] != tch[' ']}
             self.assertEqual(got, want.ink, language)
+
+    @unittest.skipUnless(os.path.exists(EXTRACTED + 'ETCNA/TITLE256.TIM'), 'needs the USA disc in extracted/')
+    def test_the_built_french_title_keeps_the_recipes_line(self):
+        """the whole localize build: nothing after the recipe draws over the line"""
+        from tools.localize import build as L
+        from tools.localize.build import tim_entries
+        sys.path.insert(0, os.path.join(ROOT, 'tools/localize/textures/misc'))
+        from idx import load
+        w, h, px, _, _ = load(EXTRACTED + 'ETCNA/TITLE256.TIM')
+        tch = T.disc_tch(open(EXTRACTED + 'ETCNA/TITLE256.TIM', 'rb').read())
+
+        class Disc:
+            def block(self, x0, y0, bw, bh):
+                return [[px(x0 + i, y0 + j) for i in range(bw)] for j in range(bh)]
+        want = _Record()
+        T.title_line(T.title_glyphs(Disc(), T.TITLE_LETTERS, tch), T.TEXTS['fr'], want, tch[' '], T.QUAD)
+        os.makedirs(os.path.join(ROOT, 'build'), exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=os.path.join(ROOT, 'build')) as d:
+            with contextlib.redirect_stdout(io.StringIO()):
+                L.build(d + '/out', EXTRACTED, scratch=d + '/scratch', language='fr')
+            data = open(d + '/out/fr/ETCNA/TITLE256.TIM', 'rb').read()
+        start, _, tw, _ = tim_entries(data)[0]
+        got = {(x, y): data[start + y * tw + x] for y in range(240, 251) for x in range(T.QUAD)
+               if data[start + y * tw + x] != tch[' ']}
+        self.assertEqual(got, want.ink)
 
 
 if __name__ == '__main__':
