@@ -96,26 +96,46 @@ class LabelScale(unittest.TestCase):
         self.assertEqual([labels.kind(item['en']) for item, _, _ in labelled], ['small', 'small', 'stat', 'stat', 'tag'])
 
     @unittest.skipUnless(os.path.isdir(EXTRACTED), 'needs the extracted disc')
-    def test_the_technique_page_headers_stay_inside_the_small_header_height(self):
+    def test_the_technique_page_labels_sit_where_their_crops_expect_them(self):
         # font B's nine rows plus its shadow reach the Final row's value under the header; the small header font is
-        # five rows (seven with a capital's accent) plus its outline
+        # five rows (seven with a capital's accent) plus its outline. The panel draws its labels from the cell's left
+        # edge and end a column before the arrow; the element names are cropped to their letters at the cell's right edge
+        # (tools/localize/systemw.py crop_tables): a name drawn elsewhere in its cell is cut or stands out
         from tools.localize import build as L
         from tools.localize.build import tim_entries
-        cells = [(128, 110, 38, 12), (166, 110, 28, 12), (194, 110, 34, 12), (96, 84, 64, 12)]
+        from tools.localize.systemw import LATIN_ELEMENT_CELLS, PANEL_CELLS, PANEL_LABEL_GAP, PANEL_LABEL_ROOM, TECH_CELLS
+        from tools.localize.tech_rows_art import OTHER_CELLS, WIDE_CELLS
+        names = {**LATIN_ELEMENT_CELLS, **OTHER_CELLS, **WIDE_CELLS}
+        panel = [TECH_CELLS[key] for key in PANEL_CELLS]
         os.makedirs(os.path.join(ROOT, 'build'), exist_ok=True)
         for language in labels.LATIN:
-            with self.subTest(language=language):
-                with tempfile.TemporaryDirectory(dir=os.path.join(ROOT, 'build')) as d, \
-                        contextlib.redirect_stdout(io.StringIO()):
-                    L.build(d + '/out', EXTRACTED, scratch=d + '/scratch', language=language)
-                    data = open(os.path.join(d, 'out', language, 'ETCDAT', 'SYSTEM_W.TIM'), 'rb').read()
-                start, _, w, h = tim_entries(data)[0]
-                px = [v for b in data[start:start + w * h // 2] for v in (b & 15, b >> 4)]
-                for u, v, cw, ch in cells:
-                    rows = [px[(v + y) * w + u:(v + y) * w + u + cw] for y in range(ch)]
-                    background = max(set(sum(rows, [])), key=sum(rows, []).count)
-                    painted = sum(any(c != background for c in row) for row in rows)
-                    self.assertLessEqual(painted, 9, (u, v, cw, ch))
+            with tempfile.TemporaryDirectory(dir=os.path.join(ROOT, 'build')) as d, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                L.build(d + '/out', EXTRACTED, scratch=d + '/scratch', language=language)
+                data = open(os.path.join(d, 'out', language, 'ETCDAT', 'SYSTEM_W.TIM'), 'rb').read()
+            start, _, w, h = tim_entries(data)[0]
+            px = [v for b in data[start:start + w * h // 2] for v in (b & 15, b >> 4)]
+
+            def ink(rect):
+                u, v, cw, ch = rect
+                rows = [px[(v + y) * w + u:(v + y) * w + u + cw] for y in range(ch)]
+                background = max(set(sum(rows, [])), key=sum(rows, []).count)
+                columns = [x for x in range(cw) if any(row[x] != background for row in rows)]
+                return sum(any(c != background for c in row) for row in rows), columns[0], columns[-1] + 1
+            for rect in TECH_CELLS.values():
+                with self.subTest(language=language, cell=rect):
+                    painted, left, right = ink(rect)
+                    self.assertLessEqual(painted, 9)
+                    self.assertEqual(left, 0)
+                    if rect in panel:
+                        self.assertLessEqual(right, PANEL_LABEL_ROOM - PANEL_LABEL_GAP)
+            for (en, es), rect in names.items():
+                with self.subTest(language=language, name=word(es, language)):
+                    fonts, words = labels.systemw_fonts()
+                    rows = words.compose(fonts.ELEM, word(es, language), gap=0)
+                    drawn = [x for x in range(len(rows[0])) if any(row[x] != '.' for row in rows)]
+                    at = rect[2] - labels.element_width(word(es, language))
+                    self.assertEqual(ink(rect)[1:], (at + drawn[0], at + drawn[-1] + 1))
 
 def _font_module(name, path):
     import importlib.util

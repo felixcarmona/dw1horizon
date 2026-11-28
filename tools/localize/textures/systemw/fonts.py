@@ -251,6 +251,10 @@ SMALL_COMPACT = dict(SMALL, **F('''
 É: ..#/##./#../##./###
 À: #../.../c#c/###/#.#
 '''))
+# the last resort of a word that has a fixed room (the technique panel's labels before their arrows): a 3-column N
+SMALL_NARROW = dict(SMALL_COMPACT, **F('''
+N: #.#/###/###/#c#/#.#
+'''))
 TAG_COMPACT = dict(TAG, **F('''
 Â: .##./#..#/..../.##./#..#/####/#..#/#..#
 À: .#../..#./.##./#..#/#..#/####/#..#/#..#
