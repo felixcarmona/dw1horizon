@@ -50,6 +50,19 @@ RELEASE_PLACES = {'f3b60929c58e277def094152586b6bd174ecab4c': (10, 160, 111),   
 PRESS_START = (0, 241, 121, 10)
 RELEASE_PRESS_START = {'c0d12ef9a5a689798b0b2965d95e574c525ab904': 115}      # European TITLE256
 CLEAR = 255     # TITLE256's transparent index, around the line
+# The colours (15-bit CLUT values) at the USA and European TITLE256 indices our recipes draw its Press Start line with:
+# white letters, grey shade, the two edge tones and the clear colour. The Japanese TITLE256 has the same 256 colours
+# in another order (white is 71 there, clear is 8), so the recipes look the index up in the disc's own palette.
+USA_COLOURS = {0: 0x7FFF, 91: 0x56B5, 181: 0x2529, 192: 0x2108, 255: 0x8000}
+
+
+def disc_index(data, index):
+    """the index in data's own CLUT (an 8-bit TIM) of the colour USA's TITLE256 has at index"""
+    cw = struct.unpack_from('<H', data, 16)[0]
+    hits = [i for i, v in enumerate(struct.unpack_from(f'<{cw}H', data, 20)) if v == USA_COLOURS[index]]
+    if len(hits) != 1:
+        sys.exit(f'TITLE256: the colour {USA_COLOURS[index]:#06x} of USA index {index} is at {hits} in this disc')
+    return hits[0]
 
 
 def word_pixels(rows):
